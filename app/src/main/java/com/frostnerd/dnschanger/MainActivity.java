@@ -143,9 +143,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(vpnRunning)stopVpn();
                 if (!Utils.isIP(s.toString())) {
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
-                    if(vpnRunning)stopVpn();
                 } else {
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
                     Preferences.put(MainActivity.this, "dns1", s.toString());
@@ -165,9 +165,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(vpnRunning)stopVpn();
                 if (!Utils.isIP(s.toString())) {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
-                    if(vpnRunning)stopVpn();
                 } else {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
                     Preferences.put(MainActivity.this, "dns2", s.toString());
