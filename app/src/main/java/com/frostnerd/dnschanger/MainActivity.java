@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        setIndicatorState(false);
+        setIndicatorState(API.checkVPNServiceRunning(this));
     }
 
     public void openDefaultDNSDialog(View v) {
