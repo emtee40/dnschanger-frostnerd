@@ -132,8 +132,17 @@ public class MainActivity extends AppCompatActivity {
         startStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = VpnService.prepare(MainActivity.this);
-                if (i != null) startActivityForResult(i, 0);
+                final Intent i = VpnService.prepare(MainActivity.this);
+                if (i != null){
+                    new AlertDialog.Builder(MainActivity.this).setTitle(R.string.information).setMessage(R.string.vpn_explain)
+                            .setCancelable(false).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            startActivityForResult(i, 0);
+                        }
+                    }).show();
+                }
                 else onActivityResult(0, RESULT_OK, null);
             }
         });
