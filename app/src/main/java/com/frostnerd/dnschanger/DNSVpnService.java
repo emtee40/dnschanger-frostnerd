@@ -33,14 +33,12 @@ public class DNSVpnService extends VpnService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent.getBooleanExtra("stop_vpn", false)) {
-            System.out.println("Stopping VPN");
             if (thread != null) {
                 run = false;
                 thread.interrupt();
                 thread = null;
             }
         } else if(intent.getBooleanExtra("start_vpn", false)){
-            System.out.println("Starting VPN..");
             if (thread != null) {
                 run = false;
                 thread.interrupt();
@@ -56,7 +54,6 @@ public class DNSVpnService extends VpnService {
                         tunnel.connect(new InetSocketAddress("127.0.0.1", 8087));
                         protect(tunnel.socket());
                         isRunning = true;
-                        System.out.println("VPN up and running");
                         try {
                             while(run){
                                 Thread.sleep(100);
