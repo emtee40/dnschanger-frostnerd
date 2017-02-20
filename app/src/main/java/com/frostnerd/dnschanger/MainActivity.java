@@ -221,12 +221,14 @@ public class MainActivity extends AppCompatActivity {
     private void startVpn() {
         startService(new Intent(this, DNSVpnService.class).putExtra("start_vpn", true));
         vpnRunning = true;
+        setIndicatorState(true);
     }
 
     private void stopVpn() {
         startService(new Intent(this, DNSVpnService.class).putExtra("stop_vpn", true));
         stopService(new Intent(this, DNSVpnService.class));
         vpnRunning = false;
+        setIndicatorState(false);
     }
 
     private class DefaultDNSAdapter extends BaseAdapter {
