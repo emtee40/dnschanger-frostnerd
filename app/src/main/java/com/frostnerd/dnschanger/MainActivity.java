@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private Button rate, info;
     private ImageButton importButton;
 
+    private AlertDialog defaultDnsDialog;
+
     static {
         defaultDNS.put("Google DNS", Arrays.asList("8.8.8.8", "8.8.4.4"));
         defaultDNS.put("OpenDNS", Arrays.asList("208.67.222.222", "208.67.220.220"));
@@ -182,26 +184,32 @@ public class MainActivity extends AppCompatActivity {
         setIndicatorState(API.checkVPNServiceRunning(this));
     }
 
-    public void openDefaultDNSDialog(View v) {
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
         View layout = getLayoutInflater().inflate(R.layout.dialog_default_dns, null, false);
         final ListView list = (ListView) layout.findViewById(R.id.defaultDnsDialogList);
         list.setAdapter(new DefaultDNSAdapter());
         list.setDividerHeight(0);
-        final AlertDialog dialog = new AlertDialog.Builder(this).setView(layout).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+        defaultDnsDialog = new AlertDialog.Builder(this).setView(layout).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
             }
-        }).setTitle(R.string.default_dns_title).show();
+        }).setTitle(R.string.default_dns_title).create();
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                dialog.cancel();
+                defaultDnsDialog.cancel();
                 List<String> ips = defaultDNS.get(defaultDNSKeys.get(position));
                 dns1.setText(ips.get(0));
                 dns2.setText(ips.get(1));
             }
         });
+    }
+
+    public void openDefaultDNSDialog(View v) {
+        defaultDnsDialog.show();
     }
 
     @Override
