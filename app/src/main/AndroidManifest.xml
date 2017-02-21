@@ -25,6 +25,7 @@
                 <action android:name="android.net.VpnService" />
             </intent-filter>
         </service>
+        <activity android:name=".SettingsActivity"/>
     </application>
 
 </manifest>
