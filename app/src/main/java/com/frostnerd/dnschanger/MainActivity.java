@@ -50,8 +50,9 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton importButton;
 
     private AlertDialog defaultDnsDialog;
-
     private LinearLayout wrapper;
+    private boolean settingV6 = false;
+
 
     static {
         defaultDNS.put("Google DNS", Arrays.asList("8.8.8.8", "8.8.4.4"));
@@ -163,11 +164,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(vpnRunning)stopVpn();
-                if (!Utils.isIP(s.toString())) {
+                if (!Utils.isIP(s.toString(),settingV6)) {
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
-                    Preferences.put(MainActivity.this, "dns1", s.toString());
+                    Preferences.put(MainActivity.this, settingV6 ? "dns1-v6" :"dns1", s.toString());
                 }
             }
 
@@ -185,11 +186,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(vpnRunning)stopVpn();
-                if (!Utils.isIP(s.toString())) {
+                if (!Utils.isIP(s.toString(),settingV6)) {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
-                    Preferences.put(MainActivity.this, "dns2", s.toString());
+                    Preferences.put(MainActivity.this, settingV6 ? "dns2-v6" : "dns2", s.toString());
                 }
             }
 
@@ -289,7 +290,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main,menu);
+        getMenuInflater().inflate(settingV6 ? R.menu.menu_main_v6 : R.menu.menu_main,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -298,6 +299,11 @@ public class MainActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.menu_settings){
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
+        }else if(item.getItemId() == R.id.menu_switch_ip_version){
+            settingV6 = !settingV6;
+            invalidateOptionsMenu();
+            dns1.setText(Preferences.getString(this,settingV6 ? "dns1-v6" : "dns1", settingV6 ? "2001:4860:4860::8888" : "8.8.8.8"));
+            dns2.setText(Preferences.getString(this,settingV6 ? "dns2-v6" : "dns2", settingV6 ? "2001:4860:4860::8844" : "8.8.4.4"));
         }
         return super.onOptionsItemSelected(item);
     }
