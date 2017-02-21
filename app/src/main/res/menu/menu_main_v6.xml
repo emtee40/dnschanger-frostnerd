@@ -10,9 +10,9 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/menu_switch_ip_version"
         android:icon="@drawable/ic_action_ipv6"
         android:orderInCategory="0"
-        android:id="@+id/menu_ipv6"
         android:title="IPv6"
         app:showAsAction="ifRoom" />
 </menu>
