@@ -12,4 +12,5 @@
     <string name="not_connected">Nicht verbunden</string>
     <string name="information">Information</string>
     <string name="vpn_explain">Diese App funktioniert, ohne, dass das Gerät gerooted sein muss.\n\nUm dies zu ermöglichen, wird ein sog. VPN benutzt. Dieser VPN empfängt den gesamten Traffic und leitet ihn nur lokal an das eigene Gerät weiter (Loopback), es verlassen über diese VPN Verbindung keine Daten das Gerät.\n\nDu wirst im nächsten Fenster gefragt, diese VPN Verbindung zu erlauben, ohne deine Zustimmung werden die eingestellten DNS Server nicht genutzt.\n\nDer Source Code kann unter https://git.frostnerd.com/PublicAndroidApps/DnsChanger eingesehen werden.</string>
+    <string name="settings">Einstellungen</string>
 </resources>

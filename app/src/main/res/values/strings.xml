@@ -11,4 +11,5 @@
     <string name="not_connected">Not connected</string>
     <string name="vpn_explain">This App works without a rooted phone. \n\nTo make this possible all traffic is redirected using a VPN. This VPN redirects your traffic only locally, the data never leaves your phone using this VPN connection.\n\nYou\'ll be asked to allow the VPN connection in the next window, without permission from you the set DNS servers won\'t work.\n\n\nSource code can be found under https://git.frostnerd.com/PublicAndroidApps/DnsChanger.</string>
     <string name="information">Information</string>
+    <string name="settings">Settings</string>
 </resources>
