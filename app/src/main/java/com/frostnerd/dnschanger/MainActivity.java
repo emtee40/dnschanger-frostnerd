@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -304,6 +305,8 @@ public class MainActivity extends AppCompatActivity {
             invalidateOptionsMenu();
             dns1.setText(Preferences.getString(this,settingV6 ? "dns1-v6" : "dns1", settingV6 ? "2001:4860:4860::8888" : "8.8.8.8"));
             dns2.setText(Preferences.getString(this,settingV6 ? "dns2-v6" : "dns2", settingV6 ? "2001:4860:4860::8844" : "8.8.4.4"));
+            dns1.setInputType(InputType.TYPE_CLASS_TEXT);
+            dns2.setInputType(InputType.TYPE_CLASS_TEXT);
         }
         return super.onOptionsItemSelected(item);
     }
