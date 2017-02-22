@@ -2,8 +2,11 @@ package com.frostnerd.dnschanger;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.Uri;
 import android.net.VpnService;
@@ -53,6 +56,13 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog defaultDnsDialog;
     private LinearLayout wrapper;
     private boolean settingV6 = false;
+
+    private BroadcastReceiver serviceStateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            setIndicatorState(intent.getBooleanExtra("vpn_running",false));
+        }
+    };
 
 
     static {
@@ -207,6 +217,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         setIndicatorState(API.checkVPNServiceRunning(this));
+        registerReceiver(serviceStateReceiver, new IntentFilter(API.BROADCAST_SERVICE_STATUS_CHANGE));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(serviceStateReceiver);
     }
 
     @Override
