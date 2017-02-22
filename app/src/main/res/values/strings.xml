@@ -16,4 +16,7 @@
     <string name="summary_notification">Show a notification when the VPN is running</string>
     <string name="title_start_boot">Start on boot</string>
     <string name="summary_start_boot">Automatically start the VPN when your phone is turned on</string>
+    <string name="subtitle_configuring">Configuring [[x]]</string>
+    <string name="menu_title_configure_v4">Configure IPv4</string>
+    <string name="menu_title_configure_v6">Configure IPv6</string>
 </resources>
