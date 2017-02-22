@@ -200,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        getSupportActionBar().setSubtitle("Ipv4");
     }
 
     @Override
@@ -307,6 +308,7 @@ public class MainActivity extends AppCompatActivity {
             dns2.setText(Preferences.getString(this,settingV6 ? "dns2-v6" : "dns2", settingV6 ? "2001:4860:4860::8844" : "8.8.4.4"));
             dns1.setInputType(InputType.TYPE_CLASS_TEXT);
             dns2.setInputType(InputType.TYPE_CLASS_TEXT);
+            getSupportActionBar().setSubtitle(settingV6 ? "Ipv6" : "Ipv4");
         }
         return super.onOptionsItemSelected(item);
     }
