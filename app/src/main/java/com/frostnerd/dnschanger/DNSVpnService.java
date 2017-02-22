@@ -1,14 +1,20 @@
 package com.frostnerd.dnschanger;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.VpnService;
 import android.os.ParcelFileDescriptor;
+import android.support.v7.app.NotificationCompat;
 
+import com.frostnerd.utils.general.StringUtils;
+import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.preferences.Preferences;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.DatagramChannel;
+import java.util.Random;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -21,13 +27,49 @@ public class DNSVpnService extends VpnService {
     private Thread thread;
     private ParcelFileDescriptor tunnelInterface;
     private Builder builder = new Builder();
+    private NotificationCompat.Builder notificationBuilder;
+    private NotificationManager notificationManager;
+    private final int NOTIFICATION_ID = 112;
 
     @Override
     public void onDestroy() {
         run = false;
-        if(thread != null)thread.interrupt();
+        if (thread != null) thread.interrupt();
         thread = null;
+        notificationManager.cancel(NOTIFICATION_ID);
+        notificationManager = null;
+        notificationBuilder = null;
         super.onDestroy();
+    }
+
+    private void updateNotification() { //TODO Fix Bug: Actions are not properly removed
+        notificationBuilder.mActions.clear();
+        android.support.v4.app.NotificationCompat.Action a1 = new NotificationCompat.Action(isRunning ? R.drawable.ic_stat_pause : R.drawable.ic_stat_resume,
+                getString(isRunning ? R.string.action_pause : R.string.action_resume),
+                PendingIntent.getService(this, 0, new Intent(this, DNSVpnService.class).setAction(new Random().nextInt(50) + "_action")
+                        .putExtra(isRunning ? "stop_vpn" : "start_vpn", true), PendingIntent.FLAG_CANCEL_CURRENT)),
+        a2 = new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_stop,
+                getString(R.string.action_stop), PendingIntent.getService(this, 1, new Intent(this, DNSVpnService.class)
+                .setAction(StringUtils.randomString(80) + "_action").putExtra("destroy", true), PendingIntent.FLAG_CANCEL_CURRENT));
+        notificationBuilder.addAction(a1);
+        notificationBuilder.addAction(a2);
+        notificationBuilder.setContentText(getString(isRunning ? R.string.notification_running : R.string.notification_paused));
+        notificationBuilder.setContentTitle(getString(isRunning ? R.string.active : R.string.paused));
+        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        if (notificationBuilder == null) {
+            notificationBuilder = new android.support.v7.app.NotificationCompat.Builder(this);
+            notificationBuilder.setSmallIcon(R.mipmap.ic_launcher); //TODO Update Image
+            notificationBuilder.setContentTitle(getString(R.string.app_name));
+            notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0));
+            notificationBuilder.setAutoCancel(false);
+            notificationBuilder.setOngoing(true);
+            notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        }
     }
 
     @Override
@@ -38,7 +80,7 @@ public class DNSVpnService extends VpnService {
                 thread.interrupt();
                 thread = null;
             }
-        } else if(intent.getBooleanExtra("start_vpn", false)){
+        } else if (intent.getBooleanExtra("start_vpn", false)) {
             if (thread != null) {
                 run = false;
                 thread.interrupt();
@@ -54,18 +96,20 @@ public class DNSVpnService extends VpnService {
                         tunnel.connect(new InetSocketAddress("127.0.0.1", 8087));
                         protect(tunnel.socket());
                         isRunning = true;
+                        updateNotification();
                         try {
-                            while(run){
+                            while (run) {
                                 Thread.sleep(100);
                             }
-                        }catch(InterruptedException e2){
+                        } catch (InterruptedException e2) {
 
                         }
-                        isRunning = false;
                     } catch (IOException e) {
 
-                    }finally {
-                        if(tunnelInterface != null) try {
+                    } finally {
+                        isRunning = false;
+                        updateNotification();
+                        if (tunnelInterface != null) try {
                             tunnelInterface.close();
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -75,7 +119,14 @@ public class DNSVpnService extends VpnService {
             });
             run = true;
             thread.start();
+        }else if(intent.getBooleanExtra("destroy",false)){
+            if (thread != null) {
+                run = false;
+                thread.interrupt();
+            }
+            stopSelf();
         }
+        updateNotification();
         return START_STICKY;
     }
 }
