@@ -23,4 +23,8 @@
     <string name="action_resume">Fortfahren</string>
     <string name="action_pause">Pausieren</string>
     <string name="action_stop">Stoppen</string>
+    <string name="notification_paused">DNS Changer ist pausiert (VPN läuft nicht)</string>
+    <string name="notification_running">DNS Changer ist aktiv (VPN läuft)</string>
+    <string name="active">Aktiv</string>
+    <string name="paused">Pausiert</string>
 </resources>
