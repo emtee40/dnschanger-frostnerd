@@ -76,6 +76,6 @@ public class DNSVpnService extends VpnService {
             run = true;
             thread.start();
         }
-        return super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
     }
 }
