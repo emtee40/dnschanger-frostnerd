@@ -1,10 +1,12 @@
 package com.frostnerd.dnschanger;
 
 import android.os.Bundle;
+import android.preference.Preference;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
 import com.frostnerd.utils.preferences.AppCompatPreferenceActivity;
+import com.frostnerd.utils.preferences.Preferences;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -19,6 +21,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        findPreference("setting_start_boot").setOnPreferenceChangeListener(changeListener);
+        findPreference("setting_show_notification").setOnPreferenceChangeListener(changeListener);
     }
 
     @Override
@@ -29,4 +33,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+            Preferences.put(SettingsActivity.this,preference.getKey(),newValue);
+            return true;
+        }
+    };
 }
