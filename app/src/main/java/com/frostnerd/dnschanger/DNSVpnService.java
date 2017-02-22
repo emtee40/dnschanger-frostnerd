@@ -96,6 +96,7 @@ public class DNSVpnService extends VpnService {
                         tunnel.connect(new InetSocketAddress("127.0.0.1", 8087));
                         protect(tunnel.socket());
                         isRunning = true;
+                        sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATUS_CHANGE).putExtra("vpn_running",true));
                         updateNotification();
                         try {
                             while (run) {
@@ -108,6 +109,7 @@ public class DNSVpnService extends VpnService {
 
                     } finally {
                         isRunning = false;
+                        sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATUS_CHANGE).putExtra("vpn_running",false));
                         updateNotification();
                         if (tunnelInterface != null) try {
                             tunnelInterface.close();
