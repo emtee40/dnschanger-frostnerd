@@ -45,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private MaterialEditText met_dns1, met_dns2;
     private EditText dns1, dns2;
     private static final HashMap<String, List<String>> defaultDNS = new HashMap<>();
-    private static final List<String> defaultDNSKeys;
+    private static final HashMap<String, List<String>> defaultDNS_V6 = new HashMap<>();
+    private static final List<String> defaultDNSKeys, DefaultDNSKeys_V6;
 
     private TextView connectionText;
     private ImageView connectionImage;
@@ -66,14 +67,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     static {
-        defaultDNS.put("Google DNS", Arrays.asList("8.8.8.8", "8.8.4.4"));
-        defaultDNS.put("OpenDNS", Arrays.asList("208.67.222.222", "208.67.220.220"));
+        defaultDNS.put("Google DNS", Arrays.asList("8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844"));
+        defaultDNS.put("OpenDNS", Arrays.asList("208.67.222.222", "208.67.220.220", "2620:0:ccc::2", "2620:0:ccd::2"));
         defaultDNS.put("Level3", Arrays.asList("209.244.0.3", "209.244.0.4"));
         defaultDNS.put("FreeDNS", Arrays.asList("37.235.1.174", "37.235.1.177"));
-        defaultDNS.put("Yandex DNS", Arrays.asList("77.88.8.8", "77.88.8.1"));
-        defaultDNS.put("Verisign", Arrays.asList("64.6.64.6", "64.6.65.6"));
+        defaultDNS.put("Yandex DNS", Arrays.asList("77.88.8.8", "77.88.8.1", "2a02:6b8::feed:0ff", "2a02:6b8:0:1::feed:0ff"));
+        defaultDNS.put("Verisign", Arrays.asList("64.6.64.6", "64.6.65.6", "2620:74:1b::1:1", "2620:74:1c::2:2"));
         defaultDNS.put("Alternate DNS", Arrays.asList("198.101.242.72", "23.253.163.53"));
+
+        defaultDNS_V6.put("Google DNS", Arrays.asList("2001:4860:4860::8888", "2001:4860:4860::8844"));
+        defaultDNS_V6.put("OpenDNS", Arrays.asList("2620:0:ccc::2", "2620:0:ccd::2"));
+        defaultDNS_V6.put("Yandex DNS", Arrays.asList("2a02:6b8::feed:0ff", "2a02:6b8:0:1::feed:0ff"));
+        defaultDNS_V6.put("Verisign", Arrays.asList("2620:74:1b::1:1", "2620:74:1c::2:2"));
         defaultDNSKeys = new ArrayList<>(defaultDNS.keySet());
+        DefaultDNSKeys_V6 = new ArrayList<>(defaultDNS_V6.keySet());
     }
 
     private void setIndicatorState(boolean vpnRunning) {
@@ -243,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 defaultDnsDialog.cancel();
-                List<String> ips = defaultDNS.get(defaultDNSKeys.get(position));
+                List<String> ips = settingV6 ? defaultDNS_V6.get(DefaultDNSKeys_V6.get(position)) : defaultDNS.get(defaultDNSKeys.get(position));
                 dns1.setText(ips.get(0));
                 dns2.setText(ips.get(1));
             }
@@ -285,12 +292,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return defaultDNS.size();
+            return settingV6 ? defaultDNS_V6.size() : defaultDNS.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return defaultDNS.get(position);
+            return settingV6 ? defaultDNS_V6.get(position) : defaultDNS.get(position);
         }
 
         @Override
@@ -301,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View v = getLayoutInflater().inflate(R.layout.item_default_dns, parent, false);
-            ((TextView) v.findViewById(R.id.text)).setText(defaultDNSKeys.get(position));
+            ((TextView) v.findViewById(R.id.text)).setText(settingV6 ? DefaultDNSKeys_V6.get(position) : defaultDNSKeys.get(position));
             v.setTag(getItem(position));
             return v;
         }
