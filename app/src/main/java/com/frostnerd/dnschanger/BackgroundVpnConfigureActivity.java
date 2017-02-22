@@ -38,7 +38,7 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
     }
 
     private void showDialog(DialogInterface.OnClickListener click) {
-        new AlertDialog.Builder(this).setTitle(R.string.information).setMessage(R.string.vpn_explain)
+        new AlertDialog.Builder(this).setTitle(R.string.information + " - " + getString(R.string.app_name)).setMessage(R.string.vpn_explain)
                 .setCancelable(false).setPositiveButton(R.string.ok, click).show();
     }
 
