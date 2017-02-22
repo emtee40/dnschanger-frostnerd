@@ -19,4 +19,7 @@
     <string name="subtitle_configuring">Configuring [[x]]</string>
     <string name="menu_title_configure_v4">Configure IPv4</string>
     <string name="menu_title_configure_v6">Configure IPv6</string>
+    <string name="action_resume">Resume</string>
+    <string name="action_pause">Pause</string>
+    <string name="action_stop">Stop</string>
 </resources>

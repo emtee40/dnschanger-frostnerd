@@ -20,4 +20,7 @@
     <string name="subtitle_configuring">Editiere [[x]]</string>
     <string name="menu_title_configure_v4">IPv4 konfigurieren</string>
     <string name="menu_title_configure_v6">IPv6 konfigurieren</string>
+    <string name="action_resume">Fortfahren</string>
+    <string name="action_pause">Pausieren</string>
+    <string name="action_stop">Stoppen</string>
 </resources>
