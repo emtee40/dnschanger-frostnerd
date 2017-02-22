@@ -3,11 +3,13 @@
 
     <CheckBoxPreference
         android:id="@+id/setting_show_notification"
+        android:key="setting_show_notification"
         android:summary="@string/summary_notification"
         android:title="@string/title_notification" />
 
     <CheckBoxPreference
         android:id="@+id/setting_start_boot"
+        android:key="setting_start_boot"
         android:summary="@string/summary_start_boot"
         android:title="@string/title_start_boot" />
 </PreferenceScreen>
