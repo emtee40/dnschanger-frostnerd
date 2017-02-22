@@ -90,8 +90,11 @@ public class DNSVpnService extends VpnService {
                 public void run() {
                     try {
                         String dns1 = Preferences.getString(DNSVpnService.this, "dns1", "8.8.8.8"),
-                                dns2 = Preferences.getString(DNSVpnService.this, "dns1", "8.8.4.4");
-                        tunnelInterface = builder.setSession("DnsChanger").addAddress("192.168.0.1", 24).addDnsServer(dns1).addDnsServer(dns2).establish();
+                                dns2 = Preferences.getString(DNSVpnService.this, "dns1", "8.8.4.4"),
+                        dns1_v6 = Preferences.getString(DNSVpnService.this, "dns1", "2001:4860:4860::8888"),
+                        dns2_v6 = Preferences.getString(DNSVpnService.this, "dns1", "2001:4860:4860::8844");
+                        tunnelInterface = builder.setSession("DnsChanger").addAddress("192.168.0.1", 24).addDnsServer(dns1).addDnsServer(dns2)
+                                .addDnsServer(dns1_v6).addDnsServer(dns2_v6).establish();
                         DatagramChannel tunnel = DatagramChannel.open();
                         tunnel.connect(new InetSocketAddress("127.0.0.1", 8087));
                         protect(tunnel.socket());
