@@ -61,7 +61,7 @@ public class DNSVpnService extends VpnService {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+                if(notificationManager != null && notificationBuilder != null) notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
             }
         },10);
     }
@@ -117,7 +117,7 @@ public class DNSVpnService extends VpnService {
 
                         }
                     } catch (IOException e) {
-
+                        e.printStackTrace();
                     } finally {
                         isRunning = false;
                         sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATUS_CHANGE).putExtra("vpn_running",false));
