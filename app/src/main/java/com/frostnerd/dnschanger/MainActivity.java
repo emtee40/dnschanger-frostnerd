@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
             info.setBackgroundColor(color);
             importButton.setBackgroundColor(color);
             startStopButton.setText(R.string.start);
-            running_indicator.setBackgroundColor(Color.parseColor("#42A5F5"));
+            running_indicator.setBackgroundColor(Color.parseColor("#2196F3"));
         }
     }
 
