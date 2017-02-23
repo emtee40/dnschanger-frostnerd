@@ -220,6 +220,12 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        findViewById(R.id.settings).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+            }
+        });
         getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
     }
 
@@ -325,10 +331,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.menu_settings){
-            startActivity(new Intent(this, SettingsActivity.class));
-            return true;
-        }else if(item.getItemId() == R.id.menu_switch_ip_version){
+        if(item.getItemId() == R.id.menu_switch_ip_version){
             settingV6 = !settingV6;
             invalidateOptionsMenu();
             dns1.setText(Preferences.getString(this,settingV6 ? "dns1-v6" : "dns1", settingV6 ? "2001:4860:4860::8888" : "8.8.8.8"));
