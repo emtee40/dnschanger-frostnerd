@@ -233,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setIndicatorState(API.checkVPNServiceRunning(this));
+        setIndicatorState(vpnRunning = API.checkVPNServiceRunning(this));
         registerReceiver(serviceStateReceiver, new IntentFilter(API.BROADCAST_SERVICE_STATUS_CHANGE));
     }
 
