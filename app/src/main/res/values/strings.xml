@@ -26,4 +26,8 @@
     <string name="notification_running">DNS Changer is active (VPN running)</string>
     <string name="active">Active</string>
     <string name="paused">Paused</string>
+    <string name="summary_auto_wifi">Automatically turn on DNS Changer when connecting to a wifi network</string>
+    <string name="summary_auto_mobile">Automatically turn on DNS Changer when connecting to a mobile network</string>
+    <string name="title_auto_wifi">Automatically start (WIFI)</string>
+    <string name="title_auto_mobile">Automatically start (Mobile)</string>
 </resources>

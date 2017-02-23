@@ -27,4 +27,8 @@
     <string name="notification_running">DNS Changer ist aktiv (VPN läuft)</string>
     <string name="active">Aktiv</string>
     <string name="paused">Pausiert</string>
+    <string name="summary_auto_mobile">DNS Changer automatisch anschalten, sobald das Handy über ein mobiles Netzwerk mit dem Internet verbunden ist</string>
+    <string name="summary_auto_wifi">DNS Changer automatisch anschalten, sobald das Handy mit einem WLAN-Netzwerk verbinden</string>
+    <string name="title_auto_wifi">Automatisch starten (WLAN)</string>
+    <string name="title_auto_mobile">Automatisch starten (Mobilfunk)</string>
 </resources>

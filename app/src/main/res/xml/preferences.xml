@@ -12,4 +12,16 @@
         android:key="setting_start_boot"
         android:summary="@string/summary_start_boot"
         android:title="@string/title_start_boot" />
+
+    <CheckBoxPreference
+        android:id="@+id/setting_auto_wifi"
+        android:key="setting_auto_wifi"
+        android:summary="@string/summary_auto_wifi"
+        android:title="@string/title_auto_wifi" />
+
+    <CheckBoxPreference
+        android:id="@+id/setting_auto_mobile"
+        android:key="setting_auto_mobile"
+        android:summary="@string/summary_auto_mobile"
+        android:title="@string/title_auto_mobile" />
 </PreferenceScreen>
