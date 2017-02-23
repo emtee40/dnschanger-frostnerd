@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver serviceStateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            vpnRunning = intent.getBooleanExtra("vpn_running",false);
             setIndicatorState(intent.getBooleanExtra("vpn_running",false));
         }
     };
