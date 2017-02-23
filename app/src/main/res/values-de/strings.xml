@@ -31,4 +31,6 @@
     <string name="title_auto_mobile">Automatisch starten (Mobilfunk)</string>
     <string name="not_running">Läuft nicht</string>
     <string name="running">Läuft</string>
+    <string name="background_configure_error">Die Berechtigung, den VPN zu starten wurde verwährt.\nDies könnte das System sein, welches die Anfrage automatisch ablehnt, da sie nicht aus dem Vordergrund gestellt wurde (Mögliches Sicherheitsrisiko)\n\nÖffne die App, um den VPN zu starten</string>
+    <string name="open_app">App öffnen</string>
 </resources>

@@ -30,4 +30,6 @@
     <string name="title_auto_mobile">Automatically start (Mobile)</string>
     <string name="running">Running</string>
     <string name="not_running">Not running</string>
+    <string name="background_configure_error">Permission to start the VPN denied. \nThis could be the system denying vpn connections being started from the background for safety reasons.\n\nOpen the app to start the VPN</string>
+    <string name="open_app">Open app</string>
 </resources>
