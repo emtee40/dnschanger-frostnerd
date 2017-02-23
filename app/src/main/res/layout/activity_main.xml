@@ -15,6 +15,7 @@
 
 
     <com.frostnerd.utils.design.MaterialEditText
+        android:id="@+id/met_dns1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:allowCollapse="false"
@@ -22,7 +23,6 @@
         app:cardStrokeColor="#42A5F5"
         app:image="@drawable/ic_language"
         app:revealDelay="0"
-        android:id="@+id/met_dns1"
         app:revealType="revealInstant">
 
         <EditText
@@ -38,6 +38,7 @@
 
 
     <com.frostnerd.utils.design.MaterialEditText
+        android:id="@+id/met_dns2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:allowCollapse="false"
@@ -45,7 +46,6 @@
         app:cardStrokeColor="#2196F3"
         app:image="@drawable/ic_language"
         app:revealDelay="0"
-        android:id="@+id/met_dns2"
         app:revealType="revealInstant">
 
         <EditText
@@ -60,19 +60,19 @@
     </com.frostnerd.utils.design.MaterialEditText>
 
     <LinearLayout
+        android:id="@+id/default_dns_view"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="#42A5F5"
         android:clickable="true"
-        android:id="@+id/default_dns_view"
         android:onClick="openDefaultDNSDialog"
-        android:padding="10dp"
-        android:layout_height="wrap_content">
+        android:padding="10dp">
 
         <ImageButton
+            android:id="@+id/default_dns_view_image"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:id="@+id/default_dns_view_image"
             android:background="#42A5F5"
             android:src="@drawable/ic_action_import" />
 
@@ -85,8 +85,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textColor="#FFF"
-            android:text="@string/default_dns" />
+            android:text="@string/default_dns"
+            android:textColor="#FFF" />
     </LinearLayout>
 
 
@@ -95,9 +95,9 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
         android:background="#42A5F5"
         android:text="@string/start"
-        android:layout_marginTop="45dp"
         android:textColor="#FFF" />
 
     <RelativeLayout
@@ -114,19 +114,19 @@
             android:layout_toLeftOf="@+id/settings"
             android:layout_weight="1"
             android:background="#42A5F5"
-            android:text="@string/rate"
             android:onClick="rateApp"
+            android:text="@string/rate"
             android:textColor="#FFF" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:src="@drawable/ic_settings"
-            android:paddingLeft="3dp"
-            android:paddingRight="3dp"
             android:id="@+id/settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:background="#42A5F5"
-            android:layout_height="wrap_content" />
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:src="@drawable/ic_settings" />
 
         <Button
             android:id="@+id/dnsInfo"
@@ -135,30 +135,39 @@
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/settings"
             android:layout_weight="1"
-            android:onClick="openDNSInfoDialog"
             android:background="#42A5F5"
+            android:onClick="openDNSInfoDialog"
             android:text="@string/info_dns_button"
             android:textColor="#FFF" />
     </RelativeLayout>
 
     <View
-        android:layout_width="match_parent"
         android:id="@+id/running_indicator"
-        android:layout_height="9dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="9dp" />
 
     <TextView
-        android:layout_width="match_parent"
         android:id="@+id/connection_status_text"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:textColor="#FFF"
-        android:layout_height="wrap_content" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:textColor="#FFF" />
 
-    <ImageView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:padding="15dp"
-        android:id="@+id/connection_status_image"
-        android:layout_height="match_parent" />
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/connection_status_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:maxHeight="64dp"
+            android:maxWidth="64dp"
+            android:padding="15dp"/>
+    </RelativeLayout>
 </LinearLayout>
