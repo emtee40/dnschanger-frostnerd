@@ -59,6 +59,16 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout wrapper;
     private boolean settingV6 = false;
 
+    @Override
+    protected void onDestroy() {
+        if(dialog1 != null)dialog1.cancel();
+        if(dialog2 != null)dialog2.cancel();
+        if(defaultDnsDialog != null)defaultDnsDialog.cancel();
+        super.onDestroy();
+    }
+
+    private AlertDialog dialog1, dialog2;
+
     private BroadcastReceiver serviceStateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -133,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openDNSInfoDialog(View v) {
-        new AlertDialog.Builder(this).setTitle(R.string.info_dns_button).setMessage(R.string.dns_info_text).setCancelable(true).setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+        dialog1 = new AlertDialog.Builder(this).setTitle(R.string.info_dns_button).setMessage(R.string.dns_info_text).setCancelable(true).setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -166,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final Intent i = VpnService.prepare(MainActivity.this);
                 if (i != null){
-                    new AlertDialog.Builder(MainActivity.this).setTitle(R.string.information).setMessage(R.string.vpn_explain)
+                    dialog2 = new AlertDialog.Builder(MainActivity.this).setTitle(R.string.information).setMessage(R.string.vpn_explain)
                             .setCancelable(false).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
