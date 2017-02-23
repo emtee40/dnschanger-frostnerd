@@ -24,7 +24,7 @@ import java.util.Random;
  * development@frostnerd.com
  */
 public class DNSVpnService extends VpnService {
-    private boolean run = true, isRunning = false;
+    private boolean run = true, isRunning = false, stopped = false;
     private Thread thread;
     private ParcelFileDescriptor tunnelInterface;
     private Builder builder = new Builder();
@@ -35,6 +35,7 @@ public class DNSVpnService extends VpnService {
 
     @Override
     public void onDestroy() {
+        stopped = true;
         run = false;
         if (thread != null) thread.interrupt();
         thread = null;
@@ -61,7 +62,7 @@ public class DNSVpnService extends VpnService {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(notificationManager != null && notificationBuilder != null) notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+                if(notificationManager != null && notificationBuilder != null && !stopped) notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
             }
         },10);
     }
@@ -83,6 +84,7 @@ public class DNSVpnService extends VpnService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent.getBooleanExtra("stop_vpn", false)) {
+            stopped = true;
             if (thread != null) {
                 run = false;
                 thread.interrupt();
