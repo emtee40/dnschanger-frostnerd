@@ -2,7 +2,6 @@ package com.frostnerd.dnschanger;
 
 import android.os.Bundle;
 import android.preference.Preference;
-import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
 import com.frostnerd.utils.preferences.AppCompatPreferenceActivity;
