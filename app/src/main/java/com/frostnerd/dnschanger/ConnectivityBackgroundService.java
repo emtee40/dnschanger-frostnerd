@@ -39,7 +39,7 @@ public class ConnectivityBackgroundService extends Service {
         if(i == null){
             this.startService(new Intent(this, DNSVpnService.class).putExtra("start_vpn",true));
         }
-        else this.startActivity(new Intent(this, BackgroundVpnConfigureActivity.class));
+        else this.startActivity(new Intent(this, BackgroundVpnConfigureActivity.class).putExtra("startService",true));
     }
 
 
