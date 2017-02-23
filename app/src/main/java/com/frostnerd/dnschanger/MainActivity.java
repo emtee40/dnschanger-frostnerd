@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout defaultDNSView;
     private Button rate, info;
     private ImageButton importButton;
+    private View running_indicator;
 
     private AlertDialog defaultDnsDialog;
     private LinearLayout wrapper;
@@ -64,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
             setIndicatorState(intent.getBooleanExtra("vpn_running",false));
         }
     };
-
 
     static {
         defaultDNS.put("Google DNS", Arrays.asList("8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844"));
@@ -84,13 +84,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setIndicatorState(boolean vpnRunning) {
-        ObjectAnimator colorFade = ObjectAnimator.ofObject(wrapper, "backgroundColor", new ArgbEvaluator(),
-                vpnRunning ? Color.parseColor("#2196F3") : Color.parseColor("#4CAF50"),
-                vpnRunning ? Color.parseColor("#4CAF50") : Color.parseColor("#2196F3"));
-        colorFade.setDuration(400);
-        colorFade.start();
+//        ObjectAnimator colorFade = ObjectAnimator.ofObject(wrapper, "backgroundColor", new ArgbEvaluator(),
+//                vpnRunning ? Color.parseColor("#2196F3") : Color.parseColor("#4CAF50"),
+//                vpnRunning ? Color.parseColor("#4CAF50") : Color.parseColor("#2196F3"));
+//        colorFade.setDuration(400);
+//        colorFade.start();
         if (vpnRunning) {
-            int color = Color.parseColor("#43A047");
+            int color = Color.parseColor("#42A5F5");
             connectionText.setText(R.string.connected);
             connectionImage.setImageResource(R.drawable.ic_thumb_up);
             startStopButton.setBackgroundColor(color);
@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
             info.setBackgroundColor(color);
             importButton.setBackgroundColor(color);
             startStopButton.setText(R.string.stop);
+            running_indicator.setBackgroundColor(Color.parseColor("#4CAF50"));
         } else {
             int color = Color.parseColor("#42A5F5");
             connectionText.setText(R.string.not_connected);
@@ -117,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
             info.setBackgroundColor(color);
             importButton.setBackgroundColor(color);
             startStopButton.setText(R.string.start);
+            running_indicator.setBackgroundColor(Color.parseColor("#42A5F5"));
         }
     }
 
@@ -153,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
         info = (Button)findViewById(R.id.dnsInfo);
         wrapper = (LinearLayout)findViewById(R.id.activity_main);
         importButton = (ImageButton)findViewById(R.id.default_dns_view_image);
+        running_indicator = (View)findViewById(R.id.running_indicator);
         dns1.setText(Preferences.getString(MainActivity.this, "dns1", "8.8.8.8"));
         dns2.setText(Preferences.getString(MainActivity.this, "dns2", "8.8.4.4"));
         startStopButton = (Button) findViewById(R.id.startStopButton);
