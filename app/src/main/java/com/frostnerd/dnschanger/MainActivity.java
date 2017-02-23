@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 //        colorFade.start();
         if (vpnRunning) {
             int color = Color.parseColor("#42A5F5");
-            connectionText.setText(R.string.connected);
+            connectionText.setText(R.string.running);
             connectionImage.setImageResource(R.drawable.ic_thumb_up);
             startStopButton.setBackgroundColor(color);
             met_dns1.setCardColor(color);
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             running_indicator.setBackgroundColor(Color.parseColor("#4CAF50"));
         } else {
             int color = Color.parseColor("#42A5F5");
-            connectionText.setText(R.string.not_connected);
+            connectionText.setText(R.string.not_running);
             connectionImage.setImageResource(R.drawable.ic_thumb_down);
             startStopButton.setBackgroundColor(color);
             met_dns1.setCardColor(color);

@@ -8,8 +8,6 @@
     <string name="default_dns">Voreingstellte DNS Adressen</string>
     <string name="default_dns_title">Öffentliche DNS Anbieter</string>
     <string name="dns_info_text">DNS steht für Domain Name System.\\n\nDas Domain Name System wird benutzt, um Domains (google.com, yahoo.com, example.org...) zu IP-Adressen (z.B. 192.168.178.1) aufzulösen und zu die Kommunikation über das Internet zu ermöglichen.\\n\nDas DNS ist eines der wichtigsten System in IP-basierten Netzwerken.</string>
-    <string name="connected">Verbunden</string>
-    <string name="not_connected">Nicht verbunden</string>
     <string name="information">Information</string>
     <string name="vpn_explain">Diese App funktioniert, ohne, dass das Gerät gerooted sein muss.\n\nUm dies zu ermöglichen, wird ein sog. VPN benutzt. Dieser VPN empfängt den gesamten Traffic und leitet ihn nur lokal an das eigene Gerät weiter (Loopback), es verlassen über diese VPN Verbindung keine Daten das Gerät.\n\nDu wirst im nächsten Fenster gefragt, diese VPN Verbindung zu erlauben, ohne deine Zustimmung werden die eingestellten DNS Server nicht genutzt.\n\nDer Source Code kann unter https://git.frostnerd.com/PublicAndroidApps/DnsChanger eingesehen werden.</string>
     <string name="settings">Einstellungen</string>
@@ -31,4 +29,6 @@
     <string name="summary_auto_wifi">DNS Changer automatisch anschalten, sobald das Handy mit einem WLAN-Netzwerk verbinden</string>
     <string name="title_auto_wifi">Automatisch starten (WLAN)</string>
     <string name="title_auto_mobile">Automatisch starten (Mobilfunk)</string>
+    <string name="not_running">Läuft nicht</string>
+    <string name="running">Läuft</string>
 </resources>
