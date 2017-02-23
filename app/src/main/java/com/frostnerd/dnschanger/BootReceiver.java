@@ -24,7 +24,7 @@ public class BootReceiver extends BroadcastReceiver {
                 if(i == null){
                     context.startService(new Intent(context, DNSVpnService.class).putExtra("start_vpn",true));
                 }
-                else context.startActivity(new Intent(context, BackgroundVpnConfigureActivity.class).putExtra("startService",true));
+                else BackgroundVpnConfigureActivity.startBackgroundConfigure(context,true);
             }
         }
     }

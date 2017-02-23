@@ -1,5 +1,6 @@
 package com.frostnerd.dnschanger;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -39,7 +40,7 @@ public class ConnectivityBackgroundService extends Service {
         if(i == null){
             this.startService(new Intent(this, DNSVpnService.class).putExtra("start_vpn",true));
         }
-        else this.startActivity(new Intent(this, BackgroundVpnConfigureActivity.class).putExtra("startService",true));
+        else BackgroundVpnConfigureActivity.startBackgroundConfigure(this,true);
     }
 
 
@@ -60,7 +61,6 @@ public class ConnectivityBackgroundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        System.out.println("BACKGROUND CONNECTIVITY START");
         return START_STICKY;
     }
 

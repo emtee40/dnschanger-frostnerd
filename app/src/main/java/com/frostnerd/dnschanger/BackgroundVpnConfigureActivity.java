@@ -1,5 +1,7 @@
 package com.frostnerd.dnschanger;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.VpnService;
@@ -17,6 +19,10 @@ import android.support.v7.app.AppCompatActivity;
 public class BackgroundVpnConfigureActivity extends AppCompatActivity {
     private boolean startService = false;
     private static final int REQUEST_CODE = 112;
+
+    public static void startBackgroundConfigure(Context context, boolean startService){
+        context.startActivity(new Intent(context, BackgroundVpnConfigureActivity.class).putExtra("startService",startService).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
