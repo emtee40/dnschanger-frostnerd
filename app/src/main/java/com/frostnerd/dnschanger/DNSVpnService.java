@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.VpnService;
+import android.os.Handler;
 import android.os.ParcelFileDescriptor;
 import android.support.v7.app.NotificationCompat;
 
@@ -30,6 +31,7 @@ public class DNSVpnService extends VpnService {
     private NotificationCompat.Builder notificationBuilder;
     private NotificationManager notificationManager;
     private final int NOTIFICATION_ID = 112;
+    private Handler handler = new Handler();
 
     @Override
     public void onDestroy() {
@@ -56,7 +58,12 @@ public class DNSVpnService extends VpnService {
         notificationBuilder.addAction(a2);
         notificationBuilder.setContentText(getString(isRunning ? R.string.notification_running : R.string.notification_paused));
         notificationBuilder.setContentTitle(getString(isRunning ? R.string.active : R.string.paused));
-        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+            }
+        },10);
     }
 
     @Override
