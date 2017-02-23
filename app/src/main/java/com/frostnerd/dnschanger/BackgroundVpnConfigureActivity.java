@@ -24,8 +24,8 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
         if(getSupportActionBar() != null)getSupportActionBar().hide();
         Intent i = getIntent();
         final Intent conf = VpnService.prepare(this);
+        startService = i != null && i.getBooleanExtra("startService", false);
         if (conf != null) {
-            startService = i != null && conf.getBooleanExtra("startService", false);
             showDialog(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -33,6 +33,7 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
                 }
             });
         } else {
+            if(startService)startService(new Intent(this, DNSVpnService.class).putExtra("start_vpn", true));
             setResult(RESULT_OK);
             finish();
         }
