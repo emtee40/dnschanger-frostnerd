@@ -72,7 +72,7 @@ public class DNSVpnService extends VpnService {
         super.onCreate();
         if (notificationBuilder == null) {
             notificationBuilder = new android.support.v7.app.NotificationCompat.Builder(this);
-            notificationBuilder.setSmallIcon(R.mipmap.ic_launcher); //TODO Update Image
+            notificationBuilder.setSmallIcon(R.drawable.ic_stat_small_icon); //TODO Update Image
             notificationBuilder.setContentTitle(getString(R.string.app_name));
             notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0));
             notificationBuilder.setAutoCancel(false);
@@ -84,7 +84,6 @@ public class DNSVpnService extends VpnService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent.getBooleanExtra("stop_vpn", false)) {
-            stopped = true;
             if (thread != null) {
                 run = false;
                 thread.interrupt();
@@ -135,6 +134,7 @@ public class DNSVpnService extends VpnService {
             run = true;
             thread.start();
         }else if(intent.getBooleanExtra("destroy",false)){
+            stopped = true;
             if (thread != null) {
                 run = false;
                 thread.interrupt();
