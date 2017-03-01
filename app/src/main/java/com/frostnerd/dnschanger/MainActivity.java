@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
                 }
-            }).show();
+            }).setMessage(R.string.rate_request_text).setTitle(R.string.rate).show();
         }
         Preferences.put(this, "first_run", false);
     }
