@@ -33,4 +33,7 @@
     <string name="running">Läuft</string>
     <string name="background_configure_error">Die Berechtigung, den VPN zu starten wurde verwährt.\nDies könnte das System sein, welches die Anfrage automatisch ablehnt, da sie nicht aus dem Vordergrund gestellt wurde (Mögliches Sicherheitsrisiko)\n\nÖffne die App, um den VPN zu starten</string>
     <string name="open_app">App öffnen</string>
+    <string name="rate_request_text">Möchtest du diese App bewerten?\nEs würde helfen, diese App zu verbreiten und zöllt meiner Arbeit Anerkennung.</string>
+    <string name="not_now">Nicht jetzt</string>
+    <string name="dont_ask_again">Nicht erneut fragen</string>
 </resources>
