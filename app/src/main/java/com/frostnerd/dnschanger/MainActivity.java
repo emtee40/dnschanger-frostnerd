@@ -245,7 +245,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setIndicatorState(vpnRunning = API.checkVPNServiceRunning(this));
+        vpnRunning = API.checkVPNServiceRunning(this);
+        setIndicatorState(vpnRunning);
         registerReceiver(serviceStateReceiver, new IntentFilter(API.BROADCAST_SERVICE_STATUS_CHANGE));
     }
 
@@ -288,10 +289,8 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 0 && resultCode == RESULT_OK) {
             if (!vpnRunning){
                 startVpn();
-                setIndicatorState(true);
             }else{
                 stopVpn();
-                setIndicatorState(false);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
