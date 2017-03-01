@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
                 }
-            });
+            }).show();
         }
         Preferences.put(this, "first_run", false);
     }
