@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private static final HashMap<String, List<String>> defaultDNS = new HashMap<>();
     private static final HashMap<String, List<String>> defaultDNS_V6 = new HashMap<>();
     private static final List<String> defaultDNSKeys, DefaultDNSKeys_V6;
+    private boolean doStopVPN = true;
 
     private TextView connectionText;
     private ImageView connectionImage;
@@ -196,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(vpnRunning)stopVpn();
+                if(vpnRunning && doStopVPN)stopVpn();
                 if (!Utils.isIP(s.toString(),settingV6)) {
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
@@ -218,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(vpnRunning)stopVpn();
+                if(vpnRunning && doStopVPN)stopVpn();
                 if (!Utils.isIP(s.toString(),settingV6)) {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
@@ -344,6 +345,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.menu_switch_ip_version){
+            doStopVPN = false;
             settingV6 = !settingV6;
             invalidateOptionsMenu();
             dns1.setText(Preferences.getString(this,settingV6 ? "dns1-v6" : "dns1", settingV6 ? "2001:4860:4860::8888" : "8.8.8.8"));
@@ -351,6 +353,7 @@ public class MainActivity extends AppCompatActivity {
             dns1.setInputType(InputType.TYPE_CLASS_TEXT);
             dns2.setInputType(InputType.TYPE_CLASS_TEXT);
             getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
+            doStopVPN = true;
         }
         return super.onOptionsItemSelected(item);
     }
