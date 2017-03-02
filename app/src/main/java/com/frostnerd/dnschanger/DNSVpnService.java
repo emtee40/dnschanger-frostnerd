@@ -2,6 +2,7 @@ package com.frostnerd.dnschanger;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.net.VpnService;
 import android.os.Handler;
@@ -32,6 +33,8 @@ public class DNSVpnService extends VpnService {
     private NotificationManager notificationManager;
     private final int NOTIFICATION_ID = 112;
     private Handler handler = new Handler();
+    private String dns1,dns2,dns1_v6,dns2_v6;
+    private boolean fixedDNS = false;
 
     @Override
     public void onDestroy() {
@@ -48,6 +51,7 @@ public class DNSVpnService extends VpnService {
     private void updateNotification() { //TODO Fix Bug: Actions are not properly removed
         initNotification();
         if(stopped || notificationBuilder == null || !Preferences.getBoolean(this, "setting_show_notification",false) || notificationManager == null)return;
+        notificationBuilder.setTicker(dns1 + "; " + dns2 + "; " + dns1_v6 + "; " + dns2_v6);
         notificationBuilder.mActions.clear();
         android.support.v4.app.NotificationCompat.Action a1 = new NotificationCompat.Action(isRunning ? R.drawable.ic_stat_pause : R.drawable.ic_stat_resume,
                 getString(isRunning ? R.string.action_pause : R.string.action_resume),
@@ -86,9 +90,30 @@ public class DNSVpnService extends VpnService {
         initNotification();
     }
 
+    public static void startWithSetDNS(final Context context, final String dns1, final String dns2, final String dns1v6, final String dns2v6){
+        context.startService(new Intent(context, DNSVpnService.class).putExtra("fixeddns",true).
+                putExtra("dns1", dns1).putExtra("dns2", dns2).putExtra("dns1-v6", dns1v6).putExtra("dns2-v6", dns2v6));
+    }
+
+    private void updateDNSServers(Intent intent){
+        if(fixedDNS){
+            if(intent == null)return;
+            if(intent.hasExtra("dns1"))dns1 = intent.getStringExtra("dns1");
+            if(intent.hasExtra("dns2"))dns2 = intent.getStringExtra("dns2");
+            if(intent.hasExtra("dns1-v6"))dns1_v6 = intent.getStringExtra("dns1-v6");
+            if(intent.hasExtra("dns2-v6"))dns2_v6 = intent.getStringExtra("dns2-v6");
+        }else{
+            dns1 = Preferences.getString(DNSVpnService.this, "dns1", "8.8.8.8");
+            dns2 = Preferences.getString(DNSVpnService.this, "dns1", "8.8.4.4");
+            dns1_v6 = Preferences.getString(DNSVpnService.this, "dns1-v6", "2001:4860:4860::8888");
+            dns2_v6 = Preferences.getString(DNSVpnService.this, "dns2-v6", "2001:4860:4860::8844");
+        }
+    }
+
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(final Intent intent, int flags, int startId) {
         if(intent!=null){
+            fixedDNS = intent.hasExtra("fixeddns") ? intent.getBooleanExtra("fixeddns", false) : fixedDNS;
             if (intent.getBooleanExtra("stop_vpn", false)) {
                 if (thread != null) {
                     run = false;
@@ -105,10 +130,7 @@ public class DNSVpnService extends VpnService {
                     public void run() {
                         try {
                             initNotification();
-                            String dns1 = Preferences.getString(DNSVpnService.this, "dns1", "8.8.8.8"),
-                                    dns2 = Preferences.getString(DNSVpnService.this, "dns1", "8.8.4.4"),
-                                    dns1_v6 = Preferences.getString(DNSVpnService.this, "dns1-v6", "2001:4860:4860::8888"),
-                                    dns2_v6 = Preferences.getString(DNSVpnService.this, "dns2-v6", "2001:4860:4860::8844");
+                            updateDNSServers(intent);
                             tunnelInterface = builder.setSession("DnsChanger").addAddress("192.168.0.1", 24).addDnsServer(dns1).addDnsServer(dns2)
                                     .addDnsServer(dns1_v6).addDnsServer(dns2_v6).establish();
                             DatagramChannel tunnel = DatagramChannel.open();

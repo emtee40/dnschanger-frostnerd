@@ -35,4 +35,6 @@
     <string name="rate_request_text">Would you like to rate this app?\nIt\'d help spreading it and shows appreciation of my work.</string>
     <string name="not_now">Not now</string>
     <string name="dont_ask_again">Don\'t ask again</string>
+    <string name="done">Done</string>
+    <string name="check_validity">Please check the validity of your input</string>
 </resources>

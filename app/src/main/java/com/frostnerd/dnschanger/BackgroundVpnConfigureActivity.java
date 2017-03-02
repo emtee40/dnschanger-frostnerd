@@ -21,18 +21,37 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 112;
     private AlertDialog dialog1, dialog2;
     private long requestTime;
+    private Intent serviceIntent;
 
     public static void startBackgroundConfigure(Context context, boolean startService) {
         context.startActivity(new Intent(context, BackgroundVpnConfigureActivity.class).putExtra("startService", startService).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+    }
+
+    public static void startWithFixedDNS(final Context context, final String dns1, final String dns2, final String dns1v6, final String dns2v6){
+        context.startActivity(new Intent(context, BackgroundVpnConfigureActivity.class).putExtra("fixeddns",true).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .putExtra("dns1",dns1).putExtra("dns2",dns2).putExtra("dns1-v6", dns1v6).putExtra("dns2-v6", dns2v6));
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getSupportActionBar() != null) getSupportActionBar().hide();
-        Intent i = getIntent();
+        Intent intent = getIntent();
         final Intent conf = VpnService.prepare(this);
-        startService = i != null && i.getBooleanExtra("startService", false);
+        startService = intent != null && intent.getBooleanExtra("startService", false);
+        serviceIntent = new Intent(this, DNSVpnService.class).putExtra("start_vpn", true);
+        if(intent != null && intent.getBooleanExtra("fixeddns", false)){
+            String dns1 = "8.8.8.8";
+            String dns2 = "8.8.4.4";
+            String dns1_v6 = "2001:4860:4860::8888";
+            String dns2_v6 = "2001:4860:4860::8844";
+            if(intent.hasExtra("dns1"))dns1 = intent.getStringExtra("dns1");
+            if(intent.hasExtra("dns2"))dns2 = intent.getStringExtra("dns2");
+            if(intent.hasExtra("dns1-v6"))dns1_v6 = intent.getStringExtra("dns1-v6");
+            if(intent.hasExtra("dns2-v6"))dns2_v6 = intent.getStringExtra("dns2-v6");
+            serviceIntent = serviceIntent.putExtra("fixeddns", true).putExtra("dns1",dns1).putExtra("dns2",dns2)
+                    .putExtra("dns1-v6", dns1_v6).putExtra("dns2-v6", dns2_v6);
+        }
         if (conf != null) {
             showDialog(new DialogInterface.OnClickListener() {
                 @Override
@@ -42,7 +61,7 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
                 }
             });
         } else {
-            if (startService)startService(new Intent(this, DNSVpnService.class).putExtra("start_vpn", true));
+            if (startService)startService(serviceIntent);
             setResult(RESULT_OK);
             finish();
         }
@@ -65,7 +84,7 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 if (startService)
-                    startService(new Intent(this, DNSVpnService.class).putExtra("start_vpn", true));
+                    startService(serviceIntent);
                 setResult(RESULT_OK);
             } else if (resultCode == RESULT_CANCELED) {
                 setResult(RESULT_CANCELED);

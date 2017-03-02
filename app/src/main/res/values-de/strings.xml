@@ -36,4 +36,6 @@
     <string name="rate_request_text">Möchtest du diese App bewerten?\nEs würde helfen, diese App zu verbreiten und zöllt meiner Arbeit Anerkennung.</string>
     <string name="not_now">Nicht jetzt</string>
     <string name="dont_ask_again">Nicht erneut fragen</string>
+    <string name="done">Fertig</string>
+    <string name="check_validity">Bitte überprüfe die Richtigkeit deiner Angaben</string>
 </resources>
