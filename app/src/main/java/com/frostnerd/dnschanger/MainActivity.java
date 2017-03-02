@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     private Button startStopButton;
@@ -141,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (android.content.ActivityNotFoundException e) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
         }
+        Preferences.put(MainActivity.this, "rated",true);
     }
 
     public void openDNSInfoDialog(View v) {
@@ -240,6 +242,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
+        if(!Preferences.getBoolean(this, "first_run",true) && !Preferences.getBoolean(this, "rated",false) && new Random().nextInt(100) <= 8){
+            new AlertDialog.Builder(this).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    rateApp(null);
+                }
+            }).setNegativeButton(R.string.dont_ask_again, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Preferences.put(MainActivity.this, "rated",true);
+                    dialog.cancel();
+                }
+            }).setNeutralButton(R.string.not_now, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            }).setMessage(R.string.rate_request_text).setTitle(R.string.rate).show();
+        }
+        Preferences.put(this, "first_run", false);
     }
 
     @Override

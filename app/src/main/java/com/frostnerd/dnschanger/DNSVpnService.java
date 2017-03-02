@@ -52,9 +52,9 @@ public class DNSVpnService extends VpnService {
                 getString(isRunning ? R.string.action_pause : R.string.action_resume),
                 PendingIntent.getService(this, 0, new Intent(this, DNSVpnService.class).setAction(new Random().nextInt(50) + "_action")
                         .putExtra(isRunning ? "stop_vpn" : "start_vpn", true), PendingIntent.FLAG_CANCEL_CURRENT)),
-        a2 = new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_stop,
-                getString(R.string.action_stop), PendingIntent.getService(this, 1, new Intent(this, DNSVpnService.class)
-                .setAction(StringUtils.randomString(80) + "_action").putExtra("destroy", true), PendingIntent.FLAG_CANCEL_CURRENT));
+                a2 = new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_stop,
+                        getString(R.string.action_stop), PendingIntent.getService(this, 1, new Intent(this, DNSVpnService.class)
+                        .setAction(StringUtils.randomString(80) + "_action").putExtra("destroy", true), PendingIntent.FLAG_CANCEL_CURRENT));
         notificationBuilder.addAction(a1);
         notificationBuilder.addAction(a2);
         notificationBuilder.setContentText(getString(isRunning ? R.string.notification_running : R.string.notification_paused));
@@ -105,8 +105,8 @@ public class DNSVpnService extends VpnService {
                         initNotification();
                         String dns1 = Preferences.getString(DNSVpnService.this, "dns1", "8.8.8.8"),
                                 dns2 = Preferences.getString(DNSVpnService.this, "dns1", "8.8.4.4"),
-                        dns1_v6 = Preferences.getString(DNSVpnService.this, "dns1-v6", "2001:4860:4860::8888"),
-                        dns2_v6 = Preferences.getString(DNSVpnService.this, "dns2-v6", "2001:4860:4860::8844");
+                                dns1_v6 = Preferences.getString(DNSVpnService.this, "dns1-v6", "2001:4860:4860::8888"),
+                                dns2_v6 = Preferences.getString(DNSVpnService.this, "dns2-v6", "2001:4860:4860::8844");
                         tunnelInterface = builder.setSession("DnsChanger").addAddress("192.168.0.1", 24).addDnsServer(dns1).addDnsServer(dns2)
                                 .addDnsServer(dns1_v6).addDnsServer(dns2_v6).establish();
                         DatagramChannel tunnel = DatagramChannel.open();

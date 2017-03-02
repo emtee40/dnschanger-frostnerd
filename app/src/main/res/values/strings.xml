@@ -32,4 +32,7 @@
     <string name="not_running">Not running</string>
     <string name="background_configure_error">Permission to start the VPN denied. \nThis could be the system denying vpn connections being started from the background for safety reasons.\n\nOpen the app to start the VPN</string>
     <string name="open_app">Open app</string>
+    <string name="rate_request_text">Would you like to rate this app?\nIt\'d help spreading it and shows appreciation of my work.</string>
+    <string name="not_now">Not now</string>
+    <string name="dont_ask_again">Don\'t ask again</string>
 </resources>
