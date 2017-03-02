@@ -67,9 +67,7 @@ public class DNSVpnService extends VpnService {
         },10);
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+    private void initNotification(){
         if (notificationBuilder == null) {
             notificationBuilder = new android.support.v7.app.NotificationCompat.Builder(this);
             notificationBuilder.setSmallIcon(R.drawable.ic_stat_small_icon); //TODO Update Image
@@ -79,6 +77,12 @@ public class DNSVpnService extends VpnService {
             notificationBuilder.setOngoing(true);
             notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         }
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        initNotification();
     }
 
     @Override
@@ -98,6 +102,7 @@ public class DNSVpnService extends VpnService {
                 @Override
                 public void run() {
                     try {
+                        initNotification();
                         String dns1 = Preferences.getString(DNSVpnService.this, "dns1", "8.8.8.8"),
                                 dns2 = Preferences.getString(DNSVpnService.this, "dns1", "8.8.4.4"),
                         dns1_v6 = Preferences.getString(DNSVpnService.this, "dns1-v6", "2001:4860:4860::8888"),
