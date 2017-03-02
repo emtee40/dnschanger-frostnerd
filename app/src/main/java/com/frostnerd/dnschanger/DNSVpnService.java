@@ -46,6 +46,7 @@ public class DNSVpnService extends VpnService {
     }
 
     private void updateNotification() { //TODO Fix Bug: Actions are not properly removed
+        initNotification();
         if(stopped || notificationBuilder == null || !Preferences.getBoolean(this, "setting_show_notification",false) || notificationManager == null)return;
         notificationBuilder.mActions.clear();
         android.support.v4.app.NotificationCompat.Action a1 = new NotificationCompat.Action(isRunning ? R.drawable.ic_stat_pause : R.drawable.ic_stat_resume,
