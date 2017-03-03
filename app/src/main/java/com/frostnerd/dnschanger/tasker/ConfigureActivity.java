@@ -37,8 +37,8 @@ import java.util.List;
  * development@frostnerd.com
  */
 public class ConfigureActivity extends AppCompatActivity {
-    private MaterialEditText met_dns1, met_dns2;
-    private EditText ed_dns1, ed_dns2;
+    private MaterialEditText met_dns1, met_dns2, met_name;
+    private EditText ed_dns1, ed_dns2, ed_name;
     private boolean cancelled = false;
     private AlertDialog defaultDnsDialog;
     private String dns1 = "8.8.8.8", dns2 = "8.8.4.4", dns1V6 ="2001:4860:4860::8888", dns2V6 = "2001:4860:4860::8844";
@@ -66,7 +66,8 @@ public class ConfigureActivity extends AppCompatActivity {
     }
 
     private boolean checkValidity(){
-        return wasEdited && Utils.isIP(dns1,false) && Utils.isIP(dns2,false) && Utils.isIP(dns1V6,true) && Utils.isIP(dns2V6,true);
+        return wasEdited && Utils.isIP(dns1,false) && Utils.isIP(dns2,false) && Utils.isIP(dns1V6,true) &&
+                Utils.isIP(dns2V6,true) && met_name.getIndicatorState() == MaterialEditText.IndicatorState.CORRECT;
     }
 
 
@@ -76,8 +77,10 @@ public class ConfigureActivity extends AppCompatActivity {
         setContentView(R.layout.tasker_configure_layout);
         ed_dns1 = (EditText)findViewById(R.id.dns1);
         ed_dns2 = (EditText)findViewById(R.id.dns2);
+        ed_name = (EditText)findViewById(R.id.name);
         met_dns1 = (MaterialEditText) findViewById(R.id.met_dns1);
         met_dns2 = (MaterialEditText)findViewById(R.id.met_dns2);
+        met_name = (MaterialEditText)findViewById(R.id.met_name);
         Helper.scrub(getIntent());
         final Bundle bundle = getIntent().getBundleExtra(Helper.EXTRA_BUNDLE);
         Helper.scrub(bundle);
@@ -87,6 +90,7 @@ public class ConfigureActivity extends AppCompatActivity {
                 if(bundle.containsKey(Helper.BUNDLE_EXTRA_DNS2))dns2 = bundle.getString(Helper.BUNDLE_EXTRA_DNS2);
                 if(bundle.containsKey(Helper.BUNDLE_EXTRA_DNS1V6))dns1V6 = bundle.getString(Helper.BUNDLE_EXTRA_DNS1V6);
                 if(bundle.containsKey(Helper.BUNDLE_EXTRA_DNS2V6))dns2V6 = bundle.getString(Helper.BUNDLE_EXTRA_DNS2V6);
+                if(getIntent().hasExtra(Helper.EXTRA_BLURB))ed_name.setText(getIntent().getStringExtra(Helper.EXTRA_BLURB));
             }
         }
         ed_dns1.setText(dns1);
@@ -130,6 +134,22 @@ public class ConfigureActivity extends AppCompatActivity {
                     if(settingV6)dns2V6 = s.toString();
                     else dns2 = s.toString();
                 }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        ed_name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                wasEdited = true;
             }
 
             @Override
@@ -215,7 +235,7 @@ public class ConfigureActivity extends AppCompatActivity {
             final Intent resultIntent = new Intent();
             final Bundle resultBundle = Helper.createBundle(dns1, dns2, dns1V6, dns2V6);
             resultIntent.putExtra(Helper.EXTRA_BUNDLE, resultBundle);
-            resultIntent.putExtra(Helper.EXTRA_BLURB, "DNS Blurb");
+            resultIntent.putExtra(Helper.EXTRA_BLURB, ed_name.getText().toString());
             setResult(RESULT_OK, resultIntent);
         }
         super.finish();
