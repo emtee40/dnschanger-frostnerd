@@ -112,7 +112,7 @@ public class DNSVpnService extends VpnService {
     }
 
     @Override
-    public int onStartCommand(final Intent intent, int flags, int startId) {
+    public int onStartCommand(Intent intent, int flags, int startId) {
         if(intent!=null){
             fixedDNS = intent.hasExtra("fixeddns") ? intent.getBooleanExtra("fixeddns", false) : fixedDNS;
             if (intent.getBooleanExtra("stop_vpn", false)) {
@@ -126,12 +126,12 @@ public class DNSVpnService extends VpnService {
                     run = false;
                     thread.interrupt();
                 }
+                updateDNSServers(intent);
                 thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
                             initNotification();
-                            updateDNSServers(intent);
                             tunnelInterface = builder.setSession("DnsChanger").addAddress("192.168.0.1", 24).addDnsServer(dns1).addDnsServer(dns2)
                                     .addDnsServer(dns1_v6).addDnsServer(dns2_v6).establish();
                             DatagramChannel tunnel = DatagramChannel.open();
