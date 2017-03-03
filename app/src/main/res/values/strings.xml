@@ -37,4 +37,5 @@
     <string name="dont_ask_again">Don\'t ask again</string>
     <string name="done">Done</string>
     <string name="check_validity">Please check the validity of your input</string>
+    <string name="press_back_again">Press back again to leave (Discards changes!)</string>
 </resources>

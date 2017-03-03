@@ -19,6 +19,7 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.utils.design.MaterialEditText;
@@ -45,6 +46,7 @@ public class ConfigureActivity extends AppCompatActivity {
     private static final HashMap<String, List<String>> defaultDNS_V6 = new HashMap<>();
     private static final List<String> defaultDNSKeys, DefaultDNSKeys_V6;
     private boolean settingV6 = false, wasEdited = false;
+    private long lastBackPress = 0;
 
     static {
         defaultDNS.put("Google DNS", Arrays.asList("8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844"));
@@ -194,6 +196,17 @@ public class ConfigureActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(System.currentTimeMillis() - lastBackPress <= 1500){
+            cancelled = true;
+            super.onBackPressed();
+        }else{
+            lastBackPress = System.currentTimeMillis();
+            Toast.makeText(this, R.string.press_back_again, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
