@@ -10,7 +10,6 @@ import android.os.ParcelFileDescriptor;
 import android.support.v7.app.NotificationCompat;
 
 import com.frostnerd.utils.general.StringUtils;
-import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.preferences.Preferences;
 
 import java.io.IOException;
@@ -62,8 +61,10 @@ public class DNSVpnService extends VpnService {
                         .setAction(StringUtils.randomString(80) + "_action").putExtra("destroy", true), PendingIntent.FLAG_CANCEL_CURRENT));
         notificationBuilder.addAction(a1);
         notificationBuilder.addAction(a2);
-        notificationBuilder.setContentText(getString(isRunning ? R.string.notification_running : R.string.notification_paused));
+        notificationBuilder.setSubText(getString(isRunning ? R.string.notification_running : R.string.notification_paused));
         notificationBuilder.setContentTitle(getString(isRunning ? R.string.active : R.string.paused));
+        notificationBuilder.setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().
+                bigText("DNS 1: " + dns1 + "\nDNS 2: " + dns2 + "\nDNSV6 1: " + dns1_v6 + "\nDNSV6 2: " + dns2_v6));
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
