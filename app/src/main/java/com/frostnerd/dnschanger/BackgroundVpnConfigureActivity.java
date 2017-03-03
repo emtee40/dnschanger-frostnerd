@@ -29,7 +29,7 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
 
     public static void startWithFixedDNS(final Context context, final String dns1, final String dns2, final String dns1v6, final String dns2v6){
         context.startActivity(new Intent(context, BackgroundVpnConfigureActivity.class).putExtra("fixeddns",true).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .putExtra("dns1",dns1).putExtra("dns2",dns2).putExtra("dns1-v6", dns1v6).putExtra("dns2-v6", dns2v6));
+                .putExtra("dns1",dns1).putExtra("dns2",dns2).putExtra("dns1-v6", dns1v6).putExtra("dns2-v6", dns2v6).putExtra("startService",true));
     }
 
     @Override
