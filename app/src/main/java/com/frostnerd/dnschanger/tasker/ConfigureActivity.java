@@ -182,8 +182,8 @@ public class ConfigureActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.menu_switch_ip_version){
             settingV6 = !settingV6;
             invalidateOptionsMenu();
-            ed_dns1.setText(Preferences.getString(this,settingV6 ? "dns1-v6" : "dns1", settingV6 ? "2001:4860:4860::8888" : "8.8.8.8"));
-            ed_dns2.setText(Preferences.getString(this,settingV6 ? "dns2-v6" : "dns2", settingV6 ? "2001:4860:4860::8844" : "8.8.4.4"));
+            ed_dns1.setText(settingV6 ? dns1V6 : dns1);
+            ed_dns2.setText(settingV6 ? dns2V6 : dns2);
             ed_dns1.setInputType(InputType.TYPE_CLASS_TEXT);
             ed_dns2.setInputType(InputType.TYPE_CLASS_TEXT);
             getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
