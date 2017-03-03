@@ -44,7 +44,7 @@ public class ConfigureActivity extends AppCompatActivity {
     private static final HashMap<String, List<String>> defaultDNS = new HashMap<>();
     private static final HashMap<String, List<String>> defaultDNS_V6 = new HashMap<>();
     private static final List<String> defaultDNSKeys, DefaultDNSKeys_V6;
-    private boolean settingV6 = false;
+    private boolean settingV6 = false, wasEdited = false;
 
     static {
         defaultDNS.put("Google DNS", Arrays.asList("8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844"));
@@ -64,7 +64,7 @@ public class ConfigureActivity extends AppCompatActivity {
     }
 
     private boolean checkValidity(){
-        return Utils.isIP(dns1,false) && Utils.isIP(dns2,false) && Utils.isIP(dns1V6,true) && Utils.isIP(dns2V6,true);
+        return wasEdited && Utils.isIP(dns1,false) && Utils.isIP(dns2,false) && Utils.isIP(dns1V6,true) && Utils.isIP(dns2V6,true);
     }
 
 
@@ -100,6 +100,7 @@ public class ConfigureActivity extends AppCompatActivity {
                 if (!Utils.isIP(s.toString(),settingV6)) {
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
+                    wasEdited = true;
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
                     if(settingV6)dns1V6 = s.toString();
                     else dns1 = s.toString();
@@ -122,6 +123,7 @@ public class ConfigureActivity extends AppCompatActivity {
                 if (!Utils.isIP(s.toString(),settingV6)) {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
+                    wasEdited = true;
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
                     if(settingV6)dns2V6 = s.toString();
                     else dns2 = s.toString();
@@ -196,7 +198,7 @@ public class ConfigureActivity extends AppCompatActivity {
 
     @Override
     public void finish() {
-        if(!cancelled){
+        if(!cancelled && checkValidity()){
             final Intent resultIntent = new Intent();
             final Bundle resultBundle = Helper.createBundle(dns1, dns2, dns1V6, dns2V6);
             resultIntent.putExtra(Helper.EXTRA_BUNDLE, resultBundle);
