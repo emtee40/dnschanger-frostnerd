@@ -1,6 +1,5 @@
 package com.frostnerd.dnschanger.tasker;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,11 +20,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.frostnerd.dnschanger.MainActivity;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.general.Utils;
-import com.frostnerd.utils.preferences.Preferences;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,10 +81,10 @@ public class ConfigureActivity extends AppCompatActivity {
         Helper.scrub(bundle);
         if(savedInstanceState == null){
             if(Helper.isBundleValid(bundle)){
-                if(bundle.containsKey("dns1"))dns1 = bundle.getString("dns1");
-                if(bundle.containsKey("dns2"))dns2 = bundle.getString("dns2");
-                if(bundle.containsKey("dns1-v6"))dns1V6 = bundle.getString("dns1-v6");
-                if(bundle.containsKey("dns2-v6"))dns2V6 = bundle.getString("dns2-v6");
+                if(bundle.containsKey(Helper.BUNDLE_EXTRA_DNS1))dns1 = bundle.getString(Helper.BUNDLE_EXTRA_DNS1);
+                if(bundle.containsKey(Helper.BUNDLE_EXTRA_DNS2))dns2 = bundle.getString(Helper.BUNDLE_EXTRA_DNS2);
+                if(bundle.containsKey(Helper.BUNDLE_EXTRA_DNS1V6))dns1V6 = bundle.getString(Helper.BUNDLE_EXTRA_DNS1V6);
+                if(bundle.containsKey(Helper.BUNDLE_EXTRA_DNS2V6))dns2V6 = bundle.getString(Helper.BUNDLE_EXTRA_DNS2V6);
             }
         }
         ed_dns1.setText(dns1);
@@ -202,9 +200,7 @@ public class ConfigureActivity extends AppCompatActivity {
             final Intent resultIntent = new Intent();
             final Bundle resultBundle = Helper.createBundle(getApplicationContext(), dns1, dns2, dns1V6, dns2V6);
             resultIntent.putExtra(Helper.EXTRA_BUNDLE, resultBundle);
-
             resultIntent.putExtra(Helper.EXTRA_BLURB, "DNS Blurb");
-
             setResult(RESULT_OK, resultIntent);
         }
         super.finish();
