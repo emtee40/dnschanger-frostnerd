@@ -37,8 +37,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     private Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
-            if(preference.getKey().equalsIgnoreCase("setting_show_notification"))startService(new Intent(SettingsActivity.this, DNSVpnService.class));
             Preferences.put(SettingsActivity.this,preference.getKey(),newValue);
+            if(preference.getKey().equalsIgnoreCase("setting_show_notification"))startService(new Intent(SettingsActivity.this, DNSVpnService.class));
             return true;
         }
     };
