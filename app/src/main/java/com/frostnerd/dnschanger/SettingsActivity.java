@@ -1,5 +1,6 @@
 package com.frostnerd.dnschanger;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.view.MenuItem;
@@ -36,6 +37,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     private Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
+            if(preference.getKey().equalsIgnoreCase("setting_show_notification"))startService(new Intent(SettingsActivity.this, DNSVpnService.class));
             Preferences.put(SettingsActivity.this,preference.getKey(),newValue);
             return true;
         }
