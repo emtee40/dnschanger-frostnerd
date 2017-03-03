@@ -198,7 +198,7 @@ public class ConfigureActivity extends AppCompatActivity {
     public void finish() {
         if(!cancelled){
             final Intent resultIntent = new Intent();
-            final Bundle resultBundle = Helper.createBundle(getApplicationContext(), dns1, dns2, dns1V6, dns2V6);
+            final Bundle resultBundle = Helper.createBundle(dns1, dns2, dns1V6, dns2V6);
             resultIntent.putExtra(Helper.EXTRA_BUNDLE, resultBundle);
             resultIntent.putExtra(Helper.EXTRA_BLURB, "DNS Blurb");
             setResult(RESULT_OK, resultIntent);

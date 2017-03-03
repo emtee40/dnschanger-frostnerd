@@ -54,7 +54,7 @@ public class Helper {
         return true;
     }
 
-    public static Bundle createBundle(final Context context, final String dns1, final String dns2, final String dns1v6, final String dns2v6){
+    public static Bundle createBundle(final String dns1, final String dns2, final String dns1v6, final String dns2v6){
         final Bundle bundle = new Bundle();
         bundle.putString(BUNDLE_EXTRA_DNS1, dns1);
         bundle.putString(BUNDLE_EXTRA_DNS2, dns2);
