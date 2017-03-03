@@ -22,7 +22,7 @@
     <string name="action_pause">Pausieren</string>
     <string name="action_stop">Stoppen</string>
     <string name="notification_paused">DNS Changer ist pausiert</string>
-    <string name="notification_running">DNS Changer ist aktiv (VPN läuft)</string>
+    <string name="notification_running">DNS Changer ist aktiv</string>
     <string name="active">Aktiv</string>
     <string name="paused">Pausiert</string>
     <string name="summary_auto_mobile">DNS Changer automatisch anschalten, sobald das Handy über ein mobiles Netzwerk mit dem Internet verbunden ist</string>

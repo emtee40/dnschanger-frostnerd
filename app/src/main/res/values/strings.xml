@@ -21,7 +21,7 @@
     <string name="action_pause">Pause</string>
     <string name="action_stop">Stop</string>
     <string name="notification_paused">DNS Changer is paused</string>
-    <string name="notification_running">DNS Changer is active (VPN running)</string>
+    <string name="notification_running">DNS Changer is active</string>
     <string name="active">Active</string>
     <string name="paused">Paused</string>
     <string name="summary_auto_wifi">Automatically turn on DNS Changer when connecting to a wifi network</string>
