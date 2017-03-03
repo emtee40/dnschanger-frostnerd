@@ -75,6 +75,7 @@ public class ConfigureActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tasker_configure_layout);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ed_dns1 = (EditText)findViewById(R.id.dns1);
         ed_dns2 = (EditText)findViewById(R.id.dns2);
         ed_name = (EditText)findViewById(R.id.name);
@@ -214,6 +215,9 @@ public class ConfigureActivity extends AppCompatActivity {
             finish();
         }else if(item.getItemId() == R.id.menu_done){
             finish();
+        }else if(item.getItemId() == android.R.id.home){
+            lastBackPress = System.currentTimeMillis();
+            onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }
