@@ -18,6 +18,7 @@ import java.util.List;
  */
 public class API {
     public static final String BROADCAST_SERVICE_STATUS_CHANGE = "com.frostnerd.dnschanger.VPN_SERVICE_CHANGE";
+    public static String TAG = "Debug";
 
     public static boolean checkVPNServiceRunning(Context c){
         ActivityManager am = (ActivityManager)c.getSystemService(Context.ACTIVITY_SERVICE);
