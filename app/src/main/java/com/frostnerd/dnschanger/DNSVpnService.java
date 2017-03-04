@@ -2,8 +2,10 @@ package com.frostnerd.dnschanger;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.VpnService;
 import android.os.Handler;
 import android.os.ParcelFileDescriptor;
@@ -33,18 +35,29 @@ public class DNSVpnService extends VpnService {
     private final int NOTIFICATION_ID = 112;
     private Handler handler = new Handler();
     private String dns1,dns2,dns1_v6,dns2_v6;
-    private boolean fixedDNS = false;
+    private boolean fixedDNS = false, startedWithTasker = false;
+    private BroadcastReceiver stateRequestReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            broadcastServiceState(isRunning);
+        }
+    };
 
     @Override
     public void onDestroy() {
         stopped = true;
         run = false;
         if (thread != null) thread.interrupt();
+        unregisterReceiver(stateRequestReceiver);
         thread = null;
         notificationManager.cancel(NOTIFICATION_ID);
         notificationManager = null;
         notificationBuilder = null;
         super.onDestroy();
+    }
+
+    private void broadcastServiceState(boolean vpnRunning){
+        sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATUS_CHANGE).putExtra("vpn_running",vpnRunning).putExtra("started_with_tasker", startedWithTasker));
     }
 
     private void updateNotification() { //TODO Fix Bug: Actions are not properly removed
@@ -90,6 +103,7 @@ public class DNSVpnService extends VpnService {
     public void onCreate() {
         super.onCreate();
         initNotification();
+        registerReceiver(stateRequestReceiver, new IntentFilter(API.BROADCAST_SERVICE_STATE_REQUEST));
     }
 
     public static void startWithSetDNS(final Context context, final String dns1, final String dns2, final String dns1v6, final String dns2v6){
@@ -116,6 +130,7 @@ public class DNSVpnService extends VpnService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(intent!=null){
             fixedDNS = intent.hasExtra("fixeddns") ? intent.getBooleanExtra("fixeddns", false) : fixedDNS;
+            startedWithTasker = intent.hasExtra("startedWithTasker") ? intent.getBooleanExtra("startedWithTasker", false) : startedWithTasker;
             if (intent.getBooleanExtra("stop_vpn", false)) {
                 if (thread != null) {
                     run = false;
@@ -140,7 +155,7 @@ public class DNSVpnService extends VpnService {
                             tunnel.connect(new InetSocketAddress("127.0.0.1", 8087));
                             protect(tunnel.socket());
                             isRunning = true;
-                            sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATUS_CHANGE).putExtra("vpn_running",true));
+                            broadcastServiceState(true);
                             updateNotification();
                             try {
                                 while (run) {
@@ -153,7 +168,7 @@ public class DNSVpnService extends VpnService {
                             e.printStackTrace();
                         } finally {
                             isRunning = false;
-                            sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATUS_CHANGE).putExtra("vpn_running",false));
+                            broadcastServiceState(false);
                             updateNotification();
                             if (tunnelInterface != null) try {
                                 tunnelInterface.close();

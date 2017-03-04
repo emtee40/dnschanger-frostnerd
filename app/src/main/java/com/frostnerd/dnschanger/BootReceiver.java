@@ -22,7 +22,7 @@ public class BootReceiver extends BroadcastReceiver {
             if(Preferences.getBoolean(context,"setting_start_boot",false)){
                 Intent i = VpnService.prepare(context);
                 if(i == null){
-                    context.startService(new Intent(context, DNSVpnService.class).putExtra("start_vpn",true));
+                    context.startService(new Intent(context, DNSVpnService.class).putExtra("start_vpn",true).putExtra("startedWithTasker", false));
                 }
                 else BackgroundVpnConfigureActivity.startBackgroundConfigure(context,true);
             }

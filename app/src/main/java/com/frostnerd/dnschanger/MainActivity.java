@@ -319,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startVpn() {
-        startService(new Intent(this, DNSVpnService.class).putExtra("start_vpn", true));
+        startService(new Intent(this, DNSVpnService.class).putExtra("start_vpn", true).putExtra("startedWithTasker", false));
         vpnRunning = true;
         setIndicatorState(true);
     }

@@ -24,7 +24,7 @@ public class FireReceiver extends BroadcastReceiver {
         if(Helper.isBundleValid(bundle)){
             String dns1 = bundle.getString(Helper.BUNDLE_EXTRA_DNS1), dns2 = bundle.getString(Helper.BUNDLE_EXTRA_DNS2),
                     dns1v6 = bundle.getString(Helper.BUNDLE_EXTRA_DNS1V6), dns2v6 = bundle.getString(Helper.BUNDLE_EXTRA_DNS2V6);
-            BackgroundVpnConfigureActivity.startWithFixedDNS(context, dns1, dns2, dns1v6, dns2v6);
+            BackgroundVpnConfigureActivity.startWithFixedDNS(context, dns1, dns2, dns1v6, dns2v6, true);
         }
     }
 }

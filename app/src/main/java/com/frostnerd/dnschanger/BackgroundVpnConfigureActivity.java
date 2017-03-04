@@ -22,14 +22,15 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
     private AlertDialog dialog1, dialog2;
     private long requestTime;
     private Intent serviceIntent;
+    private boolean startedWithTasker;
 
     public static void startBackgroundConfigure(Context context, boolean startService) {
         context.startActivity(new Intent(context, BackgroundVpnConfigureActivity.class).putExtra("startService", startService).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
-    public static void startWithFixedDNS(final Context context, final String dns1, final String dns2, final String dns1v6, final String dns2v6){
+    public static void startWithFixedDNS(final Context context, final String dns1, final String dns2, final String dns1v6, final String dns2v6, boolean startedWithTasker){
         context.startActivity(new Intent(context, BackgroundVpnConfigureActivity.class).putExtra("fixeddns",true).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .putExtra("dns1",dns1).putExtra("dns2",dns2).putExtra("dns1-v6", dns1v6).putExtra("dns2-v6", dns2v6).putExtra("startService",true));
+                .putExtra("dns1",dns1).putExtra("dns2",dns2).putExtra("dns1-v6", dns1v6).putExtra("dns2-v6", dns2v6).putExtra("startService",true).putExtra("startedWithTasker", startedWithTasker));
     }
 
     @Override
@@ -44,13 +45,14 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
             String dns1 = "8.8.8.8";
             String dns2 = "8.8.4.4";
             String dns1_v6 = "2001:4860:4860::8888";
+            startedWithTasker = intent.getBooleanExtra("startedWithTasker", false);
             String dns2_v6 = "2001:4860:4860::8844";
             if(intent.hasExtra("dns1"))dns1 = intent.getStringExtra("dns1");
             if(intent.hasExtra("dns2"))dns2 = intent.getStringExtra("dns2");
             if(intent.hasExtra("dns1-v6"))dns1_v6 = intent.getStringExtra("dns1-v6");
             if(intent.hasExtra("dns2-v6"))dns2_v6 = intent.getStringExtra("dns2-v6");
             serviceIntent = serviceIntent.putExtra("fixeddns", true).putExtra("dns1",dns1).putExtra("dns2",dns2)
-                    .putExtra("dns1-v6", dns1_v6).putExtra("dns2-v6", dns2_v6);
+                    .putExtra("dns1-v6", dns1_v6).putExtra("dns2-v6", dns2_v6).putExtra("startedWithTasker", startedWithTasker);
         }
         if (conf != null) {
             showDialog(new DialogInterface.OnClickListener() {
