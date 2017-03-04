@@ -62,7 +62,10 @@ public class DNSVpnService extends VpnService {
 
     private void updateNotification() { //TODO Fix Bug: Actions are not properly removed
         initNotification();
-        if(!Preferences.getBoolean(this, "setting_show_notification",false) && notificationManager != null)notificationManager.cancel(NOTIFICATION_ID);
+        if(!Preferences.getBoolean(this, "setting_show_notification",false) && notificationManager != null){
+            notificationManager.cancel(NOTIFICATION_ID);
+            return;
+        }
         if(stopped || notificationBuilder == null || !Preferences.getBoolean(this, "setting_show_notification",false) || notificationManager == null)return;
         notificationBuilder.mActions.clear();
         android.support.v4.app.NotificationCompat.Action a1 = new NotificationCompat.Action(isRunning ? R.drawable.ic_stat_pause : R.drawable.ic_stat_resume,
@@ -81,7 +84,7 @@ public class DNSVpnService extends VpnService {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(notificationManager != null && notificationBuilder != null && !stopped) notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+                if(notificationManager != null && notificationBuilder != null && !stopped && Preferences.getBoolean(DNSVpnService.this, "setting_show_notification",false)) notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
             }
         },10);
     }
