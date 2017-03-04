@@ -44,4 +44,5 @@
     <string name="no">Nein</string>
     <string name="yes">Ja</string>
     <string name="contact_developer">Entwickler kontaktieren</string>
+    <string name="warning_started_using_tasker">Der VPN wurde durch Tasker oder eine ähnliche App gestartet. Das Stoppen des VPN unterbricht den Standardbetrieb. Das erneute Starten des VPN benutzt die Einstellungen der App, nicht die Einstellungen, welche über Tasker gesetzt wurden. Trotzdem stoppen?</string>
 </resources>

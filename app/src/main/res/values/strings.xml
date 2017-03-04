@@ -43,4 +43,5 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="contact_developer">Contact developer</string>
+    <string name="warning_started_using_tasker">The VPN was started using Tasker. Stopping it may interrupt with it. Starting it not using tasker does not apply the DNS Servers configured using Tasker. Stop anyway?</string>
 </resources>

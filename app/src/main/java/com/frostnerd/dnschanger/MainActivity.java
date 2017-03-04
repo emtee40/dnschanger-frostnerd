@@ -42,7 +42,7 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     private Button startStopButton;
-    private boolean vpnRunning;
+    private boolean vpnRunning, wasStartedWithTasker = false;
     private MaterialEditText met_dns1, met_dns2;
     private EditText dns1, dns2;
     private static final HashMap<String, List<String>> defaultDNS = new HashMap<>();
@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             vpnRunning = intent.getBooleanExtra("vpn_running",false);
+            wasStartedWithTasker = intent.getBooleanExtra("started_with_tasker", false);
             setIndicatorState(intent.getBooleanExtra("vpn_running",false));
         }
     };
@@ -199,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(vpnRunning && doStopVPN)stopVpn();
+                if(vpnRunning && doStopVPN && !wasStartedWithTasker)stopVpn();
                 if (!Utils.isIP(s.toString(),settingV6)) {
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
@@ -221,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(vpnRunning && doStopVPN)stopVpn();
+                if(vpnRunning && doStopVPN && !wasStartedWithTasker)stopVpn();
                 if (!Utils.isIP(s.toString(),settingV6)) {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
@@ -267,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATE_REQUEST));
         vpnRunning = API.checkVPNServiceRunning(this);
         setIndicatorState(vpnRunning);
         registerReceiver(serviceStateReceiver, new IntentFilter(API.BROADCAST_SERVICE_STATUS_CHANGE));
@@ -312,13 +314,27 @@ public class MainActivity extends AppCompatActivity {
             if (!vpnRunning){
                 startVpn();
             }else{
-                stopVpn();
+                if(wasStartedWithTasker){
+                    new AlertDialog.Builder(this).setTitle(R.string.warning).setMessage(R.string.warning_started_using_tasker). setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            stopVpn();
+                            dialog.cancel();
+                        }
+                    }).setCancelable(false).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    }).show();
+                }else stopVpn();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void startVpn() {
+        wasStartedWithTasker = false;
         startService(new Intent(this, DNSVpnService.class).putExtra("start_vpn", true).putExtra("startedWithTasker", false));
         vpnRunning = true;
         setIndicatorState(true);
