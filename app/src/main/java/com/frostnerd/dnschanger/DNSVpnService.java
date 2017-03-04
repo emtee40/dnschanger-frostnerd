@@ -133,6 +133,7 @@ public class DNSVpnService extends VpnService {
                     public void run() {
                         try {
                             initNotification();
+                            if(notificationBuilder != null) notificationBuilder.setWhen(System.currentTimeMillis());
                             tunnelInterface = builder.setSession("DnsChanger").addAddress("192.168.0.1", 24).addDnsServer(dns1).addDnsServer(dns2)
                                     .addDnsServer(dns1_v6).addDnsServer(dns2_v6).establish();
                             DatagramChannel tunnel = DatagramChannel.open();
