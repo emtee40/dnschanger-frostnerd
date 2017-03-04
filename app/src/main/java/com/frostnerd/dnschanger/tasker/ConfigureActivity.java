@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.general.Utils;
+import com.frostnerd.utils.preferences.Preferences;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -158,6 +159,20 @@ public class ConfigureActivity extends AppCompatActivity {
 
             }
         });
+        if(Preferences.getBoolean(this, "setting_auto_wifi",false) || Preferences.getBoolean(this, "setting_auto_mobile",false)){
+            new AlertDialog.Builder(this).setTitle(R.string.warning).setMessage(R.string.tasker_automation_conflict_text).setCancelable(false).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Preferences.put(ConfigureActivity.this, "setting_auto_wifi", false);
+                    Preferences.put(ConfigureActivity.this, "setting_auto_mobile", false);
+                }
+            }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            }).show();
+        }
     }
 
     public void openDefaultDNSDialog(View v){
