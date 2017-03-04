@@ -159,12 +159,13 @@ public class ConfigureActivity extends AppCompatActivity {
 
             }
         });
-        if(Preferences.getBoolean(this, "setting_auto_wifi",false) || Preferences.getBoolean(this, "setting_auto_mobile",false)){
+        if(Preferences.getBoolean(this, "setting_auto_wifi",false) || Preferences.getBoolean(this, "setting_auto_mobile",false) || Preferences.getBoolean(this, "setting_start_boot", false)){
             new AlertDialog.Builder(this).setTitle(R.string.warning).setMessage(R.string.tasker_automation_conflict_text).setCancelable(false).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     Preferences.put(ConfigureActivity.this, "setting_auto_wifi", false);
                     Preferences.put(ConfigureActivity.this, "setting_auto_mobile", false);
+                    Preferences.put(ConfigureActivity.this, "setting_start_boot", false);
                 }
             }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                 @Override
