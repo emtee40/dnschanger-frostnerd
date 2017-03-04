@@ -375,6 +375,12 @@ public class MainActivity extends AppCompatActivity {
             dns2.setInputType(InputType.TYPE_CLASS_TEXT);
             getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
             doStopVPN = true;
+        }else if(item.getItemId() == R.id.contact_dev){
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("message/rfc822");
+            intent.putExtra(Intent.EXTRA_EMAIL, "support@frostnerd.com");
+            intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+            startActivity(Intent.createChooser(intent, getString(R.string.contact_developer)));
         }
         return super.onOptionsItemSelected(item);
     }
