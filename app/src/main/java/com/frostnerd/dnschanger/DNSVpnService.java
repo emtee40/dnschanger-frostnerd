@@ -81,6 +81,7 @@ public class DNSVpnService extends VpnService {
             notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0));
             notificationBuilder.setAutoCancel(false);
             notificationBuilder.setOngoing(true);
+            notificationBuilder.setUsesChronometer(true);
             notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         }
     }
