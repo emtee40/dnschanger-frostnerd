@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.net.VpnService;
@@ -136,6 +138,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private boolean isTaskerInstalled(){
+        List<ApplicationInfo> packages;
+        packages = getPackageManager().getInstalledApplications(0);
+        for (ApplicationInfo packageInfo : packages) {
+            if(packageInfo.packageName.equals("net.dinglisch.android.taskerm"))return true;
+        }
+        return false;
+    }
+
     public void rateApp(View v) {
         final String appPackageName = getPackageName();
         try {
@@ -261,6 +272,14 @@ public class MainActivity extends AppCompatActivity {
                     dialog.cancel();
                 }
             }).setMessage(R.string.rate_request_text).setTitle(R.string.rate).show();
+        }
+        if(Preferences.getBoolean(this, "first_run", true) && isTaskerInstalled()){
+            new AlertDialog.Builder(this).setTitle(R.string.tasker_support).setMessage(R.string.app_supports_tasker_text).setPositiveButton(R.string.got_it, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            }).show();
         }
         Preferences.put(this, "first_run", false);
     }
