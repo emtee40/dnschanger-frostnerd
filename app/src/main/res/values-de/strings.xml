@@ -53,4 +53,13 @@
     <string name="title_show_used_dns">Zeige DNS server</string>
     <string name="notification">Benachrichtigung</string>
     <string name="title_automation">Automatisierung</string>
+    <string name="title_general">Generelles</string>
+    <string name="summary_info">Zeige generelle Informationen über diese App</string>
+    <string name="title_info">Info</string>
+    <string name="summary_automation_warn">Achtung: Eine dieser Optionen zu verwenden, könnte aktive Tasker Profile, welche diese App nutzen, stören</string>
+    <string name="title_pin">Pin</string>
+    <string name="summary_pin">Die App und die Benachrichtigung mit einer Pin schützen (Aktuell nicht verfügbar)</string>
+    <string name="summary_pin_value">Aktueller Pin: [[x]] (Zum Ändern klicken)</string>
+    <string name="title_pin_value">Pin ändern</string>
+    <string name="settings_information_text">Diese App wurde von Daniel Wolf erstellt (frostnerd.com)\n\nSie benutzt Icons, welche von Google erstellt wurden (Material icon pack - https://material.io/icons/)\n\n\nWenn du ein fehlendes Feature entdeckst, einen Bug findest oder eine generelle Frage hast, kontaktiere mich unter support@frostnerd.com.</string>
 </resources>

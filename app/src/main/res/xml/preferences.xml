@@ -12,13 +12,16 @@
         <CheckBoxPreference
             android:id="@+id/setting_show_used_dns"
             android:defaultValue="false"
-            android:key="show_used_dns"
             android:dependency="setting_show_notification"
+            android:key="show_used_dns"
             android:summary="@string/summary_show_used_dns"
             android:title="@string/title_show_used_dns" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/title_automation">
+    <PreferenceCategory
+        android:key="automation"
+        android:title="@string/title_automation">
+        <Preference android:key="warn_automation_tasker" />
         <CheckBoxPreference
             android:id="@+id/setting_start_boot"
             android:defaultValue="false"
@@ -39,5 +42,23 @@
             android:key="setting_auto_mobile"
             android:summary="@string/summary_auto_mobile"
             android:title="@string/title_auto_mobile" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/title_general">
+        <Preference
+            android:key="setting_info"
+            android:title="@string/title_info" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="false"
+            android:key="setting_pin_enabled"
+            android:summary="@string/summary_pin"
+            android:title="@string/title_pin" />
+        <EditTextPreference
+            android:dependency="setting_pin_enabled"
+            android:enabled="false"
+            android:key="pin_value"
+            android:summary="@string/summary_pin_value"
+            android:title="@string/title_pin_value" />
     </PreferenceCategory>
 </PreferenceScreen>

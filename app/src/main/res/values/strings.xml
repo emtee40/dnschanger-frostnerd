@@ -52,4 +52,13 @@
     <string name="title_show_used_dns">Show DNS servers</string>
     <string name="notification">Notification</string>
     <string name="title_automation">Automation</string>
+    <string name="title_general">General</string>
+    <string name="summary_info">Show general info about this app</string>
+    <string name="title_info">Info</string>
+    <string name="summary_automation_warn">Warning: Using any of these might interfere with active Tasker profiles using this app!</string>
+    <string name="title_pin">Pin</string>
+    <string name="summary_pin">"Protect the app (and notification) by pin (Currently not available) "</string>
+    <string name="summary_pin_value">Current pin: [[x]] (Click to change)</string>
+    <string name="title_pin_value">Change Pin</string>
+    <string name="settings_information_text">This app was made by Daniel Wolf (frostnerd.com)\n\nIt uses icon made by Google (Material icon pack - https://material.io/icons/)\n\n\nIf you are missing a feature, found a bug or just got a general request, feel free to contact me at support@frostnerd.com</string>
 </resources>
