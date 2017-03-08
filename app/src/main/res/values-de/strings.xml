@@ -49,4 +49,8 @@
     <string name="tasker_support">Tasker Unterstützung</string>
     <string name="create_shortcut">Ein Shortcut erstellen</string>
     <string name="shortcut_created">Verknüpfung erstellt.</string>
+    <string name="summary_show_used_dns">Zeige die aktuell verwendeten DNS Server in der Benachrichtigung</string>
+    <string name="title_show_used_dns">Zeige DNS server</string>
+    <string name="notification">Benachrichtigung</string>
+    <string name="title_automation">Automatisierung</string>
 </resources>

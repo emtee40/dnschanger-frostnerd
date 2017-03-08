@@ -48,4 +48,8 @@
     <string name="tasker_support">Tasker support</string>
     <string name="create_shortcut">Create a shortcut</string>
     <string name="shortcut_created">Shortcut created.</string>
+    <string name="summary_show_used_dns">Show the currently used DNS servers in the notification</string>
+    <string name="title_show_used_dns">Show DNS servers</string>
+    <string name="notification">Notification</string>
+    <string name="title_automation">Automation</string>
 </resources>
