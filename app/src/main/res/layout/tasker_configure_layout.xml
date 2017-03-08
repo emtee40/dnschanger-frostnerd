@@ -18,7 +18,7 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context=".MainActivity">
 
-        <EditText
+        <TextView
             android:layout_width="match_parent"
             android:id="@+id/text"
             style="@style/Base.TextAppearance.AppCompat.Title"
