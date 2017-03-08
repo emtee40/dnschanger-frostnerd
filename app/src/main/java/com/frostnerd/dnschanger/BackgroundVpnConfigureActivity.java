@@ -28,9 +28,9 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
         context.startActivity(new Intent(context, BackgroundVpnConfigureActivity.class).putExtra("startService", startService).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
-    public static void startWithFixedDNS(final Context context, final String dns1, final String dns2, final String dns1v6, final String dns2v6, boolean startedWithTasker){
-        context.startActivity(new Intent(context, BackgroundVpnConfigureActivity.class).putExtra("fixeddns",true).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .putExtra("dns1",dns1).putExtra("dns2",dns2).putExtra("dns1-v6", dns1v6).putExtra("dns2-v6", dns2v6).putExtra("startService",true).putExtra("startedWithTasker", startedWithTasker));
+    public static void startWithFixedDNS(final Context context, final String dns1, final String dns2, final String dns1v6, final String dns2v6, boolean startedWithTasker) {
+        context.startActivity(new Intent(context, BackgroundVpnConfigureActivity.class).putExtra("fixeddns", true).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .putExtra("dns1", dns1).putExtra("dns2", dns2).putExtra("dns1-v6", dns1v6).putExtra("dns2-v6", dns2v6).putExtra("startService", true).putExtra("startedWithTasker", startedWithTasker));
     }
 
     @Override
@@ -41,17 +41,17 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
         final Intent conf = VpnService.prepare(this);
         startService = intent != null && intent.getBooleanExtra("startService", false);
         serviceIntent = new Intent(this, DNSVpnService.class).putExtra("start_vpn", true);
-        if(intent != null && intent.getBooleanExtra("fixeddns", false)){
+        if (intent != null && intent.getBooleanExtra("fixeddns", false)) {
             String dns1 = "8.8.8.8";
             String dns2 = "8.8.4.4";
             String dns1_v6 = "2001:4860:4860::8888";
             startedWithTasker = intent.getBooleanExtra("startedWithTasker", false);
             String dns2_v6 = "2001:4860:4860::8844";
-            if(intent.hasExtra("dns1"))dns1 = intent.getStringExtra("dns1");
-            if(intent.hasExtra("dns2"))dns2 = intent.getStringExtra("dns2");
-            if(intent.hasExtra("dns1-v6"))dns1_v6 = intent.getStringExtra("dns1-v6");
-            if(intent.hasExtra("dns2-v6"))dns2_v6 = intent.getStringExtra("dns2-v6");
-            serviceIntent = serviceIntent.putExtra("fixeddns", true).putExtra("dns1",dns1).putExtra("dns2",dns2)
+            if (intent.hasExtra("dns1")) dns1 = intent.getStringExtra("dns1");
+            if (intent.hasExtra("dns2")) dns2 = intent.getStringExtra("dns2");
+            if (intent.hasExtra("dns1-v6")) dns1_v6 = intent.getStringExtra("dns1-v6");
+            if (intent.hasExtra("dns2-v6")) dns2_v6 = intent.getStringExtra("dns2-v6");
+            serviceIntent = serviceIntent.putExtra("fixeddns", true).putExtra("dns1", dns1).putExtra("dns2", dns2)
                     .putExtra("dns1-v6", dns1_v6).putExtra("dns2-v6", dns2_v6).putExtra("startedWithTasker", startedWithTasker);
         }
         if (conf != null) {
@@ -63,7 +63,7 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
                 }
             });
         } else {
-            if (startService)startService(serviceIntent);
+            if (startService) startService(serviceIntent);
             setResult(RESULT_OK);
             finish();
         }
@@ -76,8 +76,8 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if(dialog1 != null)dialog1.cancel();
-        if(dialog2 != null)dialog2.cancel();
+        if (dialog1 != null) dialog1.cancel();
+        if (dialog2 != null) dialog2.cancel();
         super.onDestroy();
     }
 
@@ -88,9 +88,10 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
                 if (startService)
                     startService(serviceIntent);
                 setResult(RESULT_OK);
+                finish();
             } else if (resultCode == RESULT_CANCELED) {
                 setResult(RESULT_CANCELED);
-                if(System.currentTimeMillis() - requestTime <= 750){//Most likely the system
+                if (System.currentTimeMillis() - requestTime <= 750) {//Most likely the system
                     dialog2 = new AlertDialog.Builder(this).setTitle(getString(R.string.app_name) + " - " + getString(R.string.information)).setMessage(R.string.background_configure_error).setPositiveButton(R.string.open_app, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -104,7 +105,7 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
                             finish();
                         }
                     }).show();
-                }else finish();
+                } else finish();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
