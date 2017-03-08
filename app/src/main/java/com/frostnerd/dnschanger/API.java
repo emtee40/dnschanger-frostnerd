@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,6 +29,15 @@ public class API {
             if(name.equals(service.service.getClassName())){
                 return true;
             }
+        }
+        return false;
+    }
+
+    public static boolean isTaskerInstalled(Context context){
+        List<ApplicationInfo> packages;
+        packages = context.getPackageManager().getInstalledApplications(0);
+        for (ApplicationInfo packageInfo : packages) {
+            if(packageInfo.packageName.equals("net.dinglisch.android.taskerm"))return true;
         }
         return false;
     }
