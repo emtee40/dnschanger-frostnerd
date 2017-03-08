@@ -46,4 +46,6 @@
     <string name="warning_started_using_tasker">The VPN was started using Tasker. Stopping it may interrupt with it. Starting it not using tasker does not apply the DNS Servers configured using Tasker. Stop anyway?</string>
     <string name="app_supports_tasker_text">This app supports Tasker and can be used as an action plugin to automate DNS usage.</string>
     <string name="tasker_support">Tasker support</string>
+    <string name="create_shortcut">Create a shortcut</string>
+    <string name="shortcut_created">Shortcut created.</string>
 </resources>

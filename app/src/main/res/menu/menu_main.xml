@@ -15,4 +15,11 @@
         android:orderInCategory="1"
         android:title="@string/contact_developer"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/create_shortcut"
+        android:icon="@drawable/ic_open_in_new"
+        android:orderInCategory="2"
+        android:title="@string/create_shortcut"
+        app:showAsAction="ifRoom" />
 </menu>

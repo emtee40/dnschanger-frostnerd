@@ -1,18 +1,16 @@
 package com.frostnerd.dnschanger;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.net.VpnService;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -32,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.frostnerd.dnschanger.tasker.ConfigureActivity;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.preferences.Preferences;
@@ -348,6 +347,8 @@ public class MainActivity extends AppCompatActivity {
                     }).show();
                 }else stopVpn();
             }
+        }else if(requestCode == 1 && resultCode == RESULT_OK){
+            Snackbar.make(wrapper, R.string.shortcut_created, Snackbar.LENGTH_LONG).show();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -416,6 +417,8 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra(Intent.EXTRA_EMAIL, "support@frostnerd.com");
             intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
             startActivity(Intent.createChooser(intent, getString(R.string.contact_developer)));
+        }else if(item.getItemId() == R.id.create_shortcut){
+            startActivityForResult(new Intent(this, ConfigureActivity.class).putExtra("creatingShortcut", true),1);
         }
         return super.onOptionsItemSelected(item);
     }

@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.ShortcutActivity;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.preferences.Preferences;
@@ -40,7 +41,7 @@ import java.util.List;
 public class ConfigureActivity extends AppCompatActivity {
     private MaterialEditText met_dns1, met_dns2, met_name;
     private EditText ed_dns1, ed_dns2, ed_name;
-    private boolean cancelled = false;
+    private boolean cancelled = false, creatingShortcut;
     private AlertDialog defaultDnsDialog;
     private String dns1 = "8.8.8.8", dns2 = "8.8.4.4", dns1V6 ="2001:4860:4860::8888", dns2V6 = "2001:4860:4860::8844";
     private static final HashMap<String, List<String>> defaultDNS = new HashMap<>();
@@ -85,6 +86,7 @@ public class ConfigureActivity extends AppCompatActivity {
         met_name = (MaterialEditText)findViewById(R.id.met_name);
         Helper.scrub(getIntent());
         final Bundle bundle = getIntent().getBundleExtra(Helper.EXTRA_BUNDLE);
+        creatingShortcut = getIntent() != null && getIntent().getBooleanExtra("creatingShortcut", false);
         Helper.scrub(bundle);
         if(savedInstanceState == null){
             if(Helper.isBundleValid(bundle)){
@@ -251,12 +253,28 @@ public class ConfigureActivity extends AppCompatActivity {
 
     @Override
     public void finish() {
-        if(!cancelled && checkValidity()){
+        if(!cancelled && checkValidity() && !creatingShortcut){
             final Intent resultIntent = new Intent();
             final Bundle resultBundle = Helper.createBundle(dns1, dns2, dns1V6, dns2V6);
             resultIntent.putExtra(Helper.EXTRA_BUNDLE, resultBundle);
             resultIntent.putExtra(Helper.EXTRA_BLURB, ed_name.getText().toString());
             setResult(RESULT_OK, resultIntent);
+        }else if(!cancelled && checkValidity() && creatingShortcut){
+            Intent shortcutIntent = new Intent(getBaseContext(), ShortcutActivity.class);
+            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            shortcutIntent.putExtra("dns1", dns1);
+            shortcutIntent.putExtra("dns2", dns2);
+            shortcutIntent.putExtra("dns1v6", dns1V6);
+            shortcutIntent.putExtra("dns2v6", dns2V6);
+
+            Intent addIntent = new Intent();
+            addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+            addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, ed_name.getText().toString());
+            addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.mipmap.ic_launcher));
+            addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+            getApplicationContext().sendBroadcast(addIntent);
+            setResult(RESULT_OK);
         }
         super.finish();
     }
