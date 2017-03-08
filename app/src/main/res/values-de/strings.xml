@@ -63,4 +63,5 @@
     <string name="title_pin_value">Pin ändern</string>
     <string name="settings_information_text">Diese App wurde von Daniel Wolf erstellt (frostnerd.com)\n\nSie benutzt Icons, welche von Google erstellt wurden (Material icon pack - https://material.io/icons/)\n\n\nWenn du ein fehlendes Feature entdeckst, einen Bug findest oder eine generelle Frage hast, kontaktiere mich unter support@frostnerd.com.</string>
     <string name="create_tasker_action">Erstelle eine Tasker Aktion</string>
+    <string name="show">Anzeigen</string>
 </resources>

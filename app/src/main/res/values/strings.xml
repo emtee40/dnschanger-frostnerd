@@ -62,4 +62,5 @@
     <string name="title_pin_value">Change Pin</string>
     <string name="settings_information_text">This app was made by Daniel Wolf (frostnerd.com)\n\nIt uses icon made by Google (Material icon pack - https://material.io/icons/)\n\n\nIf you are missing a feature, found a bug or just got a general request, feel free to contact me at support@frostnerd.com</string>
     <string name="create_tasker_action">Creating tasker Action</string>
+    <string name="show">Show</string>
 </resources>

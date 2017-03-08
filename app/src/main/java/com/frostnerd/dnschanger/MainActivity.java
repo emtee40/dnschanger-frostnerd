@@ -339,7 +339,15 @@ public class MainActivity extends AppCompatActivity {
                 }else stopVpn();
             }
         }else if(requestCode == 1 && resultCode == RESULT_OK){
-            Snackbar.make(wrapper, R.string.shortcut_created, Snackbar.LENGTH_LONG).show();
+            final Snackbar snackbar = Snackbar.make(wrapper, R.string.shortcut_created, Snackbar.LENGTH_INDEFINITE);
+            snackbar.setAction(R.string.show, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(snackbar != null)snackbar.dismiss();
+                    onBackPressed();
+                }
+            });
+            snackbar.show();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
