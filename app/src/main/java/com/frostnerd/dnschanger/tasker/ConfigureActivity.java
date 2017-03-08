@@ -177,6 +177,7 @@ public class ConfigureActivity extends AppCompatActivity {
             }).show();
         }
         ((TextView)findViewById(R.id.text)).setText(creatingShortcut ? R.string.create_shortcut : R.string.create_tasker_action);
+        ed_name.requestFocus();
     }
 
     public void openDefaultDNSDialog(View v){

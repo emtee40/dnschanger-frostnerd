@@ -44,7 +44,9 @@
                 android:layout_height="wrap_content"
                 android:hint="Name"
                 android:text=""
-                android:textColor="#FFF" />
+                android:textColor="#FFF" >
+                <requestFocus />
+            </EditText>
         </com.frostnerd.utils.design.MaterialEditText>
 
 
