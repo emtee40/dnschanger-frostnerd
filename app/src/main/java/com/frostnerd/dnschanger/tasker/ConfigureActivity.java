@@ -176,6 +176,7 @@ public class ConfigureActivity extends AppCompatActivity {
                 }
             }).show();
         }
+        ((TextView)findViewById(R.id.text)).setText(creatingShortcut ? R.string.create_shortcut : R.string.create_tasker_action);
     }
 
     public void openDefaultDNSDialog(View v){
@@ -242,12 +243,15 @@ public class ConfigureActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(System.currentTimeMillis() - lastBackPress <= 1500){
-            cancelled = true;
-            super.onBackPressed();
-        }else{
-            lastBackPress = System.currentTimeMillis();
-            Toast.makeText(this, R.string.press_back_again, Toast.LENGTH_LONG).show();
+        if(creatingShortcut)super.onBackPressed();
+        else{
+            if(System.currentTimeMillis() - lastBackPress <= 1500){
+                cancelled = true;
+                super.onBackPressed();
+            }else{
+                lastBackPress = System.currentTimeMillis();
+                Toast.makeText(this, R.string.press_back_again, Toast.LENGTH_LONG).show();
+            }
         }
     }
 
