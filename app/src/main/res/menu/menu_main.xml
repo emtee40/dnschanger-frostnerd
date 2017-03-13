@@ -10,13 +10,6 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/contact_dev"
-        android:icon="@drawable/ic_mail_outline"
-        android:orderInCategory="1"
-        android:title="@string/contact_developer"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/create_shortcut"
         android:icon="@drawable/ic_open_in_new"
         android:orderInCategory="2"

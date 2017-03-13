@@ -2,6 +2,7 @@ package com.frostnerd.dnschanger;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
@@ -48,6 +49,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         dialog.cancel();
                     }
                 }).show();
+                return true;
+            }
+        });
+        findPreference("contact_dev").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                        "mailto","support@frostnerd.com", null));
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, "support@frostnerd.com");
+                startActivity(Intent.createChooser(emailIntent, getString(R.string.contact_developer)));
                 return true;
             }
         });

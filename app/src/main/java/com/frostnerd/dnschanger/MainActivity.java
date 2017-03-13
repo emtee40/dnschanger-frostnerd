@@ -410,12 +410,6 @@ public class MainActivity extends AppCompatActivity {
             dns2.setInputType(InputType.TYPE_CLASS_TEXT);
             getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
             doStopVPN = true;
-        }else if(item.getItemId() == R.id.contact_dev){
-            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                    "mailto","support@frostnerd.com", null));
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-            emailIntent.putExtra(Intent.EXTRA_EMAIL, "support@frostnerd.com");
-            startActivity(Intent.createChooser(emailIntent, getString(R.string.contact_developer)));
         }else if(item.getItemId() == R.id.create_shortcut){
             startActivityForResult(new Intent(this, ConfigureActivity.class).putExtra("creatingShortcut", true),1);
         }

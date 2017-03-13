@@ -48,6 +48,9 @@
         <Preference
             android:key="setting_info"
             android:title="@string/title_info" />
+        <Preference
+            android:key="contact_dev"
+            android:title="@string/contact_developer"/>
         <CheckBoxPreference
             android:defaultValue="false"
             android:enabled="false"
