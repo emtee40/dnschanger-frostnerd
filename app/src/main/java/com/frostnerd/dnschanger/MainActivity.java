@@ -9,6 +9,7 @@ import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.net.Uri;
 import android.net.VpnService;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -321,7 +322,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 0 && resultCode == RESULT_OK) {
             if (!vpnRunning){
-                startVpn();
+                if(!Preferences.getBoolean(this, "44explained", false) && Build.VERSION.SDK_INT == 19){
+                    new AlertDialog.Builder(this).setTitle(R.string.warning).setCancelable(false).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            startVpn();
+                        }
+                    }).setMessage(R.string.android4_4_warning).show();
+                }else{
+                    startVpn();
+                }
+                Preferences.getBoolean(this, "44explained", true);
             }else{
                 if(wasStartedWithTasker){
                     new AlertDialog.Builder(this).setTitle(R.string.warning).setMessage(R.string.warning_started_using_tasker). setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
