@@ -73,6 +73,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return false;
             }
         });
+        findPreference("placeholder_version").setSummary(getString(R.string.summary_version).replace("[[version]]", BuildConfig.VERSION_NAME).replace("[[code]]", BuildConfig.VERSION_CODE + ""));
     }
 
     @Override

@@ -74,4 +74,5 @@
     <string name="title_pin_app">Protect App</string>
     <string name="summary_pin_app">Ask for the pin when starting the app</string>
     <string name="title_category_pin">Pin protection</string>
+    <string name="summary_version">Version [[version]] ([[code]])\n\n© Daniel Wolf 2017</string>
 </resources>

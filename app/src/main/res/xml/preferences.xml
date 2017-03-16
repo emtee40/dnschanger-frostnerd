@@ -85,5 +85,7 @@
         <Preference
             android:key="contact_dev"
             android:title="@string/contact_developer" />
+
+        <Preference android:key="placeholder_version" />
     </PreferenceCategory>
 </PreferenceScreen>
