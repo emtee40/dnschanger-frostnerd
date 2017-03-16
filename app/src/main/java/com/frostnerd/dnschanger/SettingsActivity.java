@@ -63,6 +63,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
         });
+        findPreference("autopause_appselect").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                return false;
+            }
+        });
     }
 
     @Override

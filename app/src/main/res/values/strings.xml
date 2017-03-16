@@ -57,7 +57,7 @@
     <string name="title_info">Info</string>
     <string name="summary_automation_warn">Warning: Using any of these might interfere with active Tasker profiles using this app!</string>
     <string name="title_pin">Pin</string>
-    <string name="summary_pin">Protect the app by pin</string>
+    <string name="summary_pin">Enable pin protection</string>
     <string name="summary_pin_value">Current pin: [[x]] (Click to change)</string>
     <string name="title_pin_value">Change Pin</string>
     <string name="settings_information_text">This app was made by Daniel Wolf (frostnerd.com)\n\nIt uses icon made by Google (Material icon pack - https://material.io/icons/)\n\n\nIf you are missing a feature, found a bug or just got a general request, feel free to contact me at support@frostnerd.com</string>
@@ -69,6 +69,9 @@
     <string name="title_autopause_apps">Apps which pause DNSChanger</string>
     <string name="pin_dialog_title">Pin protected</string>
     <string name="pin_dialog_text">You choose to pinprotect this app. Please enter the pin you provided in the settings (default: 1234)</string>
-    <string name="title_pin_notification">Pin-protect stopping</string>
+    <string name="title_pin_notification">Protect Notification</string>
     <string name="summary_pin_notification">Ask for the pin when stopping/pausing DNSChanger from the notification</string>
+    <string name="title_pin_app">Protect App</string>
+    <string name="summary_pin_app">Ask for the pin when starting the app</string>
+    <string name="title_category_pin">Pin protection</string>
 </resources>
