@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <uses-feature
         android:name="android.hardware.touchscreen"
@@ -27,13 +28,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTop">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:launchMode="singleTop" />
         <service
             android:name=".DNSVpnService"
             android:enabled="true"
@@ -80,12 +75,23 @@
         </receiver>
 
         <service android:name=".ConnectivityBackgroundService" />
+
         <activity
             android:name=".ShortcutActivity"
-            android:taskAffinity="com.frostnerd.dnschangerShortcut"
+            android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.AppCompat.Dialog"
-            android:exported="true" />
+            android:taskAffinity="com.frostnerd.dnschangerShortcut"
+            android:theme="@style/Theme.AppCompat.Dialog" />
+        <activity
+            android:name=".PinActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

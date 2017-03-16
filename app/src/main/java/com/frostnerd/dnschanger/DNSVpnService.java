@@ -60,7 +60,7 @@ public class DNSVpnService extends VpnService {
         sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATUS_CHANGE).putExtra("vpn_running",vpnRunning).putExtra("started_with_tasker", startedWithTasker));
     }
 
-    private void updateNotification() { //TODO Fix Bug: Actions are not properly removed
+    private void updateNotification() { //Well, this method is a mess.
         initNotification();
         if(!Preferences.getBoolean(this, "setting_show_notification",false) && notificationManager != null){
             notificationManager.cancel(NOTIFICATION_ID);
@@ -68,12 +68,13 @@ public class DNSVpnService extends VpnService {
         }
         if(stopped || notificationBuilder == null || !Preferences.getBoolean(this, "setting_show_notification",false) || notificationManager == null)return;
         notificationBuilder.mActions.clear();
+        boolean pinProtected = Preferences.getBoolean(this, "pin_notification",false);
         android.support.v4.app.NotificationCompat.Action a1 = new NotificationCompat.Action(isRunning ? R.drawable.ic_stat_pause : R.drawable.ic_stat_resume,
                 getString(isRunning ? R.string.action_pause : R.string.action_resume),
-                PendingIntent.getService(this, 0, new Intent(this, DNSVpnService.class).setAction(new Random().nextInt(50) + "_action")
+                pinProtected ? PendingIntent.getActivity(this,0,new Intent(this, PinActivity.class).setAction(new Random().nextInt(50) + "_action").putExtra(isRunning ? "stop_vpn" : "start_vpn", true).putExtra("redirectToService",true), PendingIntent.FLAG_UPDATE_CURRENT) : PendingIntent.getService(this, 0, new Intent(this, DNSVpnService.class).setAction(new Random().nextInt(50) + "_action")
                         .putExtra(isRunning ? "stop_vpn" : "start_vpn", true), PendingIntent.FLAG_CANCEL_CURRENT)),
                 a2 = new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_stop,
-                        getString(R.string.action_stop), PendingIntent.getService(this, 1, new Intent(this, DNSVpnService.class)
+                        getString(R.string.action_stop), pinProtected ? PendingIntent.getActivity(this,0,new Intent(this, PinActivity.class).setAction(new Random().nextInt(50) + "_action").putExtra("destroy", true).putExtra("redirectToService",true), PendingIntent.FLAG_UPDATE_CURRENT) : PendingIntent.getService(this, 1, new Intent(this, DNSVpnService.class)
                         .setAction(StringUtils.randomString(80) + "_action").putExtra("destroy", true), PendingIntent.FLAG_CANCEL_CURRENT));
         notificationBuilder.addAction(a1);
         notificationBuilder.addAction(a2);
@@ -90,7 +91,7 @@ public class DNSVpnService extends VpnService {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(notificationManager != null && notificationBuilder != null && !stopped && Preferences.getBoolean(DNSVpnService.this, "setting_show_notification",false)) notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+                if(notificationManager != null && notificationBuilder != null && Preferences.getBoolean(DNSVpnService.this, "setting_show_notification",false)) notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
             }
         },10);
     }
@@ -100,7 +101,7 @@ public class DNSVpnService extends VpnService {
             notificationBuilder = new android.support.v7.app.NotificationCompat.Builder(this);
             notificationBuilder.setSmallIcon(R.drawable.ic_stat_small_icon); //TODO Update Image
             notificationBuilder.setContentTitle(getString(R.string.app_name));
-            notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0));
+            notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0));
             notificationBuilder.setAutoCancel(false);
             notificationBuilder.setOngoing(true);
             notificationBuilder.setUsesChronometer(true);
@@ -153,6 +154,7 @@ public class DNSVpnService extends VpnService {
                     thread.interrupt();
                 }
                 updateDNSServers(intent);
+                stopped = false;
                 thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -180,6 +182,7 @@ public class DNSVpnService extends VpnService {
                             isRunning = false;
                             broadcastServiceState(false);
                             updateNotification();
+                            stopped = true;
                             if (tunnelInterface != null) try {
                                 tunnelInterface.close();
                             } catch (IOException e) {
@@ -191,7 +194,6 @@ public class DNSVpnService extends VpnService {
                 run = true;
                 thread.start();
             }else if (intent.getBooleanExtra("stop_vpn", false)){
-                stopped = true;
                 if (thread != null) {
                     run = false;
                     thread.interrupt();

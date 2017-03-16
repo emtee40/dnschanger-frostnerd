@@ -95,7 +95,7 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
                     dialog2 = new AlertDialog.Builder(this).setTitle(getString(R.string.app_name) + " - " + getString(R.string.information)).setMessage(R.string.background_configure_error).setPositiveButton(R.string.open_app, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            startActivity(new Intent(BackgroundVpnConfigureActivity.this, MainActivity.class));
+                            startActivity(new Intent(BackgroundVpnConfigureActivity.this, PinActivity.class));
                             finish();
                         }
                     }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

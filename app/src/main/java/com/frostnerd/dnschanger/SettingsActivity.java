@@ -80,8 +80,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             Preferences.put(SettingsActivity.this,preference.getKey(),newValue);
             String key = preference.getKey();
             if((key.equalsIgnoreCase("setting_show_notification") || key.equalsIgnoreCase("show_used_dns")) && API.checkVPNServiceRunning(SettingsActivity.this))startService(new Intent(SettingsActivity.this, DNSVpnService.class));
-            else if(key.equalsIgnoreCase("setting_pin_enabled") && ((boolean)newValue)){
-            }
             return true;
         }
     };
