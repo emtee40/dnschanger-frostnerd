@@ -71,7 +71,7 @@ public class DNSVpnService extends VpnService {
         android.support.v4.app.NotificationCompat.Action a1 = new NotificationCompat.Action(isRunning ? R.drawable.ic_stat_pause : R.drawable.ic_stat_resume,
                 getString(isRunning ? R.string.action_pause : R.string.action_resume),
                 PendingIntent.getService(this, 0, new Intent(this, DNSVpnService.class).setAction(new Random().nextInt(50) + "_action")
-                        .putExtra(isRunning ? "stop_vpn" : "start_vpn", true), PendingIntent.FLAG_CANCEL_CURRENT)),
+                        .putExtra(isRunning ? "destroy" : "start_vpn", true), PendingIntent.FLAG_CANCEL_CURRENT)),
                 a2 = new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_stop,
                         getString(R.string.action_stop), PendingIntent.getService(this, 1, new Intent(this, DNSVpnService.class)
                         .setAction(StringUtils.randomString(80) + "_action").putExtra("destroy", true), PendingIntent.FLAG_CANCEL_CURRENT));
@@ -140,13 +140,7 @@ public class DNSVpnService extends VpnService {
         if(intent!=null){
             fixedDNS = intent.hasExtra("fixeddns") ? intent.getBooleanExtra("fixeddns", false) : fixedDNS;
             startedWithTasker = intent.hasExtra("startedWithTasker") ? intent.getBooleanExtra("startedWithTasker", false) : startedWithTasker;
-            if (intent.getBooleanExtra("stop_vpn", false)) {
-                if (thread != null) {
-                    run = false;
-                    thread.interrupt();
-                    thread = null;
-                }
-            } else if (intent.getBooleanExtra("start_vpn", false)) {
+            if (intent.getBooleanExtra("start_vpn", false)) {
                 if (thread != null) {
                     run = false;
                     thread.interrupt();

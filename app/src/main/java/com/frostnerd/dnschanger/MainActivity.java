@@ -372,7 +372,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void stopVpn() {
-        startService(new Intent(this, DNSVpnService.class).putExtra("stop_vpn", true));
+        startService(new Intent(this, DNSVpnService.class).putExtra("destroy", true));
         stopService(new Intent(this, DNSVpnService.class));
         vpnRunning = false;
         setIndicatorState(false);
