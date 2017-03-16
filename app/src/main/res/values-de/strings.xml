@@ -66,7 +66,7 @@
     <string name="show">Anzeigen</string>
     <string name="android4_4_warning">Achtung: deine Android Version (4.4) ist dafür bekannt, Fehler mit VPN zu haben. Sollte diese App abstürzen oder nicht funktionieren, liegt dies höchstwahrscheinlich am System und nicht an dieser App.\n</string>
     <string name="title_auto_pause">DNS automatisch pausieren</string>
-    <string name="summary_auto_pause">DNSChanger automatisch pausieren, wenn eine bestimmte App im Vordergrund ist</string>
+    <string name="summary_auto_pause">DNSChanger automatisch pausieren, wenn eine bestimmte App im Vordergrund ist (Folgt in der nächsten App-Version)</string>
     <string name="title_autopause_apps">Apps, welche DNSChanger pausieren</string>
     <string name="pin_dialog_title">Pingeschützt</string>
     <string name="pin_dialog_text">Sie haben in den Einstellungen festgelegt, dass diese App durch einen Pin geschützt werden soll. Bitte geben sie die gesetzte Pin ein (Standard: 1234)</string>
