@@ -1,12 +1,17 @@
 package com.frostnerd.dnschanger;
 
+import android.app.AppOpsManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 
@@ -20,6 +25,9 @@ import com.frostnerd.utils.preferences.Preferences;
  * development@frostnerd.com
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
+    private boolean usageRevokeHidden = false;
+    private PreferenceCategory automatingCategory;
+    private Preference removeUsagePreference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +75,26 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
         });
+        findPreference("auto_pause").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if(!hasUsageStatsPermission()){
+                    new AlertDialog.Builder(SettingsActivity.this).setTitle(R.string.information).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivityForResult(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS), USAGE_STATS_REQUEST);
+                            dialog.cancel();
+                        }
+                    }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    }).setMessage(R.string.usage_stats_info_text).setCancelable(false).show();
+                    return false;
+                }else return true;
+            }
+        });
         findPreference("autopause_appselect").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -74,6 +102,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
         });
         findPreference("placeholder_version").setSummary(getString(R.string.summary_version).replace("[[version]]", BuildConfig.VERSION_NAME).replace("[[code]]", BuildConfig.VERSION_CODE + ""));
+        automatingCategory = (PreferenceCategory)getPreferenceScreen().findPreference("automation");
+        removeUsagePreference = findPreference("remove_usage_data");
+        removeUsagePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivityForResult(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS), USAGE_STATS_REQUEST);
+                return true;
+            }
+        });
+        if(!hasUsageStatsPermission()){
+            usageRevokeHidden = true;
+            automatingCategory.removePreference(removeUsagePreference);
+            ((CheckBoxPreference)findPreference("auto_pause")).setChecked(false);
+        }
     }
 
     @Override
@@ -94,4 +136,32 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             return true;
         }
     };
+
+    private final int USAGE_STATS_REQUEST = 013;
+
+    public boolean hasUsageStatsPermission(){
+        if(Build.VERSION.SDK_INT < 21)return true;
+        AppOpsManager appOps = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
+        return appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,android.os.Process.myUid(), getPackageName()) == AppOpsManager.MODE_ALLOWED;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == USAGE_STATS_REQUEST){
+            if(hasUsageStatsPermission()){
+                ((CheckBoxPreference)findPreference("auto_pause")).setChecked(true);
+                if(usageRevokeHidden){
+                    automatingCategory.addPreference(removeUsagePreference);
+                    usageRevokeHidden = false;
+                }
+            }else{
+                ((CheckBoxPreference)findPreference("auto_pause")).setChecked(false);
+                if(!usageRevokeHidden){
+                    automatingCategory.removePreference(removeUsagePreference);
+                    usageRevokeHidden = true;
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }
