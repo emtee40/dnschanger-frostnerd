@@ -73,5 +73,10 @@
             android:key="pin_value"
             android:summary="@string/summary_pin_value"
             android:title="@string/title_pin_value" />
+        <CheckBoxPreference
+            android:dependency="setting_pin_enabled"
+            android:key="pin_notification"
+            android:summary="@string/summary_pin_notification"
+            android:title="@string/title_pin_notification" />
     </PreferenceCategory>
 </PreferenceScreen>
