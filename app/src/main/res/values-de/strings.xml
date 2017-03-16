@@ -58,11 +58,16 @@
     <string name="title_info">Info</string>
     <string name="summary_automation_warn">Achtung: Eine dieser Optionen zu verwenden, könnte aktive Tasker Profile, welche diese App nutzen, stören</string>
     <string name="title_pin">Pin</string>
-    <string name="summary_pin">Die App und die Benachrichtigung mit einer Pin schützen (Aktuell nicht verfügbar)</string>
+    <string name="summary_pin">Die App und die Benachrichtigung mit einer Pin schützen</string>
     <string name="summary_pin_value">Aktueller Pin: [[x]] (Zum Ändern klicken)</string>
     <string name="title_pin_value">Pin ändern</string>
     <string name="settings_information_text">Diese App wurde von Daniel Wolf erstellt (frostnerd.com)\n\nSie benutzt Icons, welche von Google erstellt wurden (Material icon pack - https://material.io/icons/)\n\n\nWenn du ein fehlendes Feature entdeckst, einen Bug findest oder eine generelle Frage hast, kontaktiere mich unter support@frostnerd.com.</string>
     <string name="create_tasker_action">Erstelle eine Tasker Aktion</string>
     <string name="show">Anzeigen</string>
-    <string name="android4_4_warning">Achtung: deine Android Version (4.4) ist dafür bekannt, Fehler mit VPN zu haben. Sollte diese App abstürzen oder nicht funktionieren, liegt dies höchstwahrscheinlich am System und nicht an dieser App.\n\nSollte dein Gerät gerooted sein, probiere die Root-Version aus dem Store.</string>
+    <string name="android4_4_warning">Achtung: deine Android Version (4.4) ist dafür bekannt, Fehler mit VPN zu haben. Sollte diese App abstürzen oder nicht funktionieren, liegt dies höchstwahrscheinlich am System und nicht an dieser App.\n</string>
+    <string name="title_auto_pause">DNS automatisch pausieren</string>
+    <string name="summary_auto_pause">DNSChanger automatisch pausieren, wenn eine bestimmte App im Vordergrund ist</string>
+    <string name="title_autopause_apps">Apps, welche DNSChanger pausieren</string>
+    <string name="pin_dialog_title">Pingeschützt</string>
+    <string name="pin_dialog_text">Sie haben in den Einstellungen festgelegt, dass diese App durch einen Pin geschützt werden soll. Bitte geben sie die gesetzte Pin ein (Standard: 1234)</string>
 </resources>

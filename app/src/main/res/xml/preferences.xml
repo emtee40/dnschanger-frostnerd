@@ -42,6 +42,18 @@
             android:key="setting_auto_mobile"
             android:summary="@string/summary_auto_mobile"
             android:title="@string/title_auto_mobile" />
+
+        <CheckBoxPreference
+            android:id="@+id/setting_auto_pause"
+            android:defaultValue="false"
+            android:key="auto_pause"
+            android:summary="@string/summary_auto_pause"
+            android:title="@string/title_auto_pause" />
+
+        <Preference
+            android:dependency="auto_pause"
+            android:key="autopause_appselect"
+            android:title="@string/title_autopause_apps" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/title_general">
@@ -50,16 +62,14 @@
             android:title="@string/title_info" />
         <Preference
             android:key="contact_dev"
-            android:title="@string/contact_developer"/>
+            android:title="@string/contact_developer" />
         <CheckBoxPreference
             android:defaultValue="false"
-            android:enabled="false"
             android:key="setting_pin_enabled"
             android:summary="@string/summary_pin"
             android:title="@string/title_pin" />
         <EditTextPreference
             android:dependency="setting_pin_enabled"
-            android:enabled="false"
             android:key="pin_value"
             android:summary="@string/summary_pin_value"
             android:title="@string/title_pin_value" />
