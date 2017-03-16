@@ -5,7 +5,7 @@
     <string name="stop">Stoppen</string>
     <string name="rate">Bewerten</string>
     <string name="info_dns_button">Infos über DNS</string>
-    <string name="default_dns">Voreingstellte DNS Adressen</string>
+    <string name="default_dns">Voreingestellte DNS Adressen</string>
     <string name="default_dns_title">Öffentliche DNS Anbieter</string>
     <string name="dns_info_text">DNS steht für Domain Name System.\n\nDas Domain Name System wird benutzt, um Domains (google.com, yahoo.com, example.org...) zu IP-Adressen (z.B. 192.168.178.1) aufzulösen und zu die Kommunikation über das Internet zu ermöglichen.\n\nDas DNS ist eines der wichtigsten System in IP-basierten Netzwerken.</string>
     <string name="information">Information</string>
