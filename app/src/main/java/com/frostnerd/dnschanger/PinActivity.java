@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 
@@ -26,6 +25,8 @@ public class PinActivity extends Activity {
             continueToFollowing(main);
             return;
         }
+        if((main && !Preferences.getBoolean(this, "pin_app", false)) ||
+                (!main && !Preferences.getBoolean(this, "pin_notification",false)))continueToFollowing(main);
         setContentView(R.layout.pin_dialog);
         pin = Preferences.getString(this, "pin_value", "1234");
         vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
