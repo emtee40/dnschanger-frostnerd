@@ -1,14 +1,11 @@
 package com.frostnerd.dnschanger;
 
 import android.app.ActivityManager;
-import android.content.BroadcastReceiver;
+import android.app.AppOpsManager;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
+import android.os.Build;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -40,5 +37,11 @@ public class API {
             if(packageInfo.packageName.equals("net.dinglisch.android.taskerm"))return true;
         }
         return false;
+    }
+
+    public static boolean hasUsageStatsPermission(Context context){
+        if(Build.VERSION.SDK_INT < 21)return true;
+        AppOpsManager appOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+        return appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,android.os.Process.myUid(), context.getPackageName()) == AppOpsManager.MODE_ALLOWED;
     }
 }
