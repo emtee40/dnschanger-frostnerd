@@ -108,7 +108,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
         });
-        if(!API.hasUsageStatsPermission(this)){
+        if(!API.hasUsageStatsPermission(this) || Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
             usageRevokeHidden = true;
             automatingCategory.removePreference(removeUsagePreference);
             ((CheckBoxPreference)findPreference("auto_pause")).setChecked(false);
