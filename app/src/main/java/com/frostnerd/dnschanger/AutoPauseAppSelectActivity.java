@@ -40,6 +40,7 @@ public class AutoPauseAppSelectActivity extends AppCompatActivity {
     private RecyclerView appList;
     private RecyclerView.LayoutManager listLayoutManager;
     private AppListAdapter listAdapter;
+    private boolean changed;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class AutoPauseAppSelectActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (System.currentTimeMillis() - lastBackPress <= 1500) {
+        if (System.currentTimeMillis() - lastBackPress <= 1500 || !changed) {
             setResult(RESULT_CANCELED);
             super.onBackPressed();
         } else {
@@ -112,8 +113,9 @@ public class AutoPauseAppSelectActivity extends AppCompatActivity {
             ((CheckBox) holder.contentView.findViewById(R.id.app_selected_indicator)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) currentSelected.add(holder.appEntry.packageName);
+                    if (isChecked)currentSelected.add(holder.appEntry.packageName);
                     else currentSelected.remove(holder.appEntry.packageName);
+                    changed = true;
                 }
             });
             holder.appEntry = apps.get(position - 1);
