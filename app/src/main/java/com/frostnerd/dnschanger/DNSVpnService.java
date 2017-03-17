@@ -13,11 +13,14 @@ import android.support.v7.app.NotificationCompat;
 
 import com.frostnerd.utils.general.StringUtils;
 import com.frostnerd.utils.preferences.Preferences;
+import com.frostnerd.utils.stats.AppTaskGetter;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.DatagramChannel;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -35,11 +38,33 @@ public class DNSVpnService extends VpnService {
     private final int NOTIFICATION_ID = 112;
     private Handler handler = new Handler();
     private String dns1,dns2,dns1_v6,dns2_v6;
-    private boolean fixedDNS = false, startedWithTasker = false;
+    private boolean fixedDNS = false, startedWithTasker = false, autoPaused = false;
     private BroadcastReceiver stateRequestReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             broadcastServiceState(isRunning);
+        }
+    };
+    private Set<String> autoPauseApps;
+    private Runnable autoPausedRestartRunnable = new Runnable() {
+        @Override
+        public void run() {
+            int counter = 0;
+                try {
+                    while(!stopped){
+                        if(counter >= 4){
+                            if(!autoPauseApps.contains(AppTaskGetter.getMostRecentApp(DNSVpnService.this,1000*1000))){
+                                startService(new Intent(DNSVpnService.this, DNSVpnService.class).putExtra("start_vpn",true));
+                                break;
+                            }
+                            counter = 0;
+                        }
+                        Thread.sleep(250);
+                        counter++;
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
         }
     };
 
@@ -141,6 +166,11 @@ public class DNSVpnService extends VpnService {
         if(intent!=null){
             fixedDNS = intent.hasExtra("fixeddns") ? intent.getBooleanExtra("fixeddns", false) : fixedDNS;
             startedWithTasker = intent.hasExtra("startedWithTasker") ? intent.getBooleanExtra("startedWithTasker", false) : startedWithTasker;
+            if(Preferences.getBoolean(this, "auto_pause", false)){
+                if(!API.hasUsageStatsPermission(this))Preferences.put(this,"auto_pause",false);
+                else autoPauseApps = Preferences.getStringSet(this, "autopause_apps");
+            }
+            else autoPauseApps = new HashSet<>();
             if(intent.getBooleanExtra("destroy",false)){
                 stopped = true;
                 if (thread != null) {
@@ -169,9 +199,19 @@ public class DNSVpnService extends VpnService {
                             isRunning = true;
                             broadcastServiceState(true);
                             updateNotification();
+                            int counter = 0;
                             try {
                                 while (run) {
-                                    Thread.sleep(100);
+                                    if(counter >= 4 && autoPauseApps.size() != 0){
+                                        counter = 0;
+                                        if(autoPauseApps.contains(AppTaskGetter.getMostRecentApp(DNSVpnService.this,1000*1000))){
+                                            run = false;
+                                            autoPaused = true;
+                                            new Thread(autoPausedRestartRunnable).start();
+                                        }
+                                    }
+                                    if(run)Thread.sleep(250);
+                                    counter++;
                                 }
                             } catch (InterruptedException e2) {
 
@@ -182,7 +222,6 @@ public class DNSVpnService extends VpnService {
                             isRunning = false;
                             broadcastServiceState(false);
                             updateNotification();
-                            stopped = true;
                             if (tunnelInterface != null) try {
                                 tunnelInterface.close();
                             } catch (IOException e) {
@@ -194,6 +233,7 @@ public class DNSVpnService extends VpnService {
                 run = true;
                 thread.start();
             }else if (intent.getBooleanExtra("stop_vpn", false)){
+                autoPaused = false;
                 if (thread != null) {
                     run = false;
                     thread.interrupt();
