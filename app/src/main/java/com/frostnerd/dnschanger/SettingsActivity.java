@@ -75,6 +75,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         findPreference("auto_pause").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if(!((Boolean) newValue))return true;
                 if(!API.hasUsageStatsPermission(SettingsActivity.this)){
                     new AlertDialog.Builder(SettingsActivity.this).setTitle(R.string.information).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
@@ -108,10 +109,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
         });
-        if(!API.hasUsageStatsPermission(this) || Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
+        boolean canAccessUsageStats = API.hasUsageStatsPermission(this);
+        if(!canAccessUsageStats || Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
             usageRevokeHidden = true;
             automatingCategory.removePreference(removeUsagePreference);
-            ((CheckBoxPreference)findPreference("auto_pause")).setChecked(false);
+            if(!canAccessUsageStats){
+                ((CheckBoxPreference)findPreference("auto_pause")).setChecked(false);
+                Preferences.put(this, "auto_pause",false);
+            }
         }
     }
 
@@ -141,12 +146,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         if(requestCode == USAGE_STATS_REQUEST){
             if(API.hasUsageStatsPermission(this)){
                 ((CheckBoxPreference)findPreference("auto_pause")).setChecked(true);
+                Preferences.put(this, "auto_pause",true);
                 if(usageRevokeHidden){
                     automatingCategory.addPreference(removeUsagePreference);
                     usageRevokeHidden = false;
                 }
             }else{
                 ((CheckBoxPreference)findPreference("auto_pause")).setChecked(false);
+                Preferences.put(this, "auto_pause",false);
                 if(!usageRevokeHidden){
                     automatingCategory.removePreference(removeUsagePreference);
                     usageRevokeHidden = true;
