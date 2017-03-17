@@ -163,7 +163,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     usageRevokeHidden = true;
                 }
             }
-        }else if(requestCode == CHOOSE_AUTOPAUSEAPPS_REQUEST){
+        }else if(requestCode == CHOOSE_AUTOPAUSEAPPS_REQUEST && resultCode == RESULT_OK){
             findPreference("autopause_appselect").setTitle(getString(R.string.title_autopause_apps).
                     replace("[[count]]", ""+data.getIntExtra("count",0)));
         }
