@@ -97,7 +97,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".AutoPauseAppSelectActivity" />
+        <activity android:name=".AutoPauseAppSelectActivity" android:parentActivityName=".SettingsActivity"/>
     </application>
 
 </manifest>
