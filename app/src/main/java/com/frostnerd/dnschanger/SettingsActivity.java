@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
@@ -96,7 +97,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         findPreference("autopause_appselect").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                startActivity(new Intent(SettingsActivity.this, AutoPauseAppSelectActivity.class));
+                startActivityForResult(new Intent(SettingsActivity.this, AutoPauseAppSelectActivity.class),CHOOSE_AUTOPAUSEAPPS_REQUEST);
                 return true;
             }
         });
@@ -119,6 +120,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 Preferences.put(this, "auto_pause",false);
             }
         }
+        findPreference("autopause_appselect").setTitle(getString(R.string.title_autopause_apps).
+                replace("[[count]]", Preferences.getInteger(this, "autopause_apps_count",0) + ""));
     }
 
     @Override
@@ -140,7 +143,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     };
 
-    private final int USAGE_STATS_REQUEST = 13;
+    private final int USAGE_STATS_REQUEST = 13, CHOOSE_AUTOPAUSEAPPS_REQUEST = 14;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -160,6 +163,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     usageRevokeHidden = true;
                 }
             }
+        }else if(requestCode == CHOOSE_AUTOPAUSEAPPS_REQUEST){
+            findPreference("autopause_appselect").setTitle(getString(R.string.title_autopause_apps).
+                    replace("[[count]]", ""+data.getIntExtra("count",0)));
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

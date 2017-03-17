@@ -66,7 +66,7 @@
     <string name="android4_4_warning">Warning: your Android version (4.4) is known to have problems with VPN connections. If this app crashes or just doesn\'t work it\'s most likely your system and not the fault of this app.\nI\'m sorry for the inconvenience.</string>
     <string name="title_auto_pause">Pause DNS automatically</string>
     <string name="summary_auto_pause">Automatically pause the DNS when certain apps are in the foreground (available in the next version)</string>
-    <string name="title_autopause_apps">Apps which pause DNSChanger</string>
+    <string name="title_autopause_apps">Apps which pause DNSChanger. Current: [[count]]</string>
     <string name="pin_dialog_title">Pin protected</string>
     <string name="pin_dialog_text">You choose to pinprotect this app. Please enter the pin you provided in the settings (default: 1234)</string>
     <string name="title_pin_notification">Protect Notification</string>
