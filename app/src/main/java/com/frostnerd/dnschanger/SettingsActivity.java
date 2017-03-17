@@ -138,7 +138,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             Preferences.put(SettingsActivity.this,preference.getKey(),newValue);
             String key = preference.getKey();
-            if((key.equalsIgnoreCase("setting_show_notification") || key.equalsIgnoreCase("show_used_dns")) && API.checkVPNServiceRunning(SettingsActivity.this))startService(new Intent(SettingsActivity.this, DNSVpnService.class));
+            if((key.equalsIgnoreCase("setting_show_notification") || key.equalsIgnoreCase("show_used_dns") ||
+                    key.equalsIgnoreCase("auto_pause")) && API.checkVPNServiceRunning(SettingsActivity.this))startService(new Intent(SettingsActivity.this, DNSVpnService.class));
             return true;
         }
     };
@@ -166,6 +167,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }else if(requestCode == CHOOSE_AUTOPAUSEAPPS_REQUEST && resultCode == RESULT_OK){
             findPreference("autopause_appselect").setTitle(getString(R.string.title_autopause_apps).
                     replace("[[count]]", ""+data.getIntExtra("count",0)));
+            if(API.checkVPNServiceRunning(SettingsActivity.this))startService(new Intent(SettingsActivity.this, DNSVpnService.class));
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
