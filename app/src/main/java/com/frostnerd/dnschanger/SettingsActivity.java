@@ -96,7 +96,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         findPreference("autopause_appselect").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                return false;
+                startActivity(new Intent(SettingsActivity.this, AutoPauseAppSelectActivity.class));
+                return true;
             }
         });
         findPreference("placeholder_version").setSummary(getString(R.string.summary_version).replace("[[version]]", BuildConfig.VERSION_NAME).replace("[[code]]", BuildConfig.VERSION_CODE + ""));
