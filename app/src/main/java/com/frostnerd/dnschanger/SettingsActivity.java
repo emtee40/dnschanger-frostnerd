@@ -134,7 +134,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     };
 
-    private final int USAGE_STATS_REQUEST = 013;
+    private final int USAGE_STATS_REQUEST = 13;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
