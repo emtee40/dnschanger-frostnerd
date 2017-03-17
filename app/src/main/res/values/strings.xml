@@ -78,4 +78,5 @@
     <string name="usage_stats_info_text">To automatically pause DNSChanger when a certain app is in the front, this app needs access to usage data. \n\nIn the next window, please grant DNSChanger access to this data or else you won\'t be able to use this setting.\n\n\nNo data execept for currently running applications is requested. No data is saved or transmitted.\nThe source code is publicy available at https://git.frostnerd.com/PublicAndroidApps/DnsChanger if you want to make sure yourself.</string>
     <string name="title_remove_usage_data">Remove access to usage data</string>
     <string name="summary_remove_usage_data">Access to usage data was granted. Click here to revoke that permission.</string>
+    <string name="autopause_appselect_info_text">Each App marked will pause DNSChanger automatically when being in the front. This might be useful as for instance in the store apps can\'t be downloaded when running with a changed DNS.</string>
 </resources>

@@ -79,4 +79,5 @@
     <string name="usage_stats_info_text">Um DNSChanger automatisch zu pausieren, wenn sich eine bestimmte App im Vordergrund befindet, wird Zugriff auf die Nutzungsdaten benötigt.\n\nBitte gewähre DNSChanger im nächsten Fenster Zugriff auf diese Daten, oder du wirst diese Einstellung nicht nutzen können.\n\n\nEs werden keine Daten außer den aktuell laufenden Apps angefordert. Es werden keine Daten gespeichert oder übertragen.\nDer SourceCode ist öffentlich unter https://git.frostnerd.com/PublicAndroidApps/DnsChanger verfügbar, wenn du selber sichergehen willst.</string>
     <string name="title_remove_usage_data">Zugriff auf Nutzungsdaten deaktivieren</string>
     <string name="summary_remove_usage_data">Zugriff auf die Nutzungsdaten wurde gewährt. Klicke hier, um diese Berechtigung zurückzuziehen.</string>
+    <string name="autopause_appselect_info_text">Jede hier markierte App pausiert DNSChanger automatisch, wenn sie sich im Vordergrund befindet. Diest ist beispielsweise sinnvoll, da im Store mit geändertem DNS keine Apps heruntergeladen werden können.</string>
 </resources>
