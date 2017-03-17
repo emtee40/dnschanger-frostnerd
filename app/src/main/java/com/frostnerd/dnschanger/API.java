@@ -40,7 +40,7 @@ public class API {
     }
 
     public static boolean hasUsageStatsPermission(Context context){
-        if(Build.VERSION.SDK_INT < 21)return true;
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)return true;
         AppOpsManager appOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
         return appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,android.os.Process.myUid(), context.getPackageName()) == AppOpsManager.MODE_ALLOWED;
     }
