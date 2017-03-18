@@ -109,17 +109,16 @@ public class DNSVpnService extends VpnService {
             return;
         }
         if(stopped || notificationBuilder == null || !Preferences.getBoolean(this, "setting_show_notification",false) || notificationManager == null)return;
-        notificationBuilder.mActions.clear();
         boolean pinProtected = Preferences.getBoolean(this, "pin_notification",false);
-        android.support.v4.app.NotificationCompat.Action a1 = new NotificationCompat.Action(isRunning ? R.drawable.ic_stat_pause : R.drawable.ic_stat_resume,
-                getString(isRunning ? R.string.action_pause : R.string.action_resume),
-                pinProtected ? PendingIntent.getActivity(this,0,new Intent(this, PinActivity.class).setAction(new Random().nextInt(50) + "_action").putExtra(isRunning ? "stop_vpn" : "start_vpn", true).putExtra("redirectToService",true), PendingIntent.FLAG_UPDATE_CURRENT) : PendingIntent.getService(this, 0, new Intent(this, DNSVpnService.class).setAction(new Random().nextInt(50) + "_action")
-                        .putExtra(isRunning ? "stop_vpn" : "start_vpn", true), PendingIntent.FLAG_CANCEL_CURRENT)),
-                a2 = new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_stop,
-                        getString(R.string.action_stop), pinProtected ? PendingIntent.getActivity(this,0,new Intent(this, PinActivity.class).setAction(new Random().nextInt(50) + "_action").putExtra("destroy", true).putExtra("redirectToService",true), PendingIntent.FLAG_UPDATE_CURRENT) : PendingIntent.getService(this, 1, new Intent(this, DNSVpnService.class)
-                        .setAction(StringUtils.randomString(80) + "_action").putExtra("destroy", true), PendingIntent.FLAG_CANCEL_CURRENT));
-        notificationBuilder.addAction(a1);
-        notificationBuilder.addAction(a2);
+        android.support.v4.app.NotificationCompat.Action a1 = notificationBuilder.mActions.get(0);
+        a1.icon = isRunning ? R.drawable.ic_stat_pause : R.drawable.ic_stat_resume;
+        a1.title = getString(isRunning ? R.string.action_pause : R.string.action_resume);
+        a1.actionIntent = pinProtected ? PendingIntent.getActivity(this,0,new Intent(this, PinActivity.class).setAction(new Random().nextInt(50) + "_action").
+                putExtra(isRunning ? "stop_vpn" : "start_vpn", true).putExtra("redirectToService",true), PendingIntent.FLAG_UPDATE_CURRENT) :
+                PendingIntent.getService(this, 0, new Intent(this, DNSVpnService.class).setAction(new Random().nextInt(50) + "_action").putExtra(isRunning ? "stop_vpn" : "start_vpn", true), PendingIntent.FLAG_CANCEL_CURRENT);
+        notificationBuilder.mActions.get(1).actionIntent = pinProtected ? PendingIntent.getActivity(this,0,new Intent(this, PinActivity.class).
+                setAction(new Random().nextInt(50) + "_action").putExtra("destroy", true).putExtra("redirectToService",true), PendingIntent.FLAG_UPDATE_CURRENT) : PendingIntent.getService(this, 1, new Intent(this, DNSVpnService.class)
+                .setAction(StringUtils.randomString(80) + "_action").putExtra("destroy", true), PendingIntent.FLAG_CANCEL_CURRENT);
         notificationBuilder.setContentTitle(getString(isRunning ? R.string.active : R.string.paused));
         if(Preferences.getBoolean(this, "show_used_dns",false)){
             notificationBuilder.setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().
@@ -147,6 +146,8 @@ public class DNSVpnService extends VpnService {
             notificationBuilder.setAutoCancel(false);
             notificationBuilder.setOngoing(true);
             notificationBuilder.setUsesChronometer(true);
+            notificationBuilder.addAction(new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_pause, getString(R.string.action_pause),null));
+            notificationBuilder.addAction(new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_stop, getString(R.string.action_stop),null));
             notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         }
     }
