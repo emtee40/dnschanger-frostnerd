@@ -79,6 +79,9 @@ public class DNSVpnService extends VpnService {
                 startActivity(new Intent(DNSVpnService.this, ErrorDialogActivity.class).putExtra("stacktrace",sw.toString()));
                 wasCrashShownToUser = true;
             }
+            stopped = true;
+            run = false;
+            stopSelf();
         }
     };
 
