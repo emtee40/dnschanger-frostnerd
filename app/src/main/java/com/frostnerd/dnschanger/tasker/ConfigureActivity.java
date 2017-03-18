@@ -300,7 +300,6 @@ public class ConfigureActivity extends AppCompatActivity {
                 }else{
                     final Intent resultIntent = new Intent();
                     final Bundle resultBundle = new Bundle();
-                    System.out.println("ACTION: " + currentAction);
                     if(currentAction == Action.PAUSE){
                         resultBundle.putBoolean(Helper.BUNDLE_EXTRA_PAUSE_DNS,true);
                     }else if(currentAction == Action.RESUME){
