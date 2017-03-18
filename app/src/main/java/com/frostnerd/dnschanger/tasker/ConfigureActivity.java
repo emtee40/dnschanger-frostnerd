@@ -2,6 +2,8 @@ package com.frostnerd.dnschanger.tasker;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -9,15 +11,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +52,11 @@ public class ConfigureActivity extends AppCompatActivity {
     private static final List<String> defaultDNSKeys, DefaultDNSKeys_V6;
     private boolean settingV6 = false, wasEdited = false;
     private long lastBackPress = 0;
+    private Action currentAction;
+
+    private enum Action{
+        PAUSE, START, STOP, RESUME;
+    }
 
     static {
         defaultDNS.put("Google DNS", Arrays.asList("8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844"));
@@ -84,6 +92,7 @@ public class ConfigureActivity extends AppCompatActivity {
         met_dns1 = (MaterialEditText) findViewById(R.id.met_dns1);
         met_dns2 = (MaterialEditText)findViewById(R.id.met_dns2);
         met_name = (MaterialEditText)findViewById(R.id.met_name);
+        Spinner actionSpinner = (Spinner) findViewById(R.id.spinner);
         Helper.scrub(getIntent());
         final Bundle bundle = getIntent().getBundleExtra(Helper.EXTRA_BUNDLE);
         creatingShortcut = getIntent() != null && getIntent().getBooleanExtra("creatingShortcut", false);
@@ -178,6 +187,26 @@ public class ConfigureActivity extends AppCompatActivity {
         }
         ((TextView)findViewById(R.id.text)).setText(creatingShortcut ? R.string.create_shortcut : R.string.create_tasker_action);
         ed_name.requestFocus();
+        if(creatingShortcut) actionSpinner.setVisibility(View.GONE);
+        else{
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.tasker_configure_actions, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            actionSpinner.setAdapter(adapter);
+            actionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if(position != 0)findViewById(R.id.wrapper).setVisibility(View.INVISIBLE);
+                    else findViewById(R.id.wrapper).setVisibility(View.VISIBLE);
+                    currentAction = position == 0 ? Action.START : (position == 1 ? Action.STOP : (position == 2 ? Action.PAUSE : Action.RESUME));
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+            actionSpinner.getBackground().setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
+        }
     }
 
     public void openDefaultDNSDialog(View v){
@@ -259,11 +288,31 @@ public class ConfigureActivity extends AppCompatActivity {
     @Override
     public void finish() {
         if(!cancelled && checkValidity() && !creatingShortcut){
-            final Intent resultIntent = new Intent();
-            final Bundle resultBundle = Helper.createBundle(dns1, dns2, dns1V6, dns2V6);
-            resultIntent.putExtra(Helper.EXTRA_BUNDLE, resultBundle);
-            resultIntent.putExtra(Helper.EXTRA_BLURB, ed_name.getText().toString());
-            setResult(RESULT_OK, resultIntent);
+            if(currentAction == Action.START){
+                final Intent resultIntent = new Intent();
+                final Bundle resultBundle = Helper.createBundle(dns1, dns2, dns1V6, dns2V6);
+                resultIntent.putExtra(Helper.EXTRA_BUNDLE, resultBundle);
+                resultIntent.putExtra(Helper.EXTRA_BLURB, ed_name.getText().toString());
+                setResult(RESULT_OK, resultIntent);
+            }else{
+                if(ed_name.getText().toString().equals("")){
+                    setResult(RESULT_CANCELED);
+                }else{
+                    final Intent resultIntent = new Intent();
+                    final Bundle resultBundle = new Bundle();
+                    System.out.println("ACTION: " + currentAction);
+                    if(currentAction == Action.PAUSE){
+                        resultBundle.putBoolean(Helper.BUNDLE_EXTRA_PAUSE_DNS,true);
+                    }else if(currentAction == Action.RESUME){
+                        resultBundle.putBoolean(Helper.BUNDLE_EXTRA_RESUME_DNS,true);
+                    }else if(currentAction == Action.STOP){
+                        resultBundle.putBoolean(Helper.BUNDLE_EXTRA_STOP_DNS,true);
+                    }
+                    resultIntent.putExtra(Helper.EXTRA_BUNDLE, resultBundle);
+                    resultIntent.putExtra(Helper.EXTRA_BLURB, ed_name.getText().toString());
+                    setResult(RESULT_OK, resultIntent);
+                }
+            }
         }else if(!cancelled && checkValidity() && creatingShortcut){
             Intent shortcutIntent = new Intent(getBaseContext(), ShortcutActivity.class);
             shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#2196F3"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#2196F3">
 
     <LinearLayout
         android:id="@+id/activity_main"
@@ -19,11 +19,16 @@
         tools:context=".MainActivity">
 
         <TextView
-            android:layout_width="match_parent"
             android:id="@+id/text"
             style="@style/Base.TextAppearance.AppCompat.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
-            android:textColor="#FFFFFF"
+            android:textColor="#FFFFFF" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <com.frostnerd.utils.design.MaterialEditText
@@ -32,6 +37,7 @@
             android:layout_height="wrap_content"
             app:allowCollapse="false"
             app:cardColor="#42A5F5"
+            android:layout_marginTop="15dp"
             app:cardStrokeColor="#2196F3"
             app:image="@drawable/ic_language"
             app:maxCharLength="50"
@@ -44,87 +50,95 @@
                 android:layout_height="wrap_content"
                 android:hint="Name"
                 android:text=""
-                android:textColor="#FFF" >
+                android:textColor="#FFF">
+
                 <requestFocus />
             </EditText>
         </com.frostnerd.utils.design.MaterialEditText>
 
-
-        <com.frostnerd.utils.design.MaterialEditText
-            android:id="@+id/met_dns1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:allowCollapse="false"
-            app:cardColor="#42A5F5"
-            app:cardStrokeColor="#42A5F5"
-            app:image="@drawable/ic_language"
-            app:revealDelay="0"
-            app:revealType="revealInstant">
-
-            <EditText
-                android:id="@+id/dns1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:digits="0123456789."
-                android:hint="DNS 1"
-                android:inputType="numberDecimal"
-                android:text="8.8.8.8"
-                android:textColor="#FFF" />
-        </com.frostnerd.utils.design.MaterialEditText>
-
-
-        <com.frostnerd.utils.design.MaterialEditText
-            android:id="@+id/met_dns2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:allowCollapse="false"
-            app:cardColor="#42A5F5"
-            app:cardStrokeColor="#2196F3"
-            app:image="@drawable/ic_language"
-            app:revealDelay="0"
-            app:revealType="revealInstant">
-
-            <EditText
-                android:id="@+id/dns2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:digits="0123456789."
-                android:hint="DNS 2"
-                android:inputType="numberDecimal"
-                android:text="8.8.4.4"
-                android:textColor="#FFF" />
-        </com.frostnerd.utils.design.MaterialEditText>
-
         <LinearLayout
-            android:id="@+id/default_dns_view"
             android:layout_width="match_parent"
+            android:id="@+id/wrapper"
             android:layout_height="wrap_content"
-            android:background="#42A5F5"
-            android:clickable="true"
-            android:onClick="openDefaultDNSDialog"
-            android:padding="10dp">
+            android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/default_dns_view_image"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:background="#42A5F5"
-                android:src="@drawable/ic_action_import" />
-
-            <View
-                android:layout_width="2dp"
-                android:layout_height="match_parent"
-                android:background="#FFF" />
-
-            <TextView
+            <com.frostnerd.utils.design.MaterialEditText
+                android:id="@+id/met_dns1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/default_dns"
-                android:textColor="#FFF" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:allowCollapse="false"
+                app:cardColor="#42A5F5"
+                app:cardStrokeColor="#42A5F5"
+                app:image="@drawable/ic_language"
+                app:revealDelay="0"
+                app:revealType="revealInstant">
+
+                <EditText
+                    android:id="@+id/dns1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="0123456789."
+                    android:hint="DNS 1"
+                    android:inputType="numberDecimal"
+                    android:text="8.8.8.8"
+                    android:textColor="#FFF" />
+            </com.frostnerd.utils.design.MaterialEditText>
+
+
+            <com.frostnerd.utils.design.MaterialEditText
+                android:id="@+id/met_dns2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:allowCollapse="false"
+                app:cardColor="#42A5F5"
+                app:cardStrokeColor="#2196F3"
+                app:image="@drawable/ic_language"
+                app:revealDelay="0"
+                app:revealType="revealInstant">
+
+                <EditText
+                    android:id="@+id/dns2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="0123456789."
+                    android:hint="DNS 2"
+                    android:inputType="numberDecimal"
+                    android:text="8.8.4.4"
+                    android:textColor="#FFF" />
+            </com.frostnerd.utils.design.MaterialEditText>
+
+            <LinearLayout
+                android:id="@+id/default_dns_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#42A5F5"
+                android:clickable="true"
+                android:onClick="openDefaultDNSDialog"
+                android:padding="10dp">
+
+                <ImageButton
+                    android:id="@+id/default_dns_view_image"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="#42A5F5"
+                    android:src="@drawable/ic_action_import" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="#FFF" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/default_dns"
+                    android:textColor="#FFF" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
 </ScrollView>
 

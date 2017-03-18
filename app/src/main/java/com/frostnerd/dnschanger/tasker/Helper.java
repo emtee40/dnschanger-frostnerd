@@ -15,7 +15,10 @@ public class Helper {
     public static final String BUNDLE_EXTRA_DNS1 = "com.frostnerd.dnschanger.dns1",
             BUNDLE_EXTRA_DNS2 = "com.frostnerd.dnschanger.dns2",
             BUNDLE_EXTRA_DNS1V6 = "com.frostnerd.dnschanger.dns1v6",
-            BUNDLE_EXTRA_DNS2V6 = "com.frostnerd.dnschanger.dns2v6";
+            BUNDLE_EXTRA_DNS2V6 = "com.frostnerd.dnschanger.dns2v6",
+            BUNDLE_EXTRA_STOP_DNS = "com.frostnerd.dnschanger.stopdns",
+            BUNDLE_EXTRA_PAUSE_DNS = "com.frostnerd.dnschanger.pausedns",
+            BUNDLE_EXTRA_RESUME_DNS = "com.frostnerd.dnschanger.resumedns";
 
     public static final String EXTRA_BUNDLE = "com.twofortyfouram.locale.intent.extra.BUNDLE";
     public static final String ACTION_FIRE_SETTINGS = "com.twofortyfouram.locale.intent.action.FIRE_SETTING";
@@ -40,6 +43,7 @@ public class Helper {
 
     public static boolean isBundleValid(final Bundle bundle) {
         if (null == bundle) return false;
+        if(bundle.containsKey(BUNDLE_EXTRA_STOP_DNS) || bundle.containsKey(BUNDLE_EXTRA_RESUME_DNS)|| bundle.containsKey(BUNDLE_EXTRA_PAUSE_DNS))return true;
         if (!bundle.containsKey(BUNDLE_EXTRA_DNS1) || !bundle.containsKey(BUNDLE_EXTRA_DNS2) ||
                 !bundle.containsKey(BUNDLE_EXTRA_DNS1V6) || !bundle.containsKey(BUNDLE_EXTRA_DNS2V6)) {
             return false;

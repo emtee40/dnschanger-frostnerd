@@ -79,4 +79,11 @@
     <string name="title_remove_usage_data">Remove access to usage data</string>
     <string name="summary_remove_usage_data">Access to usage data was granted. Click here to revoke that permission.</string>
     <string name="autopause_appselect_info_text">Each App marked will pause DNSChanger automatically when being in the front. This might be useful as for instance in the store apps can\'t be downloaded when running with a changed DNS.</string>
+
+    <string-array name="tasker_configure_actions">
+        <item>Start DNSChanger</item>
+        <item>Stop DNSChanger</item>
+        <item>Pause DNSChanger</item>
+        <item>Resume DNSChanger</item>
+    </string-array>
 </resources>

@@ -80,4 +80,11 @@
     <string name="title_remove_usage_data">Zugriff auf Nutzungsdaten deaktivieren</string>
     <string name="summary_remove_usage_data">Zugriff auf die Nutzungsdaten wurde gewährt. Klicke hier, um diese Berechtigung zurückzuziehen.</string>
     <string name="autopause_appselect_info_text">Jede hier markierte App pausiert DNSChanger automatisch, wenn sie sich im Vordergrund befindet. Diest ist beispielsweise sinnvoll, da im Store mit geändertem DNS keine Apps heruntergeladen werden können.</string>
+
+    <string-array name="tasker_configure_actions">
+        <item>DNSChanger starten</item>
+        <item>DNSChanger stoppen</item>
+        <item>DNSChanger pausieren</item>
+        <item>DNSChanger fortsetzen</item>
+    </string-array>
 </resources>
