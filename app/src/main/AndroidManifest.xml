@@ -49,7 +49,7 @@
         <activity
             android:name=".BackgroundVpnConfigureActivity"
             android:launchMode="singleInstance"
-            android:theme="@style/Theme.AppCompat.Dialog" />
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
 
         <activity
             android:name=".tasker.ConfigureActivity"
@@ -85,7 +85,7 @@
             android:exported="true"
             android:launchMode="singleTop"
             android:taskAffinity="com.frostnerd.dnschangerShortcut"
-            android:theme="@style/Theme.AppCompat.Dialog" />
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
         <activity
             android:name=".PinActivity"
             android:launchMode="singleTop"
