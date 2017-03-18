@@ -34,7 +34,7 @@ public class ErrorDialogActivity extends Activity {
                         "mailto","support@frostnerd.com", null));
                 String body = "\n\n\n\n\n\n\nSystem:\nApp version: " + BuildConfig.VERSION_CODE + " (" + BuildConfig.VERSION_NAME + ")\n"+
                         "Android: " + Build.VERSION.SDK_INT + " (" + Build.VERSION.RELEASE + " - " + Build.VERSION.CODENAME + ")\n\n\nStacktrace:\n" + crashReport;
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " - crash");
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, "support@frostnerd.com");
                 emailIntent.putExtra(Intent.EXTRA_TEXT, body);
                 startActivity(Intent.createChooser(emailIntent, getString(R.string.contact_developer)));
