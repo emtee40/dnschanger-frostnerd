@@ -96,6 +96,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ErrorDialogActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert">
+        </activity>
 
         <activity android:name=".AutoPauseAppSelectActivity" android:parentActivityName=".SettingsActivity"/>
     </application>

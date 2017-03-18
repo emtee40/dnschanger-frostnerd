@@ -16,6 +16,8 @@ import com.frostnerd.utils.preferences.Preferences;
 import com.frostnerd.utils.stats.AppTaskGetter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.InetSocketAddress;
 import java.nio.channels.DatagramChannel;
 import java.util.HashSet;
@@ -65,6 +67,18 @@ public class DNSVpnService extends VpnService {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+        }
+    };
+    private boolean wasCrashShownToUser = false;
+    private Thread.UncaughtExceptionHandler uncaughtExceptionHandler = new Thread.UncaughtExceptionHandler() {
+        @Override
+        public void uncaughtException(Thread t, Throwable e) {
+            if(!wasCrashShownToUser){
+                StringWriter sw = new StringWriter();
+                e.printStackTrace(new PrintWriter(sw));
+                startActivity(new Intent(DNSVpnService.this, ErrorDialogActivity.class).putExtra("stacktrace",sw.toString()));
+                wasCrashShownToUser = true;
+            }
         }
     };
 
@@ -139,6 +153,7 @@ public class DNSVpnService extends VpnService {
         super.onCreate();
         initNotification();
         registerReceiver(stateRequestReceiver, new IntentFilter(API.BROADCAST_SERVICE_STATE_REQUEST));
+        Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
     }
 
     public static void startWithSetDNS(final Context context, final String dns1, final String dns2, final String dns1v6, final String dns2v6){
@@ -189,6 +204,7 @@ public class DNSVpnService extends VpnService {
                     @Override
                     public void run() {
                         try {
+                            Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
                             initNotification();
                             if(notificationBuilder != null) notificationBuilder.setWhen(System.currentTimeMillis());
                             tunnelInterface = builder.setSession("DnsChanger").addAddress("192.168.0.1", 24).addDnsServer(dns1).addDnsServer(dns2)
