@@ -189,8 +189,8 @@ public class ConfigureActivity extends AppCompatActivity {
         ed_name.requestFocus();
         if(creatingShortcut) actionSpinner.setVisibility(View.GONE);
         else{
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.tasker_configure_actions, android.R.layout.simple_spinner_item);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.tasker_configure_actions, R.layout.tasker_action_spinner_item);
+            adapter.setDropDownViewResource(R.layout.tasker_action_spinner_dropdown_item);
             actionSpinner.setAdapter(adapter);
             actionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
