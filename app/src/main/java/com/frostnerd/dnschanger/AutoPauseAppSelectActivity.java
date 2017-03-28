@@ -93,7 +93,7 @@ public class AutoPauseAppSelectActivity extends AppCompatActivity {
             AppEntry entry;
             for (ApplicationInfo packageInfo : packages) {
                 entry = new AppEntry(getPackageManager(), packageInfo);
-                if (!entry.isSystemApp()) apps.add(entry);
+                apps.add(entry);
             }
             SortUtils.quickSort(apps);
         }
