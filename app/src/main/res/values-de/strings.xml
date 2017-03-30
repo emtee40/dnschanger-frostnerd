@@ -90,4 +90,5 @@
     <string name="error">Fehler</string>
     <string name="vpn_error_explain">Bei einigen Android Versionen (4.4, einige wenige 5.0 Versionen) und Custom ROMS wird die dieser App zu Grund liegende VPN-Struktur nicht unterstützt, was zu Abstürzen führt.\n\nDiese App ist unerwartet abgestürzt, was höchstwahrscheinlich darauf hindeutet, dass den Gerät diese App nicht unterstützt.\nSollte dies der Fall sein, könnest du mir helfen, indem du mir den Fehlerbericht sendest, aber leider funktioniert diese App auf deinem Gerät nicht.</string>
     <string name="send_crash_report">Absturzbericht senden</string>
+    <string name="deep_link_title">DNSChanger von Frostnerd</string>
 </resources>

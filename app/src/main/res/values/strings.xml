@@ -89,4 +89,5 @@
     <string name="error">Error</string>
     <string name="vpn_error_explain">"On some Android versions (4.4, some 5.0 versions) and custom ROMs the underlying VPN structure doesn't work and leads to crashes.\n\nThe App crashed unexpectedly which most likely indicates that your phone doesn't support how this app operates.\nIf that's the case you could help me by sending the crash report, but sadly this app doesn't work on your device. "</string>
     <string name="send_crash_report">Send crash report</string>
+    <string name="deep_link_title">DNSChanger by Frostnerd</string>
 </resources>

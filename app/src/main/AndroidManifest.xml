@@ -32,11 +32,26 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <meta-data android:name="android.max_aspect"
             android:value="2.1"/>
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop" >
+            <intent-filter android:label="@string/deep_link_title">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http"
+                    android:host="www.frostnerd.com"
+                    android:pathPrefix="/dnschanger" />
+                <data android:scheme="https"
+                    android:host="www.frostnerd.com"
+                    android:pathPrefix="/dnschanger" />
+                <data android:scheme="frostnerd"
+                      android:host="dnschanger" />
+            </intent-filter>
+        </activity>
         <service
             android:name=".DNSVpnService"
             android:enabled="true"
