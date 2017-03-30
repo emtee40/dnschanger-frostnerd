@@ -3,14 +3,22 @@ package com.frostnerd.dnschanger;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.VpnService;
+import android.os.Build;
 import android.os.Handler;
 import android.os.ParcelFileDescriptor;
+import android.service.quicksettings.TileService;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.NotificationCompat;
 
+import com.frostnerd.dnschanger.tiles.TilePause;
+import com.frostnerd.dnschanger.tiles.TileResume;
+import com.frostnerd.dnschanger.tiles.TileStart;
+import com.frostnerd.dnschanger.tiles.TileStop;
 import com.frostnerd.utils.general.StringUtils;
 import com.frostnerd.utils.preferences.Preferences;
 import com.frostnerd.utils.stats.AppTaskGetter;
@@ -96,6 +104,7 @@ public class DNSVpnService extends VpnService {
         notificationManager = null;
         notificationBuilder = null;
         super.onDestroy();
+        updateTiles(this);
     }
 
     private void broadcastServiceState(boolean vpnRunning){
@@ -180,6 +189,15 @@ public class DNSVpnService extends VpnService {
         }
     }
 
+    public static void updateTiles(Context context){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            TileService.requestListeningState(context, new ComponentName(context, TileStart.class));
+            TileService.requestListeningState(context, new ComponentName(context, TileResume.class));
+            TileService.requestListeningState(context, new ComponentName(context, TilePause.class));
+            TileService.requestListeningState(context, new ComponentName(context, TileStop.class));
+        }
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(intent!=null){
@@ -259,6 +277,7 @@ public class DNSVpnService extends VpnService {
                     thread.interrupt();
                 }
             }
+            updateTiles(this);
         }
         updateNotification();
         return START_STICKY;

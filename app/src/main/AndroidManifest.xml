@@ -122,6 +122,59 @@
         </activity>
 
         <activity android:name=".AutoPauseAppSelectActivity" android:parentActivityName=".SettingsActivity"/>
+
+        <service
+            android:name=".tiles.TileStart"
+            android:label="@string/tile_start"
+            android:icon="@drawable/ic_stat_resume"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.ACTIVE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".tiles.TileStop"
+            android:label="@string/tile_stop"
+            android:icon="@drawable/ic_stat_stop"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.ACTIVE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".tiles.TileResume"
+            android:label="@string/tile_resume"
+            android:icon="@drawable/ic_stat_resume"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.ACTIVE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".tiles.TilePause"
+            android:label="@string/tile_pause"
+            android:icon="@drawable/ic_stat_pause"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.ACTIVE_TILE"
+                android:value="true" />
+        </service>
+
     </application>
 
 </manifest>

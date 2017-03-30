@@ -1,0 +1,63 @@
+package com.frostnerd.dnschanger.tiles;
+
+import android.annotation.TargetApi;
+import android.content.Intent;
+import android.os.Build;
+import android.service.quicksettings.Tile;
+import android.widget.Toast;
+
+import com.frostnerd.dnschanger.API;
+import com.frostnerd.dnschanger.DNSVpnService;
+import com.frostnerd.dnschanger.PinActivity;
+import com.frostnerd.utils.preferences.Preferences;
+
+/**
+ * Copyright Daniel Wolf 2017
+ * All rights reserved.
+ * <p>
+ * development@frostnerd.com
+ */
+@TargetApi(Build.VERSION_CODES.N)
+public class TileStop extends android.service.quicksettings.TileService {
+
+    @Override
+    public void onTileAdded() {
+        super.onTileAdded();
+    }
+
+    @Override
+    public void onTileRemoved() {
+        super.onTileRemoved();
+    }
+
+    @Override
+    public void onStartListening() {
+        super.onStartListening();
+        Tile tile = getQsTile();
+        if(API.checkVPNServiceRunning(this)){
+            Toast.makeText(this, "INACTIVE", Toast.LENGTH_LONG).show();
+            tile.setState(Tile.STATE_INACTIVE);
+        }else{
+            Toast.makeText(this, "UNAVAILABLE", Toast.LENGTH_LONG).show();
+            tile.setState(Tile.STATE_UNAVAILABLE);
+        }
+        tile.updateTile();
+    }
+
+    @Override
+    public void onClick() {
+        super.onClick();
+        if(!API.checkVPNServiceRunning(this))return;
+        boolean pinProtected = Preferences.getBoolean(this, "pin_tile", false);
+        if(pinProtected){
+            startActivity(new Intent(this, PinActivity.class).putExtra("destroy", true).putExtra("redirectToService",true));
+        }else{
+            startService(new Intent(this, DNSVpnService.class).putExtra("destroy", true));
+        }
+    }
+
+    @Override
+    public void onStopListening() {
+        super.onStopListening();
+    }
+}

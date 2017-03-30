@@ -26,6 +26,7 @@ public class ConnectivityBackgroundService extends Service {
         public void onReceive(Context context, Intent intent) {
             boolean connected = !intent.hasExtra("noConnectivity");
             int type = intent.getIntExtra("networkType", -1);
+            DNSVpnService.updateTiles(context);
             if(!connected)return;
             if(type == ConnectivityManager.TYPE_WIFI && Preferences.getBoolean(ConnectivityBackgroundService.this,"setting_auto_wifi",false)){
                 startService();

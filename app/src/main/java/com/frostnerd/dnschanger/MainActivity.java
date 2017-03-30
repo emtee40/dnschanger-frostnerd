@@ -166,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DNSVpnService.updateTiles(this);
         startService(new Intent(this, ConnectivityBackgroundService.class));
         setContentView(R.layout.activity_main);
         met_dns1 = (MaterialEditText) findViewById(R.id.met_dns1);

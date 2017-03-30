@@ -45,9 +45,9 @@
 
         <CheckBoxPreference
             android:id="@+id/setting_auto_pause"
+            android:checked="false"
             android:defaultValue="false"
             android:enabled="false"
-            android:checked="false"
             android:key="auto_pause"
             android:summary="@string/summary_auto_pause"
             android:title="@string/title_auto_pause" />
@@ -78,6 +78,11 @@
             android:key="pin_notification"
             android:summary="@string/summary_pin_notification"
             android:title="@string/title_pin_notification" />
+        <CheckBoxPreference
+            android:dependency="setting_pin_enabled"
+            android:key="pin_tile"
+            android:summary="@string/summary_pin_tile"
+            android:title="@string/title_pin_tile" />
         <EditTextPreference
             android:dependency="setting_pin_enabled"
             android:key="pin_value"
