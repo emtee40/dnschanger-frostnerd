@@ -42,6 +42,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Copyright Daniel Wolf 2017
+ * All rights reserved.
+ * <p>
+ * development@frostnerd.com
+ */
 public class MainActivity extends AppCompatActivity {
     private Button startStopButton;
     private boolean vpnRunning, wasStartedWithTasker = false;

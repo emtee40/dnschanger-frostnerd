@@ -11,6 +11,12 @@ import android.widget.EditText;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.preferences.Preferences;
 
+/**
+ * Copyright Daniel Wolf 2017
+ * All rights reserved.
+ * <p>
+ * development@frostnerd.com
+ */
 public class PinActivity extends Activity {
     private MaterialEditText met;
     private EditText pinInput;
