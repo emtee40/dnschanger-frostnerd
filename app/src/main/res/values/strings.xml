@@ -60,7 +60,7 @@
     <string name="summary_pin">Enable pin protection</string>
     <string name="summary_pin_value">Current pin: [[x]] (Click to change)</string>
     <string name="title_pin_value">Change Pin</string>
-    <string name="settings_information_text">This app was made by Daniel Wolf (frostnerd.com)\n\nIt uses icon made by Google (Material icon pack - https://material.io/icons/)\n\n\nIf you are missing a feature, found a bug or just got a general request, feel free to contact me at support@frostnerd.com</string>
+    <string name="settings_information_text">This app was made by Daniel Wolf (frostnerd.com)\n\nIt uses icon made by Google (Material icon pack - https://material.io/icons/)\n\n\nIf you are missing a feature, found a bug or just got a general request, feel free to contact me at support@frostnerd.com\nThe Sourcecode to this app can be viewed at https://git.frostnerd.com/PublicAndroidApps/DnsChanger</string>
     <string name="create_tasker_action">Creating tasker Action</string>
     <string name="show">Show</string>
     <string name="android4_4_warning">Warning: your Android version (4.4) is known to have problems with VPN connections. If this app crashes or just doesn\'t work it\'s most likely your system and not the fault of this app.\nI\'m sorry for the inconvenience.</string>

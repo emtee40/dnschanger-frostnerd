@@ -61,7 +61,7 @@
     <string name="summary_pin">Pin-schutz aktivieren</string>
     <string name="summary_pin_value">Aktueller Pin: [[x]] (Zum Ändern klicken)</string>
     <string name="title_pin_value">Pin ändern</string>
-    <string name="settings_information_text">Diese App wurde von Daniel Wolf erstellt (frostnerd.com)\n\nSie benutzt Icons, welche von Google erstellt wurden (Material icon pack - https://material.io/icons/)\n\n\nWenn du ein fehlendes Feature entdeckst, einen Bug findest oder eine generelle Frage hast, kontaktiere mich unter support@frostnerd.com.</string>
+    <string name="settings_information_text">Diese App wurde von Daniel Wolf erstellt (frostnerd.com)\n\nSie benutzt Icons, welche von Google erstellt wurden (Material icon pack - https://material.io/icons/)\n\n\nWenn du ein fehlendes Feature entdeckst, einen Bug findest oder eine generelle Frage hast, kontaktiere mich unter support@frostnerd.com.\nDer Quellcode zu dieser App ist unter https://git.frostnerd.com/PublicAndroidApps/DnsChanger einsehbar.</string>
     <string name="create_tasker_action">Erstelle eine Tasker Aktion</string>
     <string name="show">Anzeigen</string>
     <string name="android4_4_warning">Achtung: deine Android Version (4.4) ist dafür bekannt, Fehler mit VPN zu haben. Sollte diese App abstürzen oder nicht funktionieren, liegt dies höchstwahrscheinlich am System und nicht an dieser App.\n</string>
