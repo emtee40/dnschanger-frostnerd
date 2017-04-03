@@ -254,7 +254,7 @@ public class DNSVpnService extends VpnService {
                             } catch (InterruptedException e2) {
 
                             }
-                        } catch (IOException e) {
+                        } catch (Exception  e) {
                             e.printStackTrace();
                         } finally {
                             isRunning = false;
