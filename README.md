@@ -9,7 +9,7 @@ Additionally, when using part of my code please inform me AND inform your users 
 Have a look at the wiki for this app: https://git.frostnerd.com/PublicAndroidApps/DnsChanger/wikis/home<br><br>
 
 
-Feel free to contribute to this project, it's completely free and I'd be happy to fix issues or implement requests.<br><br>
+Feel free to contribute to this project, it's completely free to sign up and I'd be happy to fix issues or implement requests.<br><br>
 
 
 © Daniel Wolf 2017
