@@ -44,7 +44,6 @@ public class TilePause extends android.service.quicksettings.TileService {
     @Override
     public void onClick() {
         super.onClick();
-        System.out.println("RUNNING: " +API.checkVPNServiceRunning(this));
         if(!API.checkVPNServiceRunning(this))return;
         boolean pinProtected = Preferences.getBoolean(this, "pin_tile", false);
         if(pinProtected){

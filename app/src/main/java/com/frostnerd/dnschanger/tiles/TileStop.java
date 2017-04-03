@@ -35,10 +35,8 @@ public class TileStop extends android.service.quicksettings.TileService {
         super.onStartListening();
         Tile tile = getQsTile();
         if(API.checkVPNServiceRunning(this)){
-            Toast.makeText(this, "INACTIVE", Toast.LENGTH_LONG).show();
             tile.setState(Tile.STATE_INACTIVE);
         }else{
-            Toast.makeText(this, "UNAVAILABLE", Toast.LENGTH_LONG).show();
             tile.setState(Tile.STATE_UNAVAILABLE);
         }
         tile.updateTile();
