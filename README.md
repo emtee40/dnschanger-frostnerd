@@ -5,6 +5,7 @@ This is the source code for my app DNS Changer, which can be found here: https:/
 You may use parts of the source code but are NOT allowed to copy my source code as a whole or in greater parts.<br>
 You are NOT allowed to present parts of my work as your own without proper permission from me.<br>
 You are NOT allowed to use parts of this commercially without proper permission from me.<br>
+You MUST give attribution to me when using parts of my code (Visually to possible users and in the Sourcecode).<br>
 Additionally, when using part of my code please inform me that you want to use parts of my code AND inform your users that it contains work done by me.<br><br>
 
 
