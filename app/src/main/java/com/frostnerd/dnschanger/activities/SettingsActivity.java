@@ -1,20 +1,36 @@
-package com.frostnerd.dnschanger;
+package com.frostnerd.dnschanger.activities;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
-import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 
+import com.frostnerd.dnschanger.API;
+import com.frostnerd.dnschanger.BuildConfig;
+import com.frostnerd.dnschanger.services.DNSVpnService;
+import com.frostnerd.dnschanger.R;
+import com.frostnerd.utils.design.FileChooserDialog;
 import com.frostnerd.utils.preferences.AppCompatPreferenceActivity;
 import com.frostnerd.utils.preferences.Preferences;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -137,6 +153,133 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
         });
+        findPreference("export_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                importSettings = false;
+                exportSettings = false;
+                if(checkWriteReadPermission())exportSettings();
+                else exportSettings = true;
+                return true;
+            }
+        });
+        findPreference("import_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                importSettings = false;
+                exportSettings = false;
+                if(checkWriteReadPermission())importSettings();
+                else exportSettings = true;
+                return true;
+            }
+        });
+    }
+
+    private final int REQUEST_EXTERNAL_STORAGE = 815;
+    private boolean exportSettings, importSettings;
+    private boolean checkWriteReadPermission(){
+        if(!canReadExternalStorage(this) || !canWriteExternalStorage(this)){
+            new AlertDialog.Builder(this).setTitle(R.string.title_import_export).setMessage(R.string.explain_storage_permission).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    ActivityCompat.requestPermissions(SettingsActivity.this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            REQUEST_EXTERNAL_STORAGE);
+                }
+            }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            }).show();
+            return false;
+        }
+        return true;
+    }
+
+    private void importSettings(){
+        new FileChooserDialog(SettingsActivity.this, false, FileChooserDialog.SelectionMode.FILE).setFileListener(new FileChooserDialog.FileSelectedListener() {
+            @Override
+            public void fileSelected(File file, FileChooserDialog.SelectionMode selectionMode) {
+                SettingsImportActivity.importFromFile(SettingsActivity.this, file);
+                finish();
+            }
+        }).showDialog();
+    }
+
+    private void exportSettings(){
+        FileChooserDialog dialog = new FileChooserDialog(SettingsActivity.this, true, FileChooserDialog.SelectionMode.DIR);
+        dialog.setShowFiles(false);
+        dialog.setShowDirs(true);
+        dialog.setNavigateToLastPath(false);
+        dialog.setFileListener(new FileChooserDialog.FileSelectedListener() {
+            @Override
+            public void fileSelected(File file, FileChooserDialog.SelectionMode selectionMode) {
+                Map<String,Object> all = Preferences.getAll(SettingsActivity.this);
+                final File f = new File(file, "dnschanger.settings");
+                if(f.exists())f.delete();
+                FileWriter fw = null;
+                BufferedWriter writer = null;
+                try{
+                    fw = new FileWriter(f);
+                    writer = new BufferedWriter(fw);
+                    writer.write("[DNSChanger Settings - " + BuildConfig.VERSION_NAME + "]\n");
+                    writer.write("[Developer: Frostnerd.com]\n");
+                    for(String s: all.keySet()) writer.write(s + "<->" + all.get(s) + "\n");
+                    writer.flush();
+                    new AlertDialog.Builder(SettingsActivity.this).setMessage(R.string.message_settings_exported).setCancelable(true).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    }).setNeutralButton(R.string.open_share_file, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+                            intentShareFile.setType("text/plain");
+                            intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+ f.getPath()));
+                            intentShareFile.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.settings));
+                            intentShareFile.putExtra(Intent.EXTRA_TEXT, getString(R.string.settings));
+
+                            startActivity(Intent.createChooser(intentShareFile, getString(R.string.open_share_file)));
+                        }
+                    }).setTitle(R.string.success).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }finally {
+                    try {
+                        if(writer != null)writer.close();
+                        if(fw != null)fw.close();
+                    }catch (IOException e){
+
+                    }
+                }
+            }
+        });
+        dialog.showDialog();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == REQUEST_EXTERNAL_STORAGE){
+            if(importSettings && canReadExternalStorage(this)){
+                importSettings();
+            }else if(exportSettings && canReadExternalStorage(this) && canWriteExternalStorage(this)){
+                exportSettings();
+            }
+            importSettings = false;
+            exportSettings = false;
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    public static boolean canWriteExternalStorage(Context context){
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static boolean canReadExternalStorage(Context context){
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override

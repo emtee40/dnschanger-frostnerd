@@ -4,8 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.VpnService;
-import android.widget.Toast;
 
+import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
+import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
+import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.utils.preferences.Preferences;
 
 /**

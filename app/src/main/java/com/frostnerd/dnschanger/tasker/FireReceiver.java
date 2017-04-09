@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.frostnerd.dnschanger.BackgroundVpnConfigureActivity;
-import com.frostnerd.dnschanger.DNSVpnService;
+import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
+import com.frostnerd.dnschanger.services.DNSVpnService;
 
 /**
  * Copyright Daniel Wolf 2017

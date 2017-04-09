@@ -1,4 +1,4 @@
-package com.frostnerd.dnschanger;
+package com.frostnerd.dnschanger.services;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -12,9 +12,12 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.ParcelFileDescriptor;
 import android.service.quicksettings.TileService;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.NotificationCompat;
 
+import com.frostnerd.dnschanger.API;
+import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
+import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.tiles.TilePause;
 import com.frostnerd.dnschanger.tiles.TileResume;
 import com.frostnerd.dnschanger.tiles.TileStart;

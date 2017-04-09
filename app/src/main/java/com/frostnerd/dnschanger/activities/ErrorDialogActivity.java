@@ -1,4 +1,4 @@
-package com.frostnerd.dnschanger;
+package com.frostnerd.dnschanger.activities;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -8,6 +8,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+
+import com.frostnerd.dnschanger.BuildConfig;
+import com.frostnerd.dnschanger.R;
 
 /**
  * Copyright Daniel Wolf 2017

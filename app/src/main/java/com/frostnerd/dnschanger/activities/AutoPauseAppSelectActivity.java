@@ -1,4 +1,4 @@
-package com.frostnerd.dnschanger;
+package com.frostnerd.dnschanger.activities;
 
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.frostnerd.dnschanger.R;
 import com.frostnerd.utils.general.SortUtils;
 import com.frostnerd.utils.preferences.Preferences;
 

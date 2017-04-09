@@ -1,4 +1,4 @@
-package com.frostnerd.dnschanger;
+package com.frostnerd.dnschanger.activities;
 
 import android.content.Intent;
 import android.os.Bundle;

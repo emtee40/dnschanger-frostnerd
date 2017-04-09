@@ -25,7 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.dnschanger.ShortcutActivity;
+import com.frostnerd.dnschanger.activities.ShortcutActivity;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.preferences.Preferences;

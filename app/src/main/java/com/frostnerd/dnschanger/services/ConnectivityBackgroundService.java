@@ -1,6 +1,5 @@
-package com.frostnerd.dnschanger;
+package com.frostnerd.dnschanger.services;
 
-import android.app.Activity;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,6 +11,7 @@ import android.net.VpnService;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
 import com.frostnerd.utils.preferences.Preferences;
 
 /**

@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.Build;
 
+import com.frostnerd.dnschanger.services.DNSVpnService;
+
 import java.util.List;
 
 /**

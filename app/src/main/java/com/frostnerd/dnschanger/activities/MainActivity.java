@@ -1,11 +1,10 @@
-package com.frostnerd.dnschanger;
+package com.frostnerd.dnschanger.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.net.Uri;
 import android.net.VpnService;
@@ -31,6 +30,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.frostnerd.dnschanger.API;
+import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
+import com.frostnerd.dnschanger.services.DNSVpnService;
+import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.tasker.ConfigureActivity;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.general.Utils;

@@ -1,4 +1,4 @@
-package com.frostnerd.dnschanger;
+package com.frostnerd.dnschanger.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
 
+import com.frostnerd.dnschanger.services.DNSVpnService;
+import com.frostnerd.dnschanger.R;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.preferences.Preferences;
 
@@ -29,6 +31,7 @@ public class PinActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Preferences.setDebug(true);
         final boolean main = getIntent() != null && !getIntent().hasExtra("redirectToService");
         if(!Preferences.getBoolean(this, "setting_pin_enabled", false)){
             continueToFollowing(main);

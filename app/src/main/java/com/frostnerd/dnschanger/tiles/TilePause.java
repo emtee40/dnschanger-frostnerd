@@ -6,8 +6,8 @@ import android.os.Build;
 import android.service.quicksettings.Tile;
 
 import com.frostnerd.dnschanger.API;
-import com.frostnerd.dnschanger.DNSVpnService;
-import com.frostnerd.dnschanger.PinActivity;
+import com.frostnerd.dnschanger.services.DNSVpnService;
+import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.utils.preferences.Preferences;
 
 /**
