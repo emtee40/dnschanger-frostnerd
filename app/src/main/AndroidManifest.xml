@@ -9,6 +9,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <!--<uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />-->
@@ -26,34 +30,40 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher"
         android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <meta-data android:name="android.max_aspect"
-            android:value="2.1"/>
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
         <activity
-            android:name=".MainActivity"
-            android:launchMode="singleTop" >
+            android:name=".activities.MainActivity"
+            android:launchMode="singleTop">
             <intent-filter android:label="@string/deep_link_title">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http"
+
+                <data
                     android:host="www.frostnerd.com"
-                    android:pathPrefix="/dnschanger" />
-                <data android:scheme="https"
+                    android:pathPrefix="/dnschanger"
+                    android:scheme="http" />
+                <data
                     android:host="www.frostnerd.com"
-                    android:pathPrefix="/dnschanger" />
-                <data android:scheme="frostnerd"
-                      android:host="dnschanger" />
+                    android:pathPrefix="/dnschanger"
+                    android:scheme="https" />
+                <data
+                    android:host="dnschanger"
+                    android:scheme="frostnerd" />
             </intent-filter>
         </activity>
         <service
-            android:name=".DNSVpnService"
+            android:name=".services.DNSVpnService"
             android:enabled="true"
             android:permission="android.permission.BIND_VPN_SERVICE">
             <intent-filter>
@@ -62,11 +72,11 @@
         </service>
 
         <activity
-            android:name=".SettingsActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".activities.SettingsActivity"
+            android:parentActivityName=".activities.MainActivity" />
 
         <activity
-            android:name=".BackgroundVpnConfigureActivity"
+            android:name=".activities.BackgroundVpnConfigureActivity"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
 
@@ -97,16 +107,16 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".ConnectivityBackgroundService" />
+        <service android:name=".services.ConnectivityBackgroundService" />
 
         <activity
-            android:name=".ShortcutActivity"
+            android:name=".activities.ShortcutActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:taskAffinity="com.frostnerd.dnschangerShortcut"
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
         <activity
-            android:name=".PinActivity"
+            android:name=".activities.PinActivity"
             android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert">
             <intent-filter>
@@ -116,17 +126,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ErrorDialogActivity"
+            android:name=".activities.ErrorDialogActivity"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert">
-        </activity>
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert"></activity>
 
-        <activity android:name=".AutoPauseAppSelectActivity" android:parentActivityName=".SettingsActivity"/>
+        <activity
+            android:name=".activities.AutoPauseAppSelectActivity"
+            android:parentActivityName=".activities.SettingsActivity" />
 
         <service
             android:name=".tiles.TileStart"
-            android:label="@string/tile_start"
             android:icon="@drawable/ic_stat_resume"
+            android:label="@string/tile_start"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
@@ -138,8 +149,8 @@
 
         <service
             android:name=".tiles.TileStop"
-            android:label="@string/tile_stop"
             android:icon="@drawable/ic_stat_stop"
+            android:label="@string/tile_stop"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
@@ -151,8 +162,8 @@
 
         <service
             android:name=".tiles.TileResume"
-            android:label="@string/tile_resume"
             android:icon="@drawable/ic_stat_resume"
+            android:label="@string/tile_resume"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
@@ -164,8 +175,8 @@
 
         <service
             android:name=".tiles.TilePause"
-            android:label="@string/tile_pause"
             android:icon="@drawable/ic_stat_pause"
+            android:label="@string/tile_pause"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
@@ -175,6 +186,26 @@
                 android:value="true" />
         </service>
 
+        <activity
+            android:name=".activities.SettingsImportActivity"
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert">
+            <intent-filter android:priority="50">
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.SENDTO" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="*/*"/>
+                <data android:pathPattern=".*\\.settings" />
+                <data android:pathPattern=".*\\..*\\.settings" />
+                <data android:pathPattern=".*\\..*\\..*\\.settings" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.settings" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.settings" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.settings" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.settings" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

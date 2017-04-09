@@ -108,4 +108,8 @@
     <string name="title_import_settings">Einstellungen importieren</string>
     <string name="summary_export_settings">Exporiert die Einstellungen in eine Datei</string>
     <string name="summary_import_settings">Importiert die Einstellungen aus einer Datei</string>
+    <string name="explain_storage_permission">Um die Einstellungsdatei zu schreiben/lesen, braucht DNSChanger Zugriff auf deinen Speicher. Bitte gewähre der App im nächsten Fenster dieses Recht.</string>
+    <string name="message_settings_exported">Die Einstellungen wurden erfolgreich exportiert.</string>
+    <string name="open_share_file">Datei öffnen/teilen</string>
+    <string name="success">Operation erfolgreich</string>
 </resources>

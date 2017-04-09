@@ -107,4 +107,8 @@
     <string name="title_import_settings">Import settings</string>
     <string name="summary_export_settings">Export the settings into a file.</string>
     <string name="summary_import_settings">Imports the settings from a file</string>
+    <string name="explain_storage_permission">To read/write the exported settings file, DNSChanger needs access to your storage. Please grant it these rights in the next dialog.</string>
+    <string name="message_settings_exported">Settings have been exported successfully.</string>
+    <string name="open_share_file">Open/share file</string>
+    <string name="success">Success</string>
 </resources>
