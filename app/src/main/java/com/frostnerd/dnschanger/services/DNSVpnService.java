@@ -235,7 +235,7 @@ public class DNSVpnService extends VpnService {
                             Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
                             initNotification();
                             if(notificationBuilder != null) notificationBuilder.setWhen(System.currentTimeMillis());
-                            tunnelInterface = builder.setSession("DnsChanger").addAddress("192.168.0.1", 24).addAddress("fda5:1fed:410b:bbd6:1fad:2abc::1",64).addDnsServer(dns1).addDnsServer(dns2)
+                            tunnelInterface = builder.setSession("DnsChanger").addAddress("192.168.255.233", 16).addAddress("fda5:1fed:410b:bbd6:1fad:2abc::1",64).addDnsServer(dns1).addDnsServer(dns2)
                                     .addDnsServer(dns1_v6).addDnsServer(dns2_v6).establish();
                             DatagramChannel tunnel = DatagramChannel.open();
                             tunnel.connect(new InetSocketAddress("127.0.0.1", 8087));
