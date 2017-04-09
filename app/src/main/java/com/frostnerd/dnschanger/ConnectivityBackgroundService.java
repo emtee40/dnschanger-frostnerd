@@ -35,6 +35,8 @@ public class ConnectivityBackgroundService extends Service {
                 startService();
             }else if(type == ConnectivityManager.TYPE_MOBILE && Preferences.getBoolean(ConnectivityBackgroundService.this,"setting_auto_mobile",false)){
                 startService();
+            }else if(Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_disable_netchange", false)){
+                startService(new Intent(ConnectivityBackgroundService.this, DNSVpnService.class).putExtra("destroy",true));
             }
         }
     };

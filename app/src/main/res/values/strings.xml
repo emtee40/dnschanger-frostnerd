@@ -96,4 +96,6 @@
     <string name="tile_stop">Stop DNSChanger</string>
     <string name="tile_pause">Pause DNSChanger</string>
     <string name="tile_resume">Resume DNSChanger</string>
+    <string name="summary_disable_network_change">Automatically disable when changing network (e.g Wifi to 3G). DNSChanger will activate again if set so in the previous settings.</string>
+    <string name="title_disable_network_change">Disable on network change</string>
 </resources>

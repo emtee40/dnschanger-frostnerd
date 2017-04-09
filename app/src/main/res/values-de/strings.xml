@@ -97,4 +97,6 @@
     <string name="tile_stop">DNSChanger stoppen</string>
     <string name="tile_pause">DNSChanger pausieren</string>
     <string name="tile_resume">DNSChanger fortsetzen</string>
+    <string name="title_disable_network_change">Bei Netzwechsel deaktivierne</string>
+    <string name="summary_disable_network_change">DNSChanger automatisch stoppen, wenn das Netz gewechselt wird (z.B. von WLAN zu 3G). DNSChanger startet erneut, wenn es in den vorherigen Einstellungen so gesetzt wurde.</string>
 </resources>
