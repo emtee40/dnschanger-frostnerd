@@ -104,6 +104,11 @@
             android:key="contact_dev"
             android:title="@string/contact_developer" />
 
+        <Preference
+            android:key="share_app"
+            android:summary="@string/summary_share_app"
+            android:title="@string/title_share_app" />
+
         <Preference android:key="placeholder_version" />
     </PreferenceCategory>
 </PreferenceScreen>

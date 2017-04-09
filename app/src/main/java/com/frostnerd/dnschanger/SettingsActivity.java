@@ -126,6 +126,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
         findPreference("autopause_appselect").setTitle(getString(R.string.title_autopause_apps).
                 replace("[[count]]", Preferences.getInteger(this, "autopause_apps_count",0) + ""));
+        findPreference("share_app").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.app_share_text));
+                startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_using)));
+                return true;
+            }
+        });
     }
 
     @Override
