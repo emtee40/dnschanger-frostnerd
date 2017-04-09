@@ -40,6 +40,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         findPreference("show_used_dns").setOnPreferenceChangeListener(changeListener);
         findPreference("setting_auto_mobile").setOnPreferenceChangeListener(changeListener);
         findPreference("setting_pin_enabled").setOnPreferenceChangeListener(changeListener);
+        findPreference("setting_disable_netchange").setOnPreferenceChangeListener(changeListener);
         findPreference("pin_value").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
