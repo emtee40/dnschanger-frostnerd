@@ -11,9 +11,9 @@
     <string name="information">Information</string>
     <string name="settings">Settings</string>
     <string name="title_notification">Notification</string>
-    <string name="summary_notification">Show a notification when the VPN is running</string>
+    <string name="summary_notification">Show a notification when DNSChanger is running</string>
     <string name="title_start_boot">Start on boot</string>
-    <string name="summary_start_boot">Automatically start the VPN when your phone is turned on</string>
+    <string name="summary_start_boot">Automatically start DNSChanger when your phone is turned on</string>
     <string name="subtitle_configuring">Configuring [[x]]</string>
     <string name="menu_title_configure_v4">Configure IPv4</string>
     <string name="menu_title_configure_v6">Configure IPv6</string>
@@ -43,7 +43,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="contact_developer">Contact developer</string>
-    <string name="warning_started_using_tasker">The VPN was started using Tasker. Stopping it may interrupt with it. Starting it not using tasker does not apply the DNS Servers configured using Tasker. Stop anyway?</string>
+    <string name="warning_started_using_tasker">DNSChanger was started using Tasker. Stopping it may interrupt with it. Starting it not using tasker does not apply the DNS Servers configured using Tasker. Stop anyway?</string>
     <string name="app_supports_tasker_text">This app supports Tasker and can be used as an action plugin to automate DNS usage.</string>
     <string name="tasker_support">Tasker support</string>
     <string name="create_shortcut">Create a shortcut</string>
