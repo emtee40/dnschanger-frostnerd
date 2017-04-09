@@ -30,7 +30,8 @@ public class ConnectivityBackgroundService extends Service {
             boolean connected = !intent.hasExtra("noConnectivity");
             int type = intent.getIntExtra("networkType", -1);
             DNSVpnService.updateTiles(context);
-            if(!connected)return;
+            if(!connected && Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_disable_netchange", false)) startService(new Intent(ConnectivityBackgroundService.this, DNSVpnService.class).putExtra("destroy",true));
+            if(!connected || type == ConnectivityManager.TYPE_BLUETOOTH || type == ConnectivityManager.TYPE_DUMMY || type == ConnectivityManager.TYPE_VPN)return;
             if(type == ConnectivityManager.TYPE_WIFI && Preferences.getBoolean(ConnectivityBackgroundService.this,"setting_auto_wifi",false)){
                 startService();
             }else if(type == ConnectivityManager.TYPE_MOBILE && Preferences.getBoolean(ConnectivityBackgroundService.this,"setting_auto_mobile",false)){
