@@ -74,7 +74,7 @@
     <string name="title_pin_app">Protect App</string>
     <string name="summary_pin_app">Ask for the pin when starting the app</string>
     <string name="title_category_pin">Pin protection</string>
-    <string name="summary_version">Version [[version]] ([[code]])\n\n© Daniel Wolf 2017</string>
+    <string name="summary_version">Version [[version]] ([[code]])\n\n© Daniel Wolf 2017\nAll rights reserved</string>
     <string name="usage_stats_info_text">To automatically pause DNSChanger when a certain app is in the front, this app needs access to usage data. \n\nIn the next window, please grant DNSChanger access to this data or else you won\'t be able to use this setting.\n\n\nNo data execept for currently running applications is requested. No data is saved or transmitted.\nThe source code is publicy available at https://git.frostnerd.com/PublicAndroidApps/DnsChanger if you want to make sure yourself.</string>
     <string name="title_remove_usage_data">Remove access to usage data</string>
     <string name="summary_remove_usage_data">Access to usage data was granted. Click here to revoke that permission.</string>
