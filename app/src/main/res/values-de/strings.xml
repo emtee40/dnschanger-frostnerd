@@ -103,4 +103,9 @@
     <string name="summary_share_app">Das Teilen diese App mit deinen Freunden oder anderen Personen würde sehr dazu beitragen, diese App bekannter zu machen.</string>
     <string name="app_share_text">Hallo, guck dir mal diese App zum Ändern der DNS Server auf deinem Handy an: https://play.google.com/store/apps/details?id=com.frostnerd.dnschanger</string>
     <string name="share_using">Teilen über</string>
+    <string name="title_import_export">Import / Export</string>
+    <string name="title_export_settings">Einstellungen exportieren</string>
+    <string name="title_import_settings">Einstellungen importieren</string>
+    <string name="summary_export_settings">Exporiert die Einstellungen in eine Datei</string>
+    <string name="summary_import_settings">Importiert die Einstellungen aus einer Datei</string>
 </resources>

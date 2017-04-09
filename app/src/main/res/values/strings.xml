@@ -102,4 +102,9 @@
     <string name="summary_share_app">Sharing this app with your friends or other people would really help alot spreading this app.</string>
     <string name="app_share_text">Hey, have a look at this DNS changing app for android. You can download it here: https://play.google.com/store/apps/details?id=com.frostnerd.dnschanger</string>
     <string name="share_using">Share using</string>
+    <string name="title_import_export">Import / Export</string>
+    <string name="title_export_settings">Export settings</string>
+    <string name="title_import_settings">Import settings</string>
+    <string name="summary_export_settings">Export the settings into a file.</string>
+    <string name="summary_import_settings">Imports the settings from a file</string>
 </resources>
