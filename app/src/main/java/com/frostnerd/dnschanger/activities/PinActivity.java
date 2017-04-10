@@ -31,7 +31,6 @@ public class PinActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Preferences.setDebug(true);
         final boolean main = getIntent() != null && !getIntent().hasExtra("redirectToService");
         if(!Preferences.getBoolean(this, "setting_pin_enabled", false)){
             continueToFollowing(main);
