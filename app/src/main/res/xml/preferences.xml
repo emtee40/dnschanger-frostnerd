@@ -120,6 +120,11 @@
             android:summary="@string/summary_share_app"
             android:title="@string/title_share_app" />
 
+        <SwitchPreference
+            android:key="device_admin"
+            android:summary="@string/summary_device_admin_activate"
+            android:title="@string/title_device_admin" />
+
         <Preference android:key="placeholder_version" />
     </PreferenceCategory>
 </PreferenceScreen>

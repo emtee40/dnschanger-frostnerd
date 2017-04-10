@@ -1,6 +1,9 @@
 package com.frostnerd.dnschanger.activities;
 
 import android.Manifest;
+import android.app.admin.DeviceAdminReceiver;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +14,7 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
+import android.preference.SwitchPreference;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -20,6 +24,7 @@ import android.view.MenuItem;
 
 import com.frostnerd.dnschanger.API;
 import com.frostnerd.dnschanger.BuildConfig;
+import com.frostnerd.dnschanger.receivers.AdminReceiver;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.utils.design.FileChooserDialog;
@@ -45,11 +50,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     private boolean usageRevokeHidden = false;
     private PreferenceCategory automatingCategory;
     private Preference removeUsagePreference;
+    private DevicePolicyManager devicePolicyManager;
+    private ComponentName deviceAdmin;
+    private final int REQUEST_EXTERNAL_STORAGE = 815,REQUEST_CODE_ENABLE_ADMIN = 1;
+    private boolean exportSettings, importSettings;
+    private final int USAGE_STATS_REQUEST = 13, CHOOSE_AUTOPAUSEAPPS_REQUEST = 14;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
+        devicePolicyManager = (DevicePolicyManager)getSystemService(DEVICE_POLICY_SERVICE);
+        deviceAdmin = new ComponentName(this, AdminReceiver.class);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         findPreference("setting_start_boot").setOnPreferenceChangeListener(changeListener);
         findPreference("setting_show_notification").setOnPreferenceChangeListener(changeListener);
@@ -173,10 +185,56 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
         });
+        if(devicePolicyManager.isAdminActive(deviceAdmin)) ((SwitchPreference) findPreference("device_admin")).setChecked(true);
+        else{
+            ((SwitchPreference) findPreference("device_admin")).setChecked(false);
+            Preferences.put(this,"device_admin", false);
+        }
+        findPreference("device_admin").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                boolean value = (Boolean)newValue;
+                if(value && !devicePolicyManager.isAdminActive(deviceAdmin)){
+                    new AlertDialog.Builder(SettingsActivity.this).setTitle(R.string.information).setMessage(R.string.set_device_admin_info).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+                            intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, deviceAdmin);
+                            intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,
+                                    getString(R.string.device_admin_description));
+                            startActivityForResult(intent, REQUEST_CODE_ENABLE_ADMIN);
+                            dialog.cancel();
+                        }
+                    }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    }).show();
+                    return false;
+                }else if(!value){
+                    Preferences.put(SettingsActivity.this,"device_admin", false);
+                    devicePolicyManager.removeActiveAdmin(deviceAdmin);
+                }else{
+                    Preferences.put(SettingsActivity.this,"device_admin", true);
+                }
+                return true;
+            }
+        });
     }
 
-    private final int REQUEST_EXTERNAL_STORAGE = 815;
-    private boolean exportSettings, importSettings;
+
+    private Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+            Preferences.put(SettingsActivity.this,preference.getKey(),newValue);
+            String key = preference.getKey();
+            if((key.equalsIgnoreCase("setting_show_notification") || key.equalsIgnoreCase("show_used_dns") ||
+                    key.equalsIgnoreCase("auto_pause")) && API.checkVPNServiceRunning(SettingsActivity.this))startService(new Intent(SettingsActivity.this, DNSVpnService.class));
+            return true;
+        }
+    };
+
     private boolean checkWriteReadPermission(){
         if(!canReadExternalStorage(this) || !canWriteExternalStorage(this)){
             new AlertDialog.Builder(this).setTitle(R.string.title_import_export).setMessage(R.string.explain_storage_permission).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -260,6 +318,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         dialog.showDialog();
     }
 
+    public static boolean canWriteExternalStorage(Context context){
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static boolean canReadExternalStorage(Context context){
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(devicePolicyManager.isAdminActive(deviceAdmin)){
+            ((SwitchPreference)findPreference("device_admin")).setChecked(true);
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode == REQUEST_EXTERNAL_STORAGE){
@@ -274,14 +348,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    public static boolean canWriteExternalStorage(Context context){
-        return ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    public static boolean canReadExternalStorage(Context context){
-        return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == android.R.id.home){
@@ -290,19 +356,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    private Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object newValue) {
-            Preferences.put(SettingsActivity.this,preference.getKey(),newValue);
-            String key = preference.getKey();
-            if((key.equalsIgnoreCase("setting_show_notification") || key.equalsIgnoreCase("show_used_dns") ||
-                    key.equalsIgnoreCase("auto_pause")) && API.checkVPNServiceRunning(SettingsActivity.this))startService(new Intent(SettingsActivity.this, DNSVpnService.class));
-            return true;
-        }
-    };
-
-    private final int USAGE_STATS_REQUEST = 13, CHOOSE_AUTOPAUSEAPPS_REQUEST = 14;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -326,6 +379,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             findPreference("autopause_appselect").setTitle(getString(R.string.title_autopause_apps).
                     replace("[[count]]", ""+data.getIntExtra("count",0)));
             if(API.checkVPNServiceRunning(SettingsActivity.this))startService(new Intent(SettingsActivity.this, DNSVpnService.class));
+        }else if(requestCode == REQUEST_CODE_ENABLE_ADMIN && resultCode == RESULT_OK && devicePolicyManager.isAdminActive(deviceAdmin)){
+            ((SwitchPreference)findPreference("device_admin")).setChecked(true);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

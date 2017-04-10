@@ -92,7 +92,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".BootReceiver">
+        <receiver android:name=".receivers.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
@@ -193,10 +193,12 @@
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.SEND" />
                 <action android:name="android.intent.action.SENDTO" />
+
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="*/*"/>
+                <data android:scheme="file" />
+                <data android:mimeType="*/*" />
                 <data android:pathPattern=".*\\.settings" />
                 <data android:pathPattern=".*\\..*\\.settings" />
                 <data android:pathPattern=".*\\..*\\..*\\.settings" />
@@ -206,6 +208,19 @@
                 <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.settings" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".receivers.AdminReceiver"
+            android:description="@string/device_admin_description"
+            android:label="@string/device_admin"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin" />
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
