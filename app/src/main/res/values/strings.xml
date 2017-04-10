@@ -111,7 +111,7 @@
     <string name="message_settings_exported">Settings have been exported successfully.</string>
     <string name="open_share_file">Open/share file</string>
     <string name="success">Success</string>
-    <string name="set_device_admin_info">This app can be set as device admin to prevent removing it without entering the devices Passcode first.\nThis feature only works if the device admin policy is set to request passwords when removing apps (Mostly found in businesses or shipped with parental control apps)\n\nDNSChanger won\'t actually use these rights.\nDNSChanger has to be removed as device admin before trying to remove it from your phone, come back to the settings to do so.</string>
+    <string name="set_device_admin_info">This app can be set as device admin to prevent removing it without entering the devices Passcode first.\n\nThis feature only works if the device admin policy is set to request passwords when removing apps (Mostly found in businesses or shipped with parental control apps)\n\nDNSChanger won\'t actually use these rights.\nDNSChanger has to be removed as device admin before trying to remove it from your phone, come back to the settings to do so.</string>
     <string name="title_device_admin">Device admin</string>
     <string name="summary_device_admin_activate">Activate this app as device admin to prevent uninstallation</string>
     <string name="device_admin_description">Prevent uninstall by settings as device admin</string>
