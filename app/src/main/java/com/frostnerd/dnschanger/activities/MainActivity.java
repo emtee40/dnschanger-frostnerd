@@ -41,6 +41,7 @@ import com.frostnerd.utils.preferences.Preferences;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -102,6 +103,9 @@ public class MainActivity extends AppCompatActivity {
         defaultDNS.put("Yandex DNS", Arrays.asList("77.88.8.8", "77.88.8.1", "2a02:6b8::feed:0ff", "2a02:6b8:0:1::feed:0ff"));
         defaultDNS.put("Verisign", Arrays.asList("64.6.64.6", "64.6.65.6", "2620:74:1b::1:1", "2620:74:1c::2:2"));
         defaultDNS.put("Alternate DNS", Arrays.asList("198.101.242.72", "23.253.163.53"));
+        defaultDNS.put("Norton Connectsafe - Security", Arrays.asList("199.85.126.10", "199.85.127.10"));
+        defaultDNS.put("Norton Connectsafe - Security + Pornography", Arrays.asList("199.85.126.20", "199.85.127.20"));
+        defaultDNS.put("Norton Connectsafe - Security + Pornography + Other", Arrays.asList("199.85.126.30", "199.85.127.30"));
 
         defaultDNS_V6.put("Google DNS", Arrays.asList("2001:4860:4860::8888", "2001:4860:4860::8844"));
         defaultDNS_V6.put("OpenDNS", Arrays.asList("2620:0:ccc::2", "2620:0:ccd::2"));
@@ -109,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
         defaultDNS_V6.put("Verisign", Arrays.asList("2620:74:1b::1:1", "2620:74:1c::2:2"));
         defaultDNSKeys = new ArrayList<>(defaultDNS.keySet());
         DefaultDNSKeys_V6 = new ArrayList<>(defaultDNS_V6.keySet());
+        Collections.sort(defaultDNSKeys);
+        Collections.sort(defaultDNSKeys);
     }
 
     private void setIndicatorState(boolean vpnRunning) {
