@@ -1,4 +1,4 @@
-package com.frostnerd.dnschanger;
+package com.frostnerd.dnschanger.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
