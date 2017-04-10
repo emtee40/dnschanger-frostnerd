@@ -54,12 +54,14 @@ public class SettingsImportActivity extends Activity {
             ir = new InputStreamReader(stream);
             reader = new BufferedReader(ir);
             String line;
+            String data = "";
             while ((line = reader.readLine()) != null) {
-                if (line.equals("") || line.startsWith("[") || !line.contains("<->")) continue;
-                Preferences.put(c, line.split("<->")[0], line.split("<->")[1]);
+                if (line.equals("") || line.startsWith("[")) continue;
+                data += line;
             }
+            Preferences.importFromStringAndPut(c, data, "<<>>");
         } catch (Exception e) {
-
+            e.printStackTrace();
         } finally {
             try {
                 if (ir != null) ir.close();

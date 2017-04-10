@@ -1,7 +1,6 @@
 package com.frostnerd.dnschanger.activities;
 
 import android.Manifest;
-import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -35,7 +34,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -260,8 +258,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         new FileChooserDialog(SettingsActivity.this, false, FileChooserDialog.SelectionMode.FILE).setFileListener(new FileChooserDialog.FileSelectedListener() {
             @Override
             public void fileSelected(File file, FileChooserDialog.SelectionMode selectionMode) {
-                SettingsImportActivity.importFromFile(SettingsActivity.this, file);
                 finish();
+                SettingsImportActivity.importFromFile(SettingsActivity.this, file);
             }
         }).showDialog();
     }
@@ -274,7 +272,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         dialog.setFileListener(new FileChooserDialog.FileSelectedListener() {
             @Override
             public void fileSelected(File file, FileChooserDialog.SelectionMode selectionMode) {
-                Map<String,Object> all = Preferences.getAll(SettingsActivity.this);
                 final File f = new File(file, "dnschanger.settings");
                 if(f.exists())f.delete();
                 FileWriter fw = null;
@@ -284,7 +281,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     writer = new BufferedWriter(fw);
                     writer.write("[DNSChanger Settings - " + BuildConfig.VERSION_NAME + "]\n");
                     writer.write("[Developer: Frostnerd.com]\n");
-                    for(String s: all.keySet()) writer.write(s + "<->" + all.get(s) + "\n");
+                    writer.write(Preferences.exportToString(SettingsActivity.this,false,"<<>>\n","first_run","device_admin"));
                     writer.flush();
                     new AlertDialog.Builder(SettingsActivity.this).setMessage(R.string.message_settings_exported).setCancelable(true).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
