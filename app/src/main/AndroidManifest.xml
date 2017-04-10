@@ -92,7 +92,9 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".receivers.BootReceiver">
+        <receiver android:name=".receivers.BootReceiver"
+            android:enabled="true"
+            android:exported="true"> <!-- TODO Check if working on all devices-->
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
