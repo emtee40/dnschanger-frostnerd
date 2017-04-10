@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.VpnService;
 
+import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
 import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
 import com.frostnerd.dnschanger.services.DNSVpnService;
@@ -20,16 +21,24 @@ import com.frostnerd.utils.preferences.Preferences;
  * development@frostnerd.com
  */
 public class BootReceiver extends BroadcastReceiver {
+    private static final String LOG_TAG = "[BootReceiver]";
+
     @Override
     public void onReceive(Context context, Intent intent) {
+        LogFactory.writeMessage(context, LOG_TAG, "Starting ConnectivityBackgroundService");
         context.startService(new Intent(context, ConnectivityBackgroundService.class));
         if(intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED) || intent.getAction().equals(Intent.ACTION_LOCKED_BOOT_COMPLETED)){
+            LogFactory.writeMessage(context, LOG_TAG, "Action is BOOT_COMPLETED");
             if(Preferences.getBoolean(context,"setting_start_boot",false)){
+                LogFactory.writeMessage(context, LOG_TAG, "User wants App to start on boot");
                 Intent i = VpnService.prepare(context);
                 if(i == null){
+                    LogFactory.writeMessage(context, LOG_TAG, "VPNService is prepared. Starting DNSVpnService.");
                     context.startService(new Intent(context, DNSVpnService.class).putExtra("start_vpn",true).putExtra("startedWithTasker", false));
+                }else{
+                    LogFactory.writeMessage(context, LOG_TAG, "VPNService is NOT prepared. Starting BackgroundVpnConfigureActivity.");
+                    BackgroundVpnConfigureActivity.startBackgroundConfigure(context,true);
                 }
-                else BackgroundVpnConfigureActivity.startBackgroundConfigure(context,true);
             }
         }
     }

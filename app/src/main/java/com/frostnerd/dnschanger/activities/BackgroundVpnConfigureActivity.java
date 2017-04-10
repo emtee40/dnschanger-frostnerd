@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
+import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.R;
 
@@ -28,12 +29,16 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
     private long requestTime;
     private Intent serviceIntent;
     private boolean startedWithTasker;
+    private static String LOG_TAG = "[BackgroundVpnConfigureActivity]";
 
     public static void startBackgroundConfigure(Context context, boolean startService) {
+        LogFactory.writeMessage(context, LOG_TAG, "[STATIC] Starting Background configuring. Starting service: " + startService);
         context.startActivity(new Intent(context, BackgroundVpnConfigureActivity.class).putExtra("startService", startService).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
     public static void startWithFixedDNS(final Context context, final String dns1, final String dns2, final String dns1v6, final String dns2v6, boolean startedWithTasker) {
+        LogFactory.writeMessage(context, LOG_TAG, "[STATIC] Starting with fixed DNS. Started with tasker: " +startedWithTasker);
+        LogFactory.writeMessage(context, LOG_TAG, "[STATIC] DNS1: " + dns1 + ", DNS2: " + dns2 + ", DNS1V6: " + dns1v6 + ", DNS2V6: " + dns2v6);
         context.startActivity(new Intent(context, BackgroundVpnConfigureActivity.class).putExtra("fixeddns", true).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .putExtra("dns1", dns1).putExtra("dns2", dns2).putExtra("dns1-v6", dns1v6).putExtra("dns2-v6", dns2v6).putExtra("startService", true).putExtra("startedWithTasker", startedWithTasker));
     }
@@ -41,12 +46,16 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LogFactory.writeMessage(this, LOG_TAG, "Created Activity");
         if (getSupportActionBar() != null) getSupportActionBar().hide();
         Intent intent = getIntent();
         final Intent conf = VpnService.prepare(this);
         startService = intent != null && intent.getBooleanExtra("startService", false);
         serviceIntent = new Intent(this, DNSVpnService.class).putExtra("start_vpn", true);
+        LogFactory.writeMessage(this, LOG_TAG, "Starting Service: " + startService);
+        LogFactory.writeMessage(this, LOG_TAG, "Is Intent null: " + (intent == null));
         if (intent != null && intent.getBooleanExtra("fixeddns", false)) {
+            LogFactory.writeMessage(this, LOG_TAG, "Intent is not null and fixeddns is false");
             String dns1 = "8.8.8.8";
             String dns2 = "8.8.4.4";
             String dns1_v6 = "2001:4860:4860::8888";
@@ -58,58 +67,78 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
             if (intent.hasExtra("dns2-v6")) dns2_v6 = intent.getStringExtra("dns2-v6");
             serviceIntent = serviceIntent.putExtra("fixeddns", true).putExtra("dns1", dns1).putExtra("dns2", dns2)
                     .putExtra("dns1-v6", dns1_v6).putExtra("dns2-v6", dns2_v6).putExtra("startedWithTasker", startedWithTasker);
+            LogFactory.writeMessage(this, LOG_TAG, "ServiceIntent created. DNS1: " + dns1 + ", DNS2: " + dns2 + ", DNS1V6: " + dns1_v6 + ", DNS2V6: " + dns2_v6 + ", fixeddns: true, startedWithTasker: " + startedWithTasker);
         }
         if (conf != null) {
+            LogFactory.writeMessage(this, LOG_TAG, "VPN access not yet granted. Requesting access (Showing Info dialog).");
             showDialog(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    LogFactory.writeMessage(BackgroundVpnConfigureActivity.this, LOG_TAG, "User clicked OK in Request Info Dialog. Requesting access now.");
                     requestTime = System.currentTimeMillis();
                     startActivityForResult(conf, REQUEST_CODE);
                 }
             });
         } else {
-            if (startService) startService(serviceIntent);
+            LogFactory.writeMessage(this, LOG_TAG, "Access to VPN was already granted.");
+            if (startService){
+                LogFactory.writeMessage(this, LOG_TAG, "Starting DNSVPNService");
+                startService(serviceIntent);
+            }
             setResult(RESULT_OK);
             finish();
         }
     }
 
     private void showDialog(DialogInterface.OnClickListener click) {
+        LogFactory.writeMessage(this, LOG_TAG, "Showing VPN Request Info Dialog");
         dialog1 = new AlertDialog.Builder(this).setTitle(getString(R.string.information) + " - " + getString(R.string.app_name)).setMessage(R.string.vpn_explain)
                 .setCancelable(false).setPositiveButton(R.string.ok, click).show();
+        LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
     }
 
     @Override
     protected void onDestroy() {
         if (dialog1 != null) dialog1.cancel();
         if (dialog2 != null) dialog2.cancel();
+        LogFactory.writeMessage(this, LOG_TAG, "Destroying");
         super.onDestroy();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE) {
+            LogFactory.writeMessage(this, LOG_TAG, "Got result for VPN Request");
             if (resultCode == RESULT_OK) {
-                if (startService)
+                LogFactory.writeMessage(this, LOG_TAG, "Access was granted");
+                if (startService){
+                    LogFactory.writeMessage(this, LOG_TAG, "Starting service");
                     startService(serviceIntent);
+                }
                 setResult(RESULT_OK);
                 finish();
             } else if (resultCode == RESULT_CANCELED) {
+                LogFactory.writeMessage(this, LOG_TAG, "Action was cancelled");
                 setResult(RESULT_CANCELED);
                 if (System.currentTimeMillis() - requestTime <= 750) {//Most likely the system
+                    LogFactory.writeMessage(this, LOG_TAG, "Looks like the System cancelled the action, not the User");
+                    LogFactory.writeMessage(this, LOG_TAG, "Showing dialog which explains that this is most likely the System");
                     dialog2 = new AlertDialog.Builder(this).setTitle(getString(R.string.app_name) + " - " + getString(R.string.information)).setMessage(R.string.background_configure_error).setPositiveButton(R.string.open_app, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            LogFactory.writeMessage(BackgroundVpnConfigureActivity.this, LOG_TAG, "Redirecting User to PinActivity");
                             startActivity(new Intent(BackgroundVpnConfigureActivity.this, PinActivity.class));
                             finish();
                         }
                     }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            LogFactory.writeMessage(BackgroundVpnConfigureActivity.this, LOG_TAG, "User choose to cancel the action.");
                             dialog.cancel();
                             finish();
                         }
                     }).show();
+                    LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
                 } else finish();
             }
         }

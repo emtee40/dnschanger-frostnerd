@@ -24,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.ShortcutActivity;
 import com.frostnerd.utils.design.MaterialEditText;
@@ -56,6 +57,7 @@ public class ConfigureActivity extends AppCompatActivity {
     private boolean settingV6 = false, wasEdited = false;
     private long lastBackPress = 0;
     private Action currentAction;
+    private static final String LOG_TAG = "[ConfigureActivity]";
 
     private enum Action{
         PAUSE, START, STOP, RESUME;
@@ -88,6 +90,7 @@ public class ConfigureActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tasker_configure_layout);
+        LogFactory.writeMessage(this, LOG_TAG, "Activity created");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ed_dns1 = (EditText)findViewById(R.id.dns1);
         ed_dns2 = (EditText)findViewById(R.id.dns2);
@@ -99,9 +102,11 @@ public class ConfigureActivity extends AppCompatActivity {
         Helper.scrub(getIntent());
         final Bundle bundle = getIntent().getBundleExtra(Helper.EXTRA_BUNDLE);
         creatingShortcut = getIntent() != null && getIntent().getBooleanExtra("creatingShortcut", false);
+        LogFactory.writeMessage(this, LOG_TAG, "Creating Shortcut: " + creatingShortcut);
         Helper.scrub(bundle);
         if(savedInstanceState == null){
             if(Helper.isBundleValid(bundle)){
+                LogFactory.writeMessage(this, LOG_TAG, "Editing existing Tasker Configuration");
                 if(bundle.containsKey(Helper.BUNDLE_EXTRA_DNS1))dns1 = bundle.getString(Helper.BUNDLE_EXTRA_DNS1);
                 if(bundle.containsKey(Helper.BUNDLE_EXTRA_DNS2))dns2 = bundle.getString(Helper.BUNDLE_EXTRA_DNS2);
                 if(bundle.containsKey(Helper.BUNDLE_EXTRA_DNS1V6))dns1V6 = bundle.getString(Helper.BUNDLE_EXTRA_DNS1V6);
@@ -290,32 +295,42 @@ public class ConfigureActivity extends AppCompatActivity {
 
     @Override
     public void finish() {
+        LogFactory.writeMessage(this, LOG_TAG, "Activity finished");
         if(!cancelled && checkValidity() && !creatingShortcut){
+            LogFactory.writeMessage(this, LOG_TAG, "Not cancelled, inputs valid, not creating shortcut");
             if(currentAction == Action.START){
+                LogFactory.writeMessage(this, LOG_TAG, "Action is START");
                 final Intent resultIntent = new Intent();
                 final Bundle resultBundle = Helper.createBundle(dns1, dns2, dns1V6, dns2V6);
                 resultIntent.putExtra(Helper.EXTRA_BUNDLE, resultBundle);
                 resultIntent.putExtra(Helper.EXTRA_BLURB, ed_name.getText().toString());
+                LogFactory.writeMessage(this, LOG_TAG, "Bundle created");
                 setResult(RESULT_OK, resultIntent);
             }else{
                 if(ed_name.getText().toString().equals("")){
+                    LogFactory.writeMessage(this, LOG_TAG, "Name is emtpy. Configurating cancelled");
                     setResult(RESULT_CANCELED);
                 }else{
                     final Intent resultIntent = new Intent();
                     final Bundle resultBundle = new Bundle();
                     if(currentAction == Action.PAUSE){
+                        LogFactory.writeMessage(this, LOG_TAG, "Action is PAUSE");
                         resultBundle.putBoolean(Helper.BUNDLE_EXTRA_PAUSE_DNS,true);
                     }else if(currentAction == Action.RESUME){
+                        LogFactory.writeMessage(this, LOG_TAG, "Action is RESUME");
                         resultBundle.putBoolean(Helper.BUNDLE_EXTRA_RESUME_DNS,true);
                     }else if(currentAction == Action.STOP){
+                        LogFactory.writeMessage(this, LOG_TAG, "Action is STOP");
                         resultBundle.putBoolean(Helper.BUNDLE_EXTRA_STOP_DNS,true);
                     }
                     resultIntent.putExtra(Helper.EXTRA_BUNDLE, resultBundle);
                     resultIntent.putExtra(Helper.EXTRA_BLURB, ed_name.getText().toString());
+                    LogFactory.writeMessage(this, LOG_TAG, "Bundle created");
                     setResult(RESULT_OK, resultIntent);
                 }
             }
         }else if(!cancelled && checkValidity() && creatingShortcut){
+            LogFactory.writeMessage(this, LOG_TAG, "Cancelled, valid, creating shortcut");
             Intent shortcutIntent = new Intent(getBaseContext(), ShortcutActivity.class);
             shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -329,8 +344,11 @@ public class ConfigureActivity extends AppCompatActivity {
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, ed_name.getText().toString());
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.mipmap.ic_launcher));
             addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+            LogFactory.writeMessage(this, LOG_TAG, "Adding shortcut. Name: " + ed_name.getText().toString() +
+                    ", DNS1: " + dns1 + ", DNS2: " + dns2 + ", DNS1V6: " + dns1V6 + ", DNS2V6: " + dns2V6);
             getApplicationContext().sendBroadcast(addIntent);
             setResult(RESULT_OK);
+            LogFactory.writeMessage(this, LOG_TAG, "Shortcut added to Launcher");
         }
         super.finish();
     }

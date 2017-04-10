@@ -6,6 +6,7 @@ import android.os.Build;
 import android.service.quicksettings.Tile;
 
 import com.frostnerd.dnschanger.API;
+import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.utils.preferences.Preferences;
@@ -21,37 +22,50 @@ import com.frostnerd.utils.preferences.Preferences;
  */
 @TargetApi(Build.VERSION_CODES.N)
 public class TileResume extends android.service.quicksettings.TileService {
+    private static final String LOG_TAG = "[ResumeTile]";
 
     @Override
     public void onTileAdded() {
         super.onTileAdded();
+        LogFactory.writeMessage(this, LOG_TAG, "Tile added");
     }
 
     @Override
     public void onTileRemoved() {
         super.onTileRemoved();
+        LogFactory.writeMessage(this, LOG_TAG, "Tile removed");
     }
 
     @Override
     public void onStartListening() {
         super.onStartListening();
+        LogFactory.writeMessage(this, LOG_TAG, "Start listening");
         Tile tile = getQsTile();
         if(API.checkVPNServiceRunning(this)){
+            LogFactory.writeMessage(this, LOG_TAG, "Service running (State set to inactive)");
             tile.setState(Tile.STATE_INACTIVE);
         }else{
+            LogFactory.writeMessage(this, LOG_TAG, "Service not running (State set to unavailable)");
             tile.setState(Tile.STATE_UNAVAILABLE);
         }
         tile.updateTile();
+        LogFactory.writeMessage(this, LOG_TAG, "Tile updated");
     }
 
     @Override
     public void onClick() {
         super.onClick();
-        if(!API.checkVPNServiceRunning(this))return;
+        LogFactory.writeMessage(this, LOG_TAG, "Tile clicked");
+        if(!API.checkVPNServiceRunning(this)){
+            LogFactory.writeMessage(this, LOG_TAG, "Service not running. Returning");
+            return;
+        }
         boolean pinProtected = Preferences.getBoolean(this, "pin_tile", false);
         if(pinProtected){
+            LogFactory.writeMessage(this, LOG_TAG, "Tile is Pin protected. Starting PinActivity");
             startActivity(new Intent(this, PinActivity.class).putExtra("start_vpn", true).putExtra("redirectToService",true));
         }else{
+            LogFactory.writeMessage(this, LOG_TAG, "Tile is not Pin protected. Starting DNSVPNService");
             startService(new Intent(this, DNSVpnService.class).putExtra("start_vpn", true));
         }
     }
@@ -59,5 +73,6 @@ public class TileResume extends android.service.quicksettings.TileService {
     @Override
     public void onStopListening() {
         super.onStopListening();
+        LogFactory.writeMessage(this, LOG_TAG, "Stop listening");
     }
 }
