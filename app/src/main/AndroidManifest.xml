@@ -128,7 +128,7 @@
         <activity
             android:name=".activities.ErrorDialogActivity"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert"></activity>
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert"/>
 
         <activity
             android:name=".activities.AutoPauseAppSelectActivity"
@@ -193,12 +193,18 @@
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.SEND" />
                 <action android:name="android.intent.action.SENDTO" />
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
 
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:scheme="uri" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
                 <data android:mimeType="*/*" />
+                <data android:host="*" />
                 <data android:pathPattern=".*\\.settings" />
                 <data android:pathPattern=".*\\..*\\.settings" />
                 <data android:pathPattern=".*\\..*\\..*\\.settings" />
