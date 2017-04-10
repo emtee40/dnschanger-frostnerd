@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.frostnerd.dnschanger.API;
 import com.frostnerd.utils.preferences.Preferences;
 
 import java.io.BufferedReader;
@@ -28,7 +29,7 @@ public class SettingsImportActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        if (intent.getAction().equals(Intent.ACTION_VIEW) && SettingsActivity.canReadExternalStorage(this)) {
+        if (intent.getAction().equals(Intent.ACTION_VIEW) && API.canReadExternalStorage(this)) {
             Uri uri = intent.getData();
             try {
                 importFromStream(this, this.getContentResolver().openInputStream(uri));

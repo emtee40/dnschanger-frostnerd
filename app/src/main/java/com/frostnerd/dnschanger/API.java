@@ -1,10 +1,13 @@
 package com.frostnerd.dnschanger;
 
+import android.Manifest;
 import android.app.ActivityManager;
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 
 import com.frostnerd.dnschanger.services.DNSVpnService;
 
@@ -48,5 +51,13 @@ public class API {
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)return true;
         AppOpsManager appOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
         return appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,android.os.Process.myUid(), context.getPackageName()) == AppOpsManager.MODE_ALLOWED;
+    }
+
+    public static boolean canWriteExternalStorage(Context context){
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static boolean canReadExternalStorage(Context context){
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 }
