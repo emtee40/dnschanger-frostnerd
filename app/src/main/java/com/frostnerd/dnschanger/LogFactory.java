@@ -39,11 +39,12 @@ public class LogFactory {
             TIMESTAMP_FORMATTER = new SimpleDateFormat("EEE MMM dd.yy kk:mm:ss");
     public static final String STATIC_TAG = "[STATIC]";
 
+
     public static File zipLogFiles(Context c){
         if(logDir == null || !logDir.canWrite() || !logDir.canRead())return null;
         writeMessage(c, Tag.INFO, "Exporting Log files");
         try{
-            File zipFile = new File(logDir, "logs.zip");
+            File zipFile = new File(logDir, "logs.collection");
             if(zipFile.exists())zipFile.delete();
             File[] logFiles = logDir.listFiles(new FileFilter() {
                 @Override
