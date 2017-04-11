@@ -31,6 +31,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.API;
+import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.R;
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     private static final HashMap<String, List<String>> defaultDNS_V6 = new HashMap<>();
     private static final List<String> defaultDNSKeys, DefaultDNSKeys_V6;
     private boolean doStopVPN = true;
+    private static final String LOG_TAG = "[MainActivity]";
 
     private TextView connectionText;
     private ImageView connectionImage;
@@ -78,9 +80,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        LogFactory.writeMessage(this, LOG_TAG, "Destroying");
         if(dialog1 != null)dialog1.cancel();
         if(dialog2 != null)dialog2.cancel();
         if(defaultDnsDialog != null)defaultDnsDialog.cancel();
+        LogFactory.writeMessage(this, LOG_TAG, "Destroyed");
         super.onDestroy();
     }
 
@@ -89,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver serviceStateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            LogFactory.writeMessage(MainActivity.this, LOG_TAG, "Received ServiceState Answer", intent);
             vpnRunning = intent.getBooleanExtra("vpn_running",false);
             wasStartedWithTasker = intent.getBooleanExtra("started_with_tasker", false);
             setIndicatorState(intent.getBooleanExtra("vpn_running",false));
@@ -118,11 +123,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setIndicatorState(boolean vpnRunning) {
-//        ObjectAnimator colorFade = ObjectAnimator.ofObject(wrapper, "backgroundColor", new ArgbEvaluator(),
-//                vpnRunning ? Color.parseColor("#2196F3") : Color.parseColor("#4CAF50"),
-//                vpnRunning ? Color.parseColor("#4CAF50") : Color.parseColor("#2196F3"));
-//        colorFade.setDuration(400);
-//        colorFade.start();
+        LogFactory.writeMessage(this, LOG_TAG, "Changing IndicatorState to " + vpnRunning);
         if (vpnRunning) {
             int color = Color.parseColor("#42A5F5");
             connectionText.setText(R.string.running);
@@ -154,32 +155,42 @@ public class MainActivity extends AppCompatActivity {
             startStopButton.setText(R.string.start);
             running_indicator.setBackgroundColor(Color.parseColor("#2196F3"));
         }
+        LogFactory.writeMessage(this, LOG_TAG, "IndictorState set");
     }
 
     public void rateApp(View v) {
         final String appPackageName = getPackageName();
+        LogFactory.writeMessage(this, LOG_TAG, "Opening site to rate app");
         try {
+            LogFactory.writeMessage(this, LOG_TAG, "Trying to open market");
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+            LogFactory.writeMessage(this, LOG_TAG, "Market was opened");
         } catch (android.content.ActivityNotFoundException e) {
+            LogFactory.writeMessage(this, LOG_TAG, "Market not present. Opening with general ACTION_VIEW");
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
         }
         Preferences.put(MainActivity.this, "rated",true);
     }
 
     public void openDNSInfoDialog(View v) {
+        LogFactory.writeMessage(this, LOG_TAG, "Opening Dialog with info about DNS");
         dialog1 = new AlertDialog.Builder(this).setTitle(R.string.info_dns_button).setMessage(R.string.dns_info_text).setCancelable(true).setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         }).show();
+        LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LogFactory.writeMessage(this, LOG_TAG, "Created Activity", getIntent());
         DNSVpnService.updateTiles(this);
+        LogFactory.writeMessage(this, LOG_TAG, "Launching ConnectivityBackgroundService");
         startService(new Intent(this, ConnectivityBackgroundService.class));
+        LogFactory.writeMessage(this, LOG_TAG, "Setting ContentView");
         setContentView(R.layout.activity_main);
         met_dns1 = (MaterialEditText) findViewById(R.id.met_dns1);
         met_dns2 = (MaterialEditText) findViewById(R.id.met_dns2);
@@ -200,17 +211,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final Intent i = VpnService.prepare(MainActivity.this);
+                LogFactory.writeMessage(MainActivity.this, LOG_TAG, "Startbutton clicked. Configuring VPN if needed");
                 if (i != null){
+                    LogFactory.writeMessage(MainActivity.this, LOG_TAG, "VPN isn't prepared yet. Showing dialog explaining the VPN");
                     dialog2 = new AlertDialog.Builder(MainActivity.this).setTitle(R.string.information).setMessage(R.string.vpn_explain)
                             .setCancelable(false).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
+                            LogFactory.writeMessage(MainActivity.this, LOG_TAG, "Requesting VPN access", i);
                             startActivityForResult(i, 0);
                         }
                     }).show();
+                    LogFactory.writeMessage(MainActivity.this, LOG_TAG, "Dialog is now being shown");
+                }else{
+                    LogFactory.writeMessage(MainActivity.this, LOG_TAG, "VPNService is already configured");
+                    onActivityResult(0, RESULT_OK, null);
                 }
-                else onActivityResult(0, RESULT_OK, null);
             }
         });
         dns1.addTextChangedListener(new TextWatcher() {
@@ -260,11 +277,15 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.settings).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                Intent i;
+                LogFactory.writeMessage(MainActivity.this, LOG_TAG, "Opening Settings",
+                        i = new Intent(MainActivity.this, SettingsActivity.class));
+                startActivity(i);
             }
         });
         getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
         if(!Preferences.getBoolean(this, "first_run",true) && !Preferences.getBoolean(this, "rated",false) && new Random().nextInt(100) <= 8){
+            LogFactory.writeMessage(this, LOG_TAG, "Showing dialog requesting rating");
             new AlertDialog.Builder(this).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -282,21 +303,27 @@ public class MainActivity extends AppCompatActivity {
                     dialog.cancel();
                 }
             }).setMessage(R.string.rate_request_text).setTitle(R.string.rate).show();
+            LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
         }
         if(Preferences.getBoolean(this, "first_run", true) && API.isTaskerInstalled(this)){
+            LogFactory.writeMessage(this, LOG_TAG, "Showing dialog telling the user that this app supports Tasker");
             new AlertDialog.Builder(this).setTitle(R.string.tasker_support).setMessage(R.string.app_supports_tasker_text).setPositiveButton(R.string.got_it, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
                 }
             }).show();
+            LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
         }
+        LogFactory.writeMessage(this, LOG_TAG, "Done with OnCreate");
         Preferences.put(this, "first_run", false);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        LogFactory.writeMessage(this, LOG_TAG, "Got OnResume");
+        LogFactory.writeMessage(this, LOG_TAG, "Sending ServiceStateRequest as broadcast");
         sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATE_REQUEST));
         vpnRunning = API.checkVPNServiceRunning(this);
         setIndicatorState(vpnRunning);
@@ -306,12 +333,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        LogFactory.writeMessage(this, LOG_TAG, "Got OnPause");
         unregisterReceiver(serviceStateReceiver);
     }
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
+        LogFactory.writeMessage(this, LOG_TAG, "Got onPostResume");
+        LogFactory.writeMessage(this, LOG_TAG, "Recreating DefaultDNSDialog");
         View layout = getLayoutInflater().inflate(R.layout.dialog_default_dns, null, false);
         final ListView list = (ListView) layout.findViewById(R.id.defaultDnsDialogList);
         list.setAdapter(new DefaultDNSAdapter());
@@ -319,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
         defaultDnsDialog = new AlertDialog.Builder(this).setView(layout).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                LogFactory.writeMessage(MainActivity.this, LOG_TAG, "Cancelled choosing from default DNS");
             }
         }).setTitle(R.string.default_dns_title).create();
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -329,19 +359,25 @@ public class MainActivity extends AppCompatActivity {
                 List<String> ips = settingV6 ? defaultDNS_V6.get(DefaultDNSKeys_V6.get(position)) : defaultDNS.get(defaultDNSKeys.get(position));
                 dns1.setText(ips.get(0));
                 dns2.setText(ips.get(1));
+                LogFactory.writeMessage(MainActivity.this, LOG_TAG, "User chose provider from default DNS. DNS1: " + ips.get(0) + ", DNS2: " + ips.get(1));
             }
         });
+        LogFactory.writeMessage(this, LOG_TAG, "DefaultDNSDialog recreated");
     }
 
     public void openDefaultDNSDialog(View v) {
+        LogFactory.writeMessage(this, LOG_TAG, "Opening DefaultDNSDialog");
         defaultDnsDialog.show();
+        LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        LogFactory.writeMessage(this, LOG_TAG, "Got OnActivityResult" ,data);
         if (requestCode == 0 && resultCode == RESULT_OK) {
             if (!vpnRunning){
                 if(!Preferences.getBoolean(this, "44explained", false) && Build.VERSION.SDK_INT == 19){
+                    LogFactory.writeMessage(this, LOG_TAG, "Opening Dialog explaining that this might not work on Android 4.4");
                     new AlertDialog.Builder(this).setTitle(R.string.warning).setCancelable(false).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -349,15 +385,18 @@ public class MainActivity extends AppCompatActivity {
                             startVpn();
                         }
                     }).setMessage(R.string.android4_4_warning).show();
+                    LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
                 }else{
                     startVpn();
                 }
                 Preferences.getBoolean(this, "44explained", true);
             }else{
                 if(wasStartedWithTasker){
+                    LogFactory.writeMessage(this, LOG_TAG, "Opening dialog which warns that the app was started using Tasker");
                     new AlertDialog.Builder(this).setTitle(R.string.warning).setMessage(R.string.warning_started_using_tasker). setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            LogFactory.writeMessage(MainActivity.this, LOG_TAG, "User clicked OK in the dialog warning about Tasker");
                             stopVpn();
                             dialog.cancel();
                         }
@@ -365,8 +404,10 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
+                            LogFactory.writeMessage(MainActivity.this, LOG_TAG, "User cancelled stopping DNSChanger as it was started using tasker");
                         }
                     }).show();
+                    LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
                 }else stopVpn();
             }
         }else if(requestCode == 1 && resultCode == RESULT_OK){
@@ -384,14 +425,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startVpn() {
+        Intent i;
+        LogFactory.writeMessage(this, LOG_TAG, "Starting VPN",
+                i = new Intent(this, DNSVpnService.class).putExtra("start_vpn", true).putExtra("startedWithTasker", false));
         wasStartedWithTasker = false;
-        startService(new Intent(this, DNSVpnService.class).putExtra("start_vpn", true).putExtra("startedWithTasker", false));
+        startService(i);
         vpnRunning = true;
         setIndicatorState(true);
     }
 
     private void stopVpn() {
-        startService(new Intent(this, DNSVpnService.class).putExtra("destroy", true));
+        Intent i;
+        LogFactory.writeMessage(this, LOG_TAG, "Stopping VPN",
+                i = new Intent(this, DNSVpnService.class).putExtra("destroy", true));
+        startService(i);
         stopService(new Intent(this, DNSVpnService.class));
         vpnRunning = false;
         setIndicatorState(false);
@@ -442,7 +489,10 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
             doStopVPN = true;
         }else if(item.getItemId() == R.id.create_shortcut){
-            startActivityForResult(new Intent(this, ConfigureActivity.class).putExtra("creatingShortcut", true),1);
+            Intent i;
+            LogFactory.writeMessage(this, LOG_TAG, "User wants to create a shortcut",
+                    i = new Intent(this, ConfigureActivity.class).putExtra("creatingShortcut", true));
+            startActivityForResult(i,1);
         }
         return super.onOptionsItemSelected(item);
     }
