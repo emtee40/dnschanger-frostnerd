@@ -1,6 +1,7 @@
 package com.frostnerd.dnschanger.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.icu.text.IDNA;
@@ -54,5 +55,12 @@ public class ErrorDialogActivity extends Activity {
             }
         }).show();
         LogFactory.writeMessage(this, LOG_TAG,"Showing Dialog");
+    }
+
+    public static void show(Context context,Throwable t){
+        Intent i;
+        LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG} , "Showing Stacktrace for " + t.getMessage(),
+                i = new Intent(context, ErrorDialogActivity.class).putExtra("stacktrace",LogFactory.stacktraceToString(t)));
+        context.startActivity(i);
     }
 }
