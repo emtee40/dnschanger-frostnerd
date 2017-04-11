@@ -24,20 +24,25 @@ public class FireReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (!Helper.ACTION_FIRE_SETTINGS.equals(intent.getAction()))return;
-        LogFactory.writeMessage(context, LOG_TAG, "FireReceiver called");
+        LogFactory.writeMessage(context, LOG_TAG, "FireReceiver called", intent);
         Helper.scrub(intent);
         final Bundle bundle = intent.getBundleExtra(Helper.EXTRA_BUNDLE);
         Helper.scrub(bundle);
         if(Helper.isBundleValid(bundle)){
             LogFactory.writeMessage(context, LOG_TAG, "Got Tasker action");
             if(bundle.containsKey(Helper.BUNDLE_EXTRA_STOP_DNS)){
-                LogFactory.writeMessage(context, LOG_TAG, "Action: Stop DNS");
-                context.startService(new Intent(context, DNSVpnService.class).putExtra("destroy",true));
+                Intent i;
+                LogFactory.writeMessage(context, LOG_TAG, "Action: Stop DNS",
+                        i = new Intent(context, DNSVpnService.class).putExtra("destroy",true));
+                context.startService(i);
             }else if(bundle.containsKey(Helper.BUNDLE_EXTRA_PAUSE_DNS)){
-                LogFactory.writeMessage(context, LOG_TAG, "Action: Pause DNS");
-                context.startService(new Intent(context, DNSVpnService.class).putExtra("stop_vpn",true));
+                Intent i;
+                LogFactory.writeMessage(context, LOG_TAG, "Action: Pause DNS",
+                        i = new Intent(context, DNSVpnService.class).putExtra("stop_vpn",true));
+                context.startService(i);
             }else if(bundle.containsKey(Helper.BUNDLE_EXTRA_RESUME_DNS)){
                 LogFactory.writeMessage(context, LOG_TAG, "Action: Resume DNS");
+                LogFactory.writeMessage(context, LOG_TAG, "Starting BackgroundVpnConfigureActivity");
                 BackgroundVpnConfigureActivity.startBackgroundConfigure(context,true);
             }else{
                 LogFactory.writeMessage(context, LOG_TAG, "Action: Start DNS");

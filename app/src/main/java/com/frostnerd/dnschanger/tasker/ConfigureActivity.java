@@ -90,7 +90,7 @@ public class ConfigureActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tasker_configure_layout);
-        LogFactory.writeMessage(this, LOG_TAG, "Activity created");
+        LogFactory.writeMessage(this, LOG_TAG, "Activity created", getIntent());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ed_dns1 = (EditText)findViewById(R.id.dns1);
         ed_dns2 = (EditText)findViewById(R.id.dns2);
@@ -304,9 +304,10 @@ public class ConfigureActivity extends AppCompatActivity {
                 final Bundle resultBundle = Helper.createBundle(dns1, dns2, dns1V6, dns2V6);
                 resultIntent.putExtra(Helper.EXTRA_BUNDLE, resultBundle);
                 resultIntent.putExtra(Helper.EXTRA_BLURB, ed_name.getText().toString());
-                LogFactory.writeMessage(this, LOG_TAG, "Bundle created");
+                LogFactory.writeMessage(this, LOG_TAG, "Bundle created", resultIntent);
                 setResult(RESULT_OK, resultIntent);
             }else{
+                LogFactory.writeMessage(this, LOG_TAG, "Acttion is other than START");
                 if(ed_name.getText().toString().equals("")){
                     LogFactory.writeMessage(this, LOG_TAG, "Name is emtpy. Configurating cancelled");
                     setResult(RESULT_CANCELED);
@@ -325,7 +326,7 @@ public class ConfigureActivity extends AppCompatActivity {
                     }
                     resultIntent.putExtra(Helper.EXTRA_BUNDLE, resultBundle);
                     resultIntent.putExtra(Helper.EXTRA_BLURB, ed_name.getText().toString());
-                    LogFactory.writeMessage(this, LOG_TAG, "Bundle created");
+                    LogFactory.writeMessage(this, LOG_TAG, "Bundle created", resultIntent);
                     setResult(RESULT_OK, resultIntent);
                 }
             }
@@ -344,8 +345,8 @@ public class ConfigureActivity extends AppCompatActivity {
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, ed_name.getText().toString());
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.mipmap.ic_launcher));
             addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-            LogFactory.writeMessage(this, LOG_TAG, "Adding shortcut. Name: " + ed_name.getText().toString() +
-                    ", DNS1: " + dns1 + ", DNS2: " + dns2 + ", DNS1V6: " + dns1V6 + ", DNS2V6: " + dns2V6);
+            LogFactory.writeMessage(this, LOG_TAG, "Adding shortcut", shortcutIntent);
+            LogFactory.writeMessage(this, LOG_TAG, "Intent for adding to Screen:", addIntent);
             getApplicationContext().sendBroadcast(addIntent);
             setResult(RESULT_OK);
             LogFactory.writeMessage(this, LOG_TAG, "Shortcut added to Launcher");

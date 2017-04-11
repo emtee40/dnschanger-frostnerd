@@ -23,6 +23,7 @@ import android.view.MenuItem;
 
 import com.frostnerd.dnschanger.API;
 import com.frostnerd.dnschanger.BuildConfig;
+import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.receivers.AdminReceiver;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.R;
@@ -53,11 +54,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     private final int REQUEST_EXTERNAL_STORAGE = 815,REQUEST_CODE_ENABLE_ADMIN = 1;
     private boolean exportSettings, importSettings;
     private final int USAGE_STATS_REQUEST = 13, CHOOSE_AUTOPAUSEAPPS_REQUEST = 14;
+    private final static String LOG_TAG = "[SettingsActivity]";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LogFactory.writeMessage(this, LOG_TAG, "Created Activity");
         addPreferencesFromResource(R.xml.preferences);
+        LogFactory.writeMessage(this, LOG_TAG, "Added preferences from resources");
         devicePolicyManager = (DevicePolicyManager)getSystemService(DEVICE_POLICY_SERVICE);
         deviceAdmin = new ComponentName(this, AdminReceiver.class);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -219,25 +223,36 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
         });
+        LogFactory.writeMessage(this, LOG_TAG, "Done with onCreate");
     }
 
     private Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
+            LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Preference " + preference.getKey() + " was changed to " +
+                    newValue + ", Type: " + Preferences.getType(newValue));
             Preferences.put(SettingsActivity.this,preference.getKey(),newValue);
             String key = preference.getKey();
             if((key.equalsIgnoreCase("setting_show_notification") || key.equalsIgnoreCase("show_used_dns") ||
-                    key.equalsIgnoreCase("auto_pause")) && API.checkVPNServiceRunning(SettingsActivity.this))startService(new Intent(SettingsActivity.this, DNSVpnService.class));
+                    key.equalsIgnoreCase("auto_pause")) && API.checkVPNServiceRunning(SettingsActivity.this)){
+                Intent i;
+                LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Updating DNSVPNService, as a relevant setting " +
+                        "(notification/autopause) changed", i = new Intent(SettingsActivity.this, DNSVpnService.class));
+                startService(i);
+            }
             return true;
         }
     };
 
     private boolean checkWriteReadPermission(){
         if(!API.canReadExternalStorage(this) || !API.canWriteExternalStorage(this)){
+            LogFactory.writeMessage(this, LOG_TAG, "Showing Dialog explaining why this app needs read/write access");
             new AlertDialog.Builder(this).setTitle(R.string.title_import_export).setMessage(R.string.explain_storage_permission).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "User clicked OK in Read/Write dialog");
                     dialog.cancel();
+                    LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Requesting access to Read/Write Permission");
                     ActivityCompat.requestPermissions(SettingsActivity.this,
                             new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},
                             REQUEST_EXTERNAL_STORAGE);
@@ -245,6 +260,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "User choose to cancel Read/Write Request");
                     dialog.cancel();
                 }
             }).show();
@@ -254,16 +270,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     private void importSettings(){
+        LogFactory.writeMessage(this, LOG_TAG, "Importing Setting. Showing chooser dialog.");
         new FileChooserDialog(SettingsActivity.this, false, FileChooserDialog.SelectionMode.FILE).setFileListener(new FileChooserDialog.FileSelectedListener() {
             @Override
             public void fileSelected(File file, FileChooserDialog.SelectionMode selectionMode) {
+                LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "User choose File " + file);
+                LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Finishing Activity");
                 finish();
+                LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Starting import (Opening SettingsImportActivity");
                 SettingsImportActivity.importFromFile(SettingsActivity.this, file);
             }
         }).showDialog();
+        LogFactory.writeMessage(this, LOG_TAG, "Dialog is now showing");
     }
 
     private void exportSettings(){
+        LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Exporting settings. Showing chooser dialog.");
         FileChooserDialog dialog = new FileChooserDialog(SettingsActivity.this, true, FileChooserDialog.SelectionMode.DIR);
         dialog.setShowFiles(false);
         dialog.setShowDirs(true);
@@ -315,11 +337,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
         });
         dialog.showDialog();
+        LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Dialog is now shown");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Resuming Activity");
         if(devicePolicyManager.isAdminActive(deviceAdmin)){
             ((SwitchPreference)findPreference("device_admin")).setChecked(true);
         }
@@ -327,6 +351,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Got Permission Request Result");
         if(requestCode == REQUEST_EXTERNAL_STORAGE){
             if(importSettings && API.canReadExternalStorage(this)){
                 importSettings();

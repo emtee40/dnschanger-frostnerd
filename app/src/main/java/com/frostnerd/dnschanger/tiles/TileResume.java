@@ -61,12 +61,15 @@ public class TileResume extends android.service.quicksettings.TileService {
             return;
         }
         boolean pinProtected = Preferences.getBoolean(this, "pin_tile", false);
+        Intent i;
         if(pinProtected){
-            LogFactory.writeMessage(this, LOG_TAG, "Tile is Pin protected. Starting PinActivity");
-            startActivity(new Intent(this, PinActivity.class).putExtra("start_vpn", true).putExtra("redirectToService",true));
+            LogFactory.writeMessage(this, LOG_TAG, "Tile is Pin protected. Starting PinActivity",
+                    i = new Intent(this, PinActivity.class).putExtra("start_vpn", true).putExtra("redirectToService",true));
+            startActivity(i);
         }else{
-            LogFactory.writeMessage(this, LOG_TAG, "Tile is not Pin protected. Starting DNSVPNService");
-            startService(new Intent(this, DNSVpnService.class).putExtra("start_vpn", true));
+            LogFactory.writeMessage(this, LOG_TAG, "Tile is not Pin protected. Starting DNSVPNService",
+                    i = new Intent(this, DNSVpnService.class).putExtra("start_vpn", true));
+            startService(i);
         }
     }
 

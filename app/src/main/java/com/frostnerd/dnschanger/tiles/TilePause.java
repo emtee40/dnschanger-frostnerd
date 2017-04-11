@@ -61,12 +61,15 @@ public class TilePause extends android.service.quicksettings.TileService {
             return;
         }
         boolean pinProtected = Preferences.getBoolean(this, "pin_tile", false);
+        Intent i;
         if(pinProtected){
-            LogFactory.writeMessage(this, LOG_TAG, "Tile is Pin protected. Starting PinActivity");
-            startActivity(new Intent(this, PinActivity.class).putExtra("stop_vpn", true).putExtra("redirectToService",true));
+            LogFactory.writeMessage(this, LOG_TAG, "Tile is Pin protected. Starting PinActivity",
+                    i = new Intent(this, PinActivity.class).putExtra("stop_vpn", true).putExtra("redirectToService",true));
+            startActivity(i);
         }else{
-            LogFactory.writeMessage(this, LOG_TAG, "Tile is Pin protected. Pausing DNSVPNService");
-            startService(new Intent(this, DNSVpnService.class).putExtra("stop_vpn", true));
+            LogFactory.writeMessage(this, LOG_TAG, "Tile is Pin protected. Pausing DNSVPNService",
+                    i = new Intent(this, DNSVpnService.class).putExtra("stop_vpn", true));
+            startService(i);
         }
     }
 

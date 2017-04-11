@@ -27,14 +27,17 @@ public class BootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         LogFactory.writeMessage(context, LOG_TAG, "Starting ConnectivityBackgroundService");
         context.startService(new Intent(context, ConnectivityBackgroundService.class));
+        LogFactory.writeMessage(context, LOG_TAG, "Received an intent ", intent);
         if(intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED) || intent.getAction().equals(Intent.ACTION_LOCKED_BOOT_COMPLETED)){
             LogFactory.writeMessage(context, LOG_TAG, "Action is BOOT_COMPLETED");
             if(Preferences.getBoolean(context,"setting_start_boot",false)){
                 LogFactory.writeMessage(context, LOG_TAG, "User wants App to start on boot");
                 Intent i = VpnService.prepare(context);
+                LogFactory.writeMessage(context, LOG_TAG, "VPNService Prepare Intent", i);
                 if(i == null){
-                    LogFactory.writeMessage(context, LOG_TAG, "VPNService is prepared. Starting DNSVpnService.");
-                    context.startService(new Intent(context, DNSVpnService.class).putExtra("start_vpn",true).putExtra("startedWithTasker", false));
+                    LogFactory.writeMessage(context, LOG_TAG, "VPNService is prepared. Starting DNSVpnService",
+                            i = new Intent(context, DNSVpnService.class).putExtra("start_vpn",true).putExtra("startedWithTasker", false));
+                    context.startService(i);
                 }else{
                     LogFactory.writeMessage(context, LOG_TAG, "VPNService is NOT prepared. Starting BackgroundVpnConfigureActivity.");
                     BackgroundVpnConfigureActivity.startBackgroundConfigure(context,true);

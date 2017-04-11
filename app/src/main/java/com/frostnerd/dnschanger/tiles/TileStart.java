@@ -14,9 +14,9 @@ import com.frostnerd.utils.preferences.Preferences;
 /**
  * Copyright Daniel Wolf 2017
  * All rights reserved.
- *
+ * <p>
  * Terms on usage of my code can be found here: https://git.frostnerd.com/PublicAndroidApps/DnsChanger/blob/master/README.md
- *
+ * <p>
  * <p>
  * development@frostnerd.com
  */
@@ -41,10 +41,10 @@ public class TileStart extends android.service.quicksettings.TileService {
         super.onStartListening();
         LogFactory.writeMessage(this, LOG_TAG, "Start listening");
         Tile tile = getQsTile();
-        if(API.checkVPNServiceRunning(this)){
+        if (API.checkVPNServiceRunning(this)) {
             LogFactory.writeMessage(this, LOG_TAG, "Service not running (State set to Active)");
             tile.setState(Tile.STATE_ACTIVE);
-        }else{
+        } else {
             LogFactory.writeMessage(this, LOG_TAG, "Service running (State set to inactive)");
             tile.setState(Tile.STATE_INACTIVE);
         }
@@ -56,17 +56,20 @@ public class TileStart extends android.service.quicksettings.TileService {
     public void onClick() {
         super.onClick();
         LogFactory.writeMessage(this, LOG_TAG, "Tile clicked");
-        if(API.checkVPNServiceRunning(this)){
+        if (API.checkVPNServiceRunning(this)) {
             LogFactory.writeMessage(this, LOG_TAG, "Service not running. Returning");
             return;
         }
         boolean pinProtected = Preferences.getBoolean(this, "pin_tile", false);
-        if(pinProtected){
-            LogFactory.writeMessage(this, LOG_TAG, "Tile is Pin protected. Starting PinActivity");
-            startActivity(new Intent(this, PinActivity.class).putExtra("start_vpn", true).putExtra("redirectToService",true));
-        }else{
-            LogFactory.writeMessage(this, LOG_TAG, "Tile is not Pin protected. Starting DNSVPNService");
-            startService(new Intent(this, DNSVpnService.class).putExtra("start_vpn", true));
+        Intent i;
+        if (pinProtected) {
+            LogFactory.writeMessage(this, LOG_TAG, "Tile is Pin protected. Starting PinActivity",
+                    i = new Intent(this, PinActivity.class).putExtra("start_vpn", true).putExtra("redirectToService", true));
+            startActivity(i);
+        } else {
+            LogFactory.writeMessage(this, LOG_TAG, "Tile is not Pin protected. Starting DNSVPNService",
+                    i = new Intent(this, DNSVpnService.class).putExtra("start_vpn", true));
+            startService(i);
         }
     }
 

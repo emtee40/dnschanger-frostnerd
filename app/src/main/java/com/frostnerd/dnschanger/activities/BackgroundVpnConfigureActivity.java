@@ -46,14 +46,14 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogFactory.writeMessage(this, LOG_TAG, "Created Activity");
+        LogFactory.writeMessage(this, LOG_TAG, "Created Activity", getIntent());
         if (getSupportActionBar() != null) getSupportActionBar().hide();
         Intent intent = getIntent();
         final Intent conf = VpnService.prepare(this);
         startService = intent != null && intent.getBooleanExtra("startService", false);
         serviceIntent = new Intent(this, DNSVpnService.class).putExtra("start_vpn", true);
+        LogFactory.writeMessage(this, LOG_TAG, "VPNService prepare", conf);
         LogFactory.writeMessage(this, LOG_TAG, "Starting Service: " + startService);
-        LogFactory.writeMessage(this, LOG_TAG, "Is Intent null: " + (intent == null));
         if (intent != null && intent.getBooleanExtra("fixeddns", false)) {
             LogFactory.writeMessage(this, LOG_TAG, "Intent is not null and fixeddns is false");
             String dns1 = "8.8.8.8";
@@ -67,7 +67,7 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
             if (intent.hasExtra("dns2-v6")) dns2_v6 = intent.getStringExtra("dns2-v6");
             serviceIntent = serviceIntent.putExtra("fixeddns", true).putExtra("dns1", dns1).putExtra("dns2", dns2)
                     .putExtra("dns1-v6", dns1_v6).putExtra("dns2-v6", dns2_v6).putExtra("startedWithTasker", startedWithTasker);
-            LogFactory.writeMessage(this, LOG_TAG, "ServiceIntent created. DNS1: " + dns1 + ", DNS2: " + dns2 + ", DNS1V6: " + dns1_v6 + ", DNS2V6: " + dns2_v6 + ", fixeddns: true, startedWithTasker: " + startedWithTasker);
+            LogFactory.writeMessage(this, LOG_TAG, "ServiceIntent created", serviceIntent);
         }
         if (conf != null) {
             LogFactory.writeMessage(this, LOG_TAG, "VPN access not yet granted. Requesting access (Showing Info dialog).");
@@ -76,6 +76,7 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     LogFactory.writeMessage(BackgroundVpnConfigureActivity.this, LOG_TAG, "User clicked OK in Request Info Dialog. Requesting access now.");
                     requestTime = System.currentTimeMillis();
+                    LogFactory.writeMessage(BackgroundVpnConfigureActivity.this, LOG_TAG, "Preparing VPNService", conf);
                     startActivityForResult(conf, REQUEST_CODE);
                 }
             });
@@ -112,7 +113,7 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 LogFactory.writeMessage(this, LOG_TAG, "Access was granted");
                 if (startService){
-                    LogFactory.writeMessage(this, LOG_TAG, "Starting service");
+                    LogFactory.writeMessage(this, LOG_TAG, "Starting service", serviceIntent);
                     startService(serviceIntent);
                 }
                 setResult(RESULT_OK);
@@ -126,8 +127,10 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
                     dialog2 = new AlertDialog.Builder(this).setTitle(getString(R.string.app_name) + " - " + getString(R.string.information)).setMessage(R.string.background_configure_error).setPositiveButton(R.string.open_app, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            LogFactory.writeMessage(BackgroundVpnConfigureActivity.this, LOG_TAG, "Redirecting User to PinActivity");
-                            startActivity(new Intent(BackgroundVpnConfigureActivity.this, PinActivity.class));
+                            Intent i;
+                            LogFactory.writeMessage(BackgroundVpnConfigureActivity.this, LOG_TAG, "Redirecting User to PinActivity",
+                                    i = new Intent(BackgroundVpnConfigureActivity.this, PinActivity.class));
+                            startActivity(i);
                             finish();
                         }
                     }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
