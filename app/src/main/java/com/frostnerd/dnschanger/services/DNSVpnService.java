@@ -180,7 +180,7 @@ public class DNSVpnService extends VpnService {
 
     private void initNotification(){
         if (notificationBuilder == null) {
-            LogFactory.writeMessage(this, LOG_TAG, "Initiating Notification");
+            LogFactory.writeMessage(this,new String[]{LOG_TAG, "[NOTIFICATION]"} , "Initiating Notification");
             notificationBuilder = new android.support.v7.app.NotificationCompat.Builder(this);
             notificationBuilder.setSmallIcon(R.drawable.ic_stat_small_icon); //TODO Update Image
             notificationBuilder.setContentTitle(getString(R.string.app_name));
@@ -191,7 +191,7 @@ public class DNSVpnService extends VpnService {
             notificationBuilder.addAction(new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_pause, getString(R.string.action_pause),null));
             notificationBuilder.addAction(new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_stop, getString(R.string.action_stop),null));
             notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            LogFactory.writeMessage(this, LOG_TAG, "Notification created (Not yet posted)");
+            LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification created (Not yet posted)");
         }
     }
 
@@ -247,7 +247,7 @@ public class DNSVpnService extends VpnService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        LogFactory.writeMessage(this, LOG_TAG, "Got StartCommand", intent);
+        LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Got StartCommand", intent);
         if(intent!=null){
             fixedDNS = intent.hasExtra("fixeddns") ? intent.getBooleanExtra("fixeddns", false) : fixedDNS;
             startedWithTasker = intent.hasExtra("startedWithTasker") ? intent.getBooleanExtra("startedWithTasker", false) : startedWithTasker;
@@ -257,25 +257,25 @@ public class DNSVpnService extends VpnService {
             }
             else autoPauseApps = new HashSet<>();
             if(intent.getBooleanExtra("destroy",false)){
-                LogFactory.writeMessage(this, LOG_TAG, "Got destroy. Destroying DNSVPNService");
+                LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Got destroy. Destroying DNSVPNService");
                 stopped = true;
                 if (thread != null) {
-                    LogFactory.writeMessage(this, LOG_TAG, "Interrupting Thread");
+                    LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Interrupting Thread");
                     run = false;
                     thread.interrupt();
                 }
-                LogFactory.writeMessage(this, LOG_TAG, "Stopping self");
+                LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Stopping self");
                 stopSelf();
             }else if (intent.getBooleanExtra("start_vpn", false)) {
-                LogFactory.writeMessage(this, LOG_TAG, "Starting VPN");
+                LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Starting VPN");
                 if (thread != null) {
-                    LogFactory.writeMessage(this, LOG_TAG, "VPNThread already running. Interrupting");
+                    LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "VPNThread already running. Interrupting");
                     run = false;
                     thread.interrupt();
                 }
                 updateDNSServers(intent);
                 stopped = false;
-                LogFactory.writeMessage(this, LOG_TAG, "Creating Thread");
+                LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Creating Thread");
                 thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -340,16 +340,16 @@ public class DNSVpnService extends VpnService {
                 run = true;
                 thread.start();
             }else if (intent.getBooleanExtra("stop_vpn", false)){
-                LogFactory.writeMessage(this, LOG_TAG, "Stopping VPN");
+                LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Stopping VPN");
                 autoPaused = false;
                 if (thread != null) {
-                    LogFactory.writeMessage(this, LOG_TAG, "Interrupting thread");
+                    LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Interrupting thread");
                     run = false;
                     thread.interrupt();
                 }
             }
             updateTiles(this);
-        }else LogFactory.writeMessage(this, new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, "Intent given is null. This isn't normal behavior");
+        }else LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]", LogFactory.Tag.ERROR.toString()}, "Intent given is null. This isn't normal behavior");
         updateNotification();
         return START_STICKY;
     }
