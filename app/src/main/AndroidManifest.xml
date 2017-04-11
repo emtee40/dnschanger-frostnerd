@@ -92,7 +92,8 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".receivers.BootReceiver"
+        <receiver
+            android:name=".receivers.BootReceiver"
             android:enabled="true"
             android:exported="true"> <!-- TODO Check if working on all devices-->
             <intent-filter>
@@ -130,7 +131,7 @@
         <activity
             android:name=".activities.ErrorDialogActivity"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert"/>
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
 
         <activity
             android:name=".activities.AutoPauseAppSelectActivity"
@@ -229,6 +230,15 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.frostnerd.dnschanger"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/debug_file_paths" />
+        </provider>
     </application>
 
 </manifest>

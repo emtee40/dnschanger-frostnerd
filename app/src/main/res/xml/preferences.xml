@@ -127,4 +127,16 @@
 
         <Preference android:key="placeholder_version" />
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/title_debug_category" android:key="debug_category">
+        <SwitchPreference
+            android:key="debug"
+            android:summary="@string/summary_debug"
+            android:title="@string/title_debug" />
+
+        <Preference
+            android:key="send_debug"
+            android:summary="@string/summary_send_debug"
+            android:title="@string/title_send_debug" />
+    </PreferenceCategory>
 </PreferenceScreen>

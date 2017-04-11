@@ -117,4 +117,10 @@
     <string name="device_admin_description">Prevent uninstall by settings as device admin</string>
     <string name="device_admin">Device admin</string>
     <string name="device_admin_removal_warning">Warning: When removing this app as device admin uninstallation isn\'t hindered anymore.</string>
+    <string name="title_debug">Debug</string>
+    <string name="summary_debug">Enables debug which generates logfiles to be sent to the developer (Doesn\'t happen automatically)\nMay increase battery usage.</string>
+    <string name="debug_dialog_info_text">Activating the debug feature may increase the battery consumption. Additionally the generated logs contain general (non personal) information about your device [App version, Android version, Device Name, Manufacturer] and may log the DNS Servers you configure the app to use.\n\nThis data isn\'t sent automatically but keep that in mind when sending those logs to me.</string>
+    <string name="summary_send_debug">Send debug logs to Developer</string>
+    <string name="title_send_debug">Send logs</string>
+    <string name="title_debug_category">Troubleshooting</string>
 </resources>

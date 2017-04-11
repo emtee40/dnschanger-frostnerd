@@ -118,4 +118,10 @@
     <string name="device_admin_description">Deinstallation durch Geräteadmin verhindern</string>
     <string name="device_admin">Geräteadministrator</string>
     <string name="device_admin_removal_warning">Warnung: Das Entfernen als Geräteadmin verhindert, dass die Deinstallation blockiert werden kann.</string>
+    <string name="title_debug">Debug</string>
+    <string name="summary_debug">Aktiviert Debugging. Es werden Logdateien erstellt, welche an den Entwickler geschickt werden können (Dies passiert nicht automatisch) und somit bei der Problemlösung helfen könnten.\nKönnte Batterienutzung erhöhen.</string>
+    <string name="debug_dialog_info_text">Das Aktivieren des Debugging könnte die Batterienutzung erhöhen. Zusätzlich werden generelle Informationen über das Gerät (nicht personenbezogen) in den Logs gespeichert [App Version, Android Version, Gerätename, Hersteller] und die eingestellten DNS Server mitgespeichert (als Teil des Logging).\n\nDiese Daten werden nicht automatisch versendet, aber behalte dies im Hinterkopf, solltest du diese Logs zu mir senden.</string>
+    <string name="summary_send_debug">Logdateien an Entwickler schicken</string>
+    <string name="title_send_debug">Logdateien versenden</string>
+    <string name="title_debug_category">Fehlersuche</string>
 </resources>
