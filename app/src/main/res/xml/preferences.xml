@@ -96,7 +96,7 @@
             android:summary="@string/summary_pin_value"
             android:title="@string/title_pin_value" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/title_import_export">
+    <!--<PreferenceCategory android:title="@string/title_import_export">
         <Preference
             android:key="export_settings"
             android:summary="@string/summary_export_settings"
@@ -106,7 +106,7 @@
             android:key="import_settings"
             android:summary="@string/summary_import_settings"
             android:title="@string/title_import_settings" />
-    </PreferenceCategory>
+    </PreferenceCategory>-->
     <PreferenceCategory android:title="@string/title_general">
         <Preference
             android:key="setting_info"

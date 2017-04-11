@@ -9,8 +9,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
 
     <!--<uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
@@ -192,7 +192,7 @@
         <activity
             android:name=".activities.SettingsImportActivity"
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert">
-            <intent-filter android:priority="50">
+            <!--<intent-filter android:priority="50">
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.SEND" />
                 <action android:name="android.intent.action.SENDTO" />
@@ -215,7 +215,7 @@
                 <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.settings" />
                 <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.settings" />
                 <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.settings" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
         <receiver
