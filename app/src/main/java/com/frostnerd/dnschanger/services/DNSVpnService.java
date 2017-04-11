@@ -201,7 +201,6 @@ public class DNSVpnService extends VpnService {
         LogFactory.writeMessage(this, LOG_TAG, "Created Service");
         initNotification();
         registerReceiver(stateRequestReceiver, new IntentFilter(API.BROADCAST_SERVICE_STATE_REQUEST));
-        Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
     }
 
     public static void startWithSetDNS(final Context context, final String dns1, final String dns2, final String dns1v6, final String dns2v6){
