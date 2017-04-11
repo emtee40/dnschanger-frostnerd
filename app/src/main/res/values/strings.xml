@@ -123,4 +123,6 @@
     <string name="summary_send_debug">Send debug logs to Developer</string>
     <string name="title_send_debug">Send logs</string>
     <string name="title_debug_category">Troubleshooting</string>
+    <string name="shortcuts">Shortcuts</string>
+    <string name="dialog_question_export_shortcuts">Export shortcuts aswell?\n\n(Exports all shortcuts created since install using this app, even those which were already deleted)</string>
 </resources>

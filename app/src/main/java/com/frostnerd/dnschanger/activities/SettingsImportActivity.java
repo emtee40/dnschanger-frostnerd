@@ -69,7 +69,12 @@ public class SettingsImportActivity extends Activity {
             LogFactory.writeMessage(c, LOG_TAG, "Reading data");
             while ((line = reader.readLine()) != null) {
                 if (line.equals("") || line.startsWith("[")) continue;
-                data += line;
+                System.out.println("LINE: " + line);
+                if(line.startsWith("'")){
+                    System.out.println("SHORTCUT: " + API.Shortcut.fromString(line.split("'")[1]));
+                    API.createShortcut(c, API.Shortcut.fromString(line.split("'")[1]));
+                }
+                else data += line;
             }
             LogFactory.writeMessage(c, LOG_TAG, "Data read: " + data);
             Preferences.importFromStringAndPut(c, data, "<<>>");

@@ -124,4 +124,6 @@
     <string name="summary_send_debug">Logdateien an Entwickler schicken</string>
     <string name="title_send_debug">Logdateien versenden</string>
     <string name="title_debug_category">Fehlersuche</string>
+    <string name="shortcuts">Verknüpfungen</string>
+    <string name="dialog_question_export_shortcuts">Verknüpfungen auch exportieren?\n\n(Exportiert alle Verknüpfungen, welche seit der Installation über die App erstellt wurden, auch solche, welche nicht mehr existieren)</string>
 </resources>

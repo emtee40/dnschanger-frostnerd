@@ -43,6 +43,7 @@ public class DNSChanger extends Application {
     @Override
     public void onTerminate() {
         LogFactory.writeMessage(this, LOG_TAG, "Application terminated");
+        API.terminate();
         LogFactory.terminate();
         super.onTerminate();
     }

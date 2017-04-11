@@ -189,7 +189,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, preference.getKey() + " clicked");
                 importSettings = false;
                 exportSettings = false;
-                if(checkWriteReadPermission())exportSettings();
+                if(checkWriteReadPermission())exportSettingsAskShortcuts();
                 else exportSettings = true;
                 return true;
             }
@@ -365,7 +365,25 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[IMPORTSETTINGS]"}, "Dialog is now showing");
     }
 
-    private void exportSettings(){
+    private void exportSettingsAskShortcuts(){
+        LogFactory.writeMessage(SettingsActivity.this, new String[]{LOG_TAG, "[EXPORTSETTINGS]"}, "Exporting settings. Asking in dialog whether shortcuts should be exported aswell.");
+        new AlertDialog.Builder(this).setTitle(R.string.shortcuts).setMessage(R.string.dialog_question_export_shortcuts).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                exportSettings(true);
+            }
+        }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                exportSettings(false);
+            }
+        }).setCancelable(false).show();
+        LogFactory.writeMessage(SettingsActivity.this, new String[]{LOG_TAG, "[EXPORTSETTINGS]"}, "Dialog is now being shown");
+    }
+
+    private void exportSettings(final boolean exportShortcuts){
         LogFactory.writeMessage(SettingsActivity.this, new String[]{LOG_TAG, "[EXPORTSETTINGS]"}, "Exporting settings. Showing chooser dialog.");
         FileChooserDialog dialog = new FileChooserDialog(SettingsActivity.this, true, FileChooserDialog.SelectionMode.DIR);
         dialog.setShowFiles(false);
@@ -394,6 +412,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     writer.write(Preferences.exportToString(SettingsActivity.this,false,"<<>>\n","first_run","device_admin"));
                     LogFactory.writeMessage(SettingsActivity.this, new String[]{LOG_TAG, "[EXPORTSETTINGS]"}, "Flushing data");
                     writer.flush();
+                    if(exportShortcuts){
+                        LogFactory.writeMessage(SettingsActivity.this, new String[]{LOG_TAG, "[EXPORTSETTINGS]"}, "Exporting shortcuts aswell");
+                        API.Shortcut[] shortcuts = API.getShortcutsFromDatabase(SettingsActivity.this);
+                        writer.write("\n");
+                        for(API.Shortcut shortcut: shortcuts){
+                            writer.write("'" + shortcut.toString() + "'\n");
+                        }
+                        LogFactory.writeMessage(SettingsActivity.this, new String[]{LOG_TAG, "[EXPORTSETTINGS]"}, "Flushing shortcut data");
+                        writer.flush();
+                        LogFactory.writeMessage(SettingsActivity.this, new String[]{LOG_TAG, "[EXPORTSETTINGS]"}, "Exported " + shortcuts.length + " Shortcuts");
+                    }
                     LogFactory.writeMessage(SettingsActivity.this, new String[]{LOG_TAG, "[EXPORTSETTINGS]"}, "Finished writing");
                     new AlertDialog.Builder(SettingsActivity.this).setMessage(R.string.message_settings_exported).setCancelable(true).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
@@ -450,7 +479,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 importSettings();
             }else if(exportSettings && API.canReadExternalStorage(this) && API.canWriteExternalStorage(this)){
                 LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "User wanted to export settings and granted the permissions");
-                exportSettings();
+                exportSettingsAskShortcuts();
             }else if(exportSettings || importSettings){
                 LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "User wants to import/export settings but hasn't granted the needed permissions.");
             }
