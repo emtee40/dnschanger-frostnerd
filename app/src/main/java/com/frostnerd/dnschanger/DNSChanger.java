@@ -3,6 +3,7 @@ package com.frostnerd.dnschanger;
 import android.app.Application;
 
 import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
+import com.frostnerd.dnschanger.services.DNSVpnService;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -20,6 +21,7 @@ public class DNSChanger extends Application {
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread t, Throwable e) {
+                LogFactory.writeMessage(DNSChanger.this,  new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, "Caught uncaught exception");
                 LogFactory.writeStackTrace(DNSChanger.this, new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, e);
                 ErrorDialogActivity.show(DNSChanger.this, e);
             }
