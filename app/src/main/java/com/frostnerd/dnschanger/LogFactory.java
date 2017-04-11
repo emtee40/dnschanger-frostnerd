@@ -110,6 +110,16 @@ public class LogFactory {
         }
     }
 
+    public static void terminate(){
+        try{
+            fileWriter.close();
+        }catch(Exception e){
+
+        }
+        fileWriter = null;logFile=null;logDir = null;
+        ready = usable = false;
+    }
+
     public static boolean prepare(Context context) {
         if(!enabled && ready)return false;
         if (ready) return usable;
@@ -264,7 +274,7 @@ public class LogFactory {
         return builder.toString();
     }
 
-    private static String stacktraceToString(Throwable throwable) {
+    public static String stacktraceToString(Throwable throwable) {
         StringWriter sw = new StringWriter();
         throwable.printStackTrace(new PrintWriter(sw));
         String res = sw.toString();
