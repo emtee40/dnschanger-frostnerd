@@ -81,7 +81,6 @@ public class LogFactory {
     }
 
     public static void enable(){
-        System.out.println("Enabling LogFactory");
         enabled = true;
         ready = false;
         usable = false;
@@ -96,7 +95,6 @@ public class LogFactory {
     }
 
     public static void disable(){
-        System.out.println("Disabling LogFactory");
         enabled = false;
         ready = true;
         usable = false;
