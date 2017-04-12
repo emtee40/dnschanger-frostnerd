@@ -324,10 +324,10 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         LogFactory.writeMessage(this, LOG_TAG, "Got OnResume");
         LogFactory.writeMessage(this, LOG_TAG, "Sending ServiceStateRequest as broadcast");
-        sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATE_REQUEST));
         vpnRunning = API.checkVPNServiceRunning(this);
         setIndicatorState(vpnRunning);
         registerReceiver(serviceStateReceiver, new IntentFilter(API.BROADCAST_SERVICE_STATUS_CHANGE));
+        sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATE_REQUEST));
     }
 
     @Override
