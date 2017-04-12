@@ -287,7 +287,7 @@ public class DNSVpnService extends VpnService {
                             initNotification();
                             if(notificationBuilder != null) notificationBuilder.setWhen(System.currentTimeMillis());
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Creating Tunnel interface");
-                            tunnelInterface = builder.setSession("DnsChanger").addAddress("172.31.255.253", 30).addAddress("fda5:1fed:410b:bbd6:1fad:2abc::1",64).addDnsServer(dns1).addDnsServer(dns2)
+                            tunnelInterface = builder.setSession("DnsChanger").addAddress("172.31.255.253", 30).addAddress(API.randomLocalIPv6Address(),48).addDnsServer(dns1).addDnsServer(dns2)
                                     .addDnsServer(dns1_v6).addDnsServer(dns2_v6).establish();
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Tunnel interface created and established.");
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Opening DatagramChannel");

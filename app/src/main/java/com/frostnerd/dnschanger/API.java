@@ -33,6 +33,23 @@ public final class API {
     public static final String LOG_TAG = "[API]";
     private static SQLiteDatabase database;
 
+    public static String randomLocalIPv6Address(){
+        String prefix = randomIPv6LocalPrefix();
+        for(int i = 0; i < 5;i++) prefix += ":" + randomIPv6Block(16,false);
+        return prefix;
+    }
+
+    private static String randomIPv6LocalPrefix(){
+        return "fd" + randomIPv6Block(8,true) + ":" + randomIPv6Block(16,false) + ":" + randomIPv6Block(16,false);
+    }
+
+    private static String randomIPv6Block(int bits, boolean leading_zeros){
+        String hex = Long.toHexString((long)Math.floor(Math.random()*Math.pow(2,bits)));
+        if(!leading_zeros || hex.length() == bits/4);
+        hex = "0000".substring(0, bits/4 - hex.length()) + hex;
+        return hex;
+    }
+
     public static boolean checkVPNServiceRunning(Context c){
         ActivityManager am = (ActivityManager)c.getSystemService(Context.ACTIVITY_SERVICE);
         String name = DNSVpnService.class.getName();
