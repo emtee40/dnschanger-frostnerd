@@ -346,6 +346,7 @@ public class DNSVpnService extends VpnService {
                             }catch(Exception e){
                                 e.printStackTrace();
                             }
+                            thread = null;
                         }
                     }
                 });
