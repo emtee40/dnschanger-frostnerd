@@ -31,6 +31,7 @@ import com.frostnerd.utils.stats.AppTaskGetter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.nio.channels.DatagramChannel;
 import java.util.HashSet;
@@ -279,6 +280,8 @@ public class DNSVpnService extends VpnService {
                     @Override
                     public void run() {
                         LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Starting Thread (run)");
+                        DatagramChannel tunnel = null;
+                        DatagramSocket tunnelSocket = null;
                         try {
                             Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
                             initNotification();
@@ -288,13 +291,13 @@ public class DNSVpnService extends VpnService {
                                     .addDnsServer(dns1_v6).addDnsServer(dns2_v6).establish();
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Tunnel interface created and established.");
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Opening DatagramChannel");
-                            DatagramChannel tunnel = DatagramChannel.open();
+                            tunnel = DatagramChannel.open();
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "DatagramChannel opened");
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Connecting to 127.0.0.1:8087");
                             tunnel.connect(new InetSocketAddress("127.0.0.1", 8087));
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Connected");
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Trying to protect tunnel");
-                            LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Tunnel protected: " + protect(tunnel.socket()));
+                            LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Tunnel protected: " + protect(tunnelSocket=tunnel.socket()));
                             isRunning = true;
                             broadcastServiceState(true);
                             updateNotification();
@@ -331,6 +334,16 @@ public class DNSVpnService extends VpnService {
                                 tunnelInterface.close();
                             } catch (IOException e) {
                                 LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Exception received whilst closing tunnel: " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                            if(tunnel != null)try{
+                                tunnel.close();
+                            }catch(Exception e){
+                                e.printStackTrace();
+                            }
+                            if(tunnelSocket != null)try{
+                                tunnelSocket.close();
+                            }catch(Exception e){
                                 e.printStackTrace();
                             }
                         }
