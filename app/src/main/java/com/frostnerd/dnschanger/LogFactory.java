@@ -38,6 +38,7 @@ public class LogFactory {
     private static final SimpleDateFormat DATE_TIME_FORMATTER = new SimpleDateFormat("dd_MM_yyyy___kk_mm_ss"),
             TIMESTAMP_FORMATTER = new SimpleDateFormat("EEE MMM dd.yy kk:mm:ss");
     public static final String STATIC_TAG = "[STATIC]";
+    private static final boolean printMessagesToConsole = true; //TODO
 
 
     public static File zipLogFiles(Context c){
@@ -176,6 +177,7 @@ public class LogFactory {
                 for(String s: tags)if(!s.equalsIgnoreCase(Tag.NO_TAG.toString()))builder.append(" " + s);
                 builder.append(": " + message);
                 if(printIntent)builder.append(" " + describeIntent(intent, true));
+                if(printMessagesToConsole) System.out.println(tags[0] + message);
                 builder.append("\n");
                 fileWriter.write(builder.toString());
                 fileWriter.flush();
