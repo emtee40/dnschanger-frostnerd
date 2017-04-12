@@ -183,7 +183,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
         });
-        findPreference("export_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        /*findPreference("export_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, preference.getKey() + " clicked");
@@ -204,7 +204,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 else exportSettings = true;
                 return true;
             }
-        });
+        });*/
         if(devicePolicyManager.isAdminActive(deviceAdmin)) ((SwitchPreference) findPreference("device_admin")).setChecked(true);
         else{
             ((SwitchPreference) findPreference("device_admin")).setChecked(false);
