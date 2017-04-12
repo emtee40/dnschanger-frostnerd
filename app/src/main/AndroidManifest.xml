@@ -101,6 +101,7 @@
                 <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
         <receiver
             android:name=".tasker.FireReceiver"
             android:exported="true"
@@ -118,6 +119,14 @@
             android:launchMode="singleTop"
             android:taskAffinity="com.frostnerd.dnschangerShortcut"
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
+        <activity-alias
+            android:name=".ShortcutActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:taskAffinity="com.frostnerd.dnschangerShortcut"
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert"
+            android:targetActivity=".activities.ShortcutActivity"/>
+
         <activity
             android:name=".activities.PinActivity"
             android:launchMode="singleTop"
