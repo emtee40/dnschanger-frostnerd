@@ -108,11 +108,14 @@
                     android:textColor="#FFF" />
             </com.frostnerd.utils.design.MaterialEditText>
 
+            <!-- TODO -->
             <LinearLayout
                 android:id="@+id/default_dns_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#42A5F5"
+                android:visibility="gone"
+                android:alpha="0.0"
                 android:clickable="true"
                 android:onClick="openDefaultDNSDialog"
                 android:padding="10dp">
