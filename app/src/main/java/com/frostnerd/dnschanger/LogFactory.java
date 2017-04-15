@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -149,6 +150,10 @@ public class LogFactory {
         writeMessage(context, Tag.INFO, "Android Version: " + Build.VERSION.SDK_INT + " (" + Build.VERSION.RELEASE + " - " + Build.VERSION.CODENAME + ")");
         writeMessage(context, Tag.INFO, "Device: " + Build.MODEL + " from " + Build.MANUFACTURER + " (Device: " + Build.DEVICE + ", Product: " + Build.PRODUCT + ")");
         writeMessage(context, Tag.INFO, "Language: " + Locale.getDefault().getDisplayLanguage());
+        String s = "";
+        Map<String,Object> prefs = Preferences.getAll(context, false);
+        for(String key: prefs.keySet())s += key + "->" + prefs.get(key) + "; ";
+        writeMessage(context, Tag.INFO, "Preferences: " + s);
         writeMessage(context, Tag.NO_TAG, "--------------------------------------------------");
         return usable;
     }
