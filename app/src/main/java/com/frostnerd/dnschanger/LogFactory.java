@@ -148,6 +148,7 @@ public class LogFactory {
         writeMessage(context, Tag.INFO, "App Version: " + BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ")");
         writeMessage(context, Tag.INFO, "Android Version: " + Build.VERSION.SDK_INT + " (" + Build.VERSION.RELEASE + " - " + Build.VERSION.CODENAME + ")");
         writeMessage(context, Tag.INFO, "Device: " + Build.MODEL + " from " + Build.MANUFACTURER + " (Device: " + Build.DEVICE + ", Product: " + Build.PRODUCT + ")");
+        writeMessage(context, Tag.INFO, "Language: " + Locale.getDefault().getDisplayLanguage());
         writeMessage(context, Tag.NO_TAG, "--------------------------------------------------");
         return usable;
     }
