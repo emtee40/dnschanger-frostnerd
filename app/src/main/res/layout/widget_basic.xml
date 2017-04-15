@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/basicWidgetBackground"
+    android:id="@+id/basic_widget"
+    android:orientation="vertical"
+    android:padding="@dimen/widget_margin">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/head"
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/basicWidgetText"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/dns1_wrap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DNS1:"
+            android:textColor="@color/basicWidgetText" />
+
+        <TextView
+            android:id="@+id/dns1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/basicWidgetText" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dns2_wrap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DNS2:"
+            android:textColor="@color/basicWidgetText" />
+
+        <TextView
+            android:id="@+id/dns2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/basicWidgetText" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dns1v6_wrap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DNS1 V6:"
+            android:textColor="@color/basicWidgetText" />
+
+        <TextView
+            android:id="@+id/dns1_v6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/basicWidgetText" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dns2v6_wrap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DNS2 V6:"
+            android:textColor="@color/basicWidgetText" />
+
+        <TextView
+            android:id="@+id/dns2_v6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/basicWidgetText" />
+
+    </LinearLayout>
+
+</LinearLayout>

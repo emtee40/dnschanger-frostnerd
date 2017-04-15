@@ -28,13 +28,13 @@
         android:xlargeScreens="true" />
 
     <application
+        android:name="com.frostnerd.dnschanger.DNSChanger"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:name="com.frostnerd.dnschanger.DNSChanger"
         android:theme="@style/AppTheme">
 
         <meta-data
@@ -123,9 +123,9 @@
             android:name=".ShortcutActivity"
             android:exported="true"
             android:launchMode="singleTop"
+            android:targetActivity=".activities.ShortcutActivity"
             android:taskAffinity="com.frostnerd.dnschangerShortcut"
-            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert"
-            android:targetActivity=".activities.ShortcutActivity"/>
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
 
         <activity
             android:name=".activities.PinActivity"
@@ -249,6 +249,15 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/debug_file_paths" />
         </provider>
+
+        <receiver android:name=".widgets.BasicWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/basic_widget" />
+        </receiver>
     </application>
 
 </manifest>

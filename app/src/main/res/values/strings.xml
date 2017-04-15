@@ -125,4 +125,5 @@
     <string name="title_debug_category">Troubleshooting</string>
     <string name="shortcuts">Shortcuts</string>
     <string name="dialog_question_export_shortcuts">Export shortcuts aswell?\n\n(Exports all shortcuts created since install using this app, even those which were already deleted)</string>
+    <string name="widget_not_running">DNS Changer is not launched</string>
 </resources>

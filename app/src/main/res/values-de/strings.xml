@@ -126,4 +126,5 @@
     <string name="title_debug_category">Fehlersuche</string>
     <string name="shortcuts">Verknüpfungen</string>
     <string name="dialog_question_export_shortcuts">Verknüpfungen auch exportieren?\n\n(Exportiert alle Verknüpfungen, welche seit der Installation über die App erstellt wurden, auch solche, welche nicht mehr existieren)</string>
+    <string name="widget_not_running">DNS Changer ist nicht aktiv</string>
 </resources>

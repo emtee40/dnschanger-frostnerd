@@ -8,10 +8,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.VpnService;
+import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.ParcelFileDescriptor;
 import android.service.quicksettings.TileService;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
@@ -24,6 +27,7 @@ import com.frostnerd.dnschanger.tiles.TilePause;
 import com.frostnerd.dnschanger.tiles.TileResume;
 import com.frostnerd.dnschanger.tiles.TileStart;
 import com.frostnerd.dnschanger.tiles.TileStop;
+import com.frostnerd.dnschanger.widgets.BasicWidget;
 import com.frostnerd.utils.general.StringUtils;
 import com.frostnerd.utils.preferences.Preferences;
 import com.frostnerd.utils.stats.AppTaskGetter;
@@ -58,12 +62,13 @@ public class DNSVpnService extends VpnService {
     private final int NOTIFICATION_ID = 112;
     private Handler handler = new Handler();
     private String dns1,dns2,dns1_v6,dns2_v6;
+    private String currentDNS1, currentDNS2, currentDNS1V6, currentDNS2V6;
     private boolean fixedDNS = false, startedWithTasker = false, autoPaused = false;
     private BroadcastReceiver stateRequestReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[StateRequestReceiver]"}, "Received broadcast", intent);
-            broadcastServiceState(isRunning);
+            broadcastCurrentState(isRunning);
         }
     };
     private Set<String> autoPauseApps;
@@ -117,7 +122,7 @@ public class DNSVpnService extends VpnService {
         stopped = true;
         run = false;
         if (thread != null) thread.interrupt();
-        unregisterReceiver(stateRequestReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(stateRequestReceiver);
         thread = null;
         notificationManager.cancel(NOTIFICATION_ID);
         notificationManager = null;
@@ -125,13 +130,6 @@ public class DNSVpnService extends VpnService {
         super.onDestroy();
         updateTiles(this);
         LogFactory.writeMessage(this, LOG_TAG, "Destroyed.");
-    }
-
-    private void broadcastServiceState(boolean vpnRunning){
-        Intent i;
-        LogFactory.writeMessage(this, LOG_TAG, "Broadcasting sevice state",
-                i = new Intent(API.BROADCAST_SERVICE_STATUS_CHANGE).putExtra("vpn_running",vpnRunning).putExtra("started_with_tasker", startedWithTasker));
-        sendBroadcast(i);
     }
 
     private void updateNotification() { //Well, this method is a mess.
@@ -201,7 +199,7 @@ public class DNSVpnService extends VpnService {
         super.onCreate();
         LogFactory.writeMessage(this, LOG_TAG, "Created Service");
         initNotification();
-        registerReceiver(stateRequestReceiver, new IntentFilter(API.BROADCAST_SERVICE_STATE_REQUEST));
+        LocalBroadcastManager.getInstance(this).registerReceiver(stateRequestReceiver, new IntentFilter(API.BROADCAST_SERVICE_STATE_REQUEST));
     }
 
     public static void startWithSetDNS(final Context context, final String dns1, final String dns2, final String dns1v6, final String dns2v6){
@@ -245,10 +243,21 @@ public class DNSVpnService extends VpnService {
         }else LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG}, "Not updating Tiles (Version is below Android N)");
     }
 
+    private void broadcastCurrentState(boolean vpnRunning){
+        Intent i;
+        LogFactory.writeMessage(this, LOG_TAG, "Broadcasting current Service state",
+                i = new Intent(API.BROADCAST_SERVICE_STATUS_CHANGE).
+                        putExtra("dns1", currentDNS1).putExtra("dns2", currentDNS2).putExtra("dns1v6", currentDNS1V6).putExtra("dns2v6", currentDNS2V6).
+                        putExtra("vpn_running", isRunning).putExtra("started_with_tasker", startedWithTasker).putExtra("fixedDNS", fixedDNS));
+        LocalBroadcastManager.getInstance(this).sendBroadcast(i);
+        LogFactory.writeMessage(this, LOG_TAG, "Broadcasted service state.");
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Got StartCommand", intent);
         if(intent!=null){
+            API.updateAllWidgets(this, BasicWidget.class);
             fixedDNS = intent.hasExtra("fixeddns") ? intent.getBooleanExtra("fixeddns", false) : fixedDNS;
             startedWithTasker = intent.hasExtra("startedWithTasker") ? intent.getBooleanExtra("startedWithTasker", false) : startedWithTasker;
             if(Preferences.getBoolean(this, "auto_pause", false)){
@@ -286,6 +295,10 @@ public class DNSVpnService extends VpnService {
                             Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
                             initNotification();
                             if(notificationBuilder != null) notificationBuilder.setWhen(System.currentTimeMillis());
+                            currentDNS1 = dns1;
+                            currentDNS2 = dns2;
+                            currentDNS1V6 = dns1_v6;
+                            currentDNS2V6 = dns2_v6;
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Creating Tunnel interface");
                             tunnelInterface = builder.setSession("DnsChanger").addAddress("172.31.255.253", 30).addAddress(API.randomLocalIPv6Address(),48).addDnsServer(dns1).addDnsServer(dns2)
                                     .addDnsServer(dns1_v6).addDnsServer(dns2_v6).establish();
@@ -299,7 +312,9 @@ public class DNSVpnService extends VpnService {
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Trying to protect tunnel");
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Tunnel protected: " + protect(tunnelSocket=tunnel.socket()));
                             isRunning = true;
-                            broadcastServiceState(true);
+                            LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Sending broadcast with current state");
+                            broadcastCurrentState(true);
+                            LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Broadcast sent");
                             updateNotification();
                             int counter = 0;
                             try {
@@ -328,8 +343,8 @@ public class DNSVpnService extends VpnService {
                             startActivity(new Intent(DNSVpnService.this, ErrorDialogActivity.class).putExtra("stacktrace",e.toString()));
                         } finally {
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "VPN Thread is in finally block");
+                            currentDNS1 = currentDNS2 = currentDNS1V6 = currentDNS2V6 = null;
                             isRunning = false;
-                            broadcastServiceState(false);
                             updateNotification();
                             if (tunnelInterface != null) try {
                                 LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Closing tunnel interface");
@@ -348,6 +363,9 @@ public class DNSVpnService extends VpnService {
                             }catch(Exception e){
                                 e.printStackTrace();
                             }
+                            LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Sending broadcast with current state");
+                            broadcastCurrentState(false);
+                            LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Broadcast sent");
                             thread = null;
                         }
                     }
@@ -385,5 +403,32 @@ public class DNSVpnService extends VpnService {
     public void onTaskRemoved(Intent rootIntent) {
         LogFactory.writeMessage(this, LOG_TAG, "Task is being removed. ", rootIntent);
         super.onTaskRemoved(rootIntent);
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return new ServiceBinder();
+    }
+
+    public String getCurrentDNS1() {
+        return currentDNS1;
+    }
+
+    public String getCurrentDNS2() {
+        return currentDNS2;
+    }
+
+    public String getCurrentDNS1V6() {
+        return currentDNS1V6;
+    }
+
+    public String getCurrentDNS2V6() {
+        return currentDNS2V6;
+    }
+
+    public class ServiceBinder extends Binder{
+        public DNSVpnService getService(){
+            return DNSVpnService.this;
+        }
     }
 }

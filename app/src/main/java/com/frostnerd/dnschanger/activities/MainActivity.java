@@ -11,6 +11,7 @@ import android.net.VpnService;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -326,15 +327,15 @@ public class MainActivity extends AppCompatActivity {
         LogFactory.writeMessage(this, LOG_TAG, "Sending ServiceStateRequest as broadcast");
         vpnRunning = API.checkVPNServiceRunning(this);
         setIndicatorState(vpnRunning);
-        registerReceiver(serviceStateReceiver, new IntentFilter(API.BROADCAST_SERVICE_STATUS_CHANGE));
-        sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATE_REQUEST));
+        LocalBroadcastManager.getInstance(this).registerReceiver(serviceStateReceiver, new IntentFilter(API.BROADCAST_SERVICE_STATUS_CHANGE));
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATE_REQUEST));
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         LogFactory.writeMessage(this, LOG_TAG, "Got OnPause");
-        unregisterReceiver(serviceStateReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(serviceStateReceiver);
     }
 
     @Override
