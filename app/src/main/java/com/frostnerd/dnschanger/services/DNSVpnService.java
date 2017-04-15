@@ -324,6 +324,7 @@ public class DNSVpnService extends VpnService {
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "VPN Thread had an exception");
                             LogFactory.writeStackTrace(DNSVpnService.this, new String[]{LOG_TAG,LogFactory.Tag.ERROR.toString()}, e);
                             e.printStackTrace();
+                            startActivity(new Intent(DNSVpnService.this, ErrorDialogActivity.class).putExtra("stacktrace",e.toString()));
                         } finally {
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "VPN Thread is in finally block");
                             isRunning = false;
