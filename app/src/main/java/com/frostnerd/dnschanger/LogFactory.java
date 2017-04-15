@@ -129,6 +129,7 @@ public class LogFactory {
             ready = true;
             enabled = false;
             usable = false;
+            return false;
         }
         String name = "logFile_" + DATE_TIME_FORMATTER.format(new Date()) + ".log";
         logDir = new File(context.getFilesDir(), "logs/");
