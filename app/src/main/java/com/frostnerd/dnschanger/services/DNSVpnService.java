@@ -368,4 +368,22 @@ public class DNSVpnService extends VpnService {
         updateNotification();
         return START_STICKY;
     }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        LogFactory.writeMessage(this, LOG_TAG, "Got onLowMemory");
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        LogFactory.writeMessage(this, LOG_TAG, "Memory trimmed. Level: " + level);
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        LogFactory.writeMessage(this, LOG_TAG, "Task is being removed. ", rootIntent);
+        super.onTaskRemoved(rootIntent);
+    }
 }
