@@ -175,7 +175,11 @@ public class LogFactory {
         if (prepare(context)) {
             try {
                 StringBuilder builder = new StringBuilder();
+                builder.append("[");
+                builder.append(System.currentTimeMillis());
+                builder.append("] >");
                 builder.append(TIMESTAMP_FORMATTER.format(new Date()));
+                builder.append("<");
                 for(String s: tags)if(!s.equalsIgnoreCase(Tag.NO_TAG.toString()))builder.append(" " + s);
                 builder.append(": " + message);
                 if(printIntent)builder.append(" " + describeIntent(intent, true));
