@@ -4,16 +4,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.nfc.Tag;
 import android.os.Build;
+import android.util.Log;
 
 import com.frostnerd.utils.preferences.Preferences;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -152,6 +155,7 @@ public class LogFactory {
                 "Incremental: " + Build.VERSION.INCREMENTAL + ")");
         writeMessage(context, Tag.INFO, "Device: " + Build.MODEL + " from " + Build.MANUFACTURER + " (Device: " + Build.DEVICE + ", Product: " + Build.PRODUCT + ")");
         writeMessage(context, Tag.INFO, "Language: " + Locale.getDefault().getDisplayLanguage());
+        writeMessage(context, Tag.INFO, "Device RAM: " + getTotalMemory());
         String s = "";
         Map<String,Object> prefs = Preferences.getAll(context, false);
         for(String key: prefs.keySet())s += key + "->" + prefs.get(key) + "; ";
@@ -297,6 +301,23 @@ public class LogFactory {
             e.printStackTrace();
         }
         return res;
+    }
+
+    private static long getTotalMemory() {
+        String str1 = "/proc/meminfo";
+        String str2;
+        String[] arrayOfString;
+        try {
+            FileReader localFileReader = new FileReader(str1);
+            BufferedReader localBufferedReader = new BufferedReader(    localFileReader, 8192);
+            str2 = localBufferedReader.readLine();//meminfo
+            arrayOfString = str2.split("\\s+");
+            localBufferedReader.close();
+            return Integer.valueOf(arrayOfString[1]).intValue() * 1024;
+        }
+        catch (IOException e){
+            return -1;
+        }
     }
 
     public static enum Tag {
