@@ -131,6 +131,7 @@
     <PreferenceCategory android:title="@string/title_debug_category" android:key="debug_category">
         <SwitchPreference
             android:key="debug"
+            android:defaultValue="false"
             android:summary="@string/summary_debug"
             android:title="@string/title_debug" />
 
