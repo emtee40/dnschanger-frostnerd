@@ -261,7 +261,7 @@ public class LogFactory {
         if(intent == null)return "Intent{NullIntent}";
         StringBuilder builder = new StringBuilder();
         builder.append("Intent{Action:" + intent.getAction() + "; Type:" + intent.getType() + "; Package:" + intent.getPackage() +
-                "; Scheme:" + intent.getScheme() + "; Data:" + intent.getDataString());
+                "; Scheme:" + intent.getScheme() + "; Data:" + intent.getDataString() + ";");
         if(intent.getExtras() != null)builder.append("ExtrasCount:" + intent.getExtras().size());
         if(printExtras){
             builder.append("; Extras:{");
