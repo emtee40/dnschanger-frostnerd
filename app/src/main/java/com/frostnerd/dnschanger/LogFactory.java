@@ -21,6 +21,7 @@ import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -35,8 +36,8 @@ public class LogFactory {
     private static File logDir;
     private static BufferedWriter fileWriter = null;
     private static boolean ready = false, usable = false, enabled = false;
-    private static final SimpleDateFormat DATE_TIME_FORMATTER = new SimpleDateFormat("dd_MM_yyyy___kk_mm_ss"),
-            TIMESTAMP_FORMATTER = new SimpleDateFormat("EEE MMM dd.yy kk:mm:ss");
+    private static final SimpleDateFormat DATE_TIME_FORMATTER = new SimpleDateFormat("dd_MM_yyyy___kk_mm_ss", Locale.US),
+            TIMESTAMP_FORMATTER = new SimpleDateFormat("EEE MMM dd.yy kk:mm:ss", Locale.US);
     public static final String STATIC_TAG = "[STATIC]";
     private static final boolean printMessagesToConsole = false;
 
