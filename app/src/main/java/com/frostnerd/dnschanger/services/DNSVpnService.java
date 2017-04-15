@@ -332,7 +332,7 @@ public class DNSVpnService extends VpnService {
                             broadcastServiceState(false);
                             updateNotification();
                             if (tunnelInterface != null) try {
-                                LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Closing tunnel interface (VPN Background thread)");
+                                LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Closing tunnel interface");
                                 tunnelInterface.close();
                             } catch (IOException e) {
                                 LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Exception received whilst closing tunnel: " + e.getMessage());
