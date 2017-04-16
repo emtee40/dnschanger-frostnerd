@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 
@@ -12,6 +13,8 @@ import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.utils.design.MaterialEditText;
+import com.frostnerd.utils.general.NumberUtils;
+import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.preferences.Preferences;
 
 /**
@@ -59,6 +62,7 @@ public class PinActivity extends Activity {
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         met = (MaterialEditText) findViewById(R.id.pin_dialog_met);
         pinInput = (EditText) findViewById(R.id.pin_dialog_pin);
+        if(!Utils.isInteger(pin))pinInput.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         findViewById(R.id.pin_dialog_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
