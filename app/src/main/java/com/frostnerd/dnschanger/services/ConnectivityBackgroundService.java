@@ -11,8 +11,10 @@ import android.net.VpnService;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import com.frostnerd.dnschanger.API;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
+import com.frostnerd.dnschanger.widgets.BasicWidget;
 import com.frostnerd.utils.preferences.Preferences;
 
 /**
@@ -33,6 +35,7 @@ public class ConnectivityBackgroundService extends Service {
             int type = intent.getIntExtra("networkType", -1);
             LogFactory.writeMessage(ConnectivityBackgroundService.this, LOG_TAG, "Connectivity changed. Connected: " + connected + ", type: " + type + ";;", intent);
             DNSVpnService.updateTiles(context);
+            API.updateAllWidgets(context, BasicWidget.class);
             Intent i;
             if(!connected && Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_disable_netchange", false)){
                 LogFactory.writeMessage(ConnectivityBackgroundService.this, LOG_TAG,
