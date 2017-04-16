@@ -420,7 +420,11 @@ public class DNSVpnService extends VpnService {
 
     @Override
     public IBinder onBind(Intent intent) {
-        return new ServiceBinder();
+        return intent.getBooleanExtra("binder",false) ? new ServiceBinder() : null;
+    }
+
+    public static Intent getBinderIntent(Context context){
+        return new Intent(context, DNSVpnService.class).putExtra("binder",true);
     }
 
     public String getCurrentDNS1() {
