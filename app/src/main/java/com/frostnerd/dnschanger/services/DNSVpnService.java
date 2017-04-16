@@ -112,6 +112,7 @@ public class DNSVpnService extends VpnService {
             stopped = true;
             run = false;
             LogFactory.writeMessage(DNSVpnService.this, LOG_TAG, "Stopping because of uncaught exception");
+            clearVars();
             stopSelf();
         }
     };
@@ -119,17 +120,29 @@ public class DNSVpnService extends VpnService {
     @Override
     public void onDestroy() {
         LogFactory.writeMessage(this, LOG_TAG, "Destroying");
-        stopped = true;
-        run = false;
-        if (thread != null) thread.interrupt();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(stateRequestReceiver);
-        thread = null;
-        notificationManager.cancel(NOTIFICATION_ID);
-        notificationManager = null;
-        notificationBuilder = null;
+        clearVars();
         super.onDestroy();
         updateTiles(this);
         LogFactory.writeMessage(this, LOG_TAG, "Destroyed.");
+    }
+
+    private void clearVars(){
+        LogFactory.writeMessage(this, LOG_TAG, "Clearing Variables");
+        stopped = true;
+        run = false;
+        if (thread != null) thread.interrupt();
+        if(stateRequestReceiver != null)LocalBroadcastManager.getInstance(this).unregisterReceiver(stateRequestReceiver);
+        thread = null;
+        if(notificationManager != null)notificationManager.cancel(NOTIFICATION_ID);
+        notificationManager = null;
+        notificationBuilder = null;
+        stateRequestReceiver = null;
+        dns1 = dns2 = dns1_v6 = dns2_v6 = currentDNS1 = currentDNS2 = currentDNS1V6 = currentDNS2V6 = null;
+        handler = null;
+        autoPausedRestartRunnable = null;
+        autoPauseApps = null;
+        uncaughtExceptionHandler = null;
+        LogFactory.writeMessage(this, LOG_TAG, "Variables cleared");
     }
 
     private void updateNotification() { //Well, this method is a mess.
