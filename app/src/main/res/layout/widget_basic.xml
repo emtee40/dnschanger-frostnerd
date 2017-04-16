@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/basic_widget"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/basicWidgetBackground"
-    android:id="@+id/basic_widget"
+    android:background="@drawable/basic_widget_background"
     android:orientation="vertical"
     android:padding="@dimen/widget_margin">
 
@@ -16,10 +16,10 @@
             style="@style/TextAppearance.AppCompat.Headline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_centerHorizontal="true"
             android:textColor="@color/basicWidgetText"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <LinearLayout
@@ -38,6 +38,7 @@
             android:id="@+id/dns1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:textColor="@color/basicWidgetText" />
 
     </LinearLayout>
@@ -58,6 +59,7 @@
             android:id="@+id/dns2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:textColor="@color/basicWidgetText" />
 
     </LinearLayout>
@@ -78,6 +80,7 @@
             android:id="@+id/dns1_v6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:textColor="@color/basicWidgetText" />
 
 
@@ -99,6 +102,7 @@
             android:id="@+id/dns2_v6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:textColor="@color/basicWidgetText" />
 
     </LinearLayout>
