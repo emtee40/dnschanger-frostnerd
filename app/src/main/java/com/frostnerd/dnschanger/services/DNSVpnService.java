@@ -320,7 +320,9 @@ public class DNSVpnService extends VpnService {
                         currentDNS1V6 = dns1_v6;
                         currentDNS2V6 = dns2_v6;
                         try {
+                            LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Trying " + addresses.size() + " different addresses before passing any thrown exception to the upper layer");
                             for(String address: addresses.keySet()){
+                                LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Trying address '" + address + "'");
                                 try{
                                     addressIndex++;
                                     LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Creating Tunnel interface");
@@ -359,10 +361,13 @@ public class DNSVpnService extends VpnService {
                                     } catch (InterruptedException e2) {
                                         LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Thread was interrupted");
                                         LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Interruption stacktrace: " + LogFactory.stacktraceToString(e2).replace("\n"," <<-->>"));
+                                        break;
                                     }
                                 }catch(Exception e){
                                     LogFactory.writeStackTrace(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", "[ADDRESS-RETRY]"}, e);
                                     if(addressIndex >= addresses.size())throw e;
+                                    else LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", "[ADDRESS-RETRY]"},
+                                            "Not throwing exception. Tries: " + addressIndex + ", addresses: " + addresses.size());
                                 }
                             }
                         } catch (Exception  e) {
