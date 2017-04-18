@@ -107,6 +107,32 @@
             android:summary="@string/summary_import_settings"
             android:title="@string/title_import_settings" />
     </PreferenceCategory>-->
+    <PreferenceCategory android:title="@string/shortcuts">
+        <CheckBoxPreference
+            android:key="shortcut_click_again_disable"
+            android:summary="@string/summary_shortcut_click_again_disable"
+            android:title="@string/title_shortcut_click_again_disable" />
+        <CheckBoxPreference
+            android:key="shortcut_click_override_settings"
+            android:summary="@string/summary_shortcut_click_override_settings"
+            android:title="@string/title_shortcut_click_override_settings" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="debug_category"
+        android:title="@string/title_debug_category">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="debug"
+            android:summary="@string/summary_debug"
+            android:title="@string/title_debug" />
+
+        <Preference
+            android:key="send_debug"
+            android:summary="@string/summary_send_debug"
+            android:title="@string/title_send_debug" />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/title_general">
         <Preference
             android:key="setting_info"
@@ -126,18 +152,5 @@
             android:title="@string/title_device_admin" />
 
         <Preference android:key="placeholder_version" />
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/title_debug_category" android:key="debug_category">
-        <SwitchPreference
-            android:key="debug"
-            android:defaultValue="false"
-            android:summary="@string/summary_debug"
-            android:title="@string/title_debug" />
-
-        <Preference
-            android:key="send_debug"
-            android:summary="@string/summary_send_debug"
-            android:title="@string/title_send_debug" />
     </PreferenceCategory>
 </PreferenceScreen>

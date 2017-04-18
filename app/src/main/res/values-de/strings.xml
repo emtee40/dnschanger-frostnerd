@@ -127,4 +127,10 @@
     <string name="shortcuts">Verknüpfungen</string>
     <string name="dialog_question_export_shortcuts">Verknüpfungen auch exportieren?\n\n(Exportiert alle Verknüpfungen, welche seit der Installation über die App erstellt wurden, auch solche, welche nicht mehr existieren)</string>
     <string name="widget_not_running">DNS Changer ist nicht aktiv</string>
+    <string name="title_shortcut_click_again_disable">App durch Verknüpfung stoppen</string>
+    <string name="title_shortcut_click_override_settings">Einstellungen überschreiben</string>
+    <string name="summary_shortcut_click_again_disable">DNS Changer stoppen, wenn die Verknüpfung, mit welcher die App gestartet wurde, erneut angeklickt wird</string>
+    <string name="summary_shortcut_click_override_settings">Überschreibe die DNS Einstellungen, wenn DNS Changer über eine Verknüpfung gestartet wird</string>
+    <string name="summary_notification_on_stop">Zeige eine Benachrichtigung, wenn DNS Changer automatisch beendet wird</string>
+    <string name="title_notification_on_stop">Bei Stopp benachrichtigen</string>
 </resources>

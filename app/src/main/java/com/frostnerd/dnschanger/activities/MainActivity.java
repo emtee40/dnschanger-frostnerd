@@ -1,15 +1,18 @@
 package com.frostnerd.dnschanger.activities;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.net.Uri;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
@@ -98,6 +101,32 @@ public class MainActivity extends AppCompatActivity {
             vpnRunning = intent.getBooleanExtra("vpn_running",false);
             wasStartedWithTasker = intent.getBooleanExtra("started_with_tasker", false);
             setIndicatorState(intent.getBooleanExtra("vpn_running",false));
+            bindService(DNSVpnService.getBinderIntent(MainActivity.this), new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder binder) {
+                    DNSVpnService service = ((DNSVpnService.ServiceBinder)binder).getService();
+                    if(service.startedFromShortcut() && Preferences.getBoolean(MainActivity.this, "shortcut_click_override_settings",false)){
+                        if(settingV6){
+                            dns1.setText(service.getCurrentDNS1V6());
+                            dns2.setText(service.getCurrentDNS2V6());
+                            Preferences.put(MainActivity.this, "dns1", service.getCurrentDNS1());
+                            Preferences.put(MainActivity.this, "dns2", service.getCurrentDNS2());
+                        }else{
+                            dns1.setText(service.getCurrentDNS1());
+                            dns2.setText(service.getCurrentDNS2());
+                            Preferences.put(MainActivity.this, "dns1", service.getCurrentDNS1());
+                            Preferences.put(MainActivity.this, "dns2", service.getCurrentDNS2());
+                        }
+                    }
+                    service = null;
+                    unbindService(this);
+                }
+
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+
+                }
+            },0);
         }
     };
 

@@ -126,4 +126,10 @@
     <string name="shortcuts">Shortcuts</string>
     <string name="dialog_question_export_shortcuts">Export shortcuts aswell?\n\n(Exports all shortcuts created since install using this app, even those which were already deleted)</string>
     <string name="widget_not_running">DNS Changer is not launched</string>
+    <string name="title_shortcut_click_again_disable">Reclick shortcut to stop</string>
+    <string name="summary_shortcut_click_again_disable">Stop DNS Changer when reclicking the shortcut it was started with</string>
+    <string name="title_shortcut_click_override_settings">Override settings</string>
+    <string name="summary_shortcut_click_override_settings">Override DNS servers from settings when starting DNS Changer from a shortcut</string>
+    <string name="summary_notification_on_stop">Show a notification with the reason why DNS Changer was stopped automatically</string>
+    <string name="title_notification_on_stop">Notify on stop</string>
 </resources>
