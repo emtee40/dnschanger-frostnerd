@@ -16,7 +16,6 @@ import android.os.ParcelFileDescriptor;
 import android.service.quicksettings.TileService;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 
 import com.frostnerd.dnschanger.API;
 import com.frostnerd.dnschanger.LogFactory;
@@ -38,6 +37,7 @@ import java.io.StringWriter;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.nio.channels.DatagramChannel;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -106,7 +106,7 @@ public class DNSVpnService extends VpnService {
                 LogFactory.writeMessage(DNSVpnService.this, LOG_TAG, "Showing crash to Users");
                 StringWriter sw = new StringWriter();
                 e.printStackTrace(new PrintWriter(sw));
-                startActivity(new Intent(DNSVpnService.this, ErrorDialogActivity.class).putExtra("stacktrace",sw.toString()));
+                ErrorDialogActivity.show(DNSVpnService.this, e);
                 wasCrashShownToUser = true;
             }
             stopped = true;
@@ -299,61 +299,77 @@ public class DNSVpnService extends VpnService {
                 stopped = false;
                 LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Creating Thread");
                 thread = new Thread(new Runnable() {
+                    private HashMap<String, Integer> addresses = new HashMap<String, Integer>(){{
+                        put("172.31.255.253", 30);
+                        put("172.31.255.1", 28);
+                        put("192.168.234.55", 24);
+                        put("192.168.0.1", 24);
+                    }};
+                    private int addressIndex = 0;
+
                     @Override
                     public void run() {
                         LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Starting Thread (run)");
                         DatagramChannel tunnel = null;
                         DatagramSocket tunnelSocket = null;
+                        Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
+                        initNotification();
+                        if(notificationBuilder != null) notificationBuilder.setWhen(System.currentTimeMillis());
+                        currentDNS1 = dns1;
+                        currentDNS2 = dns2;
+                        currentDNS1V6 = dns1_v6;
+                        currentDNS2V6 = dns2_v6;
                         try {
-                            Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
-                            initNotification();
-                            if(notificationBuilder != null) notificationBuilder.setWhen(System.currentTimeMillis());
-                            currentDNS1 = dns1;
-                            currentDNS2 = dns2;
-                            currentDNS1V6 = dns1_v6;
-                            currentDNS2V6 = dns2_v6;
-                            LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Creating Tunnel interface");
-                            tunnelInterface = builder.setSession("DnsChanger").addAddress("172.31.255.253", 30).addAddress(API.randomLocalIPv6Address(),48).addDnsServer(dns1).addDnsServer(dns2)
-                                    .addDnsServer(dns1_v6).addDnsServer(dns2_v6).establish();
-                            LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Tunnel interface created and established.");
-                            LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Opening DatagramChannel");
-                            tunnel = DatagramChannel.open();
-                            LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "DatagramChannel opened");
-                            LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Connecting to 127.0.0.1:8087");
-                            tunnel.connect(new InetSocketAddress("127.0.0.1", 8087));
-                            LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Connected");
-                            LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Trying to protect tunnel");
-                            LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Tunnel protected: " + protect(tunnelSocket=tunnel.socket()));
-                            isRunning = true;
-                            LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Sending broadcast with current state");
-                            broadcastCurrentState(true);
-                            LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Broadcast sent");
-                            updateNotification();
-                            int counter = 0;
-                            try {
-                                LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "VPN Thread going into while loop");
-                                while (run) {
-                                    if(counter >= 4 && autoPauseApps.size() != 0){
-                                        counter = 0;
-                                        if(autoPauseApps.contains(AppTaskGetter.getMostRecentApp(DNSVpnService.this,1000*1000))){
-                                            run = false;
-                                            autoPaused = true;
-                                            new Thread(autoPausedRestartRunnable).start();
+                            for(String address: addresses.keySet()){
+                                try{
+                                    addressIndex++;
+                                    LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Creating Tunnel interface");
+                                    tunnelInterface = builder.setSession("DnsChanger").addAddress(address, addresses.get(address)).addAddress(API.randomLocalIPv6Address(),48).addDnsServer(dns1).addDnsServer(dns2)
+                                            .addDnsServer(dns1_v6).addDnsServer(dns2_v6).establish();
+                                    LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Tunnel interface created and established.");
+                                    LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Opening DatagramChannel");
+                                    tunnel = DatagramChannel.open();
+                                    LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "DatagramChannel opened");
+                                    LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Connecting to 127.0.0.1:8087");
+                                    tunnel.connect(new InetSocketAddress("127.0.0.1", 8087));
+                                    LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Connected");
+                                    LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Trying to protect tunnel");
+                                    LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Tunnel protected: " + protect(tunnelSocket=tunnel.socket()));
+                                    isRunning = true;
+                                    LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Sending broadcast with current state");
+                                    broadcastCurrentState(true);
+                                    LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Broadcast sent");
+                                    updateNotification();
+                                    int counter = 0;
+                                    try {
+                                        LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "VPN Thread going into while loop");
+                                        while (run) {
+                                            if(counter >= 4 && autoPauseApps.size() != 0){
+                                                counter = 0;
+                                                if(autoPauseApps.contains(AppTaskGetter.getMostRecentApp(DNSVpnService.this,1000*1000))){
+                                                    run = false;
+                                                    autoPaused = true;
+                                                    new Thread(autoPausedRestartRunnable).start();
+                                                }
+                                            }
+                                            if(run)Thread.sleep(250);
+                                            counter++;
                                         }
+                                        LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "VPN Thread reached end of while loop. Run: " + run);
+                                    } catch (InterruptedException e2) {
+                                        LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Thread was interrupted");
+                                        LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Interruption stacktrace: " + LogFactory.stacktraceToString(e2).replace("\n"," <<-->>"));
                                     }
-                                    if(run)Thread.sleep(250);
-                                    counter++;
+                                }catch(Exception e){
+                                    LogFactory.writeStackTrace(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", "[ADDRESS-RETRY]"}, e);
+                                    if(addressIndex >= addresses.size())throw e;
                                 }
-                                LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "VPN Thread reached end of while loop. Run: " + run);
-                            } catch (InterruptedException e2) {
-                                LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Thread was interrupted");
-                                LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Interruption stacktrace: " + LogFactory.stacktraceToString(e2).replace("\n"," <<-->>"));
                             }
                         } catch (Exception  e) {
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "VPN Thread had an exception");
                             LogFactory.writeStackTrace(DNSVpnService.this, new String[]{LOG_TAG,LogFactory.Tag.ERROR.toString()}, e);
                             e.printStackTrace();
-                            startActivity(new Intent(DNSVpnService.this, ErrorDialogActivity.class).putExtra("stacktrace",e.toString()));
+                            ErrorDialogActivity.show(DNSVpnService.this, e);
                         } finally {
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "VPN Thread is in finally block");
                             currentDNS1 = currentDNS2 = currentDNS1V6 = currentDNS2V6 = null;
@@ -441,6 +457,15 @@ public class DNSVpnService extends VpnService {
 
     public String getCurrentDNS2V6() {
         return currentDNS2V6;
+    }
+
+    public boolean startedFromShortcut(){
+        return fixedDNS && !startedWithTasker;
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        return true;
     }
 
     public class ServiceBinder extends Binder{
