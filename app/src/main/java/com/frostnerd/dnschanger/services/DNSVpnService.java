@@ -450,7 +450,7 @@ public class DNSVpnService extends VpnService {
 
     @Override
     public IBinder onBind(Intent intent) {
-        return intent.getBooleanExtra("binder",false) ? new ServiceBinder() : null;
+        return (intent.getBooleanExtra("binder",false) && running) ? new ServiceBinder() : null;
     }
 
     public static Intent getBinderIntent(Context context){
