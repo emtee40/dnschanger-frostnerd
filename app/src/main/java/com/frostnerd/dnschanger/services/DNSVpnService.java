@@ -116,6 +116,12 @@ public class DNSVpnService extends VpnService {
             stopSelf();
         }
     };
+    private HashMap<String, Integer> addresses = new HashMap<String, Integer>(){{
+        put("172.31.255.253", 30);
+        put("172.31.255.1", 28);
+        put("192.168.234.55", 24);
+        put("192.168.0.1", 24);
+    }};
 
     @Override
     public void onDestroy() {
@@ -299,12 +305,6 @@ public class DNSVpnService extends VpnService {
                 stopped = false;
                 LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Creating Thread");
                 thread = new Thread(new Runnable() {
-                    private HashMap<String, Integer> addresses = new HashMap<String, Integer>(){{
-                        put("172.31.255.253", 30);
-                        put("172.31.255.1", 28);
-                        put("192.168.234.55", 24);
-                        put("192.168.0.1", 24);
-                    }};
                     private int addressIndex = 0;
 
                     @Override
