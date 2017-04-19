@@ -68,15 +68,18 @@ public final class API {
         return hex;
     }
 
+    // This is dirty. Like really dirty. But sometimes the running check returns running when the
+    // service isn't running. This is a workaround.
     public static boolean checkVPNServiceRunning(Context c) {
-        ActivityManager am = (ActivityManager) c.getSystemService(Context.ACTIVITY_SERVICE);
+        return DNSVpnService.isServiceRunning();
+        /*ActivityManager am = (ActivityManager) c.getSystemService(Context.ACTIVITY_SERVICE);
         String name = DNSVpnService.class.getName();
         for (ActivityManager.RunningServiceInfo service : am.getRunningServices(Integer.MAX_VALUE)) {
             if (name.equals(service.service.getClassName())) {
                 return true;
             }
         }
-        return false;
+        return false;*/
     }
 
     public static boolean isTaskerInstalled(Context context) {
