@@ -274,6 +274,12 @@ public class DNSVpnService extends VpnService {
         LogFactory.writeMessage(this, LOG_TAG, "Broadcasted service state.");
     }
 
+    // Hello potential Source-Code lurker!
+    // I've stumbled upon many os-based problems developing this application. For example some devices don't accept the IP used (172.31.255.253/30 is preferred)
+    // and mark it as "bad address". Other devices have a problem with the underlying VPN structure which prevents it from working on the first try.
+    // Other devices don't even reach the while-loop (by design) and thus I have to catch every exception occurring.
+    // Overall this lead to a messy thread and a lot of flawed design, but there is no other way to do it which makes it work
+    // on all devices.
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Got StartCommand", intent);
