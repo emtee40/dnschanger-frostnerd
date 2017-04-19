@@ -16,6 +16,11 @@
             android:key="show_used_dns"
             android:summary="@string/summary_show_used_dns"
             android:title="@string/title_show_used_dns" />
+
+        <CheckBoxPreference
+            android:key="notification_on_stop"
+            android:summary="@string/summary_notification_on_stop"
+            android:title="@string/title_notification_on_stop" />
     </PreferenceCategory>
 
     <PreferenceCategory
