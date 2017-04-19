@@ -53,6 +53,7 @@ import java.util.Set;
  */
 public class DNSVpnService extends VpnService {
     private static final String LOG_TAG = "[DNSVpnService]";
+    private static boolean running = false;
     private boolean run = true, isRunning = false, stopped = false;
     private Thread thread;
     private ParcelFileDescriptor tunnelInterface;
@@ -148,6 +149,7 @@ public class DNSVpnService extends VpnService {
         autoPausedRestartRunnable = null;
         autoPauseApps = null;
         uncaughtExceptionHandler = null;
+        running = false;
         LogFactory.writeMessage(this, LOG_TAG, "Variables cleared");
     }
 
@@ -276,6 +278,7 @@ public class DNSVpnService extends VpnService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Got StartCommand", intent);
         if(intent!=null){
+            running = !intent.getBooleanExtra("destroy", false);
             API.updateAllWidgets(this, BasicWidget.class);
             fixedDNS = intent.hasExtra("fixeddns") ? intent.getBooleanExtra("fixeddns", false) : fixedDNS;
             startedWithTasker = intent.hasExtra("startedWithTasker") ? intent.getBooleanExtra("startedWithTasker", false) : startedWithTasker;
@@ -477,5 +480,9 @@ public class DNSVpnService extends VpnService {
         public DNSVpnService getService(){
             return DNSVpnService.this;
         }
+    }
+
+    public static boolean isServiceRunning(){
+        return running;
     }
 }
