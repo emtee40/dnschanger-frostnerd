@@ -33,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.frostnerd.dnschanger.API;
 import com.frostnerd.dnschanger.LogFactory;
@@ -106,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onServiceConnected(ComponentName name, IBinder binder) {
                     DNSVpnService service = ((DNSVpnService.ServiceBinder)binder).getService();
                     if(service.startedFromShortcut() && Preferences.getBoolean(MainActivity.this, "shortcut_click_override_settings",false)){
+                        doStopVPN = false;
                         if(settingV6){
                             dns1.setText(service.getCurrentDNS1V6());
                             dns2.setText(service.getCurrentDNS2V6());
@@ -117,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                             Preferences.put(MainActivity.this, "dns1", service.getCurrentDNS1());
                             Preferences.put(MainActivity.this, "dns2", service.getCurrentDNS2());
                         }
+                        doStopVPN = true;
                     }
                     service = null;
                     unbindService(this);
@@ -355,6 +358,7 @@ public class MainActivity extends AppCompatActivity {
         LogFactory.writeMessage(this, LOG_TAG, "Got OnResume");
         LogFactory.writeMessage(this, LOG_TAG, "Sending ServiceStateRequest as broadcast");
         vpnRunning = API.checkVPNServiceRunning(this);
+        Toast.makeText(this, "RUNNING: " + vpnRunning, Toast.LENGTH_LONG).show();
         setIndicatorState(vpnRunning);
         LocalBroadcastManager.getInstance(this).registerReceiver(serviceStateReceiver, new IntentFilter(API.BROADCAST_SERVICE_STATUS_CHANGE));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATE_REQUEST));
