@@ -218,6 +218,19 @@ public class ConfigureActivity extends AppCompatActivity {
             });
             actionSpinner.getBackground().setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
         }
+        findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelled = true;
+                finish();
+            }
+        });
     }
 
     public void openDefaultDNSDialog(View v){
@@ -270,11 +283,6 @@ public class ConfigureActivity extends AppCompatActivity {
             ed_dns1.setInputType(InputType.TYPE_CLASS_TEXT);
             ed_dns2.setInputType(InputType.TYPE_CLASS_TEXT);
             getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
-        }else if(item.getItemId() == R.id.menu_cancel){
-            cancelled = true;
-            finish();
-        }else if(item.getItemId() == R.id.menu_done){
-            finish();
         }else if(item.getItemId() == android.R.id.home){
             lastBackPress = System.currentTimeMillis();
             onBackPressed();

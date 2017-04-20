@@ -35,9 +35,9 @@
             android:id="@+id/met_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             app:allowCollapse="false"
             app:cardColor="#42A5F5"
-            android:layout_marginTop="15dp"
             app:cardStrokeColor="#2196F3"
             app:image="@drawable/ic_language"
             app:maxCharLength="50"
@@ -57,8 +57,8 @@
         </com.frostnerd.utils.design.MaterialEditText>
 
         <LinearLayout
-            android:layout_width="match_parent"
             android:id="@+id/wrapper"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -113,12 +113,12 @@
                 android:id="@+id/default_dns_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#42A5F5"
-                android:visibility="gone"
                 android:alpha="0.0"
+                android:background="#42A5F5"
                 android:clickable="true"
                 android:onClick="openDefaultDNSDialog"
-                android:padding="10dp">
+                android:padding="10dp"
+                android:visibility="gone">
 
                 <ImageButton
                     android:id="@+id/default_dns_view_image"
@@ -141,6 +141,37 @@
                     android:textColor="#FFF" />
             </LinearLayout>
         </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/middle"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                android:layout_centerInParent="true" />
+
+            <Button
+                android:id="@+id/cancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/middle"
+                android:textColor="#FFF"
+                android:layout_marginRight="3dp"
+                android:background="#42A5F5"
+                android:text="@string/cancel" />
+
+            <Button
+                android:id="@+id/done"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/middle"
+                android:textColor="#FFF"
+                android:layout_marginLeft="3dp"
+                android:background="#42A5F5"
+                android:text="@string/done" />
+        </RelativeLayout>
     </LinearLayout>
 
 </ScrollView>
