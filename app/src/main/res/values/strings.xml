@@ -134,4 +134,5 @@
     <string name="title_notification_on_stop">Notify on stop</string>
     <string name="title_create_shortcut">Create a shortcut</string>
     <string name="summary_create_shortcut">Create a shortcut bound to a specific set of DNS servers to quickly start DNS Changer</string>
+    <string name="notification_reason_stopped">DNS Changer was automatically stopped: [reason]</string>
 </resources>

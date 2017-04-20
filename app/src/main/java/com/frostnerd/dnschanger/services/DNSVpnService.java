@@ -123,6 +123,7 @@ public class DNSVpnService extends VpnService {
         put("192.168.234.55", 24);
         put("192.168.0.1", 24);
     }};
+    private String stopReason;
 
     @Override
     public void onDestroy() {
@@ -135,6 +136,12 @@ public class DNSVpnService extends VpnService {
 
     private void clearVars(){
         LogFactory.writeMessage(this, LOG_TAG, "Clearing Variables");
+        if(stopReason != null && notificationManager != null && Preferences.getBoolean(this, "notification_on_stop", false)){
+            notificationManager.notify(NOTIFICATION_ID+1, new NotificationCompat.Builder(this).setAutoCancel(true).
+                    setOngoing(false).setContentText(getString(R.string.notification_reason_stopped).replace("[reason]", stopReason))
+            .setSmallIcon(R.mipmap.ic_launcher).setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0))
+                    .build());
+        }
         stopped = true;
         run = false;
         if (thread != null) thread.interrupt();

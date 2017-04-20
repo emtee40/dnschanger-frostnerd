@@ -135,4 +135,5 @@
     <string name="title_notification_on_stop">Bei Stopp benachrichtigen</string>
     <string name="title_create_shortcut">Eine Verknüpfung erstellen</string>
     <string name="summary_create_shortcut">Erstelle eine Verknüpfung um DNS Changer schnell mit bestimmten DNS Servern zu starten</string>
+    <string name="notification_reason_stopped">DNS Changer wurde automatisch gestoppt: [reason]</string>
 </resources>
