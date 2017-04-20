@@ -97,7 +97,7 @@
     <string name="tile_stop">DNSChanger stoppen</string>
     <string name="tile_pause">DNSChanger pausieren</string>
     <string name="tile_resume">DNSChanger fortsetzen</string>
-    <string name="title_disable_network_change">Bei Netzwechsel deaktivierne</string>
+    <string name="title_disable_network_change">Bei Netzwechsel deaktivieren</string>
     <string name="summary_disable_network_change">DNSChanger automatisch stoppen, wenn das Netz gewechselt wird (z.B. von WLAN zu 3G). DNSChanger startet erneut, wenn es in den vorherigen Einstellungen so gesetzt wurde.</string>
     <string name="title_share_app">Diese App teilen</string>
     <string name="summary_share_app">Das Teilen diese App mit deinen Freunden oder anderen Personen würde sehr dazu beitragen, diese App bekannter zu machen.</string>
