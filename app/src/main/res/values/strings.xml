@@ -38,7 +38,7 @@
     <string name="done">Done</string>
     <string name="check_validity">Please check the validity of your input</string>
     <string name="press_back_again">Press back again to leave (Discards changes!)</string>
-    <string name="tasker_automation_conflict_text">This app is set to start the vpn when the type of your network changes (Either Wifi or 3G).\\nThis might conflict with this tasker plugin as the action might be overridden by the app itself (Only one VPN can be running at any given time).\\n\\n Do you want to disable these conflicting settings?</string>
+    <string name="tasker_automation_conflict_text">This app is set to start/stop the vpn when the type of your network changes (Either Wifi or 3G).\\nThis might conflict with this tasker plugin as the action might be overridden by the app itself (Only one VPN can be running at any given time).\\n\\n Do you want to disable these conflicting settings?</string>
     <string name="warning">Warning</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
