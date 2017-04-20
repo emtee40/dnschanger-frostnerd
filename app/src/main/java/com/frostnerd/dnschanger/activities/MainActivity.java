@@ -335,7 +335,7 @@ public class MainActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(serviceStateReceiver, new IntentFilter(API.BROADCAST_SERVICE_STATUS_CHANGE));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATE_REQUEST));
         doStopVPN = false;
-        if(settingV6){
+        if(!settingV6){
             dns1.setText(Preferences.getString(this, "dns1", "8.8.8.8"));
             dns2.setText(Preferences.getString(this, "dns2", "8.8.4.4"));
         }else{
