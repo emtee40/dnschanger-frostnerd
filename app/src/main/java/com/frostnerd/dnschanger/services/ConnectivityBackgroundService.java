@@ -38,7 +38,7 @@ public class ConnectivityBackgroundService extends Service {
             DNSVpnService.updateTiles(context);
             API.updateAllWidgets(context, BasicWidget.class);
             Intent i;
-            if(!connected && Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_disable_netchange", false)){
+            if(!connected && Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_disable_netchange", false) && API.checkVPNServiceRunning(ConnectivityBackgroundService.this)){
                 LogFactory.writeMessage(ConnectivityBackgroundService.this, LOG_TAG,
                         "Destroying DNSVPNService, as device is not connected and setting_disable_netchange is true",
                         i = new Intent(ConnectivityBackgroundService.this, DNSVpnService.class).putExtra("destroy",true).putExtra("reason", getString(R.string.reason_stop_network_change)));
@@ -51,7 +51,7 @@ public class ConnectivityBackgroundService extends Service {
             }else if(type == ConnectivityManager.TYPE_MOBILE && Preferences.getBoolean(ConnectivityBackgroundService.this,"setting_auto_mobile",false)){
                 LogFactory.writeMessage(ConnectivityBackgroundService.this, LOG_TAG, "Connected to MOBILE and setting_auto_mobile is true. Starting Service..");
                 startService();
-            }else if(Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_disable_netchange", false)){
+            }else if(Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_disable_netchange", false) && API.checkVPNServiceRunning(ConnectivityBackgroundService.this)){
                 LogFactory.writeMessage(ConnectivityBackgroundService.this, LOG_TAG,
                         "Not on WIFI or MOBILE and setting_disable_netchange is true. Destroying DNSVPNService.",
                         i = new Intent(ConnectivityBackgroundService.this, DNSVpnService.class).putExtra("destroy",true).putExtra("reason", getString(R.string.reason_stop_network_change)));
