@@ -186,6 +186,7 @@ public class ConfigureActivity extends AppCompatActivity {
                     Preferences.put(ConfigureActivity.this, "setting_auto_wifi", false);
                     Preferences.put(ConfigureActivity.this, "setting_auto_mobile", false);
                     Preferences.put(ConfigureActivity.this, "setting_start_boot", false);
+                    Preferences.put(ConfigureActivity.this, "setting_auto_disable", false);
                 }
             }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                 @Override
