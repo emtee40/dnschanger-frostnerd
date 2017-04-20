@@ -121,6 +121,11 @@
             android:key="shortcut_click_override_settings"
             android:summary="@string/summary_shortcut_click_override_settings"
             android:title="@string/title_shortcut_click_override_settings" />
+
+        <Preference
+            android:key="create_shortcut"
+            android:summary="@string/summary_create_shortcut"
+            android:title="@string/title_create_shortcut" />
     </PreferenceCategory>
 
     <PreferenceCategory

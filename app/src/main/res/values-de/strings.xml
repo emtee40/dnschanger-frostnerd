@@ -133,4 +133,6 @@
     <string name="summary_shortcut_click_override_settings">Überschreibe die DNS Einstellungen, wenn DNS Changer über eine Verknüpfung gestartet wird</string>
     <string name="summary_notification_on_stop">Zeige eine Benachrichtigung, wenn DNS Changer automatisch beendet wird</string>
     <string name="title_notification_on_stop">Bei Stopp benachrichtigen</string>
+    <string name="title_create_shortcut">Eine Verknüpfung erstellen</string>
+    <string name="summary_create_shortcut">Erstelle eine Verknüpfung um DNS Changer schnell mit bestimmten DNS Servern zu starten</string>
 </resources>

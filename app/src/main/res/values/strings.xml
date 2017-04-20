@@ -132,4 +132,6 @@
     <string name="summary_shortcut_click_override_settings">Override DNS servers from settings when starting DNS Changer from a shortcut</string>
     <string name="summary_notification_on_stop">Show a notification with the reason why DNS Changer was stopped automatically</string>
     <string name="title_notification_on_stop">Notify on stop</string>
+    <string name="title_create_shortcut">Create a shortcut</string>
+    <string name="summary_create_shortcut">Create a shortcut bound to a specific set of DNS servers to quickly start DNS Changer</string>
 </resources>

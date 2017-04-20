@@ -17,11 +17,12 @@ import android.preference.PreferenceCategory;
 import android.preference.SwitchPreference;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.frostnerd.dnschanger.API;
 import com.frostnerd.dnschanger.BuildConfig;
@@ -29,6 +30,7 @@ import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.receivers.AdminReceiver;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.tasker.ConfigureActivity;
 import com.frostnerd.utils.design.FileChooserDialog;
 import com.frostnerd.utils.preferences.AppCompatPreferenceActivity;
 import com.frostnerd.utils.preferences.Preferences;
@@ -53,7 +55,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     private Preference removeUsagePreference, sendDebugPreference;
     private DevicePolicyManager devicePolicyManager;
     private ComponentName deviceAdmin;
-    private final int REQUEST_EXTERNAL_STORAGE = 815,REQUEST_CODE_ENABLE_ADMIN = 1;
+    private final int REQUEST_EXTERNAL_STORAGE = 815,REQUEST_CODE_ENABLE_ADMIN = 1, REQUEST_CREATE_SHORTCUT = 2;
     private boolean exportSettings, importSettings;
     private final int USAGE_STATS_REQUEST = 13, CHOOSE_AUTOPAUSEAPPS_REQUEST = 14;
     private final static String LOG_TAG = "[SettingsActivity]";
@@ -304,6 +306,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
         });
+        findPreference("create_shortcut").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, preference.getKey() + " clicked");
+                Intent i;
+                LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "User wants to create a shortcut",
+                        i = new Intent(SettingsActivity.this, ConfigureActivity.class).putExtra("creatingShortcut", true));
+                startActivityForResult(i,REQUEST_CREATE_SHORTCUT);
+                return true;
+            }
+        });
         LogFactory.writeMessage(this, LOG_TAG, "Done with onCreate");
     }
 
@@ -534,6 +547,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }else if(requestCode == REQUEST_CODE_ENABLE_ADMIN && resultCode == RESULT_OK && devicePolicyManager.isAdminActive(deviceAdmin)){
             LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Deviceadmin was activated");
             ((SwitchPreference)findPreference("device_admin")).setChecked(true);
+        }else if(requestCode == REQUEST_CREATE_SHORTCUT && resultCode == RESULT_OK){
+            final Snackbar snackbar = Snackbar.make(getListView(), R.string.shortcut_created, Snackbar.LENGTH_INDEFINITE);
+            snackbar.setAction(R.string.show, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(snackbar != null)snackbar.dismiss();
+                    API.goToLauncher(SettingsActivity.this);
+                }
+            });
+            snackbar.show();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

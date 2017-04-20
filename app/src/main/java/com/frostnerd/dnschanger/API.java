@@ -36,6 +36,10 @@ public final class API {
     public static final String LOG_TAG = "[API]";
     private static SQLiteDatabase database;
 
+    public static void goToLauncher(Context context){
+        context.startActivity(new Intent().setAction(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME));
+    }
+
     public static void updateAllWidgets(Context context, Class<? extends AppWidgetProvider> providerClass) {
         LogFactory.writeMessage(context, LOG_TAG, "Updating all Widgets of provider " + providerClass);
         int[] ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, providerClass));
