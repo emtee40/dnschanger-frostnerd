@@ -136,4 +136,7 @@
     <string name="title_create_shortcut">Eine Verknüpfung erstellen</string>
     <string name="summary_create_shortcut">Erstelle eine Verknüpfung um DNS Changer schnell mit bestimmten DNS Servern zu starten</string>
     <string name="notification_reason_stopped">DNS Changer wurde automatisch gestoppt: [reason]</string>
+    <string name="reason_stop_exception">Fehler während der Ausführung</string>
+    <string name="reason_stop_network_change">Netzwerk wurde geändert (DNS CHanger wurde eingestellt zu stoppen)</string>
+    <string name="reason_stop_tasker">Von Tasker gestoppt</string>
 </resources>

@@ -113,6 +113,7 @@ public class DNSVpnService extends VpnService {
             stopped = true;
             run = false;
             LogFactory.writeMessage(DNSVpnService.this, LOG_TAG, "Stopping because of uncaught exception");
+            stopReason = getString(R.string.reason_stop_exception);
             clearVars();
             stopSelf();
         }
@@ -137,8 +138,9 @@ public class DNSVpnService extends VpnService {
     private void clearVars(){
         LogFactory.writeMessage(this, LOG_TAG, "Clearing Variables");
         if(stopReason != null && notificationManager != null && Preferences.getBoolean(this, "notification_on_stop", false)){
+            String reasonText = getString(R.string.notification_reason_stopped).replace("[reason]", stopReason);
             notificationManager.notify(NOTIFICATION_ID+1, new NotificationCompat.Builder(this).setAutoCancel(true).
-                    setOngoing(false).setContentText(getString(R.string.notification_reason_stopped).replace("[reason]", stopReason))
+                    setOngoing(false).setContentText(reasonText).setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText(reasonText))
             .setSmallIcon(R.mipmap.ic_launcher).setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0))
                     .build());
         }
@@ -308,6 +310,7 @@ public class DNSVpnService extends VpnService {
                     run = false;
                     thread.interrupt();
                 }
+                if(intent.hasExtra("reason"))stopReason = intent.getStringExtra("reason");
                 LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Stopping self");
                 stopSelf();
             }else if (intent.getBooleanExtra("start_vpn", false)) {

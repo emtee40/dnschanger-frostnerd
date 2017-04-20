@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.frostnerd.dnschanger.LogFactory;
+import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 
@@ -33,7 +34,7 @@ public class FireReceiver extends BroadcastReceiver {
             if(bundle.containsKey(Helper.BUNDLE_EXTRA_STOP_DNS)){
                 Intent i;
                 LogFactory.writeMessage(context, LOG_TAG, "Action: Stop DNS",
-                        i = new Intent(context, DNSVpnService.class).putExtra("destroy",true));
+                        i = new Intent(context, DNSVpnService.class).putExtra("destroy",true).putExtra("reason", context.getString(R.string.reason_stop_tasker)));
                 context.startService(i);
             }else if(bundle.containsKey(Helper.BUNDLE_EXTRA_PAUSE_DNS)){
                 Intent i;

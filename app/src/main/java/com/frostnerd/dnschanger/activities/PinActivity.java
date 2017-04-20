@@ -100,7 +100,8 @@ public class PinActivity extends Activity {
                     i = new Intent(this, DNSVpnService.class).
                             putExtra("start_vpn", getIntent().getBooleanExtra("start_vpn", false)).
                             putExtra("stop_vpn", getIntent().getBooleanExtra("stop_vpn", false)).
-                            putExtra("destroy", getIntent().getBooleanExtra("destroy", false)));
+                            putExtra("destroy", getIntent().getBooleanExtra("destroy", false)).
+                            putExtra("reason", getIntent().hasExtra("destroy") ? getIntent().getStringExtra("reason") : null));
             startService(i);
             LogFactory.writeMessage(this, LOG_TAG, "Service Started");
         }

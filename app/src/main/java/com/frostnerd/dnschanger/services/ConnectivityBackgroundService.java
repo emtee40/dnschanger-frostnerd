@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 
 import com.frostnerd.dnschanger.API;
 import com.frostnerd.dnschanger.LogFactory;
+import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
 import com.frostnerd.dnschanger.widgets.BasicWidget;
 import com.frostnerd.utils.preferences.Preferences;
@@ -40,7 +41,7 @@ public class ConnectivityBackgroundService extends Service {
             if(!connected && Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_disable_netchange", false)){
                 LogFactory.writeMessage(ConnectivityBackgroundService.this, LOG_TAG,
                         "Destroying DNSVPNService, as device is not connected and setting_disable_netchange is true",
-                        i = new Intent(ConnectivityBackgroundService.this, DNSVpnService.class).putExtra("destroy",true));
+                        i = new Intent(ConnectivityBackgroundService.this, DNSVpnService.class).putExtra("destroy",true).putExtra("reason", getString(R.string.reason_stop_network_change)));
                 startService(i);
             }
             if(!connected || type == ConnectivityManager.TYPE_BLUETOOTH || type == ConnectivityManager.TYPE_DUMMY || type == ConnectivityManager.TYPE_VPN)return;
@@ -53,7 +54,7 @@ public class ConnectivityBackgroundService extends Service {
             }else if(Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_disable_netchange", false)){
                 LogFactory.writeMessage(ConnectivityBackgroundService.this, LOG_TAG,
                         "Not on WIFI or MOBILE and setting_disable_netchange is true. Destroying DNSVPNService.",
-                        i = new Intent(ConnectivityBackgroundService.this, DNSVpnService.class).putExtra("destroy",true));
+                        i = new Intent(ConnectivityBackgroundService.this, DNSVpnService.class).putExtra("destroy",true).putExtra("reason", getString(R.string.reason_stop_network_change)));
                 startService(i);
             }
         }
