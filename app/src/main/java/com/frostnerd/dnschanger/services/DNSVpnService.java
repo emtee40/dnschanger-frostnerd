@@ -141,7 +141,7 @@ public class DNSVpnService extends VpnService {
             String reasonText = getString(R.string.notification_reason_stopped).replace("[reason]", stopReason);
             notificationManager.notify(NOTIFICATION_ID+1, new NotificationCompat.Builder(this).setAutoCancel(true).
                     setOngoing(false).setContentText(reasonText).setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText(reasonText))
-            .setSmallIcon(R.mipmap.ic_launcher).setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0))
+            .setSmallIcon(R.drawable.ic_stat_small_icon).setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0))
                     .build());
         }
         stopped = true;
