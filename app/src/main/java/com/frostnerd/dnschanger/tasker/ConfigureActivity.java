@@ -179,7 +179,8 @@ public class ConfigureActivity extends AppCompatActivity {
 
             }
         });
-        if(Preferences.getBoolean(this, "setting_auto_wifi",false) || Preferences.getBoolean(this, "setting_auto_mobile",false) || Preferences.getBoolean(this, "setting_start_boot", false)){
+        if(!creatingShortcut && Preferences.getBoolean(this, "setting_auto_wifi",false) || Preferences.getBoolean(this, "setting_auto_mobile",false)
+                || Preferences.getBoolean(this, "setting_start_boot", false) || Preferences.getBoolean(this, "setting_auto_disable",false)){
             new AlertDialog.Builder(this).setTitle(R.string.warning).setMessage(R.string.tasker_automation_conflict_text).setCancelable(false).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
