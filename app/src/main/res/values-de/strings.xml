@@ -44,7 +44,7 @@
     <string name="no">Nein</string>
     <string name="yes">Ja</string>
     <string name="contact_developer">Entwickler kontaktieren</string>
-    <string name="warning_started_using_tasker">DNSChanger wurde durch Tasker oder eine ähnliche App gestartet. Das Stoppen des VPN unterbricht den Standardbetrieb. Das erneute Starten des VPN benutzt die Einstellungen der App, nicht die Einstellungen, welche über Tasker gesetzt wurden. Trotzdem stoppen?</string>
+    <string name="warning_started_using_tasker">DNS Changer wurde durch Tasker oder eine ähnliche App gestartet. Das Stoppen des VPN unterbricht den Standardbetrieb. Das erneute Starten des VPN benutzt die Einstellungen der App, nicht die Einstellungen, welche über Tasker gesetzt wurden. Trotzdem stoppen?</string>
     <string name="app_supports_tasker_text">Diese App unterstützt Tasker und kann als Aktions Plugin zum automatisierten Setzen der DNS-Server genutzt werden.</string>
     <string name="tasker_support">Tasker Unterstützung</string>
     <string name="create_shortcut">Ein Shortcut erstellen</string>
@@ -66,39 +66,39 @@
     <string name="show">Anzeigen</string>
     <string name="android4_4_warning">Achtung: deine Android Version (4.4) ist dafür bekannt, Fehler mit VPN zu haben. Sollte diese App abstürzen oder nicht funktionieren, liegt dies höchstwahrscheinlich am System und nicht an dieser App.\n</string>
     <string name="title_auto_pause">DNS automatisch pausieren</string>
-    <string name="summary_auto_pause">DNSChanger automatisch pausieren, wenn eine bestimmte App im Vordergrund ist (Folgt in der nächsten App-Version)</string>
-    <string name="title_autopause_apps">Apps, welche DNSChanger pausieren. Aktuell: [[count]]</string>
+    <string name="summary_auto_pause">DNS Changer automatisch pausieren, wenn eine bestimmte App im Vordergrund ist (Folgt in der nächsten App-Version)</string>
+    <string name="title_autopause_apps">Apps, welche DNS Changer pausieren. Aktuell: [[count]]</string>
     <string name="pin_dialog_title">Pingeschützt</string>
     <string name="pin_dialog_text">Sie haben in den Einstellungen festgelegt, dass diese App durch einen Pin geschützt werden soll. Bitte geben sie die gesetzte Pin ein (Standard: 1234)</string>
     <string name="title_pin_notification">Benachrichtigung schützen</string>
-    <string name="summary_pin_notification">Nach der PIN fragen, wenn DNSChanger von der Benachrichtungung aus pausiert/gestoppt wird</string>
+    <string name="summary_pin_notification">Nach der PIN fragen, wenn DNS Changer von der Benachrichtungung aus pausiert/gestoppt wird</string>
     <string name="title_pin_app">App schützen</string>
     <string name="summary_pin_app">Nach der Pin fragen, wenn die App geöffnet wird</string>
     <string name="title_category_pin">Pin</string>
     <string name="summary_version">Version [[version]] ([[code]])\n\n© Daniel Wolf 2017\nAll rights reserved</string>
-    <string name="usage_stats_info_text">Um DNSChanger automatisch zu pausieren, wenn sich eine bestimmte App im Vordergrund befindet, wird Zugriff auf die Nutzungsdaten benötigt.\n\nBitte gewähre DNSChanger im nächsten Fenster Zugriff auf diese Daten, oder du wirst diese Einstellung nicht nutzen können.\n\n\nEs werden keine Daten außer den aktuell laufenden Apps angefordert. Es werden keine Daten gespeichert oder übertragen.\nDer SourceCode ist öffentlich unter https://git.frostnerd.com/PublicAndroidApps/DnsChanger verfügbar, wenn du selber sichergehen willst.</string>
+    <string name="usage_stats_info_text">Um DNS Changer automatisch zu pausieren, wenn sich eine bestimmte App im Vordergrund befindet, wird Zugriff auf die Nutzungsdaten benötigt.\n\nBitte gewähre DNSChanger im nächsten Fenster Zugriff auf diese Daten, oder du wirst diese Einstellung nicht nutzen können.\n\n\nEs werden keine Daten außer den aktuell laufenden Apps angefordert. Es werden keine Daten gespeichert oder übertragen.\nDer SourceCode ist öffentlich unter https://git.frostnerd.com/PublicAndroidApps/DnsChanger verfügbar, wenn du selber sichergehen willst.</string>
     <string name="title_remove_usage_data">Zugriff auf Nutzungsdaten deaktivieren</string>
     <string name="summary_remove_usage_data">Zugriff auf die Nutzungsdaten wurde gewährt. Klicke hier, um diese Berechtigung zurückzuziehen.</string>
-    <string name="autopause_appselect_info_text">Jede hier markierte App pausiert DNSChanger automatisch, wenn sie sich im Vordergrund befindet. Diest ist beispielsweise sinnvoll, da im Store mit geändertem DNS keine Apps heruntergeladen werden können.</string>
+    <string name="autopause_appselect_info_text">Jede hier markierte App pausiert DNS Changer automatisch, wenn sie sich im Vordergrund befindet. Diest ist beispielsweise sinnvoll, da im Store mit geändertem DNS keine Apps heruntergeladen werden können.</string>
 
     <string-array name="tasker_configure_actions">
-        <item>DNSChanger starten</item>
-        <item>DNSChanger stoppen</item>
-        <item>DNSChanger pausieren</item>
-        <item>DNSChanger fortsetzen</item>
+        <item>DNS Changer starten</item>
+        <item>DNS Changer stoppen</item>
+        <item>DNS Changer pausieren</item>
+        <item>DNS Changer fortsetzen</item>
     </string-array>
     <string name="error">Fehler</string>
     <string name="vpn_error_explain">Bei einigen Android Versionen (4.4, einige wenige 5.0 Versionen) und Custom ROMS wird die dieser App zu Grund liegende VPN-Struktur nicht unterstützt, was zu Abstürzen führt.\n\nDiese App ist unerwartet abgestürzt, was höchstwahrscheinlich darauf hindeutet, dass den Gerät diese App nicht unterstützt.\nSollte dies der Fall sein, könnest du mir helfen, indem du mir den Fehlerbericht sendest, aber leider funktioniert diese App auf deinem Gerät nicht.</string>
     <string name="send_crash_report">Absturzbericht senden</string>
-    <string name="deep_link_title">DNSChanger von Frostnerd</string>
-    <string name="summary_pin_tile">Nach der Pin fragen, wenn DNSChanger von den Schnelleinstellungen aus gestartet/gestoppt wird</string>
+    <string name="deep_link_title">DNS Changer von Frostnerd</string>
+    <string name="summary_pin_tile">Nach der Pin fragen, wenn DNS Changer von den Schnelleinstellungen aus gestartet/gestoppt wird</string>
     <string name="title_pin_tile">Schnelleinstellungen schützen</string>
-    <string name="tile_start">DNSChanger starten</string>
-    <string name="tile_stop">DNSChanger stoppen</string>
-    <string name="tile_pause">DNSChanger pausieren</string>
-    <string name="tile_resume">DNSChanger fortsetzen</string>
+    <string name="tile_start">DNS Changer starten</string>
+    <string name="tile_stop">DNS Changer stoppen</string>
+    <string name="tile_pause">DNS Changer pausieren</string>
+    <string name="tile_resume">DNS Changer fortsetzen</string>
     <string name="title_disable_network_change">Bei Netzwechsel deaktivieren</string>
-    <string name="summary_disable_network_change">DNSChanger automatisch stoppen, wenn das Netz gewechselt wird (z.B. von WLAN zu 3G). DNSChanger startet erneut, wenn es in den vorherigen Einstellungen so gesetzt wurde.</string>
+    <string name="summary_disable_network_change">DNS Changer automatisch stoppen, wenn das Netz gewechselt wird (z.B. von WLAN zu 3G). DNSChanger startet erneut, wenn es in den vorherigen Einstellungen so gesetzt wurde.</string>
     <string name="title_share_app">Diese App teilen</string>
     <string name="summary_share_app">Das Teilen diese App mit deinen Freunden oder anderen Personen würde sehr dazu beitragen, diese App bekannter zu machen.</string>
     <string name="app_share_text">Hallo, guck dir mal diese App zum Ändern der DNS Server auf deinem Handy an: https://play.google.com/store/apps/details?id=com.frostnerd.dnschanger</string>
@@ -108,7 +108,7 @@
     <string name="title_import_settings">Einstellungen importieren</string>
     <string name="summary_export_settings">Exporiert die Einstellungen in eine Datei</string>
     <string name="summary_import_settings">Importiert die Einstellungen aus einer Datei</string>
-    <string name="explain_storage_permission">Um die Einstellungsdatei zu schreiben/lesen, braucht DNSChanger Zugriff auf deinen Speicher. Bitte gewähre der App im nächsten Fenster dieses Recht.</string>
+    <string name="explain_storage_permission">Um die Einstellungsdatei zu schreiben/lesen, braucht DNS Changer Zugriff auf deinen Speicher. Bitte gewähre der App im nächsten Fenster dieses Recht.</string>
     <string name="message_settings_exported">Die Einstellungen wurden erfolgreich exportiert.</string>
     <string name="open_share_file">Datei öffnen/teilen</string>
     <string name="success">Operation erfolgreich</string>
@@ -137,6 +137,6 @@
     <string name="summary_create_shortcut">Erstelle eine Verknüpfung um DNS Changer schnell mit bestimmten DNS Servern zu starten</string>
     <string name="notification_reason_stopped">DNS Changer wurde automatisch gestoppt: [reason]</string>
     <string name="reason_stop_exception">Fehler während der Ausführung</string>
-    <string name="reason_stop_network_change">Netzwerk wurde geändert (DNS CHanger wurde eingestellt zu stoppen)</string>
+    <string name="reason_stop_network_change">Netzwerk wurde geändert (DNS Changer wurde eingestellt zu stoppen)</string>
     <string name="reason_stop_tasker">Von Tasker gestoppt</string>
 </resources>
