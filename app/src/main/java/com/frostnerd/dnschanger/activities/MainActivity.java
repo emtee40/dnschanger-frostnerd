@@ -330,7 +330,6 @@ public class MainActivity extends AppCompatActivity {
         LogFactory.writeMessage(this, LOG_TAG, "Got OnResume");
         LogFactory.writeMessage(this, LOG_TAG, "Sending ServiceStateRequest as broadcast");
         vpnRunning = API.checkVPNServiceRunning(this);
-        Toast.makeText(this, "RUNNING: " + vpnRunning, Toast.LENGTH_LONG).show();
         setIndicatorState(vpnRunning);
         LocalBroadcastManager.getInstance(this).registerReceiver(serviceStateReceiver, new IntentFilter(API.BROADCAST_SERVICE_STATUS_CHANGE));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATE_REQUEST));
