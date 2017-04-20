@@ -30,6 +30,12 @@ public class ShortcutActivity extends AppCompatActivity {
         LogFactory.writeMessage(this, LOG_TAG, "Activity created", i);
         final String dns1 = i.getStringExtra("dns1"), dns2 = i.getStringExtra("dns2"),
                 dns1v6 = i.getStringExtra("dns1v6"), dns2v6 = i.getStringExtra("dns2v6");
+        if(Preferences.getBoolean(this, "shortcut_click_override_settings", false)){
+            Preferences.put(this, "dns1",dns1);
+            Preferences.put(this, "dns2", dns2);
+            Preferences.put(this, "dns1-v6", dns1v6);
+            Preferences.put(this, "dns2-v6", dns2v6);
+        }
         LogFactory.writeMessage(this, LOG_TAG, "DNS1: " + dns1 + ", DNS2: " + dns2 + ", DNS1V6: " + dns1v6 + ", DNS2V6: " + dns2v6);
         if(API.checkVPNServiceRunning(this)){
             LogFactory.writeMessage(this, LOG_TAG, "Service is already running");

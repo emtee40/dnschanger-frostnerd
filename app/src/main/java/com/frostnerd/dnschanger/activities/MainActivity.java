@@ -102,34 +102,6 @@ public class MainActivity extends AppCompatActivity {
             vpnRunning = intent.getBooleanExtra("vpn_running",false);
             wasStartedWithTasker = intent.getBooleanExtra("started_with_tasker", false);
             setIndicatorState(intent.getBooleanExtra("vpn_running",false));
-            bindService(DNSVpnService.getBinderIntent(MainActivity.this), new ServiceConnection() {
-                @Override
-                public void onServiceConnected(ComponentName name, IBinder binder) {
-                    DNSVpnService service = ((DNSVpnService.ServiceBinder)binder).getService();
-                    if(service.startedFromShortcut() && Preferences.getBoolean(MainActivity.this, "shortcut_click_override_settings",false)){
-                        doStopVPN = false;
-                        if(settingV6){
-                            dns1.setText(service.getCurrentDNS1V6());
-                            dns2.setText(service.getCurrentDNS2V6());
-                            Preferences.put(MainActivity.this, "dns1", service.getCurrentDNS1());
-                            Preferences.put(MainActivity.this, "dns2", service.getCurrentDNS2());
-                        }else{
-                            dns1.setText(service.getCurrentDNS1());
-                            dns2.setText(service.getCurrentDNS2());
-                            Preferences.put(MainActivity.this, "dns1-v6", service.getCurrentDNS1V6());
-                            Preferences.put(MainActivity.this, "dns2-v6", service.getCurrentDNS2V6());
-                        }
-                        doStopVPN = true;
-                    }
-                    service = null;
-                    unbindService(this);
-                }
-
-                @Override
-                public void onServiceDisconnected(ComponentName name) {
-
-                }
-            },0);
         }
     };
 
@@ -362,6 +334,15 @@ public class MainActivity extends AppCompatActivity {
         setIndicatorState(vpnRunning);
         LocalBroadcastManager.getInstance(this).registerReceiver(serviceStateReceiver, new IntentFilter(API.BROADCAST_SERVICE_STATUS_CHANGE));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATE_REQUEST));
+        doStopVPN = false;
+        if(settingV6){
+            dns1.setText(Preferences.getString(this, "dns1", "8.8.8.8"));
+            dns2.setText(Preferences.getString(this, "dns2", "8.8.4.4"));
+        }else{
+            dns1.setText(Preferences.getString(this, "dns1-v6", "2001:4860:4860::8888"));
+            dns2.setText(Preferences.getString(this, "dns2-v6", "2001:4860:4860::8844"));
+        }
+        doStopVPN = true;
     }
 
     @Override
