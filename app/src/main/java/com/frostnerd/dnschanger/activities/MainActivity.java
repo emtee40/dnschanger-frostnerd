@@ -116,8 +116,8 @@ public class MainActivity extends AppCompatActivity {
                         }else{
                             dns1.setText(service.getCurrentDNS1());
                             dns2.setText(service.getCurrentDNS2());
-                            Preferences.put(MainActivity.this, "dns1", service.getCurrentDNS1());
-                            Preferences.put(MainActivity.this, "dns2", service.getCurrentDNS2());
+                            Preferences.put(MainActivity.this, "dns1-v6", service.getCurrentDNS1V6());
+                            Preferences.put(MainActivity.this, "dns2-v6", service.getCurrentDNS2V6());
                         }
                         doStopVPN = true;
                     }
