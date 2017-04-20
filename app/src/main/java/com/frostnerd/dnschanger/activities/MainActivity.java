@@ -430,7 +430,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if(snackbar != null)snackbar.dismiss();
-                    onBackPressed();
+                    API.goToLauncher(MainActivity.this);
                 }
             });
             snackbar.show();
