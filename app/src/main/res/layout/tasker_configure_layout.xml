@@ -49,6 +49,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Name"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:nextFocusDown="@id/dns1"
+                android:nextFocusForward="@id/dns1"
                 android:text=""
                 android:textColor="#FFF">
 
@@ -80,7 +84,11 @@
                     android:layout_height="wrap_content"
                     android:digits="0123456789."
                     android:hint="DNS 1"
+                    android:imeOptions="actionNext"
                     android:inputType="numberDecimal"
+                    android:nextFocusDown="@id/dns2"
+                    android:nextFocusForward="@id/dns2"
+                    android:nextFocusUp="@id/name"
                     android:text="8.8.8.8"
                     android:textColor="#FFF" />
             </com.frostnerd.utils.design.MaterialEditText>
@@ -103,7 +111,9 @@
                     android:layout_height="wrap_content"
                     android:digits="0123456789."
                     android:hint="DNS 2"
+                    android:imeOptions="actionDone"
                     android:inputType="numberDecimal"
+                    android:nextFocusUp="@id/dns1"
                     android:text="8.8.4.4"
                     android:textColor="#FFF" />
             </com.frostnerd.utils.design.MaterialEditText>
@@ -156,21 +166,21 @@
                 android:id="@+id/cancel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/middle"
-                android:textColor="#FFF"
                 android:layout_marginRight="3dp"
+                android:layout_toLeftOf="@id/middle"
                 android:background="#42A5F5"
-                android:text="@string/cancel" />
+                android:text="@string/cancel"
+                android:textColor="#FFF" />
 
             <Button
                 android:id="@+id/done"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/middle"
-                android:textColor="#FFF"
                 android:layout_marginLeft="3dp"
+                android:layout_toRightOf="@id/middle"
                 android:background="#42A5F5"
-                android:text="@string/done" />
+                android:text="@string/done"
+                android:textColor="#FFF" />
         </RelativeLayout>
     </LinearLayout>
 
