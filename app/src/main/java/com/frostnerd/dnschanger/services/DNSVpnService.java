@@ -364,17 +364,23 @@ public class DNSVpnService extends VpnService {
                                     int counter = 0;
                                     try {
                                         LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "VPN Thread going into while loop");
-                                        while (run) {
-                                            if(counter >= 4 && autoPauseApps.size() != 0){
-                                                counter = 0;
-                                                if(autoPauseApps.contains(AppTaskGetter.getMostRecentApp(DNSVpnService.this,1000*1000))){
-                                                    run = false;
-                                                    autoPaused = true;
-                                                    new Thread(autoPausedRestartRunnable).start();
+                                        if(autoPauseApps.size() != 0){
+                                            while (run) {
+                                                if(counter >= 4 && autoPauseApps.size() != 0){
+                                                    counter = 0;
+                                                    if(autoPauseApps.contains(AppTaskGetter.getMostRecentApp(DNSVpnService.this,1000*1000))){
+                                                        run = false;
+                                                        autoPaused = true;
+                                                        new Thread(autoPausedRestartRunnable).start();
+                                                    }
                                                 }
+                                                if(run)Thread.sleep(250);
+                                                counter++;
                                             }
-                                            if(run)Thread.sleep(250);
-                                            counter++;
+                                        }else{
+                                            while(run){
+                                                Thread.sleep(250);
+                                            }
                                         }
                                         LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "VPN Thread reached end of while loop. Run: " + run);
                                     } catch (InterruptedException e2) {
