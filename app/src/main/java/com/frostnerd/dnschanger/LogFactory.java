@@ -292,6 +292,10 @@ public class LogFactory {
     }
 
     public static String stacktraceToString(Throwable throwable) {
+        return stacktraceToString(throwable,false);
+    }
+
+    public static String stacktraceToString(Throwable throwable, boolean replaceNewline) {
         StringWriter sw = new StringWriter();
         throwable.printStackTrace(new PrintWriter(sw));
         String res = sw.toString();
@@ -300,7 +304,7 @@ public class LogFactory {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return res;
+        return replaceNewline ? res.replace("\n", " -- ") : res;
     }
 
     private static long getTotalMemory() {
