@@ -33,8 +33,10 @@ import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.nio.channels.DatagramChannel;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -55,6 +57,7 @@ public class DNSVpnService extends VpnService {
     private NotificationManager notificationManager;
     private final int NOTIFICATION_ID = 112;
     private String dns1,dns2,dns1_v6,dns2_v6, stopReason, currentDNS1, currentDNS2, currentDNS1V6, currentDNS2V6;
+    private List<Runnable> afterThreadStop = new ArrayList<>();
 
     private boolean fixedDNS = false, startedWithTasker = false, autoPaused = false, runThread = true, variablesCleared = false;
     private BroadcastReceiver stateRequestReceiver = new BroadcastReceiver() {
@@ -131,6 +134,8 @@ public class DNSVpnService extends VpnService {
         uncaughtExceptionHandler = null;
         threadRunning = false;
         variablesCleared = true;
+        afterThreadStop.clear();
+        afterThreadStop = null;
         LogFactory.writeMessage(this, LOG_TAG, "Variables cleared");
         if(stopSelf)stopSelf();
     }
@@ -256,11 +261,21 @@ public class DNSVpnService extends VpnService {
                 stopService();
             }else if (IntentUtil.checkExtra(VPNServiceArguments.COMMAND_START_VPN.getArgument(),intent)) {
                 LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Starting VPN");
-                stopThread();
+                if(threadRunning){
+                    afterThreadStop.add(new Runnable() {
+                        @Override
+                        public void run() {
+                            vpnThread = createThread();
+                            vpnThread.start();
+                        }
+                    });
+                    stopThread();
+                }else {
+                    vpnThread = createThread();
+                    vpnThread.start();
+                }
                 updateDNSServers(intent);
                 LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Creating Thread");
-                vpnThread = createThread();
-                vpnThread.start();
             }else if (IntentUtil.checkExtra(VPNServiceArguments.COMMAND_STOP_VPN.getArgument(),intent)){
                 LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Stopping VPN");
                 stopThread();
@@ -345,6 +360,7 @@ public class DNSVpnService extends VpnService {
 
             @Override
             public void run() {
+                threadRunning = true;
                 LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Starting Thread (run)");
                 runThread = true;
                 Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
@@ -353,7 +369,6 @@ public class DNSVpnService extends VpnService {
                 currentDNS2 = dns2;
                 currentDNS1V6 = dns1_v6;
                 currentDNS2V6 = dns2_v6;
-                threadRunning = true;
                 try {
                     LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying " + addresses.size() + " different addresses before passing any thrown exception to the upper layer");
                     for(String address: addresses.keySet()){
@@ -380,7 +395,7 @@ public class DNSVpnService extends VpnService {
                             int counter = 0;
                             try {
                                 LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "VPN Thread going into while loop");
-                                if(autoPauseApps.size() != 0){
+                                if(autoPauseApps != null && autoPauseApps.size() != 0){
                                     while (runThread) {
                                         if(counter >= 4 && autoPauseApps.size() != 0){
                                             counter = 0;
@@ -427,6 +442,10 @@ public class DNSVpnService extends VpnService {
                     clearVars();
                     updateNotification();
                     broadcastCurrentState(false);
+                    if(afterThreadStop != null){
+                        for(Runnable r: afterThreadStop)r.run();
+                        afterThreadStop.clear();
+                    }
                     vpnThread = null;
                     LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Done with finally block");
                 }
@@ -535,4 +554,5 @@ public class DNSVpnService extends VpnService {
     public static boolean isServiceRunning(){
         return serviceRunning;
     }
+
 }
