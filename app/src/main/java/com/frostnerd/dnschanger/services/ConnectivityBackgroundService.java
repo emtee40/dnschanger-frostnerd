@@ -43,14 +43,15 @@ public class ConnectivityBackgroundService extends Service {
                         "Destroying DNSVPNService, as device is not connected and setting_disable_netchange is true",
                         i = new Intent(ConnectivityBackgroundService.this, DNSVpnService.class).putExtra("destroy",true).putExtra("reason", getString(R.string.reason_stop_network_change)));
                 startService(i);
+                return;
             }
             if(!connected || type == ConnectivityManager.TYPE_BLUETOOTH || type == ConnectivityManager.TYPE_DUMMY || type == ConnectivityManager.TYPE_VPN)return;
             if(type == ConnectivityManager.TYPE_WIFI && Preferences.getBoolean(ConnectivityBackgroundService.this,"setting_auto_wifi",false)){
                 LogFactory.writeMessage(ConnectivityBackgroundService.this, LOG_TAG, "Connected to WIFI and setting_auto_wifi is true. Starting Service..");
-                startService();
+                if(!API.checkDNSisSet(ConnectivityBackgroundService.this))startService();
             }else if(type == ConnectivityManager.TYPE_MOBILE && Preferences.getBoolean(ConnectivityBackgroundService.this,"setting_auto_mobile",false)){
                 LogFactory.writeMessage(ConnectivityBackgroundService.this, LOG_TAG, "Connected to MOBILE and setting_auto_mobile is true. Starting Service..");
-                startService();
+                if(!API.checkDNSisSet(ConnectivityBackgroundService.this))startService();
             }else if(Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_disable_netchange", false) && API.checkVPNServiceRunning(ConnectivityBackgroundService.this)){
                 LogFactory.writeMessage(ConnectivityBackgroundService.this, LOG_TAG,
                         "Not on WIFI or MOBILE and setting_disable_netchange is true. Destroying DNSVPNService.",

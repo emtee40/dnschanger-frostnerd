@@ -86,6 +86,10 @@ public final class API {
         return false;*/
     }
 
+    public static boolean checkDNSisSet(Context context){
+        return DNSVpnService.isDNSThreadRunning();
+    }
+
     public static boolean isTaskerInstalled(Context context) {
         List<ApplicationInfo> packages;
         packages = context.getPackageManager().getInstalledApplications(0);

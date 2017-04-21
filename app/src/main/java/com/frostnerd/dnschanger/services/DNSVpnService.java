@@ -53,8 +53,9 @@ import java.util.Set;
  */
 public class DNSVpnService extends VpnService {
     private static final String LOG_TAG = "[DNSVpnService]";
-    private static boolean running = false;
-    private boolean run = true, isRunning = false, stopped = false;
+    private static boolean serviceRunning = false;
+    private boolean run = true, stopped = false;
+    private static boolean isRunning = false;
     private Thread thread;
     private ParcelFileDescriptor tunnelInterface;
     private Builder builder;
@@ -158,7 +159,8 @@ public class DNSVpnService extends VpnService {
         autoPausedRestartRunnable = null;
         autoPauseApps = null;
         uncaughtExceptionHandler = null;
-        running = false;
+        serviceRunning = false;
+        isRunning = false;
         LogFactory.writeMessage(this, LOG_TAG, "Variables cleared");
     }
 
@@ -293,7 +295,7 @@ public class DNSVpnService extends VpnService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Got StartCommand", intent);
         if(intent!=null){
-            running = !intent.getBooleanExtra("destroy", false);
+            serviceRunning = !intent.getBooleanExtra("destroy", false);
             API.updateAllWidgets(this, BasicWidget.class);
             fixedDNS = intent.hasExtra("fixeddns") ? intent.getBooleanExtra("fixeddns", false) : fixedDNS;
             startedWithTasker = intent.hasExtra("startedWithTasker") ? intent.getBooleanExtra("startedWithTasker", false) : startedWithTasker;
@@ -494,7 +496,7 @@ public class DNSVpnService extends VpnService {
 
     @Override
     public IBinder onBind(Intent intent) {
-        return (intent.getBooleanExtra("binder",false) && running) ? new ServiceBinder() : null;
+        return (intent.getBooleanExtra("binder",false) && serviceRunning) ? new ServiceBinder() : null;
     }
 
     public static Intent getBinderIntent(Context context){
@@ -521,6 +523,10 @@ public class DNSVpnService extends VpnService {
         return fixedDNS && !startedWithTasker;
     }
 
+    public static boolean isDNSThreadRunning(){
+        return isServiceRunning() && isRunning;
+    }
+
     @Override
     public boolean onUnbind(Intent intent) {
         return true;
@@ -533,6 +539,6 @@ public class DNSVpnService extends VpnService {
     }
 
     public static boolean isServiceRunning(){
-        return running;
+        return serviceRunning;
     }
 }
