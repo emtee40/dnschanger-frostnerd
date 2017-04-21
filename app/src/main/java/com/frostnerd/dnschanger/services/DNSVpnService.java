@@ -393,6 +393,27 @@ public class DNSVpnService extends VpnService {
                                     if(addressIndex >= addresses.size())throw e;
                                     else LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", "[ADDRESS-RETRY]"},
                                             "Not throwing exception. Tries: " + addressIndex + ", addresses: " + addresses.size());
+                                }finally{
+                                    if(addressIndex < addresses.size()){
+                                        if (tunnelInterface != null) try {
+                                            tunnelInterface.close();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        if(tunnel != null)try{
+                                            tunnel.close();
+                                        }catch(Exception e){
+                                            e.printStackTrace();
+                                        }
+                                        if(tunnelSocket != null)try{
+                                            tunnelSocket.close();
+                                        }catch(Exception e){
+                                            e.printStackTrace();
+                                        }
+                                        tunnel = null;
+                                        tunnelInterface = null;
+                                        tunnelSocket = null;
+                                    }
                                 }
                             }
                         } catch (Exception  e) {
