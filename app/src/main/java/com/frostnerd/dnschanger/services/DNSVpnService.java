@@ -363,8 +363,9 @@ public class DNSVpnService extends VpnService {
                         LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Trying address '" + address + "'");
                         try{
                             addressIndex++;
+                            builder = new Builder();
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Creating Tunnel interface");
-                            tunnelInterface = builder.setSession("DnsChanger").addAddress(address, addresses.get(address)).addAddress(API.randomLocalIPv6Address(),48).addDnsServer(dns1).addDnsServer(dns2)
+                            tunnelInterface = builder.setSession("DnsChanger" + StringUtils.randomString(50)).addAddress(address, addresses.get(address)).addAddress(API.randomLocalIPv6Address(),48).addDnsServer(dns1).addDnsServer(dns2)
                                     .addDnsServer(dns1_v6).addDnsServer(dns2_v6).establish();
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Tunnel interface created and established.");
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Opening DatagramChannel");
@@ -429,6 +430,7 @@ public class DNSVpnService extends VpnService {
                                 }catch(Exception e){
                                     e.printStackTrace();
                                 }
+                                builder = null;
                                 tunnel = null;
                                 tunnelInterface = null;
                                 tunnelSocket = null;
@@ -466,6 +468,7 @@ public class DNSVpnService extends VpnService {
                     broadcastCurrentState(false);
                     LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Broadcast sent");
                     thread = null;
+                    builder = null;
                 }
             }
         });
