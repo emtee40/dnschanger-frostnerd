@@ -119,10 +119,10 @@ public class DNSVpnService extends VpnService {
         }
     };
     private HashMap<String, Integer> addresses = new HashMap<String, Integer>(){{
+        put("192.168.0.1", 24);
+        put("192.168.234.55", 24);
         put("172.31.255.253", 30);
         put("172.31.255.1", 28);
-        put("192.168.234.55", 24);
-        put("192.168.0.1", 24);
     }};
     private String stopReason;
 
