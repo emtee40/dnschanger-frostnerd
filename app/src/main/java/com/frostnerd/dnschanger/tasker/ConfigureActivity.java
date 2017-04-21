@@ -62,7 +62,7 @@ public class ConfigureActivity extends AppCompatActivity {
     private static final String LOG_TAG = "[ConfigureActivity]";
 
     private enum Action{
-        PAUSE, START, STOP, RESUME;
+        PAUSE, START, STOP, RESUME
     }
 
     static {

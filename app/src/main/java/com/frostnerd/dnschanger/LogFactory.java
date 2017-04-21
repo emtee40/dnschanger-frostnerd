@@ -324,7 +324,7 @@ public class LogFactory {
         }
     }
 
-    public static enum Tag {
+    public enum Tag {
         INFO, ERROR, MESSAGE, NO_TAG
     }
 }

@@ -13,7 +13,7 @@ public enum VPNServiceArguments {
     ARGUMENT_CALLER_TRACE("caller_trace");
 
     private final String argument;
-    private VPNServiceArguments(String argument){
+    VPNServiceArguments(String argument){
         this.argument = argument;
     }
 

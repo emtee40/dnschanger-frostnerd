@@ -54,11 +54,8 @@ public class Helper {
         String dns1 = bundle.getString(BUNDLE_EXTRA_DNS1), dns2 = bundle.getString(BUNDLE_EXTRA_DNS2),
                 dns1v6 = bundle.getString(BUNDLE_EXTRA_DNS1V6), dns2v6 = bundle.getString(BUNDLE_EXTRA_DNS2V6);
 
-        if (bundle.keySet().size() != 4 || TextUtils.isEmpty(dns1) || TextUtils.isEmpty(dns2)
-                || TextUtils.isEmpty(dns1v6) || TextUtils.isEmpty(dns2v6)) {
-            return false;
-        }
-        return true;
+        return !(bundle.keySet().size() != 4 || TextUtils.isEmpty(dns1) || TextUtils.isEmpty(dns2)
+                || TextUtils.isEmpty(dns1v6) || TextUtils.isEmpty(dns2v6));
     }
 
     public static Bundle createBundle(final String dns1, final String dns2, final String dns1v6, final String dns2v6){

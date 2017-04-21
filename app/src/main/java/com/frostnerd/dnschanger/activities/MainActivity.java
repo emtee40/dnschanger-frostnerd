@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
         info = (Button)findViewById(R.id.dnsInfo);
         wrapper = (LinearLayout)findViewById(R.id.activity_main);
         importButton = (ImageButton)findViewById(R.id.default_dns_view_image);
-        running_indicator = (View)findViewById(R.id.running_indicator);
+        running_indicator = findViewById(R.id.running_indicator);
         dns1.setText(Preferences.getString(MainActivity.this, "dns1", "8.8.8.8"));
         dns2.setText(Preferences.getString(MainActivity.this, "dns2", "8.8.4.4"));
         startStopButton = (Button) findViewById(R.id.startStopButton);
