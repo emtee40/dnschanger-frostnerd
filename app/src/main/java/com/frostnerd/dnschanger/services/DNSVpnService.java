@@ -365,10 +365,6 @@ public class DNSVpnService extends VpnService {
                 runThread = true;
                 Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
                 if(notificationBuilder != null) notificationBuilder.setWhen(System.currentTimeMillis());
-                currentDNS1 = dns1;
-                currentDNS2 = dns2;
-                currentDNS1V6 = dns1_v6;
-                currentDNS2V6 = dns2_v6;
                 try {
                     LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying " + addresses.size() + " different addresses before passing any thrown exception to the upper layer");
                     for(String address: addresses.keySet()){
@@ -391,6 +387,10 @@ public class DNSVpnService extends VpnService {
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Sending broadcast with current state");
                             broadcastCurrentState(true);
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Broadcast sent");
+                            currentDNS1 = dns1;
+                            currentDNS2 = dns2;
+                            currentDNS1V6 = dns1_v6;
+                            currentDNS2V6 = dns2_v6;
                             updateNotification();
                             int counter = 0;
                             try {
