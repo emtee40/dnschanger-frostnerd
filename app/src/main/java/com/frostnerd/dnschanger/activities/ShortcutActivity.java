@@ -8,6 +8,7 @@ import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 
 import com.frostnerd.dnschanger.API.API;
+import com.frostnerd.dnschanger.API.VPNServiceArguments;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.utils.preferences.Preferences;
@@ -37,7 +38,7 @@ public class ShortcutActivity extends AppCompatActivity {
             Preferences.put(this, "dns2-v6", dns2v6);
         }
         LogFactory.writeMessage(this, LOG_TAG, "DNS1: " + dns1 + ", DNS2: " + dns2 + ", DNS1V6: " + dns1v6 + ", DNS2V6: " + dns2v6);
-        if(API.checkVPNServiceRunning(this)){
+        if(API.isServiceRunning(this)){
             LogFactory.writeMessage(this, LOG_TAG, "Service is already running");
             if(Preferences.getBoolean(this, "shortcut_click_again_disable",false)){
                 LogFactory.writeMessage(this, LOG_TAG, "shortcut_click_again_disable is true. Checking if service was started via same shortcut");
@@ -51,7 +52,7 @@ public class ShortcutActivity extends AppCompatActivity {
                                 && service.getCurrentDNS1V6().equals(dns1v6) && service.getCurrentDNS2V6().equals(dns2v6)){
                             LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Service was started via same shortcut. Stopping.");
                             unbindService(this);
-                            startService(new Intent(ShortcutActivity.this, DNSVpnService.class).putExtra("destroy",true));
+                            startService(new Intent(ShortcutActivity.this, DNSVpnService.class).putExtra(VPNServiceArguments.COMMAND_STOP_SERVICE.getArgument(),true));
                             finish();
                         }else{
                             LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Service wasn't started using this shortcut");
@@ -78,9 +79,9 @@ public class ShortcutActivity extends AppCompatActivity {
     }
 
     private void start(String dns1, String dns2, String dns1v6, String dns2v6){
-        if(API.checkVPNServiceRunning(this)) {
+        if(API.isServiceRunning(this)) {
             LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Stopping Service to be safe");
-            startService(new Intent(this, DNSVpnService.class).putExtra("destroy", true));
+            startService(DNSVpnService.getDestroyIntent(this));
         }
         LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Starting BackgroundVpnConfigureActivity");
         BackgroundVpnConfigureActivity.startWithFixedDNS(this,dns1,

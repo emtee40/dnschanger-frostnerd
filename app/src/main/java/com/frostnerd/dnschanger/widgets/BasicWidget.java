@@ -28,7 +28,7 @@ public class BasicWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
         LogFactory.writeMessage(context, LOG_TAG, "Updating " + appWidgetIds.length + " Widgets.");
-        if (API.checkVPNServiceRunning(context)) {
+        if (API.isServiceRunning(context)) {
             LogFactory.writeMessage(context, LOG_TAG, "Waiting for broadcast...");
             LocalBroadcastManager.getInstance(context).registerReceiver(new BroadcastReceiver() {
                 @Override

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.VpnService;
 
+import com.frostnerd.dnschanger.API.VPNServiceArguments;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
 import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
@@ -36,7 +37,7 @@ public class BootReceiver extends BroadcastReceiver {
                 LogFactory.writeMessage(context, LOG_TAG, "VPNService Prepare Intent", i);
                 if(i == null){
                     LogFactory.writeMessage(context, LOG_TAG, "VPNService is prepared. Starting DNSVpnService",
-                            i = new Intent(context, DNSVpnService.class).putExtra("start_vpn",true).putExtra("startedWithTasker", false));
+                            i = DNSVpnService.getStartVPNIntent(context));
                     context.startService(i);
                 }else{
                     LogFactory.writeMessage(context, LOG_TAG, "VPNService is NOT prepared. Starting BackgroundVpnConfigureActivity.");

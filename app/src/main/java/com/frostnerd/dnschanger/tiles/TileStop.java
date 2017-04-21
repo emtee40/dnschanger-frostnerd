@@ -41,7 +41,7 @@ public class TileStop extends android.service.quicksettings.TileService {
         super.onStartListening();
         LogFactory.writeMessage(this, LOG_TAG, "Start listening");
         Tile tile = getQsTile();
-        if(API.checkVPNServiceRunning(this)){
+        if(API.isServiceRunning(this)){
             LogFactory.writeMessage(this, LOG_TAG, "Service running (Tile set to inactive)");
             tile.setState(Tile.STATE_INACTIVE);
         }else{
@@ -56,7 +56,7 @@ public class TileStop extends android.service.quicksettings.TileService {
     public void onClick() {
         super.onClick();
         LogFactory.writeMessage(this, LOG_TAG, "Tile clicked");
-        if(!API.checkVPNServiceRunning(this))return;
+        if(!API.isServiceRunning(this))return;
         boolean pinProtected = Preferences.getBoolean(this, "pin_tile", false);
         Intent i;
         if(pinProtected){
@@ -65,7 +65,7 @@ public class TileStop extends android.service.quicksettings.TileService {
             startActivity(i);
         }else{
             LogFactory.writeMessage(this, LOG_TAG, "Tile is not Pin Protected. Destroying DNSVPNService",
-                    i=new Intent(this, DNSVpnService.class).putExtra("destroy", true));
+                    i=DNSVpnService.getDestroyIntent(this));
             startService(i);
         }
     }

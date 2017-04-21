@@ -14,12 +14,17 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
+import android.service.quicksettings.TileService;
 import android.support.v4.content.ContextCompat;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.ShortcutActivity;
 import com.frostnerd.dnschanger.services.DNSVpnService;
+import com.frostnerd.dnschanger.tiles.TilePause;
+import com.frostnerd.dnschanger.tiles.TileResume;
+import com.frostnerd.dnschanger.tiles.TileStart;
+import com.frostnerd.dnschanger.tiles.TileStop;
 import com.frostnerd.utils.general.Utils;
 
 import java.util.List;
@@ -39,9 +44,20 @@ public final class API {
     public static final String LOG_TAG = "[API]";
     private static SQLiteDatabase database;
 
+    public static void updateTiles(Context context){
+        LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG}, "Trying to update Tiles");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            TileService.requestListeningState(context, new ComponentName(context, TileStart.class));
+            TileService.requestListeningState(context, new ComponentName(context, TileResume.class));
+            TileService.requestListeningState(context, new ComponentName(context, TilePause.class));
+            TileService.requestListeningState(context, new ComponentName(context, TileStop.class));
+            LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG}, "Tiles updated");
+        }else LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG}, "Not updating Tiles (Version is below Android N)");
+    }
+
     // This is dirty. Like really dirty. But sometimes the running check returns running when the
     // service isn't running. This is a workaround.
-    public static boolean checkVPNServiceRunning(Context c) {
+    public static boolean isServiceRunning(Context c) {
         return DNSVpnService.isServiceRunning();
         /*ActivityManager am = (ActivityManager) c.getSystemService(Context.ACTIVITY_SERVICE);
         String name = DNSVpnService.class.getName();
@@ -53,7 +69,7 @@ public final class API {
         return false;*/
     }
 
-    public static boolean checkDNSisSet(Context context){
+    public static boolean isServiceThreadRunning(Context context){
         return DNSVpnService.isDNSThreadRunning();
     }
 

@@ -332,7 +332,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             Preferences.put(SettingsActivity.this,preference.getKey(),newValue);
             String key = preference.getKey();
             if((key.equalsIgnoreCase("setting_show_notification") || key.equalsIgnoreCase("show_used_dns") ||
-                    key.equalsIgnoreCase("auto_pause")) && API.checkVPNServiceRunning(SettingsActivity.this)){
+                    key.equalsIgnoreCase("auto_pause")) && API.isServiceRunning(SettingsActivity.this)){
                 Intent i;
                 LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Updating DNSVPNService, as a relevant setting " +
                         "(notification/autopause) changed", i = new Intent(SettingsActivity.this, DNSVpnService.class));
@@ -542,7 +542,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "User returned from configuring autopause apps");
             findPreference("autopause_appselect").setTitle(getString(R.string.title_autopause_apps).
                     replace("[[count]]", ""+data.getIntExtra("count",0)));
-            if(API.checkVPNServiceRunning(SettingsActivity.this)){
+            if(API.isServiceRunning(SettingsActivity.this)){
                 Intent i;
                 LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Restarting DNSVPNService because the autopause apps changed",
                         i = new Intent(SettingsActivity.this, DNSVpnService.class));

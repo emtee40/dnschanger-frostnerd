@@ -34,12 +34,12 @@ public class FireReceiver extends BroadcastReceiver {
             if(bundle.containsKey(Helper.BUNDLE_EXTRA_STOP_DNS)){
                 Intent i;
                 LogFactory.writeMessage(context, LOG_TAG, "Action: Stop DNS",
-                        i = new Intent(context, DNSVpnService.class).putExtra("destroy",true).putExtra("reason", context.getString(R.string.reason_stop_tasker)));
+                        i = DNSVpnService.getDestroyIntent(context, context.getString(R.string.reason_stop_tasker)));
                 context.startService(i);
             }else if(bundle.containsKey(Helper.BUNDLE_EXTRA_PAUSE_DNS)){
                 Intent i;
                 LogFactory.writeMessage(context, LOG_TAG, "Action: Pause DNS",
-                        i = new Intent(context, DNSVpnService.class).putExtra("stop_vpn",true));
+                        i = DNSVpnService.getStopVPNIntent(context));
                 context.startService(i);
             }else if(bundle.containsKey(Helper.BUNDLE_EXTRA_RESUME_DNS)){
                 LogFactory.writeMessage(context, LOG_TAG, "Action: Resume DNS");

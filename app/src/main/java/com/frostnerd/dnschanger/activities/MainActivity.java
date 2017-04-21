@@ -32,6 +32,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.API.API;
+import com.frostnerd.dnschanger.API.VPNServiceArguments;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
 import com.frostnerd.dnschanger.services.DNSVpnService;
@@ -189,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LogFactory.writeMessage(this, LOG_TAG, "Created Activity", getIntent());
-        DNSVpnService.updateTiles(this);
+        API.updateTiles(this);
         LogFactory.writeMessage(this, LOG_TAG, "Launching ConnectivityBackgroundService");
         startService(new Intent(this, ConnectivityBackgroundService.class));
         LogFactory.writeMessage(this, LOG_TAG, "Setting ContentView");
@@ -326,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         LogFactory.writeMessage(this, LOG_TAG, "Got OnResume");
         LogFactory.writeMessage(this, LOG_TAG, "Sending ServiceStateRequest as broadcast");
-        vpnRunning = API.checkVPNServiceRunning(this);
+        vpnRunning = API.isServiceRunning(this);
         setIndicatorState(vpnRunning);
         LocalBroadcastManager.getInstance(this).registerReceiver(serviceStateReceiver, new IntentFilter(API.BROADCAST_SERVICE_STATUS_CHANGE));
         LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATE_REQUEST));
@@ -438,7 +439,7 @@ public class MainActivity extends AppCompatActivity {
     private void startVpn() {
         Intent i;
         LogFactory.writeMessage(this, LOG_TAG, "Starting VPN",
-                i = new Intent(this, DNSVpnService.class).putExtra("start_vpn", true).putExtra("startedWithTasker", false));
+                i = DNSVpnService.getStartVPNIntent(this));
         wasStartedWithTasker = false;
         startService(i);
         vpnRunning = true;
@@ -448,7 +449,7 @@ public class MainActivity extends AppCompatActivity {
     private void stopVpn() {
         Intent i;
         LogFactory.writeMessage(this, LOG_TAG, "Stopping VPN",
-                i = new Intent(this, DNSVpnService.class).putExtra("destroy", true));
+                i = DNSVpnService.getDestroyIntent(this));
         startService(i);
         stopService(new Intent(this, DNSVpnService.class));
         vpnRunning = false;

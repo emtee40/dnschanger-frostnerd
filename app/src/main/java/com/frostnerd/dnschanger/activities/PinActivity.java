@@ -9,6 +9,7 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 
+import com.frostnerd.dnschanger.API.VPNServiceArguments;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.R;
@@ -98,10 +99,10 @@ public class PinActivity extends Activity {
             Intent i;
             LogFactory.writeMessage(this, LOG_TAG, "Starting DNSVPNService",
                     i = new Intent(this, DNSVpnService.class).
-                            putExtra("start_vpn", getIntent().getBooleanExtra("start_vpn", false)).
-                            putExtra("stop_vpn", getIntent().getBooleanExtra("stop_vpn", false)).
-                            putExtra("destroy", getIntent().getBooleanExtra("destroy", false)).
-                            putExtra("reason", getIntent().hasExtra("destroy") ? getIntent().getStringExtra("reason") : null));
+                            putExtra(VPNServiceArguments.COMMAND_START_VPN.getArgument(), getIntent().getBooleanExtra("start_vpn", false)).
+                            putExtra(VPNServiceArguments.COMMAND_STOP_VPN.getArgument(), getIntent().getBooleanExtra("stop_vpn", false)).
+                            putExtra(VPNServiceArguments.COMMAND_STOP_SERVICE.getArgument(), getIntent().getBooleanExtra("destroy", false)).
+                            putExtra(VPNServiceArguments.ARGUMENT_STOP_REASON.getArgument(), getIntent().hasExtra("destroy") ? getIntent().getStringExtra("reason") : null));
             startService(i);
             LogFactory.writeMessage(this, LOG_TAG, "Service Started");
         }

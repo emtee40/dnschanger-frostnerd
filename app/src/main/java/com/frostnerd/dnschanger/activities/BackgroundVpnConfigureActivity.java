@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
+import com.frostnerd.dnschanger.API.VPNServiceArguments;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.R;
@@ -51,7 +52,6 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final Intent conf = VpnService.prepare(this);
         startService = intent != null && intent.getBooleanExtra("startService", false);
-        serviceIntent = new Intent(this, DNSVpnService.class).putExtra("start_vpn", true);
         LogFactory.writeMessage(this, LOG_TAG, "VPNService prepare", conf);
         LogFactory.writeMessage(this, LOG_TAG, "Starting Service: " + startService);
         if (intent != null && intent.getBooleanExtra("fixeddns", false)) {
@@ -65,10 +65,9 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
             if (intent.hasExtra("dns2")) dns2 = intent.getStringExtra("dns2");
             if (intent.hasExtra("dns1-v6")) dns1_v6 = intent.getStringExtra("dns1-v6");
             if (intent.hasExtra("dns2-v6")) dns2_v6 = intent.getStringExtra("dns2-v6");
-            serviceIntent = serviceIntent.putExtra("fixeddns", true).putExtra("dns1", dns1).putExtra("dns2", dns2)
-                    .putExtra("dns1-v6", dns1_v6).putExtra("dns2-v6", dns2_v6).putExtra("startedWithTasker", startedWithTasker);
+            serviceIntent = DNSVpnService.getStartVPNIntent(this, dns1, dns2, dns1_v6, dns2_v6, startedWithTasker);
             LogFactory.writeMessage(this, LOG_TAG, "ServiceIntent created", serviceIntent);
-        }
+        }else serviceIntent = DNSVpnService.getStartVPNIntent(this);
         if (conf != null) {
             LogFactory.writeMessage(this, LOG_TAG, "VPN access not yet granted. Requesting access (Showing Info dialog).");
             showDialog(new DialogInterface.OnClickListener() {
