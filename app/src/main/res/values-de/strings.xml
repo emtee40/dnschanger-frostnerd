@@ -39,7 +39,7 @@
     <string name="done">Fertig</string>
     <string name="check_validity">Bitte überprüfe die Richtigkeit deiner Angaben</string>
     <string name="press_back_again">Drücke erneut zurück zum verlassen (Verwirft Änderungen!)</string>
-    <string name="tasker_automation_conflict_text">Diese App ist darauf eingestellt, den VPN zu starten/stoppen, wenn sich die Netzwerkverbindung ändert (zu Wlan oder 3G/4G...).\\nDies könnte zu Konflikten mit diesem Tasker Plugin führen, da die eingestellte Aktion durch die App an sich überschrieben werden kann (Nur ein VPN kann aktiv sein). \\n\\nMöchtest du diese Einstellungen aus der App entfernen?</string>
+    <string name="tasker_automation_conflict_text">Diese App ist darauf eingestellt, den VPN zu starten/stoppen, wenn sich die Netzwerkverbindung ändert (zu Wlan oder 3G/4G...).\nDies könnte zu Konflikten mit diesem Tasker Plugin führen, da die eingestellte Aktion durch die App an sich überschrieben werden kann (Nur ein VPN kann aktiv sein).\n\nMöchtest du diese Einstellungen aus der App entfernen?</string>
     <string name="warning">Warnung</string>
     <string name="no">Nein</string>
     <string name="yes">Ja</string>
