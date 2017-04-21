@@ -24,12 +24,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.frostnerd.dnschanger.API;
+import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.ShortcutActivity;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.general.Utils;
+import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
 
 import java.util.ArrayList;
@@ -82,8 +83,8 @@ public class ConfigureActivity extends AppCompatActivity {
     }
 
     private boolean checkValidity(){
-        return wasEdited && Utils.isIP(dns1,false) && Utils.isIP(dns2,false) && Utils.isIP(dns1V6,true) &&
-                Utils.isIP(dns2V6,true) && met_name.getIndicatorState() == MaterialEditText.IndicatorState.CORRECT;
+        return wasEdited && NetworkUtil.isIP(dns1,false) && NetworkUtil.isIP(dns2,false) && NetworkUtil.isIP(dns1V6,true) &&
+                NetworkUtil.isIP(dns2V6,true) && met_name.getIndicatorState() == MaterialEditText.IndicatorState.CORRECT;
     }
 
 
@@ -125,7 +126,7 @@ public class ConfigureActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!Utils.isIP(s.toString(),settingV6)) {
+                if (!NetworkUtil.isIP(s.toString(),settingV6)) {
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
                     wasEdited = true;
@@ -148,7 +149,7 @@ public class ConfigureActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!Utils.isIP(s.toString(),settingV6)) {
+                if (!NetworkUtil.isIP(s.toString(),settingV6)) {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
                     wasEdited = true;

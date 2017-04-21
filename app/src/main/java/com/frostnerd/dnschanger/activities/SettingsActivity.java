@@ -3,7 +3,6 @@ package com.frostnerd.dnschanger.activities;
 import android.Manifest;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -24,7 +23,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.frostnerd.dnschanger.API;
+import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.receivers.AdminReceiver;
@@ -32,6 +31,8 @@ import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.tasker.ConfigureActivity;
 import com.frostnerd.utils.design.FileChooserDialog;
+import com.frostnerd.utils.general.Utils;
+import com.frostnerd.utils.permissions.PermissionsUtil;
 import com.frostnerd.utils.preferences.AppCompatPreferenceActivity;
 import com.frostnerd.utils.preferences.Preferences;
 
@@ -123,7 +124,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Preference " + preference.getKey() + " was changed to " +
                         newValue + ", Type: " + Preferences.getType(newValue));
                 if(!((Boolean) newValue))return true;
-                if(!API.hasUsageStatsPermission(SettingsActivity.this)){
+                if(!PermissionsUtil.hasUsageStatsPermission(SettingsActivity.this)){
                     LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Access to usage stats is not yet granted. Showing dialog explaining why it's needed");
                     new AlertDialog.Builder(SettingsActivity.this).setTitle(R.string.information).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
@@ -164,7 +165,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
         });
-        boolean canAccessUsageStats = API.hasUsageStatsPermission(this);
+        boolean canAccessUsageStats = PermissionsUtil.hasUsageStatsPermission(this);
         if(!canAccessUsageStats || Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
             usageRevokeHidden = true;
             automatingCategory.removePreference(removeUsagePreference);
@@ -342,7 +343,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     };
 
     private boolean checkWriteReadPermission(){
-        if(!API.canReadExternalStorage(this) || !API.canWriteExternalStorage(this)){
+        if(!PermissionsUtil.canReadExternalStorage(this) || !PermissionsUtil.canWriteExternalStorage(this)){
             LogFactory.writeMessage(this, LOG_TAG, "Showing Dialog explaining why this app needs read/write access");
             new AlertDialog.Builder(this).setTitle(R.string.title_import_export).setMessage(R.string.explain_storage_permission).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
@@ -490,10 +491,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Got Permission Request Result");
         if(requestCode == REQUEST_EXTERNAL_STORAGE){
-            if(importSettings && API.canReadExternalStorage(this)){
+            if(importSettings && PermissionsUtil.canReadExternalStorage(this)){
                 LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "User wanted to import settings and granted the permissions");
                 importSettings();
-            }else if(exportSettings && API.canReadExternalStorage(this) && API.canWriteExternalStorage(this)){
+            }else if(exportSettings && PermissionsUtil.canReadExternalStorage(this) && PermissionsUtil.canWriteExternalStorage(this)){
                 LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "User wanted to export settings and granted the permissions");
                 exportSettingsAskShortcuts();
             }else if(exportSettings || importSettings){
@@ -519,7 +520,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Received onActivityResult", data);
         if(requestCode == USAGE_STATS_REQUEST){
             LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Got answer to the Usage Stats request");
-            if(API.hasUsageStatsPermission(this)){
+            if(PermissionsUtil.hasUsageStatsPermission(this)){
                 LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Permission to usage stats was granted");
                 ((CheckBoxPreference)findPreference("auto_pause")).setChecked(true);
                 Preferences.put(this, "auto_pause",true);
@@ -556,7 +557,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 @Override
                 public void onClick(View v) {
                     if(snackbar != null)snackbar.dismiss();
-                    API.goToLauncher(SettingsActivity.this);
+                    Utils.goToLauncher(SettingsActivity.this);
                 }
             });
             snackbar.show();

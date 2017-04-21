@@ -17,7 +17,7 @@ import android.service.quicksettings.TileService;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.NotificationCompat;
 
-import com.frostnerd.dnschanger.API;
+import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
@@ -27,7 +27,10 @@ import com.frostnerd.dnschanger.tiles.TileResume;
 import com.frostnerd.dnschanger.tiles.TileStart;
 import com.frostnerd.dnschanger.tiles.TileStop;
 import com.frostnerd.dnschanger.widgets.BasicWidget;
-import com.frostnerd.utils.general.StringUtils;
+import com.frostnerd.utils.general.StringUtil;
+import com.frostnerd.utils.general.WidgetUtil;
+import com.frostnerd.utils.networking.NetworkUtil;
+import com.frostnerd.utils.permissions.PermissionsUtil;
 import com.frostnerd.utils.preferences.Preferences;
 import com.frostnerd.utils.stats.AppTaskGetter;
 
@@ -182,7 +185,7 @@ public class DNSVpnService extends VpnService {
                 PendingIntent.getService(this, 0, new Intent(this, DNSVpnService.class).setAction(new Random().nextInt(50) + "_action").putExtra(isRunning ? "stop_vpn" : "start_vpn", true), PendingIntent.FLAG_CANCEL_CURRENT);
         notificationBuilder.mActions.get(1).actionIntent = pinProtected ? PendingIntent.getActivity(this,0,new Intent(this, PinActivity.class).
                 setAction(new Random().nextInt(50) + "_action").putExtra("destroy", true).putExtra("redirectToService",true), PendingIntent.FLAG_UPDATE_CURRENT) : PendingIntent.getService(this, 1, new Intent(this, DNSVpnService.class)
-                .setAction(StringUtils.randomString(80) + "_action").putExtra("destroy", true), PendingIntent.FLAG_CANCEL_CURRENT);
+                .setAction(StringUtil.randomString(80) + "_action").putExtra("destroy", true), PendingIntent.FLAG_CANCEL_CURRENT);
         notificationBuilder.setContentTitle(getString(isRunning ? R.string.active : R.string.paused));
         if(Preferences.getBoolean(this, "show_used_dns",false)){
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Showing used DNS servers in notification");
@@ -296,11 +299,11 @@ public class DNSVpnService extends VpnService {
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Got StartCommand", intent);
         if(intent!=null){
             serviceRunning = !intent.getBooleanExtra("destroy", false);
-            API.updateAllWidgets(this, BasicWidget.class);
+            WidgetUtil.updateAllWidgets(this, BasicWidget.class);
             fixedDNS = intent.hasExtra("fixeddns") ? intent.getBooleanExtra("fixeddns", false) : fixedDNS;
             startedWithTasker = intent.hasExtra("startedWithTasker") ? intent.getBooleanExtra("startedWithTasker", false) : startedWithTasker;
             if(Preferences.getBoolean(this, "auto_pause", false)){
-                if(!API.hasUsageStatsPermission(this))Preferences.put(this,"auto_pause",false);
+                if(!PermissionsUtil.hasUsageStatsPermission(this))Preferences.put(this,"auto_pause",false);
                 else autoPauseApps = Preferences.getStringSet(this, "autopause_apps");
             }
             else autoPauseApps = new HashSet<>();
@@ -367,7 +370,7 @@ public class DNSVpnService extends VpnService {
                             addressIndex++;
                             builder = new Builder();
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Creating Tunnel interface");
-                            tunnelInterface = builder.setSession("DnsChanger" + StringUtils.randomString(50)).addAddress(address, addresses.get(address)).addAddress(API.randomLocalIPv6Address(),48).addDnsServer(dns1).addDnsServer(dns2)
+                            tunnelInterface = builder.setSession("DnsChanger" + StringUtil.randomString(50)).addAddress(address, addresses.get(address)).addAddress(NetworkUtil.randomLocalIPv6Address(),48).addDnsServer(dns1).addDnsServer(dns2)
                                     .addDnsServer(dns1_v6).addDnsServer(dns2_v6).establish();
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Tunnel interface created and established.");
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]"}, "Opening DatagramChannel");

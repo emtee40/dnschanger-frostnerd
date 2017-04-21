@@ -1,4 +1,4 @@
-package com.frostnerd.dnschanger;
+package com.frostnerd.dnschanger.API;
 
 import android.Manifest;
 import android.app.ActivityManager;
@@ -16,8 +16,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 
+import com.frostnerd.dnschanger.LogFactory;
+import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.ShortcutActivity;
 import com.frostnerd.dnschanger.services.DNSVpnService;
+import com.frostnerd.utils.general.Utils;
 
 import java.util.List;
 
@@ -35,42 +38,6 @@ public final class API {
     public static final String BROADCAST_SERVICE_STATE_REQUEST = "com.frostnerd.dnschanger.VPN_STATE_CHANGE";
     public static final String LOG_TAG = "[API]";
     private static SQLiteDatabase database;
-
-    public static void goToLauncher(Context context){
-        context.startActivity(new Intent().setAction(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME));
-    }
-
-    public static void updateAllWidgets(Context context, Class<? extends AppWidgetProvider> providerClass) {
-        LogFactory.writeMessage(context, LOG_TAG, "Updating all Widgets of provider " + providerClass);
-        int[] ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, providerClass));
-        for(int i: ids)updateWidget(context, providerClass, i);
-        LogFactory.writeMessage(context, LOG_TAG, ids.length + " Widgets updated.");
-    }
-
-    public static void updateWidget(Context context, Class<? extends AppWidgetProvider> providerClass, int widgetID){
-        Intent intent = new Intent(context,providerClass);
-        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        int[] ids = {widgetID};
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
-        context.sendBroadcast(intent);
-    }
-
-    public static String randomLocalIPv6Address() {
-        String prefix = randomIPv6LocalPrefix();
-        for (int i = 0; i < 5; i++) prefix += ":" + randomIPv6Block(16, false);
-        return prefix;
-    }
-
-    private static String randomIPv6LocalPrefix() {
-        return "fd" + randomIPv6Block(8, true) + ":" + randomIPv6Block(16, false) + ":" + randomIPv6Block(16, false);
-    }
-
-    private static String randomIPv6Block(int bits, boolean leading_zeros) {
-        String hex = Long.toHexString((long) Math.floor(Math.random() * Math.pow(2, bits)));
-        if (!leading_zeros || hex.length() == bits / 4) ;
-        hex = "0000".substring(0, bits / 4 - hex.length()) + hex;
-        return hex;
-    }
 
     // This is dirty. Like really dirty. But sometimes the running check returns running when the
     // service isn't running. This is a workaround.
@@ -91,26 +58,7 @@ public final class API {
     }
 
     public static boolean isTaskerInstalled(Context context) {
-        List<ApplicationInfo> packages;
-        packages = context.getPackageManager().getInstalledApplications(0);
-        for (ApplicationInfo packageInfo : packages) {
-            if (packageInfo.packageName.equals("net.dinglisch.android.taskerm")) return true;
-        }
-        return false;
-    }
-
-    public static boolean hasUsageStatsPermission(Context context) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return true;
-        AppOpsManager appOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-        return appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), context.getPackageName()) == AppOpsManager.MODE_ALLOWED;
-    }
-
-    public static boolean canWriteExternalStorage(Context context) {
-        return ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    public static boolean canReadExternalStorage(Context context) {
-        return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        return Utils.isPackageInstalled(context, "net.dinglisch.android.taskerm");
     }
 
     public static void terminate() {

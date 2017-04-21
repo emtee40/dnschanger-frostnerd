@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.service.quicksettings.Tile;
 
-import com.frostnerd.dnschanger.API;
+import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.activities.PinActivity;

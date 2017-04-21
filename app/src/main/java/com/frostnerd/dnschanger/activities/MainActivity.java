@@ -1,18 +1,15 @@
 package com.frostnerd.dnschanger.activities;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.net.Uri;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
@@ -33,9 +30,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.frostnerd.dnschanger.API;
+import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
 import com.frostnerd.dnschanger.services.DNSVpnService;
@@ -43,6 +39,7 @@ import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.tasker.ConfigureActivity;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.general.Utils;
+import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
 
 import java.util.ArrayList;
@@ -244,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(vpnRunning && doStopVPN && !wasStartedWithTasker)stopVpn();
-                if (!Utils.isIP(s.toString(),settingV6)) {
+                if (!NetworkUtil.isIP(s.toString(),settingV6)) {
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
@@ -266,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(vpnRunning && doStopVPN && !wasStartedWithTasker)stopVpn();
-                if (!Utils.isIP(s.toString(),settingV6)) {
+                if (!NetworkUtil.isIP(s.toString(),settingV6)) {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
@@ -430,7 +427,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if(snackbar != null)snackbar.dismiss();
-                    API.goToLauncher(MainActivity.this);
+                    Utils.goToLauncher(MainActivity.this);
                 }
             });
             snackbar.show();

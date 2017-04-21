@@ -21,10 +21,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.utils.general.SortUtils;
+import com.frostnerd.utils.general.SortUtil;
 import com.frostnerd.utils.preferences.Preferences;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -100,7 +101,7 @@ public class AutoPauseAppSelectActivity extends AppCompatActivity {
                 //if (!entry.isSystemApp()) apps.add(entry);
                 apps.add(entry);
             }
-            SortUtils.quickSort(apps);
+            Collections.sort(apps);
         }
 
         @Override

@@ -2,8 +2,8 @@ package com.frostnerd.dnschanger;
 
 import android.app.Application;
 
+import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
-import com.frostnerd.dnschanger.services.DNSVpnService;
 
 /**
  * Copyright Daniel Wolf 2017

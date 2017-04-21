@@ -7,8 +7,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.frostnerd.dnschanger.API;
+import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.LogFactory;
+import com.frostnerd.utils.permissions.PermissionsUtil;
 import com.frostnerd.utils.preferences.Preferences;
 
 import java.io.BufferedReader;
@@ -32,7 +33,7 @@ public class SettingsImportActivity extends Activity {
         super.onCreate(savedInstanceState);
         LogFactory.writeMessage(this, LOG_TAG, "Created activity", getIntent());
         Intent intent = getIntent();
-        if (intent.getAction().equals(Intent.ACTION_VIEW) && API.canReadExternalStorage(this)) {
+        if (intent.getAction().equals(Intent.ACTION_VIEW) && PermissionsUtil.canReadExternalStorage(this)) {
             Uri uri = intent.getData();
             LogFactory.writeMessage(this, LOG_TAG, "Importing from given URI: " + uri);
             try {
