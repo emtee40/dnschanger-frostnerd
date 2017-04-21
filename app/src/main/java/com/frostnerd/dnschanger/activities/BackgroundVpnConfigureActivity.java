@@ -140,6 +140,11 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
                             dialog.cancel();
                             finish();
                         }
+                    }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            finish();
+                        }
                     }).show();
                     LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
                 } else finish();
