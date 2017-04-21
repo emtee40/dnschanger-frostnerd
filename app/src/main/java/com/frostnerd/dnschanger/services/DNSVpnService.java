@@ -57,7 +57,7 @@ public class DNSVpnService extends VpnService {
     private boolean run = true, isRunning = false, stopped = false;
     private Thread thread;
     private ParcelFileDescriptor tunnelInterface;
-    private Builder builder = new Builder();
+    private Builder builder;
     private NotificationCompat.Builder notificationBuilder;
     private NotificationManager notificationManager;
     private final int NOTIFICATION_ID = 112;
