@@ -39,6 +39,7 @@ public class ErrorDialogActivity extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 LogFactory.writeMessage(ErrorDialogActivity.this, LOG_TAG,"User choose to cancel action");
                 dialog.cancel();
+                finish();
             }
         }).setNeutralButton(R.string.send_crash_report, new DialogInterface.OnClickListener() {
             @Override
@@ -52,6 +53,12 @@ public class ErrorDialogActivity extends Activity {
                 emailIntent.putExtra(Intent.EXTRA_TEXT, body);
                 LogFactory.writeMessage(ErrorDialogActivity.this, LOG_TAG,"User choose to send Email to dev", emailIntent);
                 startActivity(Intent.createChooser(emailIntent, getString(R.string.contact_developer)));
+                finish();
+            }
+        }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                finish();
             }
         }).show();
         LogFactory.writeMessage(this, LOG_TAG,"Showing Dialog");
