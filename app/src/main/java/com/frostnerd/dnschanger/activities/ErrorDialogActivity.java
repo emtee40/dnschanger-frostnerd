@@ -4,16 +4,22 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.icu.text.IDNA;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.utils.preferences.Preferences;
+
+import java.io.File;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -52,6 +58,17 @@ public class ErrorDialogActivity extends Activity {
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, "support@frostnerd.com");
                 emailIntent.putExtra(Intent.EXTRA_TEXT, body);
                 LogFactory.writeMessage(ErrorDialogActivity.this, LOG_TAG,"User choose to send Email to dev", emailIntent);
+                if(Preferences.getBoolean(ErrorDialogActivity.this, "debug",false)){
+                    File zip = LogFactory.zipLogFiles(ErrorDialogActivity.this);
+                    if(zip != null){
+                        Uri zipURI = FileProvider.getUriForFile(ErrorDialogActivity.this,"com.frostnerd.dnschanger",zip);
+                        for(ResolveInfo resolveInfo: getPackageManager().queryIntentActivities(emailIntent, PackageManager.MATCH_DEFAULT_ONLY)){
+                            grantUriPermission(resolveInfo.activityInfo.packageName,zipURI, Intent.FLAG_GRANT_READ_URI_PERMISSION );
+                        }
+                        emailIntent.putExtra(Intent.EXTRA_STREAM, zipURI);
+                        emailIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    }
+                }
                 startActivity(Intent.createChooser(emailIntent, getString(R.string.contact_developer)));
                 finish();
             }
