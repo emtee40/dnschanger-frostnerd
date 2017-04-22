@@ -194,7 +194,7 @@ public class LogFactory {
                 for(String s: tags)if(!s.equalsIgnoreCase(Tag.NO_TAG.toString()))builder.append(" " + s);
                 builder.append(": " + message);
                 if(printIntent)builder.append(" " + describeIntent(intent, true));
-                if(printMessagesToConsole) System.out.println(tags[0] + message);
+                if(printMessagesToConsole) System.out.println(builder.toString().split("<")[1]);
                 builder.append("\n");
                 fileWriter.write(builder.toString());
                 fileWriter.flush();
