@@ -48,6 +48,7 @@ public class ShortcutActivity extends AppCompatActivity {
                     public void onServiceConnected(ComponentName name, IBinder binder) {
                         DNSVpnService service = ((DNSVpnService.ServiceBinder)binder).getService();
                         LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Connected to service");
+                        LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Started via shortcut: " + service.startedFromShortcut());
                         if(service.startedFromShortcut() && service.getCurrentDNS1().equals(dns1) && service.getCurrentDNS2().equals(dns2)
                                 && service.getCurrentDNS1V6().equals(dns1v6) && service.getCurrentDNS2V6().equals(dns2v6)){
                             LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Service was started via same shortcut. Stopping.");
