@@ -442,7 +442,7 @@ public class DNSVpnService extends VpnService {
                     clearVars();
                     updateNotification();
                     broadcastCurrentState(false);
-                    if(afterThreadStop != null){
+                    if(afterThreadStop != null && serviceRunning){
                         for(Runnable r: afterThreadStop)r.run();
                         afterThreadStop.clear();
                     }
