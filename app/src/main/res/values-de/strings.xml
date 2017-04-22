@@ -139,4 +139,5 @@
     <string name="reason_stop_exception">Fehler während der Ausführung</string>
     <string name="reason_stop_network_change">Netzwerk wurde geändert (DNS Changer wurde eingestellt zu stoppen)</string>
     <string name="reason_stop_tasker">Von Tasker gestoppt</string>
+    <string name="shortcut_conflict_text">Diese App ist darauf eingestellt, den VPN zu starten/stoppen, wenn sich die Netzwerkverbindung ändert (zu Wlan oder 3G/4G...).\nDies könnte zu Konflikten führen, wenn die App über eine Verknüpfung gestartet wurde, da die eingestellte Aktion durch die App an sich überschrieben werden kann (Nur ein VPN kann aktiv sein).\n\nMöchtest du diese Einstellungen aus der App entfernen?</string>
 </resources>
