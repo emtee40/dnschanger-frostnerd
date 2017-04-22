@@ -36,31 +36,36 @@ public class ConnectivityBackgroundService extends Service {
         public void onReceive(Context context, Intent intent) {
             boolean connected = !intent.hasExtra("noConnectivity"),
                     serviceRunning = API.isServiceRunning(ConnectivityBackgroundService.this),
-                    serviceThreadRunning = API.isServiceThreadRunning(ConnectivityBackgroundService.this);
+                    serviceThreadRunning = API.isServiceThreadRunning(ConnectivityBackgroundService.this),
+                    autoWifi = Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_auto_wifi", false),
+                    autoMobile = Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_auto_mobile", false),
+                    disableNetChange = Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_disable_netchange", false);
             int type = intent.getIntExtra("networkType", -1);
             LogFactory.writeMessage(ConnectivityBackgroundService.this, LOG_TAG, "Connectivity changed. Connected: " + connected + ", type: " + type + ";;", intent);
             API.updateTiles(context);
             WidgetUtil.updateAllWidgets(context, BasicWidget.class);
             Intent i;
-            if (!connected && Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_disable_netchange", false) && serviceRunning) {
+            if(type == ConnectivityManager.TYPE_VPN)return;
+            if (!connected && disableNetChange && serviceRunning) {
                 LogFactory.writeMessage(ConnectivityBackgroundService.this, LOG_TAG,
                         "Destroying DNSVPNService, as device is not connected and setting_disable_netchange is true",
                         i = DNSVpnService.getDestroyIntent(ConnectivityBackgroundService.this, getString(R.string.reason_stop_network_change)));
                 startService(i);
                 return;
             }
-            if (!connected || type == ConnectivityManager.TYPE_BLUETOOTH || type == ConnectivityManager.TYPE_DUMMY || type == ConnectivityManager.TYPE_VPN)
+            //if (!connected || type == ConnectivityManager.TYPE_BLUETOOTH || type == ConnectivityManager.TYPE_DUMMY || type == ConnectivityManager.TYPE_VPN)
+            if(!connected || (type != ConnectivityManager.TYPE_WIFI && type != ConnectivityManager.TYPE_MOBILE && type != ConnectivityManager.TYPE_MOBILE_DUN))
                 return;
             if (!serviceThreadRunning) {
-                if (type == ConnectivityManager.TYPE_WIFI && Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_auto_wifi", false)) {
+                if ((type == ConnectivityManager.TYPE_WIFI || type == ConnectivityManager.TYPE_MOBILE_DUN) && autoWifi) {
                     LogFactory.writeMessage(ConnectivityBackgroundService.this, LOG_TAG, "Connected to WIFI and setting_auto_wifi is true. Starting Service..");
                     startService();
-                } else if (type == ConnectivityManager.TYPE_MOBILE && Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_auto_mobile", false)) {
+                } else if (type == ConnectivityManager.TYPE_MOBILE && autoMobile) {
                     LogFactory.writeMessage(ConnectivityBackgroundService.this, LOG_TAG, "Connected to MOBILE and setting_auto_mobile is true. Starting Service..");
                     startService();
                 }
             }else {
-                if (Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_disable_netchange", false) && serviceRunning) {
+                if (!(type == ConnectivityManager.TYPE_WIFI && autoWifi) && !(type == ConnectivityManager.TYPE_MOBILE && autoMobile) && Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_disable_netchange", false) && serviceRunning) {
                     LogFactory.writeMessage(ConnectivityBackgroundService.this, LOG_TAG,
                             "Not on WIFI or MOBILE and setting_disable_netchange is true. Destroying DNSVPNService.",
                             i =DNSVpnService.getDestroyIntent(ConnectivityBackgroundService.this, getString(R.string.reason_stop_network_change)));
