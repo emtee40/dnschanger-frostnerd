@@ -262,14 +262,16 @@ public class DNSVpnService extends VpnService {
             }else if (IntentUtil.checkExtra(VPNServiceArguments.COMMAND_START_VPN.getArgument(),intent)) {
                 LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Starting VPN");
                 if(threadRunning){
-                    afterThreadStop.add(new Runnable() {
-                        @Override
-                        public void run() {
-                            vpnThread = createThread();
-                            vpnThread.start();
-                        }
-                    });
-                    stopThread();
+                    if(!IntentUtil.checkExtra(VPNServiceArguments.FLAG_DONT_START_IF_RUNNING.getArgument(), intent)){
+                        afterThreadStop.add(new Runnable() {
+                            @Override
+                            public void run() {
+                                vpnThread = createThread();
+                                vpnThread.start();
+                            }
+                        });
+                        stopThread();
+                    }
                 }else {
                     vpnThread = createThread();
                     vpnThread.start();

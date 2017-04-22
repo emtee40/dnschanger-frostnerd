@@ -42,6 +42,7 @@ public class ConnectivityBackgroundService extends Service {
                     disableNetChange = Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_disable_netchange", false);
             int type = intent.getIntExtra("networkType", -1);
             LogFactory.writeMessage(ConnectivityBackgroundService.this, LOG_TAG, "Connectivity changed. Connected: " + connected + ", type: " + type + ";;", intent);
+            LogFactory.writeMessage(ConnectivityBackgroundService.this, LOG_TAG, "Service running: " + serviceRunning + "; Thread running: " + serviceThreadRunning);
             API.updateTiles(context);
             WidgetUtil.updateAllWidgets(context, BasicWidget.class);
             Intent i;
@@ -81,7 +82,7 @@ public class ConnectivityBackgroundService extends Service {
         LogFactory.writeMessage(this, LOG_TAG, "VPNService Prepare Intent", i);
         if (i == null) {
             LogFactory.writeMessage(this, LOG_TAG, "VPNService is already prepared. Starting DNSVPNService",
-                    i = DNSVpnService.getStartVPNIntent(this));
+                    i = DNSVpnService.getStartVPNIntent(this).putExtra(VPNServiceArguments.FLAG_DONT_START_IF_RUNNING.getArgument(), true));
             this.startService(i);
         } else {
             LogFactory.writeMessage(this, LOG_TAG, "VPNService is NOT prepared. Starting BackgroundVpnConfigureActivity");
@@ -102,6 +103,7 @@ public class ConnectivityBackgroundService extends Service {
             LogFactory.writeMessage(this, LOG_TAG, "No active network.");
             return;
         }
+        LogFactory.writeMessage(this, LOG_TAG, "[OnCreate] Thread running: " + API.isServiceThreadRunning(this));
         if (!API.isServiceThreadRunning(this)) {
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI && Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_auto_wifi", false)) {
                 LogFactory.writeMessage(this, LOG_TAG, "[OnCreate] Connected to WIFI and setting_auto_wifi is true. Starting Service..");
