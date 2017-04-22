@@ -242,8 +242,8 @@ public class DNSVpnService extends VpnService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Got StartCommand", intent);
+        serviceRunning = intent == null || !intent.getBooleanExtra(VPNServiceArguments.COMMAND_STOP_SERVICE.getArgument(), false);
         if(intent!=null){
-            serviceRunning = !intent.getBooleanExtra(VPNServiceArguments.COMMAND_STOP_SERVICE.getArgument(), false);
             WidgetUtil.updateAllWidgets(this, BasicWidget.class);
             fixedDNS = intent.hasExtra(VPNServiceArguments.FLAG_FIXED_DNS.getArgument()) ? intent.getBooleanExtra(VPNServiceArguments.FLAG_FIXED_DNS.getArgument(), false) : fixedDNS;
             startedWithTasker = intent.hasExtra(VPNServiceArguments.FLAG_STARTED_WITH_TASKER.getArgument()) ? intent.getBooleanExtra(VPNServiceArguments.FLAG_STARTED_WITH_TASKER.getArgument(), false) : startedWithTasker;
