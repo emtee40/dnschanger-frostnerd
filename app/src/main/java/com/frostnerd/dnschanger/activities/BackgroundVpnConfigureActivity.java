@@ -65,7 +65,7 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
             if (intent.hasExtra("dns2")) dns2 = intent.getStringExtra("dns2");
             if (intent.hasExtra("dns1-v6")) dns1_v6 = intent.getStringExtra("dns1-v6");
             if (intent.hasExtra("dns2-v6")) dns2_v6 = intent.getStringExtra("dns2-v6");
-            serviceIntent = DNSVpnService.getStartVPNIntent(this, dns1, dns2, dns1_v6, dns2_v6, startedWithTasker);
+            serviceIntent = DNSVpnService.getStartVPNIntent(this, dns1, dns2, dns1_v6, dns2_v6, startedWithTasker,intent.getBooleanExtra("fixeddns", false));
             LogFactory.writeMessage(this, LOG_TAG, "ServiceIntent created", serviceIntent);
         }else serviceIntent = DNSVpnService.getStartVPNIntent(this);
         if (conf != null) {
