@@ -32,6 +32,7 @@ import com.frostnerd.utils.stats.AppTaskGetter;
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
+import java.nio.channels.ClosedByInterruptException;
 import java.nio.channels.DatagramChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -426,6 +427,7 @@ public class DNSVpnService extends VpnService {
                             if(addressIndex >= addresses.size())throw e;
                             else LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", "[ADDRESS-RETRY]", ID},
                                     "Not throwing exception. Tries: " + addressIndex + ", addresses: " + addresses.size());
+                            if(!serviceRunning)break;
                         }finally{
                             clearVars();
                         }
