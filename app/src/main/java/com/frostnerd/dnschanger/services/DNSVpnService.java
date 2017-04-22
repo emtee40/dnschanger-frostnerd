@@ -339,8 +339,7 @@ public class DNSVpnService extends VpnService {
     }
 
     private void stopThread(){
-        LogFactory.writeMessage(this, LOG_TAG, "Trying to stop thread. Caller: ");
-        LogFactory.writeCurrentStack(this, LOG_TAG);
+        LogFactory.writeMessage(this, LOG_TAG, "Trying to stop thread.");
         if (vpnThread != null) {
             LogFactory.writeMessage(this, LOG_TAG, "VPNThread already running. Interrupting");
             runThread = false;
@@ -420,7 +419,6 @@ public class DNSVpnService extends VpnService {
                             } catch (InterruptedException e2) {
                                 LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Thread was interrupted");
                                 LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Interruption stacktrace: " + LogFactory.stacktraceToString(e2).replace("\n"," <<-->>"));
-                                LogFactory.writeCurrentStack(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", "[STACK]", ID});
                                 break;
                             }
                         }catch(Exception e){
