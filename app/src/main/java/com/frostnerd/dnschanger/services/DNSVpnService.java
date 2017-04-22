@@ -162,7 +162,7 @@ public class DNSVpnService extends VpnService {
         notificationBuilder.setContentTitle(getString(threadRunning ? R.string.active : R.string.paused));
         if(Preferences.getBoolean(this, "show_used_dns",false)){
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Showing used DNS servers in notification");
-            notificationBuilder.setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText("DNS 1: " + currentDNS1 + "\nDNS 2: " + currentDNS2 + "\nDNSV6 1: " + currentDNS1V6 + "\nDNSV6 2: " + currentDNS2V6));
+            notificationBuilder.setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText("DNS 1: " + getCurrentDNS1() + "\nDNS 2: " + getCurrentDNS2() + "\nDNSV6 1: " + getCurrentDNS1V6() + "\nDNSV6 2: " + getCurrentDNS2V6()));
             notificationBuilder.setSubText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused));
         }else{
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Not showing used DNS Servers in notification");
@@ -524,19 +524,19 @@ public class DNSVpnService extends VpnService {
     }
 
     public String getCurrentDNS1() {
-        return currentDNS1;
+        return !threadRunning ? dns1 : currentDNS1;
     }
 
     public String getCurrentDNS2() {
-        return currentDNS2;
+        return !threadRunning ? dns2 : currentDNS2;
     }
 
     public String getCurrentDNS1V6() {
-        return currentDNS1V6;
+        return !threadRunning ? dns1_v6 : currentDNS1V6;
     }
 
     public String getCurrentDNS2V6() {
-        return currentDNS2V6;
+        return !threadRunning ? dns2_v6 : currentDNS2V6;
     }
 
     public boolean startedFromShortcut(){
