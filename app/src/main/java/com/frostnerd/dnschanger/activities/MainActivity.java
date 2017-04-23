@@ -32,7 +32,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.API.API;
-import com.frostnerd.dnschanger.API.VPNServiceArguments;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
 import com.frostnerd.dnschanger.services.DNSVpnService;

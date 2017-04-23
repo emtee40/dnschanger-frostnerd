@@ -12,7 +12,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import com.frostnerd.dnschanger.API.API;
-import com.frostnerd.dnschanger.API.VPNServiceArguments;
+import com.frostnerd.dnschanger.API.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
@@ -82,8 +82,8 @@ public class ConnectivityBackgroundService extends Service {
         LogFactory.writeMessage(this, LOG_TAG, "VPNService Prepare Intent", i);
         if (i == null) {
             LogFactory.writeMessage(this, LOG_TAG, "VPNService is already prepared. Starting DNSVPNService",
-                    i = DNSVpnService.getStartVPNIntent(this).putExtra(VPNServiceArguments.FLAG_DONT_START_IF_RUNNING.getArgument(), true).
-                            putExtra(VPNServiceArguments.FLAG_FIXED_DNS.getArgument(),false));
+                    i = DNSVpnService.getStartVPNIntent(this).putExtra(VPNServiceArgument.FLAG_DONT_START_IF_RUNNING.getArgument(), true).
+                            putExtra(VPNServiceArgument.FLAG_FIXED_DNS.getArgument(),false));
             this.startService(i);
         } else {
             LogFactory.writeMessage(this, LOG_TAG, "VPNService is NOT prepared. Starting BackgroundVpnConfigureActivity");

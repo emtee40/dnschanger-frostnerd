@@ -11,11 +11,12 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.os.ParcelFileDescriptor;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.util.ArraySet;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.frostnerd.dnschanger.API.API;
-import com.frostnerd.dnschanger.API.VPNServiceArguments;
+import com.frostnerd.dnschanger.API.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
@@ -23,6 +24,7 @@ import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.widgets.BasicWidget;
 import com.frostnerd.utils.general.IntentUtil;
 import com.frostnerd.utils.general.StringUtil;
+import com.frostnerd.utils.general.VariableChecker;
 import com.frostnerd.utils.general.WidgetUtil;
 import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.permissions.PermissionsUtil;
@@ -32,7 +34,6 @@ import com.frostnerd.utils.stats.AppTaskGetter;
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
-import java.nio.channels.ClosedByInterruptException;
 import java.nio.channels.DatagramChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,7 +80,7 @@ public class DNSVpnService extends VpnService {
                         if(counter >= 4){
                             if(!autoPauseApps.contains(AppTaskGetter.getMostRecentApp(DNSVpnService.this,1000*1000))){
                                 LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG,"[AutoPausedRestartRunnable]"}, "No app which autopauses DNS Changer on top anymore. Resuming.");
-                                startService(new Intent(DNSVpnService.this, DNSVpnService.class).putExtra(VPNServiceArguments.COMMAND_START_VPN.getArgument(),true));
+                                startService(new Intent(DNSVpnService.this, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(),true));
                                 break;
                             }
                             counter = 0;
@@ -156,10 +157,10 @@ public class DNSVpnService extends VpnService {
         a1.title = getString(threadRunning ? R.string.action_pause : R.string.action_resume);
         a1.actionIntent = pinProtected ? PendingIntent.getActivity(this,0,new Intent(this, PinActivity.class).setAction(new Random().nextInt(50) + "_action").
                 putExtra(threadRunning ? "stop_vpn" : "start_vpn", true).putExtra("redirectToService",true), PendingIntent.FLAG_UPDATE_CURRENT) :
-                PendingIntent.getService(this, 0, new Intent(this, DNSVpnService.class).setAction(new Random().nextInt(50) + "_action").putExtra(threadRunning ? VPNServiceArguments.COMMAND_STOP_VPN.getArgument() : VPNServiceArguments.COMMAND_START_VPN.getArgument(), true), PendingIntent.FLAG_CANCEL_CURRENT);
+                PendingIntent.getService(this, 0, new Intent(this, DNSVpnService.class).setAction(new Random().nextInt(50) + "_action").putExtra(threadRunning ? VPNServiceArgument.COMMAND_STOP_VPN.getArgument() : VPNServiceArgument.COMMAND_START_VPN.getArgument(), true), PendingIntent.FLAG_CANCEL_CURRENT);
         notificationBuilder.mActions.get(1).actionIntent = pinProtected ? PendingIntent.getActivity(this,0,new Intent(this, PinActivity.class).
                 setAction(new Random().nextInt(50) + "_action").putExtra("destroy", true).putExtra("redirectToService",true), PendingIntent.FLAG_UPDATE_CURRENT) : PendingIntent.getService(this, 1, new Intent(this, DNSVpnService.class)
-                .setAction(StringUtil.randomString(80) + "_action").putExtra(VPNServiceArguments.COMMAND_STOP_SERVICE.getArgument(), true), PendingIntent.FLAG_CANCEL_CURRENT);
+                .setAction(StringUtil.randomString(80) + "_action").putExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(), true), PendingIntent.FLAG_CANCEL_CURRENT);
         notificationBuilder.setContentTitle(getString(threadRunning ? R.string.active : R.string.paused));
         if(Preferences.getBoolean(this, "show_used_dns",false)){
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Showing used DNS servers in notification");
@@ -196,9 +197,9 @@ public class DNSVpnService extends VpnService {
     public static void startWithSetDNS(final Context context, final String dns1, final String dns2, final String dns1v6, final String dns2v6){
         Intent i;
         LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG}, "Starting DNSVPNService with fixed DNS",
-                i = new Intent(context, DNSVpnService.class).putExtra(VPNServiceArguments.FLAG_FIXED_DNS.getArgument(),true).
-                        putExtra(VPNServiceArguments.ARGUMENT_DNS1.getArgument(), dns1).putExtra(VPNServiceArguments.ARGUMENT_DNS2.getArgument(), dns2).
-                        putExtra(VPNServiceArguments.ARGUMENT_DNS1V6.getArgument(), dns1v6).putExtra(VPNServiceArguments.ARGUMENT_DNS2V6.getArgument(), dns2v6));
+                i = new Intent(context, DNSVpnService.class).putExtra(VPNServiceArgument.FLAG_FIXED_DNS.getArgument(),true).
+                        putExtra(VPNServiceArgument.ARGUMENT_DNS1.getArgument(), dns1).putExtra(VPNServiceArgument.ARGUMENT_DNS2.getArgument(), dns2).
+                        putExtra(VPNServiceArgument.ARGUMENT_DNS1V6.getArgument(), dns1v6).putExtra(VPNServiceArgument.ARGUMENT_DNS2V6.getArgument(), dns2v6));
         context.startService(i);
     }
 
@@ -208,10 +209,10 @@ public class DNSVpnService extends VpnService {
             LogFactory.writeMessage(this, LOG_TAG, "DNSVPNService is using fixed DNS servers (Not those from settings)");
             LogFactory.writeMessage(this, LOG_TAG, "Current DNS Servers; DNS1: " + dns1 + ", DNS2: " + dns2 + ", DNS1V6:" + dns1_v6 + ", DNS2V6: " + dns2_v6);
             if(intent == null)return;
-            if(intent.hasExtra(VPNServiceArguments.ARGUMENT_DNS1.getArgument()))dns1 = intent.getStringExtra(VPNServiceArguments.ARGUMENT_DNS1.getArgument());
-            if(intent.hasExtra(VPNServiceArguments.ARGUMENT_DNS2.getArgument()))dns2 = intent.getStringExtra(VPNServiceArguments.ARGUMENT_DNS2.getArgument());
-            if(intent.hasExtra(VPNServiceArguments.ARGUMENT_DNS1V6.getArgument()))dns1_v6 = intent.getStringExtra(VPNServiceArguments.ARGUMENT_DNS1V6.getArgument());
-            if(intent.hasExtra(VPNServiceArguments.ARGUMENT_DNS2V6.getArgument()))dns2_v6 = intent.getStringExtra(VPNServiceArguments.ARGUMENT_DNS2V6.getArgument());
+            if(intent.hasExtra(VPNServiceArgument.ARGUMENT_DNS1.getArgument()))dns1 = intent.getStringExtra(VPNServiceArgument.ARGUMENT_DNS1.getArgument());
+            if(intent.hasExtra(VPNServiceArgument.ARGUMENT_DNS2.getArgument()))dns2 = intent.getStringExtra(VPNServiceArgument.ARGUMENT_DNS2.getArgument());
+            if(intent.hasExtra(VPNServiceArgument.ARGUMENT_DNS1V6.getArgument()))dns1_v6 = intent.getStringExtra(VPNServiceArgument.ARGUMENT_DNS1V6.getArgument());
+            if(intent.hasExtra(VPNServiceArgument.ARGUMENT_DNS2V6.getArgument()))dns2_v6 = intent.getStringExtra(VPNServiceArgument.ARGUMENT_DNS2V6.getArgument());
             LogFactory.writeMessage(this, LOG_TAG, "DNS Servers set to; DNS1: " + dns1 + ", DNS2: " + dns2 + ", DNS1V6:" + dns1_v6 + ", DNS2V6: " + dns2_v6);
         }else{
             LogFactory.writeMessage(this, LOG_TAG, "Not using fixed DNS. Fetching DNS from settings");
@@ -242,12 +243,14 @@ public class DNSVpnService extends VpnService {
     // on all devices.
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        intent = intent == null ? intent : restoreSettings(intent);
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Got StartCommand", intent);
-        serviceRunning = intent == null || !intent.getBooleanExtra(VPNServiceArguments.COMMAND_STOP_SERVICE.getArgument(), false);
+        serviceRunning = intent == null || !intent.getBooleanExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(), false);
         if(intent!=null){
             WidgetUtil.updateAllWidgets(this, BasicWidget.class);
-            fixedDNS = intent.hasExtra(VPNServiceArguments.FLAG_FIXED_DNS.getArgument()) ? intent.getBooleanExtra(VPNServiceArguments.FLAG_FIXED_DNS.getArgument(), false) : fixedDNS;
-            startedWithTasker = intent.hasExtra(VPNServiceArguments.FLAG_STARTED_WITH_TASKER.getArgument()) ? intent.getBooleanExtra(VPNServiceArguments.FLAG_STARTED_WITH_TASKER.getArgument(), false) : startedWithTasker;
+            fixedDNS = intent.hasExtra(VPNServiceArgument.FLAG_FIXED_DNS.getArgument()) ? intent.getBooleanExtra(VPNServiceArgument.FLAG_FIXED_DNS.getArgument(), false) : fixedDNS;
+            updateDNSServers(intent);
+            startedWithTasker = intent.hasExtra(VPNServiceArgument.FLAG_STARTED_WITH_TASKER.getArgument()) ? intent.getBooleanExtra(VPNServiceArgument.FLAG_STARTED_WITH_TASKER.getArgument(), false) : startedWithTasker;
             if(Preferences.getBoolean(this, "auto_pause", false)){
                 if(!PermissionsUtil.hasUsageStatsPermission(this)){
                     Preferences.put(this,"auto_pause",false);
@@ -255,15 +258,15 @@ public class DNSVpnService extends VpnService {
                 }
                 else autoPauseApps = Preferences.getStringSet(this, "autopause_apps");
             }else autoPauseApps = new HashSet<>();
-            if(IntentUtil.checkExtra(VPNServiceArguments.COMMAND_STOP_SERVICE.getArgument(),intent)){
+            if(IntentUtil.checkExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(),intent)){
                 LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Got destroy. Destroying DNSVPNService");
-                if(intent.hasExtra(VPNServiceArguments.ARGUMENT_STOP_REASON.getArgument()))stopReason = intent.getStringExtra(VPNServiceArguments.ARGUMENT_STOP_REASON.getArgument());
+                if(intent.hasExtra(VPNServiceArgument.ARGUMENT_STOP_REASON.getArgument()))stopReason = intent.getStringExtra(VPNServiceArgument.ARGUMENT_STOP_REASON.getArgument());
                 LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Stopping self");
                 stopService();
-            }else if (IntentUtil.checkExtra(VPNServiceArguments.COMMAND_START_VPN.getArgument(),intent)) {
+            }else if (IntentUtil.checkExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(),intent)) {
                 LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Starting VPN");
                 if(threadRunning){
-                    if(!IntentUtil.checkExtra(VPNServiceArguments.FLAG_DONT_START_IF_RUNNING.getArgument(), intent)){
+                    if(!IntentUtil.checkExtra(VPNServiceArgument.FLAG_DONT_START_IF_RUNNING.getArgument(), intent)){
                         afterThreadStop.add(new Runnable() {
                             @Override
                             public void run() {
@@ -277,9 +280,8 @@ public class DNSVpnService extends VpnService {
                     vpnThread = createThread();
                     vpnThread.start();
                 }
-                updateDNSServers(intent);
                 LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Creating Thread");
-            }else if (IntentUtil.checkExtra(VPNServiceArguments.COMMAND_STOP_VPN.getArgument(),intent)){
+            }else if (IntentUtil.checkExtra(VPNServiceArgument.COMMAND_STOP_VPN.getArgument(),intent)){
                 LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Stopping VPN");
                 stopThread();
             }
@@ -325,13 +327,55 @@ public class DNSVpnService extends VpnService {
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         LogFactory.writeMessage(this, LOG_TAG, "Task is being removed. ", rootIntent);
+        backupSettings();
         clearVars(false);
         super.onTaskRemoved(rootIntent);
     }
 
+    //As the service could be removed from RAM when the main activity is destroyed this function memorizes what settings where used if that happens.
+    private void backupSettings(){
+        LogFactory.writeMessage(this, LOG_TAG, "Backing up settings to resume with them as soon as the service restarts");
+        Set<String> settings = new ArraySet<>();
+        settings.add(VPNServiceArgument.ARGUMENT_DNS1 + ";;" + dns1);
+        settings.add(VPNServiceArgument.ARGUMENT_DNS2 + ";;" +  dns2);
+        settings.add(VPNServiceArgument.ARGUMENT_DNS1V6 + ";;" + dns1_v6);
+        settings.add(VPNServiceArgument.ARGUMENT_DNS2V6 + ";;" + dns2_v6);
+        settings.add(VPNServiceArgument.FLAG_STARTED_WITH_TASKER + ";;" + startedWithTasker);
+        settings.add(VPNServiceArgument.FLAG_FIXED_DNS + ";;" + fixedDNS);
+        settings.add(VPNServiceArgument.COMMAND_START_VPN + ";;" + threadRunning);
+        settings.add("Running;;" + threadRunning);
+        Preferences.put(this, "settings_backup", settings);
+        Preferences.put(this, "settings_backuped", true);
+        LogFactory.writeMessage(this, LOG_TAG, "Backup finished");
+    }
+
+    private Intent restoreSettings(Intent i){
+        LogFactory.writeMessage(this, LOG_TAG, "Restoring settings if needed...");
+        if(Preferences.getBoolean(this, "settings_backuped",false)){
+            LogFactory.writeMessage(this, LOG_TAG, "Settings of previous service state were saved");
+            Preferences.put(this, "settings_backuped", false);
+            Set<String> settings = Preferences.getStringSet(this, "settings_backup");
+            String key, value;
+            String splt[];
+            for(VPNServiceArgument argument: VPNServiceArgument.values()){
+                for(String s: settings){
+                    splt = s.split(";;");
+                    key = splt[0];
+                    value = splt[1];
+                    if(key.equalsIgnoreCase(argument.getArgument())){
+                        LogFactory.writeMessage(this, LOG_TAG, "Putting " + key + ": '" + value + "'");
+                        IntentUtil.putExtra(key, i, Preferences.getType(value).parseTo(value));
+                    }
+                }
+            }
+            Preferences.put(this, "settings_backup", null);
+        }else LogFactory.writeMessage(this, LOG_TAG, "No setting were previously saved.");
+        return i;
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
-        return (intent.getBooleanExtra(VPNServiceArguments.FLAG_GET_BINDER.getArgument(),false) && serviceRunning) ? new ServiceBinder() : null;
+        return (intent.getBooleanExtra(VPNServiceArgument.FLAG_GET_BINDER.getArgument(),false) && serviceRunning) ? new ServiceBinder() : null;
     }
 
     @Override
@@ -484,9 +528,9 @@ public class DNSVpnService extends VpnService {
     }
 
     public static Intent getDestroyIntent(Context context, String reason){
-        return new Intent(context, DNSVpnService.class).putExtra(VPNServiceArguments.COMMAND_STOP_SERVICE.getArgument(), true).
-                putExtra(VPNServiceArguments.ARGUMENT_STOP_REASON.getArgument(), reason).
-                putExtra(VPNServiceArguments.ARGUMENT_CALLER_TRACE.getArgument(), LogFactory.stacktraceToString(new Throwable()));
+        return new Intent(context, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(), true).
+                putExtra(VPNServiceArgument.ARGUMENT_STOP_REASON.getArgument(), reason).
+                putExtra(VPNServiceArgument.ARGUMENT_CALLER_TRACE.getArgument(), LogFactory.stacktraceToString(new Throwable()));
     }
 
     public static Intent getStartVPNIntent(Context context){
@@ -494,33 +538,33 @@ public class DNSVpnService extends VpnService {
     }
 
     public static Intent getStartVPNIntent(Context context, boolean startedWithTasker){
-        return new Intent(context, DNSVpnService.class).putExtra(VPNServiceArguments.COMMAND_START_VPN.getArgument(),true).putExtra(VPNServiceArguments.FLAG_STARTED_WITH_TASKER.getArgument(), startedWithTasker).
-                putExtra(VPNServiceArguments.ARGUMENT_CALLER_TRACE.getArgument(), LogFactory.stacktraceToString(new Throwable(),true));
+        return new Intent(context, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(),true).putExtra(VPNServiceArgument.FLAG_STARTED_WITH_TASKER.getArgument(), startedWithTasker).
+                putExtra(VPNServiceArgument.ARGUMENT_CALLER_TRACE.getArgument(), LogFactory.stacktraceToString(new Throwable(),true));
     }
 
     public static Intent getStopVPNIntent(Context context){
-        return new Intent(context, DNSVpnService.class).putExtra(VPNServiceArguments.COMMAND_STOP_VPN.getArgument(),true).
-                putExtra(VPNServiceArguments.ARGUMENT_CALLER_TRACE.getArgument(), LogFactory.stacktraceToString(new Throwable(),true));
+        return new Intent(context, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_STOP_VPN.getArgument(),true).
+                putExtra(VPNServiceArgument.ARGUMENT_CALLER_TRACE.getArgument(), LogFactory.stacktraceToString(new Throwable(),true));
     }
 
     public static Intent getStartVPNIntent(Context context, String dns1, String dns2, String dns1v6, String dns2v6, boolean startedWithTasker, boolean fixedDNS){
-        return new Intent(context, DNSVpnService.class).putExtra(VPNServiceArguments.COMMAND_START_VPN.getArgument(),true).
-                putExtra(VPNServiceArguments.ARGUMENT_DNS1.getArgument(), dns1).putExtra(VPNServiceArguments.ARGUMENT_DNS2.getArgument(), dns2).
-                putExtra(VPNServiceArguments.ARGUMENT_DNS1V6.getArgument(), dns1v6).putExtra(VPNServiceArguments.ARGUMENT_DNS2V6.getArgument(), dns2v6).
-                putExtra(VPNServiceArguments.FLAG_STARTED_WITH_TASKER.getArgument(), startedWithTasker). putExtra(VPNServiceArguments.FLAG_FIXED_DNS.getArgument(), fixedDNS).
-                putExtra(VPNServiceArguments.ARGUMENT_CALLER_TRACE.getArgument(), LogFactory.stacktraceToString(new Throwable(),true));
+        return new Intent(context, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(),true).
+                putExtra(VPNServiceArgument.ARGUMENT_DNS1.getArgument(), dns1).putExtra(VPNServiceArgument.ARGUMENT_DNS2.getArgument(), dns2).
+                putExtra(VPNServiceArgument.ARGUMENT_DNS1V6.getArgument(), dns1v6).putExtra(VPNServiceArgument.ARGUMENT_DNS2V6.getArgument(), dns2v6).
+                putExtra(VPNServiceArgument.FLAG_STARTED_WITH_TASKER.getArgument(), startedWithTasker). putExtra(VPNServiceArgument.FLAG_FIXED_DNS.getArgument(), fixedDNS).
+                putExtra(VPNServiceArgument.ARGUMENT_CALLER_TRACE.getArgument(), LogFactory.stacktraceToString(new Throwable(),true));
     }
 
     public static Intent getStartVPNIntent(Context context, String dns1, String dns2, String dns1v6, String dns2v6, boolean startedWithTasker){
-        return new Intent(context, DNSVpnService.class).putExtra(VPNServiceArguments.COMMAND_START_VPN.getArgument(),true).
-                putExtra(VPNServiceArguments.ARGUMENT_DNS1.getArgument(), dns1).putExtra(VPNServiceArguments.ARGUMENT_DNS2.getArgument(), dns2).
-                putExtra(VPNServiceArguments.ARGUMENT_DNS1V6.getArgument(), dns1v6).putExtra(VPNServiceArguments.ARGUMENT_DNS2V6.getArgument(), dns2v6).
-                putExtra(VPNServiceArguments.FLAG_STARTED_WITH_TASKER.getArgument(), startedWithTasker).
-                putExtra(VPNServiceArguments.ARGUMENT_CALLER_TRACE.getArgument(), LogFactory.stacktraceToString(new Throwable(),true));
+        return new Intent(context, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(),true).
+                putExtra(VPNServiceArgument.ARGUMENT_DNS1.getArgument(), dns1).putExtra(VPNServiceArgument.ARGUMENT_DNS2.getArgument(), dns2).
+                putExtra(VPNServiceArgument.ARGUMENT_DNS1V6.getArgument(), dns1v6).putExtra(VPNServiceArgument.ARGUMENT_DNS2V6.getArgument(), dns2v6).
+                putExtra(VPNServiceArgument.FLAG_STARTED_WITH_TASKER.getArgument(), startedWithTasker).
+                putExtra(VPNServiceArgument.ARGUMENT_CALLER_TRACE.getArgument(), LogFactory.stacktraceToString(new Throwable(),true));
     }
 
     public static Intent getBinderIntent(Context context){
-        return new Intent(context, DNSVpnService.class).putExtra(VPNServiceArguments.FLAG_GET_BINDER.getArgument(),true);
+        return new Intent(context, DNSVpnService.class).putExtra(VPNServiceArgument.FLAG_GET_BINDER.getArgument(),true);
     }
 
     public String getCurrentDNS1() {

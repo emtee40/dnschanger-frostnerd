@@ -8,7 +8,7 @@ import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 
 import com.frostnerd.dnschanger.API.API;
-import com.frostnerd.dnschanger.API.VPNServiceArguments;
+import com.frostnerd.dnschanger.API.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.utils.preferences.Preferences;
@@ -53,7 +53,7 @@ public class ShortcutActivity extends AppCompatActivity {
                                 && service.getCurrentDNS1V6().equals(dns1v6) && service.getCurrentDNS2V6().equals(dns2v6)){
                             LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Service was started via same shortcut. Stopping.");
                             unbindService(this);
-                            startService(new Intent(ShortcutActivity.this, DNSVpnService.class).putExtra(VPNServiceArguments.COMMAND_STOP_SERVICE.getArgument(),true));
+                            startService(new Intent(ShortcutActivity.this, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(),true));
                             finish();
                         }else{
                             LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Service wasn't started using this shortcut");
