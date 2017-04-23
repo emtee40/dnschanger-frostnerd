@@ -125,7 +125,7 @@ public class DNSVpnService extends VpnService {
         serviceRunning = false;
         stopThread();
         if(stateRequestReceiver != null)LocalBroadcastManager.getInstance(this).unregisterReceiver(stateRequestReceiver);
-        if(notificationManager != null)notificationManager.cancel(NOTIFICATION_ID);
+        stopForeground(true);
         notificationManager = null;
         notificationBuilder = null;
         stateRequestReceiver = null;
@@ -145,9 +145,9 @@ public class DNSVpnService extends VpnService {
         if(!serviceRunning)return;
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Updating notification");
         initNotification();
-        if(!Preferences.getBoolean(this, "setting_show_notification",false) && notificationManager != null){
+        if(!Preferences.getBoolean(this, "setting_show_notification",false)){
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification is disabled");
-            notificationManager.cancel(NOTIFICATION_ID);
+            stopForeground(true);
             return;
         }else LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification is enabled");
         boolean pinProtected = Preferences.getBoolean(this, "pin_notification",false);
@@ -173,7 +173,7 @@ public class DNSVpnService extends VpnService {
         }
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Posting Notification in 10ms");
         LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Updating notification");
-        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        startForeground(NOTIFICATION_ID, notificationBuilder.build());
     }
 
     private void initNotification(){
