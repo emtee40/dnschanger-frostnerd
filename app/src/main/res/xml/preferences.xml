@@ -4,7 +4,7 @@
     <PreferenceCategory android:title="@string/notification">
         <CheckBoxPreference
             android:id="@+id/setting_show_notification"
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="setting_show_notification"
             android:summary="@string/summary_notification"
             android:title="@string/title_notification" />
