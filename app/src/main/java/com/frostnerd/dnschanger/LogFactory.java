@@ -43,7 +43,7 @@ public class LogFactory {
     private static final SimpleDateFormat DATE_TIME_FORMATTER = new SimpleDateFormat("dd_MM_yyyy___kk_mm_ss", Locale.US),
             TIMESTAMP_FORMATTER = new SimpleDateFormat("EEE MMM dd.yy kk:mm:ss", Locale.US);
     public static final String STATIC_TAG = "[STATIC]";
-    private static final boolean printMessagesToConsole = true;
+    private static final boolean printMessagesToConsole = false;
 
 
     public static File zipLogFiles(Context c){
