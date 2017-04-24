@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -46,7 +48,7 @@ public class LogFactory {
     private static final boolean printMessagesToConsole = false;
 
 
-    public static File zipLogFiles(Context c){
+    public static synchronized File zipLogFiles(Context c){
         if(logDir == null || !logDir.canWrite() || !logDir.canRead())return null;
         writeMessage(c, Tag.INFO, "Exporting Log files");
         try{
@@ -86,7 +88,7 @@ public class LogFactory {
         return null;
     }
 
-    public static void enable(){
+    public synchronized static void enable(){
         enabled = true;
         ready = false;
         usable = false;
@@ -100,7 +102,7 @@ public class LogFactory {
         }
     }
 
-    public static void disable(){
+    public synchronized static void disable(){
         enabled = false;
         ready = true;
         usable = false;
@@ -114,7 +116,7 @@ public class LogFactory {
         }
     }
 
-    public static void terminate(){
+    public synchronized static void terminate(){
         try{
             fileWriter.close();
         }catch(Exception e){
@@ -124,7 +126,7 @@ public class LogFactory {
         ready = usable = false;
     }
 
-    public static boolean prepare(Context context) {
+    public static synchronized boolean prepare(Context context) {
         if(!enabled && ready)return false;
         if (ready) return usable;
         enabled = Preferences.getBoolean(context, "debug", false);
@@ -182,7 +184,7 @@ public class LogFactory {
         writeMessage(context, arr, message, intent, printIntent);
     }
 
-    public static void writeMessage(Context context, String[] tags, String message, Intent intent, boolean printIntent){
+    public static synchronized void writeMessage(Context context, String[] tags, String message, Intent intent, boolean printIntent){
         if (prepare(context)) {
             try {
                 StringBuilder builder = new StringBuilder();
@@ -307,7 +309,7 @@ public class LogFactory {
         return replaceNewline ? res.replace("\n", " -- ") : res;
     }
 
-    private static long getTotalMemory() {
+    private synchronized static long getTotalMemory() {
         String str1 = "/proc/meminfo";
         String str2;
         String[] arrayOfString;

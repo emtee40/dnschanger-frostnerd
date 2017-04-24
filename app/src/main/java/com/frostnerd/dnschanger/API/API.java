@@ -44,7 +44,7 @@ public final class API {
     public static final String LOG_TAG = "[API]";
     private static SQLiteDatabase database;
 
-    public static void updateTiles(Context context){
+    public static synchronized void updateTiles(Context context){
         LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG}, "Trying to update Tiles");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             TileService.requestListeningState(context, new ComponentName(context, TileStart.class));
@@ -81,7 +81,7 @@ public final class API {
         if (database != null) database.close();
     }
 
-    private static void setupDatabase(Context context) {
+    private static synchronized void setupDatabase(Context context) {
         if (database != null) return;
         database = context.openOrCreateDatabase("data.db", SQLiteDatabase.OPEN_READWRITE, null);
         database.execSQL("CREATE TABLE IF NOT EXISTS Shortcuts(Name TEXT, dns1 TEXT, dns2 TEXT, dns1v6 TEXT, dns2v6 TEXT)");
@@ -123,7 +123,7 @@ public final class API {
         context.sendBroadcast(addIntent);
     }
 
-    public static Shortcut[] getShortcutsFromDatabase(Context context) {
+    public static synchronized Shortcut[] getShortcutsFromDatabase(Context context) {
         setupDatabase(context);
         Cursor cursor = database.rawQuery("SELECT * FROM Shortcuts", new String[]{});
         if (cursor.moveToFirst()) {
