@@ -13,7 +13,6 @@ import android.os.ParcelFileDescriptor;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.util.ArraySet;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 
 import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.VPNServiceArgument;
@@ -24,7 +23,6 @@ import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.widgets.BasicWidget;
 import com.frostnerd.utils.general.IntentUtil;
 import com.frostnerd.utils.general.StringUtil;
-import com.frostnerd.utils.general.VariableChecker;
 import com.frostnerd.utils.general.WidgetUtil;
 import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.permissions.PermissionsUtil;
@@ -35,12 +33,12 @@ import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.nio.channels.DatagramChannel;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -59,7 +57,7 @@ public class DNSVpnService extends VpnService {
     private NotificationManager notificationManager;
     private final int NOTIFICATION_ID = 112;
     private String dns1,dns2,dns1_v6,dns2_v6, stopReason, currentDNS1, currentDNS2, currentDNS1V6, currentDNS2V6;
-    private List<Runnable> afterThreadStop = new ArrayList<>();
+    private Vector<Runnable> afterThreadStop = new Vector<>();
 
     private boolean fixedDNS = false, startedWithTasker = false, autoPaused = false, runThread = true, variablesCleared = false;
     private BroadcastReceiver stateRequestReceiver = new BroadcastReceiver() {
@@ -106,15 +104,16 @@ public class DNSVpnService extends VpnService {
             stopService();
         }
     };
-    private HashMap<String, Integer> addresses = new HashMap<String, Integer>(){{
+    private Map<String, Integer> addresses = new ConcurrentHashMap<String, Integer>(){{
         put("192.168.0.1", 24);
         put("192.168.234.55", 24);
         put("172.31.255.253", 30);
         put("172.31.255.1", 28);
     }};
 
-    private void clearVars(boolean stopSelf){
+    private synchronized void clearVars(boolean stopSelf){
         if(variablesCleared)return;
+        variablesCleared = true;
         LogFactory.writeMessage(this, LOG_TAG, "Clearing Variables");
         if(stopReason != null && notificationManager != null && Preferences.getBoolean(this, "notification_on_stop", false)){
             String reasonText = getString(R.string.notification_reason_stopped).replace("[reason]", stopReason);
@@ -135,7 +134,6 @@ public class DNSVpnService extends VpnService {
         autoPauseApps = null;
         uncaughtExceptionHandler = null;
         threadRunning = false;
-        variablesCleared = true;
         afterThreadStop.clear();
         afterThreadStop = null;
         LogFactory.writeMessage(this, LOG_TAG, "Variables cleared");
@@ -399,10 +397,10 @@ public class DNSVpnService extends VpnService {
         return new Thread(new Runnable() {
             private final String ID = "[" + StringUtil.randomString(20) + "]";
             private int addressIndex = 0;
-            ParcelFileDescriptor tunnelInterface = null;
-            Builder builder;
-            DatagramChannel tunnel = null;
-            DatagramSocket tunnelSocket = null;
+            private ParcelFileDescriptor tunnelInterface = null;
+            private Builder builder;
+            private DatagramChannel tunnel = null;
+            private DatagramSocket tunnelSocket = null;
 
             @Override
             public void run() {
@@ -497,7 +495,7 @@ public class DNSVpnService extends VpnService {
                 }
             }
 
-            private void clearVars(){
+            private synchronized void clearVars(){
                 if(tunnelSocket != null && !tunnelSocket.isClosed()){
                     tunnelSocket.disconnect();
                     tunnelSocket.close();
