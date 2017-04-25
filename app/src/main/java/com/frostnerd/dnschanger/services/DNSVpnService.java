@@ -75,23 +75,23 @@ public class DNSVpnService extends VpnService {
         public void run() {
             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG,"[AutoPausedRestartRunnable]"}, "Started Runnable which'll resume DNSChanger after the autopausing app isn't in the front anymore");
             int counter = 0;
-                try {
-                    while(serviceRunning){
-                        if(counter >= 4){
-                            if(!autoPauseApps.contains(AppTaskGetter.getMostRecentApp(DNSVpnService.this,1000*1000))){
-                                LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG,"[AutoPausedRestartRunnable]"}, "No app which autopauses DNS Changer on top anymore. Resuming.");
-                                startService(new Intent(DNSVpnService.this, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(),true));
-                                break;
-                            }
-                            counter = 0;
+            try {
+                while(serviceRunning){
+                    if(counter >= 4){
+                        if(!autoPauseApps.contains(AppTaskGetter.getMostRecentApp(DNSVpnService.this,1000*1000))){
+                            LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG,"[AutoPausedRestartRunnable]"}, "No app which autopauses DNS Changer on top anymore. Resuming.");
+                            startService(new Intent(DNSVpnService.this, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(),true));
+                            break;
                         }
-                        Thread.sleep(250);
-                        counter++;
+                        counter = 0;
                     }
-                } catch (InterruptedException e) {
-                    LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG,"[AutoPausedRestartRunnable]"}, "Runnable interrupted");
-                    e.printStackTrace();
+                    Thread.sleep(250);
+                    counter++;
                 }
+            } catch (InterruptedException e) {
+                LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG,"[AutoPausedRestartRunnable]"}, "Runnable interrupted");
+                e.printStackTrace();
+            }
         }
     };
     private Thread.UncaughtExceptionHandler uncaughtExceptionHandler = new Thread.UncaughtExceptionHandler() {
@@ -107,9 +107,9 @@ public class DNSVpnService extends VpnService {
         }
     };
     private HashMap<String, Integer> addresses = new HashMap<String, Integer>(){{
+        put("172.31.255.253", 30);
         put("192.168.0.1", 24);
         put("192.168.234.55", 24);
-        put("172.31.255.253", 30);
         put("172.31.255.1", 28);
     }};
 
