@@ -62,12 +62,17 @@
                     android:scheme="frostnerd" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".services.DNSVpnService"
-            android:enabled="true"
-            android:stopWithTask="false"
-            android:exported="false"
-            android:externalService="false"
+            android:permission="android.permission.BIND_VPN_SERVICE">
+            <intent-filter>
+                <action android:name="android.net.VpnService" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".services.TestVPNService"
             android:permission="android.permission.BIND_VPN_SERVICE">
             <intent-filter>
                 <action android:name="android.net.VpnService" />
