@@ -60,8 +60,6 @@ public class DNSVpnService extends VpnService {
     private final int NOTIFICATION_ID = 112;
     private String dns1,dns2,dns1_v6,dns2_v6, stopReason, currentDNS1, currentDNS2, currentDNS1V6, currentDNS2V6;
     private Vector<Runnable> afterThreadStop = new Vector<>();
-    private Builder builder = new Builder();
-
     private boolean fixedDNS = false, startedWithTasker = false, autoPaused = false, runThread = true, variablesCleared = false;
     private BroadcastReceiver stateRequestReceiver = new BroadcastReceiver() {
         @Override
@@ -416,7 +414,7 @@ public class DNSVpnService extends VpnService {
             private final String ID = "[" + StringUtil.randomString(20) + "]";
             private int addressIndex = 0;
             private ParcelFileDescriptor tunnelInterface = null;
-            //private Builder builder;
+            private Builder builder;
             private DatagramChannel tunnel = null;
             private DatagramSocket tunnelSocket = null;
 
@@ -430,6 +428,7 @@ public class DNSVpnService extends VpnService {
                 try {
                     LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying " + addresses.size() + " different addresses before passing any thrown exception to the upper layer");
                     for(String address: addresses.keySet()){
+                        builder = new Builder();
                         LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying address '" + address + "'");
                         try{
                             addressIndex++;
@@ -531,37 +530,10 @@ public class DNSVpnService extends VpnService {
                         e.printStackTrace();
                     }
                 }
-                //builder = null;
-                resetBuilder();
+                builder = null;
                 tunnel = null;
                 tunnelInterface = null;
                 tunnelSocket = null;
-            }
-
-            private void resetBuilder(){
-                try {
-                    Class<? extends Builder> clazz = builder.getClass();
-                    Field addresses = clazz.getDeclaredField("mAddresses"),
-                        routes = clazz.getDeclaredField("mRoutes"),
-                        config = clazz.getDeclaredField("mConfig");
-                    addresses.setAccessible(true);
-                    routes.setAccessible(true);
-                    config.setAccessible(true);
-                    List<?> addressList = (List<?>)addresses.get(builder);
-                    addressList.clear();
-                    addresses.set(builder, addressList);
-                    List<?> routesList = (List<?>)routes.get(builder);
-                    routesList.clear();
-                    routes.set(builder, routesList);
-                    addresses.setAccessible(false);
-                    routes.setAccessible(false);
-                    config.get(builder).getClass().getField("dnsServers").set(config.get(builder), null);
-                    config.setAccessible(false);
-                } catch (NoSuchFieldException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
             }
         });
     }
