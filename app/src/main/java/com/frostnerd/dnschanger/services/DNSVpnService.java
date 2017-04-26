@@ -30,10 +30,12 @@ import com.frostnerd.utils.preferences.Preferences;
 import com.frostnerd.utils.stats.AppTaskGetter;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.nio.channels.DatagramChannel;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -58,6 +60,7 @@ public class DNSVpnService extends VpnService {
     private final int NOTIFICATION_ID = 112;
     private String dns1,dns2,dns1_v6,dns2_v6, stopReason, currentDNS1, currentDNS2, currentDNS1V6, currentDNS2V6;
     private Vector<Runnable> afterThreadStop = new Vector<>();
+    private Builder builder = new Builder();
 
     private boolean fixedDNS = false, startedWithTasker = false, autoPaused = false, runThread = true, variablesCleared = false;
     private BroadcastReceiver stateRequestReceiver = new BroadcastReceiver() {
@@ -412,7 +415,7 @@ public class DNSVpnService extends VpnService {
             private final String ID = "[" + StringUtil.randomString(20) + "]";
             private int addressIndex = 0;
             private ParcelFileDescriptor tunnelInterface = null;
-            private Builder builder;
+            //private Builder builder;
             private DatagramChannel tunnel = null;
             private DatagramSocket tunnelSocket = null;
 
@@ -429,9 +432,9 @@ public class DNSVpnService extends VpnService {
                         LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying address '" + address + "'");
                         try{
                             addressIndex++;
-                            builder = new Builder();
+                            //builder = new Builder();
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Creating Tunnel interface");
-                            tunnelInterface = builder.setSession("DnsChanger" + StringUtil.randomString(50)).addAddress(address, addresses.get(address)).addAddress(NetworkUtil.randomLocalIPv6Address(),48).addDnsServer(dns1).addDnsServer(dns2)
+                            tunnelInterface = builder.setSession("DnsChanger").addAddress(address, addresses.get(address)).addAddress(NetworkUtil.randomLocalIPv6Address(),48).addDnsServer(dns1).addDnsServer(dns2)
                                     .addDnsServer(dns1_v6).addDnsServer(dns2_v6).establish();
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface created and established.");
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Opening DatagramChannel");
@@ -527,10 +530,37 @@ public class DNSVpnService extends VpnService {
                         e.printStackTrace();
                     }
                 }
-                builder = null;
+                //builder = null;
+                resetBuilder();
                 tunnel = null;
                 tunnelInterface = null;
                 tunnelSocket = null;
+            }
+
+            private void resetBuilder(){
+                try {
+                    Class<? extends Builder> clazz = builder.getClass();
+                    Field addresses = clazz.getDeclaredField("mAddresses"),
+                        routes = clazz.getDeclaredField("mRoutes"),
+                        config = clazz.getDeclaredField("mConfig");
+                    addresses.setAccessible(true);
+                    routes.setAccessible(true);
+                    config.setAccessible(true);
+                    List<?> addressList = (List<?>)addresses.get(builder);
+                    addressList.clear();
+                    addresses.set(builder, addressList);
+                    List<?> routesList = (List<?>)routes.get(builder);
+                    routesList.clear();
+                    routes.set(builder, routesList);
+                    addresses.setAccessible(false);
+                    routes.setAccessible(false);
+                    config.get(builder).getClass().getField("dnsServers").set(config.get(builder), null);
+                    config.setAccessible(false);
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
