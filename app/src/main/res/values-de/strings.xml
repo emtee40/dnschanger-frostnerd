@@ -88,7 +88,7 @@
         <item>DNS Changer fortsetzen</item>
     </string-array>
     <string name="error">Fehler</string>
-    <string name="vpn_error_explain">Bei einigen Android Versionen (4.4, einige wenige 5.0 Versionen) und Custom ROMS wird die dieser App zu Grund liegende VPN-Struktur nicht unterstützt, was zu Abstürzen führt.\n\nDiese App ist unerwartet abgestürzt, was höchstwahrscheinlich darauf hindeutet, dass den Gerät diese App nicht unterstützt.\nSollte dies der Fall sein, könnest du mir helfen, indem du mir den Fehlerbericht sendest, aber leider funktioniert diese App auf deinem Gerät nicht.</string>
+    <string name="vpn_error_explain">Die App ist unerwartet abgestürzt. Dies bedeutet entweder, dass dein Gerät/Betriebssystem die Art und Weise, wie diese App funktioniert, nicht unterstützt, oder, dass ein genereller Fehler aufgetreten ist (Was meistens einen Fehler meinerseits impliziert).\n\nDurch das Senden des Absturzberichts (und ggf. debug-Daten) könnest du mir helfen, diesen Fehler zu beheben.\nMöchtest du diesen Bericht an mich senden?</string>
     <string name="send_crash_report">Absturzbericht senden</string>
     <string name="deep_link_title">DNS Changer von Frostnerd</string>
     <string name="summary_pin_tile">Nach der Pin fragen, wenn DNS Changer von den Schnelleinstellungen aus gestartet/gestoppt wird</string>
