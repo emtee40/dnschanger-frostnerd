@@ -258,7 +258,7 @@ public class DNSVpnService extends VpnService {
     // on all devices.
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        intent = intent == null ? intent : restoreSettings(intent);
+        //intent = intent == null ? intent : restoreSettings(intent);
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Got StartCommand", intent);
         serviceRunning = intent == null || !intent.getBooleanExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(), false);
         if(intent!=null){
@@ -303,7 +303,7 @@ public class DNSVpnService extends VpnService {
             API.updateTiles(this);
         }else LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]", LogFactory.Tag.ERROR.toString()}, "Intent given is null. This isn't normal behavior");
         updateNotification();
-        return START_STICKY;
+        return START_REDELIVER_INTENT;
     }
 
     public void stopService(){
@@ -342,13 +342,13 @@ public class DNSVpnService extends VpnService {
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         LogFactory.writeMessage(this, LOG_TAG, "Task is being removed. ", rootIntent);
-        backupSettings();
-        clearVars(false);
+        //backupSettings();
+        //clearVars(false, true);
         super.onTaskRemoved(rootIntent);
     }
 
     //As the service could be removed from RAM when the main activity is destroyed this function memorizes what settings where used if that happens.
-    private void backupSettings(){
+    /*private void backupSettings(){
         LogFactory.writeMessage(this, LOG_TAG, "Backing up settings to resume with them as soon as the service restarts");
         Set<String> settings = new ArraySet<>();
         settings.add(VPNServiceArgument.ARGUMENT_DNS1 + ";;" + dns1);
@@ -362,9 +362,10 @@ public class DNSVpnService extends VpnService {
         Preferences.put(this, "settings_backup", settings);
         Preferences.put(this, "settings_backuped", true);
         LogFactory.writeMessage(this, LOG_TAG, "Backup finished");
-    }
+    }*/
 
-    private Intent restoreSettings(Intent i){
+    /*private Intent restoreSettings(Intent i){
+        return i;
         LogFactory.writeMessage(this, LOG_TAG, "Restoring settings if needed...");
         if(Preferences.getBoolean(this, "settings_backuped",false)){
             LogFactory.writeMessage(this, LOG_TAG, "Settings of previous service state were saved");
@@ -386,7 +387,7 @@ public class DNSVpnService extends VpnService {
             Preferences.put(this, "settings_backup", null);
         }else LogFactory.writeMessage(this, LOG_TAG, "No setting were previously saved.");
         return i;
-    }
+    }*/
 
     @Override
     public IBinder onBind(Intent intent) {
