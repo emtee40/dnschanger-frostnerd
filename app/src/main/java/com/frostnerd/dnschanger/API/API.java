@@ -58,7 +58,7 @@ public final class API {
     // This is dirty. Like really dirty. But sometimes the running check returns running when the
     // service isn't running. This is a workaround.
     public static boolean isServiceRunning(Context c) {
-        return DNSVpnService.isServiceRunning();
+        return DNSVpnService.isServiceRunning() ||isServiceRunningNative(c);
         /*ActivityManager am = (ActivityManager) c.getSystemService(Context.ACTIVITY_SERVICE);
         String name = DNSVpnService.class.getName();
         for (ActivityManager.RunningServiceInfo service : am.getRunningServices(Integer.MAX_VALUE)) {
@@ -67,6 +67,17 @@ public final class API {
             }
         }
         return false;*/
+    }
+
+    private static boolean isServiceRunningNative(Context context){
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        String name = DNSVpnService.class.getName();
+        for (ActivityManager.RunningServiceInfo service : am.getRunningServices(Integer.MAX_VALUE)) {
+            if (name.equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static boolean isServiceThreadRunning(Context context){
