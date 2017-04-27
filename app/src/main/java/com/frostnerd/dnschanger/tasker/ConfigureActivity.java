@@ -83,8 +83,9 @@ public class ConfigureActivity extends AppCompatActivity {
     }
 
     private boolean checkValidity(){
-        return wasEdited && NetworkUtil.isAssignableAddress(dns1,false,true) && NetworkUtil.isAssignableAddress(dns2,false,true) && NetworkUtil.isAssignableAddress(dns1V6,true,true) &&
-                NetworkUtil.isAssignableAddress(dns2V6,true,true) && met_name.getIndicatorState() == MaterialEditText.IndicatorState.CORRECT;
+        return wasEdited && NetworkUtil.isAssignableAddress(dns1,false,false) && NetworkUtil.isAssignableAddress(dns2,false,true) &&
+                (!API.isIPv6Enabled(this) || (NetworkUtil.isAssignableAddress(dns1V6,true,false) &&
+                NetworkUtil.isAssignableAddress(dns2V6,true,true))) && met_name.getIndicatorState() == MaterialEditText.IndicatorState.CORRECT;
     }
 
 
@@ -126,7 +127,7 @@ public class ConfigureActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6)) {
+                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6, false)) {
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
                     wasEdited = true;
@@ -149,7 +150,7 @@ public class ConfigureActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6)) {
+                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6, false)) {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
                     wasEdited = true;
@@ -270,7 +271,7 @@ public class ConfigureActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(settingV6 ? R.menu.tasker_menu_v4 : R.menu.tasker_menu_v6 ,menu);
+        getMenuInflater().inflate(API.isIPv6Enabled(this) ? (settingV6 ? R.menu.tasker_menu_v4 : R.menu.tasker_menu_v6) : R.menu.tasker_menu_no_ipv6 ,menu);
         return super.onCreateOptionsMenu(menu);
     }
 

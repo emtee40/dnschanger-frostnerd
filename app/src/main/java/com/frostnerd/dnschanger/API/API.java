@@ -26,6 +26,7 @@ import com.frostnerd.dnschanger.tiles.TileResume;
 import com.frostnerd.dnschanger.tiles.TileStart;
 import com.frostnerd.dnschanger.tiles.TileStop;
 import com.frostnerd.utils.general.Utils;
+import com.frostnerd.utils.preferences.Preferences;
 
 import java.util.List;
 
@@ -78,6 +79,26 @@ public final class API {
             }
         }
         return false;
+    }
+
+    public static boolean isIPv6Enabled(Context context){
+        return Preferences.getBoolean(context, "setting_ipv6_enabled", true);
+    }
+
+    public static String getDNS1(Context context){
+        return Preferences.getString(context, "dns1", "8.8.8.8");
+    }
+
+    public static String getDNS2(Context context){
+        return Preferences.getString(context, "dns2", "8.8.4.4");
+    }
+
+    public static String getDNS1V6(Context context){
+        return isIPv6Enabled(context) ? Preferences.getString(context, "dns1-v6", "2001:4860:4860::8888") : "";
+    }
+
+    public static String getDNS2V6(Context context){
+        return isIPv6Enabled(context) ? Preferences.getString(context, "dns2-v6", "2001:4860:4860::8844") : "";
     }
 
     public static boolean isServiceThreadRunning(Context context){

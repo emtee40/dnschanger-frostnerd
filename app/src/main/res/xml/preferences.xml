@@ -161,6 +161,12 @@
             android:summary="@string/summary_device_admin_activate"
             android:title="@string/title_device_admin" />
 
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="setting_ipv6_enabled"
+            android:summary="@string/summary_enable_ipv6"
+            android:title="@string/title_enable_ipv6" />
+
         <Preference android:key="placeholder_version" />
     </PreferenceCategory>
 </PreferenceScreen>

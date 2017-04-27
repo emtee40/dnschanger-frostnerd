@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(vpnRunning && doStopVPN && !wasStartedWithTasker)stopVpn();
-                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6,true)) {
+                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6,false)) {
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
@@ -351,6 +351,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostResume() {
         super.onPostResume();
+        settingV6 = false;
+        dns1.setText(Preferences.getString(MainActivity.this, "dns1", "8.8.8.8"));
+        dns2.setText(Preferences.getString(MainActivity.this, "dns2", "8.8.4.4"));
+        invalidateOptionsMenu();
         LogFactory.writeMessage(this, LOG_TAG, "Got onPostResume");
         LogFactory.writeMessage(this, LOG_TAG, "Recreating DefaultDNSDialog");
         View layout = getLayoutInflater().inflate(R.layout.dialog_default_dns, null, false);
@@ -483,7 +487,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(settingV6 ? R.menu.menu_main_v6 : R.menu.menu_main,menu);
+        getMenuInflater().inflate(API.isIPv6Enabled(this) ? (settingV6 ? R.menu.menu_main_v6 : R.menu.menu_main) : R.menu.menu_main_no_ipv6,menu);
         return super.onCreateOptionsMenu(menu);
     }
 

@@ -217,14 +217,14 @@ public class DNSVpnService extends VpnService {
         }else{
             LogFactory.writeMessage(this, LOG_TAG, "Not using fixed DNS. Fetching DNS from settings");
             LogFactory.writeMessage(this, LOG_TAG, "Current DNS Servers; DNS1: " + dns1 + ", DNS2: " + dns2 + ", DNS1V6:" + dns1_v6 + ", DNS2V6: " + dns2_v6);
-            dns1 = Preferences.getString(DNSVpnService.this, "dns1", "8.8.8.8");
-            dns2 = Preferences.getString(DNSVpnService.this, "dns2", "8.8.4.4");
-            dns1_v6 = Preferences.getString(DNSVpnService.this, "dns1-v6", "2001:4860:4860::8888");
-            dns2_v6 = Preferences.getString(DNSVpnService.this, "dns2-v6", "2001:4860:4860::8844");
+            dns1 = API.getDNS1(this);
+            dns2 = API.getDNS2(this);
+            dns1_v6 = API.getDNS1V6(this);
+            dns2_v6 = API.getDNS2V6(this);
             LogFactory.writeMessage(this, LOG_TAG, "DNS Servers set to; DNS1: " + dns1 + ", DNS2: " + dns2 + ", DNS1V6:" + dns1_v6 + ", DNS2V6: " + dns2_v6);
         }
-        checkDNSValid(true);
-        checkDNSValid(false);
+        //checkDNSValid(true);
+        //checkDNSValid(false);
     }
 
     private void checkDNSValid(boolean fromPreferences){

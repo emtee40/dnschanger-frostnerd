@@ -141,4 +141,6 @@
     <string name="reason_stop_tasker">Von Tasker gestoppt</string>
     <string name="shortcut_conflict_text">Diese App ist darauf eingestellt, den VPN zu starten/stoppen, wenn sich die Netzwerkverbindung ändert (zu Wlan oder 3G/4G...).\nDies könnte zu Konflikten führen, wenn die App über eine Verknüpfung gestartet wurde, da die eingestellte Aktion durch die App an sich überschrieben werden kann (Nur ein VPN kann aktiv sein).\n\nMöchtest du diese Einstellungen aus der App entfernen?</string>
     <string name="invalid_dns_error_text">Es sieht so aus, als würde mindestens einer der eingestellten DNS Server auf diesem Gerät nicht funktionieren.\nDies kann entweder ein temporärer Fehler sein, oder durch eine invalide IP Adresse begründet sein.\n\nBitte stelle sicher, dass deine Einstellungen im Hauptmenü korrekt sind und besonders, dass die eingegebenen IP-Adressen valide sind.</string>
+    <string name="summary_enable_ipv6">Aktiviert IPv6. Dies erlaubt es, IPv6 Adressen zur Nutzung als DNS Server einzustellen.</string>
+    <string name="title_enable_ipv6">IPv6 aktivieren</string>
 </resources>

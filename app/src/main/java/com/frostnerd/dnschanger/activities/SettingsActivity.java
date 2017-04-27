@@ -78,6 +78,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         findPreference("setting_disable_netchange").setOnPreferenceChangeListener(changeListener);
         findPreference("notification_on_stop").setOnPreferenceChangeListener(changeListener);
         findPreference("shortcut_click_again_disable").setOnPreferenceChangeListener(changeListener);
+        findPreference("setting_ipv6_enabled").setOnPreferenceChangeListener(changeListener);
         findPreference("shortcut_click_override_settings").setOnPreferenceChangeListener(changeListener);
         findPreference("pin_value").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
