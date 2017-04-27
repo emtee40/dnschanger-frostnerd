@@ -60,8 +60,6 @@ public class DNSVpnService extends VpnService {
     private final int NOTIFICATION_ID = 112;
     private String dns1,dns2,dns1_v6,dns2_v6, stopReason, currentDNS1, currentDNS2, currentDNS1V6, currentDNS2V6;
     private Vector<Runnable> afterThreadStop = new Vector<>();
-    private Builder builder = new Builder();
-
     private boolean fixedDNS = false, startedWithTasker = false, autoPaused = false, runThread = true, variablesCleared = false;
     private BroadcastReceiver stateRequestReceiver = new BroadcastReceiver() {
         @Override
@@ -258,7 +256,7 @@ public class DNSVpnService extends VpnService {
     // on all devices.
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        intent = intent == null ? intent : restoreSettings(intent);
+        //intent = intent == null ? intent : restoreSettings(intent);
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Got StartCommand", intent);
         serviceRunning = intent == null || !intent.getBooleanExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(), false);
         if(intent!=null){
@@ -303,7 +301,7 @@ public class DNSVpnService extends VpnService {
             API.updateTiles(this);
         }else LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]", LogFactory.Tag.ERROR.toString()}, "Intent given is null. This isn't normal behavior");
         updateNotification();
-        return START_STICKY;
+        return START_REDELIVER_INTENT;
     }
 
     public void stopService(){
@@ -342,13 +340,13 @@ public class DNSVpnService extends VpnService {
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         LogFactory.writeMessage(this, LOG_TAG, "Task is being removed. ", rootIntent);
-        backupSettings();
-        clearVars(false);
+        //backupSettings();
+        //clearVars(false, true);
         super.onTaskRemoved(rootIntent);
     }
 
     //As the service could be removed from RAM when the main activity is destroyed this function memorizes what settings where used if that happens.
-    private void backupSettings(){
+    /*private void backupSettings(){
         LogFactory.writeMessage(this, LOG_TAG, "Backing up settings to resume with them as soon as the service restarts");
         Set<String> settings = new ArraySet<>();
         settings.add(VPNServiceArgument.ARGUMENT_DNS1 + ";;" + dns1);
@@ -362,9 +360,10 @@ public class DNSVpnService extends VpnService {
         Preferences.put(this, "settings_backup", settings);
         Preferences.put(this, "settings_backuped", true);
         LogFactory.writeMessage(this, LOG_TAG, "Backup finished");
-    }
+    }*/
 
-    private Intent restoreSettings(Intent i){
+    /*private Intent restoreSettings(Intent i){
+        return i;
         LogFactory.writeMessage(this, LOG_TAG, "Restoring settings if needed...");
         if(Preferences.getBoolean(this, "settings_backuped",false)){
             LogFactory.writeMessage(this, LOG_TAG, "Settings of previous service state were saved");
@@ -386,7 +385,7 @@ public class DNSVpnService extends VpnService {
             Preferences.put(this, "settings_backup", null);
         }else LogFactory.writeMessage(this, LOG_TAG, "No setting were previously saved.");
         return i;
-    }
+    }*/
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -415,7 +414,7 @@ public class DNSVpnService extends VpnService {
             private final String ID = "[" + StringUtil.randomString(20) + "]";
             private int addressIndex = 0;
             private ParcelFileDescriptor tunnelInterface = null;
-            //private Builder builder;
+            private Builder builder;
             private DatagramChannel tunnel = null;
             private DatagramSocket tunnelSocket = null;
 
@@ -429,6 +428,7 @@ public class DNSVpnService extends VpnService {
                 try {
                     LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying " + addresses.size() + " different addresses before passing any thrown exception to the upper layer");
                     for(String address: addresses.keySet()){
+                        builder = new Builder();
                         LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying address '" + address + "'");
                         try{
                             addressIndex++;
@@ -530,37 +530,10 @@ public class DNSVpnService extends VpnService {
                         e.printStackTrace();
                     }
                 }
-                //builder = null;
-                resetBuilder();
+                builder = null;
                 tunnel = null;
                 tunnelInterface = null;
                 tunnelSocket = null;
-            }
-
-            private void resetBuilder(){
-                try {
-                    Class<? extends Builder> clazz = builder.getClass();
-                    Field addresses = clazz.getDeclaredField("mAddresses"),
-                        routes = clazz.getDeclaredField("mRoutes"),
-                        config = clazz.getDeclaredField("mConfig");
-                    addresses.setAccessible(true);
-                    routes.setAccessible(true);
-                    config.setAccessible(true);
-                    List<?> addressList = (List<?>)addresses.get(builder);
-                    addressList.clear();
-                    addresses.set(builder, addressList);
-                    List<?> routesList = (List<?>)routes.get(builder);
-                    routesList.clear();
-                    routes.set(builder, routesList);
-                    addresses.setAccessible(false);
-                    routes.setAccessible(false);
-                    config.get(builder).getClass().getField("dnsServers").set(config.get(builder), null);
-                    config.setAccessible(false);
-                } catch (NoSuchFieldException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
             }
         });
     }

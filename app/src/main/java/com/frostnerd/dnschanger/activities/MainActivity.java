@@ -36,7 +36,6 @@ import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.dnschanger.services.TestVPNService;
 import com.frostnerd.dnschanger.tasker.ConfigureActivity;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.general.Utils;
@@ -320,7 +319,6 @@ public class MainActivity extends AppCompatActivity {
         }
         LogFactory.writeMessage(this, LOG_TAG, "Done with OnCreate");
         Preferences.put(this, "first_run", false);
-        //startService(TestVPNService.getStartVPNIntent(this));
     }
 
     @Override
