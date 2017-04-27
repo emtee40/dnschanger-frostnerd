@@ -283,15 +283,19 @@ public class DNSVpnService extends VpnService {
                         afterThreadStop.add(new Runnable() {
                             @Override
                             public void run() {
-                                vpnThread = createThread();
-                                vpnThread.start();
+                                synchronized (DNSVpnService.this){
+                                    vpnThread = createThread();
+                                    vpnThread.start();
+                                }
                             }
                         });
                         stopThread();
                     }
                 }else {
-                    vpnThread = createThread();
-                    vpnThread.start();
+                    synchronized (DNSVpnService.this){
+                        vpnThread = createThread();
+                        vpnThread.start();
+                    }
                 }
                 LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Creating Thread");
             }else if (IntentUtil.checkExtra(VPNServiceArgument.COMMAND_STOP_VPN.getArgument(),intent)){
