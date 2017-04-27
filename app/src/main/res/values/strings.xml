@@ -88,7 +88,7 @@
         <item>Resume DNSChanger</item>
     </string-array>
     <string name="error">Error</string>
-    <string name="vpn_error_explain">"On some Android versions (4.4, some 5.0 versions) and custom ROMs the underlying VPN structure doesn't work and leads to crashes.\n\nThe App crashed unexpectedly which most likely indicates that your phone doesn't support how this app operates.\nIf that's the case you could help me by sending the crash report, but sadly this app doesn't work on your device. "</string>
+    <string name="vpn_error_explain">The App crashed unexpectedly. This could either imply that the way this app works is not supported by your phone/ROM or a general error occured (which most likely indicated that I did something wrong).\n\nEither way, sending the crash report would help me a lot and could possibly lead to a fix.\nDo you want to send it to me?</string>
     <string name="send_crash_report">Send crash report</string>
     <string name="deep_link_title">DNS Changer by Frostnerd</string>
     <string name="summary_pin_tile">Ask for the pin when starting/stopping from QuickSettings</string>
@@ -139,4 +139,5 @@
     <string name="reason_stop_exception">Exception whilst running</string>
     <string name="reason_stop_network_change">Network changed (DNS Changer is set to stop)</string>
     <string name="reason_stop_tasker">Stopped by Tasker</string>
+    <string name="invalid_dns_error_text">It looks like one of the DNS servers you configured cannot be used on your device. \nEither you entered an invalid IP address, no DNS server is present on the given ip address or it is a temporary error.\n\nPlease check the configuration in the main menu and verify that the addresses entered are correct.</string>
 </resources>

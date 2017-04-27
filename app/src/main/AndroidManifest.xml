@@ -62,12 +62,9 @@
                     android:scheme="frostnerd" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".services.DNSVpnService"
-            android:enabled="true"
-            android:stopWithTask="false"
-            android:exported="false"
-            android:externalService="false"
             android:permission="android.permission.BIND_VPN_SERVICE">
             <intent-filter>
                 <action android:name="android.net.VpnService" />
@@ -77,6 +74,11 @@
         <activity
             android:name=".activities.SettingsActivity"
             android:parentActivityName=".activities.MainActivity" />
+
+        <activity
+            android:name=".activities.InvalidDNSDialogActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
 
         <activity
             android:name=".activities.BackgroundVpnConfigureActivity"

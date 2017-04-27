@@ -11,7 +11,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.os.ParcelFileDescriptor;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.util.ArraySet;
 import android.support.v7.app.NotificationCompat;
 
 import com.frostnerd.dnschanger.API.API;
@@ -19,6 +18,7 @@ import com.frostnerd.dnschanger.API.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
+import com.frostnerd.dnschanger.activities.InvalidDNSDialogActivity;
 import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.widgets.BasicWidget;
 import com.frostnerd.utils.general.IntentUtil;
@@ -30,10 +30,12 @@ import com.frostnerd.utils.preferences.Preferences;
 import com.frostnerd.utils.stats.AppTaskGetter;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.nio.channels.DatagramChannel;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -58,7 +60,6 @@ public class DNSVpnService extends VpnService {
     private final int NOTIFICATION_ID = 112;
     private String dns1,dns2,dns1_v6,dns2_v6, stopReason, currentDNS1, currentDNS2, currentDNS1V6, currentDNS2V6;
     private Vector<Runnable> afterThreadStop = new Vector<>();
-
     private boolean fixedDNS = false, startedWithTasker = false, autoPaused = false, runThread = true, variablesCleared = false;
     private BroadcastReceiver stateRequestReceiver = new BroadcastReceiver() {
         @Override
@@ -73,23 +74,23 @@ public class DNSVpnService extends VpnService {
         public void run() {
             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG,"[AutoPausedRestartRunnable]"}, "Started Runnable which'll resume DNSChanger after the autopausing app isn't in the front anymore");
             int counter = 0;
-                try {
-                    while(serviceRunning){
-                        if(counter >= 4){
-                            if(!autoPauseApps.contains(AppTaskGetter.getMostRecentApp(DNSVpnService.this,1000*1000))){
-                                LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG,"[AutoPausedRestartRunnable]"}, "No app which autopauses DNS Changer on top anymore. Resuming.");
-                                startService(new Intent(DNSVpnService.this, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(),true));
-                                break;
-                            }
-                            counter = 0;
+            try {
+                while(serviceRunning){
+                    if(counter >= 4){
+                        if(!autoPauseApps.contains(AppTaskGetter.getMostRecentApp(DNSVpnService.this,1000*1000))){
+                            LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG,"[AutoPausedRestartRunnable]"}, "No app which autopauses DNS Changer on top anymore. Resuming.");
+                            startService(new Intent(DNSVpnService.this, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(),true));
+                            break;
                         }
-                        Thread.sleep(250);
-                        counter++;
+                        counter = 0;
                     }
-                } catch (InterruptedException e) {
-                    LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG,"[AutoPausedRestartRunnable]"}, "Runnable interrupted");
-                    e.printStackTrace();
+                    Thread.sleep(250);
+                    counter++;
                 }
+            } catch (InterruptedException e) {
+                LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG,"[AutoPausedRestartRunnable]"}, "Runnable interrupted");
+                e.printStackTrace();
+            }
         }
     };
     private Thread.UncaughtExceptionHandler uncaughtExceptionHandler = new Thread.UncaughtExceptionHandler() {
@@ -105,9 +106,9 @@ public class DNSVpnService extends VpnService {
         }
     };
     private Map<String, Integer> addresses = new ConcurrentHashMap<String, Integer>(){{
+        put("172.31.255.253", 30);
         put("192.168.0.1", 24);
         put("192.168.234.55", 24);
-        put("172.31.255.253", 30);
         put("172.31.255.1", 28);
     }};
 
@@ -206,12 +207,13 @@ public class DNSVpnService extends VpnService {
         if(fixedDNS){
             LogFactory.writeMessage(this, LOG_TAG, "DNSVPNService is using fixed DNS servers (Not those from settings)");
             LogFactory.writeMessage(this, LOG_TAG, "Current DNS Servers; DNS1: " + dns1 + ", DNS2: " + dns2 + ", DNS1V6:" + dns1_v6 + ", DNS2V6: " + dns2_v6);
-            if(intent == null)return;
-            if(intent.hasExtra(VPNServiceArgument.ARGUMENT_DNS1.getArgument()))dns1 = intent.getStringExtra(VPNServiceArgument.ARGUMENT_DNS1.getArgument());
-            if(intent.hasExtra(VPNServiceArgument.ARGUMENT_DNS2.getArgument()))dns2 = intent.getStringExtra(VPNServiceArgument.ARGUMENT_DNS2.getArgument());
-            if(intent.hasExtra(VPNServiceArgument.ARGUMENT_DNS1V6.getArgument()))dns1_v6 = intent.getStringExtra(VPNServiceArgument.ARGUMENT_DNS1V6.getArgument());
-            if(intent.hasExtra(VPNServiceArgument.ARGUMENT_DNS2V6.getArgument()))dns2_v6 = intent.getStringExtra(VPNServiceArgument.ARGUMENT_DNS2V6.getArgument());
-            LogFactory.writeMessage(this, LOG_TAG, "DNS Servers set to; DNS1: " + dns1 + ", DNS2: " + dns2 + ", DNS1V6:" + dns1_v6 + ", DNS2V6: " + dns2_v6);
+            if(intent != null){
+                if(intent.hasExtra(VPNServiceArgument.ARGUMENT_DNS1.getArgument()))dns1 = intent.getStringExtra(VPNServiceArgument.ARGUMENT_DNS1.getArgument());
+                if(intent.hasExtra(VPNServiceArgument.ARGUMENT_DNS2.getArgument()))dns2 = intent.getStringExtra(VPNServiceArgument.ARGUMENT_DNS2.getArgument());
+                if(intent.hasExtra(VPNServiceArgument.ARGUMENT_DNS1V6.getArgument()))dns1_v6 = intent.getStringExtra(VPNServiceArgument.ARGUMENT_DNS1V6.getArgument());
+                if(intent.hasExtra(VPNServiceArgument.ARGUMENT_DNS2V6.getArgument()))dns2_v6 = intent.getStringExtra(VPNServiceArgument.ARGUMENT_DNS2V6.getArgument());
+                LogFactory.writeMessage(this, LOG_TAG, "DNS Servers set to; DNS1: " + dns1 + ", DNS2: " + dns2 + ", DNS1V6:" + dns1_v6 + ", DNS2V6: " + dns2_v6);
+            }
         }else{
             LogFactory.writeMessage(this, LOG_TAG, "Not using fixed DNS. Fetching DNS from settings");
             LogFactory.writeMessage(this, LOG_TAG, "Current DNS Servers; DNS1: " + dns1 + ", DNS2: " + dns2 + ", DNS1V6:" + dns1_v6 + ", DNS2V6: " + dns2_v6);
@@ -221,6 +223,19 @@ public class DNSVpnService extends VpnService {
             dns2_v6 = Preferences.getString(DNSVpnService.this, "dns2-v6", "2001:4860:4860::8844");
             LogFactory.writeMessage(this, LOG_TAG, "DNS Servers set to; DNS1: " + dns1 + ", DNS2: " + dns2 + ", DNS1V6:" + dns1_v6 + ", DNS2V6: " + dns2_v6);
         }
+        checkDNSValid(true);
+        checkDNSValid(false);
+    }
+
+    private void checkDNSValid(boolean fromPreferences){
+        if(dns1 == null || dns1.equals("") || !NetworkUtil.isIPv4(dns1))
+            dns1 = fromPreferences ? Preferences.getString(this,"dns1","8.8.8.8") : "8.8.8.8";
+        if(dns2 == null || dns2.equals("") || !NetworkUtil.isIPv4(dns2))
+            dns2 = fromPreferences ? Preferences.getString(this,"dns2","8.8.4.4") : "8.8.4.4";
+        if(dns1_v6 == null || dns1_v6.equals("") || !NetworkUtil.isIP(dns1_v6,true))
+            dns1_v6 = fromPreferences ? Preferences.getString(this,"dns1-v6","2001:4860:4860::8888") : "2001:4860:4860::8888";
+        if(dns2_v6 == null || dns2_v6.equals("") || !NetworkUtil.isIP(dns2_v6, true))
+            dns2_v6 = fromPreferences ? Preferences.getString(this,"dns2-v6","2001:4860:4860::8844") : "2001:4860:4860::8844";
     }
 
     private void broadcastCurrentState(boolean vpnRunning){
@@ -241,7 +256,7 @@ public class DNSVpnService extends VpnService {
     // on all devices.
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        intent = intent == null ? intent : restoreSettings(intent);
+        //intent = intent == null ? intent : restoreSettings(intent);
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Got StartCommand", intent);
         serviceRunning = intent == null || !intent.getBooleanExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(), false);
         if(intent!=null){
@@ -286,7 +301,7 @@ public class DNSVpnService extends VpnService {
             API.updateTiles(this);
         }else LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]", LogFactory.Tag.ERROR.toString()}, "Intent given is null. This isn't normal behavior");
         updateNotification();
-        return START_STICKY;
+        return START_REDELIVER_INTENT;
     }
 
     public void stopService(){
@@ -325,13 +340,13 @@ public class DNSVpnService extends VpnService {
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         LogFactory.writeMessage(this, LOG_TAG, "Task is being removed. ", rootIntent);
-        backupSettings();
-        clearVars(false);
+        //backupSettings();
+        //clearVars(false, true);
         super.onTaskRemoved(rootIntent);
     }
 
     //As the service could be removed from RAM when the main activity is destroyed this function memorizes what settings where used if that happens.
-    private void backupSettings(){
+    /*private void backupSettings(){
         LogFactory.writeMessage(this, LOG_TAG, "Backing up settings to resume with them as soon as the service restarts");
         Set<String> settings = new ArraySet<>();
         settings.add(VPNServiceArgument.ARGUMENT_DNS1 + ";;" + dns1);
@@ -345,9 +360,10 @@ public class DNSVpnService extends VpnService {
         Preferences.put(this, "settings_backup", settings);
         Preferences.put(this, "settings_backuped", true);
         LogFactory.writeMessage(this, LOG_TAG, "Backup finished");
-    }
+    }*/
 
-    private Intent restoreSettings(Intent i){
+    /*private Intent restoreSettings(Intent i){
+        return i;
         LogFactory.writeMessage(this, LOG_TAG, "Restoring settings if needed...");
         if(Preferences.getBoolean(this, "settings_backuped",false)){
             LogFactory.writeMessage(this, LOG_TAG, "Settings of previous service state were saved");
@@ -369,7 +385,7 @@ public class DNSVpnService extends VpnService {
             Preferences.put(this, "settings_backup", null);
         }else LogFactory.writeMessage(this, LOG_TAG, "No setting were previously saved.");
         return i;
-    }
+    }*/
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -412,12 +428,13 @@ public class DNSVpnService extends VpnService {
                 try {
                     LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying " + addresses.size() + " different addresses before passing any thrown exception to the upper layer");
                     for(String address: addresses.keySet()){
+                        builder = new Builder();
                         LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying address '" + address + "'");
                         try{
                             addressIndex++;
-                            builder = new Builder();
+                            //builder = new Builder();
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Creating Tunnel interface");
-                            tunnelInterface = builder.setSession("DnsChanger" + StringUtil.randomString(50)).addAddress(address, addresses.get(address)).addAddress(NetworkUtil.randomLocalIPv6Address(),48).addDnsServer(dns1).addDnsServer(dns2)
+                            tunnelInterface = builder.setSession("DnsChanger").addAddress(address, addresses.get(address)).addAddress(NetworkUtil.randomLocalIPv6Address(),48).addDnsServer(dns1).addDnsServer(dns2)
                                     .addDnsServer(dns1_v6).addDnsServer(dns2_v6).establish();
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface created and established.");
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Opening DatagramChannel");
@@ -478,7 +495,8 @@ public class DNSVpnService extends VpnService {
                     LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "VPN Thread had an exception");
                     LogFactory.writeStackTrace(DNSVpnService.this, new String[]{LOG_TAG,LogFactory.Tag.ERROR.toString()}, e);
                     e.printStackTrace();
-                    ErrorDialogActivity.show(DNSVpnService.this, e);
+                    if(isDNSInvalid(e))startActivity(new Intent(DNSVpnService.this, InvalidDNSDialogActivity.class));
+                    else ErrorDialogActivity.show(DNSVpnService.this, e);
                 } finally {
                     LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "VPN Thread is in finally block");
                     threadRunning = false;
@@ -493,6 +511,12 @@ public class DNSVpnService extends VpnService {
                     vpnThread = null;
                     LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Done with finally block");
                 }
+            }
+
+            private boolean isDNSInvalid(Exception ex){
+                for(StackTraceElement ste: ex.getStackTrace())
+                    if(ste.toString().contains("Builder.addDnsServer") && ex instanceof IllegalArgumentException && ex.getMessage().contains("Bad address"))return true;
+                return false;
             }
 
             private synchronized void clearVars(){
