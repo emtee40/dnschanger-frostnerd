@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(vpnRunning && doStopVPN && !wasStartedWithTasker)stopVpn();
-                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6)) {
+                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6,true)) {
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
@@ -263,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(vpnRunning && doStopVPN && !wasStartedWithTasker)stopVpn();
-                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6)) {
+                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6, true)) {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);

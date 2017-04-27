@@ -438,8 +438,12 @@ public class DNSVpnService extends VpnService {
                             addressIndex++;
                             //builder = new Builder();
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Creating Tunnel interface");
-                            tunnelInterface = builder.setSession("DnsChanger").addAddress(address, addresses.get(address)).addAddress(NetworkUtil.randomLocalIPv6Address(),48).addDnsServer(dns1).addDnsServer(dns2)
-                                    .addDnsServer(dns1_v6).addDnsServer(dns2_v6).establish();
+                            builder = builder.setSession("DnsChanger").addAddress(address, addresses.get(address)).addAddress(NetworkUtil.randomLocalIPv6Address(),48);
+                            if(dns1 != null && !dns1.equals(""))builder = builder.addDnsServer(dns1);
+                            if(dns2 != null && !dns2.equals(""))builder = builder.addDnsServer(dns2);
+                            if(dns1_v6 != null && !dns1_v6.equals(""))builder = builder.addDnsServer(dns1_v6);
+                            if(dns2_v6 != null && !dns2_v6.equals(""))builder = builder.addDnsServer(dns2_v6);
+                            tunnelInterface = builder.establish();
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface created and established.");
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Opening DatagramChannel");
                             tunnel = DatagramChannel.open();

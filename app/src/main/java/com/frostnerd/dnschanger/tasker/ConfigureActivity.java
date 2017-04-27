@@ -83,8 +83,8 @@ public class ConfigureActivity extends AppCompatActivity {
     }
 
     private boolean checkValidity(){
-        return wasEdited && NetworkUtil.isAssignableAddress(dns1,false) && NetworkUtil.isAssignableAddress(dns2,false) && NetworkUtil.isAssignableAddress(dns1V6,true) &&
-                NetworkUtil.isAssignableAddress(dns2V6,true) && met_name.getIndicatorState() == MaterialEditText.IndicatorState.CORRECT;
+        return wasEdited && NetworkUtil.isAssignableAddress(dns1,false,true) && NetworkUtil.isAssignableAddress(dns2,false,true) && NetworkUtil.isAssignableAddress(dns1V6,true,true) &&
+                NetworkUtil.isAssignableAddress(dns2V6,true,true) && met_name.getIndicatorState() == MaterialEditText.IndicatorState.CORRECT;
     }
 
 
