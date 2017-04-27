@@ -83,8 +83,8 @@ public class ConfigureActivity extends AppCompatActivity {
     }
 
     private boolean checkValidity(){
-        return wasEdited && NetworkUtil.isIP(dns1,false) && NetworkUtil.isIP(dns2,false) && NetworkUtil.isIP(dns1V6,true) &&
-                NetworkUtil.isIP(dns2V6,true) && met_name.getIndicatorState() == MaterialEditText.IndicatorState.CORRECT;
+        return wasEdited && NetworkUtil.isAssignableAddress(dns1,false) && NetworkUtil.isAssignableAddress(dns2,false) && NetworkUtil.isAssignableAddress(dns1V6,true) &&
+                NetworkUtil.isAssignableAddress(dns2V6,true) && met_name.getIndicatorState() == MaterialEditText.IndicatorState.CORRECT;
     }
 
 
@@ -126,7 +126,7 @@ public class ConfigureActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!NetworkUtil.isIP(s.toString(),settingV6)) {
+                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6)) {
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
                     wasEdited = true;
@@ -149,7 +149,7 @@ public class ConfigureActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!NetworkUtil.isIP(s.toString(),settingV6)) {
+                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6)) {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
                     wasEdited = true;
