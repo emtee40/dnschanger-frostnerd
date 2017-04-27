@@ -11,7 +11,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.os.ParcelFileDescriptor;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.util.ArraySet;
 import android.support.v7.app.NotificationCompat;
 
 import com.frostnerd.dnschanger.API.API;
@@ -19,6 +18,7 @@ import com.frostnerd.dnschanger.API.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
+import com.frostnerd.dnschanger.activities.InvalidDNSDialogActivity;
 import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.widgets.BasicWidget;
 import com.frostnerd.utils.general.IntentUtil;
@@ -495,7 +495,8 @@ public class DNSVpnService extends VpnService {
                     LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "VPN Thread had an exception");
                     LogFactory.writeStackTrace(DNSVpnService.this, new String[]{LOG_TAG,LogFactory.Tag.ERROR.toString()}, e);
                     e.printStackTrace();
-                    ErrorDialogActivity.show(DNSVpnService.this, e);
+                    if(isDNSInvalid(e))startActivity(new Intent(DNSVpnService.this, InvalidDNSDialogActivity.class));
+                    else ErrorDialogActivity.show(DNSVpnService.this, e);
                 } finally {
                     LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "VPN Thread is in finally block");
                     threadRunning = false;
@@ -510,6 +511,12 @@ public class DNSVpnService extends VpnService {
                     vpnThread = null;
                     LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Done with finally block");
                 }
+            }
+
+            private boolean isDNSInvalid(Exception ex){
+                for(StackTraceElement ste: ex.getStackTrace())
+                    if(ste.toString().contains("Builder.addDnsServer") && ex instanceof IllegalArgumentException && ex.getMessage().contains("Bad address"))return true;
+                return false;
             }
 
             private synchronized void clearVars(){

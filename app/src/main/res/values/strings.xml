@@ -139,4 +139,5 @@
     <string name="reason_stop_exception">Exception whilst running</string>
     <string name="reason_stop_network_change">Network changed (DNS Changer is set to stop)</string>
     <string name="reason_stop_tasker">Stopped by Tasker</string>
+    <string name="invalid_dns_error_text">It looks like one of the DNS servers you configured cannot be used on your device. \nEither you entered an invalid IP address, no DNS server is present on the given ip address or it is a temporary error.\n\nPlease check the configuration in the main menu and verify that the addresses entered are correct.</string>
 </resources>

@@ -76,6 +76,11 @@
             android:parentActivityName=".activities.MainActivity" />
 
         <activity
+            android:name=".activities.InvalidDNSDialogActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
+
+        <activity
             android:name=".activities.BackgroundVpnConfigureActivity"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
