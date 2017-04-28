@@ -35,9 +35,11 @@ public class DefaultDNSDialog extends AlertDialog {
         entries.add(new DNSEntry("Norton Connectsafe - Security + Pornography", "199.85.126.20", "199.85.127.20", "", ""));
         entries.add(new DNSEntry("Norton Connectsafe - Security + Portnography + Other", "199.85.126.30", "199.85.127.30", "", ""));
     }
+    private List<DNSEntry> localEntries = new ArrayList<>();
 
     public DefaultDNSDialog(@NonNull Context context,@NonNull final OnProviderSelectedListener listener) {
         super(context);
+        for(DNSEntry entry: entries)localEntries.add(entry);
         this.listener = listener;
         view = LayoutInflater.from(context).inflate(R.layout.dialog_default_dns, null, false);
         setView(view);
@@ -76,12 +78,12 @@ public class DefaultDNSDialog extends AlertDialog {
 
         @Override
         public int getCount() {
-            return entries.size();
+            return localEntries.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return entries.get(position);
+            return localEntries.get(position);
         }
 
         @Override
@@ -92,7 +94,7 @@ public class DefaultDNSDialog extends AlertDialog {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View v = getLayoutInflater().inflate(R.layout.item_default_dns, parent, false);
-            ((TextView) v.findViewById(R.id.text)).setText(entries.get(position).getName());
+            ((TextView) v.findViewById(R.id.text)).setText(localEntries.get(position).getName());
             v.setTag(getItem(position));
             return v;
         }
