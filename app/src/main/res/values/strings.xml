@@ -144,4 +144,5 @@
     <string name="summary_enable_ipv6">Enable IPv6. This allows to provide ipv6 addresses to use as dns servers.</string>
     <string name="default_dns_legal_warning">Any of the providers shown here might be registered trademarks of the respective owners. Their terms of use apply.</string>
     <string name="add">Add</string>
+    <string name="new_entry">New entry</string>
 </resources>

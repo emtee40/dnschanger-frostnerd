@@ -117,6 +117,12 @@ public final class API {
         if (database != null) return;
         database = context.openOrCreateDatabase("data.db", SQLiteDatabase.OPEN_READWRITE, null);
         database.execSQL("CREATE TABLE IF NOT EXISTS Shortcuts(Name TEXT, dns1 TEXT, dns2 TEXT, dns1v6 TEXT, dns2v6 TEXT)");
+        database.execSQL("CREATE TABLE IF NOT EXISTS DNSEntries(Name TEXT, dns1 TEXT, dns2 TEXT, dns1v6 TEXT, dns2v6 TEXT)");
+    }
+
+    public static synchronized SQLiteDatabase getDatabase(Context context){
+        setupDatabase(context);
+        return database;
     }
 
     public static void onShortcutCreated(Context context, String dns1, String dns2, String dns1V6, String dns2V6, String name) {

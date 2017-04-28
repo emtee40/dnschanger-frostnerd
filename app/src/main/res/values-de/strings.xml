@@ -145,4 +145,5 @@
     <string name="title_enable_ipv6">IPv6 aktivieren</string>
     <string name="default_dns_legal_warning">Die hier gezeigten Namen könnten eingetragene Marken deren Besitzer sein. Es gelten die jeweiligen Nutzungsbedingungen der Anbieter.</string>
     <string name="add">Hinzufügen</string>
+    <string name="new_entry">Neuer Eintrag</string>
 </resources>
