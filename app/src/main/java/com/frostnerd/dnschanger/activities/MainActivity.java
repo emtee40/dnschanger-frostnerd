@@ -33,6 +33,7 @@ import android.widget.TextView;
 
 import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.LogFactory;
+import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
 import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.R;
@@ -63,20 +64,15 @@ public class MainActivity extends AppCompatActivity {
     private boolean vpnRunning, wasStartedWithTasker = false;
     private MaterialEditText met_dns1, met_dns2;
     private EditText dns1, dns2;
-    private static final HashMap<String, List<String>> defaultDNS = new HashMap<>();
-    private static final HashMap<String, List<String>> defaultDNS_V6 = new HashMap<>();
-    private static final List<String> defaultDNSKeys, DefaultDNSKeys_V6;
     private boolean doStopVPN = true;
     private static final String LOG_TAG = "[MainActivity]";
 
     private TextView connectionText;
     private ImageView connectionImage;
-    private LinearLayout defaultDNSView;
     private Button rate, info;
     private ImageButton importButton;
     private View running_indicator;
-
-    private AlertDialog defaultDnsDialog;
+    private DefaultDNSDialog defaultDnsDialog;
     private LinearLayout wrapper;
     private boolean settingV6 = false;
 
@@ -102,28 +98,6 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    static {
-        defaultDNS.put("Google DNS", Arrays.asList("8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844"));
-        defaultDNS.put("OpenDNS", Arrays.asList("208.67.222.222", "208.67.220.220", "2620:0:ccc::2", "2620:0:ccd::2"));
-        defaultDNS.put("Level3", Arrays.asList("209.244.0.3", "209.244.0.4"));
-        defaultDNS.put("FreeDNS", Arrays.asList("37.235.1.174", "37.235.1.177"));
-        defaultDNS.put("Yandex DNS", Arrays.asList("77.88.8.8", "77.88.8.1", "2a02:6b8::feed:0ff", "2a02:6b8:0:1::feed:0ff"));
-        defaultDNS.put("Verisign", Arrays.asList("64.6.64.6", "64.6.65.6", "2620:74:1b::1:1", "2620:74:1c::2:2"));
-        defaultDNS.put("Alternate DNS", Arrays.asList("198.101.242.72", "23.253.163.53"));
-        defaultDNS.put("Norton Connectsafe - Security", Arrays.asList("199.85.126.10", "199.85.127.10"));
-        defaultDNS.put("Norton Connectsafe - Security + Pornography", Arrays.asList("199.85.126.20", "199.85.127.20"));
-        defaultDNS.put("Norton Connectsafe - Security + Pornography + Other", Arrays.asList("199.85.126.30", "199.85.127.30"));
-
-        defaultDNS_V6.put("Google DNS", Arrays.asList("2001:4860:4860::8888", "2001:4860:4860::8844"));
-        defaultDNS_V6.put("OpenDNS", Arrays.asList("2620:0:ccc::2", "2620:0:ccd::2"));
-        defaultDNS_V6.put("Yandex DNS", Arrays.asList("2a02:6b8::feed:0ff", "2a02:6b8:0:1::feed:0ff"));
-        defaultDNS_V6.put("Verisign", Arrays.asList("2620:74:1b::1:1", "2620:74:1c::2:2"));
-        defaultDNSKeys = new ArrayList<>(defaultDNS.keySet());
-        DefaultDNSKeys_V6 = new ArrayList<>(defaultDNS_V6.keySet());
-        Collections.sort(defaultDNSKeys);
-        Collections.sort(defaultDNSKeys);
-    }
-
     private void setIndicatorState(boolean vpnRunning) {
         LogFactory.writeMessage(this, LOG_TAG, "Changing IndicatorState to " + vpnRunning);
         if (vpnRunning) {
@@ -135,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
             met_dns1.setCardStrokeColor(color);
             met_dns2.setCardColor(color);
             met_dns2.setCardStrokeColor(color);
-            defaultDNSView.setBackgroundColor(color);
             rate.setBackgroundColor(color);
             info.setBackgroundColor(color);
             importButton.setBackgroundColor(color);
@@ -150,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
             met_dns1.setCardStrokeColor(color);
             met_dns2.setCardColor(color);
             met_dns2.setCardStrokeColor(color);
-            defaultDNSView.setBackgroundColor(color);
             rate.setBackgroundColor(color);
             info.setBackgroundColor(color);
             importButton.setBackgroundColor(color);
@@ -200,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
         dns2 = (EditText) findViewById(R.id.dns2);
         connectionImage = (ImageView)findViewById(R.id.connection_status_image);
         connectionText = (TextView)findViewById(R.id.connection_status_text);
-        defaultDNSView = (LinearLayout)findViewById(R.id.default_dns_view);
         rate = (Button)findViewById(R.id.rate);
         info = (Button)findViewById(R.id.dnsInfo);
         wrapper = (LinearLayout)findViewById(R.id.activity_main);
@@ -356,32 +327,26 @@ public class MainActivity extends AppCompatActivity {
         dns2.setText(Preferences.getString(MainActivity.this, "dns2", "8.8.4.4"));
         invalidateOptionsMenu();
         LogFactory.writeMessage(this, LOG_TAG, "Got onPostResume");
-        LogFactory.writeMessage(this, LOG_TAG, "Recreating DefaultDNSDialog");
-        View layout = getLayoutInflater().inflate(R.layout.dialog_default_dns, null, false);
-        final ListView list = (ListView) layout.findViewById(R.id.defaultDnsDialogList);
-        list.setAdapter(new DefaultDNSAdapter());
-        list.setDividerHeight(0);
-        defaultDnsDialog = new AlertDialog.Builder(this).setView(layout).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                LogFactory.writeMessage(MainActivity.this, LOG_TAG, "Cancelled choosing from default DNS");
-            }
-        }).setTitle(R.string.default_dns_title).create();
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                defaultDnsDialog.cancel();
-                List<String> ips = settingV6 ? defaultDNS_V6.get(DefaultDNSKeys_V6.get(position)) : defaultDNS.get(defaultDNSKeys.get(position));
-                dns1.setText(ips.get(0));
-                dns2.setText(ips.get(1));
-                LogFactory.writeMessage(MainActivity.this, LOG_TAG, "User chose provider from default DNS. DNS1: " + ips.get(0) + ", DNS2: " + ips.get(1));
-            }
-        });
-        LogFactory.writeMessage(this, LOG_TAG, "DefaultDNSDialog recreated");
     }
 
     public void openDefaultDNSDialog(View v) {
         LogFactory.writeMessage(this, LOG_TAG, "Opening DefaultDNSDialog");
+        defaultDnsDialog = new DefaultDNSDialog(this, new DefaultDNSDialog.OnProviderSelectedListener(){
+            @Override
+            public void onProviderSelected(String name, String dns1, String dns2, String dns1V6, String dns2V6) {
+                if(settingV6){
+                    if(!dns1V6.equals(""))MainActivity.this.dns1.setText(dns1V6);
+                    if(!dns2V6.equals(""))MainActivity.this.dns2.setText(dns2V6);
+                    if(!dns1.equals(""))Preferences.put(MainActivity.this, "dns1", dns1);
+                    if(!dns2.equals(""))Preferences.put(MainActivity.this, "dns2", dns2);
+                }else{
+                    if(!dns1.equals(""))MainActivity.this.dns1.setText(dns1);
+                    if(!dns2.equals(""))MainActivity.this.dns2.setText(dns2);
+                    if(!dns1V6.equals(""))Preferences.put(MainActivity.this, "dns1-v6", dns1V6);
+                    if(!dns2V6.equals(""))Preferences.put(MainActivity.this, "dns2-v6", dns2V6);
+                }
+            }
+        });
         defaultDnsDialog.show();
         LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
     }
@@ -457,32 +422,6 @@ public class MainActivity extends AppCompatActivity {
         stopService(new Intent(this, DNSVpnService.class));
         vpnRunning = false;
         setIndicatorState(false);
-    }
-
-    private class DefaultDNSAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return settingV6 ? defaultDNS_V6.size() : defaultDNS.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return settingV6 ? defaultDNS_V6.get(position) : defaultDNS.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View v = getLayoutInflater().inflate(R.layout.item_default_dns, parent, false);
-            ((TextView) v.findViewById(R.id.text)).setText(settingV6 ? DefaultDNSKeys_V6.get(position) : defaultDNSKeys.get(position));
-            v.setTag(getItem(position));
-            return v;
-        }
     }
 
     @Override

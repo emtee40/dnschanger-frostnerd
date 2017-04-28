@@ -73,8 +73,6 @@
         android:layout_height="wrap_content"
         android:background="#42A5F5"
         android:clickable="true"
-        android:visibility="gone"
-        android:alpha="0.0"
         android:layout_marginTop="15dp"
         android:onClick="openDefaultDNSDialog"
         android:padding="10dp">

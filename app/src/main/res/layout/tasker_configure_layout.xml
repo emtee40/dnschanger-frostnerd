@@ -123,12 +123,10 @@
                 android:id="@+id/default_dns_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:alpha="0.0"
                 android:background="#42A5F5"
                 android:clickable="true"
                 android:onClick="openDefaultDNSDialog"
-                android:padding="10dp"
-                android:visibility="gone">
+                android:padding="10dp">
 
                 <ImageButton
                     android:id="@+id/default_dns_view_image"
@@ -154,6 +152,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
+            android:layout_marginTop="15dp"
             android:layout_height="wrap_content">
 
             <View
