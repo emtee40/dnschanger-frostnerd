@@ -322,9 +322,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        settingV6 = false;
-        dns1.setText(Preferences.getString(MainActivity.this, "dns1", "8.8.8.8"));
-        dns2.setText(Preferences.getString(MainActivity.this, "dns2", "8.8.4.4"));
         invalidateOptionsMenu();
         LogFactory.writeMessage(this, LOG_TAG, "Got onPostResume");
     }

@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -21,14 +22,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.utils.general.SortUtil;
-import com.frostnerd.utils.preferences.Preferences;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -39,27 +36,41 @@ import java.util.Set;
  * <p>
  * development@frostnerd.com
  */
-public class AutoPauseAppSelectActivity extends AppCompatActivity {
+public class AppSelectionActivity extends AppCompatActivity {
     private long lastBackPress;
-    private Set<String> currentSelected;
+    private ArrayList<String> currentSelected;
     private RecyclerView appList;
     private RecyclerView.LayoutManager listLayoutManager;
     private AppListAdapter listAdapter;
     private boolean changed;
+    private String infoText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_autopause_app_select);
+        setContentView(R.layout.activity_app_select);
         appList = (RecyclerView) findViewById(R.id.app_list);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        currentSelected = getIntent() != null && getIntent().hasExtra("apps") ? getIntent().getStringArrayListExtra("apps") : new ArrayList<String>();
+        infoText = getIntent() != null && getIntent().hasExtra("infoText") ? getIntent().getStringExtra("infoText") : null;
 
         listLayoutManager = new LinearLayoutManager(this);
         appList.setLayoutManager(listLayoutManager);
         appList.setHasFixedSize(true);
-        appList.setAdapter(listAdapter = new AppListAdapter());
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        currentSelected = Preferences.getStringSet(this, "autopause_apps");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                listAdapter = new AppListAdapter();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        findViewById(R.id.progress).setVisibility(View.GONE);
+                        appList.setAdapter(listAdapter);
+                    }
+                });
+            }
+        }).start();
+        //Preferences.getStringSet(this, "autopause_apps");
     }
 
     @Override
@@ -82,9 +93,7 @@ public class AutoPauseAppSelectActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_done || item.getItemId() == android.R.id.home) {
-            Preferences.put(this, "autopause_apps", currentSelected);
-            Preferences.put(this, "autopause_apps_count", currentSelected.size());
-            setResult(RESULT_OK, new Intent().putExtra("count", currentSelected.size()));
+            setResult(RESULT_OK, new Intent().putExtra("apps", currentSelected));
             finish();
         }
         return super.onOptionsItemSelected(item);
@@ -106,44 +115,58 @@ public class AutoPauseAppSelectActivity extends AppCompatActivity {
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder((RelativeLayout) getLayoutInflater().inflate(viewType == 0 ? R.layout.row_autopause_info : R.layout.row_app_entry, parent, false));
+            return new ViewHolder((RelativeLayout) getLayoutInflater().inflate(viewType == 0 ? R.layout.row_appselect_info : R.layout.row_app_entry, parent, false), viewType);
         }
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            if (position == 0) return;
-            ((ImageView) holder.contentView.findViewById(R.id.app_image)).setImageDrawable(apps.get(position - 1).getIcon());
-            ((TextView) holder.contentView.findViewById(R.id.app_title)).setText(apps.get(position - 1).getTitle());
-            if (currentSelected.contains(apps.get(position - 1).packageName))
-                ((CheckBox) holder.contentView.findViewById(R.id.app_selected_indicator)).setChecked(true);
-            ((CheckBox) holder.contentView.findViewById(R.id.app_selected_indicator)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked)currentSelected.add(holder.appEntry.packageName);
-                    else currentSelected.remove(holder.appEntry.packageName);
-                    changed = true;
-                }
-            });
-            holder.appEntry = apps.get(position - 1);
+            if (holder.type == 0){
+                ((TextView)holder.contentView.findViewById(R.id.text)).setText(infoText);
+            }else{
+                int offSet = infoText != null ? 1 : 0;
+                ((ImageView) holder.contentView.findViewById(R.id.app_image)).setImageDrawable(apps.get(position - offSet).getIcon());
+                ((TextView) holder.contentView.findViewById(R.id.app_title)).setText(apps.get(position - offSet).getTitle());
+                if (currentSelected.contains(apps.get(position - offSet).packageName))
+                    ((CheckBox) holder.contentView.findViewById(R.id.app_selected_indicator)).setChecked(true);
+                holder.contentView.setClickable(true);
+                holder.contentView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((CheckBox) v.findViewById(R.id.app_selected_indicator)).toggle();
+                    }
+                });
+                ((CheckBox) holder.contentView.findViewById(R.id.app_selected_indicator)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked)currentSelected.add(holder.appEntry.packageName);
+                        else currentSelected.remove(holder.appEntry.packageName);
+                        changed = true;
+                    }
+                });
+                holder.appEntry = apps.get(position - offSet);
+            }
+
         }
 
         @Override
         public int getItemViewType(int position) {
-            return position == 0 ? 0 : 1;
+            return (position == 0 && infoText != null) ? 0 : 1;
         }
 
         @Override
         public int getItemCount() {
-            return apps.size() + 1;
+            return apps.size() + (infoText != null ? 1 : 0);
         }
 
         public final class ViewHolder extends RecyclerView.ViewHolder {
             private RelativeLayout contentView;
             private AppEntry appEntry;
+            private int type;
 
-            public ViewHolder(RelativeLayout layout) {
+            public ViewHolder(RelativeLayout layout, int type) {
                 super(layout);
                 this.contentView = layout;
+                this.type = type;
             }
         }
     }

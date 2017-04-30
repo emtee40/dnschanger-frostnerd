@@ -20,9 +20,9 @@
             android:layout_height="wrap_content"
             android:paddingBottom="8dp"
             android:paddingRight="8dp"
+            android:id="@+id/text"
             android:paddingLeft="8dp"
-            android:paddingTop="8dp"
-            android:text="@string/autopause_appselect_info_text" />
+            android:paddingTop="8dp"/>
     </android.support.v7.widget.CardView>
 
 

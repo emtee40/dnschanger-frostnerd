@@ -144,18 +144,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/title_general">
-        <Preference
-            android:key="setting_info"
-            android:title="@string/title_info" />
-        <Preference
-            android:key="contact_dev"
-            android:title="@string/contact_developer" />
-
-        <Preference
-            android:key="share_app"
-            android:summary="@string/summary_share_app"
-            android:title="@string/title_share_app" />
-
         <SwitchPreference
             android:key="device_admin"
             android:summary="@string/summary_device_admin_activate"
@@ -167,6 +155,24 @@
             android:summary="@string/summary_enable_ipv6"
             android:title="@string/title_enable_ipv6" />
 
+        <Preference
+            android:key="exclude_apps"
+            android:summary="@string/summary_exclude_apps"
+            android:title="@string/title_exclude_apps" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/title_about">
+        <Preference
+            android:key="setting_info"
+            android:title="@string/title_info" />
+        <Preference
+            android:key="contact_dev"
+            android:title="@string/contact_developer" />
+
+        <Preference
+            android:key="share_app"
+            android:summary="@string/summary_share_app"
+            android:title="@string/title_share_app" />
         <Preference android:key="placeholder_version" />
     </PreferenceCategory>
 </PreferenceScreen>

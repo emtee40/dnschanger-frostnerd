@@ -148,7 +148,7 @@
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
 
         <activity
-            android:name=".activities.AutoPauseAppSelectActivity"
+            android:name=".activities.AppSelectionActivity"
             android:parentActivityName=".activities.SettingsActivity" />
 
         <service
@@ -255,14 +255,14 @@
                 android:resource="@xml/debug_file_paths" />
         </provider>
 
-        <receiver android:name=".widgets.BasicWidget">
+        <!--<receiver android:name=".widgets.BasicWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/basic_widget" />
-        </receiver>
+        </receiver>-->
     </application>
 
 </manifest>

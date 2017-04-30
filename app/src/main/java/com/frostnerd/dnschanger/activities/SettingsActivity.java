@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.frostnerd.dnschanger.API.API;
+import com.frostnerd.dnschanger.API.VPNServiceArgument;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.receivers.AdminReceiver;
@@ -40,6 +41,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -56,7 +61,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     private Preference removeUsagePreference, sendDebugPreference;
     private DevicePolicyManager devicePolicyManager;
     private ComponentName deviceAdmin;
-    private final int REQUEST_EXTERNAL_STORAGE = 815,REQUEST_CODE_ENABLE_ADMIN = 1, REQUEST_CREATE_SHORTCUT = 2;
+    private final int REQUEST_EXTERNAL_STORAGE = 815,REQUEST_CODE_ENABLE_ADMIN = 1, REQUEST_CREATE_SHORTCUT = 2, REQUEST_EXCLUDE_APPS = 3;
     private boolean exportSettings, importSettings;
     private final int USAGE_STATS_REQUEST = 13, CHOOSE_AUTOPAUSEAPPS_REQUEST = 14;
     private final static String LOG_TAG = "[SettingsActivity]";
@@ -152,7 +157,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, preference.getKey() + " clicked");
-                startActivityForResult(new Intent(SettingsActivity.this, AutoPauseAppSelectActivity.class),CHOOSE_AUTOPAUSEAPPS_REQUEST);
+                Set<String> apps = Preferences.getStringSet(SettingsActivity.this, "autopause_apps");
+                startActivityForResult(new Intent(SettingsActivity.this, AppSelectionActivity.class).putExtra("apps", Collections.list(Collections.enumeration(apps))).
+                        putExtra("infoText", getString(R.string.autopause_appselect_info_text)),CHOOSE_AUTOPAUSEAPPS_REQUEST);
                 return true;
             }
         });
@@ -176,7 +183,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
         }
         findPreference("autopause_appselect").setTitle(getString(R.string.title_autopause_apps).
-                replace("[[count]]", Preferences.getInteger(this, "autopause_apps_count",0) + ""));
+                replace("[[count]]", Preferences.getStringSet(this, "autopause_apps").size()+""));
         findPreference("share_app").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -319,6 +326,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "User wants to create a shortcut",
                         i = new Intent(SettingsActivity.this, ConfigureActivity.class).putExtra("creatingShortcut", true));
                 startActivityForResult(i,REQUEST_CREATE_SHORTCUT);
+                return true;
+            }
+        });
+        findPreference("exclude_apps").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Set<String> apps = Preferences.getStringSet(SettingsActivity.this, "excluded_apps");
+                startActivityForResult(new Intent(SettingsActivity.this, AppSelectionActivity.class).putExtra("apps", Collections.list(Collections.enumeration(apps))).
+                        putExtra("infoText", getString(R.string.excluded_apps_info_text)),REQUEST_EXCLUDE_APPS);
                 return true;
             }
         });
@@ -541,8 +557,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
         }else if(requestCode == CHOOSE_AUTOPAUSEAPPS_REQUEST && resultCode == RESULT_OK){
             LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "User returned from configuring autopause apps");
+            ArrayList<String> apps = data.getStringArrayListExtra("apps");
             findPreference("autopause_appselect").setTitle(getString(R.string.title_autopause_apps).
-                    replace("[[count]]", ""+data.getIntExtra("count",0)));
+                    replace("[[count]]", ""+ apps.size()));
+            Preferences.put(this, "autopause_apps", new HashSet<String>(apps));
+            Preferences.put(this, "autopause_apps_count", apps.size());
             if(API.isServiceRunning(SettingsActivity.this)){
                 Intent i;
                 LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Restarting DNSVPNService because the autopause apps changed",
@@ -562,6 +581,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 }
             });
             snackbar.show();
+        }else if(requestCode == REQUEST_EXCLUDE_APPS && resultCode == RESULT_OK){
+            ArrayList<String> apps = data.getStringArrayListExtra("apps");
+            Preferences.put(this, "excluded_apps", new HashSet<String>(apps));
+            if(API.isServiceRunning(SettingsActivity.this)){
+                startService(new Intent(SettingsActivity.this, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true).
+                        putExtra(VPNServiceArgument.FLAG_DONT_UPDATE_DNS.getArgument(),true));
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

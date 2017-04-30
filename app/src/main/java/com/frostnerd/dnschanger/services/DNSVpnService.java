@@ -6,8 +6,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.net.VpnService;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.ParcelFileDescriptor;
 import android.support.v4.content.LocalBroadcastManager;
@@ -111,6 +113,7 @@ public class DNSVpnService extends VpnService {
         put("192.168.234.55", 24);
         put("172.31.255.1", 28);
     }};
+    private Set<String> excludedApps;
 
     private synchronized void clearVars(boolean stopSelf){
         if(variablesCleared)return;
@@ -259,10 +262,11 @@ public class DNSVpnService extends VpnService {
         //intent = intent == null ? intent : restoreSettings(intent);
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Got StartCommand", intent);
         serviceRunning = intent == null || !intent.getBooleanExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(), false);
+        excludedApps = Preferences.getStringSet(this, "excluded_apps");
         if(intent!=null){
             WidgetUtil.updateAllWidgets(this, BasicWidget.class);
             fixedDNS = intent.hasExtra(VPNServiceArgument.FLAG_FIXED_DNS.getArgument()) ? intent.getBooleanExtra(VPNServiceArgument.FLAG_FIXED_DNS.getArgument(), false) : fixedDNS;
-            updateDNSServers(intent);
+            if(!intent.hasExtra(VPNServiceArgument.FLAG_DONT_UPDATE_DNS.getArgument()))updateDNSServers(intent);
             startedWithTasker = intent.hasExtra(VPNServiceArgument.FLAG_STARTED_WITH_TASKER.getArgument()) ? intent.getBooleanExtra(VPNServiceArgument.FLAG_STARTED_WITH_TASKER.getArgument(), false) : startedWithTasker;
             if(Preferences.getBoolean(this, "auto_pause", false)){
                 if(!PermissionsUtil.hasUsageStatsPermission(this)){
@@ -445,6 +449,7 @@ public class DNSVpnService extends VpnService {
                             if(dns2 != null && !dns2.equals(""))builder = builder.addDnsServer(dns2);
                             if(ipv6Enabled && dns1_v6 != null && !dns1_v6.equals(""))builder = builder.addDnsServer(dns1_v6);
                             if(ipv6Enabled && dns2_v6 != null && !dns2_v6.equals(""))builder = builder.addDnsServer(dns2_v6);
+                            builder = applyDisallowed(builder);
                             tunnelInterface = builder.establish();
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface created and established.");
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Opening DatagramChannel");
@@ -521,6 +526,19 @@ public class DNSVpnService extends VpnService {
                     vpnThread = null;
                     LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Done with finally block");
                 }
+            }
+
+            private Builder applyDisallowed(Builder builder){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    try{
+                        for(String s: excludedApps){
+                            builder = builder.addDisallowedApplication(s);
+                        }
+                    }catch (PackageManager.NameNotFoundException e){
+
+                    }
+                }
+                return builder;
             }
 
             private boolean isDNSInvalid(Exception ex){
