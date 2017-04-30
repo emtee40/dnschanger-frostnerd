@@ -338,6 +338,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
         });
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)((PreferenceCategory)findPreference("general_category")).removePreference(findPreference("exclude_apps"));
         LogFactory.writeMessage(this, LOG_TAG, "Done with onCreate");
     }
 

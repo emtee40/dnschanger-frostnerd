@@ -143,7 +143,7 @@
             android:title="@string/title_send_debug" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/title_general">
+    <PreferenceCategory android:title="@string/title_general" android:key="general_category">
         <SwitchPreference
             android:key="device_admin"
             android:summary="@string/summary_device_admin_activate"
