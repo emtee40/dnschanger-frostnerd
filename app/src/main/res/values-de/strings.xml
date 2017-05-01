@@ -150,4 +150,5 @@
     <string name="summary_exclude_apps">Installierte Apps daran hindern, die interne VPN Verbindung zu nutzen. Dies sorgt dafür, dass diese nicht die eingestellten DNS Server nutzen</string>
     <string name="excluded_apps_info_text">Jede markierte Anwendung wird den internen VPN nicht verwenden. Dadurch werden die DNS Server auf diese ebenfalls nicht angewendet.</string>
     <string name="title_about">Über diese App</string>
+    <string name="search">Suchen</string>
 </resources>

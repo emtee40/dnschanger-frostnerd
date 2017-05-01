@@ -149,4 +149,5 @@
     <string name="summary_exclude_apps">Exclude installed apps from using the VPN connection created internally. This won\'t apply the DNS servers to them</string>
     <string name="excluded_apps_info_text">Each application checked won\'t use the internal VPN. This won\'t apply the DNS servers to them either.</string>
     <string name="title_about">About</string>
+    <string name="search">Search</string>
 </resources>

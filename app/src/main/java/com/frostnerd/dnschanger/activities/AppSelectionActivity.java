@@ -7,9 +7,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +28,7 @@ import com.frostnerd.dnschanger.R;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -36,7 +39,7 @@ import java.util.List;
  * <p>
  * development@frostnerd.com
  */
-public class AppSelectionActivity extends AppCompatActivity {
+public class AppSelectionActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
     private long lastBackPress;
     private ArrayList<String> currentSelected;
     private RecyclerView appList;
@@ -53,7 +56,7 @@ public class AppSelectionActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         currentSelected = getIntent() != null && getIntent().hasExtra("apps") ? getIntent().getStringArrayListExtra("apps") : new ArrayList<String>();
         infoText = getIntent() != null && getIntent().hasExtra("infoText") ? getIntent().getStringExtra("infoText") : null;
-
+        System.out.println(currentSelected.toString());
         listLayoutManager = new LinearLayoutManager(this);
         appList.setLayoutManager(listLayoutManager);
         appList.setHasFixedSize(true);
@@ -76,6 +79,7 @@ public class AppSelectionActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_autopause_appselect, menu);
+        ((SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search))).setOnQueryTextListener(this);
         return true;
     }
 
@@ -99,8 +103,21 @@ public class AppSelectionActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        listAdapter.filter(newText);
+        return true;
+    }
+
     private final class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHolder> {
-        private List<AppEntry> apps = new ArrayList<>();
+        private TreeSet<AppEntry> apps = new TreeSet<>();
+        private List<AppEntry> searchedApps = new ArrayList<>();
+        private boolean apply = true;
 
         public AppListAdapter() {
             List<ApplicationInfo> packages = getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
@@ -110,7 +127,19 @@ public class AppSelectionActivity extends AppCompatActivity {
                 //if (!entry.isSystemApp()) apps.add(entry);
                 apps.add(entry);
             }
-            Collections.sort(apps);
+            filter("");
+        }
+
+        public void filter(String search){
+            searchedApps.clear();
+            if(search.equals("")){
+                for(AppEntry entry: apps)searchedApps.add(entry);
+            }else{
+                for(AppEntry entry: apps){
+                    if(entry.getTitle().toLowerCase().contains(search.toLowerCase()))searchedApps.add(entry);
+                }
+            }
+            notifyDataSetChanged();
         }
 
         @Override
@@ -124,28 +153,30 @@ public class AppSelectionActivity extends AppCompatActivity {
                 ((TextView)holder.contentView.findViewById(R.id.text)).setText(infoText);
             }else{
                 int offSet = infoText != null ? 1 : 0;
-                ((ImageView) holder.contentView.findViewById(R.id.app_image)).setImageDrawable(apps.get(position - offSet).getIcon());
-                ((TextView) holder.contentView.findViewById(R.id.app_title)).setText(apps.get(position - offSet).getTitle());
-                if (currentSelected.contains(apps.get(position - offSet).packageName))
-                    ((CheckBox) holder.contentView.findViewById(R.id.app_selected_indicator)).setChecked(true);
+                AppEntry entry = searchedApps.get(position - offSet);
+                CheckBox checkBox = (CheckBox) holder.contentView.findViewById(R.id.app_selected_indicator);
+                ((ImageView) holder.contentView.findViewById(R.id.app_image)).setImageDrawable(entry.getIcon());
+                ((TextView) holder.contentView.findViewById(R.id.app_title)).setText(entry.getTitle());
                 holder.contentView.setClickable(true);
+                checkBox.setOnCheckedChangeListener(null);
+                checkBox.setChecked(currentSelected.contains(entry.packageName));
                 holder.contentView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ((CheckBox) v.findViewById(R.id.app_selected_indicator)).toggle();
                     }
                 });
-                ((CheckBox) holder.contentView.findViewById(R.id.app_selected_indicator)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if(!apply)return;
                         if (isChecked)currentSelected.add(holder.appEntry.packageName);
                         else currentSelected.remove(holder.appEntry.packageName);
                         changed = true;
                     }
                 });
-                holder.appEntry = apps.get(position - offSet);
+                holder.appEntry = entry;
             }
-
         }
 
         @Override
@@ -155,7 +186,7 @@ public class AppSelectionActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return apps.size() + (infoText != null ? 1 : 0);
+            return searchedApps.size() + (infoText != null ? 1 : 0);
         }
 
         public final class ViewHolder extends RecyclerView.ViewHolder {
