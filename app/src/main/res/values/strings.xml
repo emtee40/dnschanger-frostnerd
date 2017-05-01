@@ -150,4 +150,6 @@
     <string name="excluded_apps_info_text">Each application checked won\'t use the internal VPN. This won\'t apply the DNS servers to them either.</string>
     <string name="title_about">About</string>
     <string name="search">Search</string>
+    <string name="title_reset">Reset</string>
+    <string name="summary_reset">Resets all settings and saved dns servers. Shortcuts and tasker actions are not deleted.</string>
 </resources>

@@ -151,4 +151,6 @@
     <string name="excluded_apps_info_text">Jede markierte Anwendung wird den internen VPN nicht verwenden. Dadurch werden die DNS Server auf diese ebenfalls nicht angewendet.</string>
     <string name="title_about">Über diese App</string>
     <string name="search">Suchen</string>
+    <string name="title_reset">Zurücksetzen</string>
+    <string name="summary_reset">Setzt alle Einstellungen und gespeicherten DNS Server zurück. Verknüpfungen und Tasker Aktionen werden nicht gelöscht.</string>
 </resources>

@@ -143,7 +143,9 @@
             android:title="@string/title_send_debug" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/title_general" android:key="general_category">
+    <PreferenceCategory
+        android:key="general_category"
+        android:title="@string/title_general">
         <SwitchPreference
             android:key="device_admin"
             android:summary="@string/summary_device_admin_activate"
@@ -168,6 +170,11 @@
         <Preference
             android:key="contact_dev"
             android:title="@string/contact_developer" />
+
+        <Preference
+            android:key="reset"
+            android:summary="@string/summary_reset"
+            android:title="@string/title_reset" />
 
         <Preference
             android:key="share_app"
