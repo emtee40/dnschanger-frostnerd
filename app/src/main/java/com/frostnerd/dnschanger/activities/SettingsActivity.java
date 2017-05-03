@@ -339,6 +339,26 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
         });
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)((PreferenceCategory)findPreference("general_category")).removePreference(findPreference("exclude_apps"));
+        findPreference("reset").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(final Preference preference) {
+                new AlertDialog.Builder(SettingsActivity.this).setTitle(R.string.warning).setMessage(R.string.reset_warning_text).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Preferences.getDefaultPreferences(SettingsActivity.this).edit().clear().commit();
+                        Preferences.flushBuffer();
+                        API.deleteDatabase(SettingsActivity.this);
+                        finish();
+                    }
+                }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
+                return true;
+            }
+        });
         LogFactory.writeMessage(this, LOG_TAG, "Done with onCreate");
     }
 

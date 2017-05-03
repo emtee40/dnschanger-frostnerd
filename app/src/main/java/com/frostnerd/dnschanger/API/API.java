@@ -120,6 +120,11 @@ public final class API {
         database.execSQL("CREATE TABLE IF NOT EXISTS DNSEntries(Name TEXT, dns1 TEXT, dns2 TEXT, dns1v6 TEXT, dns2v6 TEXT)");
     }
 
+    public static synchronized void deleteDatabase(Context context){
+        context.getDatabasePath("data.db").delete();
+        database = null;
+    }
+
     public static synchronized SQLiteDatabase getDatabase(Context context){
         setupDatabase(context);
         return database;

@@ -152,4 +152,5 @@
     <string name="search">Search</string>
     <string name="title_reset">Reset</string>
     <string name="summary_reset">Resets all settings and saved dns servers. Shortcuts and tasker actions are not deleted.</string>
+    <string name="reset_warning_text">Do you really want to reset all settings?\nThis cannot be reversed.</string>
 </resources>
