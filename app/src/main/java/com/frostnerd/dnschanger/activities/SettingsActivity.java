@@ -285,7 +285,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 ((SwitchPreference)findPreference("debug")).setChecked(true);
                                 Preferences.put(SettingsActivity.this, "debug",true);
-                                LogFactory.enable();
+                                LogFactory.enable(SettingsActivity.this);
                                 debugCategory.addPreference(sendDebugPreference);
                             }
                         }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -342,12 +342,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         findPreference("reset").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
+                LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, preference.getKey() + " clicked");
                 new AlertDialog.Builder(SettingsActivity.this).setTitle(R.string.warning).setMessage(R.string.reset_warning_text).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Resetting..");
                         Preferences.getDefaultPreferences(SettingsActivity.this).edit().clear().commit();
                         Preferences.flushBuffer();
                         API.deleteDatabase(SettingsActivity.this);
+                        LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Reset finished.");
                         finish();
                     }
                 }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
