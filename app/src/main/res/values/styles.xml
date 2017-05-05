@@ -2,10 +2,45 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@drawable/background_default</item>
+        <item name="cardColor">#42A5F5</item>
+        <item name="cardStrokeColor">#42A5F5</item>
+        <item name="inputElementColor">#42A5F5</item>
+    </style>
+
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">?attr/cardColor</item>
+    </style>
+
+    <style name="DialogTheme_Dark" parent="Theme.AppCompat.Light.Dialog.Alert">
+
+    </style>
+
+    <style name="DialogTheme_Mono" parent="Theme.AppCompat.Light.Dialog.Alert">
+
+    </style>
+
+    <style name="AppTheme_Dark" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#607D8B</item>
+        <item name="colorPrimaryDark">#37474F</item>
+        <item name="colorAccent">#616161</item>
+        <item name="android:windowBackground">@drawable/background_dark</item>
+    </style>
+
+    <style name="AppTheme_Mono" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#607D8B</item>
+        <item name="colorPrimaryDark">#37474F</item>
+        <item name="colorAccent">#E0E0E0</item>
+        <item name="android:windowBackground">@drawable/background_mono</item>
+        <item name="android:textColor">#E0E0E0</item>
+        <item name="android:textColorSecondary">#BDBDBD</item>
+        <item name="android:textColorHighlight">#B0BEC5</item>
+        <item name="cardColor">#90A4AE</item>
+        <item name="cardStrokeColor">#90A4AE</item>
+        <item name="inputElementColor">#90A4AE</item>
     </style>
 
 </resources>

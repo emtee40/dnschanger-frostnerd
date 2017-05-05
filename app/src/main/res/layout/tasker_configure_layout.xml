@@ -3,14 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#2196F3">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/activity_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#2196F3"
         android:orientation="vertical"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -37,8 +35,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             app:allowCollapse="false"
-            app:cardColor="#42A5F5"
-            app:cardStrokeColor="#2196F3"
             app:image="@drawable/ic_language"
             app:maxCharLength="50"
             app:revealDelay="0"
@@ -72,8 +68,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 app:allowCollapse="false"
-                app:cardColor="#42A5F5"
-                app:cardStrokeColor="#42A5F5"
                 app:image="@drawable/ic_language"
                 app:revealDelay="0"
                 app:revealType="revealInstant">
@@ -99,8 +93,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:allowCollapse="false"
-                app:cardColor="#42A5F5"
-                app:cardStrokeColor="#2196F3"
                 app:image="@drawable/ic_language"
                 app:revealDelay="0"
                 app:revealType="revealInstant">
@@ -123,7 +115,7 @@
                 android:id="@+id/default_dns_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#42A5F5"
+                android:background="?attr/inputElementColor"
                 android:clickable="true"
                 android:onClick="openDefaultDNSDialog"
                 android:padding="10dp">
@@ -133,7 +125,7 @@
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:background="#42A5F5"
+                    android:background="?attr/inputElementColor"
                     android:src="@drawable/ic_action_import" />
 
                 <View
@@ -167,7 +159,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="3dp"
                 android:layout_toLeftOf="@id/middle"
-                android:background="#42A5F5"
+                android:background="?attr/inputElementColor"
                 android:text="@string/cancel"
                 android:textColor="#FFF" />
 
@@ -177,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
                 android:layout_toRightOf="@id/middle"
-                android:background="#42A5F5"
+                android:background="?attr/inputElementColor"
                 android:text="@string/done"
                 android:textColor="#FFF" />
         </RelativeLayout>

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
+import android.support.annotation.StyleRes;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,8 +47,8 @@ public class DefaultDNSDialog extends AlertDialog {
     private List<DNSEntry> localEntries = new ArrayList<>();
     private DefaultDNSAdapter adapter;
 
-    public DefaultDNSDialog(@NonNull final Context context, @NonNull final OnProviderSelectedListener listener) {
-        super(context);
+    public DefaultDNSDialog(@NonNull final Context context, final int theme, @NonNull final OnProviderSelectedListener listener) {
+        super(context, theme);
         for(DNSEntry entry: entries)localEntries.add(entry);
         loadEntriesFromDatabase();
         this.listener = listener;

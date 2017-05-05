@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +35,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.API.API;
+import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
 import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
@@ -104,30 +108,16 @@ public class MainActivity extends AppCompatActivity {
             int color = Color.parseColor("#42A5F5");
             connectionText.setText(R.string.running);
             connectionImage.setImageResource(R.drawable.ic_thumb_up);
-            startStopButton.setBackgroundColor(color);
-            met_dns1.setCardColor(color);
-            met_dns1.setCardStrokeColor(color);
-            met_dns2.setCardColor(color);
-            met_dns2.setCardStrokeColor(color);
-            rate.setBackgroundColor(color);
-            info.setBackgroundColor(color);
-            importButton.setBackgroundColor(color);
             startStopButton.setText(R.string.stop);
             running_indicator.setBackgroundColor(Color.parseColor("#4CAF50"));
         } else {
-            int color = Color.parseColor("#42A5F5");
+            TypedValue typedValue = new TypedValue();
+            Resources.Theme theme = getTheme();
+            theme.resolveAttribute(android.R.attr.windowBackground, typedValue, true);
             connectionText.setText(R.string.not_running);
             connectionImage.setImageResource(R.drawable.ic_thumb_down);
-            startStopButton.setBackgroundColor(color);
-            met_dns1.setCardColor(color);
-            met_dns1.setCardStrokeColor(color);
-            met_dns2.setCardColor(color);
-            met_dns2.setCardStrokeColor(color);
-            rate.setBackgroundColor(color);
-            info.setBackgroundColor(color);
-            importButton.setBackgroundColor(color);
             startStopButton.setText(R.string.start);
-            running_indicator.setBackgroundColor(Color.parseColor("#2196F3"));
+            running_indicator.setBackgroundColor(typedValue.data);
         }
         LogFactory.writeMessage(this, LOG_TAG, "IndictorState set");
     }
@@ -328,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void openDefaultDNSDialog(View v) {
         LogFactory.writeMessage(this, LOG_TAG, "Opening DefaultDNSDialog");
-        defaultDnsDialog = new DefaultDNSDialog(this, new DefaultDNSDialog.OnProviderSelectedListener(){
+        defaultDnsDialog = new DefaultDNSDialog(this, ThemeHandler.getDialogTheme(this), new DefaultDNSDialog.OnProviderSelectedListener(){
             @Override
             public void onProviderSelected(String name, String dns1, String dns2, String dns1V6, String dns2V6) {
                 if(settingV6){
@@ -355,7 +345,7 @@ public class MainActivity extends AppCompatActivity {
             if (!vpnRunning){
                 if(!Preferences.getBoolean(this, "44explained", false) && Build.VERSION.SDK_INT == 19){
                     LogFactory.writeMessage(this, LOG_TAG, "Opening Dialog explaining that this might not work on Android 4.4");
-                    new AlertDialog.Builder(this).setTitle(R.string.warning).setCancelable(false).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    new AlertDialog.Builder(this, ThemeHandler.getDialogTheme(this)).setTitle(R.string.warning).setCancelable(false).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
@@ -370,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
             }else{
                 if(wasStartedWithTasker){
                     LogFactory.writeMessage(this, LOG_TAG, "Opening dialog which warns that the app was started using Tasker");
-                    new AlertDialog.Builder(this).setTitle(R.string.warning).setMessage(R.string.warning_started_using_tasker). setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    new AlertDialog.Builder(this,ThemeHandler.getDialogTheme(this)).setTitle(R.string.warning).setMessage(R.string.warning_started_using_tasker). setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             LogFactory.writeMessage(MainActivity.this, LOG_TAG, "User clicked OK in the dialog warning about Tasker");

@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.frostnerd.dnschanger.API.API;
+import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.ShortcutActivity;
@@ -217,7 +218,7 @@ public class ConfigureActivity extends AppCompatActivity {
     }
 
     public void openDefaultDNSDialog(View v){
-        defaultDNSDialog = new DefaultDNSDialog(this, new DefaultDNSDialog.OnProviderSelectedListener() {
+        defaultDNSDialog = new DefaultDNSDialog(this, ThemeHandler.getDialogTheme(this), new DefaultDNSDialog.OnProviderSelectedListener() {
             @Override
             public void onProviderSelected(String name, String dns1, String dns2, String dns1V6, String dns2V6) {
                 ConfigureActivity.this.dns1 = dns1.equals("") ? ConfigureActivity.this.dns1 : dns1;
