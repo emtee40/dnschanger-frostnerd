@@ -47,7 +47,6 @@ public class LogFactory {
     public static final String STATIC_TAG = "[STATIC]";
     private static final boolean printMessagesToConsole = false;
 
-
     public static synchronized File zipLogFiles(Context c){
         if(logDir == null || !logDir.canWrite() || !logDir.canRead())return null;
         writeMessage(c, Tag.INFO, "Exporting Log files");
@@ -124,6 +123,16 @@ public class LogFactory {
         }
         fileWriter = null;logFile=null;logDir = null;
         ready = usable = false;
+    }
+
+    public static void deleteLogFiles(Context context){
+        if(logDir == null)logDir = new File(context.getFilesDir(), "logs/");
+        boolean wasEnabled = ready && enabled;
+        disable();
+        for(File f: logDir.listFiles()){
+            f.delete();
+        }
+        if(wasEnabled)enable(context);
     }
 
     public static synchronized boolean prepare(Context context) {
