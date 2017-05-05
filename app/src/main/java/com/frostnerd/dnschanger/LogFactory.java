@@ -88,10 +88,9 @@ public class LogFactory {
         return null;
     }
 
-    public synchronized static void enable(){
-        enabled = true;
+    public synchronized static void enable(Context context){
         ready = false;
-        usable = false;
+        enabled = true;
         if(fileWriter != null){
             try{
                 fileWriter.close();
@@ -100,6 +99,7 @@ public class LogFactory {
             }
             fileWriter = null;
         }
+        prepare(context);
     }
 
     public synchronized static void disable(){
