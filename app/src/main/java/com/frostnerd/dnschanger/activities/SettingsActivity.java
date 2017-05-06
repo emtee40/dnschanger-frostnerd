@@ -29,6 +29,7 @@ import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.API.VPNServiceArgument;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
+import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.receivers.AdminReceiver;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.tasker.ConfigureActivity;
