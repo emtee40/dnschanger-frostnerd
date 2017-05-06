@@ -375,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
             snackbar.setAction(R.string.show, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(snackbar != null)snackbar.dismiss();
+                    snackbar.dismiss();
                     Utils.goToLauncher(MainActivity.this);
                 }
             });
