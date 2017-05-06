@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
@@ -23,35 +22,26 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
+import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
 import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
 import com.frostnerd.dnschanger.services.DNSVpnService;
-import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.tasker.ConfigureActivity;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -138,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void openDNSInfoDialog(View v) {
         LogFactory.writeMessage(this, LOG_TAG, "Opening Dialog with info about DNS");
-        dialog1 = new AlertDialog.Builder(this).setTitle(R.string.info_dns_button).setMessage(R.string.dns_info_text).setCancelable(true).setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+        dialog1 = new AlertDialog.Builder(this,ThemeHandler.getDialogTheme(this)).setTitle(R.string.info_dns_button).setMessage(R.string.dns_info_text).setCancelable(true).setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -150,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(ThemeHandler.getAppTheme(this));
         LogFactory.writeMessage(this, LOG_TAG, "Created Activity", getIntent());
         API.updateTiles(this);
         LogFactory.writeMessage(this, LOG_TAG, "Launching ConnectivityBackgroundService");
@@ -177,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                 LogFactory.writeMessage(MainActivity.this, LOG_TAG, "Startbutton clicked. Configuring VPN if needed");
                 if (i != null){
                     LogFactory.writeMessage(MainActivity.this, LOG_TAG, "VPN isn't prepared yet. Showing dialog explaining the VPN");
-                    dialog2 = new AlertDialog.Builder(MainActivity.this).setTitle(R.string.information).setMessage(R.string.vpn_explain)
+                    dialog2 = new AlertDialog.Builder(MainActivity.this,ThemeHandler.getDialogTheme(MainActivity.this)).setTitle(R.string.information).setMessage(R.string.vpn_explain)
                             .setCancelable(false).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -249,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
         if(!Preferences.getBoolean(this, "first_run",true) && !Preferences.getBoolean(this, "rated",false) && new Random().nextInt(100) <= 8){
             LogFactory.writeMessage(this, LOG_TAG, "Showing dialog requesting rating");
-            new AlertDialog.Builder(this).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            new AlertDialog.Builder(this,ThemeHandler.getDialogTheme(this)).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     rateApp(null);
@@ -270,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if(Preferences.getBoolean(this, "first_run", true) && API.isTaskerInstalled(this)){
             LogFactory.writeMessage(this, LOG_TAG, "Showing dialog telling the user that this app supports Tasker");
-            new AlertDialog.Builder(this).setTitle(R.string.tasker_support).setMessage(R.string.app_supports_tasker_text).setPositiveButton(R.string.got_it, new DialogInterface.OnClickListener() {
+            new AlertDialog.Builder(this,ThemeHandler.getDialogTheme(this)).setTitle(R.string.tasker_support).setMessage(R.string.app_supports_tasker_text).setPositiveButton(R.string.got_it, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();

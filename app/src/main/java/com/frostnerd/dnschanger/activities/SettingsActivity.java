@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.frostnerd.dnschanger.API.API;
+import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.API.VPNServiceArgument;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
@@ -68,6 +69,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(ThemeHandler.getAppTheme(this));
         super.onCreate(savedInstanceState);
         LogFactory.writeMessage(this, LOG_TAG, "Created Activity");
         addPreferencesFromResource(R.xml.preferences);
@@ -99,7 +101,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, preference.getKey() + " clicked");
-                new AlertDialog.Builder(SettingsActivity.this).setTitle(R.string.information).setMessage(R.string.settings_information_text).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(SettingsActivity.this,ThemeHandler.getDialogTheme(SettingsActivity.this)).setTitle(R.string.information).setMessage(R.string.settings_information_text).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -132,7 +134,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 if(!((Boolean) newValue))return true;
                 if(!PermissionsUtil.hasUsageStatsPermission(SettingsActivity.this)){
                     LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Access to usage stats is not yet granted. Showing dialog explaining why it's needed");
-                    new AlertDialog.Builder(SettingsActivity.this).setTitle(R.string.information).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    new AlertDialog.Builder(SettingsActivity.this,ThemeHandler.getDialogTheme(SettingsActivity.this)).setTitle(R.string.information).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Intent i;
@@ -232,7 +234,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 boolean value = (Boolean)newValue;
                 if(value && !devicePolicyManager.isAdminActive(deviceAdmin)){
                     LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "User wants app to function as DeviceAdmin but access isn't granted yet. Showing dialog explaining Device Admin");
-                    new AlertDialog.Builder(SettingsActivity.this).setTitle(R.string.information).setMessage(R.string.set_device_admin_info).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    new AlertDialog.Builder(SettingsActivity.this,ThemeHandler.getDialogTheme(SettingsActivity.this)).setTitle(R.string.information).setMessage(R.string.set_device_admin_info).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
@@ -279,7 +281,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     LogFactory.disable();
                     return true;
                 }
-                new AlertDialog.Builder(SettingsActivity.this).setTitle(R.string.warning).setMessage(R.string.debug_dialog_info_text).setCancelable(true)
+                new AlertDialog.Builder(SettingsActivity.this,ThemeHandler.getDialogTheme(SettingsActivity.this)).setTitle(R.string.warning).setMessage(R.string.debug_dialog_info_text).setCancelable(true)
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -343,7 +345,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
                 LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, preference.getKey() + " clicked");
-                new AlertDialog.Builder(SettingsActivity.this).setTitle(R.string.warning).setMessage(R.string.reset_warning_text).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(SettingsActivity.this,ThemeHandler.getDialogTheme(SettingsActivity.this)).setTitle(R.string.warning).setMessage(R.string.reset_warning_text).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "Resetting..");
@@ -386,7 +388,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     private boolean checkWriteReadPermission(){
         if(!PermissionsUtil.canReadExternalStorage(this) || !PermissionsUtil.canWriteExternalStorage(this)){
             LogFactory.writeMessage(this, LOG_TAG, "Showing Dialog explaining why this app needs read/write access");
-            new AlertDialog.Builder(this).setTitle(R.string.title_import_export).setMessage(R.string.explain_storage_permission).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            new AlertDialog.Builder(this, ThemeHandler.getDialogTheme(this)).setTitle(R.string.title_import_export).setMessage(R.string.explain_storage_permission).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     LogFactory.writeMessage(SettingsActivity.this, LOG_TAG, "User clicked OK in Read/Write dialog");
@@ -425,7 +427,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     private void exportSettingsAskShortcuts(){
         LogFactory.writeMessage(SettingsActivity.this, new String[]{LOG_TAG, "[EXPORTSETTINGS]"}, "Exporting settings. Asking in dialog whether shortcuts should be exported aswell.");
-        new AlertDialog.Builder(this).setTitle(R.string.shortcuts).setMessage(R.string.dialog_question_export_shortcuts).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(this,ThemeHandler.getDialogTheme(this)).setTitle(R.string.shortcuts).setMessage(R.string.dialog_question_export_shortcuts).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -482,7 +484,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         LogFactory.writeMessage(SettingsActivity.this, new String[]{LOG_TAG, "[EXPORTSETTINGS]"}, "Exported " + shortcuts.length + " Shortcuts");
                     }
                     LogFactory.writeMessage(SettingsActivity.this, new String[]{LOG_TAG, "[EXPORTSETTINGS]"}, "Finished writing");
-                    new AlertDialog.Builder(SettingsActivity.this).setMessage(R.string.message_settings_exported).setCancelable(true).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    new AlertDialog.Builder(SettingsActivity.this,ThemeHandler.getDialogTheme(SettingsActivity.this)).setMessage(R.string.message_settings_exported).setCancelable(true).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             LogFactory.writeMessage(SettingsActivity.this, new String[]{LOG_TAG, "[EXPORTSETTINGS]"}, "User clicked cancel on Share/open of exported settings Dialog.");

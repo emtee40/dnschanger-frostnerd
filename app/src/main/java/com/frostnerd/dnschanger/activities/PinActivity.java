@@ -9,6 +9,7 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 
+import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.API.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.services.DNSVpnService;
@@ -36,6 +37,7 @@ public class PinActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(ThemeHandler.getDialogTheme(this));
         LogFactory.writeMessage(this, LOG_TAG, "Created Activity", getIntent());
         final boolean main = getIntent() != null && !getIntent().hasExtra("redirectToService");
         LogFactory.writeMessage(this, LOG_TAG, "Returning to main after pin: " + main);
