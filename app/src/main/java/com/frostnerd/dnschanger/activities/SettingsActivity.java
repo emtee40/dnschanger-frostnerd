@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.SwitchPreference;
@@ -30,7 +31,6 @@ import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.receivers.AdminReceiver;
 import com.frostnerd.dnschanger.services.DNSVpnService;
-import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.tasker.ConfigureActivity;
 import com.frostnerd.utils.design.FileChooserDialog;
 import com.frostnerd.utils.general.Utils;
@@ -377,6 +377,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
         });
+        ((ListPreference)findPreference("theme")).setDefaultValue(0);
         LogFactory.writeMessage(this, LOG_TAG, "Done with onCreate");
     }
 
