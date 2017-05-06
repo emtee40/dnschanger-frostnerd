@@ -59,7 +59,7 @@
     <string name="summary_automation_warn">Warning: Using any of these might interfere with active Tasker profiles using this app!</string>
     <string name="title_pin">Pin</string>
     <string name="summary_pin">Enable pin protection</string>
-    <string name="summary_pin_value">Current pin: [[x]] (Click to change)</string>
+    <string name="summary_pin_value">Click here to change the PIN</string>
     <string name="title_pin_value">Change Pin</string>
     <string name="settings_information_text">This app was made by Daniel Wolf (frostnerd.com)\n\nIt uses icons made by Google (Material icon pack - https://material.io/icons/)\n\n\nIf you are missing a feature, found a bug or just got a general request, feel free to contact me at support@frostnerd.com\nThe Sourcecode to this app can be viewed at https://git.frostnerd.com/PublicAndroidApps/DnsChanger</string>
     <string name="create_tasker_action">Creating Tasker Action</string>
