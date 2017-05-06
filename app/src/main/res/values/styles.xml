@@ -4,7 +4,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">#B2EBF2</item>
         <item name="android:windowBackground">@drawable/background_default</item>
         <item name="cardColor">#42A5F5</item>
         <item name="cardStrokeColor">#42A5F5</item>
@@ -19,7 +19,7 @@
         <item name="android:background">@drawable/background_default</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">#B2EBF2</item>
         <item name="keyResource">@drawable/ic_action_key</item>
         <item name="android:windowBackground">@drawable/background_default</item>
 
