@@ -364,6 +364,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
         });
+        findPreference("theme").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                String val = (String)newValue;
+                int theme = val.equalsIgnoreCase("1") ? R.style.AppTheme : (val.equalsIgnoreCase("2") ? R.style.AppTheme_Mono : R.style.AppTheme_Dark),
+                dialogTheme = val.equalsIgnoreCase("1") ? R.style.DialogTheme : (val.equalsIgnoreCase("2") ? R.style.DialogTheme_Mono : R.style.DialogTheme_Dark);
+                ThemeHandler.updateAppTheme(SettingsActivity.this, theme);
+                ThemeHandler.updateDialogTheme(SettingsActivity.this, dialogTheme);
+                setResult(RESULT_FIRST_USER, new Intent().putExtra("themeupdated",true));
+                finish();
+                return true;
+            }
+        });
         LogFactory.writeMessage(this, LOG_TAG, "Done with onCreate");
     }
 

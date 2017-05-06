@@ -154,4 +154,12 @@
     <string name="title_reset">Zurücksetzen</string>
     <string name="summary_reset">Setzt alle Einstellungen und gespeicherten DNS Server zurück. Verknüpfungen und Tasker Aktionen werden nicht gelöscht.</string>
     <string name="reset_warning_text">Möchtest du wirklich alle Einstellungen löschen?\nDies kann nicht rückgängig gemacht werden</string>
+    <string name="summary_theme">Setzt das Aussehen dieser App</string>
+    <string name="title_theme">Aussehen</string>
+
+    <string-array name="theme">
+        <item>Standard</item>
+        <item>Mono</item>
+        <item>Dunkel</item>
+    </string-array>
 </resources>

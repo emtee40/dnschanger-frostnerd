@@ -12,7 +12,7 @@ import com.frostnerd.utils.preferences.Preferences;
 public class ThemeHandler {
 
     public static void updateAppTheme(Context context, int theme){
-        Preferences.put(context, "theme", theme);
+        Preferences.put(context, "apptheme", theme);
     }
 
     public static void updateDialogTheme(Context context, int theme){
@@ -24,6 +24,6 @@ public class ThemeHandler {
     }
 
     public static int getAppTheme(Context context){
-        return Preferences.getInteger(context, "theme", R.style.AppTheme);
+        return Preferences.getInteger(context, "apptheme", R.style.AppTheme);
     }
 }

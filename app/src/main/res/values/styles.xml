@@ -13,6 +13,9 @@
         <item name="android:textColorPrimary">#EEEEEE</item>
         <item name="android:textColorSecondary">#EEEEEE</item>
         <item name="android:textColorHighlight">#EEEEEE</item>
+
+        <item name="dialogTheme">@style/DialogTheme</item>
+        <item name="alertDialogTheme">@style/DialogTheme</item>
     </style>
 
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
@@ -57,6 +60,8 @@
         <item name="colorPrimaryDark">#37474F</item>
         <item name="colorAccent">#616161</item>
         <item name="android:windowBackground">@drawable/background_dark</item>
+        <item name="dialogTheme">@style/DialogTheme_Dark</item>
+        <item name="alertDialogTheme">@style/DialogTheme_Dark</item>
     </style>
 
     <style name="AppTheme_Mono" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -70,6 +75,8 @@
         <item name="cardColor">#90A4AE</item>
         <item name="cardStrokeColor">#90A4AE</item>
         <item name="inputElementColor">#90A4AE</item>
+        <item name="dialogTheme">@style/DialogTheme_Mono</item>
+        <item name="alertDialogTheme">@style/DialogTheme_Mono</item>
     </style>
 
 </resources>

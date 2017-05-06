@@ -153,4 +153,18 @@
     <string name="title_reset">Reset</string>
     <string name="summary_reset">Resets all settings and saved dns servers. Shortcuts and tasker actions are not deleted.</string>
     <string name="reset_warning_text">Do you really want to reset all settings?\nThis cannot be reversed.</string>
+    <string name="title_theme">Theme</string>
+    <string name="summary_theme">Sets the theme of this app</string>
+
+    <string-array name="theme">
+        <item>Default</item>
+        <item>Mono</item>
+        <item>Dark</item>
+    </string-array>
+
+    <string-array name="themeValues">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>

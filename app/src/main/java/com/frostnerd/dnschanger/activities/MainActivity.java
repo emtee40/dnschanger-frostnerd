@@ -38,6 +38,7 @@ import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.tasker.ConfigureActivity;
 import com.frostnerd.utils.design.MaterialEditText;
+import com.frostnerd.utils.general.IntentUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private DefaultDNSDialog defaultDnsDialog;
     private LinearLayout wrapper;
     private boolean settingV6 = false;
+    private final int REQUEST_SETTINGS = 13;
 
     @Override
     protected void onDestroy() {
@@ -234,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent i;
                 LogFactory.writeMessage(MainActivity.this, LOG_TAG, "Opening Settings",
                         i = new Intent(MainActivity.this, SettingsActivity.class));
-                startActivity(i);
+                startActivityForResult(i,REQUEST_SETTINGS);
             }
         });
         getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
@@ -378,6 +380,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             snackbar.show();
+        }else if(requestCode == REQUEST_SETTINGS && resultCode == RESULT_FIRST_USER){
+            if(IntentUtil.checkExtra("themeupdated",data))IntentUtil.restartActivity(this);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

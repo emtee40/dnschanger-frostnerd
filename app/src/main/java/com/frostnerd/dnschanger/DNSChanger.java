@@ -3,6 +3,7 @@ package com.frostnerd.dnschanger;
 import android.app.Application;
 
 import com.frostnerd.dnschanger.API.API;
+import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
 
 /**
@@ -16,6 +17,7 @@ public class DNSChanger extends Application {
 
     @Override
     public void onCreate() {
+        setTheme(ThemeHandler.getAppTheme(this));
         super.onCreate();
         LogFactory.writeMessage(this, LOG_TAG, "Application created");
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {

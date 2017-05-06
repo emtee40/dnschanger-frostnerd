@@ -157,6 +157,14 @@
             android:summary="@string/summary_enable_ipv6"
             android:title="@string/title_enable_ipv6" />
 
+        <ListPreference
+            android:entries="@array/theme"
+            android:entryValues="@array/themeValues"
+            android:key="theme"
+            android:defaultValue="1"
+            android:summary="@string/summary_theme"
+            android:title="@string/title_theme" />
+
         <Preference
             android:key="exclude_apps"
             android:summary="@string/summary_exclude_apps"
