@@ -12,10 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         app:allowCollapse="false"
-        app:cardColor="#42A5F5"
-        app:cardStrokeColor="#2196F3"
         app:image="@drawable/ic_language"
-        app:labelColorSecondary="#757575"
         app:maxCharLength="50"
         app:revealDelay="0"
         app:revealType="revealInstant">
@@ -42,10 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         app:allowCollapse="false"
-        app:cardColor="#42A5F5"
-        app:cardStrokeColor="#42A5F5"
         app:image="@drawable/ic_language"
-        app:labelColorSecondary="#757575"
         app:revealDelay="0"
         app:revealType="revealInstant">
 
@@ -70,10 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:allowCollapse="false"
-        app:cardColor="#42A5F5"
-        app:cardStrokeColor="#2196F3"
         app:image="@drawable/ic_language"
-        app:labelColorSecondary="#757575"
         app:revealDelay="0"
         app:revealType="revealInstant">
 

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.frostnerd.dnschanger.API.API;
+import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.networking.NetworkUtil;
@@ -33,7 +34,7 @@ public class DNSCreationDialog extends AlertDialog {
     private boolean settingV6;
 
     public DNSCreationDialog(@NonNull Context context, @NonNull final OnCreationFinishedListener listener) {
-        super(context);
+        super(context, ThemeHandler.getDialogTheme(context));
         setView(view = LayoutInflater.from(context).inflate(R.layout.dialog_create_dns_entry, null, false));
         ed_dns1 = (EditText) view.findViewById(R.id.dns1);
         ed_dns2 = (EditText) view.findViewById(R.id.dns2);
