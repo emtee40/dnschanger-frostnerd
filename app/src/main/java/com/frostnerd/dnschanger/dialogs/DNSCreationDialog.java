@@ -1,4 +1,4 @@
-package com.frostnerd.dnschanger.API;
+package com.frostnerd.dnschanger.dialogs;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.networking.NetworkUtil;

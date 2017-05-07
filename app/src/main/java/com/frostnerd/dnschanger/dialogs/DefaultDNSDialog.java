@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
-import android.support.annotation.StyleRes;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +16,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.API.API;
-import com.frostnerd.dnschanger.API.DNSCreationDialog;
 import com.frostnerd.dnschanger.R;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
