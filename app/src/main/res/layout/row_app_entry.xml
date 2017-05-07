@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         card_view:cardCornerRadius="4dp"
+        card_view:cardBackgroundColor="?attr/inputElementColor"
         card_view:cardElevation="3dp"
         card_view:cardUseCompatPadding="true">
 
