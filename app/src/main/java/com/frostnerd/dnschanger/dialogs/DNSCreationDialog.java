@@ -90,6 +90,7 @@ public class DNSCreationDialog extends AlertDialog {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (NetworkUtil.isAssignableAddress(s.toString(), settingV6, false)) {
+                    met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
                     if (settingV6) dns1V6 = s.toString();
                     else dns1 = s.toString();
                 } else met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
@@ -109,6 +110,7 @@ public class DNSCreationDialog extends AlertDialog {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (NetworkUtil.isAssignableAddress(s.toString(), settingV6, true)) {
+                    met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
                     if (settingV6) dns2V6 = s.toString();
                     else dns2 = s.toString();
                 } else met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
