@@ -11,15 +11,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.service.quicksettings.TileService;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.ShortcutActivity;
+import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.tiles.TilePause;
 import com.frostnerd.dnschanger.tiles.TileResume;
@@ -28,6 +32,8 @@ import com.frostnerd.dnschanger.tiles.TileStop;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.preferences.Preferences;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -44,6 +50,21 @@ public final class API {
     public static final String BROADCAST_SERVICE_STATE_REQUEST = "com.frostnerd.dnschanger.VPN_STATE_CHANGE";
     public static final String LOG_TAG = "[API]";
     private static SQLiteDatabase database;
+    private static final List<DNSEntry> defaultDNSEntries = new ArrayList<>();
+    static {
+        defaultDNSEntries.add(new DNSEntry(0,"", "", "", "", ""));
+        defaultDNSEntries.add(new DNSEntry(0,"Google", "8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844"));
+        defaultDNSEntries.add(new DNSEntry(0,"OpenDNS", "208.67.222.222", "208.67.220.220", "2620:0:ccc::2", "2620:0:ccd::2"));
+        defaultDNSEntries.add(new DNSEntry(0,"Level3", "209.244.0.3", "209.244.0.4", "", ""));
+        defaultDNSEntries.add(new DNSEntry(0,"FreeDNS", "37.235.1.174", "37.235.1.177", "", ""));
+        defaultDNSEntries.add(new DNSEntry(0,"Yandex", "77.88.8.8", "77.88.8.1", "2a02:6b8::feed:0ff", "2a02:6b8:0:1::feed:0ff"));
+        defaultDNSEntries.add(new DNSEntry(0,"Verisign", "64.6.64.6", "64.6.65.6", "2620:74:1b::1:1", "2620:74:1c::2:2"));
+        defaultDNSEntries.add(new DNSEntry(0,"Alternate", "198.101.242.72", "23.253.163.53", "", ""));
+        defaultDNSEntries.add(new DNSEntry(0,"Norton Connectsafe - Security", "199.85.126.10", "199.85.127.10", "", ""));
+        defaultDNSEntries.add(new DNSEntry(0,"Norton Connectsafe - Security + Pornography", "199.85.126.20", "199.85.127.20", "", ""));
+        defaultDNSEntries.add(new DNSEntry(0,"Norton Connectsafe - Security + Portnography + Other", "199.85.126.30", "199.85.127.30", "", ""));
+        Collections.sort(defaultDNSEntries);
+    }
 
     public static synchronized void updateTiles(Context context){
         LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG}, "Trying to update Tiles");
@@ -117,7 +138,46 @@ public final class API {
         if (database != null) return;
         database = context.openOrCreateDatabase("data.db", SQLiteDatabase.OPEN_READWRITE, null);
         database.execSQL("CREATE TABLE IF NOT EXISTS Shortcuts(Name TEXT, dns1 TEXT, dns2 TEXT, dns1v6 TEXT, dns2v6 TEXT)");
-        database.execSQL("CREATE TABLE IF NOT EXISTS DNSEntries(Name TEXT, dns1 TEXT, dns2 TEXT, dns1v6 TEXT, dns2v6 TEXT)");
+        database.execSQL("CREATE TABLE IF NOT EXISTS DNSEntries(ID INTEGER PRIMARY KEY AUTOINCREMENT,Name TEXT, dns1 TEXT, dns2 TEXT, dns1v6 TEXT, dns2v6 TEXT)");
+        if(!Preferences.getBoolean(context, "dnsentries_created", false)){
+            List<DNSEntry> prev = loadDNSEntriesFromDatabase(context);
+            defaultDNSEntries.addAll(prev);
+            database.execSQL("DROP TABLE DNSEntries");
+            database.execSQL("CREATE TABLE IF NOT EXISTS DNSEntries(ID INTEGER PRIMARY KEY AUTOINCREMENT,Name TEXT, dns1 TEXT, dns2 TEXT, dns1v6 TEXT, dns2v6 TEXT)");
+            for(DNSEntry entry: defaultDNSEntries){
+                ContentValues values = new ContentValues(5);
+                values.put("Name", entry.getName());
+                values.put("dns1", entry.getDns1());
+                values.put("dns2", entry.getDns2());
+                values.put("dns1v6", entry.getDns1V6());
+                values.put("dns2v6", entry.getDns2V6());
+                database.insert("DNSEntries", null,values);
+            }
+            Preferences.put(context, "dnsentries_created",true);
+        }
+    }
+
+    public static List<API.DNSEntry> loadDNSEntriesFromDatabase(Context context){
+        List<API.DNSEntry> entries = new ArrayList<>();
+        try{
+            SQLiteDatabase database = API.getDatabase(context);
+            Cursor cursor = database.rawQuery("SELECT * FROM DNSEntries", new String[]{});
+
+            if(cursor.moveToFirst()){
+                do{
+                    entries.add(new API.DNSEntry(cursor.getInt(cursor.getColumnIndex("ID")),cursor.getString(cursor.getColumnIndex("Name")), cursor.getString(cursor.getColumnIndex("dns1")), cursor.getString(cursor.getColumnIndex("dns2")),
+                            cursor.getString(cursor.getColumnIndex("dns1v6")), cursor.getString(cursor.getColumnIndex("dns2v6"))));
+                }while(cursor.moveToNext());
+            }
+            cursor.close();
+        }catch (Exception e){
+            //This is here because the table could possibly not exist when creating the table but the entries are still queried
+        }
+        return entries;
+    }
+
+    public static void removeDNSEntry(int ID){
+        database.execSQL("DELETE FROM DNSEntries WHERE ID=" + ID);
     }
 
     public static synchronized void deleteDatabase(Context context){
@@ -139,6 +199,12 @@ public final class API {
         values.put("dns2v6", dns2V6);
         values.put("Name", name);
         database.insert("Shortcuts", null, values);
+    }
+
+    public static int resolveColor(Context context, int attrID){
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(attrID, typedValue, true);
+       return typedValue.data;
     }
 
     public static void createShortcut(Context context, Shortcut shortcut) {
@@ -223,6 +289,49 @@ public final class API {
             if (s == null || s.equals("") || s.split("<<>>").length < 5) return null;
             String[] splt = s.split("<<>>");
             return new Shortcut(splt[4], splt[0], splt[1], splt[2], splt[3]);
+        }
+    }
+
+    public static class DNSEntry implements Comparable<DNSEntry>{
+        private String name, dns1,dns2,dns1V6,dns2V6;
+        private int ID;
+
+        public DNSEntry(int id,String name, String dns1,String dns2, String dns1V6, String dns2V6){
+            this.name = name;
+            this.dns1 =  dns1;
+            this.dns2 = dns2;
+            this.dns1V6 = dns1V6;
+            this.dns2V6 = dns2V6;
+            this.ID = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getDns1() {
+            return dns1;
+        }
+
+        public String getDns2() {
+            return dns2;
+        }
+
+        public String getDns1V6() {
+            return dns1V6;
+        }
+
+        public String getDns2V6() {
+            return dns2V6;
+        }
+
+        public int getID(){
+            return ID;
+        }
+
+        @Override
+        public int compareTo(@NonNull DNSEntry o) {
+            return name.compareTo(o.name);
         }
     }
 }

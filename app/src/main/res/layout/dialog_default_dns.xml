@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:text="@string/default_dns_legal_warning" />
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/defaultDnsDialogList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
