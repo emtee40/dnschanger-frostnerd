@@ -153,13 +153,31 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         public void onBindViewHolder(final ViewHolder holder, int position) {
             if (holder.type == 0){
                 ((CheckBox)holder.contentView.findViewById(R.id.checkbox_whitelist)).setOnCheckedChangeListener(null);
+                ((CheckBox)holder.contentView.findViewById(R.id.deselect_all)).setOnCheckedChangeListener(null);
+                ((CheckBox)holder.contentView.findViewById(R.id.select_all)).setOnCheckedChangeListener(null);
                 ((TextView)holder.contentView.findViewById(R.id.text)).setText(whiteList ? infoTextWhitelist : infoTextBlacklist);
                 ((CheckBox)holder.contentView.findViewById(R.id.checkbox_whitelist)).setChecked(whiteList);
+                ((CheckBox)holder.contentView.findViewById(R.id.deselect_all)).setChecked(currentSelected.size() == 0);
+                ((CheckBox)holder.contentView.findViewById(R.id.select_all)).setChecked(currentSelected.size() == apps.size());
                 ((CheckBox)holder.contentView.findViewById(R.id.checkbox_whitelist)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         whiteList = isChecked;
                         listAdapter.notifyItemChanged(0);
+                    }
+                });
+                ((CheckBox)holder.contentView.findViewById(R.id.deselect_all)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        currentSelected.clear();
+                        notifyItemRangeChanged(0, getItemCount());
+                    }
+                });
+                ((CheckBox)holder.contentView.findViewById(R.id.select_all)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        for(AppEntry entry: apps)currentSelected.add(entry.packageName);
+                        notifyItemRangeChanged(0, getItemCount());
                     }
                 });
             }else{
@@ -183,6 +201,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
                         if(!apply)return;
                         if (isChecked)currentSelected.add(holder.appEntry.packageName);
                         else currentSelected.remove(holder.appEntry.packageName);
+                        listAdapter.notifyItemChanged(0);
                         changed = true;
                     }
                 });
