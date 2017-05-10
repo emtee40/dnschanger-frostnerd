@@ -337,7 +337,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             public boolean onPreferenceClick(Preference preference) {
                 Set<String> apps = Preferences.getStringSet(SettingsActivity.this, "excluded_apps");
                 startActivityForResult(new Intent(SettingsActivity.this, AppSelectionActivity.class).putExtra("apps", Collections.list(Collections.enumeration(apps))).
-                        putExtra("infoText", getString(R.string.excluded_apps_info_text)),REQUEST_EXCLUDE_APPS);
+                        putExtra("infoTextWhitelist", getString(R.string.excluded_apps_info_text_whitelist)).putExtra("infoTextBlacklist", getString(R.string.excluded_apps_info_text_blacklist))
+                        .putExtra("whitelist", Preferences.getBoolean(SettingsActivity.this, "excluded_whitelist",false)),REQUEST_EXCLUDE_APPS);
                 return true;
             }
         });
@@ -625,6 +626,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }else if(requestCode == REQUEST_EXCLUDE_APPS && resultCode == RESULT_OK){
             ArrayList<String> apps = data.getStringArrayListExtra("apps");
             Preferences.put(this, "excluded_apps", new HashSet<String>(apps));
+            Preferences.put(this, "excluded_whitelist", data.getBooleanExtra("whitelist",false));
             if(API.isServiceRunning(SettingsActivity.this)){
                 startService(new Intent(SettingsActivity.this, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true).
                         putExtra(VPNServiceArgument.FLAG_DONT_UPDATE_DNS.getArgument(),true));

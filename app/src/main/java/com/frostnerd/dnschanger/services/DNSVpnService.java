@@ -531,8 +531,14 @@ public class DNSVpnService extends VpnService {
             private Builder applyDisallowed(Builder builder){
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     try{
-                        for(String s: excludedApps){
-                            builder = builder.addDisallowedApplication(s);
+                        if(Preferences.getBoolean(DNSVpnService.this, "excluded_whitelist", false)){
+                            for(String s: excludedApps){
+                                builder = builder.addDisallowedApplication(s);
+                            }
+                        }else{
+                            for(String s: excludedApps){
+                                builder = builder.addAllowedApplication(s);
+                            }
                         }
                     }catch (PackageManager.NameNotFoundException e){
 

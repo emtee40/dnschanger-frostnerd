@@ -46,7 +46,8 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
     private RecyclerView.LayoutManager listLayoutManager;
     private AppListAdapter listAdapter;
     private boolean changed;
-    private String infoText;
+    private String infoTextWhitelist, infoTextBlacklist;
+    private boolean whiteList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,8 +56,9 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         appList = (RecyclerView) findViewById(R.id.app_list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         currentSelected = getIntent() != null && getIntent().hasExtra("apps") ? getIntent().getStringArrayListExtra("apps") : new ArrayList<String>();
-        infoText = getIntent() != null && getIntent().hasExtra("infoText") ? getIntent().getStringExtra("infoText") : null;
-        System.out.println(currentSelected.toString());
+        infoTextWhitelist = getIntent() != null && getIntent().hasExtra("infoTextWhitelist") ? getIntent().getStringExtra("infoTextWhitelist") : null;
+        infoTextBlacklist = getIntent() != null && getIntent().hasExtra("infoTextBlacklist") ? getIntent().getStringExtra("infoTextBlacklist") : null;
+        whiteList = getIntent() != null && getIntent().getBooleanExtra("whitelist", false);
         listLayoutManager = new LinearLayoutManager(this);
         appList.setLayoutManager(listLayoutManager);
         appList.setHasFixedSize(true);
@@ -97,7 +99,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_done || item.getItemId() == android.R.id.home) {
-            setResult(RESULT_OK, new Intent().putExtra("apps", currentSelected));
+            setResult(RESULT_OK, new Intent().putExtra("apps", currentSelected).putExtra("whitelist", whiteList));
             finish();
         }
         return super.onOptionsItemSelected(item);
@@ -150,9 +152,18 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             if (holder.type == 0){
-                ((TextView)holder.contentView.findViewById(R.id.text)).setText(infoText);
+                ((CheckBox)holder.contentView.findViewById(R.id.checkbox_whitelist)).setOnCheckedChangeListener(null);
+                ((TextView)holder.contentView.findViewById(R.id.text)).setText(whiteList ? infoTextWhitelist : infoTextBlacklist);
+                ((CheckBox)holder.contentView.findViewById(R.id.checkbox_whitelist)).setChecked(whiteList);
+                ((CheckBox)holder.contentView.findViewById(R.id.checkbox_whitelist)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        whiteList = isChecked;
+                        listAdapter.notifyItemChanged(0);
+                    }
+                });
             }else{
-                int offSet = infoText != null ? 1 : 0;
+                int offSet = 1;
                 AppEntry entry = searchedApps.get(position - offSet);
                 CheckBox checkBox = (CheckBox) holder.contentView.findViewById(R.id.app_selected_indicator);
                 ((ImageView) holder.contentView.findViewById(R.id.app_image)).setImageDrawable(entry.getIcon());
@@ -181,12 +192,12 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
 
         @Override
         public int getItemViewType(int position) {
-            return (position == 0 && infoText != null) ? 0 : 1;
+            return position == 0 ? 0 : 1;
         }
 
         @Override
         public int getItemCount() {
-            return searchedApps.size() + (infoText != null ? 1 : 0);
+            return searchedApps.size() + 1;
         }
 
         public final class ViewHolder extends RecyclerView.ViewHolder {

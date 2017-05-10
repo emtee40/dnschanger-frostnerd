@@ -147,7 +147,8 @@
     <string name="new_entry">New entry</string>
     <string name="title_exclude_apps">Exclude apps from VPN</string>
     <string name="summary_exclude_apps">Exclude installed apps from using the VPN connection created internally. This won\'t apply the DNS servers to them</string>
-    <string name="excluded_apps_info_text">Each application checked won\'t use the internal VPN. This won\'t apply the DNS servers to them either.</string>
+    <string name="excluded_apps_info_text_whitelist">Only selected applications will use the internal VPN. Apps not selected thus won\'t use the DNS servers set by you</string>
+    <string name="excluded_apps_info_text_blacklist">Each application checked won\'t use the internal VPN. This won\'t apply the DNS servers to them either.</string>
     <string name="title_about">About</string>
     <string name="search">Search</string>
     <string name="title_reset">Reset</string>
@@ -168,4 +169,5 @@
         <item>3</item>
     </string-array>
     <string name="remove">Remove</string>
+    <string name="whitelist">Whitelist</string>
 </resources>
