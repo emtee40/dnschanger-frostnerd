@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,6 +63,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         listLayoutManager = new LinearLayoutManager(this);
         appList.setLayoutManager(listLayoutManager);
         appList.setHasFixedSize(true);
+        ((SimpleItemAnimator) appList.getItemAnimator()).setSupportsChangeAnimations(false);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -152,28 +154,31 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             if (holder.type == 0){
-                ((CheckBox)holder.contentView.findViewById(R.id.checkbox_whitelist)).setOnCheckedChangeListener(null);
-                ((CheckBox)holder.contentView.findViewById(R.id.deselect_all)).setOnCheckedChangeListener(null);
-                ((CheckBox)holder.contentView.findViewById(R.id.select_all)).setOnCheckedChangeListener(null);
+                CheckBox checkboxWhitelist = ((CheckBox)holder.contentView.findViewById(R.id.checkbox_whitelist)),
+                        deselect = ((CheckBox)holder.contentView.findViewById(R.id.deselect_all)),
+                        select = ((CheckBox)holder.contentView.findViewById(R.id.select_all));
+                checkboxWhitelist.setOnCheckedChangeListener(null);
+                deselect.setOnCheckedChangeListener(null);
+                select.setOnCheckedChangeListener(null);
                 ((TextView)holder.contentView.findViewById(R.id.text)).setText(whiteList ? infoTextWhitelist : infoTextBlacklist);
-                ((CheckBox)holder.contentView.findViewById(R.id.checkbox_whitelist)).setChecked(whiteList);
-                ((CheckBox)holder.contentView.findViewById(R.id.deselect_all)).setChecked(currentSelected.size() == 0);
-                ((CheckBox)holder.contentView.findViewById(R.id.select_all)).setChecked(currentSelected.size() == apps.size());
-                ((CheckBox)holder.contentView.findViewById(R.id.checkbox_whitelist)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                checkboxWhitelist.setChecked(whiteList);
+                deselect.setChecked(currentSelected.size() == 0);
+                select.setChecked(currentSelected.size() == apps.size());
+                checkboxWhitelist.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         whiteList = isChecked;
                         listAdapter.notifyItemChanged(0);
                     }
                 });
-                ((CheckBox)holder.contentView.findViewById(R.id.deselect_all)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                deselect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         currentSelected.clear();
                         notifyItemRangeChanged(0, getItemCount());
                     }
                 });
-                ((CheckBox)holder.contentView.findViewById(R.id.select_all)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                select.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         for(AppEntry entry: apps)currentSelected.add(entry.packageName);
