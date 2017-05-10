@@ -379,6 +379,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
         });
+        findPreference("pin_app_shortcut").setOnPreferenceChangeListener(changeListener);
+        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N_MR1){
+            ((PreferenceCategory)findPreference("general_category")).removePreference(findPreference("setting_app_shortcuts_enabled"));
+            ((PreferenceCategory)findPreference("pin_app_shortcut")).removePreference(findPreference("pin_app_shortcut"));
+        }
+        findPreference("setting_app_shortcuts_enabled").setOnPreferenceChangeListener(changeListener);
         ((ListPreference)findPreference("theme")).setDefaultValue(0);
         LogFactory.writeMessage(this, LOG_TAG, "Done with onCreate");
     }
@@ -397,6 +403,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         "(notification/autopause) changed", i = new Intent(SettingsActivity.this, DNSVpnService.class));
                 startService(i);
             }
+            if(key.equals("pin_app_shortcut") || key.equals("setting_app_shortcuts_enabled"))API.updateAppShortcuts(SettingsActivity.this);
             return true;
         }
     };

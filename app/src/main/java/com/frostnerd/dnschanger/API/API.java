@@ -11,10 +11,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ShortcutInfo;
+import android.content.pm.ShortcutManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Icon;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.service.quicksettings.TileService;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -22,6 +27,7 @@ import android.util.TypedValue;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.activities.ShortcutActivity;
 import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
 import com.frostnerd.dnschanger.services.DNSVpnService;
@@ -29,6 +35,7 @@ import com.frostnerd.dnschanger.tiles.TilePause;
 import com.frostnerd.dnschanger.tiles.TileResume;
 import com.frostnerd.dnschanger.tiles.TileStart;
 import com.frostnerd.dnschanger.tiles.TileStop;
+import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.preferences.Preferences;
 
@@ -199,6 +206,47 @@ public final class API {
         values.put("dns2v6", dns2V6);
         values.put("Name", name);
         database.insert("Shortcuts", null, values);
+    }
+
+    public static void updateAppShortcuts(Context context){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N_MR1) {
+            ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
+            if(!Preferences.getBoolean(context, "setting_app_shortcuts_enabled", false)){
+                shortcutManager.removeAllDynamicShortcuts();
+                return;
+            }
+            boolean pinProtected = Preferences.getBoolean(context, "pin_app_shortcut", false);
+            List<ShortcutInfo> shortcutInfos = new ArrayList<>();
+            if(isServiceThreadRunning(context)){
+                Bundle extras1 = new Bundle();
+                extras1.putBoolean("stop_vpn", true);
+                extras1.putBoolean("redirectToService",true);
+                Bundle extras2 = new Bundle();
+                extras2.putBoolean("destroy", true);
+                extras2.putBoolean("redirectToService",true);
+                shortcutInfos.add(new ShortcutInfo.Builder(context, "id1").setShortLabel(context.getString(R.string.tile_pause))
+                        .setLongLabel(context.getString(R.string.tile_pause)).setIcon(Icon.createWithResource(context, R.drawable.ic_stat_pause_dark))
+                        .setIntent(pinProtected ? new Intent(context.getApplicationContext(), PinActivity.class).putExtras(extras1).setAction(StringUtil.randomString(40)) : DNSVpnService.getStopVPNIntent(context.getApplicationContext())).build());
+                shortcutInfos.add(new ShortcutInfo.Builder(context, "id2").setShortLabel(context.getString(R.string.tile_stop))
+                        .setLongLabel(context.getString(R.string.tile_stop)).setIcon(Icon.createWithResource(context, R.drawable.ic_stat_stop_dark))
+                        .setIntent(pinProtected ? new Intent(context.getApplicationContext(), PinActivity.class).putExtras(extras2).setAction(StringUtil.randomString(40)) : DNSVpnService.getDestroyIntent(context.getApplicationContext())).build());
+            }else if(isServiceRunning(context)){
+                Bundle extras = new Bundle();
+                extras.putBoolean("start_vpn", true);
+                extras.putBoolean("redirectToService",true);
+                shortcutInfos.add(new ShortcutInfo.Builder(context, "id3").setShortLabel(context.getString(R.string.tile_resume))
+                        .setLongLabel(context.getString(R.string.tile_resume)).setIcon(Icon.createWithResource(context, R.drawable.ic_stat_resume_dark))
+                        .setIntent(pinProtected ? new Intent(context.getApplicationContext(), PinActivity.class).putExtras(extras).setAction(StringUtil.randomString(40)) : DNSVpnService.getStartVPNIntent(context.getApplicationContext())).build());
+            }else{
+                Bundle extras = new Bundle();
+                extras.putBoolean("start_vpn", true);
+                extras.putBoolean("redirectToService",true);
+                shortcutInfos.add(new ShortcutInfo.Builder(context, "id4").setShortLabel(context.getString(R.string.tile_start)).
+                        setLongLabel(context.getString(R.string.tile_start)).setIcon(Icon.createWithResource(context, R.drawable.ic_stat_resume_dark))
+                        .setIntent(pinProtected ? new Intent(context.getApplicationContext(), PinActivity.class).putExtras(extras).setAction(StringUtil.randomString(40)) : DNSVpnService.getStartVPNIntent(context.getApplicationContext())).build());
+            }
+            shortcutManager.setDynamicShortcuts(shortcutInfos);
+        }
     }
 
     public static int resolveColor(Context context, int attrID){

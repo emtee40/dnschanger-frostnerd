@@ -95,6 +95,11 @@
             android:key="pin_tile"
             android:summary="@string/summary_pin_tile"
             android:title="@string/title_pin_tile" />
+        <CheckBoxPreference
+            android:dependency="setting_pin_enabled"
+            android:key="pin_app_shortcut"
+            android:summary="@string/summary_pin_app_shortcut"
+            android:title="@string/title_pin_app_shortcut" />
         <EditTextPreference
             android:dependency="setting_pin_enabled"
             android:key="pin_value"
@@ -157,6 +162,13 @@
             android:key="setting_ipv6_enabled"
             android:summary="@string/summary_enable_ipv6"
             android:title="@string/title_enable_ipv6" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="setting_app_shortcuts_enabled"
+            android:summary="@string/summary_enable_app_shortcuts"
+            android:title="@string/title_enable_app_shortcuts" />
+
 
         <ListPreference
             android:entries="@array/theme"

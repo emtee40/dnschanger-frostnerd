@@ -172,4 +172,8 @@
     <string name="whitelist">Whitelist</string>
     <string name="select_all">Select all</string>
     <string name="deselect_all">Deselect all</string>
+    <string name="summary_pin_app_shortcut">Ask for the pin when starting/stopping from the app shortcuts</string>
+    <string name="title_pin_app_shortcut">Protect app shortcuts</string>
+    <string name="title_enable_app_shortcuts">Enable app shortcuts</string>
+    <string name="summary_enable_app_shortcuts">Enables app shortcuts. Long click on the apps shortcut in the launcher to open the menu</string>
 </resources>

@@ -273,6 +273,7 @@ public class MainActivity extends AppCompatActivity {
         }
         LogFactory.writeMessage(this, LOG_TAG, "Done with OnCreate");
         Preferences.put(this, "first_run", false);
+        API.updateAppShortcuts(this);
     }
 
     @Override
