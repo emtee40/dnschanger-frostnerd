@@ -316,14 +316,14 @@ public class MainActivity extends AppCompatActivity {
             public void onProviderSelected(String name, String dns1, String dns2, String dns1V6, String dns2V6) {
                 if(settingV6){
                     if(!dns1V6.equals(""))MainActivity.this.dns1.setText(dns1V6);
-                    if(!dns2V6.equals(""))MainActivity.this.dns2.setText(dns2V6);
+                    MainActivity.this.dns2.setText(dns2V6);
                     if(!dns1.equals(""))Preferences.put(MainActivity.this, "dns1", dns1);
-                    if(!dns2.equals(""))Preferences.put(MainActivity.this, "dns2", dns2);
+                    Preferences.put(MainActivity.this, "dns2", dns2);
                 }else{
                     if(!dns1.equals(""))MainActivity.this.dns1.setText(dns1);
-                    if(!dns2.equals(""))MainActivity.this.dns2.setText(dns2);
+                    MainActivity.this.dns2.setText(dns2);
                     if(!dns1V6.equals(""))Preferences.put(MainActivity.this, "dns1-v6", dns1V6);
-                    if(!dns2V6.equals(""))Preferences.put(MainActivity.this, "dns2-v6", dns2V6);
+                    Preferences.put(MainActivity.this, "dns2-v6", dns2V6);
                 }
             }
         });

@@ -223,9 +223,9 @@ public class ConfigureActivity extends AppCompatActivity {
             @Override
             public void onProviderSelected(String name, String dns1, String dns2, String dns1V6, String dns2V6) {
                 ConfigureActivity.this.dns1 = dns1.equals("") ? ConfigureActivity.this.dns1 : dns1;
-                ConfigureActivity.this.dns2 = dns2.equals("") ? ConfigureActivity.this.dns2 : dns2;
+                ConfigureActivity.this.dns2 = dns2;
                 ConfigureActivity.this.dns1V6 = dns1V6.equals("") ? ConfigureActivity.this.dns1V6 : dns1V6;
-                ConfigureActivity.this.dns2V6 = dns2V6.equals("") ? ConfigureActivity.this.dns2V6 : dns2V6;
+                ConfigureActivity.this.dns2V6 = dns2V6;
                 ed_dns1.setText(settingV6 ? dns1V6 : dns1);
                 ed_dns2.setText(settingV6 ? dns2V6 : dns2);
             }
