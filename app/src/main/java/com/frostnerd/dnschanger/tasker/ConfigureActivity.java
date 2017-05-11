@@ -290,7 +290,7 @@ public class ConfigureActivity extends AppCompatActivity {
                 LogFactory.writeMessage(this, LOG_TAG, "Bundle created", resultIntent);
                 setResult(RESULT_OK, resultIntent);
             }else{
-                LogFactory.writeMessage(this, LOG_TAG, "Acttion is other than START");
+                LogFactory.writeMessage(this, LOG_TAG, "Action is other than START");
                 if(ed_name.getText().toString().equals("")){
                     LogFactory.writeMessage(this, LOG_TAG, "Name is emtpy. Configurating cancelled");
                     setResult(RESULT_CANCELED);
