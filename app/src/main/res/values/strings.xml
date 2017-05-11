@@ -178,4 +178,5 @@
     <string name="summary_enable_app_shortcuts">Enables app shortcuts. Long click on the apps shortcut in the launcher to open the menu</string>
     <string name="notification_x_whitelisted">[x] apps whitelisted</string>
     <string name="notification_x_blacklisted">[x] apps blacklisted</string>
+    <string name="default_dns_explain_delete">Long click on an entry to delete it. Click on additional entries to delete them as well.</string>
 </resources>

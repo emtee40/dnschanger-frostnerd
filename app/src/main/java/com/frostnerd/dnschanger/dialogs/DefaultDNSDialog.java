@@ -110,63 +110,74 @@ public class DefaultDNSDialog extends AlertDialog {
     private class DefaultDNSAdapter extends RecyclerView.Adapter<DefaultDNSAdapter.ViewHolder> {
         class ViewHolder extends RecyclerView.ViewHolder{
             private View layout;
+            private int type;
 
-            public ViewHolder(View itemView) {
+            public ViewHolder(View itemView, int type) {
                 super(itemView);
                 this.layout = itemView;
+                this.type = type;
             }
         }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(getLayoutInflater().inflate(R.layout.item_default_dns, parent, false));
+            return new ViewHolder(getLayoutInflater().inflate(viewType == 0 ? R.layout.row_text_cardview : R.layout.item_default_dns, parent, false),viewType);
         }
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.layout.setSelected(false);
-            ((TextView) holder.layout.findViewById(R.id.text)).setText(localEntries.get(position).getName());
-            holder.layout.setLongClickable(true);
-            holder.layout.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    v.setSelected(!v.isSelected());
-                    v.setBackgroundColor(v.isSelected() ? API.resolveColor(getContext(), R.attr.inputElementColor) : API.resolveColor(getContext(), android.R.attr.windowBackground));
-                    if(!removeButtonShown){
-                        getButton(BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
-                        removeButtonShown = true;
-                    }
-                    if(!v.isSelected())removal.remove((API.DNSEntry)v.getTag());
-                    else removal.add((API.DNSEntry) v.getTag());
-                    if(removal.size() == 0){
-                        removeButtonShown = false;
-                        getButton(BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
-                    }
-                    return true;
-                }
-            });
-            holder.layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(removeButtonShown){
+            if(holder.type == 0){
+                ((TextView) holder.layout.findViewById(R.id.text)).setText(getContext().getString(R.string.default_dns_explain_delete));
+            }else{
+                holder.layout.setSelected(false);
+                ((TextView) holder.layout.findViewById(R.id.text)).setText(localEntries.get(position).getName());
+                holder.layout.setLongClickable(true);
+                holder.layout.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
                         v.setSelected(!v.isSelected());
                         v.setBackgroundColor(v.isSelected() ? API.resolveColor(getContext(), R.attr.inputElementColor) : API.resolveColor(getContext(), android.R.attr.windowBackground));
+                        if(!removeButtonShown){
+                            getButton(BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
+                            removeButtonShown = true;
+                        }
                         if(!v.isSelected())removal.remove((API.DNSEntry)v.getTag());
                         else removal.add((API.DNSEntry) v.getTag());
                         if(removal.size() == 0){
                             removeButtonShown = false;
                             getButton(BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
                         }
-                    }else{
-                        dismiss();
-                        API.DNSEntry entry = (API.DNSEntry)v.getTag();
-                        listener.onProviderSelected(entry.getName(), entry.getDns1(), entry.getDns2(), entry.getDns1V6(), entry.getDns2V6());
+                        return true;
                     }
-                }
-            });
-            if(localEntries.get(position).getDescription().equals(""))holder.layout.findViewById(R.id.text2).setVisibility(View.GONE);
-            else ((TextView)holder.layout.findViewById(R.id.text2)).setText(localEntries.get(position).getDescription());
-            holder.layout.setTag(localEntries.get(position));
+                });
+                holder.layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(removeButtonShown){
+                            v.setSelected(!v.isSelected());
+                            v.setBackgroundColor(v.isSelected() ? API.resolveColor(getContext(), R.attr.inputElementColor) : API.resolveColor(getContext(), android.R.attr.windowBackground));
+                            if(!v.isSelected())removal.remove((API.DNSEntry)v.getTag());
+                            else removal.add((API.DNSEntry) v.getTag());
+                            if(removal.size() == 0){
+                                removeButtonShown = false;
+                                getButton(BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
+                            }
+                        }else{
+                            dismiss();
+                            API.DNSEntry entry = (API.DNSEntry)v.getTag();
+                            listener.onProviderSelected(entry.getName(), entry.getDns1(), entry.getDns2(), entry.getDns1V6(), entry.getDns2V6());
+                        }
+                    }
+                });
+                if(localEntries.get(position).getDescription().equals(""))holder.layout.findViewById(R.id.text2).setVisibility(View.GONE);
+                else ((TextView)holder.layout.findViewById(R.id.text2)).setText(localEntries.get(position).getDescription());
+                holder.layout.setTag(localEntries.get(position));
+            }
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return position == 0 ? 0 : 1;
         }
 
         @Override
