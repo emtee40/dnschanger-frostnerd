@@ -271,9 +271,15 @@ public class MainActivity extends AppCompatActivity {
             }).show();
             LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
         }
+        API.updateAppShortcuts(this);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                API.getDatabase(MainActivity.this);
+            }
+        });
         LogFactory.writeMessage(this, LOG_TAG, "Done with OnCreate");
         Preferences.put(this, "first_run", false);
-        API.updateAppShortcuts(this);
     }
 
     @Override
