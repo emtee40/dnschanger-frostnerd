@@ -133,7 +133,7 @@ public class ConfigureActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6, false)) {
+                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6, true)) {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
                     wasEdited = true;
