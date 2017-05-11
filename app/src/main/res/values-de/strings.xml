@@ -177,4 +177,6 @@
     <string name="title_pin_app_shortcut">App shortcuts schützen</string>
     <string name="title_enable_app_shortcuts">App shortcuts aktivieren</string>
     <string name="summary_enable_app_shortcuts">Aktiviert app shortcuts. Klicke im Hauptbildschirm lange auf die App, um dieses Menü zu öffnen.</string>
+    <string name="notification_x_blacklisted">[x] Apps auf der Blacklist</string>
+    <string name="notification_x_whitelisted">[x] Apps auf der Whitelist</string>
 </resources>

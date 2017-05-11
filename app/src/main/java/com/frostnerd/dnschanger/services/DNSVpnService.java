@@ -114,6 +114,7 @@ public class DNSVpnService extends VpnService {
         put("172.31.255.1", 28);
     }};
     private Set<String> excludedApps;
+    private boolean excludedWhitelisted;
 
     private synchronized void clearVars(boolean stopSelf){
         if(variablesCleared)return;
@@ -164,14 +165,19 @@ public class DNSVpnService extends VpnService {
                 setAction(new Random().nextInt(50) + "_action").putExtra("destroy", true).putExtra("redirectToService",true), PendingIntent.FLAG_UPDATE_CURRENT) : PendingIntent.getService(this, 1, new Intent(this, DNSVpnService.class)
                 .setAction(StringUtil.randomString(80) + "_action").putExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(), true), PendingIntent.FLAG_CANCEL_CURRENT);
         notificationBuilder.setContentTitle(getString(threadRunning ? R.string.active : R.string.paused));
+        String excludedAppsText = (excludedApps.size() != 0 ? "\n" +
+                getString(excludedWhitelisted ? R.string.notification_x_whitelisted : R.string.notification_x_blacklisted)
+                        .replace("[x]",""+excludedApps.size()) : "");
         if(Preferences.getBoolean(this, "show_used_dns",false)){
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Showing used DNS servers in notification");
-            notificationBuilder.setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText("DNS 1: " + getCurrentDNS1() + "\nDNS 2: " + getCurrentDNS2() + "\nDNSV6 1: " + getCurrentDNS1V6() + "\nDNSV6 2: " + getCurrentDNS2V6()));
+            notificationBuilder.setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().
+                    bigText("DNS 1: " + getCurrentDNS1() + "\nDNS 2: " + getCurrentDNS2() + "\nDNSV6 1: " +
+                            getCurrentDNS1V6() + "\nDNSV6 2: " + getCurrentDNS2V6() +excludedAppsText));
             notificationBuilder.setSubText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused));
         }else{
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Not showing used DNS Servers in notification");
             notificationBuilder.setSubText("");
-            notificationBuilder.setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().setSummaryText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused)));
+            notificationBuilder.setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().setSummaryText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused) + excludedAppsText));
             notificationBuilder.setContentText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused));
         }
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Posting Notification in 10ms");
@@ -263,6 +269,7 @@ public class DNSVpnService extends VpnService {
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Got StartCommand", intent);
         serviceRunning = intent == null || !intent.getBooleanExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(), false);
         excludedApps = Preferences.getStringSet(this, "excluded_apps");
+        excludedWhitelisted = Preferences.getBoolean(DNSVpnService.this, "excluded_whitelist", false);
         if(intent!=null){
             WidgetUtil.updateAllWidgets(this, BasicWidget.class);
             fixedDNS = intent.hasExtra(VPNServiceArgument.FLAG_FIXED_DNS.getArgument()) ? intent.getBooleanExtra(VPNServiceArgument.FLAG_FIXED_DNS.getArgument(), false) : fixedDNS;
@@ -533,7 +540,7 @@ public class DNSVpnService extends VpnService {
             private Builder applyDisallowed(Builder builder){
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     try{
-                        if(Preferences.getBoolean(DNSVpnService.this, "excluded_whitelist", false)){
+                        if(excludedWhitelisted){
                             for(String s: excludedApps){
                                 builder = builder.addAllowedApplication(s);
                             }
