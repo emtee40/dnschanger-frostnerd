@@ -535,11 +535,11 @@ public class DNSVpnService extends VpnService {
                     try{
                         if(Preferences.getBoolean(DNSVpnService.this, "excluded_whitelist", false)){
                             for(String s: excludedApps){
-                                builder = builder.addDisallowedApplication(s);
+                                builder = builder.addAllowedApplication(s);
                             }
                         }else{
                             for(String s: excludedApps){
-                                builder = builder.addAllowedApplication(s);
+                                builder = builder.addDisallowedApplication(s);
                             }
                         }
                     }catch (PackageManager.NameNotFoundException e){
