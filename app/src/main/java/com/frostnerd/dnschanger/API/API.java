@@ -41,6 +41,7 @@ import com.frostnerd.utils.preferences.Preferences;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -58,6 +59,7 @@ public final class API {
     public static final String LOG_TAG = "[API]";
     private static SQLiteDatabase database;
     private static final List<DNSEntry> defaultDNSEntries = new ArrayList<>();
+    private static final HashMap<String, DNSEntry> additionalDefaultEntries = new HashMap<>();
     static {
         defaultDNSEntries.add(new DNSEntry(0,"", "", "", "", ""));
         defaultDNSEntries.add(new DNSEntry(0,"Google", "8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844"));
@@ -71,6 +73,8 @@ public final class API {
         defaultDNSEntries.add(new DNSEntry(0,"Norton Connectsafe - Security + Pornography", "199.85.126.20", "199.85.127.20", "", ""));
         defaultDNSEntries.add(new DNSEntry(0,"Norton Connectsafe - Security + Portnography + Other", "199.85.126.30", "199.85.127.30", "", ""));
         Collections.sort(defaultDNSEntries);
+
+        additionalDefaultEntries.put("unblockr", new DNSEntry(0,"Unblockr", "178.62.57.141", "139.162.231.18", "", ""));
     }
 
     public static synchronized void updateTiles(Context context){
@@ -160,7 +164,33 @@ public final class API {
                 values.put("dns2v6", entry.getDns2V6());
                 database.insert("DNSEntries", null,values);
             }
+            for(DNSEntry entry: additionalDefaultEntries.values()){
+                ContentValues values = new ContentValues(5);
+                values.put("Name", entry.getName());
+                values.put("dns1", entry.getDns1());
+                values.put("dns2", entry.getDns2());
+                values.put("dns1v6", entry.getDns1V6());
+                values.put("dns2v6", entry.getDns2V6());
+                database.insert("DNSEntries", null,values);
+            }
             Preferences.put(context, "dnsentries_created",true);
+        }else{
+            Preferences.PreferenceGetter getter = Preferences.getter(context);
+            Preferences.PreferenceSetter setter = new Preferences.PreferenceSetter(context);
+            for(String s: additionalDefaultEntries.keySet()){
+                if(!getter.getBoolean("set_" + s,false)){
+                    DNSEntry entry = additionalDefaultEntries.get(s);
+                    ContentValues values = new ContentValues(5);
+                    values.put("Name", entry.getName());
+                    values.put("dns1", entry.getDns1());
+                    values.put("dns2", entry.getDns2());
+                    values.put("dns1v6", entry.getDns1V6());
+                    values.put("dns2v6", entry.getDns2V6());
+                    database.insert("DNSEntries", null,values);
+                    setter.putBoolean("set_" + s, true);
+                }
+            }
+            setter.commit();
         }
     }
 
