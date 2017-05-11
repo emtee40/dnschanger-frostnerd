@@ -42,7 +42,7 @@ public class ErrorDialogActivity extends Activity {
         final String crashReport = getIntent() != null ? getIntent().getStringExtra("stacktrace") : "";
         LogFactory.writeMessage(this, LOG_TAG,"Creating Dialog displaying the user that an error occurred");
         new AlertDialog.Builder(this, ThemeHandler.getDialogTheme(this)).setTitle(getString(R.string.error) + " - " + getString(R.string.app_name)).setMessage(R.string.vpn_error_explain)
-                .setCancelable(false).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                .setCancelable(false).setPositiveButton(R.string.no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 LogFactory.writeMessage(ErrorDialogActivity.this, LOG_TAG,"User choose to cancel action");
