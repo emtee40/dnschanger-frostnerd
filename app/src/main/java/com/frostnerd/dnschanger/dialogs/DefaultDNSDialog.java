@@ -61,7 +61,7 @@ public class DefaultDNSDialog extends AlertDialog {
                         new DNSCreationDialog(context, new DNSCreationDialog.OnCreationFinishedListener() {
                             @Override
                             public void onCreationFinished(String name, String dns1, String dns2, String dns1V6, String dns2V6) {
-                                saveEntryToDatabase(new API.DNSEntry(0,name, dns1, dns2, dns1V6, dns2V6));
+                                saveEntryToDatabase(new API.DNSEntry(0,name, dns1, dns2, dns1V6, dns2V6, ""));
                                 localEntries.clear();
                                 localEntries = API.loadDNSEntriesFromDatabase(context);
                                 list.setAdapter(adapter = new DefaultDNSAdapter());
@@ -96,6 +96,7 @@ public class DefaultDNSDialog extends AlertDialog {
         values.put("dns2", entry.getDns2());
         values.put("dns1v6", entry.getDns1V6());
         values.put("dns2v6", entry.getDns2V6());
+        values.put("description", entry.getDescription());
         database.insert("DNSEntries", null,values);
         return entry;
     }
@@ -163,6 +164,8 @@ public class DefaultDNSDialog extends AlertDialog {
                     }
                 }
             });
+            if(localEntries.get(position).getDescription().equals(""))holder.layout.findViewById(R.id.text2).setVisibility(View.GONE);
+            else ((TextView)holder.layout.findViewById(R.id.text2)).setText(localEntries.get(position).getDescription());
             holder.layout.setTag(localEntries.get(position));
         }
 
