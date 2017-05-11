@@ -32,12 +32,10 @@ import com.frostnerd.utils.preferences.Preferences;
 import com.frostnerd.utils.stats.AppTaskGetter;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.nio.channels.DatagramChannel;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
