@@ -11,7 +11,7 @@
 
         <CheckBoxPreference
             android:id="@+id/setting_show_used_dns"
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:dependency="setting_show_notification"
             android:key="show_used_dns"
             android:summary="@string/summary_show_used_dns"
