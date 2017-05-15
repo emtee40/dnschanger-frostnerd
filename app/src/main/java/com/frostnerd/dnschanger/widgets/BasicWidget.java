@@ -19,6 +19,9 @@ import com.frostnerd.dnschanger.activities.PinActivity;
 /**
  * Copyright Daniel Wolf 2017
  * All rights reserved.
+ *
+ * Terms on usage of my code can be found here: https://git.frostnerd.com/PublicAndroidApps/DnsChanger/blob/master/README.md
+ *
  * <p>
  * development@frostnerd.com
  */

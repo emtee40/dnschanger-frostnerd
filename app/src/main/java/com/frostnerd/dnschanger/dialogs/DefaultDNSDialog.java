@@ -19,7 +19,15 @@ import com.frostnerd.dnschanger.R;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Copyright Daniel Wolf 2017
+ * All rights reserved.
+ *
+ * Terms on usage of my code can be found here: https://git.frostnerd.com/PublicAndroidApps/DnsChanger/blob/master/README.md
+ *
+ * <p>
+ * development@frostnerd.com
+ */
 public class DefaultDNSDialog extends AlertDialog {
     View layout;
     private OnProviderSelectedListener listener;
