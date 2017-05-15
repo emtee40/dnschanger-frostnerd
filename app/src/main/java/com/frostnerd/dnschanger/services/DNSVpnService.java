@@ -412,9 +412,9 @@ public class DNSVpnService extends VpnService {
 
     private void stopThread(){
         LogFactory.writeMessage(this, LOG_TAG, "Trying to stop thread.");
+        runThread = false;
         if (vpnThread != null) {
             LogFactory.writeMessage(this, LOG_TAG, "VPNThread already running. Interrupting");
-            runThread = false;
             vpnThread.interrupt();
         }else{
             threadRunning = false;
