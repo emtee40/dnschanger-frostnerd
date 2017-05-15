@@ -178,7 +178,6 @@ public class DNSVpnService extends VpnService {
             notificationBuilder.setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().setSummaryText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused) + excludedAppsText));
             notificationBuilder.setContentText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused));
         }
-        LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Posting Notification in 10ms");
         LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Updating notification");
         startForeground(NOTIFICATION_ID, notificationBuilder.build());
     }
