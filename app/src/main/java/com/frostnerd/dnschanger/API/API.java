@@ -71,7 +71,7 @@ public final class API {
         defaultDNSEntries.add(new DNSEntry(0, "Alternate", "198.101.242.72", "23.253.163.53", "", "", ""));
         defaultDNSEntries.add(new DNSEntry(0, "Norton Connectsafe - Security", "199.85.126.10", "199.85.127.10", "", "", ""));
         defaultDNSEntries.add(new DNSEntry(0, "Norton Connectsafe - Security + Pornography", "199.85.126.20", "199.85.127.20", "", "", ""));
-        defaultDNSEntries.add(new DNSEntry(0, "Norton Connectsafe - Security + Portnography + Other", "199.85.126.30", "199.85.127.30", "", "", ""));
+        defaultDNSEntries.add(new DNSEntry(0, "Norton Connectsafe - Security + Pornography + Other", "199.85.126.30", "199.85.127.30", "", "", ""));
         Collections.sort(defaultDNSEntries);
 
         additionalDefaultEntries.put("unblockr", new DNSEntry(0, "Unblockr", "178.62.57.141", "139.162.231.18", "", "", "Non-public DNS server for kodi. Visit unblockr.net for more information."));
