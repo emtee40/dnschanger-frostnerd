@@ -147,7 +147,7 @@ public class DNSVpnService extends VpnService {
         if(!serviceRunning)return;
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Updating notification");
         initNotification();
-        if(!Preferences.getBoolean(this, "setting_show_notification",false)){
+        if(!Preferences.getBoolean(this, "setting_show_notification",true)){
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification is disabled");
             stopForeground(true);
             return;
