@@ -128,7 +128,7 @@ public class DNSVpnService extends VpnService {
         serviceRunning = false;
         stopThread();
         if(stateRequestReceiver != null)LocalBroadcastManager.getInstance(this).unregisterReceiver(stateRequestReceiver);
-        stopForeground(true);
+        notificationManager.cancel(NOTIFICATION_ID);
         notificationManager = null;
         notificationBuilder = null;
         stateRequestReceiver = null;
