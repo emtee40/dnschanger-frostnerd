@@ -149,7 +149,7 @@ public class DNSVpnService extends VpnService {
         initNotification();
         if(!Preferences.getBoolean(this, "setting_show_notification",true)){
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification is disabled");
-            stopForeground(true);
+            notificationManager.cancel(NOTIFICATION_ID);
             return;
         }else LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification is enabled");
         boolean pinProtected = Preferences.getBoolean(this, "pin_notification",false);
@@ -179,7 +179,7 @@ public class DNSVpnService extends VpnService {
             notificationBuilder.setContentText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused));
         }
         LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Updating notification");
-        startForeground(NOTIFICATION_ID, notificationBuilder.build());
+        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
     }
 
     private void initNotification(){
