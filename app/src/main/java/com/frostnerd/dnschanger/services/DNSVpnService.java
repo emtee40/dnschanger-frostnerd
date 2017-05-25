@@ -166,7 +166,7 @@ public class DNSVpnService extends VpnService {
         String excludedAppsText = (excludedApps.size() != 0 ? "\n" +
                 getString(excludedWhitelisted ? R.string.notification_x_whitelisted : R.string.notification_x_blacklisted)
                         .replace("[x]",""+excludedApps.size()) : "");
-        if(Preferences.getBoolean(this, "show_used_dns",false)){
+        if(Preferences.getBoolean(this, "show_used_dns",true)){
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Showing used DNS servers in notification");
             notificationBuilder.setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().
                     bigText("DNS 1: " + getCurrentDNS1() + "\nDNS 2: " + getCurrentDNS2() + "\nDNSV6 1: " +
