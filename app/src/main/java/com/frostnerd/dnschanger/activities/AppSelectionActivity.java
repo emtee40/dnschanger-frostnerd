@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.R;
 
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(ThemeHandler.getAppTheme(this));
         setContentView(R.layout.activity_app_select);
         appList = (RecyclerView) findViewById(R.id.app_list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
