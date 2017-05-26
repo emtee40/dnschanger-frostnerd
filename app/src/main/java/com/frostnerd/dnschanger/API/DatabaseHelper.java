@@ -24,19 +24,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final HashMap<String, DNSEntry> additionalDefaultEntries = new HashMap<>();
     private Context context;
     static {
-        defaultDNSEntries.add(new DNSEntry(0, "Google", "8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844", ""));
-        defaultDNSEntries.add(new DNSEntry(0, "OpenDNS", "208.67.222.222", "208.67.220.220", "2620:0:ccc::2", "2620:0:ccd::2", ""));
-        defaultDNSEntries.add(new DNSEntry(0, "Level3", "209.244.0.3", "209.244.0.4", "", "", ""));
-        defaultDNSEntries.add(new DNSEntry(0, "FreeDNS", "37.235.1.174", "37.235.1.177", "", "", ""));
-        defaultDNSEntries.add(new DNSEntry(0, "Yandex", "77.88.8.8", "77.88.8.1", "2a02:6b8::feed:0ff", "2a02:6b8:0:1::feed:0ff", ""));
-        defaultDNSEntries.add(new DNSEntry(0, "Verisign", "64.6.64.6", "64.6.65.6", "2620:74:1b::1:1", "2620:74:1c::2:2", ""));
-        defaultDNSEntries.add(new DNSEntry(0, "Alternate", "198.101.242.72", "23.253.163.53", "", "", ""));
-        defaultDNSEntries.add(new DNSEntry(0, "Norton Connectsafe - Security", "199.85.126.10", "199.85.127.10", "", "", ""));
-        defaultDNSEntries.add(new DNSEntry(0, "Norton Connectsafe - Security + Pornography", "199.85.126.20", "199.85.127.20", "", "", ""));
-        defaultDNSEntries.add(new DNSEntry(0, "Norton Connectsafe - Security + Pornography + Other", "199.85.126.30", "199.85.127.30", "", "", ""));
+        defaultDNSEntries.add(new DNSEntry(0, "Google", "8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844", "",false));
+        defaultDNSEntries.add(new DNSEntry(0, "OpenDNS", "208.67.222.222", "208.67.220.220", "2620:0:ccc::2", "2620:0:ccd::2", "",false));
+        defaultDNSEntries.add(new DNSEntry(0, "Level3", "209.244.0.3", "209.244.0.4", "", "", "",false));
+        defaultDNSEntries.add(new DNSEntry(0, "FreeDNS", "37.235.1.174", "37.235.1.177", "", "", "",false));
+        defaultDNSEntries.add(new DNSEntry(0, "Yandex", "77.88.8.8", "77.88.8.1", "2a02:6b8::feed:0ff", "2a02:6b8:0:1::feed:0ff", "",false));
+        defaultDNSEntries.add(new DNSEntry(0, "Verisign", "64.6.64.6", "64.6.65.6", "2620:74:1b::1:1", "2620:74:1c::2:2", "",false));
+        defaultDNSEntries.add(new DNSEntry(0, "Alternate", "198.101.242.72", "23.253.163.53", "", "", "",false));
+        defaultDNSEntries.add(new DNSEntry(0, "Norton Connectsafe - Security", "199.85.126.10", "199.85.127.10", "", "", "",false));
+        defaultDNSEntries.add(new DNSEntry(0, "Norton Connectsafe - Security + Pornography", "199.85.126.20", "199.85.127.20", "", "", "",false));
+        defaultDNSEntries.add(new DNSEntry(0, "Norton Connectsafe - Security + Pornography + Other", "199.85.126.30", "199.85.127.30", "", "", "",false));
         Collections.sort(defaultDNSEntries);
 
-        additionalDefaultEntries.put("unblockr", new DNSEntry(0, "Unblockr", "178.62.57.141", "139.162.231.18", "", "", "Non-public DNS server for kodi. Visit unblockr.net for more information."));
+        additionalDefaultEntries.put("unblockr", new DNSEntry(0, "Unblockr", "178.62.57.141", "139.162.231.18", "", "", "Non-public DNS server for kodi. Visit unblockr.net for more information.",false));
     }
     private static final String DATABASE_NAME = "data";
     private static final int DATABASE_VERSION = 1;
@@ -84,7 +84,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        if(oldVersion < 2){
+            db.execSQL("ALTER TABLE DNSEntries ADD COLUMN CustomEntry BOOLEAN DEFAULT ''");
+        }
     }
 
     @Override
@@ -130,6 +132,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("dns1v6", entry.getDns1V6());
         values.put("dns2v6", entry.getDns2V6());
         values.put("description", entry.getDescription());
+        values.put("CustomEntry", entry.isCustomEntry());
         getWritableDatabase().insert("DNSEntries", null, values);
     }
 
@@ -171,7 +174,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 do {
                     entries.add(new DNSEntry(cursor.getInt(cursor.getColumnIndex("ID")), cursor.getString(cursor.getColumnIndex("Name")), cursor.getString(cursor.getColumnIndex("dns1")), cursor.getString(cursor.getColumnIndex("dns2")),
                             cursor.getString(cursor.getColumnIndex("dns1v6")), cursor.getString(cursor.getColumnIndex("dns2v6")),
-                            cursor.getString(cursor.getColumnIndex("description"))));
+                            cursor.getString(cursor.getColumnIndex("description")), cursor.getInt(cursor.getColumnIndex("CustomEntry")) == 1));
                 } while (cursor.moveToNext());
             }
             cursor.close();

@@ -189,7 +189,7 @@ public final class API {
                 do {
                     entries.add(new DNSEntry(cursor.getInt(cursor.getColumnIndex("ID")), cursor.getString(cursor.getColumnIndex("Name")), cursor.getString(cursor.getColumnIndex("dns1")), cursor.getString(cursor.getColumnIndex("dns2")),
                             cursor.getString(cursor.getColumnIndex("dns1v6")), cursor.getString(cursor.getColumnIndex("dns2v6")),
-                            cursor.getString(cursor.getColumnIndex("description"))));
+                            cursor.getString(cursor.getColumnIndex("description")), true));
                 } while (cursor.moveToNext());
             }
             cursor.close();
