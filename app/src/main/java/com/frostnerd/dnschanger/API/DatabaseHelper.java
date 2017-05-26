@@ -50,9 +50,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context, List<DNSEntry> entries){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        defaultDNSEntries.clear();
-        additionalDefaultEntries.clear();
-        defaultDNSEntries.addAll(entries);
+        if(entries.size() != 0){
+            defaultDNSEntries.clear();
+            additionalDefaultEntries.clear();
+            defaultDNSEntries.addAll(entries);
+        }
         this.context = context;
     }
 
