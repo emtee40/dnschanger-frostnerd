@@ -333,7 +333,7 @@ public class ConfigureActivity extends AppCompatActivity {
             getApplicationContext().sendBroadcast(addIntent);
             setResult(RESULT_OK);
             LogFactory.writeMessage(this, LOG_TAG, "Shortcut added to Launcher");
-            API.onShortcutCreated(this, dns1, dns2, dns1V6, dns2V6, ed_name.getText().toString());
+            API.getDBHelper(this).saveShortcut(dns1, dns2, dns1V6, dns2V6, ed_name.getText().toString());
         }
         super.finish();
     }

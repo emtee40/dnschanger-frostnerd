@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.frostnerd.dnschanger.API.API;
+import com.frostnerd.dnschanger.API.Shortcut;
 import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.API.VPNServiceArgument;
 import com.frostnerd.dnschanger.BuildConfig;
@@ -467,7 +468,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     private void exportSettings(final boolean exportShortcuts){
         LogFactory.writeMessage(SettingsActivity.this, new String[]{LOG_TAG, "[EXPORTSETTINGS]"}, "Exporting settings. Showing chooser dialog.");
-        FileChooserDialog dialog = new FileChooserDialog(SettingsActivity.this, true, FileChooserDialog.SelectionMode.DIR);
+        FileChooserDialog dialog = new FileChooserDialog(SettingsActivity.this, true, FileChooserDialog.SelectionMode.DIR, ThemeHandler.getDialogTheme(this));
         dialog.setShowFiles(false);
         dialog.setShowDirs(true);
         dialog.setNavigateToLastPath(false);
@@ -496,9 +497,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     writer.flush();
                     if(exportShortcuts){
                         LogFactory.writeMessage(SettingsActivity.this, new String[]{LOG_TAG, "[EXPORTSETTINGS]"}, "Exporting shortcuts aswell");
-                        API.Shortcut[] shortcuts = API.getShortcutsFromDatabase(SettingsActivity.this);
+                        Shortcut[] shortcuts = API.getDBHelper(SettingsActivity.this).getShortcuts();
                         writer.write("\n");
-                        for(API.Shortcut shortcut: shortcuts){
+                        for(Shortcut shortcut: shortcuts){
                             writer.write("'" + shortcut.toString() + "'\n");
                         }
                         LogFactory.writeMessage(SettingsActivity.this, new String[]{LOG_TAG, "[EXPORTSETTINGS]"}, "Flushing shortcut data");

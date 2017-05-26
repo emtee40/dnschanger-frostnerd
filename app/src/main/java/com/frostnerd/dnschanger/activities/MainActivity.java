@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                API.getDatabase(MainActivity.this);
+                API.getDBHelper(MainActivity.this).getReadableDatabase();
             }
         });
         LogFactory.writeMessage(this, LOG_TAG, "Done with OnCreate");
