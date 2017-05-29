@@ -60,7 +60,7 @@ public class DNSVpnService extends VpnService {
     private final int NOTIFICATION_ID = 112;
     private String dns1,dns2,dns1_v6,dns2_v6, stopReason, currentDNS1, currentDNS2, currentDNS1V6, currentDNS2V6;
     private Vector<Runnable> afterThreadStop = new Vector<>();
-    private boolean fixedDNS = false, startedWithTasker = false, autoPaused = false, runThread = true, variablesCleared = false;
+    private boolean fixedDNS = false, startedWithTasker = false, autoPaused = false, runThread = true, variablesCleared = false, threadInWhile = false;
     private BroadcastReceiver stateRequestReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -414,7 +414,7 @@ public class DNSVpnService extends VpnService {
         runThread = false;
         if (vpnThread != null) {
             LogFactory.writeMessage(this, LOG_TAG, "VPNThread already running. Interrupting");
-            vpnThread.interrupt();
+            if(threadInWhile)vpnThread.interrupt();
         }else{
             threadRunning = false;
             LogFactory.writeMessage(this, LOG_TAG, "VPNThread not running. No need to interrupt.");
@@ -478,6 +478,7 @@ public class DNSVpnService extends VpnService {
                             int counter = 0;
                             try {
                                 LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "VPN Thread going into while loop");
+                                threadInWhile = true;
                                 if(autoPauseApps != null && autoPauseApps.size() != 0){
                                     while (runThread) {
                                         if(counter >= 4 && autoPauseApps.size() != 0){
@@ -496,6 +497,7 @@ public class DNSVpnService extends VpnService {
                                         Thread.sleep(250);
                                     }
                                 }
+                                threadInWhile = false;
                                 LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "VPN Thread reached end of while loop. Run: " + runThread);
                                 break;
                             } catch (InterruptedException e2) {
@@ -562,6 +564,7 @@ public class DNSVpnService extends VpnService {
             }
 
             private synchronized void clearVars(){
+                threadInWhile = false;
                 if(tunnelSocket != null && !tunnelSocket.isClosed()){
                     tunnelSocket.disconnect();
                     tunnelSocket.close();
