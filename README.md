@@ -1,6 +1,3 @@
- ![Build Status](https://ci.gitlab.com/projects/<project number>/status.png?ref=master)
- 
-
 This is the source code for my app DNS Changer, which can be found here: https://play.google.com/store/apps/details?id=com.frostnerd.dnschanger<br><br>
 
 
