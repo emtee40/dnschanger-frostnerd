@@ -68,7 +68,7 @@ public class DefaultDNSDialog extends AlertDialog {
                         new DNSCreationDialog(context, new DNSCreationDialog.OnCreationFinishedListener() {
                             @Override
                             public void onCreationFinished(String name, String dns1, String dns2, String dns1V6, String dns2V6) {
-                                API.getDBHelper(context).saveDNSEntry(new DNSEntry(0,name, dns1, dns2, dns1V6, dns2V6, ""));
+                                API.getDBHelper(context).saveDNSEntry(new DNSEntry(0,name, dns1, dns2, dns1V6, dns2V6, "",true));
                                 localEntries.clear();
                                 localEntries = API.getDBHelper(context).getDNSEntries();
                                 list.setAdapter(adapter = new DefaultDNSAdapter());
