@@ -15,8 +15,6 @@ stages:
 
 build:
   stage: build
-  tags:
-    - android
   script:
     - ./gradlew assembleDebug --stacktrace
   artifacts:
