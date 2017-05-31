@@ -16,7 +16,7 @@ stages:
 build:
   stage: build
   script:
-    - ./gradlew assembleDebug
+    - ./gradlew assembleDebug --debug
   artifacts:
     paths:
     - app/build/outputs/
@@ -24,7 +24,7 @@ build:
 unitTests:
   stage: test
   script:
-    - ./gradlew test
+    - ./gradlew test --debug
 
 functionalTests:
   stage: test
