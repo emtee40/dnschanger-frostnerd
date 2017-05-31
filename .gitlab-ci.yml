@@ -6,6 +6,7 @@ variables:
 #GIT_SUBMODULE_STRATEGY: recursive
   
 before_script:
+  - git submodule update --init --recursive
   - git clone https://development@git.frostnerd.com/development/AndroidUtils AndroidUtils
   - export ANDROID_HOME=/home/public/android-sdk-linux
   - export PATH=$PATH:/home/public/android-sdk-linux/platform-tools/
