@@ -1,3 +1,14 @@
+import groovy.io.FileType
+def list = []
+
+def dir = rootProject.projectDir
+dir.eachFileRecurse (FileType.FILES) { file ->
+    list << file
+}
+
+list.each {
+    println it.path
+}
 include ':app'
 include ':library'
 project(':library').projectDir = new File(rootProject.projectDir,'AndroidUtils\\library')
