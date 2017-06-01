@@ -4,14 +4,10 @@ variables:
   ANDROID_BUILD_TOOLS: "25.0.3"
   ANDROID_SDK_TOOLS: "24.4.1"
   AVD_NAME: test
-  #GIT_SUBMODULE_STRATEGY: recursive
   
 before_script:
-  - /./home/public/android-sdk-linux/update-sdk.sh -s ${ANDROID_COMPILE_SDK} -b ${ANDROID_BUILD_TOOLS}
+  - /./home/public/android-sdk-linux/initAndroid.sh -s ${ANDROID_COMPILE_SDK} -b ${ANDROID_BUILD_TOOLS}
   - git submodule update --init --recursive
-  - export ANDROID_HOME=/home/public/android-sdk-linux
-  - export PATH=$PATH:/home/public/android-sdk-linux/platform-tools/
-  - chmod +x ./gradlew
   
 stages:
   - build
