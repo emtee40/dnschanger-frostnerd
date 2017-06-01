@@ -33,7 +33,7 @@ functionalTests:
   script:
     - echo no | /home/public/android-sdk-linux/tools/android create avd -n test -t android-${ANDROID_COMPILE_SDK} --abi google_apis/x86
     - /home/public/android-sdk-linux/tools/emulator64-x86 -avd test -no-window -no-audio &
-    - ./android-wait-for-emulator
+    - ./home/public/android-sdk-linux/wait-for-emulator.sh
     - adb shell input keyevent 82
     - ./gradlew cAT
   artifacts:
