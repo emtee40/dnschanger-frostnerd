@@ -32,7 +32,7 @@ unitTests:
 functionalTests:
   stage: test
   script:
-    - if [ ! -a `~/.android/${AVD_NAME}.ini`] then echo no | /home/public/android-sdk-linux/tools/android create avd -n ${AVD_NAME} -t android-${ANDROID_COMPILE_SDK} --abi google_apis/x86 --force fi
+    - if [ ! -a `~/.android/${AVD_NAME}.ini`]; then echo no | /home/public/android-sdk-linux/tools/android create avd -n ${AVD_NAME} -t android-${ANDROID_COMPILE_SDK} --abi google_apis/x86; fi
     - /home/public/android-sdk-linux/tools/emulator64-x86 -avd test -no-window -no-audio &
     - ./home/public/android-sdk-linux/wait-for-emulator.sh
     - adb shell input keyevent 82
