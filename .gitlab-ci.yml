@@ -7,6 +7,7 @@ variables:
   #GIT_SUBMODULE_STRATEGY: recursive
   
 before_script:
+  - /./home/public/android-sdk-linux/update-sdk.sh -s ${ANDROID_COMPILE_SDK} -b ${ANDROID_BUILD_TOOLS}
   - git submodule update --init --recursive
   - export ANDROID_HOME=/home/public/android-sdk-linux
   - export PATH=$PATH:/home/public/android-sdk-linux/platform-tools/
