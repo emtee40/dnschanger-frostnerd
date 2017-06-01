@@ -10,5 +10,6 @@ list.each {
     println it.path
 }
 include ':app'
-include ':library'
-project(':library').projectDir = new File(rootProject.projectDir,'AndroidUtils\\library')
+include ':AndroidUtils:library'
+include ':AndroidUtils'
+//project(':AndroidUtils').projectDir = new File(rootProject.projectDir,'AndroidUtils')
