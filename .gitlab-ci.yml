@@ -6,7 +6,7 @@ variables:
   AVD_NAME: test
   
 before_script:
-  - /./home/public/android-sdk-linux/initAndroid.sh -s ${ANDROID_COMPILE_SDK} -b ${ANDROID_BUILD_TOOLS}
+  - source /home/public/android-sdk-linux/initAndroid.sh -s ${ANDROID_COMPILE_SDK} -b ${ANDROID_BUILD_TOOLS}
   - git submodule update --init --recursive
   
 stages:
