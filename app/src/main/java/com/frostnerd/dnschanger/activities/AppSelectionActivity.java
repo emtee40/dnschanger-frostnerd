@@ -1,9 +1,12 @@
 package com.frostnerd.dnschanger.activities;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -49,7 +52,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
     private AppListAdapter listAdapter;
     private boolean changed;
     private String infoTextWhitelist, infoTextBlacklist;
-    private boolean whiteList;
+    private boolean whiteList, onlyInternet;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +61,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         setContentView(R.layout.activity_app_select);
         appList = (RecyclerView) findViewById(R.id.app_list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        onlyInternet = getIntent() != null && getIntent().getBooleanExtra("onlyInternet",false);
         currentSelected = getIntent() != null && getIntent().hasExtra("apps") ? getIntent().getStringArrayListExtra("apps") : new ArrayList<String>();
         infoTextWhitelist = getIntent() != null && getIntent().hasExtra("infoTextWhitelist") ? getIntent().getStringExtra("infoTextWhitelist") : null;
         infoTextBlacklist = getIntent() != null && getIntent().hasExtra("infoTextBlacklist") ? getIntent().getStringExtra("infoTextBlacklist") : null;
@@ -131,7 +135,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
             for (ApplicationInfo packageInfo : packages) {
                 entry = new AppEntry(getPackageManager(), packageInfo);
                 //if (!entry.isSystemApp()) apps.add(entry);
-                apps.add(entry);
+                if(!onlyInternet || entry.hasPermission(Manifest.permission.INTERNET))apps.add(entry);
             }
             filter("");
         }
@@ -271,6 +275,32 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         @Override
         public int compareTo(@NonNull AppEntry o) {
             return title.compareTo(o.title);
+        }
+
+        public boolean hasPermission(String s){
+            try {
+                PackageInfo info = getPackageManager().getPackageInfo(packageName, 0);
+                String[] permissions = info.requestedPermissions;
+                for(int i = 0; i < permissions.length; i++){
+                    if(info.requestedPermissions[i].equals(s) && isPermissionGranted(info, i))return true;
+                }
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+        private boolean isPermissionGranted(PackageInfo info, String permission){
+            for(int i = 0; i < info.requestedPermissions.length; i++){
+                if(info.requestedPermissions[i].equals(permission)) {
+                    return Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN || (info.requestedPermissionsFlags[i] & PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0;
+                }
+            }
+            return false;
+        }
+
+        private boolean isPermissionGranted(PackageInfo info, int pos){
+            return Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN || (info.requestedPermissionsFlags[pos] & PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0;
         }
     }
 }

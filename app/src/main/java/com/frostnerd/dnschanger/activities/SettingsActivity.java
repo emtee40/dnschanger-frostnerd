@@ -339,7 +339,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 Set<String> apps = Preferences.getStringSet(SettingsActivity.this, "excluded_apps");
                 startActivityForResult(new Intent(SettingsActivity.this, AppSelectionActivity.class).putExtra("apps", Collections.list(Collections.enumeration(apps))).
                         putExtra("infoTextWhitelist", getString(R.string.excluded_apps_info_text_whitelist)).putExtra("infoTextBlacklist", getString(R.string.excluded_apps_info_text_blacklist))
-                        .putExtra("whitelist", Preferences.getBoolean(SettingsActivity.this, "excluded_whitelist",false)),REQUEST_EXCLUDE_APPS);
+                        .putExtra("whitelist", Preferences.getBoolean(SettingsActivity.this, "excluded_whitelist",false)).putExtra("onlyInternet",true),REQUEST_EXCLUDE_APPS);
                 return true;
             }
         });
