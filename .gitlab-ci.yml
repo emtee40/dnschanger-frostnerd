@@ -3,15 +3,16 @@ variables:
   ANDROID_COMPILE_SDK: "25"
   ANDROID_BUILD_TOOLS: "25.0.3"
   ANDROID_SDK_TOOLS: "24.4.1"
+  AVD_NAME: test
   
 before_script:
-  - export ANDROID_HOME=/home/public/android-sdk-linux
-  - export PATH=$PATH:/home/public/android-sdk-linux/platform-tools/
-  - chmod +x ./gradlew
+  - source /home/public/android-sdk-linux/initAndroid.sh -s ${ANDROID_COMPILE_SDK} -b ${ANDROID_BUILD_TOOLS}
+  - git submodule update --init --recursive
   
 stages:
   - build
   - test
+  - webdeploy
 
 build:
   stage: build
@@ -24,19 +25,21 @@ build:
 unitTests:
   stage: test
   script:
-    - ./gradlew test --stacktrace
+    - ./gradlew test
+    
+upload:
+    stage: webdeploy
+    script:
+        - cp -f app/build/outputs/apk/app-debug.apk /var/www/frostnerd/download/appbuilds/dnschanger/ci/app-debug.apk
 
-functionalTests:
-  stage: test
-  script:
-    - wget --quiet --output-document=android-wait-for-emulator https://raw.githubusercontent.com/travis-ci/travis-cookbooks/0f497eb71291b52a703143c5cd63a217c8766dc9/community-cookbooks/android-sdk/files/default/android-wait-for-emulator
-    - chmod +x android-wait-for-emulator
-    - echo y | android-sdk-linux/tools/android --silent update sdk --no-ui --all --filter sys-img-x86-google_apis-${ANDROID_COMPILE_SDK}
-    - echo no | android-sdk-linux/tools/android create avd -n test -t android-${ANDROID_COMPILE_SDK} --abi google_apis/x86
-    - android-sdk-linux/tools/emulator64-x86 -avd test -no-window -no-audio &
-    - ./android-wait-for-emulator
-    - adb shell input keyevent 82
-    - ./gradlew cAT
-  artifacts:
-    paths:
-    - app/build/reports/androidTests/
+#functionalTests:
+#  stage: test
+#  script:
+#    - if [ ! -a `~/.android/avd/${AVD_NAME}.ini`]; then echo no | /home/public/android-sdk-linux/tools/android create avd -n ${AVD_NAME} -t android-${ANDROID_COMPILE_SDK} --abi google_apis/x86; fi
+#    - /home/public/android-sdk-linux/tools/emulator64-x86 -avd test -no-window -no-audio &
+#    - /./home/public/android-sdk-linux/wait-for-emulator.sh
+#    - adb shell input keyevent 82
+#    - ./gradlew cAT
+#  artifacts:
+#    paths:
+#    - app/build/reports/androidTests/
