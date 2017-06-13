@@ -87,7 +87,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         findPreference("setting_disable_netchange").setOnPreferenceChangeListener(changeListener);
         findPreference("notification_on_stop").setOnPreferenceChangeListener(changeListener);
         findPreference("shortcut_click_again_disable").setOnPreferenceChangeListener(changeListener);
-        findPreference("setting_ipv6_enabled").setOnPreferenceChangeListener(changeListener);
         findPreference("shortcut_click_override_settings").setOnPreferenceChangeListener(changeListener);
         findPreference("pin_value").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -387,6 +386,30 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }else findPreference("setting_app_shortcuts_enabled").setOnPreferenceChangeListener(changeListener);
         ((ListPreference)findPreference("theme")).setDefaultValue(0);
         LogFactory.writeMessage(this, LOG_TAG, "Done with onCreate");
+        final CheckBoxPreference v4Enabled = (CheckBoxPreference)  findPreference("setting_ipv4_enabled"),
+                v6Enabled = (CheckBoxPreference)findPreference("setting_ipv6_enabled");
+        v4Enabled.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                boolean val = (boolean)newValue;
+                v6Enabled.setEnabled(val);
+                startService(new Intent(SettingsActivity.this, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true).
+                        putExtra(VPNServiceArgument.FLAG_DONT_UPDATE_DNS.getArgument(),true));
+                return true;
+            }
+        });
+        v6Enabled.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                boolean val = (boolean)newValue;
+                v4Enabled.setEnabled(val);
+                startService(new Intent(SettingsActivity.this, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true).
+                        putExtra(VPNServiceArgument.FLAG_DONT_UPDATE_DNS.getArgument(),true));
+                return true;
+            }
+        });
+        v4Enabled.setEnabled(v6Enabled.isEnabled());
+        v6Enabled.setEnabled(v4Enabled.isEnabled());
     }
 
     private Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {

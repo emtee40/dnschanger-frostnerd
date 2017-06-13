@@ -285,6 +285,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        settingV6 = !API.isIPv4Enabled(this) || (API.isIPv6Enabled(this) && settingV6);
         LogFactory.writeMessage(this, LOG_TAG, "Got OnResume");
         LogFactory.writeMessage(this, LOG_TAG, "Sending ServiceStateRequest as broadcast");
         vpnRunning = API.isServiceRunning(this);
@@ -415,7 +416,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(API.isIPv6Enabled(this) ? (settingV6 ? R.menu.menu_main_v6 : R.menu.menu_main) : R.menu.menu_main_no_ipv6,menu);
+        getMenuInflater().inflate(API.isIPv6Enabled(this) ? (API.isIPv4Enabled(this) ? ((settingV6 ? R.menu.menu_main_v6 : R.menu.menu_main)) : R.menu.menu_main_no_ipv6) : R.menu.menu_main_no_ipv6,menu);
         return super.onCreateOptionsMenu(menu);
     }
 

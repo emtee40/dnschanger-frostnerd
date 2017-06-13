@@ -159,6 +159,12 @@
 
         <CheckBoxPreference
             android:defaultValue="true"
+            android:key="setting_ipv4_enabled"
+            android:summary="@string/summary_enable_ipv4"
+            android:title="@string/title_enable_ipv4" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
             android:key="setting_ipv6_enabled"
             android:summary="@string/summary_enable_ipv6"
             android:title="@string/title_enable_ipv6" />

@@ -437,7 +437,8 @@ public class DNSVpnService extends VpnService {
                 runThread = true;
                 Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
                 if(notificationBuilder != null) notificationBuilder.setWhen(System.currentTimeMillis());
-                boolean ipv6Enabled = Preferences.getBoolean(DNSVpnService.this, "setting_ipv6_enabled", true);
+                boolean ipv6Enabled = Preferences.getBoolean(DNSVpnService.this, "setting_ipv6_enabled", true),
+                ipv4Enabled = Preferences.getBoolean(DNSVpnService.this, "setting_ipv4_enabled", true);
                 try {
                     LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying " + addresses.size() + " different addresses before passing any thrown exception to the upper layer");
                     for(String address: addresses.keySet()){
@@ -448,10 +449,11 @@ public class DNSVpnService extends VpnService {
                             addressIndex++;
                             //builder = new Builder();
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Creating Tunnel interface");
-                            builder = builder.setSession("DnsChanger").addAddress(address, addresses.get(address));
+                            builder = builder.setSession("DnsChanger");
+                            if(ipv4Enabled)builder = builder.addAddress(address, addresses.get(address));
                             if(ipv6Enabled) builder = builder.addAddress(NetworkUtil.randomLocalIPv6Address(),48);
-                            if(dns1 != null && !dns1.equals(""))builder = builder.addDnsServer(dns1);
-                            if(dns2 != null && !dns2.equals(""))builder = builder.addDnsServer(dns2);
+                            if(ipv4Enabled && dns1 != null && !dns1.equals(""))builder = builder.addDnsServer(dns1);
+                            if(ipv4Enabled && dns2 != null && !dns2.equals(""))builder = builder.addDnsServer(dns2);
                             if(ipv6Enabled && dns1_v6 != null && !dns1_v6.equals(""))builder = builder.addDnsServer(dns1_v6);
                             if(ipv6Enabled && dns2_v6 != null && !dns2_v6.equals(""))builder = builder.addDnsServer(dns2_v6);
                             builder = applyDisallowed(builder);

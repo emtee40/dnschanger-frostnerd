@@ -141,12 +141,16 @@ public final class API {
         return Preferences.getBoolean(context, "setting_ipv6_enabled", true);
     }
 
+    public static boolean isIPv4Enabled(Context context) {
+        return Preferences.getBoolean(context, "setting_ipv4_enabled", true);
+    }
+
     public static String getDNS1(Context context) {
-        return Preferences.getString(context, "dns1", "8.8.8.8");
+        return isIPv4Enabled(context) ? Preferences.getString(context, "dns1", "8.8.8.8") : "";
     }
 
     public static String getDNS2(Context context) {
-        return Preferences.getString(context, "dns2", "8.8.4.4");
+        return isIPv4Enabled(context) ? Preferences.getString(context, "dns2", "8.8.4.4") : "";
     }
 
     public static String getDNS1V6(Context context) {
