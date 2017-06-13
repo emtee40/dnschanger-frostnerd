@@ -31,7 +31,6 @@ import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -279,8 +278,9 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
 
         public boolean hasPermission(String s){
             try {
-                PackageInfo info = getPackageManager().getPackageInfo(packageName, 0);
+                PackageInfo info = getPackageManager().getPackageInfo(packageName, PackageManager.GET_PERMISSIONS);
                 String[] permissions = info.requestedPermissions;
+                if(permissions == null)return false;
                 for(int i = 0; i < permissions.length; i++){
                     if(info.requestedPermissions[i].equals(s) && isPermissionGranted(info, i))return true;
                 }
