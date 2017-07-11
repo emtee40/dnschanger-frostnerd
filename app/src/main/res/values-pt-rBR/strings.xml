@@ -76,7 +76,7 @@
     <string name="title_pin_app">Proteger App</string>
     <string name="summary_pin_app">Solicitar PIN ao iniciar o app</string>
     <string name="title_category_pin">Proteção PIN</string>
-    <string name="summary_version">Versão [[version]] ([[code]])\n\n© Daniel Wolf 2017\nTodos os direitos reservados</string>
+    <string name="summary_version">Versão [[version]] ([[code]])\n\n© Daniel Wolf 2017\nTodos os direitos reservados\n\nTradução brasileira de Lukinhas</string>
     <string name="usage_stats_info_text">Para pausar o DNS Changer automaticamente quando um determinado aplicativo está na frente, este app precisa acessar dados de uso. \n\nNa próxima janela, por favor, conceda DNS Changer acessar esses dados ou então você não poderá usar essa configuração.\n\n\nNão são solicitados dados, exceto para apps em execução. Nenhum dado é salvo ou transmitido.\nO código-fonte está disponível publicamente em https://git.frostnerd.com/PublicAndroidApps/DnsChanger se você quer ter certeza de si mesmo.</string>
     <string name="title_remove_usage_data">Remover Acesso aos Dados de Uso</string>
     <string name="summary_remove_usage_data">O acesso aos dados de uso foi concedido. Clique aqui para revogar essa permissão.</string>
