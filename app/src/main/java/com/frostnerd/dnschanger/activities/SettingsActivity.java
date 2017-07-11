@@ -397,11 +397,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 v6Enabled.setEnabled(val);
-                                startService(new Intent(SettingsActivity.this, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true).
-                                        putExtra(VPNServiceArgument.FLAG_DONT_UPDATE_DNS.getArgument(),true));
+                                if(API.isServiceRunning(SettingsActivity.this))startService(new Intent(SettingsActivity.this, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true));
                                 v4Enabled.setChecked(val);
                             }
                         }).setTitle(R.string.warning).setMessage(R.string.warning_disabling_v4).show();
+                else if(API.isServiceRunning(SettingsActivity.this)){
+                    startService(new Intent(SettingsActivity.this, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true));
+                }
                 return val;
             }
         });
@@ -416,7 +418,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 boolean val = (boolean)newValue;
                 v4Enabled.setEnabled(val);
-                startService(new Intent(SettingsActivity.this, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true).
+                if(API.isServiceRunning(SettingsActivity.this))startService(new Intent(SettingsActivity.this, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true).
                         putExtra(VPNServiceArgument.FLAG_DONT_UPDATE_DNS.getArgument(),true));
                 return true;
             }
