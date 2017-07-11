@@ -26,7 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.API.API;
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton importButton;
     private View running_indicator;
     private DefaultDNSDialog defaultDnsDialog;
-    private LinearLayout wrapper;
+    private ScrollView wrapper;
     private boolean settingV6 = false;
     private final int REQUEST_SETTINGS = 13;
 
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
         connectionText = (TextView)findViewById(R.id.connection_status_text);
         rate = (Button)findViewById(R.id.rate);
         info = (Button)findViewById(R.id.dnsInfo);
-        wrapper = (LinearLayout)findViewById(R.id.activity_main);
+        wrapper = (ScrollView)findViewById(R.id.activity_main);
         importButton = (ImageButton)findViewById(R.id.default_dns_view_image);
         running_indicator = findViewById(R.id.running_indicator);
         dns1.setText(Preferences.getString(this,settingV6 ? "dns1-v6" : "dns1", settingV6 ? "2001:4860:4860::8888" : "8.8.8.8"));
