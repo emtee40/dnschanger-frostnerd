@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.frostnerd.dnschanger.API.API;
@@ -59,7 +60,7 @@ public class DNSCreationDialog extends AlertDialog {
 
             }
         });
-        if(Preferences.getBoolean(context, "setting_ipv6_enabled", true))setButton(BUTTON_NEUTRAL, "V6", (OnClickListener) null);
+        setButton(BUTTON_NEUTRAL, "V6", (OnClickListener) null);
         setOnShowListener(new OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
@@ -74,12 +75,13 @@ public class DNSCreationDialog extends AlertDialog {
                         }
                     }
                 });
-                if(Preferences.getBoolean(getContext(), "setting_ipv6_enabled", true))getButton(BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
+                getButton(BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         settingV6 = !settingV6;
                         ed_dns1.setText(settingV6 ? dns1V6 : dns1);
                         ed_dns2.setText(settingV6 ? dns2V6 : dns2);
+                        ((Button)v).setText(settingV6 ? "V4" : "V6");
                     }
                 });
             }
