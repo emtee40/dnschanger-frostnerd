@@ -304,7 +304,11 @@ public class MainActivity extends AppCompatActivity {
         }else{
             dns1.setText(Preferences.getString(this, "dns1-v6", "2001:4860:4860::8888"));
             dns2.setText(Preferences.getString(this, "dns2-v6", "2001:4860:4860::8844"));
+            dns1.setInputType(InputType.TYPE_CLASS_TEXT);
+            dns2.setInputType(InputType.TYPE_CLASS_TEXT);
         }
+        getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
+        invalidateOptionsMenu();
         doStopVPN = true;
     }
 
