@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        settingV6 = !API.isIPv4Enabled(this) || (API.isIPv6Enabled(this) && settingV6);
         setTheme(ThemeHandler.getAppTheme(this));
         LogFactory.writeMessage(this, LOG_TAG, "Created Activity", getIntent());
         API.updateTiles(this);
@@ -160,8 +161,12 @@ public class MainActivity extends AppCompatActivity {
         wrapper = (LinearLayout)findViewById(R.id.activity_main);
         importButton = (ImageButton)findViewById(R.id.default_dns_view_image);
         running_indicator = findViewById(R.id.running_indicator);
-        dns1.setText(Preferences.getString(MainActivity.this, "dns1", "8.8.8.8"));
-        dns2.setText(Preferences.getString(MainActivity.this, "dns2", "8.8.4.4"));
+        dns1.setText(Preferences.getString(this,settingV6 ? "dns1-v6" : "dns1", settingV6 ? "2001:4860:4860::8888" : "8.8.8.8"));
+        dns2.setText(Preferences.getString(this,settingV6 ? "dns1-v6" : "dns1", settingV6 ? "2001:4860:4860::8844" : "8.8.4.4"));
+        if(settingV6){
+            dns1.setInputType(InputType.TYPE_CLASS_TEXT);
+            dns2.setInputType(InputType.TYPE_CLASS_TEXT);
+        }
         startStopButton = (Button) findViewById(R.id.startStopButton);
         startStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
