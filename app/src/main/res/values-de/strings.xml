@@ -182,4 +182,5 @@
     <string name="default_dns_explain_delete">Halte einen EIntrag lange gedrückt, um ihn zu löschen. Klicke dannach weitere EInträge an, um diese ebenfalls zu löschen.</string>
     <string name="summary_enable_ipv4">Aktiviert IPv4. Dies erlaubt es, IPv4 Adressen zur Nutzung als DNS Server einzustellen.</string>
     <string name="title_enable_ipv4">IPv4 aktivieren</string>
+    <string name="warning_disabling_v4">Viele Androidversionen können nicht mehr auf das Internet zugreifen, wird keine IPv4 Adresse genutzt während DNS Changer läuft. Dies musst du allerdings für dein Gerät testen.</string>
 </resources>

@@ -174,4 +174,7 @@
     <string name="notification_x_whitelisted">[x] apps na lista branca</string>
     <string name="notification_x_blacklisted">[x] apps na lista negra</string>
     <string name="default_dns_explain_delete">Pressione uma entrada para excluí-la. Toque em entradas adicionais para excluí-las também.</string>
+    <string name="summary_enable_ipv4">Habilitar IPv4. Isto permite fornecer endereços IPv4 para usar como servidores DNS.</string>
+    <string name="title_enable_ipv4">Habilitar IPv4</string>
+    <string name="warning_disabling_v4">Most Android versions can\'t access the internet anymore when DNS Changer is running and no IPv4 address is provided. You\'ll have to try for your device though.</string>
 </resources>

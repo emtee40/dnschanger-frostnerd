@@ -390,11 +390,24 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 v6Enabled = (CheckBoxPreference)findPreference("setting_ipv6_enabled");
         v4Enabled.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                boolean val = (boolean)newValue;
-                v6Enabled.setEnabled(val);
-                startService(new Intent(SettingsActivity.this, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true).
-                        putExtra(VPNServiceArgument.FLAG_DONT_UPDATE_DNS.getArgument(),true));
+            public boolean onPreferenceChange(Preference preference, final Object newValue) {
+                final boolean val = (boolean)newValue;
+                if(!val)new AlertDialog.Builder(SettingsActivity.this, ThemeHandler.getDialogTheme(SettingsActivity.this)).setNegativeButton(R.string.cancel, null).
+                        setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                v6Enabled.setEnabled(val);
+                                startService(new Intent(SettingsActivity.this, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true).
+                                        putExtra(VPNServiceArgument.FLAG_DONT_UPDATE_DNS.getArgument(),true));
+                                v4Enabled.setChecked(val);
+                            }
+                        }).setTitle(R.string.warning).setMessage(R.string.warning_disabling_v4).show();
+                return val;
+            }
+        });
+        v4Enabled.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
                 return true;
             }
         });

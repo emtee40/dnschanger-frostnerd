@@ -181,4 +181,5 @@
     <string name="default_dns_explain_delete">Long click on an entry to delete it. Click on additional entries to delete them as well.</string>
     <string name="summary_enable_ipv4">Enable IPv4. This allows to provide ipv4 addresses to use as dns servers</string>
     <string name="title_enable_ipv4">Enable IPv4</string>
+    <string name="warning_disabling_v4">Most Android versions can\'t access the internet anymore when DNS Changer is running and no IPv4 address is provided. You\'ll have to try for your device though.</string>
 </resources>
