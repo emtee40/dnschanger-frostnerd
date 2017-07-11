@@ -44,6 +44,7 @@ import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
 
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -275,6 +276,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }).show();
             LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
+        }
+        if(Preferences.getBoolean(this, "first_run", true)){
+            Set<String> excluded = Preferences.getStringSet(this, "excluded_apps");
+            if(!excluded.contains("com.android.vending"))excluded.add("com.android.vending");
+            Preferences.put(this, "excluded_apps", excluded);
         }
         API.updateAppShortcuts(this);
         new Thread(new Runnable() {
