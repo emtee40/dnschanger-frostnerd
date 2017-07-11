@@ -162,12 +162,6 @@
         <item>Mono</item>
         <item>Dunkel</item>
     </string-array>
-
-    <string-array name="themeValues">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
     <string name="remove">Löschen</string>
     <string name="whitelist">Whitelist</string>
     <string name="excluded_apps_info_text_whitelist">Nur die markierten Anwendungen werden den internen VPN verwenden. Dadurch verwenden nicht markierte Apps die DNS Server nicht.</string>
