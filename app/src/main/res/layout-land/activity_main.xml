@@ -5,7 +5,6 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -13,13 +12,15 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.frostnerd.dnschanger.activities.MainActivity">
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:layout_toLeftOf="@id/middle"
             android:orientation="vertical">
 
             <com.frostnerd.utils.design.MaterialEditText
@@ -102,87 +103,108 @@
                     android:textColor="#FFF" />
             </LinearLayout>
 
-
-            <Button
-                android:id="@+id/startStopButton"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="45dp"
-                android:background="?attr/cardColor"
-                android:text="@string/start"
-                android:textColor="#FFF" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/rate"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
-                    android:layout_toLeftOf="@+id/settings"
-                    android:layout_weight="1"
-                    android:background="?attr/cardColor"
-                    android:onClick="rateApp"
-                    android:text="@string/rate"
-                    android:textColor="#FFF" />
-
-                <ImageView
-                    android:id="@+id/settings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:background="?attr/inputElementColor"
-                    android:paddingLeft="3dp"
-                    android:paddingRight="3dp"
-                    android:src="@drawable/ic_settings" />
-
-                <Button
-                    android:id="@+id/dnsInfo"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@+id/settings"
-                    android:layout_weight="1"
-                    android:background="?attr/inputElementColor"
-                    android:onClick="openDNSInfoDialog"
-                    android:text="@string/info_dns_button"
-                    android:textColor="#FFF" />
-            </RelativeLayout>
-
-            <View
-                android:id="@+id/running_indicator"
-                android:layout_width="match_parent"
-                android:layout_height="9dp" />
-
-            <TextView
-                android:id="@+id/connection_status_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:textColor="#FFF" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal">
-
-                <ImageView
-                    android:id="@+id/connection_status_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:maxHeight="64dp"
-                    android:maxWidth="64dp"
-                    android:padding="15dp" />
-            </RelativeLayout>
         </LinearLayout>
-    </ScrollView>
+
+        <View
+            android:id="@+id/middle"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#424242"
+            android:layout_centerInParent="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@id/middle"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/connection_status_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:textColor="#FFF" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal">
+
+                    <ImageView
+                        android:id="@+id/connection_status_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:maxHeight="64dp"
+                        android:maxWidth="64dp"/>
+                </RelativeLayout>
+
+                <View
+                    android:id="@+id/running_indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="9dp" />
+
+                <Button
+                    android:id="@+id/startStopButton"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:background="?attr/cardColor"
+                    android:text="@string/start"
+                    android:textColor="#FFF" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/rate"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/settings"
+                        android:layout_weight="1"
+                        android:background="?attr/cardColor"
+                        android:onClick="rateApp"
+                        android:text="@string/rate"
+                        android:textColor="#FFF" />
+
+                    <ImageView
+                        android:id="@+id/settings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:background="?attr/inputElementColor"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:src="@drawable/ic_settings" />
+
+                    <Button
+                        android:id="@+id/dnsInfo"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/settings"
+                        android:layout_weight="1"
+                        android:background="?attr/inputElementColor"
+                        android:onClick="openDNSInfoDialog"
+                        android:text="@string/info_dns_button"
+                        android:textColor="#FFF" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>

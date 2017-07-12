@@ -42,6 +42,7 @@
             android:value="2.1" />
         <activity
             android:name=".activities.MainActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTop">
             <intent-filter android:label="@string/deep_link_title">
                 <action android:name="android.intent.action.VIEW" />

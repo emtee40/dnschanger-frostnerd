@@ -1,10 +1,12 @@
 package com.frostnerd.dnschanger.activities;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
@@ -15,6 +17,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.OrientationHelper;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -28,6 +31,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.ThemeHandler;
@@ -69,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton importButton;
     private View running_indicator;
     private DefaultDNSDialog defaultDnsDialog;
-    private ScrollView wrapper;
+    private View wrapper;
     private boolean settingV6 = false;
     private final int REQUEST_SETTINGS = 13;
 
@@ -100,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         if (vpnRunning) {
             int color = Color.parseColor("#42A5F5");
             connectionText.setText(R.string.running);
-            connectionImage.setImageResource(R.drawable.ic_thumb_up);
+            if(connectionImage != null)connectionImage.setImageResource(R.drawable.ic_thumb_up);
             startStopButton.setText(R.string.stop);
             running_indicator.setBackgroundColor(Color.parseColor("#4CAF50"));
         } else {
@@ -108,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             Resources.Theme theme = getTheme();
             theme.resolveAttribute(android.R.attr.windowBackground, typedValue, true);
             connectionText.setText(R.string.not_running);
-            connectionImage.setImageResource(R.drawable.ic_thumb_down);
+            if(connectionImage != null)connectionImage.setImageResource(R.drawable.ic_thumb_down);
             startStopButton.setText(R.string.start);
             running_indicator.setBackgroundColor(typedValue.data);
         }
@@ -144,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         settingV6 = !API.isIPv4Enabled(this) || (API.isIPv6Enabled(this) && settingV6);
+        boolean vertical = getResources().getConfiguration().orientation == OrientationHelper.VERTICAL;
         setTheme(ThemeHandler.getAppTheme(this));
         LogFactory.writeMessage(this, LOG_TAG, "Created Activity", getIntent());
         API.updateTiles(this);
@@ -155,11 +160,11 @@ public class MainActivity extends AppCompatActivity {
         met_dns2 = (MaterialEditText) findViewById(R.id.met_dns2);
         dns1 = (EditText) findViewById(R.id.dns1);
         dns2 = (EditText) findViewById(R.id.dns2);
-        connectionImage = (ImageView)findViewById(R.id.connection_status_image);
+        connectionImage = vertical ? null : (ImageView)findViewById(R.id.connection_status_image);
         connectionText = (TextView)findViewById(R.id.connection_status_text);
         rate = (Button)findViewById(R.id.rate);
         info = (Button)findViewById(R.id.dnsInfo);
-        wrapper = (ScrollView)findViewById(R.id.activity_main);
+        wrapper = findViewById(R.id.activity_main);
         importButton = (ImageButton)findViewById(R.id.default_dns_view_image);
         running_indicator = findViewById(R.id.running_indicator);
         dns1.setText(Preferences.getString(this,settingV6 ? "dns1-v6" : "dns1", settingV6 ? "2001:4860:4860::8888" : "8.8.8.8"));
@@ -454,5 +459,17 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(i,1);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+        }
     }
 }
