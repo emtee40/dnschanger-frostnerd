@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.util.ArraySet;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.OrientationHelper;
@@ -47,6 +48,7 @@ import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Set;
 
@@ -282,11 +284,7 @@ public class MainActivity extends AppCompatActivity {
             }).show();
             LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
         }
-        if(Preferences.getBoolean(this, "first_run", true)){
-            Set<String> excluded = Preferences.getStringSet(this, "excluded_apps");
-            if(!excluded.contains("com.android.vending"))excluded.add("com.android.vending");
-            Preferences.put(this, "excluded_apps", excluded);
-        }
+        if(Preferences.getBoolean(this, "first_run", true)) Preferences.put(this, "excluded_apps", new ArraySet<>(Arrays.asList(getResources().getStringArray(R.array.default_blacklist))));
         API.updateAppShortcuts(this);
         new Thread(new Runnable() {
             @Override
