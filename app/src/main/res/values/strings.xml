@@ -28,8 +28,8 @@
     <string name="summary_auto_mobile">Automatically turn on DNS Changer when connecting to a mobile network</string>
     <string name="title_auto_wifi">Automatically start (WIFI)</string>
     <string name="title_auto_mobile">Automatically start (Mobile)</string>
-    <string name="running">Running</string>
-    <string name="not_running">Not running</string>
+    <string name="running">Active</string>
+    <string name="not_running">Inactive</string>
     <string name="background_configure_error">Permission to start the VPN denied. \nThis could be the system denying vpn connections being started from the background for safety reasons.\n\nOpen the app to start the VPN</string>
     <string name="open_app">Open app</string>
     <string name="rate_request_text">Would you like to rate this app?\nIt\'d help spreading it and shows appreciation of my work.</string>
