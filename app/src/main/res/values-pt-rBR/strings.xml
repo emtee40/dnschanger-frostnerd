@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
+﻿<resources>
     <string name="app_name">DNS Changer</string>
     <string name="start">Iniciar</string>
     <string name="stop">Parar</string>
@@ -27,10 +26,10 @@
     <string name="paused">Pausado</string>
     <string name="summary_auto_wifi">Iniciar o DNS Changer automaticamente ao se conectar a uma rede Wi-Fi</string>
     <string name="summary_auto_mobile">Iniciar o DNS Changer automaticamente ao se conectar aos Dados Móveis</string>
-    <string name="title_auto_wifi">Iniciar automaticament (WIFI)</string>
-    <string name="title_auto_mobile">Iniciar automaticamente (Dados Móveis)</string>
-    <string name="running">Ativo</string>
-    <string name="not_running">Inativo</string>
+    <string name="title_auto_wifi">Início Automático (WIFI)</string>
+    <string name="title_auto_mobile">Início Automático (Dados Móveis)</string>
+    <string name="running">Funcionando</string>
+    <string name="not_running">Não está funcionando</string>
     <string name="background_configure_error">Permissão para iniciar VPN negada. \nEste pode ser o sistema que negava as conexões vpn sendo iniciadas a partir do plano de fundo por razões de segurança.\n\nAbrir aplicativo para iniciar a VPN</string>
     <string name="open_app">Abrir App</string>
     <string name="rate_request_text">Gostaria de avaliar este aplicativo?\nIsto ajuda a divulgar e mostra apreciação ao meu trabalho.</string>
