@@ -559,6 +559,14 @@ public class DNSVpnService extends VpnService {
                 return builder;
             }
 
+            private Builder setMTU(Builder builder){
+                String release = Build.VERSION.RELEASE;
+                if(Build.VERSION.SDK_INT != 19 || release.startsWith("4.4.3") || release.startsWith("4.4.4") || release.startsWith("4.4.5") || release.startsWith("4.4.6")){
+                    builder.setMtu(1500);
+                }else builder.setMtu(1280);
+                return builder;
+            }
+
             private boolean isDNSInvalid(Exception ex){
                 for(StackTraceElement ste: ex.getStackTrace())
                     if(ste.toString().contains("Builder.addDnsServer") && ex instanceof IllegalArgumentException && ex.getMessage().contains("Bad address"))return true;
