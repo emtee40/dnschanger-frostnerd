@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.DNSEntry;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.utils.networking.NetworkUtil;
+import com.frostnerd.utils.preferences.Preferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,17 @@ public class DefaultDNSDialog extends AlertDialog {
     public DefaultDNSDialog(@NonNull final Context context, final int theme, @NonNull final OnProviderSelectedListener listener) {
         super(context, theme);
         localEntries = API.getDBHelper(context).getDNSEntries();
+        boolean ipv4Enabled = Preferences.getBoolean(context, "setting_ipv4_enabled", true), ipv6Enabled = !ipv4Enabled || Preferences.getBoolean(context, "setting_ipv6_enabled", true);
+        List<DNSEntry> tmp = new ArrayList<>();
+        if(!ipv4Enabled || !ipv6Enabled){
+            for(DNSEntry entry: localEntries){
+                if((!ipv4Enabled && NetworkUtil.isAssignableAddress(entry.getDns1V6(), true)) ||
+                        (!ipv6Enabled && NetworkUtil.isAssignableAddress(entry.getDns1(), false))){
+                    tmp.add(entry);
+                }
+            }
+            localEntries = tmp;
+        }
         this.listener = listener;
         layout = LayoutInflater.from(context).inflate(R.layout.dialog_default_dns, null, false);
         setView(layout);

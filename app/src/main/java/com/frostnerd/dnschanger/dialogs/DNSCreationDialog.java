@@ -15,6 +15,7 @@ import android.widget.EditText;
 import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
@@ -22,9 +23,9 @@ import com.frostnerd.utils.preferences.Preferences;
 /**
  * Copyright Daniel Wolf 2017
  * All rights reserved.
- *
+ * <p>
  * Terms on usage of my code can be found here: https://git.frostnerd.com/PublicAndroidApps/DnsChanger/blob/master/README.md
- *
+ * <p>
  * <p>
  * development@frostnerd.com
  */
@@ -40,6 +41,9 @@ public class DNSCreationDialog extends AlertDialog {
     public DNSCreationDialog(@NonNull Context context, @NonNull final OnCreationFinishedListener listener) {
         super(context, ThemeHandler.getDialogTheme(context));
         setView(view = LayoutInflater.from(context).inflate(R.layout.dialog_create_dns_entry, null, false));
+        final boolean ipv4Enabled = Preferences.getBoolean(context, "setting_ipv4_enabled", true),
+                ipv6Enabled = !ipv4Enabled || Preferences.getBoolean(context, "setting_ipv6_enabled", true);
+        settingV6 = !ipv4Enabled;
         ed_dns1 = (EditText) view.findViewById(R.id.dns1);
         ed_dns2 = (EditText) view.findViewById(R.id.dns2);
         ed_name = (EditText) view.findViewById(R.id.name);
@@ -47,6 +51,9 @@ public class DNSCreationDialog extends AlertDialog {
         met_dns1 = (MaterialEditText) view.findViewById(R.id.met_dns1);
         met_dns2 = (MaterialEditText) view.findViewById(R.id.met_dns2);
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+
+        ed_dns1.setText(settingV6 ? dns1V6 : dns1);
+        ed_dns2.setText(settingV6 ? dns2V6 : dns2);
         setTitle(R.string.new_entry);
         setButton(BUTTON_NEGATIVE, context.getString(R.string.cancel), new OnClickListener() {
             @Override
@@ -60,7 +67,7 @@ public class DNSCreationDialog extends AlertDialog {
 
             }
         });
-        setButton(BUTTON_NEUTRAL, "V6", (OnClickListener) null);
+        if(ipv6Enabled && ipv4Enabled)setButton(BUTTON_NEUTRAL, "V6", (OnClickListener) null);
         setOnShowListener(new OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
@@ -75,13 +82,13 @@ public class DNSCreationDialog extends AlertDialog {
                         }
                     }
                 });
-                getButton(BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
+                if(ipv6Enabled && ipv4Enabled)getButton(BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         settingV6 = !settingV6;
                         ed_dns1.setText(settingV6 ? dns1V6 : dns1);
                         ed_dns2.setText(settingV6 ? dns2V6 : dns2);
-                        ((Button)v).setText(settingV6 ? "V4" : "V6");
+                        ((Button) v).setText(settingV6 ? "V4" : "V6");
                     }
                 });
             }
