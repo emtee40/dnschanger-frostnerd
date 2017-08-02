@@ -186,4 +186,5 @@
         <item>com.android.vending</item>
         <item>bbc.iplayer.android</item>
     </string-array>
+    <string name="x_apps_selected">[[x]] apps selected</string>
 </resources>

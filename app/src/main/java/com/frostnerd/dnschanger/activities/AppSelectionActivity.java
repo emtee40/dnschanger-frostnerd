@@ -82,6 +82,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
                 });
             }
         }).start();
+        getSupportActionBar().setSubtitle(getString(R.string.x_apps_selected).replace("[[x]]", currentSelected.size() + ""));
         //Preferences.getStringSet(this, "autopause_apps");
     }
 
@@ -174,6 +175,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         whiteList = isChecked;
                         listAdapter.notifyItemChanged(0);
+                        getSupportActionBar().setSubtitle(getString(R.string.x_apps_selected).replace("[[x]]", currentSelected.size() + ""));
                     }
                 });
                 deselect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -212,6 +214,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
                         if (isChecked)currentSelected.add(holder.appEntry.packageName);
                         else currentSelected.remove(holder.appEntry.packageName);
                         listAdapter.notifyItemChanged(0);
+                        getSupportActionBar().setSubtitle(getString(R.string.x_apps_selected).replace("[[x]]", currentSelected.size() + ""));
                         changed = true;
                     }
                 });
