@@ -55,7 +55,7 @@ public class ConfigureActivity extends AppCompatActivity {
     private boolean cancelled = false, creatingShortcut;
     private DefaultDNSDialog defaultDNSDialog;
     private String dns1 = "8.8.8.8", dns2 = "8.8.4.4", dns1V6 ="2001:4860:4860::8888", dns2V6 = "2001:4860:4860::8844";
-    private boolean settingV6 = false, wasEdited = false;
+    private boolean settingV6 = false, wasEdited = false, ipv4Enabled, ipv6Enabled;
     private long lastBackPress = 0;
     private Action currentAction;
     private static final String LOG_TAG = "[ConfigureActivity]";
@@ -78,6 +78,11 @@ public class ConfigureActivity extends AppCompatActivity {
         setContentView(R.layout.tasker_configure_layout);
         LogFactory.writeMessage(this, LOG_TAG, "Activity created", getIntent());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        ipv4Enabled = Preferences.getBoolean(this, "setting_ipv4_enabled", true);
+        ipv6Enabled = !ipv4Enabled || Preferences.getBoolean(this, "setting_ipv6_enabled", true);
+        settingV6 = !ipv4Enabled;
+
         ed_dns1 = (EditText)findViewById(R.id.dns1);
         ed_dns2 = (EditText)findViewById(R.id.dns2);
         ed_name = (EditText)findViewById(R.id.name);
@@ -100,8 +105,8 @@ public class ConfigureActivity extends AppCompatActivity {
                 if(getIntent().hasExtra(Helper.EXTRA_BLURB))ed_name.setText(getIntent().getStringExtra(Helper.EXTRA_BLURB));
             }
         }
-        ed_dns1.setText(dns1);
-        ed_dns2.setText(dns2);
+        ed_dns1.setText(settingV6 ? dns1V6 : dns1);
+        ed_dns2.setText(settingV6 ? dns2V6 : dns2);
         ed_dns1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -241,7 +246,7 @@ public class ConfigureActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(API.isIPv6Enabled(this) ? (settingV6 ? R.menu.tasker_menu_v4 : R.menu.tasker_menu_v6) : R.menu.tasker_menu_no_ipv6 ,menu);
+        getMenuInflater().inflate(ipv6Enabled && ipv4Enabled ? (settingV6 ? R.menu.tasker_menu_v4 : R.menu.tasker_menu_v6) : R.menu.tasker_menu_no_ipv6 ,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
