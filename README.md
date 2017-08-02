@@ -1,6 +1,6 @@
 [![build status](https://git.frostnerd.com/PublicAndroidApps/DnsChanger/badges/master/build.svg)](https://git.frostnerd.com/PublicAndroidApps/DnsChanger/commits/master)
-<br>You can download the last passed build at https://dl.frostnerd.com/appbuilds/dnschanger/ci/app-debug.apk
-It is unsigned.<br><br>
+<br>You can download all artifacts at https://dl.frostnerd.com/appbuilds
+They are unsigned.<br><br>
 
 
 This is the source code for my app DNS Changer, which can be found here: https://play.google.com/store/apps/details?id=com.frostnerd.dnschanger<br><br>
