@@ -25,6 +25,7 @@ build:
     - app/build/outputs/
   except:
     - /^no_ci.*$/
+    - /^no_build.*$/
     
 unitTests:
   stage: test
