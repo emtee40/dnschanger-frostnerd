@@ -33,14 +33,7 @@ upload:
     stage: webdeploy
     script:
         - cp -f app/build/outputs/apk/app-debug.apk /var/www/frostnerd/download/appbuilds/dnschanger/ci/$CI_COMMIT_REF_NAME-$CI_PIPELINE_ID.apk
-        - lastCommit = $("cat /var/www/frostnerd/download/appbuilds/dnschanger/ci/last_builded_commit.txt")
-        - echo $("git log --pretty=format:'%H' -1") > /var/www/frostnerd/download/appbuilds/dnschanger/ci/last_builded_commit.txt
-        - echo "==========Build $CI_PIPELINE_ID in $CI_COMMIT_REF_NAME==========\n" >> /var/www/frostnerd/download/appbuilds/dnschanger/ci/builds.txt
-        - echo "File: $CI_COMMIT_REF_NAME-$CI_PIPELINE_ID.apk\n" >> /var/www/frostnerd/download/appbuilds/dnschanger/ci/builds.txt
-        - echo "Time: $('date')\n" >> /var/www/frostnerd/download/appbuilds/dnschanger/ci/builds.txt
-        - echo "Commits:\n" >> /var/www/frostnerd/download/appbuilds/dnschanger/ci/builds.txt
-        - echo $("git log --pretty=oneline $lastCommit..$CI_COMMIT_SHA") >> /var/www/frostnerd/download/appbuilds/dnschanger/ci/builds.txt
-        - echo "\n\n\n" >> /var/www/frostnerd/download/appbuilds/dnschanger/ci/builds.txt
+        -  /./home/public/gitrunner/logCIBuilds.sh /var/www/frostnerd/download/appbuilds/dnschanger/ci
 
 #functionalTests:
 #  stage: test
