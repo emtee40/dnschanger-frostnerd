@@ -41,6 +41,7 @@ upload:
     - /./home/public/gitrunner/logCIBuilds.sh /var/www/frostnerd/download/appbuilds/dnschanger/ci
   except:
     - /^no_ci.*$/
+    - /^no_deploy.*$/
 
 #functionalTests:
 #  stage: test
