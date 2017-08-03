@@ -33,6 +33,7 @@ upload:
     stage: webdeploy
     script:
         - cp -f app/build/outputs/apk/app-debug.apk /var/www/frostnerd/download/appbuilds/dnschanger/ci/$CI_COMMIT_REF_NAME-$CI_PIPELINE_ID.apk
+        -  /./home/public/gitrunner/logCIBuilds.sh /var/www/frostnerd/download/appbuilds/dnschanger/ci
 
 #functionalTests:
 #  stage: test
