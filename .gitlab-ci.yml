@@ -50,6 +50,7 @@ upload:
     - /^no_tests_no_deploy.*$/
     - /^no_build_no_deploy.*$/
     - /^no_build.*$/ 
+    - release
     
 upload_release:
   stage: webdeploy
