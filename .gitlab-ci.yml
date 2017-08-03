@@ -4,6 +4,8 @@ variables:
   ANDROID_BUILD_TOOLS: "26.0.1"
   ANDROID_SDK_TOOLS: "26.0.2"
   AVD_NAME: test
+  DEV_DEPLOY_DIR: /var/www/frostnerd/download/appbuilds/dnschanger/ci/dev
+  RELEASE_DEPLOY_DIR: /var/www/frostnerd/download/appbuilds/dnschanger/ci/releases
   
 before_script:
   - source /home/public/android-sdk-linux/initAndroid.sh -s ${ANDROID_COMPILE_SDK} -b ${ANDROID_BUILD_TOOLS}
@@ -42,8 +44,8 @@ unitTests:
 upload:
   stage: webdeploy
   script:
-    - cp -f app/build/outputs/apk/app-debug.apk /var/www/frostnerd/download/appbuilds/dnschanger/ci/$CI_COMMIT_REF_NAME-$CI_PIPELINE_ID.apk
-    - /./home/public/gitrunner/logCIBuilds.sh /var/www/frostnerd/download/appbuilds/dnschanger/ci
+    - cp -f app/build/outputs/apk/app-debug.apk $DEV_DEPLOY_DIR/$CI_COMMIT_REF_NAME-$CI_PIPELINE_ID.apk
+    - /./home/public/gitrunner/logCIBuilds.sh $DEV_DEPLOY_DIR
   except:
     - /^no_ci.*$/
     - /^no_deploy.*$/
@@ -55,7 +57,7 @@ upload:
 upload_release:
   stage: webdeploy
   script:
-    - cp -f app/build/outputs/apk/app-debug.apk /var/www/frostnerd/download/appbuilds/dnschanger/ci/releases/$(/./home/public/gitrunner/determineAppVersionName.sh app/build/outputs/apk/app-debug.apk).apk
+    - cp -f app/build/outputs/apk/app-debug.apk $RELEASE_DEPLOY_DIR/$(/./home/public/gitrunner/determineAppVersionName.sh app/build/outputs/apk/app-debug.apk).apk
   only:
     - release
 
