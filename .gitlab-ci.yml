@@ -22,7 +22,7 @@ build:
     - ./gradlew assembleDebug --stacktrace
   artifacts:
     paths:
-    - app/build/outputs/
+    - /var/www/frostnerd/download/appbuilds/dnschanger/ci/$CI_COMMIT_REF_NAME-$CI_PIPELINE_ID.apk
     
 unitTests:
   stage: test
