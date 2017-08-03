@@ -26,6 +26,8 @@ build:
   except:
     - /^no_ci.*$/
     - /^no_build.*$/
+    - /^no_build_no_tests.*$/
+    - /^no_build_no_deploy.*$/
     
 unitTests:
   stage: test
@@ -34,6 +36,8 @@ unitTests:
   except:
     - /^no_ci.*$/
     - /^no_tests.*$/
+    - /^no_build_no_tests.*$/
+    - /^no_tests_no_deploy.*$/
     
 upload:
   stage: webdeploy
@@ -43,6 +47,8 @@ upload:
   except:
     - /^no_ci.*$/
     - /^no_deploy.*$/
+    - /^no_tests_no_deploy.*$/
+    - /^no_build_no_deploy.*$/
 
 #functionalTests:
 #  stage: test
