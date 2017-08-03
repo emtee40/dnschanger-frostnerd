@@ -22,7 +22,7 @@ build:
     - ./gradlew assembleDebug --stacktrace
   artifacts:
     paths:
-    - app/build/outputs/
+    - app/build/outputs/apk
   except:
     - /^no_ci.*$/
     - /^no_build.*$/
