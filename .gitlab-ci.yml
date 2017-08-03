@@ -49,6 +49,7 @@ upload:
     - /^no_deploy.*$/
     - /^no_tests_no_deploy.*$/
     - /^no_build_no_deploy.*$/
+    - /^no_build.*$/ 
 
 #functionalTests:
 #  stage: test
