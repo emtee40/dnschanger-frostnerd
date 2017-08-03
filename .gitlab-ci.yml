@@ -32,6 +32,7 @@ unitTests:
     - ./gradlew test
   except:
     - /^no_ci.*$/
+    - /^no_tests.*$/
     
 upload:
   stage: webdeploy
