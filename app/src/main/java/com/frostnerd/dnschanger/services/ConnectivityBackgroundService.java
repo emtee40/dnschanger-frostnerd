@@ -36,7 +36,7 @@ public class ConnectivityBackgroundService extends Service {
         public void onReceive(Context context, Intent intent) {
             boolean connected = !intent.hasExtra("noConnectivity"),
                     serviceRunning = API.isServiceRunning(ConnectivityBackgroundService.this),
-                    serviceThreadRunning = API.isServiceThreadRunning(ConnectivityBackgroundService.this),
+                    serviceThreadRunning = API.isServiceThreadRunning(),
                     autoWifi = Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_auto_wifi", false),
                     autoMobile = Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_auto_mobile", false),
                     disableNetChange = Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_disable_netchange", false);
@@ -104,8 +104,8 @@ public class ConnectivityBackgroundService extends Service {
             LogFactory.writeMessage(this, LOG_TAG, "No active network.");
             return;
         }
-        LogFactory.writeMessage(this, LOG_TAG, "[OnCreate] Thread running: " + API.isServiceThreadRunning(this));
-        if (!API.isServiceThreadRunning(this)) {
+        LogFactory.writeMessage(this, LOG_TAG, "[OnCreate] Thread running: " + API.isServiceThreadRunning());
+        if (!API.isServiceThreadRunning()) {
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI && Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_auto_wifi", false)) {
                 LogFactory.writeMessage(this, LOG_TAG, "[OnCreate] Connected to WIFI and setting_auto_wifi is true. Starting Service..");
                 startService();
