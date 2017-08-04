@@ -528,6 +528,7 @@ public class DNSVpnService extends VpnService {
                     threadRunning = false;
                     currentDNS1 = currentDNS2 = currentDNS1V6 = currentDNS2V6 = null;
                     API.updateAppShortcuts(DNSVpnService.this);
+                    API.updateTiles(DNSVpnService.this);
                     clearVars();
                     updateNotification();
                     broadcastCurrentState(false);
