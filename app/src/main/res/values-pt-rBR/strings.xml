@@ -177,4 +177,6 @@
     <string name="title_enable_ipv4">Habilitar IPv4</string>
     <string name="warning_disabling_v4">Most Android versions can\'t access the internet anymore when DNS Changer is running and no IPv4 address is provided. You\'ll have to try for your device though.</string>
     <string name="x_apps_selected">[[x]] apps seleccionado</string>
+    <string name="tile_pause_resume">Pausar / Continuar</string>
+    <string name="tile_start_stop">Iniciar / Parar</string>
 </resources>

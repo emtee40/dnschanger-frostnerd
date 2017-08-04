@@ -1,47 +1,31 @@
 package com.frostnerd.dnschanger.API;
 
-import android.Manifest;
 import android.app.ActivityManager;
-import android.app.AppOpsManager;
-import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.service.quicksettings.TileService;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.activities.ShortcutActivity;
-import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
 import com.frostnerd.dnschanger.services.DNSVpnService;
-import com.frostnerd.dnschanger.tiles.TilePause;
-import com.frostnerd.dnschanger.tiles.TileResume;
-import com.frostnerd.dnschanger.tiles.TileStart;
-import com.frostnerd.dnschanger.tiles.TileStop;
+import com.frostnerd.dnschanger.tiles.TilePauseResume;
+import com.frostnerd.dnschanger.tiles.TileStartStop;
 import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.preferences.Preferences;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -62,10 +46,8 @@ public final class API {
     public static synchronized void updateTiles(Context context) {
         LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG}, "Trying to update Tiles");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            TileService.requestListeningState(context, new ComponentName(context, TileStart.class));
-            TileService.requestListeningState(context, new ComponentName(context, TileResume.class));
-            TileService.requestListeningState(context, new ComponentName(context, TilePause.class));
-            TileService.requestListeningState(context, new ComponentName(context, TileStop.class));
+            TileService.requestListeningState(context, new ComponentName(context, TileStartStop.class));
+            TileService.requestListeningState(context, new ComponentName(context, TilePauseResume.class));
             LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG}, "Tiles updated");
         } else
             LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG}, "Not updating Tiles (Version is below Android N)");
@@ -80,7 +62,7 @@ public final class API {
             }
             boolean pinProtected = Preferences.getBoolean(context, "pin_app_shortcut", false);
             List<ShortcutInfo> shortcutInfos = new ArrayList<>();
-            if (isServiceThreadRunning(context)) {
+            if (isServiceThreadRunning()) {
                 Bundle extras1 = new Bundle();
                 extras1.putBoolean("stop_vpn", true);
                 extras1.putBoolean("redirectToService", true);
@@ -157,11 +139,12 @@ public final class API {
         return isIPv6Enabled(context) ? Preferences.getString(context, "dns1-v6", "2001:4860:4860::8888") : "";
     }
 
+
     public static String getDNS2V6(Context context) {
         return isIPv6Enabled(context) ? Preferences.getString(context, "dns2-v6", "2001:4860:4860::8844") : "";
     }
 
-    public static boolean isServiceThreadRunning(Context context) {
+    public static boolean isServiceThreadRunning() {
         return DNSVpnService.isDNSThreadRunning();
     }
 
