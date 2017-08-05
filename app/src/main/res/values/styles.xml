@@ -17,6 +17,7 @@
 
         <item name="android:dialogTheme">@style/DialogTheme</item>
         <item name="android:alertDialogTheme">@style/DialogTheme</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
@@ -94,6 +95,7 @@
 
         <item name="android:dialogTheme">@style/DialogTheme_Dark</item>
         <item name="android:alertDialogTheme">@style/DialogTheme_Dark</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
     <style name="AppTheme_Mono" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -110,6 +112,6 @@
         <item name="inputElementColor">#90A4AE</item>
         <item name="android:dialogTheme">@style/DialogTheme_Mono</item>
         <item name="android:alertDialogTheme">@style/DialogTheme_Mono</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
-
 </resources>
