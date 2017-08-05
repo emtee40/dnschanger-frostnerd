@@ -1,10 +1,13 @@
 package com.frostnerd.dnschanger.activities;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.net.VpnService;
@@ -12,42 +15,42 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.util.ArraySet;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.OrientationHelper;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.frostnerd.dnschanger.API.API;
+import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
+import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
 import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
 import com.frostnerd.dnschanger.services.DNSVpnService;
-import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.tasker.ConfigureActivity;
 import com.frostnerd.utils.design.MaterialEditText;
+import com.frostnerd.utils.general.IntentUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -63,22 +66,18 @@ public class MainActivity extends AppCompatActivity {
     private boolean vpnRunning, wasStartedWithTasker = false;
     private MaterialEditText met_dns1, met_dns2;
     private EditText dns1, dns2;
-    private static final HashMap<String, List<String>> defaultDNS = new HashMap<>();
-    private static final HashMap<String, List<String>> defaultDNS_V6 = new HashMap<>();
-    private static final List<String> defaultDNSKeys, DefaultDNSKeys_V6;
     private boolean doStopVPN = true;
     private static final String LOG_TAG = "[MainActivity]";
 
     private TextView connectionText;
     private ImageView connectionImage;
-    private LinearLayout defaultDNSView;
     private Button rate, info;
     private ImageButton importButton;
     private View running_indicator;
-
-    private AlertDialog defaultDnsDialog;
-    private LinearLayout wrapper;
+    private DefaultDNSDialog defaultDnsDialog;
+    private View wrapper;
     private boolean settingV6 = false;
+    private final int REQUEST_SETTINGS = 13;
 
     @Override
     protected void onDestroy() {
@@ -102,60 +101,22 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    static {
-        defaultDNS.put("Google DNS", Arrays.asList("8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844"));
-        defaultDNS.put("OpenDNS", Arrays.asList("208.67.222.222", "208.67.220.220", "2620:0:ccc::2", "2620:0:ccd::2"));
-        defaultDNS.put("Level3", Arrays.asList("209.244.0.3", "209.244.0.4"));
-        defaultDNS.put("FreeDNS", Arrays.asList("37.235.1.174", "37.235.1.177"));
-        defaultDNS.put("Yandex DNS", Arrays.asList("77.88.8.8", "77.88.8.1", "2a02:6b8::feed:0ff", "2a02:6b8:0:1::feed:0ff"));
-        defaultDNS.put("Verisign", Arrays.asList("64.6.64.6", "64.6.65.6", "2620:74:1b::1:1", "2620:74:1c::2:2"));
-        defaultDNS.put("Alternate DNS", Arrays.asList("198.101.242.72", "23.253.163.53"));
-        defaultDNS.put("Norton Connectsafe - Security", Arrays.asList("199.85.126.10", "199.85.127.10"));
-        defaultDNS.put("Norton Connectsafe - Security + Pornography", Arrays.asList("199.85.126.20", "199.85.127.20"));
-        defaultDNS.put("Norton Connectsafe - Security + Pornography + Other", Arrays.asList("199.85.126.30", "199.85.127.30"));
-
-        defaultDNS_V6.put("Google DNS", Arrays.asList("2001:4860:4860::8888", "2001:4860:4860::8844"));
-        defaultDNS_V6.put("OpenDNS", Arrays.asList("2620:0:ccc::2", "2620:0:ccd::2"));
-        defaultDNS_V6.put("Yandex DNS", Arrays.asList("2a02:6b8::feed:0ff", "2a02:6b8:0:1::feed:0ff"));
-        defaultDNS_V6.put("Verisign", Arrays.asList("2620:74:1b::1:1", "2620:74:1c::2:2"));
-        defaultDNSKeys = new ArrayList<>(defaultDNS.keySet());
-        DefaultDNSKeys_V6 = new ArrayList<>(defaultDNS_V6.keySet());
-        Collections.sort(defaultDNSKeys);
-        Collections.sort(defaultDNSKeys);
-    }
-
     private void setIndicatorState(boolean vpnRunning) {
         LogFactory.writeMessage(this, LOG_TAG, "Changing IndicatorState to " + vpnRunning);
         if (vpnRunning) {
             int color = Color.parseColor("#42A5F5");
             connectionText.setText(R.string.running);
-            connectionImage.setImageResource(R.drawable.ic_thumb_up);
-            startStopButton.setBackgroundColor(color);
-            met_dns1.setCardColor(color);
-            met_dns1.setCardStrokeColor(color);
-            met_dns2.setCardColor(color);
-            met_dns2.setCardStrokeColor(color);
-            defaultDNSView.setBackgroundColor(color);
-            rate.setBackgroundColor(color);
-            info.setBackgroundColor(color);
-            importButton.setBackgroundColor(color);
+            if(connectionImage != null)connectionImage.setImageResource(R.drawable.ic_thumb_up);
             startStopButton.setText(R.string.stop);
             running_indicator.setBackgroundColor(Color.parseColor("#4CAF50"));
         } else {
-            int color = Color.parseColor("#42A5F5");
+            TypedValue typedValue = new TypedValue();
+            Resources.Theme theme = getTheme();
+            theme.resolveAttribute(android.R.attr.windowBackground, typedValue, true);
             connectionText.setText(R.string.not_running);
-            connectionImage.setImageResource(R.drawable.ic_thumb_down);
-            startStopButton.setBackgroundColor(color);
-            met_dns1.setCardColor(color);
-            met_dns1.setCardStrokeColor(color);
-            met_dns2.setCardColor(color);
-            met_dns2.setCardStrokeColor(color);
-            defaultDNSView.setBackgroundColor(color);
-            rate.setBackgroundColor(color);
-            info.setBackgroundColor(color);
-            importButton.setBackgroundColor(color);
+            if(connectionImage != null)connectionImage.setImageResource(R.drawable.ic_thumb_down);
             startStopButton.setText(R.string.start);
-            running_indicator.setBackgroundColor(Color.parseColor("#2196F3"));
+            running_indicator.setBackgroundColor(typedValue.data);
         }
         LogFactory.writeMessage(this, LOG_TAG, "IndictorState set");
     }
@@ -176,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void openDNSInfoDialog(View v) {
         LogFactory.writeMessage(this, LOG_TAG, "Opening Dialog with info about DNS");
-        dialog1 = new AlertDialog.Builder(this).setTitle(R.string.info_dns_button).setMessage(R.string.dns_info_text).setCancelable(true).setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+        dialog1 = new AlertDialog.Builder(this,ThemeHandler.getDialogTheme(this)).setTitle(R.string.info_dns_button).setMessage(R.string.dns_info_text).setCancelable(true).setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -188,6 +149,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        settingV6 = !API.isIPv4Enabled(this) || (API.isIPv6Enabled(this) && settingV6);
+        boolean vertical = getResources().getConfiguration().orientation == OrientationHelper.VERTICAL;
+        setTheme(ThemeHandler.getAppTheme(this));
         LogFactory.writeMessage(this, LOG_TAG, "Created Activity", getIntent());
         API.updateTiles(this);
         LogFactory.writeMessage(this, LOG_TAG, "Launching ConnectivityBackgroundService");
@@ -198,16 +162,19 @@ public class MainActivity extends AppCompatActivity {
         met_dns2 = (MaterialEditText) findViewById(R.id.met_dns2);
         dns1 = (EditText) findViewById(R.id.dns1);
         dns2 = (EditText) findViewById(R.id.dns2);
-        connectionImage = (ImageView)findViewById(R.id.connection_status_image);
+        connectionImage = vertical ? null : (ImageView)findViewById(R.id.connection_status_image);
         connectionText = (TextView)findViewById(R.id.connection_status_text);
-        defaultDNSView = (LinearLayout)findViewById(R.id.default_dns_view);
         rate = (Button)findViewById(R.id.rate);
         info = (Button)findViewById(R.id.dnsInfo);
-        wrapper = (LinearLayout)findViewById(R.id.activity_main);
+        wrapper = findViewById(R.id.activity_main);
         importButton = (ImageButton)findViewById(R.id.default_dns_view_image);
         running_indicator = findViewById(R.id.running_indicator);
-        dns1.setText(Preferences.getString(MainActivity.this, "dns1", "8.8.8.8"));
-        dns2.setText(Preferences.getString(MainActivity.this, "dns2", "8.8.4.4"));
+        dns1.setText(Preferences.getString(this,settingV6 ? "dns1-v6" : "dns1", settingV6 ? "2001:4860:4860::8888" : "8.8.8.8"));
+        dns2.setText(Preferences.getString(this,settingV6 ? "dns1-v6" : "dns1", settingV6 ? "2001:4860:4860::8844" : "8.8.4.4"));
+        if(settingV6){
+            dns1.setInputType(InputType.TYPE_CLASS_TEXT);
+            dns2.setInputType(InputType.TYPE_CLASS_TEXT);
+        }
         startStopButton = (Button) findViewById(R.id.startStopButton);
         startStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 LogFactory.writeMessage(MainActivity.this, LOG_TAG, "Startbutton clicked. Configuring VPN if needed");
                 if (i != null){
                     LogFactory.writeMessage(MainActivity.this, LOG_TAG, "VPN isn't prepared yet. Showing dialog explaining the VPN");
-                    dialog2 = new AlertDialog.Builder(MainActivity.this).setTitle(R.string.information).setMessage(R.string.vpn_explain)
+                    dialog2 = new AlertDialog.Builder(MainActivity.this,ThemeHandler.getDialogTheme(MainActivity.this)).setTitle(R.string.information).setMessage(R.string.vpn_explain)
                             .setCancelable(false).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -241,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(vpnRunning && doStopVPN && !wasStartedWithTasker)stopVpn();
-                if (!NetworkUtil.isIP(s.toString(),settingV6)) {
+                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6,false)) {
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
@@ -263,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(vpnRunning && doStopVPN && !wasStartedWithTasker)stopVpn();
-                if (!NetworkUtil.isIP(s.toString(),settingV6)) {
+                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6, true)) {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
@@ -282,13 +249,13 @@ public class MainActivity extends AppCompatActivity {
                 Intent i;
                 LogFactory.writeMessage(MainActivity.this, LOG_TAG, "Opening Settings",
                         i = new Intent(MainActivity.this, SettingsActivity.class));
-                startActivity(i);
+                startActivityForResult(i,REQUEST_SETTINGS);
             }
         });
         getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
         if(!Preferences.getBoolean(this, "first_run",true) && !Preferences.getBoolean(this, "rated",false) && new Random().nextInt(100) <= 8){
             LogFactory.writeMessage(this, LOG_TAG, "Showing dialog requesting rating");
-            new AlertDialog.Builder(this).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            new AlertDialog.Builder(this,ThemeHandler.getDialogTheme(this)).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     rateApp(null);
@@ -309,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if(Preferences.getBoolean(this, "first_run", true) && API.isTaskerInstalled(this)){
             LogFactory.writeMessage(this, LOG_TAG, "Showing dialog telling the user that this app supports Tasker");
-            new AlertDialog.Builder(this).setTitle(R.string.tasker_support).setMessage(R.string.app_supports_tasker_text).setPositiveButton(R.string.got_it, new DialogInterface.OnClickListener() {
+            new AlertDialog.Builder(this,ThemeHandler.getDialogTheme(this)).setTitle(R.string.tasker_support).setMessage(R.string.app_supports_tasker_text).setPositiveButton(R.string.got_it, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
@@ -317,6 +284,14 @@ public class MainActivity extends AppCompatActivity {
             }).show();
             LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
         }
+        if(Preferences.getBoolean(this, "first_run", true)) Preferences.put(this, "excluded_apps", new ArraySet<>(Arrays.asList(getResources().getStringArray(R.array.default_blacklist))));
+        API.updateAppShortcuts(this);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                API.getDBHelper(MainActivity.this).getReadableDatabase();
+            }
+        });
         LogFactory.writeMessage(this, LOG_TAG, "Done with OnCreate");
         Preferences.put(this, "first_run", false);
     }
@@ -324,6 +299,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        settingV6 = !API.isIPv4Enabled(this) || (API.isIPv6Enabled(this) && settingV6);
         LogFactory.writeMessage(this, LOG_TAG, "Got OnResume");
         LogFactory.writeMessage(this, LOG_TAG, "Sending ServiceStateRequest as broadcast");
         vpnRunning = API.isServiceRunning(this);
@@ -337,8 +313,13 @@ public class MainActivity extends AppCompatActivity {
         }else{
             dns1.setText(Preferences.getString(this, "dns1-v6", "2001:4860:4860::8888"));
             dns2.setText(Preferences.getString(this, "dns2-v6", "2001:4860:4860::8844"));
+            dns1.setInputType(InputType.TYPE_CLASS_TEXT);
+            dns2.setInputType(InputType.TYPE_CLASS_TEXT);
         }
+        getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
+        invalidateOptionsMenu();
         doStopVPN = true;
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     @Override
@@ -351,33 +332,28 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostResume() {
         super.onPostResume();
+        invalidateOptionsMenu();
         LogFactory.writeMessage(this, LOG_TAG, "Got onPostResume");
-        LogFactory.writeMessage(this, LOG_TAG, "Recreating DefaultDNSDialog");
-        View layout = getLayoutInflater().inflate(R.layout.dialog_default_dns, null, false);
-        final ListView list = (ListView) layout.findViewById(R.id.defaultDnsDialogList);
-        list.setAdapter(new DefaultDNSAdapter());
-        list.setDividerHeight(0);
-        defaultDnsDialog = new AlertDialog.Builder(this).setView(layout).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                LogFactory.writeMessage(MainActivity.this, LOG_TAG, "Cancelled choosing from default DNS");
-            }
-        }).setTitle(R.string.default_dns_title).create();
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                defaultDnsDialog.cancel();
-                List<String> ips = settingV6 ? defaultDNS_V6.get(DefaultDNSKeys_V6.get(position)) : defaultDNS.get(defaultDNSKeys.get(position));
-                dns1.setText(ips.get(0));
-                dns2.setText(ips.get(1));
-                LogFactory.writeMessage(MainActivity.this, LOG_TAG, "User chose provider from default DNS. DNS1: " + ips.get(0) + ", DNS2: " + ips.get(1));
-            }
-        });
-        LogFactory.writeMessage(this, LOG_TAG, "DefaultDNSDialog recreated");
     }
 
     public void openDefaultDNSDialog(View v) {
         LogFactory.writeMessage(this, LOG_TAG, "Opening DefaultDNSDialog");
+        defaultDnsDialog = new DefaultDNSDialog(this, ThemeHandler.getDialogTheme(this), new DefaultDNSDialog.OnProviderSelectedListener(){
+            @Override
+            public void onProviderSelected(String name, String dns1, String dns2, String dns1V6, String dns2V6) {
+                if(settingV6){
+                    if(!dns1V6.equals(""))MainActivity.this.dns1.setText(dns1V6);
+                    MainActivity.this.dns2.setText(dns2V6);
+                    if(!dns1.equals(""))Preferences.put(MainActivity.this, "dns1", dns1);
+                    Preferences.put(MainActivity.this, "dns2", dns2);
+                }else{
+                    if(!dns1.equals(""))MainActivity.this.dns1.setText(dns1);
+                    MainActivity.this.dns2.setText(dns2);
+                    if(!dns1V6.equals(""))Preferences.put(MainActivity.this, "dns1-v6", dns1V6);
+                    Preferences.put(MainActivity.this, "dns2-v6", dns2V6);
+                }
+            }
+        });
         defaultDnsDialog.show();
         LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
     }
@@ -389,7 +365,7 @@ public class MainActivity extends AppCompatActivity {
             if (!vpnRunning){
                 if(!Preferences.getBoolean(this, "44explained", false) && Build.VERSION.SDK_INT == 19){
                     LogFactory.writeMessage(this, LOG_TAG, "Opening Dialog explaining that this might not work on Android 4.4");
-                    new AlertDialog.Builder(this).setTitle(R.string.warning).setCancelable(false).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    new AlertDialog.Builder(this, ThemeHandler.getDialogTheme(this)).setTitle(R.string.warning).setCancelable(false).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
@@ -404,7 +380,7 @@ public class MainActivity extends AppCompatActivity {
             }else{
                 if(wasStartedWithTasker){
                     LogFactory.writeMessage(this, LOG_TAG, "Opening dialog which warns that the app was started using Tasker");
-                    new AlertDialog.Builder(this).setTitle(R.string.warning).setMessage(R.string.warning_started_using_tasker). setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    new AlertDialog.Builder(this,ThemeHandler.getDialogTheme(this)).setTitle(R.string.warning).setMessage(R.string.warning_started_using_tasker). setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             LogFactory.writeMessage(MainActivity.this, LOG_TAG, "User clicked OK in the dialog warning about Tasker");
@@ -426,11 +402,13 @@ public class MainActivity extends AppCompatActivity {
             snackbar.setAction(R.string.show, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(snackbar != null)snackbar.dismiss();
+                    snackbar.dismiss();
                     Utils.goToLauncher(MainActivity.this);
                 }
             });
             snackbar.show();
+        }else if(requestCode == REQUEST_SETTINGS && resultCode == RESULT_FIRST_USER){
+            if(IntentUtil.checkExtra("themeupdated",data))IntentUtil.restartActivity(this);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -455,35 +433,9 @@ public class MainActivity extends AppCompatActivity {
         setIndicatorState(false);
     }
 
-    private class DefaultDNSAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return settingV6 ? defaultDNS_V6.size() : defaultDNS.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return settingV6 ? defaultDNS_V6.get(position) : defaultDNS.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View v = getLayoutInflater().inflate(R.layout.item_default_dns, parent, false);
-            ((TextView) v.findViewById(R.id.text)).setText(settingV6 ? DefaultDNSKeys_V6.get(position) : defaultDNSKeys.get(position));
-            v.setTag(getItem(position));
-            return v;
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(settingV6 ? R.menu.menu_main_v6 : R.menu.menu_main,menu);
+        getMenuInflater().inflate(API.isIPv6Enabled(this) ? (API.isIPv4Enabled(this) ? ((settingV6 ? R.menu.menu_main_v6 : R.menu.menu_main)) : R.menu.menu_main_no_ipv6) : R.menu.menu_main_no_ipv6,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -506,5 +458,17 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(i,1);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -28,8 +28,8 @@
     <string name="summary_auto_mobile">Automatically turn on DNS Changer when connecting to a mobile network</string>
     <string name="title_auto_wifi">Automatically start (WIFI)</string>
     <string name="title_auto_mobile">Automatically start (Mobile)</string>
-    <string name="running">Running</string>
-    <string name="not_running">Not running</string>
+    <string name="running">Active</string>
+    <string name="not_running">Inactive</string>
     <string name="background_configure_error">Permission to start the VPN denied. \nThis could be the system denying vpn connections being started from the background for safety reasons.\n\nOpen the app to start the VPN</string>
     <string name="open_app">Open app</string>
     <string name="rate_request_text">Would you like to rate this app?\nIt\'d help spreading it and shows appreciation of my work.</string>
@@ -59,7 +59,7 @@
     <string name="summary_automation_warn">Warning: Using any of these might interfere with active Tasker profiles using this app!</string>
     <string name="title_pin">Pin</string>
     <string name="summary_pin">Enable pin protection</string>
-    <string name="summary_pin_value">Current pin: [[x]] (Click to change)</string>
+    <string name="summary_pin_value">Click here to change the PIN</string>
     <string name="title_pin_value">Change Pin</string>
     <string name="settings_information_text">This app was made by Daniel Wolf (frostnerd.com)\n\nIt uses icons made by Google (Material icon pack - https://material.io/icons/)\n\n\nIf you are missing a feature, found a bug or just got a general request, feel free to contact me at support@frostnerd.com\nThe Sourcecode to this app can be viewed at https://git.frostnerd.com/PublicAndroidApps/DnsChanger</string>
     <string name="create_tasker_action">Creating Tasker Action</string>
@@ -75,7 +75,7 @@
     <string name="title_pin_app">Protect App</string>
     <string name="summary_pin_app">Ask for the pin when starting the app</string>
     <string name="title_category_pin">Pin protection</string>
-    <string name="summary_version">Version [[version]] ([[code]])\n\n© Daniel Wolf 2017\nAll rights reserved</string>
+    <string name="summary_version">Version [[version]] ([[code]])\n\n© Daniel Wolf 2017\nAll rights reserved\n\nBrazilian translation by Lukinhas</string>
     <string name="usage_stats_info_text">To automatically pause DNS Changer when a certain app is in the front, this app needs access to usage data. \n\nIn the next window, please grant DNSChanger access to this data or else you won\'t be able to use this setting.\n\n\nNo data execept for currently running applications is requested. No data is saved or transmitted.\nThe source code is publicy available at https://git.frostnerd.com/PublicAndroidApps/DnsChanger if you want to make sure yourself.</string>
     <string name="title_remove_usage_data">Remove access to usage data</string>
     <string name="summary_remove_usage_data">Access to usage data was granted. Click here to revoke that permission.</string>
@@ -88,7 +88,7 @@
         <item>Resume DNSChanger</item>
     </string-array>
     <string name="error">Error</string>
-    <string name="vpn_error_explain">"On some Android versions (4.4, some 5.0 versions) and custom ROMs the underlying VPN structure doesn't work and leads to crashes.\n\nThe App crashed unexpectedly which most likely indicates that your phone doesn't support how this app operates.\nIf that's the case you could help me by sending the crash report, but sadly this app doesn't work on your device. "</string>
+    <string name="vpn_error_explain">The App crashed unexpectedly. This could either imply that the way this app works is not supported by your phone/ROM or a general error occured (which most likely indicated that I did something wrong).\n\nEither way, sending the crash report would help me a lot and could possibly lead to a fix.\nDo you want to send it to me?</string>
     <string name="send_crash_report">Send crash report</string>
     <string name="deep_link_title">DNS Changer by Frostnerd</string>
     <string name="summary_pin_tile">Ask for the pin when starting/stopping from QuickSettings</string>
@@ -139,4 +139,54 @@
     <string name="reason_stop_exception">Exception whilst running</string>
     <string name="reason_stop_network_change">Network changed (DNS Changer is set to stop)</string>
     <string name="reason_stop_tasker">Stopped by Tasker</string>
+    <string name="invalid_dns_error_text">It looks like one of the DNS servers you configured cannot be used on your device. \nEither you entered an invalid IP address, no DNS server is present on the given ip address or it is a temporary error.\n\nPlease check the configuration in the main menu and verify that the addresses entered are correct.</string>
+    <string name="title_enable_ipv6">Enable IPv6</string>
+    <string name="summary_enable_ipv6">Enable IPv6. This allows to provide ipv6 addresses to use as dns servers.</string>
+    <string name="default_dns_legal_warning">Any of the providers shown here might be registered trademarks of the respective owners. Their terms of use apply.\nBe aware that dns servers could log which sites you visit.</string>
+    <string name="add">Add</string>
+    <string name="new_entry">New entry</string>
+    <string name="title_exclude_apps">Exclude apps from VPN</string>
+    <string name="summary_exclude_apps">Exclude installed apps from using the VPN connection created internally. This won\'t apply the DNS servers to them</string>
+    <string name="excluded_apps_info_text_whitelist">Only selected applications will use the internal VPN. Apps not selected thus won\'t use the DNS servers set by you</string>
+    <string name="excluded_apps_info_text_blacklist">Each application checked won\'t use the internal VPN. This won\'t apply the DNS servers to them either.</string>
+    <string name="title_about">About</string>
+    <string name="search">Search</string>
+    <string name="title_reset">Reset</string>
+    <string name="summary_reset">Resets all settings and saved dns servers. Shortcuts and tasker actions are not deleted.</string>
+    <string name="reset_warning_text">Do you really want to reset all settings?\nThis cannot be reversed.</string>
+    <string name="title_theme">Theme</string>
+    <string name="summary_theme">Sets the theme of this app</string>
+
+    <string-array name="theme">
+        <item>Default</item>
+        <item>Mono</item>
+        <item>Dark</item>
+    </string-array>
+
+    <string-array name="themeValues" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string name="remove">Remove</string>
+    <string name="whitelist">Whitelist</string>
+    <string name="select_all">Select all</string>
+    <string name="deselect_all">Deselect all</string>
+    <string name="summary_pin_app_shortcut">Ask for the pin when starting/stopping from the app shortcuts</string>
+    <string name="title_pin_app_shortcut">Protect app shortcuts</string>
+    <string name="title_enable_app_shortcuts">Enable app shortcuts</string>
+    <string name="summary_enable_app_shortcuts">Enables app shortcuts. Long click on the apps shortcut in the launcher to open the menu</string>
+    <string name="notification_x_whitelisted">[x] apps whitelisted</string>
+    <string name="notification_x_blacklisted">[x] apps blacklisted</string>
+    <string name="default_dns_explain_delete">Long click on an entry to delete it. Click on additional entries to delete them as well.</string>
+    <string name="summary_enable_ipv4">Enable IPv4. This allows to provide ipv4 addresses to use as dns servers</string>
+    <string name="title_enable_ipv4">Enable IPv4</string>
+    <string name="warning_disabling_v4">Most Android versions can\'t access the internet anymore when DNS Changer is running and no IPv4 address is provided. You\'ll have to try for your device though.</string>
+    <string-array name="default_blacklist" translatable="false">
+        <item>com.android.vending</item>
+        <item>bbc.iplayer.android</item>
+    </string-array>
+    <string name="x_apps_selected">[[x]] apps selected</string>
+    <string name="tile_pause_resume">Pause / Resume</string>
+    <string name="tile_start_stop">Start / Stop</string>
 </resources>

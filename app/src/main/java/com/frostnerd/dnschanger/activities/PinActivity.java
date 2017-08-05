@@ -9,11 +9,13 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 
+import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.API.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.utils.design.MaterialEditText;
+import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.general.VariableChecker;
 import com.frostnerd.utils.preferences.Preferences;
 
@@ -36,6 +38,7 @@ public class PinActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(ThemeHandler.getDialogTheme(this));
         LogFactory.writeMessage(this, LOG_TAG, "Created Activity", getIntent());
         final boolean main = getIntent() != null && !getIntent().hasExtra("redirectToService");
         LogFactory.writeMessage(this, LOG_TAG, "Returning to main after pin: " + main);
@@ -45,13 +48,16 @@ public class PinActivity extends Activity {
             return;
         }
         if ((main && !Preferences.getBoolean(this, "pin_app", false)) ||
-                (!main && (!Preferences.getBoolean(this, "pin_notification", false) && !Preferences.getBoolean(this, "pin_tile", false)))) {
+                (!main && (!Preferences.getBoolean(this, "pin_notification", false) && !Preferences.getBoolean(this, "pin_tile", false) &&
+                        !Preferences.getBoolean(this, "pin_app_shortcut", false)))) {
             if (main && !Preferences.getBoolean(this, "pin_app", false)) {
                 LogFactory.writeMessage(this, LOG_TAG, "We are going to main and pin for the app is not enabled. Not asking for pin");
             } else if (!main && !Preferences.getBoolean(this, "pin_notification", false)) {
                 LogFactory.writeMessage(this, LOG_TAG, "We are doing something in the notification and pin for it is not enabled. Not asking for pin");
             } else if (!main && !Preferences.getBoolean(this, "pin_tile", false)) {
                 LogFactory.writeMessage(this, LOG_TAG, "We are doing something in the tiles and pin for it is not enabled. Not asking for pin");
+            }else if(!main && !Preferences.getBoolean(this, "pin_app_shortcut", false)){
+                LogFactory.writeMessage(this, LOG_TAG, "We are doing something in an app shortcut and pin for it is not enabled. Not asking for pin");
             }
             continueToFollowing(main);
         }
@@ -101,7 +107,7 @@ public class PinActivity extends Activity {
                             putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), getIntent().getBooleanExtra("start_vpn", false)).
                             putExtra(VPNServiceArgument.COMMAND_STOP_VPN.getArgument(), getIntent().getBooleanExtra("stop_vpn", false)).
                             putExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(), getIntent().getBooleanExtra("destroy", false)).
-                            putExtra(VPNServiceArgument.ARGUMENT_STOP_REASON.getArgument(), getIntent().hasExtra("destroy") ? getIntent().getStringExtra("reason") : null));
+                            putExtra(VPNServiceArgument.ARGUMENT_STOP_REASON.getArgument(), getIntent().hasExtra("destroy") ? getIntent().getStringExtra("reason") : null).setAction(StringUtil.randomString(40)));
             startService(i);
             LogFactory.writeMessage(this, LOG_TAG, "Service Started");
         }

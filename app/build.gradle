@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "com.frostnerd.dnschanger"
-        minSdkVersion 16
-        targetSdkVersion 25
-        versionCode 25
-        versionName "BETA 1.9.1"
+        minSdkVersion 14
+        targetSdkVersion 26
+        versionCode 48
+        versionName "1.14.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -20,8 +20,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:cardview-v7:25.3.1'
-    compile project(path: ':library')
+    compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
+    compile 'com.android.support:cardview-v7:26.0.0-alpha1'
+    compile 'com.android.support:recyclerview-v7:26.0.0-alpha1'
+    compile 'com.android.support:preference-v14:26.0.0-alpha1'
+    compile project(path: ':AndroidUtils:library')
+
+    testCompile 'junit:junit:4.12'
 }

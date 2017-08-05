@@ -11,7 +11,7 @@
 
         <CheckBoxPreference
             android:id="@+id/setting_show_used_dns"
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:dependency="setting_show_notification"
             android:key="show_used_dns"
             android:summary="@string/summary_show_used_dns"
@@ -74,7 +74,7 @@
             android:summary="@string/summary_remove_usage_data"
             android:title="@string/title_remove_usage_data" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/title_category_pin">
+    <PreferenceCategory android:title="@string/title_category_pin" android:key="pin_category">
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="setting_pin_enabled"
@@ -95,9 +95,15 @@
             android:key="pin_tile"
             android:summary="@string/summary_pin_tile"
             android:title="@string/title_pin_tile" />
+        <CheckBoxPreference
+            android:dependency="setting_pin_enabled"
+            android:key="pin_app_shortcut"
+            android:summary="@string/summary_pin_app_shortcut"
+            android:title="@string/title_pin_app_shortcut" />
         <EditTextPreference
             android:dependency="setting_pin_enabled"
             android:key="pin_value"
+            android:inputType="textPassword"
             android:summary="@string/summary_pin_value"
             android:title="@string/title_pin_value" />
     </PreferenceCategory>
@@ -129,6 +135,47 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="general_category"
+        android:title="@string/title_general">
+        <SwitchPreference
+            android:key="device_admin"
+            android:summary="@string/summary_device_admin_activate"
+            android:title="@string/title_device_admin" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="setting_ipv4_enabled"
+            android:summary="@string/summary_enable_ipv4"
+            android:title="@string/title_enable_ipv4" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="setting_ipv6_enabled"
+            android:summary="@string/summary_enable_ipv6"
+            android:title="@string/title_enable_ipv6" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="setting_app_shortcuts_enabled"
+            android:summary="@string/summary_enable_app_shortcuts"
+            android:title="@string/title_enable_app_shortcuts" />
+
+
+        <ListPreference
+            android:entries="@array/theme"
+            android:entryValues="@array/themeValues"
+            android:key="theme"
+            android:defaultValue="1"
+            android:summary="@string/summary_theme"
+            android:title="@string/title_theme" />
+
+        <Preference
+            android:key="exclude_apps"
+            android:summary="@string/summary_exclude_apps"
+            android:title="@string/title_exclude_apps" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:key="debug_category"
         android:title="@string/title_debug_category">
         <SwitchPreference
@@ -143,7 +190,7 @@
             android:title="@string/title_send_debug" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/title_general">
+    <PreferenceCategory android:title="@string/title_about">
         <Preference
             android:key="setting_info"
             android:title="@string/title_info" />
@@ -152,15 +199,14 @@
             android:title="@string/contact_developer" />
 
         <Preference
+            android:key="reset"
+            android:summary="@string/summary_reset"
+            android:title="@string/title_reset" />
+
+        <Preference
             android:key="share_app"
             android:summary="@string/summary_share_app"
             android:title="@string/title_share_app" />
-
-        <SwitchPreference
-            android:key="device_admin"
-            android:summary="@string/summary_device_admin_activate"
-            android:title="@string/title_device_admin" />
-
         <Preference android:key="placeholder_version" />
     </PreferenceCategory>
 </PreferenceScreen>

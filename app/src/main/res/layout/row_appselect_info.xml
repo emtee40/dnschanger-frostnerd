@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingBottom="16dp"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardBackgroundColor="?attr/inputElementColor"
+        card_view:cardElevation="3dp"
+        card_view:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingRight="8dp"
+                android:id="@+id/text"
+                android:paddingLeft="8dp"
+                android:paddingTop="8dp"/>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:text="@string/whitelist"
+                android:id="@+id/checkbox_whitelist"
+                android:textColor="?android:textColor"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:text="@string/select_all"
+                android:id="@+id/select_all"
+                android:textColor="?android:textColor"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:text="@string/deselect_all"
+                android:id="@+id/deselect_all"
+                android:textColor="?android:textColor"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+
+</RelativeLayout>

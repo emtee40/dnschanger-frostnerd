@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.frostnerd.dnschanger.API.API;
+import com.frostnerd.dnschanger.API.Shortcut;
+import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.utils.permissions.PermissionsUtil;
 import com.frostnerd.utils.preferences.Preferences;
@@ -31,6 +33,7 @@ public class SettingsImportActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(ThemeHandler.getAppTheme(this));
         LogFactory.writeMessage(this, LOG_TAG, "Created activity", getIntent());
         Intent intent = getIntent();
         if (intent.getAction().equals(Intent.ACTION_VIEW) && PermissionsUtil.canReadExternalStorage(this)) {
@@ -71,7 +74,7 @@ public class SettingsImportActivity extends Activity {
             while ((line = reader.readLine()) != null) {
                 if (line.equals("") || line.startsWith("[")) continue;
                 if(line.startsWith("'")){
-                    API.createShortcut(c, API.Shortcut.fromString(line.split("'")[1]));
+                    API.createShortcut(c, Shortcut.fromString(line.split("'")[1]));
                 }
                 else data += line;
             }

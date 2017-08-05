@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 
+import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
@@ -36,11 +37,12 @@ public class ErrorDialogActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(ThemeHandler.getDialogTheme(this));
         LogFactory.writeMessage(this, LOG_TAG,"Created Activity", getIntent());
         final String crashReport = getIntent() != null ? getIntent().getStringExtra("stacktrace") : "";
         LogFactory.writeMessage(this, LOG_TAG,"Creating Dialog displaying the user that an error occurred");
-        new AlertDialog.Builder(this).setTitle(getString(R.string.error) + " - " + getString(R.string.app_name)).setMessage(R.string.vpn_error_explain)
-                .setCancelable(false).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(this, ThemeHandler.getDialogTheme(this)).setTitle(getString(R.string.error) + " - " + getString(R.string.app_name)).setMessage(R.string.vpn_error_explain)
+                .setCancelable(false).setPositiveButton(R.string.no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 LogFactory.writeMessage(ErrorDialogActivity.this, LOG_TAG,"User choose to cancel action");

@@ -1,0 +1,74 @@
+image: openjdk:8-jdk
+variables:
+  ANDROID_COMPILE_SDK: "26"
+  ANDROID_BUILD_TOOLS: "26.0.1"
+  ANDROID_SDK_TOOLS: "26.0.2"
+  AVD_NAME: test
+  DEV_DEPLOY_DIR: /var/www/frostnerd/download/appbuilds/dnschanger/ci/dev
+  RELEASE_DEPLOY_DIR: /var/www/frostnerd/download/appbuilds/dnschanger/ci/releases
+  
+before_script:
+  - source /home/public/android-sdk-linux/initAndroid.sh -s ${ANDROID_COMPILE_SDK} -b ${ANDROID_BUILD_TOOLS}
+  - git config --file=.gitmodules submodule.AndroidUtils.url https://runner:$USER_PASS@git.frostnerd.com/AndroidApps/AndroidUtils.git
+  - git submodule sync
+  - git submodule update --init --recursive --force
+  
+stages:
+  - build
+  - test
+  - webdeploy
+
+build:
+  stage: build
+  script:
+    - ./gradlew assembleDebug --stacktrace
+  artifacts:
+    paths:
+    - app/build/outputs/apk
+  except:
+    - /^no_ci.*$/
+    - /^no_build.*$/
+    - /^no_build_no_tests.*$/
+    - /^no_build_no_deploy.*$/
+    
+unitTests:
+  stage: test
+  script:
+    - ./gradlew test
+  except:
+    - /^no_ci.*$/
+    - /^no_tests.*$/
+    - /^no_build_no_tests.*$/
+    - /^no_tests_no_deploy.*$/
+    
+upload:
+  stage: webdeploy
+  script:
+    - cp -f app/build/outputs/apk/app-debug.apk $DEV_DEPLOY_DIR/$CI_COMMIT_REF_NAME-$CI_PIPELINE_ID.apk
+    - /./home/public/gitrunner/logCIBuilds.sh $DEV_DEPLOY_DIR
+  except:
+    - /^no_ci.*$/
+    - /^no_deploy.*$/
+    - /^no_tests_no_deploy.*$/
+    - /^no_build_no_deploy.*$/
+    - /^no_build.*$/ 
+    - release
+    
+upload_release:
+  stage: webdeploy
+  script:
+    - cp -f app/build/outputs/apk/app-debug.apk $RELEASE_DEPLOY_DIR/$(/./home/public/gitrunner/determineAppVersionName.sh app/build/outputs/apk/app-debug.apk).apk
+  only:
+    - release
+
+#functionalTests:
+#  stage: test
+#  script:
+#    - if [ ! -a `~/.android/avd/${AVD_NAME}.ini`]; then echo no | /home/public/android-sdk-linux/tools/android create avd -n ${AVD_NAME} -t android-${ANDROID_COMPILE_SDK} --abi google_apis/x86; fi
+#    - /home/public/android-sdk-linux/tools/emulator64-x86 -avd test -no-window -no-audio &
+#    - /./home/public/android-sdk-linux/wait-for-emulator.sh
+#    - adb shell input keyevent 82
+#    - ./gradlew cAT
+#  artifacts:
+#    paths:
+#    - app/build/reports/androidTests/

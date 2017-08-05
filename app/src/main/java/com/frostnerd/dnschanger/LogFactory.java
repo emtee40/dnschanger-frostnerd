@@ -34,6 +34,9 @@ import java.util.zip.ZipOutputStream;
 /**
  * Copyright Daniel Wolf 2017
  * All rights reserved.
+ *
+ * Terms on usage of my code can be found here: https://git.frostnerd.com/PublicAndroidApps/DnsChanger/blob/master/README.md
+ *
  * <p>
  * development@frostnerd.com
  */
@@ -46,7 +49,6 @@ public class LogFactory {
             TIMESTAMP_FORMATTER = new SimpleDateFormat("EEE MMM dd.yy kk:mm:ss", Locale.US);
     public static final String STATIC_TAG = "[STATIC]";
     private static final boolean printMessagesToConsole = false;
-
 
     public static synchronized File zipLogFiles(Context c){
         if(logDir == null || !logDir.canWrite() || !logDir.canRead())return null;
@@ -88,10 +90,9 @@ public class LogFactory {
         return null;
     }
 
-    public synchronized static void enable(){
-        enabled = true;
+    public synchronized static void enable(Context context){
         ready = false;
-        usable = false;
+        enabled = true;
         if(fileWriter != null){
             try{
                 fileWriter.close();
@@ -100,6 +101,7 @@ public class LogFactory {
             }
             fileWriter = null;
         }
+        prepare(context);
     }
 
     public synchronized static void disable(){
@@ -124,6 +126,16 @@ public class LogFactory {
         }
         fileWriter = null;logFile=null;logDir = null;
         ready = usable = false;
+    }
+
+    public static void deleteLogFiles(Context context){
+        if(logDir == null)logDir = new File(context.getFilesDir(), "logs/");
+        boolean wasEnabled = ready && enabled;
+        disable();
+        for(File f: logDir.listFiles()){
+            f.delete();
+        }
+        if(wasEnabled)enable(context);
     }
 
     public static synchronized boolean prepare(Context context) {
