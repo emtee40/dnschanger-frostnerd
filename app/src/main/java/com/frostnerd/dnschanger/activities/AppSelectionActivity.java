@@ -188,7 +188,9 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
                 select.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        for(AppEntry entry: apps)currentSelected.add(entry.packageName);
+                        for(AppEntry entry: apps){
+                            if(!currentSelected.contains(entry.packageName))currentSelected.add(entry.packageName);
+                        }
                         notifyItemRangeChanged(0, getItemCount());
                     }
                 });
