@@ -172,6 +172,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         currentSelected.clear();
                         notifyItemRangeChanged(0, getItemCount());
+                        getSupportActionBar().setSubtitle(getString(R.string.x_apps_selected).replace("[[x]]", currentSelected.size() + ""));
                     }
                 });
                 select.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -181,6 +182,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
                             if(!currentSelected.contains(entry.packageName))currentSelected.add(entry.packageName);
                         }
                         notifyItemRangeChanged(0, getItemCount());
+                        getSupportActionBar().setSubtitle(getString(R.string.x_apps_selected).replace("[[x]]", currentSelected.size() + ""));
                     }
                 });
             }else{
