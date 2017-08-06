@@ -70,12 +70,12 @@ upload:
 upload_release:
   stage: webdeploy
   script:
-    - cp -f app/build/outputs/apk/app-debug.apk $RELEASE_DEPLOY_DIR/$(/./home/public/gitrunner/determineAppVersionName.sh app/build/outputs/apk/app-debug.apk).apk
+    - cp -f app/build/outputs/apk/app-release.apk $RELEASE_DEPLOY_DIR/$(/./home/public/gitrunner/determineAppVersionName.sh app/build/outputs/apk/app-release.apk).apk
   only:
     - release
   artifacts:
     paths:
-    - $RELEASE_DEPLOY_DIR/$(/./home/public/gitrunner/determineAppVersionName.sh app/build/outputs/apk/app-debug.apk).apk
+    - $RELEASE_DEPLOY_DIR/$(/./home/public/gitrunner/determineAppVersionName.sh app/build/outputs/apk/app-release.apk).apk
 
 #functionalTests:
 #  stage: test
