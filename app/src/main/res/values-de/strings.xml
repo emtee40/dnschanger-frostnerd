@@ -180,4 +180,5 @@
     <string name="x_apps_selected">[[x]] Apps ausgewählt</string>
     <string name="tile_pause_resume">Pausieren / Fortsetzen</string>
     <string name="tile_start_stop">Starten / Stoppen</string>
+    <string name="title_vpn_exclusion">VPN-Umgehung</string>
 </resources>

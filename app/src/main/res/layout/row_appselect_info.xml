@@ -31,14 +31,6 @@
 
             <CheckBox
                 android:layout_width="wrap_content"
-                android:text="@string/whitelist"
-                android:id="@+id/checkbox_whitelist"
-                android:textColor="?android:textColor"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content" />
-
-            <CheckBox
-                android:layout_width="wrap_content"
                 android:text="@string/select_all"
                 android:id="@+id/select_all"
                 android:textColor="?android:textColor"

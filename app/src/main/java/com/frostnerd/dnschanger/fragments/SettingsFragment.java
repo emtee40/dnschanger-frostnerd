@@ -419,6 +419,17 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         });
         v4Enabled.setEnabled(v6Enabled.isEnabled());
         v6Enabled.setEnabled(v4Enabled.isEnabled());
+        if(Preferences.getBoolean(getActivity(), "excluded_whitelist", false)){
+            findPreference("excluded_whitelist").setSummary(R.string.excluded_apps_info_text_whitelist);
+        }
+        findPreference("excluded_whitelist").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                boolean newValue = (boolean)o;
+                preference.setSummary(newValue ? R.string.excluded_apps_info_text_whitelist : R.string.excluded_apps_info_text_blacklist);
+                return true;
+            }
+        });
     }
 
     private Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
