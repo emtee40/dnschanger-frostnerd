@@ -46,6 +46,7 @@ upload:
   script:
     - cp -f app/build/outputs/apk/app-debug.apk $DEV_DEPLOY_DIR/$CI_COMMIT_REF_NAME-$CI_PIPELINE_ID.apk
     - /./home/public/gitrunner/logCIBuilds.sh $DEV_DEPLOY_DIR
+    - ln -s -f $DEV_DEPLOY_DIR/$CI_COMMIT_REF_NAME-$CI_PIPELINE_ID.apk $DEV_DEPLOY_DIR/0_latest_$CI_COMMIT_REF_NAME.apk
   except:
     - /^no_ci.*$/
     - /^no_deploy.*$/
