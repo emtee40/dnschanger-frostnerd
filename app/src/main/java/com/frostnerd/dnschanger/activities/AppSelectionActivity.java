@@ -160,24 +160,13 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             if (holder.type == 0){
-                CheckBox checkboxWhitelist = ((CheckBox)holder.contentView.findViewById(R.id.checkbox_whitelist)),
-                        deselect = ((CheckBox)holder.contentView.findViewById(R.id.deselect_all)),
+                CheckBox deselect = ((CheckBox)holder.contentView.findViewById(R.id.deselect_all)),
                         select = ((CheckBox)holder.contentView.findViewById(R.id.select_all));
-                checkboxWhitelist.setOnCheckedChangeListener(null);
                 deselect.setOnCheckedChangeListener(null);
                 select.setOnCheckedChangeListener(null);
                 ((TextView)holder.contentView.findViewById(R.id.text)).setText(whiteList ? infoTextWhitelist : infoTextBlacklist);
-                checkboxWhitelist.setChecked(whiteList);
                 deselect.setChecked(currentSelected.size() == 0);
                 select.setChecked(currentSelected.size() == apps.size());
-                checkboxWhitelist.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        whiteList = isChecked;
-                        listAdapter.notifyItemChanged(0);
-                        getSupportActionBar().setSubtitle(getString(R.string.x_apps_selected).replace("[[x]]", currentSelected.size() + ""));
-                    }
-                });
                 deselect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
