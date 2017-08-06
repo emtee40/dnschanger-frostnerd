@@ -70,6 +70,7 @@ upload:
 upload_release:
   stage: webdeploy
   script:
+    - find . -name "*.apk"
     - cp -f app/build/outputs/apk/app-release.apk $RELEASE_DEPLOY_DIR/$(/./home/public/gitrunner/determineAppVersionName.sh app/build/outputs/apk/app-release.apk).apk
   only:
     - release
