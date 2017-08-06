@@ -74,7 +74,9 @@
             android:summary="@string/summary_remove_usage_data"
             android:title="@string/title_remove_usage_data" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/title_category_pin" android:key="pin_category">
+    <PreferenceCategory
+        android:key="pin_category"
+        android:title="@string/title_category_pin">
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="setting_pin_enabled"
@@ -102,8 +104,8 @@
             android:title="@string/title_pin_app_shortcut" />
         <EditTextPreference
             android:dependency="setting_pin_enabled"
-            android:key="pin_value"
             android:inputType="textPassword"
+            android:key="pin_value"
             android:summary="@string/summary_pin_value"
             android:title="@string/title_pin_value" />
     </PreferenceCategory>
@@ -134,19 +136,17 @@
             android:title="@string/title_create_shortcut" />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:key="debug_category"
-        android:title="@string/title_debug_category">
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="debug"
-            android:summary="@string/summary_debug"
-            android:title="@string/title_debug" />
-
+    <PreferenceCategory android:title="@string/title_vpn_exclusion">
         <Preference
-            android:key="send_debug"
-            android:summary="@string/summary_send_debug"
-            android:title="@string/title_send_debug" />
+            android:key="exclude_apps"
+            android:summary="@string/summary_exclude_apps"
+            android:title="@string/title_exclude_apps" />
+
+        <SwitchPreference
+            android:summary="@string/excluded_apps_info_text_blacklist"
+            android:key="excluded_whitelist"
+            android:defaultValue="false"
+            android:title="@string/whitelist" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -177,17 +177,28 @@
 
 
         <ListPreference
+            android:defaultValue="1"
             android:entries="@array/theme"
             android:entryValues="@array/themeValues"
             android:key="theme"
-            android:defaultValue="1"
             android:summary="@string/summary_theme"
             android:title="@string/title_theme" />
 
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="debug_category"
+        android:title="@string/title_debug_category">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="debug"
+            android:summary="@string/summary_debug"
+            android:title="@string/title_debug" />
+
         <Preference
-            android:key="exclude_apps"
-            android:summary="@string/summary_exclude_apps"
-            android:title="@string/title_exclude_apps" />
+            android:key="send_debug"
+            android:summary="@string/summary_send_debug"
+            android:title="@string/title_send_debug" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/title_about">

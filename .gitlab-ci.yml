@@ -21,6 +21,7 @@ stages:
 build:
   stage: build
   script:
+    - /./home/public/gitrunner/changeAppVersion.sh app/build.gradle " $CI_COMMIT_REF_NAME\_$CI_PIPELINE_ID" --append
     - ./gradlew assembleDebug --stacktrace
   artifacts:
     paths:
@@ -30,6 +31,14 @@ build:
     - /^no_build.*$/
     - /^no_build_no_tests.*$/
     - /^no_build_no_deploy.*$/
+    - release
+    
+build_release:
+  stage: build
+  script:
+   - ./gradlew clean check assembleRelease --stacktrace -Pandroid.injected.signing.store.file=$KEYSTORE_FILE -Pandroid.injected.signing.store.password=$KEYSTORE_PASSWORD -Pandroid.injected.signing.key.alias=$KEYSTORE_KEY_NAME -Pandroid.injected.signing.key.password=$KEYSTORE_KEY_PASSWORD
+  only:
+   - release
     
 unitTests:
   stage: test
@@ -46,6 +55,7 @@ upload:
   script:
     - cp -f app/build/outputs/apk/app-debug.apk $DEV_DEPLOY_DIR/$CI_COMMIT_REF_NAME-$CI_PIPELINE_ID.apk
     - /./home/public/gitrunner/logCIBuilds.sh $DEV_DEPLOY_DIR
+    - ln -s -f $DEV_DEPLOY_DIR/$CI_COMMIT_REF_NAME-$CI_PIPELINE_ID.apk $DEV_DEPLOY_DIR/0_latest_$CI_COMMIT_REF_NAME.apk
   except:
     - /^no_ci.*$/
     - /^no_deploy.*$/
@@ -53,6 +63,9 @@ upload:
     - /^no_build_no_deploy.*$/
     - /^no_build.*$/ 
     - release
+  artifacts:
+    paths:
+    - $DEV_DEPLOY_DIR/$CI_COMMIT_REF_NAME-$CI_PIPELINE_ID.apk
     
 upload_release:
   stage: webdeploy
@@ -60,6 +73,9 @@ upload_release:
     - cp -f app/build/outputs/apk/app-debug.apk $RELEASE_DEPLOY_DIR/$(/./home/public/gitrunner/determineAppVersionName.sh app/build/outputs/apk/app-debug.apk).apk
   only:
     - release
+  artifacts:
+    paths:
+    - $RELEASE_DEPLOY_DIR/$(/./home/public/gitrunner/determineAppVersionName.sh app/build/outputs/apk/app-debug.apk).apk
 
 #functionalTests:
 #  stage: test

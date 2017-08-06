@@ -79,15 +79,38 @@ public class ShortcutActivity extends AppCompatActivity {
         }
     }
 
-    private void start(String dns1, String dns2, String dns1v6, String dns2v6){
-        if(API.isServiceRunning(this)) {
-            LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Stopping Service to be safe");
-            startService(DNSVpnService.getDestroyIntent(this));
+    private void start(final String dns1, final String dns2, final String dns1v6, final String dns2v6){
+        if(API.isServiceRunning(this))bindService(DNSVpnService.getBinderIntent(this), new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder binder) {
+                DNSVpnService service = ((DNSVpnService.ServiceBinder)binder).getService();
+                LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Connected to service");
+                LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Started via shortcut: " + service.startedFromShortcut());
+                boolean threadRunning = API.isServiceThreadRunning();
+                if(!(service.getCurrentDNS1().equals(dns1) && service.getCurrentDNS2().equals(dns2)
+                        && service.getCurrentDNS1V6().equals(dns1v6) && service.getCurrentDNS2V6().equals(dns2v6))){
+                    unbindService(this);
+                    startService(DNSVpnService.getDestroyIntent(ShortcutActivity.this));
+                    LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Starting BackgroundVpnConfigureActivity");
+                    BackgroundVpnConfigureActivity.startWithFixedDNS(ShortcutActivity.this,dns1,
+                            dns2,dns1v6, dns2v6,false);
+                    finish();
+                }else{
+                    if(!threadRunning)startService(new Intent(ShortcutActivity.this, DNSVpnService.class)
+                            .putExtra(VPNServiceArgument.COMMAND_START_VPN.toString(), true));
+                    unbindService(this);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+            }
+        },0);
+        else {
+            BackgroundVpnConfigureActivity.startWithFixedDNS(this,dns1,dns2,dns1v6, dns2v6,false);
+            finish();
         }
-        LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Starting BackgroundVpnConfigureActivity");
-        BackgroundVpnConfigureActivity.startWithFixedDNS(this,dns1,
-                dns2,dns1v6, dns2v6,false);
-        finish();
     }
 
     @Override
