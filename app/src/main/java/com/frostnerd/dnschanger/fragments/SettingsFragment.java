@@ -69,7 +69,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Created Activity");
-        addPreferencesFromResource(R.xml.preferences);
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Added preferences from resources");
         devicePolicyManager = (DevicePolicyManager)getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
         deviceAdmin = new ComponentName(getActivity(), AdminReceiver.class);
