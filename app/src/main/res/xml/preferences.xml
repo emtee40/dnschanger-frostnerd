@@ -106,6 +106,7 @@
             android:dependency="setting_pin_enabled"
             android:inputType="textPassword"
             android:key="pin_value"
+            android:defaultValue="1234"
             android:summary="@string/summary_pin_value"
             android:title="@string/title_pin_value" />
     </PreferenceCategory>
