@@ -12,6 +12,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
+import android.support.v14.preference.PreferenceFragment;
+import android.support.v14.preference.SwitchPreference;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,8 +21,6 @@ import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
-import android.support.v7.preference.PreferenceFragmentCompat;
-import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.PreferenceScreen;
 import android.view.View;
 
@@ -50,7 +50,7 @@ import java.util.Set;
  * <p>
  * development@frostnerd.com
  */
-public class SettingsFragment extends PreferenceFragmentCompat {
+public class SettingsFragment extends PreferenceFragment {
     private boolean usageRevokeHidden = false;
     private PreferenceCategory automatingCategory, debugCategory;
     private Preference removeUsagePreference, sendDebugPreference;
@@ -436,6 +436,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if((boolean)newValue){
                     if(Preferences.getString(getActivity(), "pin_value", "1234").equals("1234"))getPreferenceManager().showDialog(findPreference("pin_value"));
+                    System.out.println(findPreference("pin_value").getClass());
                     if (!((CheckBoxPreference)findPreference("pin_app")).isChecked())((CheckBoxPreference)findPreference("pin_app")).setChecked(true);
                 }
                 return true;
