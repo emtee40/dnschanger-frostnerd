@@ -434,8 +434,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         findPreference("setting_pin_enabled").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if((boolean)newValue && Preferences.getString(getActivity(), "pin_value", "1234").equals("1234")){
-                    getPreferenceManager().showDialog(findPreference("pin_value"));
+                if((boolean)newValue){
+                    if(Preferences.getString(getActivity(), "pin_value", "1234").equals("1234"))getPreferenceManager().showDialog(findPreference("pin_value"));
+                    if (!((CheckBoxPreference)findPreference("pin_app")).isChecked())((CheckBoxPreference)findPreference("pin_app")).setChecked(true);
                 }
                 return true;
             }
