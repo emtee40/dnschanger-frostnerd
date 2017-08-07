@@ -7,8 +7,8 @@ android {
         applicationId "com.frostnerd.dnschanger"
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 48
-        versionName "1.14.3"
+        versionCode 49
+        versionName "1.14.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -23,6 +23,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
     compile 'com.android.support:cardview-v7:26.0.0-alpha1'
     compile 'com.android.support:recyclerview-v7:26.0.0-alpha1'
+    compile 'com.android.support:preference-v14:26.0.0-alpha1'
     compile project(path: ':AndroidUtils:library')
 
     testCompile 'junit:junit:4.12'
