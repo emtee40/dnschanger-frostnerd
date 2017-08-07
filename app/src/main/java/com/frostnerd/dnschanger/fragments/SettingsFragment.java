@@ -21,6 +21,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v14.preference.SwitchPreference;
+import android.support.v7.preference.PreferenceScreen;
 import android.view.View;
 
 import com.frostnerd.dnschanger.API.API;
@@ -58,6 +59,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public static final int REQUEST_CODE_ENABLE_ADMIN = 1, REQUEST_CREATE_SHORTCUT = 2, REQUEST_EXCLUDE_APPS = 3;
     public final static String LOG_TAG = "[SettingsActivity]";
     public final static int USAGE_STATS_REQUEST = 13, CHOOSE_AUTOPAUSEAPPS_REQUEST = 14;
+    private PreferenceScreen preferenceScreen;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -72,11 +74,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Added preferences from resources");
         devicePolicyManager = (DevicePolicyManager)getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
         deviceAdmin = new ComponentName(getActivity(), AdminReceiver.class);
+        preferenceScreen = (PreferenceScreen)findPreference("preferences");
         findPreference("setting_start_boot").setOnPreferenceChangeListener(changeListener);
         findPreference("setting_show_notification").setOnPreferenceChangeListener(changeListener);
         findPreference("show_used_dns").setOnPreferenceChangeListener(changeListener);
         findPreference("setting_auto_mobile").setOnPreferenceChangeListener(changeListener);
-        findPreference("setting_pin_enabled").setOnPreferenceChangeListener(changeListener);
         findPreference("setting_disable_netchange").setOnPreferenceChangeListener(changeListener);
         findPreference("notification_on_stop").setOnPreferenceChangeListener(changeListener);
         findPreference("shortcut_click_again_disable").setOnPreferenceChangeListener(changeListener);
@@ -429,6 +431,16 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
+        findPreference("setting_pin_enabled").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if((boolean)newValue && Preferences.getString(getActivity(), "pin_value", "1234").equals("1234")){
+                    getPreferenceManager().showDialog(findPreference("pin_value"));
+                }
+                return true;
+            }
+        });
+
     }
 
     private Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
