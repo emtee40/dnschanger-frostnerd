@@ -436,7 +436,6 @@ public class SettingsFragment extends PreferenceFragment {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if((boolean)newValue){
                     if(Preferences.getString(getActivity(), "pin_value", "1234").equals("1234"))getPreferenceManager().showDialog(findPreference("pin_value"));
-                    System.out.println(findPreference("pin_value").getClass());
                     if (!((CheckBoxPreference)findPreference("pin_app")).isChecked())((CheckBoxPreference)findPreference("pin_app")).setChecked(true);
                 }
                 return true;
