@@ -148,7 +148,7 @@
     <string name="new_entry">Neuer Eintrag</string>
     <string name="title_exclude_apps">Apps vom VPN ausschließen</string>
     <string name="summary_exclude_apps">Installierte Apps daran hindern, die interne VPN Verbindung zu nutzen. Dies sorgt dafür, dass diese nicht die eingestellten DNS Server nutzen</string>
-    <string name="excluded_apps_info_text_blacklist">Jede markierte Anwendung wird den internen VPN nicht verwenden. Dadurch werden die DNS Server auf diese ebenfalls nicht angewendet.</string>
+    <string name="excluded_apps_info_text_blacklist">Jede in der oberen Einstellung ausgewählte Anwendung wird den internen VPN nicht verwenden. Dadurch werden die DNS Server auf diese ebenfalls nicht angewendet.</string>
     <string name="title_about">Über diese App</string>
     <string name="search">Suchen</string>
     <string name="title_reset">Zurücksetzen</string>

@@ -207,18 +207,18 @@
             </intent-filter>-->
         </activity>
 
-        <receiver
-            android:name=".receivers.AdminReceiver"
-            android:description="@string/device_admin_description"
-            android:label="@string/device_admin"
-            android:permission="android.permission.BIND_DEVICE_ADMIN">
-            <meta-data
-                android:name="android.app.device_admin"
-                android:resource="@xml/device_admin" />
-            <intent-filter>
-                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
-            </intent-filter>
-        </receiver>
+        <!--<receiver-->
+            <!--android:name=".receivers.AdminReceiver"-->
+            <!--android:description="@string/device_admin_description"-->
+            <!--android:label="@string/device_admin"-->
+            <!--android:permission="android.permission.BIND_DEVICE_ADMIN">-->
+            <!--<meta-data-->
+                <!--android:name="android.app.device_admin"-->
+                <!--android:resource="@xml/device_admin" />-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
         <provider
             android:name="android.support.v4.content.FileProvider"
