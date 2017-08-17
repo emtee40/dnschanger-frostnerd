@@ -387,6 +387,7 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, final Object newValue) {
                 final boolean val = (boolean)newValue;
+                Preferences.put(getActivity(),preference.getKey(),newValue);
                 if(!val)new AlertDialog.Builder(getActivity(), ThemeHandler.getDialogTheme(getActivity())).setNegativeButton(R.string.cancel, null).
                         setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
@@ -413,8 +414,8 @@ public class SettingsFragment extends PreferenceFragment {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 boolean val = (boolean)newValue;
                 v4Enabled.setEnabled(val);
-                if(API.isServiceRunning(getActivity()))getActivity().startService(new Intent(getActivity(), DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true).
-                        putExtra(VPNServiceArgument.FLAG_DONT_UPDATE_DNS.getArgument(),true));
+                Preferences.put(getActivity(),preference.getKey(),newValue);
+                if(API.isServiceRunning(getActivity()))getActivity().startService(new Intent(getActivity(), DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true));
                 return true;
             }
         });
