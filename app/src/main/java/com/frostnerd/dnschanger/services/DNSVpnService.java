@@ -168,9 +168,20 @@ public class DNSVpnService extends VpnService {
                         .replace("[x]",""+excludedApps.size()) : "");
         if(Preferences.getBoolean(this, "show_used_dns",true)){
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Showing used DNS servers in notification");
+            boolean ipv6Enabled = Preferences.getBoolean(DNSVpnService.this, "setting_ipv6_enabled", true),
+                    ipv4Enabled = Preferences.getBoolean(DNSVpnService.this, "setting_ipv4_enabled", true);
+            StringBuilder contentText = new StringBuilder();
+            if(ipv4Enabled){
+                contentText.append("DNS 1: ").append(getCurrentDNS1()).append("\n");
+                contentText.append("DNS 2: ").append(getCurrentDNS2()).append("\n");
+            }
+            if(ipv6Enabled){
+                contentText.append("DNSV6 1: ").append(getCurrentDNS1V6()).append("\n");
+                contentText.append("DNSV6 2: ").append(getCurrentDNS2V6()).append("\n");
+            }
+            contentText.append(excludedAppsText);
             notificationBuilder.setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().
-                    bigText("DNS 1: " + getCurrentDNS1() + "\nDNS 2: " + getCurrentDNS2() + "\nDNSV6 1: " +
-                            getCurrentDNS1V6() + "\nDNSV6 2: " + getCurrentDNS2V6() +excludedAppsText));
+                    bigText(contentText.toString()));
             notificationBuilder.setSubText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused));
         }else{
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Not showing used DNS Servers in notification");
