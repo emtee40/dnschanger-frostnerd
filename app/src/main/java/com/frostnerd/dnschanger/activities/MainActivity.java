@@ -253,7 +253,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
-        if(!Preferences.getBoolean(this, "first_run",true) && !Preferences.getBoolean(this, "rated",false) && new Random().nextInt(100) <= 8){
+        int random = new Random().nextInt(100), launches = Preferences.getInteger(this, "launches", 0);
+        Preferences.put(this, "launches", launches+1);
+        if(!Preferences.getBoolean(this, "first_run",true) && !Preferences.getBoolean(this, "rated",false) && random <= (launches >= 3 ? 8 : 3)){
             LogFactory.writeMessage(this, LOG_TAG, "Showing dialog requesting rating");
             new AlertDialog.Builder(this,ThemeHandler.getDialogTheme(this)).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
