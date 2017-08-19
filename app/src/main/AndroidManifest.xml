@@ -74,7 +74,11 @@
 
         <activity
             android:name=".activities.SettingsActivity"
-            android:parentActivityName=".activities.MainActivity" />
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
 
         <activity
             android:name=".activities.InvalidDNSDialogActivity"
@@ -150,7 +154,11 @@
 
         <activity
             android:name=".activities.AppSelectionActivity"
-            android:parentActivityName=".activities.SettingsActivity" />
+            android:parentActivityName=".activities.SettingsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.SettingsActivity" />
+        </activity>
 
         <service
             android:name=".tiles.TileStartStop"
