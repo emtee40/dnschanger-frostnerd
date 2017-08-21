@@ -180,4 +180,5 @@
     <string name="tile_pause_resume">Pausar / Continuar</string>
     <string name="tile_start_stop">Iniciar / Parar</string>
     <string name="title_vpn_exclusion">Exclusão VPN</string>
+    <string name="unfixable_error_explaination">The background worker crashed with an exception present on some devices. This crash cannot be fixed by the app itself.\nEither try restarting the app and if that doesn\'t help try restarting your device.</string>
 </resources>
