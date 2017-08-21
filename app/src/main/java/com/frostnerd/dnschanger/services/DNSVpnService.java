@@ -166,6 +166,7 @@ public class DNSVpnService extends VpnService {
         String excludedAppsText = (excludedApps.size() != 0 ? "\n" +
                 getString(excludedWhitelisted ? R.string.notification_x_whitelisted : R.string.notification_x_blacklisted)
                         .replace("[x]",""+excludedApps.size()) : "");
+        excludedAppsText = !Preferences.getBoolean(this, "app_whitelist_configured",false) ? "" : excludedAppsText;
         if(Preferences.getBoolean(this, "show_used_dns",true)){
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Showing used DNS servers in notification");
             boolean ipv6Enabled = Preferences.getBoolean(DNSVpnService.this, "setting_ipv6_enabled", true),
@@ -173,11 +174,11 @@ public class DNSVpnService extends VpnService {
             StringBuilder contentText = new StringBuilder();
             if(ipv4Enabled){
                 contentText.append("DNS 1: ").append(getCurrentDNS1()).append("\n");
-                contentText.append("DNS 2: ").append(getCurrentDNS2()).append("\n");
+                contentText.append("DNS 2: ").append(getCurrentDNS2()).append(!excludedAppsText.equals("") || ipv6Enabled ? "\n" : "");
             }
             if(ipv6Enabled){
                 contentText.append("DNSV6 1: ").append(getCurrentDNS1V6()).append("\n");
-                contentText.append("DNSV6 2: ").append(getCurrentDNS2V6()).append("\n");
+                contentText.append("DNSV6 2: ").append(getCurrentDNS2V6()).append(!excludedAppsText.equals("") ? "\n" : "");
             }
             contentText.append(excludedAppsText);
             notificationBuilder.setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().
