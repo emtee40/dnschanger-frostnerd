@@ -293,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 API.getDBHelper(MainActivity.this).getReadableDatabase();
             }
-        });
+        }).start();
         LogFactory.writeMessage(this, LOG_TAG, "Done with OnCreate");
         Preferences.put(this, "first_run", false);
     }
