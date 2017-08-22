@@ -469,6 +469,7 @@ public class DNSVpnService extends VpnService {
                             if(ipv6Enabled && dns1_v6 != null && !dns1_v6.equals(""))builder = builder.addDnsServer(dns1_v6);
                             if(ipv6Enabled && dns2_v6 != null && !dns2_v6.equals(""))builder = builder.addDnsServer(dns2_v6);
                             builder = applyDisallowed(builder);
+                            builder = setMTU(builder);
                             tunnelInterface = builder.establish();
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface created and established.");
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Opening DatagramChannel");
