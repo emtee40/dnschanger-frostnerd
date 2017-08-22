@@ -107,7 +107,7 @@ public class DNSVpnService extends VpnService {
     };
     private Map<String, Integer> addresses = new ConcurrentHashMap<String, Integer>(){{
         put("172.31.255.253", 30);
-        put("192.168.0.1", 24);
+        put("192.168.0.131", 24);
         put("192.168.234.55", 24);
         put("172.31.255.1", 28);
     }};
