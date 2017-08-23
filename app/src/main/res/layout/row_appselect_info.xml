@@ -28,21 +28,6 @@
                 android:id="@+id/text"
                 android:paddingLeft="8dp"
                 android:paddingTop="8dp"/>
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:text="@string/select_all"
-                android:id="@+id/select_all"
-                android:textColor="?android:textColor"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content" />
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:text="@string/deselect_all"
-                android:id="@+id/deselect_all"
-                android:textColor="?android:textColor"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content" />
         </LinearLayout>
 
 
