@@ -6,4 +6,8 @@
 
     <color name="basicWidgetBackground">#801E88E5</color>
     <color name="basicWidgetText">#FFF</color>
+
+    <color name="defaultBackgroundColor">#2196F3</color>
+    <color name="monoBackgroundColor">#546E7A</color>
+    <color name="darkBackgroundColor">#424242</color>
 </resources>
