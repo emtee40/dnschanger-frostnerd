@@ -128,4 +128,10 @@ public class ConnectivityBackgroundService extends Service {
         LogFactory.writeMessage(this, LOG_TAG, "Bind command received", intent);
         return null;
     }
+
+    @Override
+    public void onDestroy() {
+        unregisterReceiver(connectivityChange);
+        super.onDestroy();
+    }
 }
