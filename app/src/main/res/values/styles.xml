@@ -6,6 +6,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">#B2EBF2</item>
         <item name="android:windowBackground">@drawable/background_default</item>
+        <item name="android:colorBackground">@color/defaultBackgroundColor</item>
 
         <item name="android:textColor">#EEEEEE</item>
         <item name="android:textColorPrimary">#EEEEEE</item>
@@ -19,6 +20,8 @@
         <item name="android:dialogTheme">@style/DialogTheme</item>
         <item name="android:alertDialogTheme">@style/DialogTheme</item>
         <item name="preferenceTheme">@style/PreferenceTheme</item>
+
+        <item name="nav_icon_home">@drawable/ic_home_dark</item>
     </style>
 
     <style name="AppTheme_Dark" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -26,6 +29,7 @@
         <item name="colorPrimaryDark">#212121</item>
         <item name="colorAccent">#607D8B</item>
         <item name="android:windowBackground">@drawable/background_dark</item>
+        <item name="android:colorBackground">@color/darkBackgroundColor</item>
 
         <item name="android:textColor">#BDBDBD</item>
         <item name="android:textColorSecondary">#E0E0E0</item>
@@ -38,6 +42,8 @@
         <item name="android:dialogTheme">@style/DialogTheme_Dark</item>
         <item name="android:alertDialogTheme">@style/DialogTheme_Dark</item>
         <item name="preferenceTheme">@style/PreferenceTheme_Dark</item>
+
+        <item name="nav_icon_home">@drawable/ic_home_light</item>
     </style>
 
     <style name="AppTheme_Mono" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -45,6 +51,7 @@
         <item name="colorPrimaryDark">#37474F</item>
         <item name="colorAccent">#E0E0E0</item>
         <item name="android:windowBackground">@drawable/background_mono</item>
+        <item name="android:colorBackground">@color/monoBackgroundColor</item>
 
         <item name="android:textColor">#E0E0E0</item>
         <item name="android:textColorSecondary">#BDBDBD</item>
@@ -57,6 +64,8 @@
         <item name="android:dialogTheme">@style/DialogTheme_Mono</item>
         <item name="android:alertDialogTheme">@style/DialogTheme_Mono</item>
         <item name="preferenceTheme">@style/PreferenceTheme_Mono</item>
+
+        <item name="nav_icon_home">@drawable/ic_home_light</item>
     </style>
 
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
