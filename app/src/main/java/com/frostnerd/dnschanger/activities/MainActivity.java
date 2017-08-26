@@ -25,7 +25,6 @@ import com.frostnerd.utils.design.material.navigationdrawer.StyleOptions;
 import com.frostnerd.utils.general.DesignUtil;
 import com.frostnerd.utils.preferences.Preferences;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,7 +41,6 @@ public class MainActivity extends NavigationDrawerActivity {
     private AlertDialog dialog1;
     private DefaultDNSDialog defaultDnsDialog;
     private MainFragment mainFragment;
-    private List<DrawerItem> drawerItems = new ArrayList<>();
     private DrawerItem defaultDrawerItem;
     @ColorInt int backgroundColor;
     @ColorInt int textColor;
