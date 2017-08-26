@@ -16,6 +16,7 @@ import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
 import com.frostnerd.dnschanger.fragments.MainFragment;
 import com.frostnerd.utils.design.material.navigationdrawer.DrawerItem;
+import com.frostnerd.utils.design.material.navigationdrawer.DrawerItemCreator;
 import com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity;
 import com.frostnerd.utils.design.material.navigationdrawer.StyleOptions;
 import com.frostnerd.utils.preferences.Preferences;
@@ -66,14 +67,20 @@ public class MainActivity extends NavigationDrawerActivity {
 
     @Override
     public List<DrawerItem> createDrawerItems() {
-        drawerItems.add(new DrawerItem(this, R.string.nav_title_main));
-        drawerItems.add(defaultDrawerItem = new DrawerItem(this, R.string.nav_title_dns, ThemeHandler.getDrawableFromTheme(this, R.attr.nav_icon_home), new DrawerItem.FragmentCreator() {
+        DrawerItemCreator itemCreator = new DrawerItemCreator(this);
+        itemCreator.createItemAndContinue(R.string.nav_title_main);
+        itemCreator.createItemAndContinue(R.string.nav_title_dns, ThemeHandler.getDrawableFromTheme(this, R.attr.nav_icon_home), new DrawerItem.FragmentCreator() {
             @Override
             public Fragment getFragment() {
                 return mainFragment=new MainFragment();
             }
-        }));
-        return drawerItems;
+        }).accessLastItemAndContinue(new DrawerItemCreator.ItemAccessor() {
+            @Override
+            public void access(DrawerItem item) {
+                defaultDrawerItem = item;
+            }
+        });
+        return itemCreator.getDrawerItems();
     }
 
     @Override
