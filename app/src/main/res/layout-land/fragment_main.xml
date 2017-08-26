@@ -163,47 +163,6 @@
                     android:background="?attr/cardColor"
                     android:text="@string/start"
                     android:textColor="#FFF" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/rate"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:layout_toLeftOf="@+id/settings"
-                        android:layout_weight="1"
-                        android:background="?attr/cardColor"
-                        android:onClick="rateApp"
-                        android:text="@string/rate"
-                        android:textColor="#FFF" />
-
-                    <ImageView
-                        android:id="@+id/settings"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:background="?attr/inputElementColor"
-                        android:paddingLeft="3dp"
-                        android:paddingRight="3dp"
-                        android:src="@drawable/ic_settings" />
-
-                    <Button
-                        android:id="@+id/dnsInfo"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@+id/settings"
-                        android:layout_weight="1"
-                        android:background="?attr/inputElementColor"
-                        android:onClick="openDNSInfoDialog"
-                        android:text="@string/info_dns_button"
-                        android:textColor="#FFF" />
-                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

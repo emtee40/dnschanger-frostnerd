@@ -209,15 +209,6 @@ public class MainFragment extends Fragment {
 
             }
         });
-        findViewById(R.id.settings).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i;
-                LogFactory.writeMessage(getActivity(), LOG_TAG, "Opening Settings",
-                        i = new Intent(getActivity(), SettingsActivity.class));
-                startActivityForResult(i,REQUEST_SETTINGS);
-            }
-        });
         ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
         int random = new Random().nextInt(100), launches = Preferences.getInteger(getActivity(), "launches", 0);
         Preferences.put(getActivity(), "launches", launches+1);
