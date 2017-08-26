@@ -188,4 +188,8 @@
     <string name="nav_title_learn">Lernen</string>
     <string name="nav_title_what_is_dns">Was ist DNS?</string>
     <string name="nav_title_how_does_it_work">Wie funktioniert es?</string>
+    <string name="nav_title_features">Funktionen</string>
+    <string name="nav_title_tiles">Schnelleinstellung</string>
+    <string name="nav_title_pin_protection">Pin-schutz</string>
+    <string name="nav_title_more">Und mehr</string>
 </resources>

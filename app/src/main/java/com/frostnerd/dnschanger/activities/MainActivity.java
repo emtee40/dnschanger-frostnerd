@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 
+import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
@@ -106,6 +107,41 @@ public class MainActivity extends NavigationDrawerActivity {
             @Override
             public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
                 //TODO
+                return false;
+            }
+        });
+        itemCreator.createItemAndContinue(R.string.nav_title_features);
+        itemCreator.createItemAndContinue(R.string.shortcuts, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_open_in_new)), new DrawerItem.ClickListener() {
+            @Override
+            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+                return false;
+            }
+        });
+        if(API.isTaskerInstalled(this)){
+            itemCreator.createItemAndContinue(R.string.tasker_support, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_thumb_up)), new DrawerItem.ClickListener() {
+                @Override
+                public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+                    return false;
+                }
+            });
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            itemCreator.createItemAndContinue(R.string.nav_title_tiles, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_viewquilt)), new DrawerItem.ClickListener() {
+                @Override
+                public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+                    return false;
+                }
+            });
+        }
+        itemCreator.createItemAndContinue(R.string.nav_title_pin_protection, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_action_key)), new DrawerItem.ClickListener() {
+            @Override
+            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+                return false;
+            }
+        });
+        itemCreator.createItemAndContinue(R.string.nav_title_more, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_ellipsis)), new DrawerItem.ClickListener() {
+            @Override
+            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
                 return false;
             }
         });

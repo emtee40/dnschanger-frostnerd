@@ -197,4 +197,8 @@
     <string name="nav_title_learn">Learn</string>
     <string name="nav_title_how_does_it_work">How does it work?</string>
     <string name="nav_title_what_is_dns">What is DNS?</string>
+    <string name="nav_title_features">Features</string>
+    <string name="nav_title_tiles">Tiles</string>
+    <string name="nav_title_pin_protection">Pin protection</string>
+    <string name="nav_title_more">And more</string>
 </resources>
