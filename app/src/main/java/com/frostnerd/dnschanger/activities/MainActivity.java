@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.LightingColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import com.frostnerd.dnschanger.API.ThemeHandler;
+import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
@@ -118,7 +120,15 @@ public class MainActivity extends NavigationDrawerActivity {
         itemCreator.createItemAndContinue(R.string.contact_developer, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_person)), new DrawerItem.ClickListener() {
             @Override
             public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
-                rateApp();
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                        "mailto","support@frostnerd.com", null));
+                String body = "\n\n\n\n\n\n\nSystem:\nApp version: " + BuildConfig.VERSION_CODE + " (" + BuildConfig.VERSION_NAME + ")\n"+
+                        "Android: " + Build.VERSION.SDK_INT + " (" + Build.VERSION.RELEASE + " - " + Build.VERSION.CODENAME + ")";
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, "support@frostnerd.com");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, body);
+                LogFactory.writeMessage(MainActivity.this, LOG_TAG, "Now showing chooser for contacting dev", emailIntent);
+                startActivity(Intent.createChooser(emailIntent, getString(R.string.contact_developer)));
                 return false;
             }
         });

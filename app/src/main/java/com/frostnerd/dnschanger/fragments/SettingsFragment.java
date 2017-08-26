@@ -114,22 +114,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 return true;
             }
         });
-        findPreference("contact_dev").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                LogFactory.writeMessage(getActivity(), LOG_TAG, preference.getKey() + " clicked");
-                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                        "mailto","support@frostnerd.com", null));
-                String body = "\n\n\n\n\n\n\nSystem:\nApp version: " + BuildConfig.VERSION_CODE + " (" + BuildConfig.VERSION_NAME + ")\n"+
-                        "Android: " + Build.VERSION.SDK_INT + " (" + Build.VERSION.RELEASE + " - " + Build.VERSION.CODENAME + ")";
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, "support@frostnerd.com");
-                emailIntent.putExtra(Intent.EXTRA_TEXT, body);
-                LogFactory.writeMessage(getActivity(), LOG_TAG, "Now showing chooser for contacting dev", emailIntent);
-                startActivity(Intent.createChooser(emailIntent, getString(R.string.contact_developer)));
-                return true;
-            }
-        });
         findPreference("auto_pause").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
