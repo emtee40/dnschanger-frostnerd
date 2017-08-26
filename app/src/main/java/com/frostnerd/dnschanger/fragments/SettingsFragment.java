@@ -1,7 +1,7 @@
 package com.frostnerd.dnschanger.fragments;
 
+import android.app.SearchManager;
 import android.app.admin.DevicePolicyManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,6 +22,9 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 
 import com.frostnerd.dnschanger.API.API;
@@ -36,12 +39,16 @@ import com.frostnerd.dnschanger.tasker.ConfigureActivity;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.permissions.PermissionsUtil;
 import com.frostnerd.utils.preferences.Preferences;
+import com.frostnerd.utils.preferences.searchablepreferences.SearchSettings;
+import com.frostnerd.utils.preferences.searchablepreferences.v14.PreferenceSearcher;
+import com.frostnerd.utils.preferences.searchablepreferences.v14.SearchablePreference;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -49,7 +56,7 @@ import java.util.Set;
  * <p>
  * development@frostnerd.com
  */
-public class SettingsFragment extends PreferenceFragmentCompat {
+public class SettingsFragment extends PreferenceFragmentCompat implements SearchablePreference, SearchView.OnQueryTextListener{
     private boolean usageRevokeHidden = false;
     private PreferenceCategory automatingCategory, debugCategory;
     private Preference removeUsagePreference, sendDebugPreference;
@@ -59,6 +66,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public final static String LOG_TAG = "[SettingsActivity]";
     public final static int USAGE_STATS_REQUEST = 13, CHOOSE_AUTOPAUSEAPPS_REQUEST = 14;
     private PreferenceScreen preferenceScreen;
+    private PreferenceSearcher preferenceSearcher = new PreferenceSearcher(this);
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -69,6 +77,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Created Activity");
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Added preferences from resources");
         devicePolicyManager = (DevicePolicyManager)getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
@@ -533,5 +542,51 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_settings, menu);
+
+        SearchManager searchManager = (SearchManager)getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+        searchView.setOnQueryTextListener(this);
+    }
+
+    private Pattern emptySearchPattern = Pattern.compile("[\\s]*?");
+    @Override
+    public boolean preferenceMatches(Preference preference, String search) {
+        if(search == null || search.equals("") || emptySearchPattern.matcher(search).matches())return true;
+        Pattern pattern = Pattern.compile("(?i).*?" + search + ".*");
+        if(preference.getTitle() == null && preference.getSummary() != null){
+            return pattern.matcher(preference.getSummary()).matches();
+        }else if (preference.getSummary() == null && preference.getTitle() != null) {
+            return pattern.matcher(preference.getTitle()).matches();
+        } else
+            return preference.getSummary() != null && pattern.matcher(preference.getTitle() + "" + preference.getSummary()).matches();
+    }
+
+    @Override
+    public SearchSettings getSearchOptions() {
+        return new SearchSettings.Builder().hideCategoriesWithNoChildren(true).matchCategories(false).build();
+    }
+
+    @Override
+    public android.support.v7.preference.PreferenceGroup getTopLevelPreferenceGroup() {
+        return getPreferenceScreen();
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        preferenceSearcher.search(newText);
+        return true;
     }
 }
