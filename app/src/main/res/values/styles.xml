@@ -21,7 +21,6 @@
         <item name="android:alertDialogTheme">@style/DialogTheme</item>
         <item name="preferenceTheme">@style/PreferenceTheme</item>
 
-        <item name="nav_icon_home">@drawable/ic_home_dark</item>
     </style>
 
     <style name="AppTheme_Dark" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -43,7 +42,6 @@
         <item name="android:alertDialogTheme">@style/DialogTheme_Dark</item>
         <item name="preferenceTheme">@style/PreferenceTheme_Dark</item>
 
-        <item name="nav_icon_home">@drawable/ic_home_light</item>
     </style>
 
     <style name="AppTheme_Mono" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -65,7 +63,6 @@
         <item name="android:alertDialogTheme">@style/DialogTheme_Mono</item>
         <item name="preferenceTheme">@style/PreferenceTheme_Mono</item>
 
-        <item name="nav_icon_home">@drawable/ic_home_light</item>
     </style>
 
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
