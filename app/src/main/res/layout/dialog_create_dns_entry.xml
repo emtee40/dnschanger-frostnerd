@@ -24,8 +24,8 @@
             android:hint="Name"
             android:imeOptions="actionNext"
             android:maxLines="1"
-            android:nextFocusDown="@id/dns1"
-            android:nextFocusForward="@id/dns1"
+            android:nextFocusDown="@+id/dns1"
+            android:nextFocusForward="@+id/dns1"
             android:text=""
             android:textColor="#FFF">
 
@@ -51,8 +51,8 @@
             android:hint="DNS 1"
             android:imeOptions="actionNext"
             android:inputType="numberDecimal"
-            android:nextFocusDown="@id/dns2"
-            android:nextFocusForward="@id/dns2"
+            android:nextFocusDown="@+id/dns2"
+            android:nextFocusForward="@+id/dns2"
             android:nextFocusUp="@id/name"
             android:text="8.8.8.8"
             android:textColor="#FFF" />

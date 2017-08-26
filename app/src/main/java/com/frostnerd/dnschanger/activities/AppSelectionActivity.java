@@ -160,31 +160,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             if (holder.type == 0){
-                CheckBox deselect = ((CheckBox)holder.contentView.findViewById(R.id.deselect_all)),
-                        select = ((CheckBox)holder.contentView.findViewById(R.id.select_all));
-                deselect.setOnCheckedChangeListener(null);
-                select.setOnCheckedChangeListener(null);
                 ((TextView)holder.contentView.findViewById(R.id.text)).setText(whiteList ? infoTextWhitelist : infoTextBlacklist);
-                deselect.setChecked(currentSelected.size() == 0);
-                select.setChecked(currentSelected.size() == apps.size());
-                deselect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        currentSelected.clear();
-                        notifyItemRangeChanged(0, getItemCount());
-                        getSupportActionBar().setSubtitle(getString(R.string.x_apps_selected).replace("[[x]]", currentSelected.size() + ""));
-                    }
-                });
-                select.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        for(AppEntry entry: apps){
-                            if(!currentSelected.contains(entry.packageName))currentSelected.add(entry.packageName);
-                        }
-                        notifyItemRangeChanged(0, getItemCount());
-                        getSupportActionBar().setSubtitle(getString(R.string.x_apps_selected).replace("[[x]]", currentSelected.size() + ""));
-                    }
-                });
             }else{
                 int offSet = 1;
                 AppEntry entry = searchedApps.get(position - offSet);

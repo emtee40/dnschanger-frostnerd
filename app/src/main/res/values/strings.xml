@@ -191,4 +191,7 @@
     <string name="tile_start_stop">Start / Stop</string>
     <string name="title_vpn_exclusion">VPN exclusion</string>
     <string name="search_hint">Search a setting</string>
+    <string name="unfixable_error_explaination">The background worker crashed with an exception present on some devices. This crash cannot be fixed by the app itself.\nEither try restarting the app and if that doesn\'t help try restarting your device.</string>
+    <string name="nav_title_dns">DNS</string>
+    <string name="nav_title_main">Main screen</string>
 </resources>

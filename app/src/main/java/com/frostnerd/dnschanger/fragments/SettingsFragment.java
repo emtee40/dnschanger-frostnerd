@@ -428,6 +428,7 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 boolean newValue = (boolean)o;
+                Preferences.put(getActivity(), "app_whitelist_configured", true);
                 preference.setSummary(newValue ? R.string.excluded_apps_info_text_whitelist : R.string.excluded_apps_info_text_blacklist);
                 return true;
             }
@@ -501,6 +502,7 @@ public class SettingsFragment extends PreferenceFragment {
             ArrayList<String> apps = data.getStringArrayListExtra("apps");
             findPreference("autopause_appselect").setTitle(getString(R.string.title_autopause_apps).
                     replace("[[count]]", ""+ apps.size()));
+            if(apps.size() != getResources().getStringArray(R.array.default_blacklist).length)Preferences.put(getActivity(), "app_whitelist_configured", true);
             Preferences.put(getActivity(), "autopause_apps", new HashSet<String>(apps));
             Preferences.put(getActivity(), "autopause_apps_count", apps.size());
             if(API.isServiceRunning(getActivity())){
