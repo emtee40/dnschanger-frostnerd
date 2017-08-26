@@ -30,6 +30,7 @@
                 app:image="@drawable/ic_language"
                 app:indicatorVisibilityWhenUnused="gone"
                 app:revealDelay="0"
+                app:animationDuration="0"
                 app:revealType="revealInstant">
 
                 <EditText
@@ -56,6 +57,7 @@
                 app:image="@drawable/ic_language"
                 app:indicatorVisibilityWhenUnused="gone"
                 app:revealDelay="0"
+                app:animationDuration="0"
                 app:revealType="revealInstant">
 
                 <EditText
