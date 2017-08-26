@@ -185,4 +185,5 @@
     <string name="unfixable_error_explaination">Der Hintergrundprozess ist aufgrund eines in manchen Geräten vorhandenen Fehlers abgestürzt. Dieser kann leider nicht durch diese App behoben werden\n.Probiere entweder, die App neuzustarten, hilft dies nicht, starte dein Gerät neu.</string>
     <string name="nav_title_dns">DNS</string>
     <string name="nav_title_main">Hauptbildschirm</string>
+    <string name="nav_title_learn">Lernen</string>
 </resources>

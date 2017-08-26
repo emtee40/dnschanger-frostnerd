@@ -184,4 +184,5 @@
     <string name="unfixable_error_explaination">The background worker crashed with an exception present on some devices. This crash cannot be fixed by the app itself.\nEither try restarting the app and if that doesn\'t help try restarting your device.</string>
     <string name="nav_title_dns">DNS</string>
     <string name="nav_title_main">Tela principal</string>
+    <string name="nav_title_learn">Aprender</string>
 </resources>

@@ -226,7 +226,7 @@ public class MainFragment extends Fragment {
             new AlertDialog.Builder(getActivity(),ThemeHandler.getDialogTheme(getActivity())).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    ((MainActivity)getActivity()).rateApp(null);
+                    ((MainActivity)getActivity()).rateApp();
                 }
             }).setNegativeButton(R.string.dont_ask_again, new DialogInterface.OnClickListener() {
                 @Override

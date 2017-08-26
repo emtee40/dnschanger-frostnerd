@@ -2,6 +2,8 @@ package com.frostnerd.dnschanger.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.LightingColorFilter;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
@@ -15,10 +17,12 @@ import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
 import com.frostnerd.dnschanger.fragments.MainFragment;
+import com.frostnerd.dnschanger.fragments.SettingsFragment;
 import com.frostnerd.utils.design.material.navigationdrawer.DrawerItem;
 import com.frostnerd.utils.design.material.navigationdrawer.DrawerItemCreator;
 import com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity;
 import com.frostnerd.utils.design.material.navigationdrawer.StyleOptions;
+import com.frostnerd.utils.general.DesignUtil;
 import com.frostnerd.utils.preferences.Preferences;
 
 import java.util.ArrayList;
@@ -40,10 +44,14 @@ public class MainActivity extends NavigationDrawerActivity {
     private MainFragment mainFragment;
     private List<DrawerItem> drawerItems = new ArrayList<>();
     private DrawerItem defaultDrawerItem;
+    @ColorInt int backgroundColor;
+    @ColorInt int textColor;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setTheme(ThemeHandler.getAppTheme(this));
+        backgroundColor = ThemeHandler.resolveThemeAttribute(getTheme(), android.R.attr.colorBackground);
+        textColor = ThemeHandler.resolveThemeAttribute(getTheme(), android.R.attr.textColor);
         super.onCreate(savedInstanceState);
     }
 
@@ -69,7 +77,7 @@ public class MainActivity extends NavigationDrawerActivity {
     public List<DrawerItem> createDrawerItems() {
         DrawerItemCreator itemCreator = new DrawerItemCreator(this);
         itemCreator.createItemAndContinue(R.string.nav_title_main);
-        itemCreator.createItemAndContinue(R.string.nav_title_dns, ThemeHandler.getDrawableFromTheme(this, R.attr.nav_icon_home), new DrawerItem.FragmentCreator() {
+        itemCreator.createItemAndContinue(R.string.nav_title_dns, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_home)), new DrawerItem.FragmentCreator() {
             @Override
             public Fragment getFragment() {
                 return mainFragment=new MainFragment();
@@ -80,13 +88,39 @@ public class MainActivity extends NavigationDrawerActivity {
                 defaultDrawerItem = item;
             }
         });
+        itemCreator.createItemAndContinue(R.string.settings, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_settings)), new DrawerItem.FragmentCreator() {
+            @Override
+            public Fragment getFragment() {
+                return new SettingsFragment();
+            }
+        });
+        itemCreator.createItemAndContinue(R.string.nav_title_learn);
+        itemCreator.createItemAndContinue(R.string.app_name);
+        itemCreator.createItemAndContinue(R.string.rate, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_star)), new DrawerItem.ClickListener() {
+            @Override
+            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+                rateApp();
+                return false;
+            }
+        });
+        itemCreator.createItemAndContinue(R.string.title_about, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_info)), new DrawerItem.ClickListener() {
+            @Override
+            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+                //TODO
+                return false;
+            }
+        });
         return itemCreator.getDrawerItems();
+    }
+
+    private Drawable setDrawableColor(Drawable drawable){
+        drawable = drawable.mutate();
+        drawable.setColorFilter(new LightingColorFilter(textColor, textColor));
+        return drawable;
     }
 
     @Override
     public StyleOptions getStyleOptions() {
-        @ColorInt int backgroundColor = ThemeHandler.resolveThemeAttribute(getTheme(), android.R.attr.colorBackground);
-        @ColorInt int textColor = ThemeHandler.resolveThemeAttribute(getTheme(), android.R.attr.textColor);
         return new StyleOptions(this).setListItemBackgroundColor(backgroundColor)
                 .setSelectedListItemTextColor(textColor)
                 .setSelectedListItemColor(ThemeHandler.getColor(this, R.attr.inputElementColor, -1))
@@ -105,7 +139,7 @@ public class MainActivity extends NavigationDrawerActivity {
         LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
     }
 
-    public void rateApp(View v) {
+    public void rateApp() {
         final String appPackageName = this.getPackageName();
         LogFactory.writeMessage(this, LOG_TAG, "Opening site to rate app");
         try {
