@@ -93,8 +93,29 @@ public class MainActivity extends NavigationDrawerActivity {
             }
         });
         itemCreator.createItemAndContinue(R.string.nav_title_learn);
+        itemCreator.createItemAndContinue(R.string.nav_title_how_does_it_work, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_wrench)), new DrawerItem.ClickListener() {
+            @Override
+            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+                //TODO
+                return false;
+            }
+        });
+        itemCreator.createItemAndContinue(R.string.nav_title_what_is_dns, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_help)), new DrawerItem.ClickListener() {
+            @Override
+            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+                //TODO
+                return false;
+            }
+        });
         itemCreator.createItemAndContinue(R.string.app_name);
         itemCreator.createItemAndContinue(R.string.rate, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_star)), new DrawerItem.ClickListener() {
+            @Override
+            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+                rateApp();
+                return false;
+            }
+        });
+        itemCreator.createItemAndContinue(R.string.contact_developer, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_person)), new DrawerItem.ClickListener() {
             @Override
             public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
                 rateApp();

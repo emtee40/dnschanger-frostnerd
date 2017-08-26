@@ -195,4 +195,6 @@
     <string name="nav_title_dns">DNS</string>
     <string name="nav_title_main">Main screen</string>
     <string name="nav_title_learn">Learn</string>
+    <string name="nav_title_how_does_it_work">How does it work?</string>
+    <string name="nav_title_what_is_dns">What is DNS?</string>
 </resources>

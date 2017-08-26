@@ -186,4 +186,6 @@
     <string name="nav_title_dns">DNS</string>
     <string name="nav_title_main">Hauptbildschirm</string>
     <string name="nav_title_learn">Lernen</string>
+    <string name="nav_title_what_is_dns">Was ist DNS?</string>
+    <string name="nav_title_how_does_it_work">Wie funktioniert es?</string>
 </resources>

@@ -185,4 +185,6 @@
     <string name="nav_title_dns">DNS</string>
     <string name="nav_title_main">Tela principal</string>
     <string name="nav_title_learn">Aprender</string>
+    <string name="nav_title_how_does_it_work">Como funciona?</string>
+    <string name="nav_title_what_is_dns">O que é DNS?</string>
 </resources>
