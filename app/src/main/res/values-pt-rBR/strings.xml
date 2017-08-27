@@ -198,6 +198,5 @@
     <string name="notification_channel_default">Canal padrão</string>
     <string name="notification_channel_default_description">Default channel for posting notifications.</string>
     <string name="feature_tiles">For quick access you can place tiles in you notification area. They can be used to start/stop and pause/resume DNS Changer.\n\nTo add them drag down the notification area, click on the pen and drag them upwards by long-clicking them.</string>
-    <string name="info_text_dns">To add them drag down the notification area, click on the pen and drag them upwards by long-clicking them.</string>
     <string name="info_text_dns">DNS significa Sistema de Nomes de Domínio.\\n\\nO Sistema de Nomes de Domínios é usado para resolver Domínios (google.com, yahoo.com, example.com...) para endereços IP (por exemplo, 192.168.178.1) para se comunicar pela Internet.\\n\\nÉ um dos sistemas mais importantes utilizados em redes baseadas em IP.</string>
 </resources>
