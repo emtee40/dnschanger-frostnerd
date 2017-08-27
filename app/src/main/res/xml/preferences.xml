@@ -200,9 +200,7 @@
             android:key="send_debug"
             android:summary="@string/summary_send_debug"
             android:title="@string/title_send_debug" />
-    </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/title_about">
         <Preference
             android:key="reset"
             android:summary="@string/summary_reset"
