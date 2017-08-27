@@ -191,7 +191,7 @@
     <string name="nav_title_tiles">Azulejos</string>
     <string name="nav_title_pin_protection">Proteção de senha</string>
     <string name="nav_title_more">E mais</string>
-    <string name="about_text">Este aplicativo é de código aberto. O código-fonte pode ser encontrado em git.frostnerd.com\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2017\nAll rights reserved.\n\nTradução brasileira por Lukinhas</string>
+    <string name="about_text">Este aplicativo é de código aberto. O código-fonte pode ser encontrado em git.frostnerd.com\nÍcones do google são usados (Material icon pack - https://material.io/icons).\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2017\nAll rights reserved.\n\nTradução brasileira por Lukinhas</string>
     <string name="close">Fecha</string>
     <string name="info_text_how_does_it_work">Android allows you to configure DNS servers in the wifi settings - but not for mobile connections (3G, 4G…). This however requires you to use a static IP address, doesn\'t allow switching easily and won\'t work with IPv6, among other disadvantages when compared to this app.  This app takes advantage of Androids VPN structure which allows devices to set DNS servers dynamically. To achieve this a local vpn is created which uses the same device as endpoint - this means the vpn connection neither connects to the internet itself, nor is it detectable from outside. As this dummy-VPN can be started/stopped dynamically it allows for a range of features and automatation. This VPN isn\'t tapped and no data is read by it. It\'s just a middle man in changing the DNS servers.  If you are interested in the technical side of this, visit my git at git.frostnerd.com.</string>
 </resources>

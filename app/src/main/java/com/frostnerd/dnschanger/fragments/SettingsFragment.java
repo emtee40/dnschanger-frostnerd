@@ -101,19 +101,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         findPreference("pin_value").setSummary(getString(R.string.summary_pin_value).replace("[[x]]", Preferences.getString(getActivity(), "pin_value", "1234")));
         if(API.isTaskerInstalled(getActivity()))findPreference("warn_automation_tasker").setSummary(R.string.summary_automation_warn);
         else ((PreferenceCategory)findPreference("automation")).removePreference(findPreference("warn_automation_tasker"));
-        findPreference("setting_info").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                LogFactory.writeMessage(getActivity(), LOG_TAG, preference.getKey() + " clicked");
-                new AlertDialog.Builder(getActivity(),ThemeHandler.getDialogTheme(getActivity())).setTitle(R.string.information).setMessage(R.string.settings_information_text).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                }).show();
-                return true;
-            }
-        });
         findPreference("auto_pause").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {

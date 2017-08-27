@@ -204,10 +204,6 @@
 
     <PreferenceCategory android:title="@string/title_about">
         <Preference
-            android:key="setting_info"
-            android:title="@string/title_info" />
-
-        <Preference
             android:key="reset"
             android:summary="@string/summary_reset"
             android:title="@string/title_reset" />
