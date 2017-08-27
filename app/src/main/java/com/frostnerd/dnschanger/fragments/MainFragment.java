@@ -331,16 +331,6 @@ public class MainFragment extends Fragment {
                     LogFactory.writeMessage(getActivity(), LOG_TAG, "Dialog is now being shown");
                 }else stopVpn();
             }
-        }else if(requestCode == 1 && resultCode == Activity.RESULT_OK){
-            final Snackbar snackbar = Snackbar.make(wrapper, R.string.shortcut_created, Snackbar.LENGTH_INDEFINITE);
-            snackbar.setAction(R.string.show, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    snackbar.dismiss();
-                    Utils.goToLauncher(getActivity());
-                }
-            });
-            snackbar.show();
         }else if(requestCode == REQUEST_SETTINGS && resultCode == Activity.RESULT_FIRST_USER){
             if(IntentUtil.checkExtra("themeupdated",data))IntentUtil.restartActivity(getActivity());
         }

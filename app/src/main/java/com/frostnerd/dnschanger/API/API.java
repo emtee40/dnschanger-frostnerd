@@ -1,6 +1,8 @@
 package com.frostnerd.dnschanger.API;
 
+import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -40,6 +42,7 @@ import java.util.List;
 public final class API {
     public static final String BROADCAST_SERVICE_STATUS_CHANGE = "com.frostnerd.dnschanger.VPN_SERVICE_CHANGE";
     public static final String BROADCAST_SERVICE_STATE_REQUEST = "com.frostnerd.dnschanger.VPN_STATE_CHANGE";
+    public static final String BROADCAST_SHORTCUT_CREATED = "com.frostnerd.dnschanger.SHORTCUT_CREATED";
     public static final String LOG_TAG = "[API]";
     private static DatabaseHelper dbHelper;
 
@@ -153,10 +156,10 @@ public final class API {
     }
 
     public static void terminate() {
-        if (dbHelper != null)dbHelper.close();
+        if (dbHelper != null) dbHelper.close();
     }
 
-    public static DatabaseHelper getDBHelper(Context context){
+    public static DatabaseHelper getDBHelper(Context context) {
         return dbHelper == null ?
                 (dbHelper = (Preferences.getBoolean(context, "legacy_backup", false) ?
                         new DatabaseHelper(context) :
@@ -164,11 +167,11 @@ public final class API {
                 dbHelper;
     }
 
-    private static SQLiteDatabase getLegacyDatabase(Context context){
+    private static SQLiteDatabase getLegacyDatabase(Context context) {
         return context.openOrCreateDatabase("data.db", SQLiteDatabase.OPEN_READWRITE, null);
     }
 
-    private static List<DNSEntry> getDNSEntries(Context context){
+    private static List<DNSEntry> getDNSEntries(Context context) {
         List<DNSEntry> entries = new ArrayList<>();
         try {
             Cursor cursor = getLegacyDatabase(context).rawQuery("SELECT * FROM DNSEntries", new String[]{});
@@ -246,7 +249,8 @@ public final class API {
     }*/
 
     public static synchronized void deleteDatabase(Context context) {
-        dbHelper.close();dbHelper = null;
+        dbHelper.close();
+        dbHelper = null;
         context.getDatabasePath("data.db").delete();
     }
 
@@ -264,13 +268,27 @@ public final class API {
     public static void createShortcut(Context context, String dns1, String dns2, String dns1V6, String dns2V6, String name) {
         LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG}, "Creating shortcut");
         Intent shortcutIntent = new Intent(context, ShortcutActivity.class);
+        shortcutIntent.setAction("com.frostnerd.dnschanger.RUN_VPN_FROM_SHORTCUT");
         shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         shortcutIntent.putExtra("dns1", dns1);
         shortcutIntent.putExtra("dns2", dns2);
         shortcutIntent.putExtra("dns1v6", dns1V6);
         shortcutIntent.putExtra("dns2v6", dns2V6);
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            ShortcutManager shortcutManager = (ShortcutManager) context.getSystemService(Activity.SHORTCUT_SERVICE);
+            if (shortcutManager.isRequestPinShortcutSupported()) {
+                ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(context, StringUtil.randomString(30))
+                        .setIcon(Icon.createWithResource(context, R.mipmap.ic_launcher))
+                        .setShortLabel(name)
+                        .setLongLabel(name)
+                        .setIntent(shortcutIntent)
+                        .build();
+                PendingIntent intent = PendingIntent.getBroadcast(context, 0, new Intent(API.BROADCAST_SHORTCUT_CREATED), 0);
+                shortcutManager.requestPinShortcut(shortcutInfo, intent.getIntentSender());
+                return;
+            }
+        }
         Intent addIntent = new Intent();
         addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
         addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, name);
@@ -280,6 +298,4 @@ public final class API {
         LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG}, "Intent for adding to Screen:", addIntent);
         context.sendBroadcast(addIntent);
     }
-
-
 }

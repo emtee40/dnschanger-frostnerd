@@ -320,22 +320,7 @@ public class ConfigureActivity extends AppCompatActivity {
             }
         }else if(!cancelled && checkValidity() && creatingShortcut){
             LogFactory.writeMessage(this, LOG_TAG, "Cancelled, valid, creating shortcut");
-            Intent shortcutIntent = new Intent(getBaseContext(), ShortcutActivity.class);
-            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            shortcutIntent.putExtra("dns1", dns1);
-            shortcutIntent.putExtra("dns2", dns2);
-            shortcutIntent.putExtra("dns1v6", dns1V6);
-            shortcutIntent.putExtra("dns2v6", dns2V6);
-
-            Intent addIntent = new Intent();
-            addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-            addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, ed_name.getText().toString());
-            addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.mipmap.ic_launcher));
-            addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-            LogFactory.writeMessage(this, LOG_TAG, "Adding shortcut", shortcutIntent);
-            LogFactory.writeMessage(this, LOG_TAG, "Intent for adding to Screen:", addIntent);
-            getApplicationContext().sendBroadcast(addIntent);
+            API.createShortcut(this, dns1, dns2, dns1V6, dns2V6, ed_name.getText().toString());
             setResult(RESULT_OK);
             LogFactory.writeMessage(this, LOG_TAG, "Shortcut added to Launcher");
             API.getDBHelper(this).saveShortcut(dns1, dns2, dns1V6, dns2V6, ed_name.getText().toString());

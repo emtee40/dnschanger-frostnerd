@@ -1,7 +1,11 @@
 package com.frostnerd.dnschanger.activities;
 
+import android.app.job.JobScheduler;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.LightingColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -10,6 +14,7 @@ import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -29,6 +34,7 @@ import com.frostnerd.utils.design.material.navigationdrawer.DrawerItemCreator;
 import com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity;
 import com.frostnerd.utils.design.material.navigationdrawer.StyleOptions;
 import com.frostnerd.utils.general.DesignUtil;
+import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.preferences.Preferences;
 
 import java.util.List;
@@ -51,6 +57,28 @@ public class MainActivity extends NavigationDrawerActivity {
     private DrawerItem defaultDrawerItem, settingsDrawerItem;
     @ColorInt int backgroundColor;
     @ColorInt int textColor;
+    private BroadcastReceiver shortcutReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final Snackbar snackbar = Snackbar.make(getContentFrame(), R.string.shortcut_created, Snackbar.LENGTH_INDEFINITE);
+            snackbar.setAction(R.string.show, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    snackbar.dismiss();
+                    Utils.goToLauncher(MainActivity.this);
+                }
+            });
+            snackbar.show();
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Receiver is not unregistered in onPause() because the app is in the background when a shortcut
+        // is created
+        registerReceiver(shortcutReceiver, new IntentFilter(API.BROADCAST_SHORTCUT_CREATED));
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +92,7 @@ public class MainActivity extends NavigationDrawerActivity {
     protected void onDestroy() {
         if(dialog1 != null && dialog1.isShowing())dialog1.cancel();
         if(defaultDnsDialog != null && defaultDnsDialog.isShowing())defaultDnsDialog.cancel();
+        unregisterReceiver(shortcutReceiver);
         super.onDestroy();
     }
 
@@ -246,6 +275,7 @@ public class MainActivity extends NavigationDrawerActivity {
                 return false;
             }
         });
+        JobScheduler scheduler;
         return itemCreator.getDrawerItems();
     }
 
