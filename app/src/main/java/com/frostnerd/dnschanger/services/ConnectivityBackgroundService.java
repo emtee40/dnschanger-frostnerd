@@ -119,7 +119,6 @@ public class ConnectivityBackgroundService extends Service {
     }
 
     private void handleConnectivityChange(NetworkInfo networkInfo){
-        System.out.println("INFO: " + networkInfo);
         if(networkInfo != null)handleConnectivityChange(networkInfo.isConnected(), networkInfo.getType());
         else handleConnectivityChange(false, ConnectionType.OTHER);
     }
