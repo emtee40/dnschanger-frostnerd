@@ -100,14 +100,27 @@ public class MainActivity extends NavigationDrawerActivity {
         itemCreator.createItemAndContinue(R.string.nav_title_how_does_it_work, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_wrench)), new DrawerItem.ClickListener() {
             @Override
             public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
-                //TODO
+                dialog1 = new AlertDialog.Builder(MainActivity.this, ThemeHandler.getDialogTheme(MainActivity.this)).setTitle(R.string.nav_title_how_does_it_work)
+                        .setMessage(R.string.info_text_how_does_it_work).setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        }).show();
                 return false;
             }
         });
         itemCreator.createItemAndContinue(R.string.nav_title_what_is_dns, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_help)), new DrawerItem.ClickListener() {
             @Override
             public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
-                //TODO
+                LogFactory.writeMessage(MainActivity.this, LOG_TAG, "Opening Dialog with info about DNS");
+                dialog1 = new AlertDialog.Builder(MainActivity.this, ThemeHandler.getDialogTheme(MainActivity.this)).setTitle(R.string.info_dns_button).setMessage(R.string.info_text_dns).setCancelable(true).setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }).show();
+                LogFactory.writeMessage(MainActivity.this, LOG_TAG, "Dialog is now being shown");
                 return false;
             }
         });
@@ -199,17 +212,6 @@ public class MainActivity extends NavigationDrawerActivity {
                 .setSelectedListItemColor(ThemeHandler.getColor(this, R.attr.inputElementColor, -1))
                 .setListItemTextColor(textColor)
                 .setListViewBackgroundColor(backgroundColor);
-    }
-
-    public void openDNSInfoDialog(View v) {
-        LogFactory.writeMessage(this, LOG_TAG, "Opening Dialog with info about DNS");
-        dialog1 = new AlertDialog.Builder(this, ThemeHandler.getDialogTheme(this)).setTitle(R.string.info_dns_button).setMessage(R.string.dns_info_text).setCancelable(true).setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        }).show();
-        LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
     }
 
     public void rateApp() {

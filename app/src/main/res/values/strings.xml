@@ -6,7 +6,7 @@
     <string name="info_dns_button">Info about DNS</string>
     <string name="default_dns">Default DNS Addresses</string>
     <string name="default_dns_title">Public DNS providers</string>
-    <string name="dns_info_text">DNS stands for Domain Name System.\n\nThe Domain Name System is used to resolve Domains (google.com, yahoo.com, example.com...) to IP Addresses (192.168.178.1 for example) to communicate over the Internet.\n\nIt is one of the most important systems used in IP-based networks.</string>
+    <string name="info_text_dns">DNS stands for Domain Name System.\n\nThe Domain Name System is used to resolve Domains (google.com, yahoo.com, example.com...) to IP Addresses (192.168.178.1 for example) to communicate over the Internet.\n\nIt is one of the most important systems used in IP-based networks.</string>
     <string name="vpn_explain">This App works without a rooted phone. \n\nTo make this possible all traffic is redirected using a VPN. This VPN redirects your traffic only locally, the data never leaves your phone using this VPN connection.\n\nYou\'ll be asked to allow the VPN connection in the next window, without permission from you the set DNS servers won\'t work.\n\n\nSource code can be found under https://git.frostnerd.com/PublicAndroidApps/DnsChanger.</string>
     <string name="information">Information</string>
     <string name="settings">Settings</string>
@@ -203,4 +203,5 @@
     <string name="nav_title_more">And more</string>
     <string name="about_text">This app is open source. The source code can be found at git.frostnerd.com.\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2017\nAll rights reserved.\n\nBrazilian translation by Lukinhas</string>
     <string name="close">Close</string>
+    <string name="info_text_how_does_it_work">Android allows you to configure DNS servers in the wifi settings - but not for mobile connections (3G, 4G…). This however requires you to use a static IP address, doesn\'t allow switching easily and won\'t work with IPv6, among other disadvantages when compared to this app.\n\nThis app takes advantage of Androids VPN structure which allows devices to set DNS servers dynamically. To achieve this a local vpn is created which uses the same device as endpoint - this means the vpn connection neither connects to the internet itself, nor is it detectable from outside.\nAs this dummy-VPN can be started/stopped dynamically it allows for a range of features and automatation. This VPN isn\'t tapped and no data is read by it. It\'s just a middle man in changing the DNS servers.\n\nIf you are interested in the technical side of this, visit my git at git.frostnerd.com.</string>
 </resources>
