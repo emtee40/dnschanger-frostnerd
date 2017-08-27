@@ -9,9 +9,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.Button;
 
 import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.ThemeHandler;
@@ -21,6 +23,7 @@ import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
 import com.frostnerd.dnschanger.fragments.MainFragment;
 import com.frostnerd.dnschanger.fragments.SettingsFragment;
+import com.frostnerd.dnschanger.tasker.ConfigureActivity;
 import com.frostnerd.utils.design.material.navigationdrawer.DrawerItem;
 import com.frostnerd.utils.design.material.navigationdrawer.DrawerItemCreator;
 import com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity;
@@ -45,7 +48,7 @@ public class MainActivity extends NavigationDrawerActivity {
     private DefaultDNSDialog defaultDnsDialog;
     private MainFragment mainFragment;
     private SettingsFragment settingsFragment;
-    private DrawerItem defaultDrawerItem;
+    private DrawerItem defaultDrawerItem, settingsDrawerItem;
     @ColorInt int backgroundColor;
     @ColorInt int textColor;
 
@@ -81,7 +84,7 @@ public class MainActivity extends NavigationDrawerActivity {
         itemCreator.createItemAndContinue(R.string.nav_title_main);
         itemCreator.createItemAndContinue(R.string.nav_title_dns, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_home)), new DrawerItem.FragmentCreator() {
             @Override
-            public Fragment getFragment() {
+            public Fragment getFragment(@Nullable Bundle arguments) {
                 return mainFragment == null ? mainFragment=new MainFragment() : mainFragment;
             }
         }).accessLastItemAndContinue(new DrawerItemCreator.ItemAccessor() {
@@ -92,14 +95,21 @@ public class MainActivity extends NavigationDrawerActivity {
         });
         itemCreator.createItemAndContinue(R.string.settings, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_settings)), new DrawerItem.FragmentCreator() {
             @Override
-            public Fragment getFragment() {
-                return settingsFragment == null ? settingsFragment=new SettingsFragment() : settingsFragment;
+            public Fragment getFragment(@Nullable Bundle arguments) {
+                if(settingsFragment == null)settingsFragment = new SettingsFragment();
+                if(arguments != null)settingsFragment.setArguments(arguments);
+                return settingsFragment;
+            }
+        }).accessLastItemAndContinue(new DrawerItemCreator.ItemAccessor() {
+            @Override
+            public void access(DrawerItem item) {
+                settingsDrawerItem = item;
             }
         });
         itemCreator.createItemAndContinue(R.string.nav_title_learn);
         itemCreator.createItemAndContinue(R.string.nav_title_how_does_it_work, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_wrench)), new DrawerItem.ClickListener() {
             @Override
-            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
                 dialog1 = new AlertDialog.Builder(MainActivity.this, ThemeHandler.getDialogTheme(MainActivity.this)).setTitle(R.string.nav_title_how_does_it_work)
                         .setMessage(R.string.info_text_how_does_it_work).setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
                             @Override
@@ -112,7 +122,7 @@ public class MainActivity extends NavigationDrawerActivity {
         });
         itemCreator.createItemAndContinue(R.string.nav_title_what_is_dns, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_help)), new DrawerItem.ClickListener() {
             @Override
-            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
                 LogFactory.writeMessage(MainActivity.this, LOG_TAG, "Opening Dialog with info about DNS");
                 dialog1 = new AlertDialog.Builder(MainActivity.this, ThemeHandler.getDialogTheme(MainActivity.this)).setTitle(R.string.info_dns_button).setMessage(R.string.info_text_dns).setCancelable(true).setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
@@ -127,14 +137,40 @@ public class MainActivity extends NavigationDrawerActivity {
         itemCreator.createItemAndContinue(R.string.nav_title_features);
         itemCreator.createItemAndContinue(R.string.shortcuts, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_open_in_new)), new DrawerItem.ClickListener() {
             @Override
-            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
+                dialog1 = new AlertDialog.Builder(MainActivity.this).setTitle(R.string.shortcuts).setNegativeButton(R.string.close, null)
+                        .setPositiveButton("pos", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                openSettingsAndScrollToKey("shortcut_category");
+                            }
+                        })
+                        .setNeutralButton(R.string.create_one, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int cnt) {
+                                Intent i;
+                                LogFactory.writeMessage(MainActivity.this, LOG_TAG, "User wants to create a shortcut",
+                                        i = new Intent(MainActivity.this, ConfigureActivity.class).putExtra("creatingShortcut", true));
+                                startActivityForResult(i,1);
+                            }
+                        }).setMessage(R.string.feature_shortcuts).create();
+                dialog1.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialogInterface) {
+                        Button button = dialog1.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                        button.setText("");
+                        Drawable gear = setDrawableColor(getResources().getDrawable(R.drawable.ic_settings));
+                        button.setCompoundDrawablesWithIntrinsicBounds(gear, null, null, null);
+                    }
+                });
+                dialog1.show();
                 return false;
             }
         });
         if(API.isTaskerInstalled(this)){
             itemCreator.createItemAndContinue(R.string.tasker_support, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_thumb_up)), new DrawerItem.ClickListener() {
                 @Override
-                public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+                public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
                     return false;
                 }
             });
@@ -142,34 +178,34 @@ public class MainActivity extends NavigationDrawerActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             itemCreator.createItemAndContinue(R.string.nav_title_tiles, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_viewquilt)), new DrawerItem.ClickListener() {
                 @Override
-                public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+                public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
                     return false;
                 }
             });
         }
         itemCreator.createItemAndContinue(R.string.nav_title_pin_protection, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_action_key)), new DrawerItem.ClickListener() {
             @Override
-            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
                 return false;
             }
         });
         itemCreator.createItemAndContinue(R.string.nav_title_more, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_ellipsis)), new DrawerItem.ClickListener() {
             @Override
-            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
                 return false;
             }
         });
         itemCreator.createItemAndContinue(R.string.app_name);
         itemCreator.createItemAndContinue(R.string.rate, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_star)), new DrawerItem.ClickListener() {
             @Override
-            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
                 rateApp();
                 return false;
             }
         });
         itemCreator.createItemAndContinue(R.string.title_share_app, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_share)), new DrawerItem.ClickListener() {
             @Override
-            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.app_name));
@@ -181,7 +217,7 @@ public class MainActivity extends NavigationDrawerActivity {
         });
         itemCreator.createItemAndContinue(R.string.contact_developer, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_person)), new DrawerItem.ClickListener() {
             @Override
-            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                         "mailto","support@frostnerd.com", null));
                 String body = "\n\n\n\n\n\n\nSystem:\nApp version: " + BuildConfig.VERSION_CODE + " (" + BuildConfig.VERSION_NAME + ")\n"+
@@ -196,7 +232,7 @@ public class MainActivity extends NavigationDrawerActivity {
         });
         itemCreator.createItemAndContinue(R.string.title_about, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_info)), new DrawerItem.ClickListener() {
             @Override
-            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
                 String text = getString(R.string.about_text).replace("[[version]]", BuildConfig.VERSION_NAME).replace("[[build]]", BuildConfig.VERSION_CODE + "");
                 new AlertDialog.Builder(MainActivity.this).setTitle(R.string.title_about).setMessage(text)
                         .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
@@ -209,6 +245,12 @@ public class MainActivity extends NavigationDrawerActivity {
             }
         });
         return itemCreator.getDrawerItems();
+    }
+
+    private void openSettingsAndScrollToKey(String key){
+        Bundle arguments = new Bundle();
+        arguments.putString(SettingsFragment.ARGUMENT_SCROLL_TO_SETTING, key);
+        clickItem(settingsDrawerItem, arguments);
     }
 
     private Drawable setDrawableColor(Drawable drawable){

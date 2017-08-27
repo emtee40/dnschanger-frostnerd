@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:key="preferences">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:key="preferences">
 
     <PreferenceCategory android:title="@string/notification">
         <CheckBoxPreference
@@ -121,7 +123,7 @@
             android:summary="@string/summary_import_settings"
             android:title="@string/title_import_settings" />
     </PreferenceCategory>-->
-    <PreferenceCategory android:title="@string/shortcuts">
+    <PreferenceCategory android:title="@string/shortcuts" app:key="shortcut_category">
         <CheckBoxPreference
             android:key="shortcut_click_again_disable"
             android:summary="@string/summary_shortcut_click_again_disable"

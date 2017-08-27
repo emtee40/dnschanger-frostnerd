@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -63,7 +64,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
     private DevicePolicyManager devicePolicyManager;
     //private ComponentName deviceAdmin;
     public static final int REQUEST_CODE_ENABLE_ADMIN = 1, REQUEST_CREATE_SHORTCUT = 2, REQUEST_EXCLUDE_APPS = 3;
-    public final static String LOG_TAG = "[SettingsActivity]";
+    public final static String LOG_TAG = "[SettingsActivity]", ARGUMENT_SCROLL_TO_SETTING = "scroll_to_setting";
     public final static int USAGE_STATS_REQUEST = 13, CHOOSE_AUTOPAUSEAPPS_REQUEST = 14;
     private PreferenceScreen preferenceScreen;
     private PreferenceSearcher preferenceSearcher = new PreferenceSearcher(this);
@@ -71,6 +72,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
+        if(getArguments().containsKey(ARGUMENT_SCROLL_TO_SETTING)){
+            String key = getArguments().getString(ARGUMENT_SCROLL_TO_SETTING, null);
+            if(!key.equals("") && key != null){
+                scrollToPreference(key);
+            }
+        }
     }
 
     //Theme, getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -408,7 +415,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 return true;
             }
         });
-
     }
 
     private Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
