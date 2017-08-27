@@ -217,6 +217,23 @@ public class MainActivity extends NavigationDrawerActivity {
         itemCreator.createItemAndContinue(R.string.nav_title_pin_protection, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_action_key)), new DrawerItem.ClickListener() {
             @Override
             public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
+                dialog1 = new AlertDialog.Builder(MainActivity.this).setTitle(item.getTitle()).setNegativeButton(R.string.close, null)
+                        .setPositiveButton("pos", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                openSettingsAndScrollToKey("pin_category");
+                            }
+                        }).setMessage(R.string.feature_pin_protection).create();
+                dialog1.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialogInterface) {
+                        Button button = dialog1.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                        button.setText("");
+                        Drawable gear = setDrawableColor(getResources().getDrawable(R.drawable.ic_settings));
+                        button.setCompoundDrawablesWithIntrinsicBounds(gear, null, null, null);
+                    }
+                });
+                dialog1.show();
                 return false;
             }
         });
