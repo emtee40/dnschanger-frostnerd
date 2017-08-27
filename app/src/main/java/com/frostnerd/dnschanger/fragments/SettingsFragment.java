@@ -101,7 +101,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         findPreference("pin_value").setSummary(getString(R.string.summary_pin_value).replace("[[x]]", Preferences.getString(getActivity(), "pin_value", "1234")));
         if(API.isTaskerInstalled(getActivity()))findPreference("warn_automation_tasker").setSummary(R.string.summary_automation_warn);
         else ((PreferenceCategory)findPreference("automation")).removePreference(findPreference("warn_automation_tasker"));
-        findPreference("auto_pause").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        /*findPreference("auto_pause").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 LogFactory.writeMessage(getActivity(), LOG_TAG, "Preference " + preference.getKey() + " was changed to " +
@@ -139,7 +139,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                         putExtra("infoText", getString(R.string.autopause_appselect_info_text)),CHOOSE_AUTOPAUSEAPPS_REQUEST);
                 return true;
             }
-        });
+        });*/
         automatingCategory = (PreferenceCategory)getPreferenceScreen().findPreference("automation");
         removeUsagePreference = findPreference("remove_usage_data");
         removeUsagePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -150,7 +150,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             }
         });
         boolean canAccessUsageStats = PermissionsUtil.hasUsageStatsPermission(getActivity());
-        if(!canAccessUsageStats || Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
+        /*if(!canAccessUsageStats || Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
             usageRevokeHidden = true;
             automatingCategory.removePreference(removeUsagePreference);
             if(!canAccessUsageStats){

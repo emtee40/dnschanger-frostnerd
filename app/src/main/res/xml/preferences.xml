@@ -55,7 +55,7 @@
             android:summary="@string/summary_disable_network_change"
             android:title="@string/title_disable_network_change" />
 
-        <CheckBoxPreference
+        <!--<CheckBoxPreference
             android:id="@+id/setting_auto_pause"
             android:checked="false"
             android:defaultValue="false"
@@ -67,7 +67,7 @@
         <Preference
             android:dependency="auto_pause"
             android:key="autopause_appselect"
-            android:title="@string/title_autopause_apps" />
+            android:title="@string/title_autopause_apps" />-->
 
         <Preference
             android:key="remove_usage_data"
