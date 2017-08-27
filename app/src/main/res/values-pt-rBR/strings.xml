@@ -195,4 +195,6 @@
     <string name="info_text_how_does_it_work">You can configure the behavior of them in the settings.</string>
     <string name="create_one">Criar</string>
     <string name="feature_shortcuts">Using this app you can create shortcuts on your home screen. These shortcuts contain DNS settings and change your DNS servers by clicking them without needing you to open the app.</string>
+    <string name="notification_channel_default">Canal padrão</string>
+    <string name="notification_channel_default_description">Default channel for posting notifications.</string>
 </resources>
