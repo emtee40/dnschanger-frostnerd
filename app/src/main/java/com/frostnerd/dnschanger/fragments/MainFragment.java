@@ -373,11 +373,6 @@ public class MainFragment extends Fragment {
             dns2.setInputType(InputType.TYPE_CLASS_TEXT);
             ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
             doStopVPN = true;
-        }else if(item.getItemId() == R.id.create_shortcut){
-            Intent i;
-            LogFactory.writeMessage(getActivity(), LOG_TAG, "User wants to create a shortcut",
-                    i = new Intent(getActivity(), ConfigureActivity.class).putExtra("creatingShortcut", true));
-            startActivityForResult(i,1);
         }
         return super.onOptionsItemSelected(item);
     }
