@@ -72,7 +72,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
-        if(getArguments().containsKey(ARGUMENT_SCROLL_TO_SETTING)){
+        if(getArguments() != null && getArguments().containsKey(ARGUMENT_SCROLL_TO_SETTING)){
             String key = getArguments().getString(ARGUMENT_SCROLL_TO_SETTING, null);
             if(!key.equals("") && key != null){
                 scrollToPreference(key);
