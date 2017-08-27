@@ -2,10 +2,4 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/create_shortcut"
-        android:icon="@drawable/ic_open_in_new"
-        android:orderInCategory="2"
-        android:title="@string/create_shortcut"
-        app:showAsAction="ifRoom" />
 </menu>
