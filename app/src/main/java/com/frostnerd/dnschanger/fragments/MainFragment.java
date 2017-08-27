@@ -121,6 +121,7 @@ public class MainFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         settingV6 = !API.isIPv4Enabled(getActivity()) || (API.isIPv6Enabled(getActivity()) && settingV6);
+        setHasOptionsMenu(true);
         boolean vertical = getResources().getConfiguration().orientation == OrientationHelper.VERTICAL;
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Created Activity", getActivity().getIntent());
         API.updateTiles(getActivity());
