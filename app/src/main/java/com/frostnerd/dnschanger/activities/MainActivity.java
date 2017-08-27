@@ -275,7 +275,6 @@ public class MainActivity extends NavigationDrawerActivity {
                 return false;
             }
         });
-        JobScheduler scheduler;
         return itemCreator.getDrawerItems();
     }
 
