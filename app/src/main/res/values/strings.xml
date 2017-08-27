@@ -201,4 +201,5 @@
     <string name="nav_title_tiles">Tiles</string>
     <string name="nav_title_pin_protection">Pin protection</string>
     <string name="nav_title_more">And more</string>
+    <string name="about_text">This app is open source. The source code can be found at git.frostnerd.com.\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2017\nAll rights reserved.\n\nBrazilian translation by Lukinhas</string>
 </resources>

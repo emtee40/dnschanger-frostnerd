@@ -153,7 +153,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 return true;
             }
         });
-        findPreference("placeholder_version").setSummary(getString(R.string.summary_version).replace("[[version]]", BuildConfig.VERSION_NAME).replace("[[code]]", BuildConfig.VERSION_CODE + ""));
         automatingCategory = (PreferenceCategory)getPreferenceScreen().findPreference("automation");
         removeUsagePreference = findPreference("remove_usage_data");
         removeUsagePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
