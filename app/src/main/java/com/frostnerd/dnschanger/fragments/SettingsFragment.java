@@ -37,6 +37,7 @@ import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.AppSelectionActivity;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.tasker.ConfigureActivity;
+import com.frostnerd.utils.general.IntentUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.permissions.PermissionsUtil;
 import com.frostnerd.utils.preferences.Preferences;
@@ -341,8 +342,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                         dialogTheme = val.equalsIgnoreCase("1") ? R.style.DialogTheme : (val.equalsIgnoreCase("2") ? R.style.DialogTheme_Mono : R.style.DialogTheme_Dark);
                 ThemeHandler.updateAppTheme(getActivity(), theme);
                 ThemeHandler.updateDialogTheme(getActivity(), dialogTheme);
-                getActivity().setResult(AppCompatActivity.RESULT_FIRST_USER, new Intent().putExtra("themeupdated",true));
-                getActivity().finish();
+                IntentUtil.restartActivity(getActivity());
                 return true;
             }
         });

@@ -331,8 +331,6 @@ public class MainFragment extends Fragment {
                     LogFactory.writeMessage(getActivity(), LOG_TAG, "Dialog is now being shown");
                 }else stopVpn();
             }
-        }else if(requestCode == REQUEST_SETTINGS && resultCode == Activity.RESULT_FIRST_USER){
-            if(IntentUtil.checkExtra("themeupdated",data))IntentUtil.restartActivity(getActivity());
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
