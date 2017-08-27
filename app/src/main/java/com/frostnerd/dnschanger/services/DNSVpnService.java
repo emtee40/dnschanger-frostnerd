@@ -352,7 +352,7 @@ public class DNSVpnService extends VpnService {
     @Override
     public void onDestroy() {
         LogFactory.writeMessage(this, LOG_TAG, "Destroying");
-        clearVars(false);
+        //clearVars(false);
         super.onDestroy();
         API.updateTiles(this);
         LogFactory.writeMessage(this, LOG_TAG, "Destroyed.");
