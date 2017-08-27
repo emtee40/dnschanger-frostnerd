@@ -179,6 +179,8 @@ public class MainActivity extends NavigationDrawerActivity {
             itemCreator.createItemAndContinue(R.string.nav_title_tiles, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_viewquilt)), new DrawerItem.ClickListener() {
                 @Override
                 public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
+                    dialog1 = new AlertDialog.Builder(MainActivity.this).setTitle(R.string.nav_title_tiles).setMessage(R.string.feature_tiles)
+                            .setNeutralButton(R.string.close, null).show();
                     return false;
                 }
             });

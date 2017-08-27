@@ -208,4 +208,5 @@
     <string name="feature_shortcuts">Using this app you can create shortcuts on your home screen. These shortcuts contain DNS settings and change your DNS servers by clicking them without needing you to open the app.\nThis makes them particular convenient if you want to quickly cycle between different servers - just create a bunch of the shortcuts and let them rest on your home screen.\n\nYou can configure the behavior of them in the settings.</string>
     <string name="notification_channel_default">Default Channel</string>
     <string name="notification_channel_default_description">Default channel for posting notifications.</string>
+    <string name="feature_tiles">For quick access you can place tiles in you notification area. They can be used to start/stop and pause/resume DNS Changer.\n\nTo add them drag down the notification area, click on the pen and drag them upwards by long-clicking them.</string>
 </resources>

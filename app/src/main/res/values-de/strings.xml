@@ -199,4 +199,5 @@
     <string name="feature_shortcuts">Mit dieser App lassen sich Verknüpfungen auf dem Hauptbildschirm erstellen. Diese Verknüpfungen enthalten DNS Einstellungen und ändern deine DNS Server, sobald du drauf klickst, ohne, dass du die App öffnen musst.\nDies macht sie sehr nützlich, wenn schnell zwischen mehreren Konfigurationen gewechselt werden muss oder ein Schnellzugriff auf diese möglich sein soll.\n\nDu kannst deren Verhalten in den Einstellungen personalisieren.</string>
     <string name="notification_channel_default">Standardchannel</string>
     <string name="notification_channel_default_description">Standardchannel für Benachrichtigungen</string>
+    <string name="feature_tiles">Für den schnellen Zugriff können in der Benachrichtigungszeile Kacheln hinzugefügt werden, mit welchen sich DNS Changer kontrollieren lässt.\n\nUm diese hinzuzufügen, öffne die Benachrichtigungszeile, indem du diese herunterziehst, drücke auf den Stift und ziehe die Kacheln durch langes Drücken nach oben.</string>
 </resources>

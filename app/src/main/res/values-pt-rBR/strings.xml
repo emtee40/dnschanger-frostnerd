@@ -3,7 +3,6 @@
     <string name="start">Iniciar</string>
     <string name="stop">Parar</string>
     <string name="rate">Avaliar</string>
-    <string name="info_dns_button">This makes them particular convenient if you want to quickly cycle between different servers - just create a bunch of the shortcuts and let them rest on your home screen.</string>
     <string name="default_dns">Endereços DNS padrão</string>
     <string name="default_dns_title">Provedores de DNS públicos</string>
     <string name="vpn_explain">Este aplicativo funciona sem root. \n\nPara tornar isso possível, todo o tráfego é redirecionado usando uma VPN. Esta VPN redireciona seu tráfego apenas localmente, os dados nunca saem do seu telefone usando esta conexão VPN.\n\nVocê será solicitado para permitir a conexão VPN na próxima janela, sem sua permissão os servidores DNS não funcionarão.\n\n\nO código-fonte pode ser encontrado em https://git.frostnerd.com/PublicAndroidApps/DnsChanger.</string>
@@ -197,4 +196,6 @@
     <string name="feature_shortcuts">Using this app you can create shortcuts on your home screen. These shortcuts contain DNS settings and change your DNS servers by clicking them without needing you to open the app.</string>
     <string name="notification_channel_default">Canal padrão</string>
     <string name="notification_channel_default_description">Default channel for posting notifications.</string>
+    <string name="feature_tiles">For quick access you can place tiles in you notification area. They can be used to start/stop and pause/resume DNS Changer.\n\nTo add them drag down the notification area, click on the pen and drag them upwards by long-clicking them.</string>
+    <string name="info_text_dns">To add them drag down the notification area, click on the pen and drag them upwards by long-clicking them.</string>
 </resources>
