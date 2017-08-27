@@ -193,4 +193,5 @@
     <string name="nav_title_pin_protection">Pin-schutz</string>
     <string name="nav_title_more">Und mehr</string>
     <string name="about_text">Diese App ist quelloffen. Der Quellcode kann unter git.frostnerd.com eingesehen werden.\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2017\nAll rights reserved.\n\nBrasilianische Übersetzung von Lukinhas</string>
+    <string name="close">Schließen</string>
 </resources>

@@ -173,7 +173,7 @@ public class MainActivity extends NavigationDrawerActivity {
             public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
                 String text = getString(R.string.about_text).replace("[[version]]", BuildConfig.VERSION_NAME).replace("[[build]]", BuildConfig.VERSION_CODE + "");
                 new AlertDialog.Builder(MainActivity.this).setTitle(R.string.title_about).setMessage(text)
-                        .setNegativeButton(R.string.closed_drawer, new DialogInterface.OnClickListener() {
+                        .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dialogInterface.dismiss();
