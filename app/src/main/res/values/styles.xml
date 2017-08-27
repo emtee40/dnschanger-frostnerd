@@ -19,6 +19,8 @@
 
         <item name="android:dialogTheme">@style/DialogTheme</item>
         <item name="android:alertDialogTheme">@style/DialogTheme</item>
+        <item name="dialogTheme">@style/DialogTheme</item>
+        <item name="alertDialogTheme">@style/DialogTheme</item>
         <item name="preferenceTheme">@style/PreferenceTheme</item>
 
     </style>
@@ -40,6 +42,8 @@
 
         <item name="android:dialogTheme">@style/DialogTheme_Dark</item>
         <item name="android:alertDialogTheme">@style/DialogTheme_Dark</item>
+        <item name="dialogTheme">@style/DialogTheme_Dark</item>
+        <item name="alertDialogTheme">@style/DialogTheme_Dark</item>
         <item name="preferenceTheme">@style/PreferenceTheme_Dark</item>
 
     </style>
@@ -61,6 +65,8 @@
 
         <item name="android:dialogTheme">@style/DialogTheme_Mono</item>
         <item name="android:alertDialogTheme">@style/DialogTheme_Mono</item>
+        <item name="dialogTheme">@style/DialogTheme_Mono</item>
+        <item name="alertDialogTheme">@style/DialogTheme_Mono</item>
         <item name="preferenceTheme">@style/PreferenceTheme_Mono</item>
 
     </style>
