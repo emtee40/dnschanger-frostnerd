@@ -44,6 +44,7 @@ public class MainActivity extends NavigationDrawerActivity {
     private AlertDialog dialog1;
     private DefaultDNSDialog defaultDnsDialog;
     private MainFragment mainFragment;
+    private SettingsFragment settingsFragment;
     private DrawerItem defaultDrawerItem;
     @ColorInt int backgroundColor;
     @ColorInt int textColor;
@@ -81,7 +82,7 @@ public class MainActivity extends NavigationDrawerActivity {
         itemCreator.createItemAndContinue(R.string.nav_title_dns, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_home)), new DrawerItem.FragmentCreator() {
             @Override
             public Fragment getFragment() {
-                return mainFragment=new MainFragment();
+                return mainFragment == null ? mainFragment=new MainFragment() : mainFragment;
             }
         }).accessLastItemAndContinue(new DrawerItemCreator.ItemAccessor() {
             @Override
@@ -92,7 +93,7 @@ public class MainActivity extends NavigationDrawerActivity {
         itemCreator.createItemAndContinue(R.string.settings, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_settings)), new DrawerItem.FragmentCreator() {
             @Override
             public Fragment getFragment() {
-                return new SettingsFragment();
+                return settingsFragment == null ? settingsFragment=new SettingsFragment() : settingsFragment;
             }
         });
         itemCreator.createItemAndContinue(R.string.nav_title_learn);
