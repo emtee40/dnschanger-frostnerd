@@ -350,7 +350,6 @@ public class MainFragment extends Fragment {
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Stopping VPN",
                 i = DNSVpnService.getDestroyIntent(getActivity()));
         getActivity().startService(i);
-        getActivity().stopService(new Intent(getActivity(), DNSVpnService.class));
         vpnRunning = false;
         setIndicatorState(false);
     }
