@@ -211,10 +211,5 @@
             android:key="reset"
             android:summary="@string/summary_reset"
             android:title="@string/title_reset" />
-
-        <Preference
-            android:key="share_app"
-            android:summary="@string/summary_share_app"
-            android:title="@string/title_share_app" />
     </PreferenceCategory>
 </PreferenceScreen>

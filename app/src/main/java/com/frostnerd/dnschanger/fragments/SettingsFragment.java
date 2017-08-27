@@ -173,19 +173,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         }
         findPreference("autopause_appselect").setTitle(getString(R.string.title_autopause_apps).
                 replace("[[count]]", Preferences.getStringSet(getActivity(), "autopause_apps").size()+""));
-        findPreference("share_app").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                LogFactory.writeMessage(getActivity(), LOG_TAG, preference.getKey() + " clicked");
-                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                sharingIntent.setType("text/plain");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.app_share_text));
-                LogFactory.writeMessage(getActivity(), LOG_TAG, "Showing chooser for share", sharingIntent);
-                startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_using)));
-                return true;
-            }
-        });
         /*findPreference("export_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
