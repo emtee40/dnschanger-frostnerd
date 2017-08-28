@@ -32,11 +32,8 @@
         android:layout_marginTop="10dp"
         app:allowCollapse="false"
         app:animationDuration="0"
-        app:cardColor="#2196F3"
-        app:cardStrokeColor="#2196F3"
-        app:image="@drawable/ic_action_key"
-        app:labelColorPrimary="#000"
-        app:labelColorSecondary="#000"
+        app:indicatorVisibilityWhenUnused="gone"
+        app:image="?attr/keyResource"
         app:labelText="PIN"
         app:revealDelay="0"
         app:revealType="revealInstant">
@@ -46,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:cursorVisible="true"
+            android:background="?attr/inputElementColor"
             android:inputType="numberPassword"
             android:textColor="#FFF"
             android:textCursorDrawable="@null" />

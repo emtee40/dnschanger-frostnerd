@@ -34,6 +34,9 @@ import java.util.zip.ZipOutputStream;
 /**
  * Copyright Daniel Wolf 2017
  * All rights reserved.
+ *
+ * Terms on usage of my code can be found here: https://git.frostnerd.com/PublicAndroidApps/DnsChanger/blob/master/README.md
+ *
  * <p>
  * development@frostnerd.com
  */
@@ -46,7 +49,6 @@ public class LogFactory {
             TIMESTAMP_FORMATTER = new SimpleDateFormat("EEE MMM dd.yy kk:mm:ss", Locale.US);
     public static final String STATIC_TAG = "[STATIC]";
     private static final boolean printMessagesToConsole = false;
-
 
     public static synchronized File zipLogFiles(Context c){
         if(logDir == null || !logDir.canWrite() || !logDir.canRead())return null;
@@ -88,10 +90,9 @@ public class LogFactory {
         return null;
     }
 
-    public synchronized static void enable(){
-        enabled = true;
+    public synchronized static void enable(Context context){
         ready = false;
-        usable = false;
+        enabled = true;
         if(fileWriter != null){
             try{
                 fileWriter.close();
@@ -100,6 +101,7 @@ public class LogFactory {
             }
             fileWriter = null;
         }
+        prepare(context);
     }
 
     public synchronized static void disable(){
@@ -124,6 +126,16 @@ public class LogFactory {
         }
         fileWriter = null;logFile=null;logDir = null;
         ready = usable = false;
+    }
+
+    public static void deleteLogFiles(Context context){
+        if(logDir == null)logDir = new File(context.getFilesDir(), "logs/");
+        boolean wasEnabled = ready && enabled;
+        disable();
+        for(File f: logDir.listFiles()){
+            f.delete();
+        }
+        if(wasEnabled)enable(context);
     }
 
     public static synchronized boolean prepare(Context context) {
@@ -234,23 +246,41 @@ public class LogFactory {
         if (prepare(context)) {
             writeMessage(context, customTag, stacktraceToString(exception));
         }
+        writeSeparateStackTrace(context, exception);
     }
 
     public static void writeStackTrace(Context context, String[] tags, Throwable exception) {
         if (prepare(context)) {
             writeMessage(context, tags, stacktraceToString(exception));
         }
+        writeSeparateStackTrace(context, exception);
     }
 
     public static void writeStackTrace(Context context, Tag tag, Throwable exception) {
         if (prepare(context)) {
             writeMessage(context, tag, stacktraceToString(exception));
         }
+        writeSeparateStackTrace(context, exception);
     }
 
     public static void writeStackTrace(Context context, Tag[] tags, Throwable exception) {
         if (prepare(context)) {
             writeMessage(context, tags, stacktraceToString(exception));
+        }
+        writeSeparateStackTrace(context, exception);
+    }
+
+    private static void writeSeparateStackTrace(Context context, Throwable exception){
+        File f = new File(context.getFilesDir(), "logs/" + DATE_TIME_FORMATTER.format(new Date()) + ".error.log");
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(f));
+            writer.write("App Version: " + BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ")\n");
+            writer.write("Android Version: " + Build.VERSION.SDK_INT + " (" + Build.VERSION.RELEASE + " - " + Build.VERSION.CODENAME + ", " +
+                    "Incremental: " + Build.VERSION.INCREMENTAL + ")\n");
+            writer.write(stacktraceToString(exception) + "\n");
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

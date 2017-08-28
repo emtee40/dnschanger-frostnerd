@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <uses-permission android:name="android.permission.VIBRATE" />
+
+    <permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" android:protectionLevel="signature"/>
     <!--<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
 
@@ -42,6 +44,7 @@
             android:value="2.1" />
         <activity
             android:name=".activities.MainActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTop">
             <intent-filter android:label="@string/deep_link_title">
                 <action android:name="android.intent.action.VIEW" />
@@ -71,17 +74,24 @@
             </intent-filter>
         </service>
 
-        <service
-            android:name=".services.TestVPNService"
-            android:permission="android.permission.BIND_VPN_SERVICE">
-            <intent-filter>
-                <action android:name="android.net.VpnService" />
-            </intent-filter>
-        </service>
-
         <activity
             android:name=".activities.SettingsActivity"
-            android:parentActivityName=".activities.MainActivity" />
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
+        <activity
+            android:name=".activities.InvalidDNSDialogActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
 
         <activity
             android:name=".activities.BackgroundVpnConfigureActivity"
@@ -151,13 +161,17 @@
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
 
         <activity
-            android:name=".activities.AutoPauseAppSelectActivity"
-            android:parentActivityName=".activities.SettingsActivity" />
+            android:name=".activities.AppSelectionActivity"
+            android:parentActivityName=".activities.SettingsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.SettingsActivity" />
+        </activity>
 
         <service
-            android:name=".tiles.TileStart"
+            android:name=".tiles.TileStartStop"
             android:icon="@drawable/ic_stat_resume"
-            android:label="@string/tile_start"
+            android:label="@string/tile_start_stop"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
@@ -168,35 +182,9 @@
         </service>
 
         <service
-            android:name=".tiles.TileStop"
-            android:icon="@drawable/ic_stat_stop"
-            android:label="@string/tile_stop"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
-            </intent-filter>
-            <meta-data
-                android:name="android.service.quicksettings.ACTIVE_TILE"
-                android:value="true" />
-        </service>
-
-        <service
-            android:name=".tiles.TileResume"
+            android:name=".tiles.TilePauseResume"
             android:icon="@drawable/ic_stat_resume"
-            android:label="@string/tile_resume"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
-            </intent-filter>
-            <meta-data
-                android:name="android.service.quicksettings.ACTIVE_TILE"
-                android:value="true" />
-        </service>
-
-        <service
-            android:name=".tiles.TilePause"
-            android:icon="@drawable/ic_stat_pause"
-            android:label="@string/tile_pause"
+            android:label="@string/tile_pause_resume"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
@@ -235,18 +223,18 @@
             </intent-filter>-->
         </activity>
 
-        <receiver
-            android:name=".receivers.AdminReceiver"
-            android:description="@string/device_admin_description"
-            android:label="@string/device_admin"
-            android:permission="android.permission.BIND_DEVICE_ADMIN">
-            <meta-data
-                android:name="android.app.device_admin"
-                android:resource="@xml/device_admin" />
-            <intent-filter>
-                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
-            </intent-filter>
-        </receiver>
+        <!--<receiver-->
+        <!--android:name=".receivers.AdminReceiver"-->
+        <!--android:description="@string/device_admin_description"-->
+        <!--android:label="@string/device_admin"-->
+        <!--android:permission="android.permission.BIND_DEVICE_ADMIN">-->
+        <!--<meta-data-->
+        <!--android:name="android.app.device_admin"-->
+        <!--android:resource="@xml/device_admin" />-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />-->
+        <!--</intent-filter>-->
+        <!--</receiver>-->
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -258,14 +246,14 @@
                 android:resource="@xml/debug_file_paths" />
         </provider>
 
-        <receiver android:name=".widgets.BasicWidget">
+        <!--<receiver android:name=".widgets.BasicWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/basic_widget" />
-        </receiver>
+        </receiver>-->
     </application>
 
 </manifest>

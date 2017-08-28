@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <com.frostnerd.utils.design.MaterialEditText
+        android:id="@+id/met_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:allowCollapse="false"
+        app:image="@drawable/ic_language"
+        app:maxCharLength="50"
+        app:revealDelay="0"
+        app:revealType="revealInstant">
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Name"
+            android:imeOptions="actionNext"
+            android:maxLines="1"
+            android:nextFocusDown="@+id/dns1"
+            android:nextFocusForward="@+id/dns1"
+            android:text=""
+            android:textColor="#FFF">
+
+            <requestFocus />
+        </EditText>
+    </com.frostnerd.utils.design.MaterialEditText>
+
+    <com.frostnerd.utils.design.MaterialEditText
+        android:id="@+id/met_dns1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:allowCollapse="false"
+        app:image="@drawable/ic_language"
+        app:revealDelay="0"
+        app:revealType="revealInstant">
+
+        <EditText
+            android:id="@+id/dns1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="0123456789."
+            android:hint="DNS 1"
+            android:imeOptions="actionNext"
+            android:inputType="numberDecimal"
+            android:nextFocusDown="@+id/dns2"
+            android:nextFocusForward="@+id/dns2"
+            android:nextFocusUp="@id/name"
+            android:text="8.8.8.8"
+            android:textColor="#FFF" />
+    </com.frostnerd.utils.design.MaterialEditText>
+
+
+    <com.frostnerd.utils.design.MaterialEditText
+        android:id="@+id/met_dns2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:allowCollapse="false"
+        app:image="@drawable/ic_language"
+        app:revealDelay="0"
+        app:revealType="revealInstant">
+
+        <EditText
+            android:id="@+id/dns2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="0123456789."
+            android:hint="DNS 2"
+            android:imeOptions="actionDone"
+            android:inputType="numberDecimal"
+            android:nextFocusUp="@id/dns1"
+            android:text="8.8.4.4"
+            android:textColor="#FFF" />
+    </com.frostnerd.utils.design.MaterialEditText>
+
+</LinearLayout>

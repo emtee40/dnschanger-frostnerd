@@ -7,7 +7,7 @@
     <string name="info_dns_button">Infos über DNS</string>
     <string name="default_dns">Voreingestellte DNS Adressen</string>
     <string name="default_dns_title">Öffentliche DNS Anbieter</string>
-    <string name="dns_info_text">DNS steht für Domain Name System.\n\nDas Domain Name System wird benutzt, um Domains (google.com, yahoo.com, example.org...) zu IP-Adressen (z.B. 192.168.178.1) aufzulösen und zu die Kommunikation über das Internet zu ermöglichen.\n\nDas DNS ist eines der wichtigsten System in IP-basierten Netzwerken.</string>
+    <string name="info_text_dns">DNS steht für Domain Name System.\n\nDas Domain Name System wird benutzt, um Domains (google.com, yahoo.com, example.org...) zu IP-Adressen (z.B. 192.168.178.1) aufzulösen und zu die Kommunikation über das Internet zu ermöglichen.\n\nDas DNS ist eines der wichtigsten System in IP-basierten Netzwerken.</string>
     <string name="information">Information</string>
     <string name="vpn_explain">Diese App funktioniert, ohne, dass das Gerät gerooted sein muss.\n\nUm dies zu ermöglichen, wird ein sog. VPN benutzt. Dieser VPN empfängt den gesamten Traffic und leitet ihn nur lokal an das eigene Gerät weiter (Loopback), es verlassen über diese VPN Verbindung keine Daten das Gerät.\n\nDu wirst im nächsten Fenster gefragt, diese VPN Verbindung zu erlauben, ohne deine Zustimmung werden die eingestellten DNS Server nicht genutzt.\n\nDer Source Code kann unter https://git.frostnerd.com/PublicAndroidApps/DnsChanger eingesehen werden.</string>
     <string name="settings">Einstellungen</string>
@@ -29,8 +29,8 @@
     <string name="summary_auto_wifi">DNS Changer automatisch anschalten, sobald das Handy mit einem WLAN-Netzwerk verbunden ist</string>
     <string name="title_auto_wifi">Automatisch starten (WLAN)</string>
     <string name="title_auto_mobile">Automatisch starten (Mobilfunk)</string>
-    <string name="not_running">Läuft nicht</string>
-    <string name="running">Läuft</string>
+    <string name="not_running">Inaktiv</string>
+    <string name="running">Aktiv</string>
     <string name="background_configure_error">Die Berechtigung, den VPN zu starten wurde verwährt.\nDies könnte das System sein, welches die Anfrage automatisch ablehnt, da sie nicht aus dem Vordergrund gestellt wurde (Mögliches Sicherheitsrisiko)\n\nÖffne die App, um den VPN zu starten</string>
     <string name="open_app">App öffnen</string>
     <string name="rate_request_text">Möchtest du diese App bewerten?\nEs würde helfen, diese App zu verbreiten und zöllt meiner Arbeit Anerkennung.</string>
@@ -59,7 +59,7 @@
     <string name="summary_automation_warn">Achtung: Eine dieser Optionen zu verwenden, könnte aktive Tasker Profile, welche diese App nutzen, stören</string>
     <string name="title_pin">Pin</string>
     <string name="summary_pin">Pin-schutz aktivieren</string>
-    <string name="summary_pin_value">Aktueller Pin: [[x]] (Zum Ändern klicken)</string>
+    <string name="summary_pin_value">Zum Ändern des PINs hier klicken</string>
     <string name="title_pin_value">Pin ändern</string>
     <string name="settings_information_text">Diese App wurde von Daniel Wolf erstellt (frostnerd.com)\n\nSie benutzt Icons, welche von Google erstellt wurden (Material icon pack - https://material.io/icons/)\n\n\nWenn du ein fehlendes Feature entdeckst, einen Bug findest oder eine generelle Frage hast, kontaktiere mich unter support@frostnerd.com.\nDer Quellcode zu dieser App ist unter https://git.frostnerd.com/PublicAndroidApps/DnsChanger einsehbar.</string>
     <string name="create_tasker_action">Erstelle eine Tasker Aktion</string>
@@ -88,7 +88,7 @@
         <item>DNS Changer fortsetzen</item>
     </string-array>
     <string name="error">Fehler</string>
-    <string name="vpn_error_explain">Bei einigen Android Versionen (4.4, einige wenige 5.0 Versionen) und Custom ROMS wird die dieser App zu Grund liegende VPN-Struktur nicht unterstützt, was zu Abstürzen führt.\n\nDiese App ist unerwartet abgestürzt, was höchstwahrscheinlich darauf hindeutet, dass den Gerät diese App nicht unterstützt.\nSollte dies der Fall sein, könnest du mir helfen, indem du mir den Fehlerbericht sendest, aber leider funktioniert diese App auf deinem Gerät nicht.</string>
+    <string name="vpn_error_explain">Die App ist unerwartet abgestürzt. Dies bedeutet entweder, dass dein Gerät/Betriebssystem die Art und Weise, wie diese App funktioniert, nicht unterstützt, oder, dass ein genereller Fehler aufgetreten ist (Was meistens einen Fehler meinerseits impliziert).\n\nDurch das Senden des Absturzberichts (und ggf. debug-Daten) könnest du mir helfen, diesen Fehler zu beheben.\nMöchtest du diesen Bericht an mich senden?</string>
     <string name="send_crash_report">Absturzbericht senden</string>
     <string name="deep_link_title">DNS Changer von Frostnerd</string>
     <string name="summary_pin_tile">Nach der Pin fragen, wenn DNS Changer von den Schnelleinstellungen aus gestartet/gestoppt wird</string>
@@ -140,4 +140,65 @@
     <string name="reason_stop_network_change">Netzwerk wurde geändert (DNS Changer wurde eingestellt zu stoppen)</string>
     <string name="reason_stop_tasker">Von Tasker gestoppt</string>
     <string name="shortcut_conflict_text">Diese App ist darauf eingestellt, den VPN zu starten/stoppen, wenn sich die Netzwerkverbindung ändert (zu Wlan oder 3G/4G...).\nDies könnte zu Konflikten führen, wenn die App über eine Verknüpfung gestartet wurde, da die eingestellte Aktion durch die App an sich überschrieben werden kann (Nur ein VPN kann aktiv sein).\n\nMöchtest du diese Einstellungen aus der App entfernen?</string>
+    <string name="invalid_dns_error_text">Es sieht so aus, als würde mindestens einer der eingestellten DNS Server auf diesem Gerät nicht funktionieren.\nDies kann entweder ein temporärer Fehler sein, oder durch eine invalide IP Adresse begründet sein.\n\nBitte stelle sicher, dass deine Einstellungen im Hauptmenü korrekt sind und besonders, dass die eingegebenen IP-Adressen valide sind.</string>
+    <string name="summary_enable_ipv6">Aktiviert IPv6. Dies erlaubt es, IPv6 Adressen zur Nutzung als DNS Server einzustellen.</string>
+    <string name="title_enable_ipv6">IPv6 aktivieren</string>
+    <string name="default_dns_legal_warning">Die hier gezeigten Namen könnten eingetragene Marken deren Besitzer sein. Es gelten die jeweiligen Nutzungsbedingungen der Anbieter.\nAchtung: DNS Server haben die Möglichkeit, zu speichern, welche Webseiten du besuchst.</string>
+    <string name="add">Hinzufügen</string>
+    <string name="new_entry">Neuer Eintrag</string>
+    <string name="title_exclude_apps">Apps vom VPN ausschließen</string>
+    <string name="summary_exclude_apps">Installierte Apps daran hindern, die interne VPN Verbindung zu nutzen. Dies sorgt dafür, dass diese nicht die eingestellten DNS Server nutzen</string>
+    <string name="excluded_apps_info_text_blacklist">Jede in der oberen Einstellung ausgewählte Anwendung wird den internen VPN nicht verwenden. Dadurch werden die DNS Server auf diese ebenfalls nicht angewendet.</string>
+    <string name="title_about">Über diese App</string>
+    <string name="search">Suchen</string>
+    <string name="title_reset">Zurücksetzen</string>
+    <string name="summary_reset">Setzt alle Einstellungen und gespeicherten DNS Server zurück. Verknüpfungen und Tasker Aktionen werden nicht gelöscht.</string>
+    <string name="reset_warning_text">Möchtest du wirklich alle Einstellungen löschen?\nDies kann nicht rückgängig gemacht werden</string>
+    <string name="summary_theme">Setzt das Aussehen dieser App</string>
+    <string name="title_theme">Aussehen</string>
+
+    <string-array name="theme">
+        <item>Standard</item>
+        <item>Mono</item>
+        <item>Dunkel</item>
+    </string-array>
+    <string name="remove">Löschen</string>
+    <string name="whitelist">Whitelist</string>
+    <string name="excluded_apps_info_text_whitelist">Nur die markierten Anwendungen werden den internen VPN verwenden. Dadurch verwenden nicht markierte Apps die DNS Server nicht.</string>
+    <string name="select_all">Alle auswählen</string>
+    <string name="deselect_all">Alle abwählen</string>
+    <string name="summary_pin_app_shortcut">Nach der PIN fragen, wenn DNS Changer von einem App Shortcut aus pausiert/gestoppt wird</string>
+    <string name="title_pin_app_shortcut">App shortcuts schützen</string>
+    <string name="title_enable_app_shortcuts">App shortcuts aktivieren</string>
+    <string name="summary_enable_app_shortcuts">Aktiviert app shortcuts. Klicke im Hauptbildschirm lange auf die App, um dieses Menü zu öffnen.</string>
+    <string name="notification_x_blacklisted">[x] Apps auf der Blacklist</string>
+    <string name="notification_x_whitelisted">[x] Apps auf der Whitelist</string>
+    <string name="default_dns_explain_delete">Halte einen EIntrag lange gedrückt, um ihn zu löschen. Klicke dannach weitere EInträge an, um diese ebenfalls zu löschen.</string>
+    <string name="summary_enable_ipv4">Aktiviert IPv4. Dies erlaubt es, IPv4 Adressen zur Nutzung als DNS Server einzustellen.</string>
+    <string name="title_enable_ipv4">IPv4 aktivieren</string>
+    <string name="warning_disabling_v4">Viele Androidversionen können nicht mehr auf das Internet zugreifen, wird keine IPv4 Adresse genutzt während DNS Changer läuft. Dies musst du allerdings für dein Gerät testen.</string>
+    <string name="x_apps_selected">[[x]] Apps ausgewählt</string>
+    <string name="tile_pause_resume">Pausieren / Fortsetzen</string>
+    <string name="tile_start_stop">Starten / Stoppen</string>
+    <string name="title_vpn_exclusion">VPN-Umgehung</string>
+    <string name="search_hint">Suche eine Einstellung</string>
+    <string name="unfixable_error_explaination">Der Hintergrundprozess ist aufgrund eines in manchen Geräten vorhandenen Fehlers abgestürzt. Dieser kann leider nicht durch diese App behoben werden\n.Probiere entweder, die App neuzustarten, hilft dies nicht, starte dein Gerät neu.</string>
+    <string name="nav_title_dns">DNS</string>
+    <string name="nav_title_main">Hauptbildschirm</string>
+    <string name="nav_title_learn">Lernen</string>
+    <string name="nav_title_what_is_dns">Was ist DNS?</string>
+    <string name="nav_title_how_does_it_work">Wie funktioniert es?</string>
+    <string name="nav_title_features">Funktionen</string>
+    <string name="nav_title_tiles">Schnelleinstellung</string>
+    <string name="nav_title_pin_protection">Pin-schutz</string>
+    <string name="nav_title_more">Und mehr</string>
+    <string name="about_text">Diese App ist quelloffen. Der Quellcode kann unter git.frostnerd.com eingesehen werden.\nEs werden Icons von Google benutzt (Material icon pack - https://material.io/icons).\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2017\nAll rights reserved.\n\nBrasilianische Übersetzung von Lukinhas</string>
+    <string name="close">Schließen</string>
+    <string name="info_text_how_does_it_work">Android erlaubt es, primäre und sekundäre DNS Server in den WLAN Einstellungen festzulegen - Allerdings nicht für mobile Netze. Zusätzlich bringt diese weitere Nachteile mit sich, zum Beispiel, dass eine statische IP-Adresse genutzt werden muss, kein IPv6 verwendet werden kann und weitere im Vergleich zu dieser App.\n\nDiese App benutzt die VPN-Struktur von Android, um die DNS server dynamisch zu setzen. Um dies zu erreichen, wird ein lokaler VPN erstellt, welcher das eigene Gerät als Endpunkt nutzt - dies bedeutet, dass diese VPN-Verbindung das Gerät nicht verlässt und von außerhalb auch nicht erkennbar ist.\nDa dieser Dummy-VPN jederzeit gestartet/gestoppt werden kann, erlaubt es eine Fülle an Automatisierungen und Verbesserungen. Es werden keine Daten aus dem VPN abgegriffen.\n\nBist du in die technische Seite hiervon interessiert, besuche mein Git unter git.frostnerd.com.</string>
+    <string name="create_one">Eins erstellen</string>
+    <string name="feature_shortcuts">Mit dieser App lassen sich Verknüpfungen auf dem Hauptbildschirm erstellen. Diese Verknüpfungen enthalten DNS Einstellungen und ändern deine DNS Server, sobald du drauf klickst, ohne, dass du die App öffnen musst.\nDies macht sie sehr nützlich, wenn schnell zwischen mehreren Konfigurationen gewechselt werden muss oder ein Schnellzugriff auf diese möglich sein soll.\n\nDu kannst deren Verhalten in den Einstellungen personalisieren.</string>
+    <string name="notification_channel_default">Standardchannel</string>
+    <string name="notification_channel_default_description">Standardchannel für Benachrichtigungen</string>
+    <string name="feature_tiles">Für den schnellen Zugriff können in der Benachrichtigungszeile Kacheln hinzugefügt werden, mit welchen sich DNS Changer kontrollieren lässt.\n\nUm diese hinzuzufügen, öffne die Benachrichtigungszeile, indem du diese herunterziehst, drücke auf den Stift und ziehe die Kacheln durch langes Drücken nach oben.</string>
+    <string name="feature_pin_protection">Du kannst sämtliche Aktionen (start/stopp/pausieren/forsetzen) durch eine PIN schützen. Jedes mal, wenn eine dieser Aktionen ausgeführt werden soll, wird in einem Dialog nach der PIN gefragt.\n\nDies kann zum Beispiel dafür genutzt werden, den Nutzer des Geräts daran zu hindern, DNS Changer zu beeinflussen. Es wurde entwickelt um Kinder daran zu hindern, DNS Changer zu beenden.\nBesuche die Einstellungen um auszuwählen, was auf diese Weise geschützt werden soll.</string>
 </resources>
