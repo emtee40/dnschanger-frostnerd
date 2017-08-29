@@ -114,7 +114,7 @@ public class ConnectivityBackgroundService extends Service {
 
     @Override
     public void onDestroy() {
-        unregisterReceiver(connectivityChange);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)unregisterReceiver(connectivityChange);
         super.onDestroy();
     }
 
