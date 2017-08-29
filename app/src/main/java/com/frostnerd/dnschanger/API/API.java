@@ -117,6 +117,16 @@ public final class API {
         return false;*/
     }
 
+    public static boolean isServiceRunning(Context context, Class serviceClass){
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : am.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static boolean isServiceRunningNative(Context context) {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         String name = DNSVpnService.class.getName();
