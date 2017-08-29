@@ -155,7 +155,7 @@ public class ConnectivityBackgroundService extends Service {
         if(!connected || (connectionType != ConnectionType.WIFI && connectionType != ConnectionType.MOBILE))
             return;
         if (!serviceThreadRunning) {
-            if ((connectionType == ConnectionType.WIFI || connectionType == ConnectionType.MOBILE) && autoWifi) {
+            if (connectionType == ConnectionType.WIFI && autoWifi) {
                 LogFactory.writeMessage(ConnectivityBackgroundService.this, LOG_TAG, "Connected to WIFI and setting_auto_wifi is true. Starting Service..");
                 startService();
             } else if (connectionType == ConnectionType.MOBILE && autoMobile) {
