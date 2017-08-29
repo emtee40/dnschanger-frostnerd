@@ -121,7 +121,7 @@ public class DNSVpnService extends VpnService {
         LogFactory.writeMessage(this, LOG_TAG, "Clearing Variables");
         if(stopReason != null && notificationManager != null && Preferences.getBoolean(this, "notification_on_stop", false)){
             String reasonText = getString(R.string.notification_reason_stopped).replace("[reason]", stopReason);
-            notificationManager.notify(NOTIFICATION_ID+1, new NotificationCompat.Builder(this).setAutoCancel(true)
+            notificationManager.notify(NOTIFICATION_ID+1, new NotificationCompat.Builder(this, createNotificationChannel()).setAutoCancel(true)
                     .setOngoing(false).setContentText(reasonText).setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText(reasonText))
                     .setSmallIcon(R.drawable.ic_stat_small_icon).setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0))
                     .build());
@@ -201,7 +201,7 @@ public class DNSVpnService extends VpnService {
     private void initNotification(){
         if (notificationBuilder == null) {
             LogFactory.writeMessage(this,new String[]{LOG_TAG, "[NOTIFICATION]"} , "Initiating Notification");
-            notificationBuilder = new NotificationCompat.Builder(this, "defaultchannel");
+            notificationBuilder = new NotificationCompat.Builder(this, createNotificationChannel());
             notificationBuilder.setSmallIcon(R.drawable.ic_stat_small_icon); //TODO Update Image
             notificationBuilder.setContentTitle(getString(R.string.app_name));
             notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0));
@@ -221,6 +221,18 @@ public class DNSVpnService extends VpnService {
             }
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification created (Not yet posted)");
         }
+    }
+
+    private String createNotificationChannel(){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("defaultchannel", getString(R.string.notification_channel_default), NotificationManager.IMPORTANCE_HIGH);
+            channel.enableLights(false);
+            channel.enableVibration(false);
+            channel.setDescription(getString(R.string.notification_channel_default_description));
+            notificationManager.createNotificationChannel(channel);
+            notificationBuilder.setChannelId("defaultchannel");
+        }
+        return "defaultchannel";
     }
 
     public static synchronized void startWithSetDNS(final Context context, final String dns1, final String dns2, final String dns1v6, final String dns2v6){
