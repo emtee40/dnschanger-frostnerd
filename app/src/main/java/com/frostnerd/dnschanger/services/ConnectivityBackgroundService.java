@@ -152,7 +152,7 @@ public class ConnectivityBackgroundService extends Service {
             return;
         }
         //if (!connected || type == ConnectivityManager.TYPE_BLUETOOTH || type == ConnectivityManager.TYPE_DUMMY || type == ConnectivityManager.TYPE_VPN)
-        if(!connected || (connectionType != ConnectionType.WIFI && connectionType != ConnectionType.MOBILE && connectionType != ConnectionType.MOBILE))
+        if(!connected || (connectionType != ConnectionType.WIFI && connectionType != ConnectionType.MOBILE))
             return;
         if (!serviceThreadRunning) {
             if ((connectionType == ConnectionType.WIFI || connectionType == ConnectionType.MOBILE) && autoWifi) {
