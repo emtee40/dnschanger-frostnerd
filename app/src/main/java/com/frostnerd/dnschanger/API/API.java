@@ -328,4 +328,11 @@ public final class API {
         }
         return false;
     }
+
+    public static void startService(Context context, Intent intent){
+        if(intent.getComponent().getClassName().equals(DNSVpnService.class.getName()) &&
+                Preferences.getBoolean(context, "setting_show_notification", true) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            context.startForegroundService(intent);
+        }else context.startService(intent);
+    }
 }
