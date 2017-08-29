@@ -199,6 +199,7 @@ public class DNSVpnService extends VpnService {
     }
 
     private void initNotification(){
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (notificationBuilder == null) {
             LogFactory.writeMessage(this,new String[]{LOG_TAG, "[NOTIFICATION]"} , "Initiating Notification");
             notificationBuilder = new NotificationCompat.Builder(this, createNotificationChannel());
@@ -210,7 +211,6 @@ public class DNSVpnService extends VpnService {
             notificationBuilder.setUsesChronometer(true);
             notificationBuilder.addAction(new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_pause, getString(R.string.action_pause),null));
             notificationBuilder.addAction(new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_stop, getString(R.string.action_stop),null));
-            notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 NotificationChannel channel = new NotificationChannel("defaultchannel", getString(R.string.notification_channel_default), NotificationManager.IMPORTANCE_HIGH);
                 channel.enableLights(false);
