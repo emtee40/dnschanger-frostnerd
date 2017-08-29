@@ -141,7 +141,10 @@ public class DNSVpnService extends VpnService {
         afterThreadStop.clear();
         afterThreadStop = null;
         LogFactory.writeMessage(this, LOG_TAG, "Variables cleared");
-        if(stopSelf)stopSelf();
+        if(stopSelf){
+            stopForeground(true);
+            stopSelf();
+        }
     }
 
     private void updateNotification() { //Well, this method is a mess.
@@ -192,7 +195,7 @@ public class DNSVpnService extends VpnService {
             notificationBuilder.setContentText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused));
         }
         LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Updating notification");
-        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        startForeground(NOTIFICATION_ID, notificationBuilder.build());
     }
 
     private void initNotification(){
