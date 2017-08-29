@@ -415,6 +415,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 return true;
             }
         });
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            Preference pref = findPreference("setting_show_notification");
+            ((CheckBoxPreference)pref).setChecked(true);
+            pref.setSummary(pref.getSummary() + "\n" + getString(R.string.no_disable_android_o));
+            pref.setEnabled(false);
+            findPreference("show_used_dns").setDependency("");
+        }
     }
 
     private Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
