@@ -35,14 +35,7 @@ public class BootReceiver extends BroadcastReceiver {
                 LogFactory.writeMessage(context, LOG_TAG, "User wants App to start on boot");
                 Intent i = VpnService.prepare(context);
                 LogFactory.writeMessage(context, LOG_TAG, "VPNService Prepare Intent", i);
-                if(i == null){
-                    LogFactory.writeMessage(context, LOG_TAG, "VPNService is prepared. Starting DNSVpnService",
-                            i = DNSVpnService.getStartVPNIntent(context).putExtra(VPNServiceArgument.FLAG_DONT_START_IF_RUNNING.getArgument(), true));
-                    context.startService(i);
-                }else{
-                    LogFactory.writeMessage(context, LOG_TAG, "VPNService is NOT prepared. Starting BackgroundVpnConfigureActivity.");
-                    BackgroundVpnConfigureActivity.startBackgroundConfigure(context,true);
-                }
+                BackgroundVpnConfigureActivity.startBackgroundConfigure(context,true);
             }
         }
     }
