@@ -230,7 +230,6 @@ public class DNSVpnService extends VpnService {
             channel.enableVibration(false);
             channel.setDescription(getString(R.string.notification_channel_default_description));
             notificationManager.createNotificationChannel(channel);
-            notificationBuilder.setChannelId("defaultchannel");
         }
         return "defaultchannel";
     }
