@@ -50,7 +50,7 @@ public class ConnectivityBackgroundService extends Service {
             LogFactory.writeMessage(this, LOG_TAG, "VPNService is already prepared. Starting DNSVPNService",
                     i = DNSVpnService.getStartVPNIntent(this).putExtra(VPNServiceArgument.FLAG_DONT_START_IF_RUNNING.getArgument(), true).
                             putExtra(VPNServiceArgument.FLAG_FIXED_DNS.getArgument(),false));
-            this.startService(i);
+            API.startService(this, i);
         } else {
             LogFactory.writeMessage(this, LOG_TAG, "VPNService is NOT prepared. Starting BackgroundVpnConfigureActivity");
             BackgroundVpnConfigureActivity.startBackgroundConfigure(this, true);
