@@ -273,6 +273,7 @@ public class LogFactory {
     private static void writeSeparateStackTrace(Context context, Throwable exception){
         File f = new File(context.getFilesDir(), "logs/" + DATE_TIME_FORMATTER.format(new Date()) + ".error.log");
         try {
+            if(!f.exists())f.createNewFile();
             BufferedWriter writer = new BufferedWriter(new FileWriter(f));
             writer.write("App Version: " + BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ")\n");
             writer.write("Android Version: " + Build.VERSION.SDK_INT + " (" + Build.VERSION.RELEASE + " - " + Build.VERSION.CODENAME + ", " +
