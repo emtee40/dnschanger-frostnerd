@@ -347,6 +347,9 @@ public class DNSVpnService extends VpnService {
             }
             API.updateTiles(this);
         }else LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]", LogFactory.Tag.ERROR.toString()}, "Intent given is null. This isn't normal behavior");
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            Preferences.put(this, "setting_show_notification", true);
+        }
         updateNotification();
         return START_REDELIVER_INTENT;
     }
