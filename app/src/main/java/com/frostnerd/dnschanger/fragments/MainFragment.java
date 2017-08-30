@@ -288,7 +288,7 @@ public class MainFragment extends Fragment {
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Starting VPN",
                 i = DNSVpnService.getStartVPNIntent(getActivity()));
         wasStartedWithTasker = false;
-        getActivity().startService(i);
+        API.startService(getActivity(), i);
         vpnRunning = true;
         setIndicatorState(true);
     }
