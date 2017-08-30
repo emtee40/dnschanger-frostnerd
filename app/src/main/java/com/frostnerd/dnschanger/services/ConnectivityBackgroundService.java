@@ -41,6 +41,7 @@ public class ConnectivityBackgroundService extends Service {
             handleConnectivityChange(!intent.hasExtra("noConnectivity"), intent.getIntExtra("networkType", -1));
         }
     };
+    private ConnectivityManager.NetworkCallback networkCallback;
 
     private void startService() {
         LogFactory.writeMessage(this, LOG_TAG, "Trying to start DNSVPNService");
@@ -65,7 +66,7 @@ public class ConnectivityBackgroundService extends Service {
         connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             NetworkRequest.Builder builder = new NetworkRequest.Builder();
-            connectivityManager.registerNetworkCallback(builder.build(), new ConnectivityManager.NetworkCallback(){
+            connectivityManager.registerNetworkCallback(builder.build(), networkCallback = new ConnectivityManager.NetworkCallback(){
                 @Override
                 public void onAvailable(Network network) {
                     NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
@@ -115,6 +116,7 @@ public class ConnectivityBackgroundService extends Service {
     @Override
     public void onDestroy() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)unregisterReceiver(connectivityChange);
+        else connectivityManager.unregisterNetworkCallback(networkCallback);
         super.onDestroy();
     }
 
