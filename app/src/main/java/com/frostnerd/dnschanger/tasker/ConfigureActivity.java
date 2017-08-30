@@ -14,12 +14,10 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,17 +26,10 @@ import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.dnschanger.activities.ShortcutActivity;
 import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
 import com.frostnerd.utils.design.MaterialEditText;
-import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -83,13 +74,13 @@ public class ConfigureActivity extends AppCompatActivity {
         ipv6Enabled = !ipv4Enabled || Preferences.getBoolean(this, "setting_ipv6_enabled", true);
         settingV6 = !ipv4Enabled;
 
-        ed_dns1 = (EditText)findViewById(R.id.dns1);
-        ed_dns2 = (EditText)findViewById(R.id.dns2);
-        ed_name = (EditText)findViewById(R.id.name);
-        met_dns1 = (MaterialEditText) findViewById(R.id.met_dns1);
-        met_dns2 = (MaterialEditText)findViewById(R.id.met_dns2);
-        met_name = (MaterialEditText)findViewById(R.id.met_name);
-        Spinner actionSpinner = (Spinner) findViewById(R.id.spinner);
+        ed_dns1 = findViewById(R.id.dns1);
+        ed_dns2 = findViewById(R.id.dns2);
+        ed_name = findViewById(R.id.name);
+        met_dns1 = findViewById(R.id.met_dns1);
+        met_dns2 = findViewById(R.id.met_dns2);
+        met_name = findViewById(R.id.met_name);
+        Spinner actionSpinner = findViewById(R.id.spinner);
         Helper.scrub(getIntent());
         final Bundle bundle = getIntent().getBundleExtra(Helper.EXTRA_BUNDLE);
         creatingShortcut = getIntent() != null && getIntent().getBooleanExtra("creatingShortcut", false);
@@ -221,6 +212,7 @@ public class ConfigureActivity extends AppCompatActivity {
                 finish();
             }
         });
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     public void openDefaultDNSDialog(View v){
