@@ -32,9 +32,11 @@ public class TilePauseResume extends android.service.quicksettings.TileService {
         super.onTileAdded();
         LogFactory.writeMessage(this, LOG_TAG, "Tile added");
         Tile tile = getQsTile();
-        tile.setState(Tile.STATE_UNAVAILABLE);
-        tile.setLabel(getString(R.string.not_running));
-        tile.updateTile();
+        if(tile != null){
+            tile.setState(Tile.STATE_UNAVAILABLE);
+            tile.setLabel(getString(R.string.not_running));
+            tile.updateTile();
+        }else API.updateTiles(this);
     }
 
     @Override
