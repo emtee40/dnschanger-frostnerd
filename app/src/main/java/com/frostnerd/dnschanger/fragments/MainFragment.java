@@ -116,11 +116,6 @@ public class MainFragment extends Fragment {
         setHasOptionsMenu(true);
         boolean vertical = getResources().getConfiguration().orientation == OrientationHelper.VERTICAL;
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Created Activity", getActivity().getIntent());
-        API.updateTiles(getActivity());
-        if(!API.isServiceRunning(getActivity(), ConnectivityBackgroundService.class)){
-            LogFactory.writeMessage(getActivity(), LOG_TAG, "Launching ConnectivityBackgroundService");
-            getActivity().startService(new Intent(getActivity(), ConnectivityBackgroundService.class));
-        }
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Setting ContentView");
         met_dns1 = (MaterialEditText) findViewById(R.id.met_dns1);
         met_dns2 = (MaterialEditText) findViewById(R.id.met_dns2);
@@ -130,13 +125,14 @@ public class MainFragment extends Fragment {
         connectionText = (TextView)findViewById(R.id.connection_status_text);
         wrapper = findViewById(R.id.activity_main);
         running_indicator = findViewById(R.id.running_indicator);
+        startStopButton = (Button) findViewById(R.id.startStopButton);
+
         dns1.setText(Preferences.getString(getActivity(),settingV6 ? "dns1-v6" : "dns1", settingV6 ? "2001:4860:4860::8888" : "8.8.8.8"));
         dns2.setText(Preferences.getString(getActivity(),settingV6 ? "dns1-v6" : "dns1", settingV6 ? "2001:4860:4860::8844" : "8.8.4.4"));
         if(settingV6){
             dns1.setInputType(InputType.TYPE_CLASS_TEXT);
             dns2.setInputType(InputType.TYPE_CLASS_TEXT);
         }
-        startStopButton = (Button) findViewById(R.id.startStopButton);
         startStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,49 +201,7 @@ public class MainFragment extends Fragment {
             }
         });
         ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
-        int random = new Random().nextInt(100), launches = Preferences.getInteger(getActivity(), "launches", 0);
-        Preferences.put(getActivity(), "launches", launches+1);
-        if(!Preferences.getBoolean(getActivity(), "first_run",true) && !Preferences.getBoolean(getActivity(), "rated",false) && random <= (launches >= 3 ? 8 : 3)){
-            LogFactory.writeMessage(getActivity(), LOG_TAG, "Showing dialog requesting rating");
-            new AlertDialog.Builder(getActivity(),ThemeHandler.getDialogTheme(getActivity())).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ((MainActivity)getActivity()).rateApp();
-                }
-            }).setNegativeButton(R.string.dont_ask_again, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Preferences.put(getActivity(), "rated",true);
-                    dialog.cancel();
-                }
-            }).setNeutralButton(R.string.not_now, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            }).setMessage(R.string.rate_request_text).setTitle(R.string.rate).show();
-            LogFactory.writeMessage(getActivity(), LOG_TAG, "Dialog is now being shown");
-        }
-        if(Preferences.getBoolean(getActivity(), "first_run", true) && API.isTaskerInstalled(getActivity())){
-            LogFactory.writeMessage(getActivity(), LOG_TAG, "Showing dialog telling the user that this app supports Tasker");
-            new AlertDialog.Builder(getActivity(),ThemeHandler.getDialogTheme(getActivity())).setTitle(R.string.tasker_support).setMessage(R.string.app_supports_tasker_text).setPositiveButton(R.string.got_it, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            }).show();
-            LogFactory.writeMessage(getActivity(), LOG_TAG, "Dialog is now being shown");
-        }
-        if(Preferences.getBoolean(getActivity(), "first_run", true)) Preferences.put(getActivity(), "excluded_apps", new ArraySet<>(Arrays.asList(getResources().getStringArray(R.array.default_blacklist))));
-        API.updateAppShortcuts(getActivity());
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                API.getDBHelper(getActivity()).getReadableDatabase();
-            }
-        }).start();
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Done with OnCreate");
-        Preferences.put(getActivity(), "first_run", false);
     }
 
     private View findViewById(@IdRes int id){

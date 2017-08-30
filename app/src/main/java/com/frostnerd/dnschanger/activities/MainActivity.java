@@ -16,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.ArraySet;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,7 @@ import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
 import com.frostnerd.dnschanger.fragments.MainFragment;
 import com.frostnerd.dnschanger.fragments.SettingsFragment;
+import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
 import com.frostnerd.dnschanger.tasker.ConfigureActivity;
 import com.frostnerd.utils.design.material.navigationdrawer.DrawerItem;
 import com.frostnerd.utils.design.material.navigationdrawer.DrawerItemCreator;
@@ -37,7 +39,9 @@ import com.frostnerd.utils.general.DesignUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.preferences.Preferences;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -86,6 +90,53 @@ public class MainActivity extends NavigationDrawerActivity {
         backgroundColor = ThemeHandler.resolveThemeAttribute(getTheme(), android.R.attr.colorBackground);
         textColor = ThemeHandler.resolveThemeAttribute(getTheme(), android.R.attr.textColor);
         super.onCreate(savedInstanceState);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                API.getDBHelper(MainActivity.this).getReadableDatabase();
+            }
+        }).start();
+        API.updateAppShortcuts(this);
+        Preferences.put(this, "first_run", false);
+        if(Preferences.getBoolean(this, "first_run", true)) Preferences.put(this, "excluded_apps", new ArraySet<>(Arrays.asList(getResources().getStringArray(R.array.default_blacklist))));
+        if(Preferences.getBoolean(this, "first_run", true) && API.isTaskerInstalled(this)){
+            LogFactory.writeMessage(this, LOG_TAG, "Showing dialog telling the user that this app supports Tasker");
+            new AlertDialog.Builder(this,ThemeHandler.getDialogTheme(this)).setTitle(R.string.tasker_support).setMessage(R.string.app_supports_tasker_text).setPositiveButton(R.string.got_it, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            }).show();
+            LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
+        }
+        int random = new Random().nextInt(100), launches = Preferences.getInteger(this, "launches", 0);
+        Preferences.put(this, "launches", launches+1);
+        if(!Preferences.getBoolean(this, "first_run",true) && !Preferences.getBoolean(this, "rated",false) && random <= (launches >= 3 ? 8 : 3)){
+            LogFactory.writeMessage(this, LOG_TAG, "Showing dialog requesting rating");
+            new AlertDialog.Builder(this,ThemeHandler.getDialogTheme(this)).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    rateApp();
+                }
+            }).setNegativeButton(R.string.dont_ask_again, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Preferences.put(MainActivity.this, "rated",true);
+                    dialog.cancel();
+                }
+            }).setNeutralButton(R.string.not_now, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            }).setMessage(R.string.rate_request_text).setTitle(R.string.rate).show();
+            LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
+        }
+        API.updateTiles(this);
+        if(!API.isServiceRunning(this, ConnectivityBackgroundService.class)){
+            LogFactory.writeMessage(this, LOG_TAG, "Launching ConnectivityBackgroundService");
+            this.startService(new Intent(this, ConnectivityBackgroundService.class));
+        }
     }
 
     @Override
