@@ -200,7 +200,6 @@ public class MainFragment extends Fragment {
 
             }
         });
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Done with OnCreate");
     }
 
