@@ -265,7 +265,7 @@ public final class API {
     }*/
 
     public static synchronized void deleteDatabase(Context context) {
-        dbHelper.close();
+        if(dbHelper != null)dbHelper.close();
         dbHelper = null;
         context.getDatabasePath("data.db").delete();
     }
