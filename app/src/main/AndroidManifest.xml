@@ -148,10 +148,10 @@
 
         <activity
             android:name=".activities.AppSelectionActivity"
-            android:parentActivityName=".activities.SettingsActivity">
+            android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.SettingsActivity" />
+                android:value=".activities.MainActivity" />
         </activity>
 
         <service
