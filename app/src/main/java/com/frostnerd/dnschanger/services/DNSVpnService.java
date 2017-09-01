@@ -476,7 +476,7 @@ public class DNSVpnService extends VpnService {
                 Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
                 if(notificationBuilder != null) notificationBuilder.setWhen(System.currentTimeMillis());
                 boolean ipv6Enabled = Preferences.getBoolean(DNSVpnService.this, "setting_ipv6_enabled", true),
-                ipv4Enabled = Preferences.getBoolean(DNSVpnService.this, "setting_ipv4_enabled", true);
+                        ipv4Enabled = Preferences.getBoolean(DNSVpnService.this, "setting_ipv4_enabled", true);
                 try {
                     LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying " + addresses.size() + " different addresses before passing any thrown exception to the upper layer");
                     for(String address: addresses.keySet()){
