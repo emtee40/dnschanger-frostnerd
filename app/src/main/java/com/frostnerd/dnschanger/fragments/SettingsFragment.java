@@ -356,6 +356,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 else if(API.isServiceRunning(getActivity())){
                     getActivity().startService(new Intent(getActivity(), DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true));
                 }
+                v6Enabled.setEnabled(val);
                 return val;
             }
         });
