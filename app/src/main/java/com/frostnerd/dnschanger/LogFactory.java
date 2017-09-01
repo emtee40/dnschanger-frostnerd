@@ -271,7 +271,9 @@ public class LogFactory {
     }
 
     private static void writeSeparateStackTrace(Context context, Throwable exception){
-        File f = new File(context.getFilesDir(), "logs/" + DATE_TIME_FORMATTER.format(new Date()) + ".error.log");
+        File dir = new File(context.getFilesDir(), "logs/");
+        if(!dir.exists())dir.mkdirs();
+        File f = new File(dir, DATE_TIME_FORMATTER.format(new Date()) + ".error.log");
         try {
             if(!f.exists())f.createNewFile();
             BufferedWriter writer = new BufferedWriter(new FileWriter(f));
