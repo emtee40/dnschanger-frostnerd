@@ -154,8 +154,7 @@ public class MainActivity extends NavigationDrawerActivity {
     }
 
     @Override
-    public DrawerItem onItemClicked(DrawerItem item) {
-        return item;
+    public void onItemClicked(DrawerItem item, boolean handle) {
     }
 
     @Override
