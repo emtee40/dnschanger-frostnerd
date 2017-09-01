@@ -70,11 +70,6 @@
             android:dependency="auto_pause"
             android:key="autopause_appselect"
             android:title="@string/title_autopause_apps" />-->
-
-        <Preference
-            android:key="remove_usage_data"
-            android:summary="@string/summary_remove_usage_data"
-            android:title="@string/title_remove_usage_data" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="pin_category"

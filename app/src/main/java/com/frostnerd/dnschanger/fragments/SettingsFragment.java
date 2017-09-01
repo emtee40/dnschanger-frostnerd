@@ -149,23 +149,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             }
         });*/
         automatingCategory = (PreferenceCategory)getPreferenceScreen().findPreference("automation");
-        removeUsagePreference = findPreference("remove_usage_data");
-        removeUsagePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                startActivityForResult(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS), USAGE_STATS_REQUEST);
-                return true;
-            }
-        });
-        boolean canAccessUsageStats = PermissionsUtil.hasUsageStatsPermission(getActivity());
-        /*if(!canAccessUsageStats || Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
-            usageRevokeHidden = true;
-            automatingCategory.removePreference(removeUsagePreference);
-            if(!canAccessUsageStats){
-                ((CheckBoxPreference)findPreference("auto_pause")).setChecked(false);
-                Preferences.put(getActivity(), "auto_pause",false);
-            }
-        }
+        /*
         findPreference("autopause_appselect").setTitle(getString(R.string.title_autopause_apps).
                 replace("[[count]]", Preferences.getStringSet(getActivity(), "autopause_apps").size()+""));
         /*findPreference("export_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
