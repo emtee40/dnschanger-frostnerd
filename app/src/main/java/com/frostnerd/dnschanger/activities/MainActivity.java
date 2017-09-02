@@ -1,6 +1,6 @@
 package com.frostnerd.dnschanger.activities;
 
-import android.app.job.JobScheduler;
+import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,6 +18,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArraySet;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
@@ -38,6 +40,7 @@ import com.frostnerd.utils.design.material.navigationdrawer.StyleOptions;
 import com.frostnerd.utils.general.DesignUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.preferences.Preferences;
+import com.frostnerd.utils.preferences.searchablepreferences.v14.PreferenceSearcher;
 
 import java.util.Arrays;
 import java.util.List;
@@ -142,6 +145,20 @@ public class MainActivity extends NavigationDrawerActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if(getCurrentFragment() == settingsFragment){
+            getMenuInflater().inflate(R.menu.menu_settings, menu);
+
+            SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
+            SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+            searchView.setOnQueryTextListener(settingsFragment);
+            return true;
+        }else return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     protected void onDestroy() {
         if(dialog1 != null && dialog1.isShowing())dialog1.cancel();
         if(defaultDnsDialog != null && defaultDnsDialog.isShowing())defaultDnsDialog.cancel();
@@ -185,6 +202,7 @@ public class MainActivity extends NavigationDrawerActivity {
             @Override
             public void access(DrawerItem item) {
                 settingsDrawerItem = item;
+                item.setInvalidateActivityMenu(true);
             }
         });
         itemCreator.createItemAndContinue(R.string.nav_title_learn);

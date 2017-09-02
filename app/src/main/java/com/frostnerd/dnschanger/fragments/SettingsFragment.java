@@ -69,7 +69,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
     public static final int REQUEST_CODE_ENABLE_ADMIN = 1, REQUEST_CREATE_SHORTCUT = 2, REQUEST_EXCLUDE_APPS = 3;
     public final static String LOG_TAG = "[SettingsActivity]", ARGUMENT_SCROLL_TO_SETTING = "scroll_to_setting";
     public final static int USAGE_STATS_REQUEST = 13, CHOOSE_AUTOPAUSEAPPS_REQUEST = 14;
-    private PreferenceScreen preferenceScreen;
     private PreferenceSearcher preferenceSearcher = new PreferenceSearcher(this);
 
     @Override
@@ -83,16 +82,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         }
     }
 
-    //Theme, getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Created Activity");
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Added preferences from resources");
         devicePolicyManager = (DevicePolicyManager)getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
         //deviceAdmin = new ComponentName(getActivity(), _AdminReceiver.class);
-        preferenceScreen = (PreferenceScreen)findPreference("preferences");
         findPreference("setting_start_boot").setOnPreferenceChangeListener(changeListener);
         findPreference("setting_show_notification").setOnPreferenceChangeListener(changeListener);
         findPreference("show_used_dns").setOnPreferenceChangeListener(changeListener);
