@@ -467,7 +467,7 @@ public class MainActivity extends NavigationDrawerActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(!startedActivity && Preferences.getBoolean(this, "pin_app", false))finish();
+        if(!startedActivity && (Preferences.getBoolean(this, "pin_app", false) && Preferences.getBoolean(this, "setting_pin_enabled", false)))finish();
     }
 
     @Override
