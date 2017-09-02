@@ -118,7 +118,7 @@
             android:summary="@string/summary_import_settings"
             android:title="@string/title_import_settings" />
     </PreferenceCategory>-->
-    <PreferenceCategory android:title="@string/shortcuts" app:key="shortcut_category">
+    <PreferenceCategory android:title="@string/shortcuts" android:key="shortcut_category">
         <CheckBoxPreference
             android:key="shortcut_click_again_disable"
             android:summary="@string/summary_shortcut_click_again_disable"
