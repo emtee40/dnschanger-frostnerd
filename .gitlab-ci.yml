@@ -11,7 +11,7 @@ before_script:
   - source /home/public/android-sdk-linux/initAndroid.sh -s ${ANDROID_COMPILE_SDK} -b ${ANDROID_BUILD_TOOLS}
   - git config --file=.gitmodules submodule.AndroidUtils.url https://runner:$USER_PASS@git.frostnerd.com/AndroidApps/AndroidUtils.git
   - git submodule sync
-  - git submodule update --init --recursive --force
+  - git submodule update --init --recursive --force --remote
   
 stages:
   - build
