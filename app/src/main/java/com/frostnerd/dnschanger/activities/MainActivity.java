@@ -405,9 +405,12 @@ public class MainActivity extends NavigationDrawerActivity {
     }
 
     private void openSettingsAndScrollToKey(String key){
-        Bundle arguments = new Bundle();
-        arguments.putString(SettingsFragment.ARGUMENT_SCROLL_TO_SETTING, key);
-        clickItem(settingsDrawerItem, arguments);
+        if(getCurrentFragment() instanceof SettingsFragment)settingsFragment.scrollToPreference(key);
+        else{
+            Bundle arguments = new Bundle();
+            arguments.putString(SettingsFragment.ARGUMENT_SCROLL_TO_SETTING, key);
+            clickItem(settingsDrawerItem, arguments);
+        }
     }
 
     private Drawable setDrawableColor(Drawable drawable){
