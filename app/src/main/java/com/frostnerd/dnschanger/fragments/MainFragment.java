@@ -164,12 +164,14 @@ public class MainFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(vpnRunning && doStopVPN && !wasStartedWithTasker)stopVpn();
-                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6,false)) {
-                    met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
-                } else {
-                    met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
-                    Preferences.put(getActivity(), settingV6 ? "dns1-v6" :"dns1", s.toString());
+                if(before != count){
+                    if(vpnRunning && doStopVPN && !wasStartedWithTasker)stopVpn();
+                    if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6,false)) {
+                        met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
+                    } else {
+                        met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
+                        Preferences.put(getActivity(), settingV6 ? "dns1-v6" :"dns1", s.toString());
+                    }
                 }
             }
 
@@ -186,12 +188,14 @@ public class MainFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(vpnRunning && doStopVPN && !wasStartedWithTasker)stopVpn();
-                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6, true)) {
-                    met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
-                } else {
-                    met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
-                    Preferences.put(getActivity(), settingV6 ? "dns2-v6" : "dns2", s.toString());
+                if(before != count){
+                    if(vpnRunning && doStopVPN && !wasStartedWithTasker)stopVpn();
+                    if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6, true)) {
+                        met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
+                    } else {
+                        met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
+                        Preferences.put(getActivity(), settingV6 ? "dns2-v6" : "dns2", s.toString());
+                    }
                 }
             }
 
@@ -294,6 +298,8 @@ public class MainFragment extends Fragment {
     }
 
     private void stopVpn() {
+        System.out.println("STOPPING VPN");
+        System.out.println(LogFactory.stacktraceToString(new Throwable()));
         Intent i;
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Stopping VPN",
                 i = DNSVpnService.getDestroyIntent(getActivity()));
