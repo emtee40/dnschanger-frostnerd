@@ -412,7 +412,7 @@ public class MainActivity extends NavigationDrawerActivity {
 
     @Override
     public void startActivity(Intent intent) {
-        if(intent.getAction().equals(Intent.ACTION_CHOOSER) || (intent.getComponent() != null && intent.getComponent().getClassName().contains("com.frostnerd"))){
+        if((intent.getAction() != null && intent.getAction().equals(Intent.ACTION_CHOOSER)) || (intent.getComponent() != null && intent.getComponent().getPackageName().equals("com.frostnerd.dnschanger"))){
             startedActivity = true;
         }
         super.startActivity(intent);
@@ -420,7 +420,6 @@ public class MainActivity extends NavigationDrawerActivity {
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
-        System.out.println("COMP: " + intent.getComponent().getPackageName());
         if((intent.getAction() != null && intent.getAction().equals(Intent.ACTION_CHOOSER)) || (intent.getComponent() != null && intent.getComponent().getPackageName().equals("com.frostnerd.dnschanger"))){
             startedActivity = true;
         }
