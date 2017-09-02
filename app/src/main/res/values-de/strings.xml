@@ -202,4 +202,5 @@
     <string name="feature_tiles">Für den schnellen Zugriff können in der Benachrichtigungszeile Kacheln hinzugefügt werden, mit welchen sich DNS Changer kontrollieren lässt.\n\nUm diese hinzuzufügen, öffne die Benachrichtigungszeile, indem du diese herunterziehst, drücke auf den Stift und ziehe die Kacheln durch langes Drücken nach oben.</string>
     <string name="feature_pin_protection">Du kannst sämtliche Aktionen (start/stopp/pausieren/forsetzen) durch eine PIN schützen. Jedes mal, wenn eine dieser Aktionen ausgeführt werden soll, wird in einem Dialog nach der PIN gefragt.\n\nDies kann zum Beispiel dafür genutzt werden, den Nutzer des Geräts daran zu hindern, DNS Changer zu beeinflussen. Es wurde entwickelt um Kinder daran zu hindern, DNS Changer zu beenden.\nBesuche die Einstellungen um auszuwählen, was auf diese Weise geschützt werden soll.</string>
     <string name="no_disable_android_o">Dies kann mit Android O und darüber nicht deaktiviert werden.</string>
+    <string name="blacklist">Blacklist</string>
 </resources>

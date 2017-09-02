@@ -382,6 +382,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         v6Enabled.setEnabled(v4Enabled.isEnabled());
         if(Preferences.getBoolean(getActivity(), "excluded_whitelist", false)){
             findPreference("excluded_whitelist").setSummary(R.string.excluded_apps_info_text_whitelist);
+        }else{
+            findPreference("excluded_whitelist").setTitle(R.string.blacklist);
         }
         findPreference("excluded_whitelist").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -389,6 +391,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 boolean newValue = (boolean)o;
                 Preferences.put(getActivity(), "app_whitelist_configured", true);
                 preference.setSummary(newValue ? R.string.excluded_apps_info_text_whitelist : R.string.excluded_apps_info_text_blacklist);
+                preference.setTitle(newValue ? R.string.whitelist : R.string.blacklist);
                 Set<String> selected = Preferences.getStringSet(getActivity(), "excluded_apps");
                 Set<String> flipped = new HashSet<>();
                 List<ApplicationInfo> packages = getActivity().getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
