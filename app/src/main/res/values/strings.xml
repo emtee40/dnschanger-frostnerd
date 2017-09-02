@@ -212,4 +212,5 @@
     <string name="feature_pin_protection">You can pin-protect every action which starts/stops/pauses/resumes DNS Changer. Each time one of those is to be executed a dialog shows asking for the pin set by you.\n\nThis can be used for hindering the phones user from interfering with the app if the user isn\'t to tech-savvy. It was developed to stop children from stopping the app.\nTo choose what to protect open the settings.</string>
     <string name="no_disable_android_o">This cannot be disabled on Android O and above.</string>
     <string name="blacklist">Blacklist</string>
+    <string name="easter_egg">No easter eggs here. Go away.</string>
 </resources>

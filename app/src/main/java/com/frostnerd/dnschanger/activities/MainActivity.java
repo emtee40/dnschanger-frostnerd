@@ -396,7 +396,9 @@ public class MainActivity extends NavigationDrawerActivity {
 
             @Override
             public boolean onLongClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
-                return false;
+                new AlertDialog.Builder(MainActivity.this).setMessage(R.string.easter_egg).setTitle("(╯°□°）╯︵ ┻━┻")
+                        .setPositiveButton("Okay :(", null).show();
+                return true;
             }
         });
         return itemCreator.getDrawerItems();

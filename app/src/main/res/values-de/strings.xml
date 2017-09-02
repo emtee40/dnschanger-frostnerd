@@ -203,4 +203,5 @@
     <string name="feature_pin_protection">Du kannst sämtliche Aktionen (start/stopp/pausieren/forsetzen) durch eine PIN schützen. Jedes mal, wenn eine dieser Aktionen ausgeführt werden soll, wird in einem Dialog nach der PIN gefragt.\n\nDies kann zum Beispiel dafür genutzt werden, den Nutzer des Geräts daran zu hindern, DNS Changer zu beeinflussen. Es wurde entwickelt um Kinder daran zu hindern, DNS Changer zu beenden.\nBesuche die Einstellungen um auszuwählen, was auf diese Weise geschützt werden soll.</string>
     <string name="no_disable_android_o">Dies kann mit Android O und darüber nicht deaktiviert werden.</string>
     <string name="blacklist">Blacklist</string>
+    <string name="easter_egg">Hier gibt es keine Easter eggs. Geh weg.</string>
 </resources>
