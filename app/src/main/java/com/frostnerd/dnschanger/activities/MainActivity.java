@@ -61,6 +61,7 @@ public class MainActivity extends NavigationDrawerActivity {
     private DrawerItem defaultDrawerItem, settingsDrawerItem;
     @ColorInt int backgroundColor;
     @ColorInt int textColor;
+    private boolean startedActivity = false;
     private BroadcastReceiver shortcutReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -79,6 +80,7 @@ public class MainActivity extends NavigationDrawerActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        startedActivity = false;
         // Receiver is not unregistered in onPause() because the app is in the background when a shortcut
         // is created
         registerReceiver(shortcutReceiver, new IntentFilter(API.BROADCAST_SHORTCUT_CREATED));
@@ -400,5 +402,28 @@ public class MainActivity extends NavigationDrawerActivity {
         });
         defaultDnsDialog.show();
         LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(!startedActivity && Preferences.getBoolean(this, "pin_app", false))finish();
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        if(intent.getAction().equals(Intent.ACTION_CHOOSER) || (intent.getComponent() != null && intent.getComponent().getClassName().contains("com.frostnerd"))){
+            startedActivity = true;
+        }
+        super.startActivity(intent);
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        System.out.println("COMP: " + intent.getComponent().getPackageName());
+        if((intent.getAction() != null && intent.getAction().equals(Intent.ACTION_CHOOSER)) || (intent.getComponent() != null && intent.getComponent().getPackageName().equals("com.frostnerd.dnschanger"))){
+            startedActivity = true;
+        }
+        super.startActivityForResult(intent, requestCode);
     }
 }
