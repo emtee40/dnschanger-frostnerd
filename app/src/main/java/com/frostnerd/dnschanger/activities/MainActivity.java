@@ -446,6 +446,16 @@ public class MainActivity extends NavigationDrawerActivity {
                 .setListViewBackgroundColor(backgroundColor);
     }
 
+    @Override
+    public boolean useItemBackStack() {
+        return true;
+    }
+
+    @Override
+    public int maxBackStackRecursion() {
+        return 0;
+    }
+
     public void rateApp() {
         final String appPackageName = this.getPackageName();
         LogFactory.writeMessage(this, LOG_TAG, "Opening site to rate app");
