@@ -5,6 +5,7 @@ import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Color;
@@ -49,6 +50,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -387,6 +389,14 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 boolean newValue = (boolean)o;
                 Preferences.put(getActivity(), "app_whitelist_configured", true);
                 preference.setSummary(newValue ? R.string.excluded_apps_info_text_whitelist : R.string.excluded_apps_info_text_blacklist);
+                Set<String> selected = Preferences.getStringSet(getActivity(), "excluded_apps");
+                Set<String> flipped = new HashSet<>();
+                List<ApplicationInfo> packages = getActivity().getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
+                for (ApplicationInfo packageInfo : packages) {
+                    if(selected.contains(packageInfo.packageName))continue;
+                    flipped.add(packageInfo.packageName);
+                }
+                Preferences.put(getActivity(), "excluded_apps", flipped);
                 return true;
             }
         });
