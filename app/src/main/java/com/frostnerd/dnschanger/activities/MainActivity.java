@@ -200,6 +200,11 @@ public class MainActivity extends NavigationDrawerActivity {
                         }).show();
                 return false;
             }
+
+            @Override
+            public boolean onLongClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+                return false;
+            }
         });
         itemCreator.createItemAndContinue(R.string.nav_title_what_is_dns, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_help)), new DrawerItem.ClickListener() {
             @Override
@@ -212,6 +217,11 @@ public class MainActivity extends NavigationDrawerActivity {
                     }
                 }).show();
                 LogFactory.writeMessage(MainActivity.this, LOG_TAG, "Dialog is now being shown");
+                return false;
+            }
+
+            @Override
+            public boolean onLongClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
                 return false;
             }
         });
@@ -247,11 +257,21 @@ public class MainActivity extends NavigationDrawerActivity {
                 dialog1.show();
                 return false;
             }
+
+            @Override
+            public boolean onLongClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+                return false;
+            }
         });
         if(API.isTaskerInstalled(this)){
             itemCreator.createItemAndContinue(R.string.tasker_support, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_thumb_up)), new DrawerItem.ClickListener() {
                 @Override
                 public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
+                    return false;
+                }
+
+                @Override
+                public boolean onLongClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
                     return false;
                 }
             });
@@ -262,6 +282,11 @@ public class MainActivity extends NavigationDrawerActivity {
                 public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
                     dialog1 = new AlertDialog.Builder(MainActivity.this).setTitle(R.string.nav_title_tiles).setMessage(R.string.feature_tiles)
                             .setNeutralButton(R.string.close, null).show();
+                    return false;
+                }
+
+                @Override
+                public boolean onLongClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
                     return false;
                 }
             });
@@ -288,10 +313,20 @@ public class MainActivity extends NavigationDrawerActivity {
                 dialog1.show();
                 return false;
             }
+
+            @Override
+            public boolean onLongClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+                return false;
+            }
         });
         itemCreator.createItemAndContinue(R.string.nav_title_more, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_ellipsis)), new DrawerItem.ClickListener() {
             @Override
             public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
+                return false;
+            }
+
+            @Override
+            public boolean onLongClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
                 return false;
             }
         });
@@ -300,6 +335,11 @@ public class MainActivity extends NavigationDrawerActivity {
             @Override
             public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
                 rateApp();
+                return false;
+            }
+
+            @Override
+            public boolean onLongClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
                 return false;
             }
         });
@@ -312,6 +352,11 @@ public class MainActivity extends NavigationDrawerActivity {
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.app_share_text));
                 LogFactory.writeMessage(MainActivity.this, LOG_TAG, "Showing chooser for share", sharingIntent);
                 startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_using)));
+                return false;
+            }
+
+            @Override
+            public boolean onLongClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
                 return false;
             }
         });
@@ -329,6 +374,11 @@ public class MainActivity extends NavigationDrawerActivity {
                 startActivity(Intent.createChooser(emailIntent, getString(R.string.contact_developer)));
                 return false;
             }
+
+            @Override
+            public boolean onLongClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+                return false;
+            }
         });
         itemCreator.createItemAndContinue(R.string.title_about, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_info)), new DrawerItem.ClickListener() {
             @Override
@@ -341,6 +391,11 @@ public class MainActivity extends NavigationDrawerActivity {
                                 dialogInterface.dismiss();
                             }
                         }).show();
+                return false;
+            }
+
+            @Override
+            public boolean onLongClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
                 return false;
             }
         });
