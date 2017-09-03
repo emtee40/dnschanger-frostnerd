@@ -43,7 +43,6 @@ import com.frostnerd.utils.design.material.navigationdrawer.StyleOptions;
 import com.frostnerd.utils.general.DesignUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.preferences.Preferences;
-import com.frostnerd.utils.preferences.searchablepreferences.v14.PreferenceSearcher;
 
 import java.util.Arrays;
 import java.util.List;
@@ -201,12 +200,13 @@ public class MainActivity extends NavigationDrawerActivity {
         itemCreator.createItemAndContinue(R.string.nav_title_dns, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_home)), new DrawerItem.FragmentCreator() {
             @Override
             public Fragment getFragment(@Nullable Bundle arguments) {
-                return mainFragment == null ? mainFragment=new MainFragment() : mainFragment;
+                return mainFragment=new MainFragment();
             }
         }).accessLastItemAndContinue(new DrawerItemCreator.ItemAccessor() {
             @Override
             public void access(DrawerItem item) {
                 defaultDrawerItem = item;
+                item.setRecreateFragmentOnConfigChange(true);
             }
         });
         itemCreator.createItemAndContinue(R.string.settings, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_settings)), new DrawerItem.FragmentCreator() {
