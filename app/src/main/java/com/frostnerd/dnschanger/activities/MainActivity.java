@@ -212,7 +212,7 @@ public class MainActivity extends NavigationDrawerActivity {
         itemCreator.createItemAndContinue(R.string.settings, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_settings)), new DrawerItem.FragmentCreator() {
             @Override
             public Fragment getFragment(@Nullable Bundle arguments) {
-                if(settingsFragment == null)settingsFragment = new SettingsFragment();
+                settingsFragment = new SettingsFragment();
                 if(arguments != null)settingsFragment.setArguments(arguments);
                 return settingsFragment;
             }
@@ -441,7 +441,7 @@ public class MainActivity extends NavigationDrawerActivity {
     }
 
     private void openSettingsAndScrollToKey(String key){
-        if(getCurrentFragment() instanceof SettingsFragment)settingsFragment.scrollToPreference(key);
+        if(getCurrentFragment() instanceof SettingsFragment)((SettingsFragment)getCurrentFragment()).scrollToPreference(key);
         else{
             Bundle arguments = new Bundle();
             arguments.putString(SettingsFragment.ARGUMENT_SCROLL_TO_SETTING, key);
