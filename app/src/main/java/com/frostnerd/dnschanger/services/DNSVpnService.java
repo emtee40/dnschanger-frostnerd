@@ -584,12 +584,15 @@ public class DNSVpnService extends VpnService {
             private Builder applyDisallowed(Builder builder){
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     try{
+                        builder = builder.addDisallowedApplication("com.android.vending");
                         if(excludedWhitelisted){
                             for(String s: excludedApps){
+                                if(s.equals("com.android.vending"))continue;
                                 builder = builder.addAllowedApplication(s);
                             }
                         }else{
                             for(String s: excludedApps){
+                                if(s.equals("com.android.vending"))continue;
                                 builder = builder.addDisallowedApplication(s);
                             }
                         }
