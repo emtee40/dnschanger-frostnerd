@@ -18,6 +18,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.VPNServiceArgument;
+import com.frostnerd.dnschanger.DNSChanger;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
@@ -473,7 +474,7 @@ public class DNSVpnService extends VpnService {
                 threadRunning = true;
                 LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Starting Thread (run)");
                 runThread = true;
-                Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
+                Thread.setDefaultUncaughtExceptionHandler(((DNSChanger)getApplication()).getExcpetionHandler());
                 if(notificationBuilder != null) notificationBuilder.setWhen(System.currentTimeMillis());
                 boolean ipv6Enabled = Preferences.getBoolean(DNSVpnService.this, "setting_ipv6_enabled", true),
                         ipv4Enabled = Preferences.getBoolean(DNSVpnService.this, "setting_ipv4_enabled", true);

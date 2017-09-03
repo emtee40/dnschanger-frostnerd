@@ -17,21 +17,22 @@ import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
  */
 public class DNSChanger extends Application {
     private static final String LOG_TAG = "[DNSCHANGER-APPLICATION]";
+    private Thread.UncaughtExceptionHandler customHandler = new Thread.UncaughtExceptionHandler() {
+        @Override
+        public void uncaughtException(Thread t, Throwable e) {
+            LogFactory.writeMessage(DNSChanger.this,  new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, "Caught uncaught exception");
+            LogFactory.writeStackTrace(DNSChanger.this, new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, e);
+            ErrorDialogActivity.show(DNSChanger.this, e);
+            System.exit(2);
+        }
+    };
 
     @Override
     public void onCreate() {
         setTheme(ThemeHandler.getAppTheme(this));
+        Thread.setDefaultUncaughtExceptionHandler(customHandler);
         super.onCreate();
         LogFactory.writeMessage(this, LOG_TAG, "Application created");
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(Thread t, Throwable e) {
-                e.printStackTrace();
-                LogFactory.writeMessage(DNSChanger.this,  new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, "Caught uncaught exception");
-                LogFactory.writeStackTrace(DNSChanger.this, new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, e);
-                ErrorDialogActivity.show(DNSChanger.this, e);
-            }
-        });
     }
 
     @Override
@@ -52,5 +53,9 @@ public class DNSChanger extends Application {
         API.terminate();
         LogFactory.terminate();
         super.onTerminate();
+    }
+
+    public Thread.UncaughtExceptionHandler getExcpetionHandler() {
+        return customHandler;
     }
 }

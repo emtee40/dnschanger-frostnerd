@@ -146,6 +146,11 @@
         <activity
             android:name=".activities.ErrorDialogActivity"
             android:launchMode="singleTop"
+            android:autoRemoveFromRecents="true"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:clearTaskOnLaunch="true"
+            android:process=".ErrorProcess"
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
 
         <activity

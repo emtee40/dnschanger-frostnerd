@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.icu.text.IDNA;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -99,10 +98,11 @@ public class ErrorDialogActivity extends Activity {
         LogFactory.writeMessage(this, LOG_TAG,"Showing Dialog");
     }
 
-    public static void show(Context context,Throwable t){
+    public static void show(Context context, Throwable t){
         Intent i;
         LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG} , "Showing Stacktrace for " + t.getMessage(),
-                i = new Intent(context, ErrorDialogActivity.class).putExtra("stacktrace",LogFactory.stacktraceToString(t)).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                i = new Intent(context, ErrorDialogActivity.class).putExtra("stacktrace",LogFactory.stacktraceToString(t)).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        .setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT));
         context.startActivity(i);
     }
 }
