@@ -387,6 +387,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             public boolean onPreferenceChange(Preference preference, Object o) {
                 boolean newValue = (boolean)o;
                 Preferences.put(getActivity(), "app_whitelist_configured", true);
+                Preferences.put(getActivity(), "excluded_whitelist", o);
                 preference.setSummary(newValue ? R.string.excluded_apps_info_text_whitelist : R.string.excluded_apps_info_text_blacklist);
                 preference.setTitle(newValue ? R.string.whitelist : R.string.blacklist);
                 Set<String> selected = Preferences.getStringSet(getActivity(), "excluded_apps");
