@@ -191,7 +191,7 @@
     <string name="tile_start_stop">Start / Stop</string>
     <string name="title_vpn_exclusion">VPN exclusion</string>
     <string name="search_hint">Search a setting</string>
-    <string name="unfixable_error_explaination">The background worker crashed with an exception present on some devices. This crash cannot be fixed by the app itself.\nEither try restarting the app and if that doesn\'t help try restarting your device.</string>
+    <string name="unfixable_error_explaination">The background worker crashed with an exception present on some devices. This crash cannot be fixed by the app itself.\nEither try restarting the app and if that doesn\'t help try restarting your device.\n\nIf the problem persists and your device is rooted try downloading the app Tun.ko Installer as it might be able to fix it. The developer of this app is DroidVPN Inc.\nLink: https://play.google.com/store/apps/details?id=com.aed.tun.installer</string>
     <string name="nav_title_dns">DNS</string>
     <string name="nav_title_main">Main screen</string>
     <string name="nav_title_learn">Learn</string>

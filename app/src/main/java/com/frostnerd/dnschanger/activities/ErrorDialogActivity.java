@@ -12,6 +12,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
+import android.widget.TextView;
 
 import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.BuildConfig;
@@ -41,7 +45,7 @@ public class ErrorDialogActivity extends Activity {
         final String crashReport = getIntent() != null ? getIntent().getStringExtra("stacktrace") : "";
         LogFactory.writeMessage(this, LOG_TAG,"Creating Dialog displaying the user that an error occurred");
         if(crashReport.contains("Cannot create interface")){ //Kind of dirty, but this error is unfixable
-            new AlertDialog.Builder(this, ThemeHandler.getDialogTheme(this)).setTitle(getString(R.string.error) + " - " + getString(R.string.app_name)).setMessage(R.string.unfixable_error_explaination)
+            AlertDialog alertDialog = new AlertDialog.Builder(this, ThemeHandler.getDialogTheme(this)).setTitle(getString(R.string.error) + " - " + getString(R.string.app_name))
                     .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -53,7 +57,14 @@ public class ErrorDialogActivity extends Activity {
                 public void onCancel(DialogInterface dialogInterface) {
                     finish();
                 }
-            }).show();
+            }).setMessage(Html.fromHtml(getString(R.string.unfixable_error_explaination).replace("\n","\n<br>"))).show();
+            TextView tv = alertDialog.findViewById(android.R.id.message);
+            if(tv != null){
+                Linkify.addLinks(tv, Linkify.ALL);
+                tv.setLinksClickable(true);
+                tv.setAutoLinkMask(Linkify.ALL);
+                tv.setMovementMethod(LinkMovementMethod.getInstance());
+            }
         }else{
             new AlertDialog.Builder(this, ThemeHandler.getDialogTheme(this)).setTitle(getString(R.string.error) + " - " + getString(R.string.app_name)).setMessage(R.string.vpn_error_explain)
                     .setCancelable(false).setPositiveButton(R.string.no, new DialogInterface.OnClickListener() {

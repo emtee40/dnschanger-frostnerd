@@ -182,7 +182,7 @@
     <string name="tile_start_stop">Starten / Stoppen</string>
     <string name="title_vpn_exclusion">VPN-Umgehung</string>
     <string name="search_hint">Suche eine Einstellung</string>
-    <string name="unfixable_error_explaination">Der Hintergrundprozess ist aufgrund eines in manchen Geräten vorhandenen Fehlers abgestürzt. Dieser kann leider nicht durch diese App behoben werden\n.Probiere entweder, die App neuzustarten, hilft dies nicht, starte dein Gerät neu.</string>
+    <string name="unfixable_error_explaination">Der Hintergrundprozess ist aufgrund eines in manchen Geräten vorhandenen Fehlers abgestürzt. Dieser kann leider nicht durch diese App behoben werden.\nProbiere entweder, die App neuzustarten, hilft dies nicht, starte dein Gerät neu.\n\nBesteht das Problem weiterhin, probiere die App Tun.ko Installer herunterzuladen, da diese das Problem eventuell beheben kann. Der Entwickler dieser App ist DroidVPN Inc.\nLink: https://play.google.com/store/apps/details?id=com.aed.tun.installer</string>
     <string name="nav_title_dns">DNS</string>
     <string name="nav_title_main">Hauptbildschirm</string>
     <string name="nav_title_learn">Lernen</string>
