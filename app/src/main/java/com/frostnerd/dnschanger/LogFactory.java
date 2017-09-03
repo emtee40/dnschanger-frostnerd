@@ -174,6 +174,7 @@ public class LogFactory {
         Map<String,Object> prefs = Preferences.getAll(context, false);
         for(String key: prefs.keySet())s += key + "->" + prefs.get(key) + "; ";
         writeMessage(context, Tag.INFO, "Preferences: " + s);
+        writeMessage(context, Tag.INFO, "Prepare caller stack: " + stacktraceToString(new Throwable(), true));
         writeMessage(context, Tag.NO_TAG, "--------------------------------------------------");
         return usable;
     }
