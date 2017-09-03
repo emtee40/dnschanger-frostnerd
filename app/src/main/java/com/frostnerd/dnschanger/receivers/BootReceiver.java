@@ -28,6 +28,7 @@ public class BootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         LogFactory.writeMessage(context, LOG_TAG, "Starting ConnectivityBackgroundService");
         context.startService(new Intent(context, ConnectivityBackgroundService.class));
+        Preferences.put(context, "everything_disabled", false);
         LogFactory.writeMessage(context, LOG_TAG, "Received an intent ", intent);
         if(intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED) || intent.getAction().equals(Intent.ACTION_LOCKED_BOOT_COMPLETED)){
             LogFactory.writeMessage(context, LOG_TAG, "Action is BOOT_COMPLETED");

@@ -135,6 +135,7 @@ public class ConnectivityBackgroundService extends Service {
     }
 
     private void handleConnectivityChange(boolean connected, ConnectionType connectionType){
+        if(Preferences.getBoolean(this, "everything_disabled", false))return;
         boolean serviceRunning = API.isServiceRunning(ConnectivityBackgroundService.this),
                 serviceThreadRunning = API.isServiceThreadRunning(),
                 autoWifi = Preferences.getBoolean(ConnectivityBackgroundService.this, "setting_auto_wifi", false),

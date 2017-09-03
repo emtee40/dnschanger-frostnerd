@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Configuration;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.VpnService;
@@ -16,7 +16,6 @@ import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.util.ArraySet;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.OrientationHelper;
@@ -35,21 +34,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.dnschanger.activities.MainActivity;
-import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
-
-import java.util.Arrays;
-import java.util.Random;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -81,6 +74,19 @@ public class MainFragment extends Fragment {
         }
     };
     private View contentView;
+    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sp, String s) {
+            if(s.equals("everything_disabled")){
+                boolean value = Preferences.getBoolean(getActivity(), "everything_disabled", false);
+                startStopButton.setEnabled(!value);
+                startStopButton.setClickable(!value);
+                startStopButton.setAlpha(value ? 0.50f : 1f);
+                if(value)connectionText.setText(R.string.info_functionality_disabled);
+                else setIndicatorState(vpnRunning);
+            }
+        }
+    };
 
     private void setIndicatorState(boolean vpnRunning) {
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Changing IndicatorState to " + vpnRunning);
@@ -214,11 +220,22 @@ public class MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Preferences.getDefaultPreferences(getActivity()).registerOnSharedPreferenceChangeListener(preferenceChangeListener);
         settingV6 = !API.isIPv4Enabled(getActivity()) || (API.isIPv6Enabled(getActivity()) && settingV6);
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Got OnResume");
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Sending ServiceStateRequest as broadcast");
         vpnRunning = API.isServiceRunning(getActivity());
-        setIndicatorState(vpnRunning);
+        if(Preferences.getBoolean(getActivity(), "everything_disabled", false)){
+            startStopButton.setEnabled(false);
+            startStopButton.setClickable(false);
+            startStopButton.setAlpha(0.50f);
+            connectionText.setText(R.string.info_functionality_disabled);
+        }else{
+            startStopButton.setEnabled(true);
+            startStopButton.setClickable(true);
+            startStopButton.setAlpha(1f);
+            setIndicatorState(vpnRunning);
+        }
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(serviceStateReceiver, new IntentFilter(API.BROADCAST_SERVICE_STATUS_CHANGE));
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATE_REQUEST));
         doStopVPN = false;
@@ -242,6 +259,7 @@ public class MainFragment extends Fragment {
         super.onPause();
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Got OnPause");
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(serviceStateReceiver);
+        Preferences.getDefaultPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(preferenceChangeListener);
     }
 
     @Override
@@ -298,8 +316,6 @@ public class MainFragment extends Fragment {
     }
 
     private void stopVpn() {
-        System.out.println("STOPPING VPN");
-        System.out.println(LogFactory.stacktraceToString(new Throwable()));
         Intent i;
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Stopping VPN",
                 i = DNSVpnService.getDestroyIntent(getActivity()));

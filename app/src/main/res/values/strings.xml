@@ -213,4 +213,8 @@
     <string name="no_disable_android_o">This cannot be disabled on Android O and above.</string>
     <string name="blacklist">Blacklist</string>
     <string name="easter_egg">No easter eggs here. Go away.</string>
+    <string name="cardview_title">Disable all functionality</string>
+    <string name="cardview_text">Click here to disable everything - Automation and functionality (only temporary)</string>
+    <string name="cardview_text_disabled">Functionality is disabled. Click here to re-enable (happens automatically at reboot)</string>
+    <string name="info_functionality_disabled">All functionality has been disabled by you. Re-enable in the menu on the side to start.</string>
 </resources>

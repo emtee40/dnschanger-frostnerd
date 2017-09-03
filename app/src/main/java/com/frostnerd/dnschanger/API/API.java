@@ -340,6 +340,7 @@ public final class API {
     }
 
     public static void startService(Context context, Intent intent){
+        if(Preferences.getBoolean(context, "everything_disabled", false))return;
         if(intent.getComponent().getClassName().equals(DNSVpnService.class.getName()) &&
                 Preferences.getBoolean(context, "setting_show_notification", true) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             context.startForegroundService(intent);

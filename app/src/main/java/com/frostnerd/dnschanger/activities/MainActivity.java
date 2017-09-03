@@ -22,6 +22,9 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+import android.widget.TextView;
 
 import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.ThemeHandler;
@@ -142,6 +145,21 @@ public class MainActivity extends NavigationDrawerActivity {
             LogFactory.writeMessage(this, LOG_TAG, "Launching ConnectivityBackgroundService");
             this.startService(new Intent(this, ConnectivityBackgroundService.class));
         }
+        View cardView = getLayoutInflater().inflate(R.layout.main_cardview, null, false);
+        final TextView text = cardView.findViewById(R.id.text);
+        final Switch button = cardView.findViewById(R.id.cardview_switch);
+        if(Preferences.getBoolean(this, "everything_disabled", false)){
+            button.setChecked(true);
+            text.setText(R.string.cardview_text_disabled);
+        }
+       button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                text.setText(b ? R.string.cardview_text_disabled : R.string.cardview_text);
+                Preferences.put(MainActivity.this, "everything_disabled", b);
+            }
+        });
+        setCardView(cardView);
     }
 
     @Override
