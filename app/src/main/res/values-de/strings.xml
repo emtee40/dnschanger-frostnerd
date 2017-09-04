@@ -173,7 +173,7 @@
     <string name="summary_enable_app_shortcuts">Aktiviert app shortcuts. Klicke im Hauptbildschirm lange auf die App, um dieses Menü zu öffnen.</string>
     <string name="notification_x_blacklisted">[x] Apps auf der Blacklist</string>
     <string name="notification_x_whitelisted">[x] Apps auf der Whitelist</string>
-    <string name="default_dns_explain_delete">Halte einen Eintrag lange gedrückt, um ihn zu löschen. Klicke dannach weitere EInträge an, um diese ebenfalls zu löschen.</string>
+    <string name="default_dns_explain_delete">Halte einen Eintrag lange gedrückt, um ihn zu löschen. Klicke dannach weitere Einträge an, um diese ebenfalls zu löschen.</string>
     <string name="summary_enable_ipv4">Aktiviert IPv4. Dies erlaubt es, IPv4 Adressen zur Nutzung als DNS Server einzustellen.</string>
     <string name="title_enable_ipv4">IPv4 aktivieren</string>
     <string name="warning_disabling_v4">Unter vielen Android versionen besteht kein Internetzugriff, wenn IPv4 deaktiviert ist. Dies ist nur der Fall, solange DNS Changer läuft.\nOb dies für dein Gerät der Fall ist musst du testen.</string>
