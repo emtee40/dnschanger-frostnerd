@@ -401,7 +401,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                if(awaitingPinChange && !DesignUtil.hasOpenDialogs(getActivity()) && Preferences.getString(getActivity(), "pin_value", "1234").equals("1234")){
+                                if(awaitingPinChange && !DesignUtil.hasOpenDialogs(getActivity())){
                                     ((CheckBoxPreference)preference).setChecked(false);
                                     awaitingPinChange = false;
                                 }
