@@ -401,7 +401,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                if(!DesignUtil.hasOpenDialogs(getActivity()) && Preferences.getString(getActivity(), "pin_value", "1234").equals("1234")){
+                                if(awaitingPinChange && !DesignUtil.hasOpenDialogs(getActivity()) && Preferences.getString(getActivity(), "pin_value", "1234").equals("1234")){
                                     ((CheckBoxPreference)preference).setChecked(false);
                                     awaitingPinChange = false;
                                 }
@@ -424,8 +424,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         findPreference("pin_value").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                Preferences.put(getActivity(), "pin_value", "" + newValue);
                 awaitingPinChange = false;
+                Preferences.put(getActivity(), "pin_value", "" + newValue);
                 return false;
             }
         });
