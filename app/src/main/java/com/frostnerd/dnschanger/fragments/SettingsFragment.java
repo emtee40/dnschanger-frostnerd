@@ -424,9 +424,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         findPreference("pin_value").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                Preferences.put(getActivity(), "pin_value", newValue);
+                Preferences.put(getActivity(), "pin_value", "" + newValue);
                 awaitingPinChange = false;
-                return true;
+                return false;
             }
         });
     }
