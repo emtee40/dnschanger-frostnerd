@@ -235,6 +235,11 @@ public class MainActivity extends NavigationDrawerActivity {
             public Fragment getFragment(@Nullable Bundle arguments) {
                 return new DnsQueryFragment();
             }
+        }).accessLastItemAndContinue(new DrawerItemCreator.ItemAccessor() {
+            @Override
+            public void access(DrawerItem item) {
+                item.setInvalidateActivityMenu(true);
+            }
         });
         itemCreator.createItemAndContinue(R.string.nav_title_learn);
         itemCreator.createItemAndContinue(R.string.nav_title_how_does_it_work, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_wrench)), new DrawerItem.ClickListener() {
