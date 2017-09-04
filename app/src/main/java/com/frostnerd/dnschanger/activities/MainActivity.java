@@ -32,6 +32,7 @@ import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
+import com.frostnerd.dnschanger.fragments.DnsQueryFragment;
 import com.frostnerd.dnschanger.fragments.MainFragment;
 import com.frostnerd.dnschanger.fragments.SettingsFragment;
 import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
@@ -227,6 +228,12 @@ public class MainActivity extends NavigationDrawerActivity {
             public void access(DrawerItem item) {
                 settingsDrawerItem = item;
                 item.setInvalidateActivityMenu(true);
+            }
+        });
+        itemCreator.createItemAndContinue(R.string.nav_title_dns_query, setDrawableColor(DesignUtil.getDrawable(this, android.R.drawable.ic_menu_search)), new DrawerItem.FragmentCreator() {
+            @Override
+            public Fragment getFragment(@Nullable Bundle arguments) {
+                return new DnsQueryFragment();
             }
         });
         itemCreator.createItemAndContinue(R.string.nav_title_learn);

@@ -207,4 +207,5 @@
     <string name="cardview_text">Click here to disable everything - Automation and functionality (only temporary)</string>
     <string name="cardview_text_disabled">Functionality is disabled. Click here to re-enabled (happens automatically at reboot)</string>
     <string name="info_functionality_disabled">All functionality has been disabled by you. Re-enable in the menu on the side to start.</string>
+    <string name="run_query">Run query</string>
 </resources>

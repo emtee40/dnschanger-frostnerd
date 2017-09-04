@@ -25,6 +25,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:26.0.1'
     compile 'com.android.support:preference-v14:26.0.1'
     compile project(path: ':AndroidUtils:library')
-
     testCompile 'junit:junit:4.12'
+    compile 'dnsjava:dnsjava:2.1.8'
 }

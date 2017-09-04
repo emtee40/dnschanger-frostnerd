@@ -208,4 +208,6 @@
     <string name="cardview_text">Klicke hier um alles zu deaktivieren - Automatisierung und Funktionalität (Nur temporär)</string>
     <string name="cardview_text_disabled">Funktionalität ist deaktiviert. Klicke hier zum reaktivieren (passiert automatisch beim Geräteneustart)</string>
     <string name="info_functionality_disabled">Sämtliche Funktionalitäten wurden von dir deaktviert. Zum Starten reaktivere diese im seitlichen Menü.</string>
+    <string name="run_query">Abfrage starten</string>
+    <string name="hint_dns_lookup">DNS Anfrage</string>
 </resources>
