@@ -11,6 +11,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v4.content.FileProvider;
@@ -34,6 +35,7 @@ import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.AppSelectionActivity;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.tasker.ConfigureActivity;
+import com.frostnerd.utils.general.DesignUtil;
 import com.frostnerd.utils.general.IntentUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.permissions.PermissionsUtil;
@@ -57,7 +59,7 @@ import java.util.regex.Pattern;
  * development@frostnerd.com
  */
 public class SettingsFragment extends PreferenceFragmentCompat implements SearchablePreference, SearchView.OnQueryTextListener{
-    private boolean usageRevokeHidden = false;
+    private boolean usageRevokeHidden = false, awaitingPinChange = false;
     private PreferenceCategory automatingCategory, debugCategory;
     private Preference removeUsagePreference, sendDebugPreference;
     private DevicePolicyManager devicePolicyManager;
@@ -66,6 +68,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
     public final static String LOG_TAG = "[SettingsActivity]", ARGUMENT_SCROLL_TO_SETTING = "scroll_to_setting";
     public final static int USAGE_STATS_REQUEST = 13, CHOOSE_AUTOPAUSEAPPS_REQUEST = 14;
     private PreferenceSearcher preferenceSearcher = new PreferenceSearcher(this);
+    private Handler handler = new Handler();
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -390,9 +393,22 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         });
         findPreference("setting_pin_enabled").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
+            public boolean onPreferenceChange(final Preference preference, Object newValue) {
                 if((boolean)newValue){
-                    if(Preferences.getString(getActivity(), "pin_value", "1234").equals("1234"))getPreferenceManager().showDialog(findPreference("pin_value"));
+                    if(Preferences.getString(getActivity(), "pin_value", "1234").equals("1234")){
+                        getPreferenceManager().showDialog(findPreference("pin_value"));
+                        awaitingPinChange = true;
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(!DesignUtil.hasOpenDialogs(getActivity()) && Preferences.getString(getActivity(), "pin_value", "1234").equals("1234")){
+                                    ((CheckBoxPreference)preference).setChecked(false);
+                                    awaitingPinChange = false;
+                                }
+                                if(awaitingPinChange)handler.postDelayed(this, 250);
+                            }
+                        },250);
+                    }
                     if (!((CheckBoxPreference)findPreference("pin_app")).isChecked())((CheckBoxPreference)findPreference("pin_app")).setChecked(true);
                 }
                 return true;
@@ -405,6 +421,14 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             pref.setEnabled(false);
             findPreference("show_used_dns").setDependency("");
         }
+        findPreference("pin_value").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                Preferences.put(getActivity(), "pin_value", newValue);
+                awaitingPinChange = false;
+                return true;
+            }
+        });
     }
 
     private Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
