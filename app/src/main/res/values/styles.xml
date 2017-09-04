@@ -143,11 +143,11 @@
         <item name="colorAccent">#B2EBF2</item>
         <item name="android:windowBackground">@drawable/background_default</item>
 
-        <item name="android:textColor">#EEEEEE</item>
-        <item name="android:textColorPrimary">#EEEEEE</item>
-        <item name="android:textColorSecondary">#EEEEEE</item>
-        <item name="android:textColorHighlight">#EEEEEE</item>
-        <item name="android:editTextColor">#EEEEEE</item>
+        <item name="android:textColor">@color/preference_primary_color</item>
+        <item name="android:textColorPrimary">@color/preference_primary_color</item>
+        <item name="android:textColorSecondary">@color/preference_primary_color</item>
+        <item name="android:textColorHighlight">@color/preference_primary_color</item>
+        <item name="android:editTextColor">@color/preference_primary_color</item>
 
         <item name="cardColor">#42A5F5</item>
         <item name="cardStrokeColor">#42A5F5</item>
@@ -164,11 +164,11 @@
         <item name="colorAccent">#607D8B</item>
         <item name="android:windowBackground">@drawable/background_dark</item>
 
-        <item name="android:textColor">#BDBDBD</item>
-        <item name="android:textColorPrimary">#BDBDBD</item>
-        <item name="android:textColorSecondary">#E0E0E0</item>
-        <item name="android:textColorHighlight">#E0E0E0</item>
-        <item name="android:editTextColor">#BDBDBD</item>
+        <item name="android:textColor">@color/preference_primary_color_dark</item>
+        <item name="android:textColorPrimary">@color/preference_primary_color_dark</item>
+        <item name="android:textColorSecondary">@color/preference_primary_color_dark</item>
+        <item name="android:textColorHighlight">@color/preference_primary_color_dark</item>
+        <item name="android:editTextColor">@color/preference_primary_color_dark</item>
 
         <item name="cardColor">#757575</item>
         <item name="cardStrokeColor">#757575</item>
@@ -187,11 +187,11 @@
         <item name="colorAccent">#E0E0E0</item>
         <item name="android:windowBackground">@drawable/background_mono</item>
 
-        <item name="android:textColor">#E0E0E0</item>
-        <item name="android:textColorPrimary">#E0E0E0</item>
-        <item name="android:textColorSecondary">#BDBDBD</item>
-        <item name="android:textColorHighlight">#B0BEC5</item>
-        <item name="android:editTextColor">#E0E0E0</item>
+        <item name="android:textColor">@color/preference_primary_color_mono</item>
+        <item name="android:textColorPrimary">@color/preference_primary_color_mono</item>
+        <item name="android:textColorSecondary">@color/preference_primary_color_mono</item>
+        <item name="android:textColorHighlight">@color/preference_primary_color_mono</item>
+        <item name="android:editTextColor">@color/preference_primary_color_mono</item>
 
         <item name="cardColor">#90A4AE</item>
         <item name="cardStrokeColor">#90A4AE</item>
