@@ -108,17 +108,19 @@ public class DnsQueryFragment extends Fragment {
                             authority = response.getSectionRRsets(2),
                             additional = response.getSectionRRsets(3);
                     if(answer == null)throw new IOException("RESULT NULL");
-                    final QueryResultAdapter adapter = new QueryResultAdapter(getActivity(), answer, authority, additional);
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            resultList.setAdapter(adapter);
-                            progress.setVisibility(View.INVISIBLE);
-                        }
-                    });
+                    if(getActivity() != null){
+                        final QueryResultAdapter adapter = new QueryResultAdapter(getActivity(), answer, authority, additional);
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                resultList.setAdapter(adapter);
+                                progress.setVisibility(View.INVISIBLE);
+                            }
+                        });
+                    }
                 } catch (final IOException e) {
                     e.printStackTrace();
-                    getActivity().runOnUiThread(new Runnable() {
+                    if(getActivity() != null)getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             handleException(e);
