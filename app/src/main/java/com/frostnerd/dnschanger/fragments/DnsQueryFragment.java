@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.adapters.QueryResultAdapter;
@@ -36,20 +37,21 @@ import java.io.IOException;
  * development@frostnerd.com
  */
 public class DnsQueryFragment extends Fragment {
-    private View contentView;
     private MaterialEditText metQuery;
     private EditText edQuery;
     private Button runQuery;
     private RecyclerView resultList;
+    private ProgressBar progress;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        contentView = inflater.inflate(R.layout.fragment_dnsquery, container, false);
+        View contentView = inflater.inflate(R.layout.fragment_dnsquery, container, false);
         metQuery = contentView.findViewById(R.id.met_query);
         edQuery = contentView.findViewById(R.id.query);
         runQuery = contentView.findViewById(R.id.run_query);
         resultList = contentView.findViewById(R.id.result_list);
+        progress = contentView.findViewById(R.id.progress);
 
         edQuery.addTextChangedListener(new TextWatcher() {
             @Override
@@ -81,6 +83,7 @@ public class DnsQueryFragment extends Fragment {
     }
 
     private void runQuery(String queryText){
+        progress.setVisibility(View.VISIBLE);
         final String adjustedQuery = queryText.endsWith(".") ? queryText : queryText + ".";
         new Thread(){
             @Override
@@ -91,14 +94,16 @@ public class DnsQueryFragment extends Fragment {
                     Name name = Name.fromString(adjustedQuery);
                     Record record = Record.newRecord(name, Type.ANY, DClass.IN);
                     Message query = Message.newQuery(record);
-                    final Message response = resolver.send(query);
+                    Message response = resolver.send(query);
+                    RRset[] answer = response.getSectionRRsets(1),
+                            authority = response.getSectionRRsets(2),
+                            additional = response.getSectionRRsets(3);
+                    final QueryResultAdapter adapter = new QueryResultAdapter(getActivity(), answer, authority, additional);
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            RRset[] answer = response.getSectionRRsets(1),
-                                    authority = response.getSectionRRsets(2),
-                                    additional = response.getSectionRRsets(3);
-                            resultList.setAdapter(new QueryResultAdapter(getActivity(), answer, authority, additional));
+                            resultList.setAdapter(adapter);
+                            progress.setVisibility(View.INVISIBLE);
                         }
                     });
                 } catch (IOException e) {
