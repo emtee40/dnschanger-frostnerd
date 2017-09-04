@@ -225,4 +225,5 @@
     <string name="query_title_type">Type</string>
     <string name="query_title_answer">Answer</string>
     <string name="query_destination_info">Query will be sent to [x]</string>
+    <string name="query_error_occured">An error occured: [error]</string>
 </resources>

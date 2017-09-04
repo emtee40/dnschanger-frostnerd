@@ -31,6 +31,7 @@ import org.xbill.DNS.SimpleResolver;
 import org.xbill.DNS.Type;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -44,6 +45,8 @@ public class DnsQueryFragment extends Fragment {
     private Button runQuery;
     private RecyclerView resultList;
     private ProgressBar progress;
+    private TextView infoText;
+    private boolean showingError;
 
     @Nullable
     @Override
@@ -54,6 +57,7 @@ public class DnsQueryFragment extends Fragment {
         runQuery = contentView.findViewById(R.id.run_query);
         resultList = contentView.findViewById(R.id.result_list);
         progress = contentView.findViewById(R.id.progress);
+        infoText = contentView.findViewById(R.id.query_destination_info_text);
 
         edQuery.addTextChangedListener(new TextWatcher() {
             @Override
@@ -63,6 +67,7 @@ public class DnsQueryFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                resetElements();
                 boolean valid = isResolvable(charSequence.toString());
                 metQuery.setIndicatorState(valid ? MaterialEditText.IndicatorState.CORRECT : MaterialEditText.IndicatorState.INCORRECT);
                 runQuery.setEnabled(valid);
@@ -77,12 +82,12 @@ public class DnsQueryFragment extends Fragment {
         runQuery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                resetElements();
                 runQuery(edQuery.getText().toString() + ".");
             }
         });
         resultList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        ((TextView)contentView.findViewById(R.id.query_destination_info_text)).
-                setText(getString(R.string.query_destination_info).replace("[x]", API.getDNS1(getActivity())));
+        infoText.setText(getString(R.string.query_destination_info).replace("[x]", API.getDNS1(getActivity())));
         return contentView;
     }
 
@@ -102,6 +107,7 @@ public class DnsQueryFragment extends Fragment {
                     RRset[] answer = response.getSectionRRsets(1),
                             authority = response.getSectionRRsets(2),
                             additional = response.getSectionRRsets(3);
+                    if(answer == null)throw new IOException("RESULT NULL");
                     final QueryResultAdapter adapter = new QueryResultAdapter(getActivity(), answer, authority, additional);
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -110,11 +116,36 @@ public class DnsQueryFragment extends Fragment {
                             progress.setVisibility(View.INVISIBLE);
                         }
                     });
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     e.printStackTrace();
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            handleException(e);
+                        }
+                    });
                 }
             }
         }.start();
+    }
+
+    private void handleException(IOException e){
+        showingError = true;
+        progress.setVisibility(View.INVISIBLE);
+        String errorMSG = e.getMessage();
+        errorMSG = errorMSG == null ? e.getLocalizedMessage() : errorMSG;
+        if(errorMSG == null){
+            if(e instanceof SocketTimeoutException)errorMSG = "TIMEOUT";
+            else errorMSG = "GENERAL ERROR";
+        }
+        infoText.setText(getString(R.string.query_error_occured).replace("[error]", errorMSG));
+    }
+
+    private void resetElements(){
+        if(showingError){
+            infoText.setText(getString(R.string.query_destination_info).replace("[x]", API.getDNS1(getActivity())));
+            showingError = false;
+        }
     }
 
     private boolean isResolvable(String s){
