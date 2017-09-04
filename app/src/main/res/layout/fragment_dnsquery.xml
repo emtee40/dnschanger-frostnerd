@@ -29,32 +29,49 @@
             android:textColor="#FFF" />
     </com.frostnerd.utils.design.MaterialEditText>
 
-    <Button
-        android:id="@+id/run_query"
-        android:layout_below="@id/met_query"
-        style="@style/Widget.AppCompat.Button.Borderless"
+    <RelativeLayout
+        android:id="@+id/start_button_wrap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:background="?attr/cardColor"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:text="@string/run_query"
-        android:textColor="#FFF" />
+        android:layout_below="@id/met_query">
+
+        <Button
+            android:id="@+id/run_query"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/cardColor"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/run_query"
+            android:textColor="#FFF" />
+
+        <TextView
+            android:id="@+id/query_destination_info_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@id/run_query"
+            android:layout_toRightOf="@id/run_query"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+    </RelativeLayout>
 
     <ProgressBar
-        android:layout_width="48dp"
-        android:layout_below="@id/run_query"
         android:id="@+id/progress"
-        android:visibility="invisible"
-        android:indeterminate="true"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/start_button_wrap"
         android:layout_centerHorizontal="true"
-        android:layout_height="48dp" />
+        android:indeterminate="true"
+        android:visibility="invisible" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_below="@id/run_query"
         android:layout_height="match_parent"
+        android:layout_below="@id/start_button_wrap"
         android:layout_marginTop="15dp"
         android:scrollbars="vertical">
 

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.R;
@@ -80,6 +81,8 @@ public class DnsQueryFragment extends Fragment {
             }
         });
         resultList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        ((TextView)contentView.findViewById(R.id.query_destination_info_text)).
+                setText(getString(R.string.query_destination_info).replace("[x]", API.getDNS1(getActivity())));
         return contentView;
     }
 
