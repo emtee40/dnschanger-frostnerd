@@ -76,7 +76,7 @@ public class DnsQueryFragment extends Fragment {
                 runQuery(edQuery.getText().toString() + ".");
             }
         });
-        resultList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        resultList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         return contentView;
     }
 
