@@ -11,7 +11,6 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v4.content.FileProvider;
@@ -94,14 +93,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         findPreference("notification_on_stop").setOnPreferenceChangeListener(changeListener);
         findPreference("shortcut_click_again_disable").setOnPreferenceChangeListener(changeListener);
         findPreference("shortcut_click_override_settings").setOnPreferenceChangeListener(changeListener);
-        findPreference("pin_value").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                preference.setSummary(getString(R.string.summary_pin_value).replace("[[x]]", ""+newValue));
-                return true;
-            }
-        });
-        findPreference("pin_value").setSummary(getString(R.string.summary_pin_value).replace("[[x]]", Preferences.getString(getActivity(), "pin_value", "1234")));
         if(API.isTaskerInstalled(getActivity()))findPreference("warn_automation_tasker").setSummary(R.string.summary_automation_warn);
         else ((PreferenceCategory)findPreference("automation")).removePreference(findPreference("warn_automation_tasker"));
         /*findPreference("auto_pause").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
