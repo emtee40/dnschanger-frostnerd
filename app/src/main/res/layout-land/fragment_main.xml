@@ -18,14 +18,15 @@
 
         <ScrollView
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_toLeftOf="@id/middle"
-            android:layout_toStartOf="@id/middle"
-            android:layout_height="match_parent">
+            android:layout_toStartOf="@id/middle">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingRight="@dimen/activity_horizontal_margin">
 
                 <com.frostnerd.utils.design.MaterialEditText
                     android:id="@+id/met_dns1"
@@ -34,7 +35,8 @@
                     app:allowCollapse="false"
                     app:animationDuration="0"
                     app:image="@drawable/ic_language"
-                    app:indicatorVisibilityWhenUnused="gone"
+                    app:indicatorState="undefined"
+                    app:indicatorVisibilityWhenUnused="hidden"
                     app:revealDelay="0"
                     app:revealType="revealInstant">
 
@@ -58,10 +60,11 @@
                     android:id="@+id/met_dns2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:animationDuration="0"
                     app:allowCollapse="false"
+                    app:animationDuration="0"
                     app:image="@drawable/ic_language"
-                    app:indicatorVisibilityWhenUnused="gone"
+                    app:indicatorState="undefined"
+                    app:indicatorVisibilityWhenUnused="hidden"
                     app:revealDelay="0"
                     app:revealType="revealInstant">
 
@@ -116,16 +119,16 @@
             android:id="@+id/middle"
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="#424242"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:background="#424242" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:layout_centerInParent="true"
             android:layout_toRightOf="@id/middle"
-            android:gravity="center">
+            android:gravity="center"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -153,7 +156,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:maxHeight="64dp"
-                        android:maxWidth="64dp"/>
+                        android:maxWidth="64dp" />
                 </RelativeLayout>
 
                 <View
