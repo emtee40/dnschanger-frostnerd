@@ -116,4 +116,10 @@ public class ErrorDialogActivity extends Activity {
         .setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT));
         context.startActivity(i);
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        System.exit(1);
+    }
 }
