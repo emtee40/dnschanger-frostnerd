@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.adapters.QueryResultAdapter;
 import com.frostnerd.utils.design.MaterialEditText;
@@ -89,7 +90,7 @@ public class DnsQueryFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    Resolver resolver = new SimpleResolver("8.8.8.8");
+                    Resolver resolver = new SimpleResolver(API.getDNS1(getActivity()));
                     resolver.setTCP(true);
                     Name name = Name.fromString(adjustedQuery);
                     Record record = Record.newRecord(name, Type.ANY, DClass.IN);
