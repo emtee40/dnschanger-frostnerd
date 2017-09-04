@@ -26,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_dns_lookup"
+            android:textColor="#FFF"
             android:text="google.com" />
     </com.frostnerd.utils.design.MaterialEditText>
 
