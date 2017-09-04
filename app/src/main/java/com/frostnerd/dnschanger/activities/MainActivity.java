@@ -151,11 +151,17 @@ public class MainActivity extends NavigationDrawerActivity {
             button.setChecked(true);
             text.setText(R.string.cardview_text_disabled);
         }
-       button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 text.setText(b ? R.string.cardview_text_disabled : R.string.cardview_text);
                 Preferences.put(MainActivity.this, "everything_disabled", b);
+            }
+        });
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                button.toggle();
             }
         });
         setCardView(cardView);
