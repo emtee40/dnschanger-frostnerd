@@ -139,7 +139,7 @@ public final class API {
     }
 
     public static boolean isIPv6Enabled(Context context) {
-        return Preferences.getBoolean(context, "setting_ipv6_enabled", true);
+        return Preferences.getBoolean(context, "setting_ipv6_enabled", false);
     }
 
     public static boolean isIPv4Enabled(Context context) {
