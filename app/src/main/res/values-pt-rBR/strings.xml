@@ -208,4 +208,13 @@
     <string name="cardview_text_disabled">Functionality is disabled. Click here to re-enabled (happens automatically at reboot)</string>
     <string name="info_functionality_disabled">All functionality has been disabled by you. Re-enable in the menu on the side to start.</string>
     <string name="run_query">Run query</string>
+    <string name="hint_dns_lookup">Pesquisa de DNS</string>
+    <string name="nav_title_dns_query">DNS Query</string>
+    <string name="query_title_type">Tipo</string>
+    <string name="query_title_ttl">TTL</string>
+    <string name="query_title_dclass">Classe D</string>
+    <string name="query_title_name">Nome</string>
+    <string name="query_title_answer">Responda</string>
+    <string name="query_destination_info">A consulta será enviada para [x]</string>
+    <string name="query_error_occured">Ocorreu um erro: [error]</string>
 </resources>

@@ -221,7 +221,7 @@
     <string name="run_query">Run query</string>
     <string name="query_title_name">Name</string>
     <string name="query_title_ttl">TTL</string>
-    <string name="query_title_dclass">DClass</string>
+    <string name="query_title_dclass">D class</string>
     <string name="query_title_type">Type</string>
     <string name="query_title_answer">Answer</string>
     <string name="query_destination_info">Query will be sent to [x]</string>

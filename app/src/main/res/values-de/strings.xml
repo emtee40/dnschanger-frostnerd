@@ -210,4 +210,12 @@
     <string name="info_functionality_disabled">Sämtliche Funktionalitäten wurden von dir deaktviert. Zum Starten reaktivere diese im seitlichen Menü.</string>
     <string name="run_query">Abfrage starten</string>
     <string name="hint_dns_lookup">DNS Anfrage</string>
+    <string name="nav_title_dns_query">DNS Query</string>
+    <string name="query_title_type">Typ</string>
+    <string name="query_title_ttl">TTL</string>
+    <string name="query_title_name">Name</string>
+    <string name="query_title_dclass">D Klasse</string>
+    <string name="query_title_answer">Antwort</string>
+    <string name="query_error_occured">Ein Fehler is aufgetreten: [error]</string>
+    <string name="query_destination_info">Anfrage wird an [x] gesendet</string>
 </resources>
