@@ -41,7 +41,7 @@ public class DefaultDNSDialog extends AlertDialog {
     public DefaultDNSDialog(@NonNull final Context context, final int theme, @NonNull final OnProviderSelectedListener listener) {
         super(context, theme);
         localEntries = API.getDBHelper(context).getDNSEntries();
-        boolean ipv4Enabled = Preferences.getBoolean(context, "setting_ipv4_enabled", true), ipv6Enabled = !ipv4Enabled || Preferences.getBoolean(context, "setting_ipv6_enabled", true);
+        boolean ipv4Enabled = API.isIPv4Enabled(context), ipv6Enabled = !ipv4Enabled || API.isIPv6Enabled(context);
         List<DNSEntry> tmp = new ArrayList<>();
         if(!ipv4Enabled || !ipv6Enabled){
             for(DNSEntry entry: localEntries){

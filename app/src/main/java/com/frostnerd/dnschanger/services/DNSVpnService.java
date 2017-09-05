@@ -174,8 +174,8 @@ public class DNSVpnService extends VpnService {
         excludedAppsText = !Preferences.getBoolean(this, "app_whitelist_configured",false) ? "" : excludedAppsText;
         if(Preferences.getBoolean(this, "show_used_dns",true)){
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Showing used DNS servers in notification");
-            boolean ipv6Enabled = Preferences.getBoolean(DNSVpnService.this, "setting_ipv6_enabled", true),
-                    ipv4Enabled = Preferences.getBoolean(DNSVpnService.this, "setting_ipv4_enabled", true);
+            boolean ipv6Enabled = API.isIPv6Enabled(this),
+                    ipv4Enabled = API.isIPv4Enabled(this);
             StringBuilder contentText = new StringBuilder();
             if(ipv4Enabled){
                 contentText.append("DNS 1: ").append(getCurrentDNS1()).append("\n");
@@ -478,8 +478,8 @@ public class DNSVpnService extends VpnService {
                 runThread = true;
                 Thread.setDefaultUncaughtExceptionHandler(((DNSChanger)getApplication()).getExcpetionHandler());
                 if(notificationBuilder != null) notificationBuilder.setWhen(System.currentTimeMillis());
-                boolean ipv6Enabled = Preferences.getBoolean(DNSVpnService.this, "setting_ipv6_enabled", true),
-                        ipv4Enabled = Preferences.getBoolean(DNSVpnService.this, "setting_ipv4_enabled", true);
+                boolean ipv6Enabled = API.isIPv6Enabled(DNSVpnService.this),
+                        ipv4Enabled = API.isIPv4Enabled(DNSVpnService.this);
                 try {
                     LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying " + addresses.size() + " different addresses before passing any thrown exception to the upper layer");
                     for(String address: addresses.keySet()){

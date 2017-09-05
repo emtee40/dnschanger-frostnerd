@@ -70,8 +70,8 @@ public class ConfigureActivity extends AppCompatActivity {
         LogFactory.writeMessage(this, LOG_TAG, "Activity created", getIntent());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        ipv4Enabled = Preferences.getBoolean(this, "setting_ipv4_enabled", true);
-        ipv6Enabled = !ipv4Enabled || Preferences.getBoolean(this, "setting_ipv6_enabled", true);
+        ipv4Enabled = API.isIPv4Enabled(this);
+        ipv6Enabled = !ipv4Enabled || API.isIPv6Enabled(this);
         settingV6 = !ipv4Enabled;
 
         ed_dns1 = findViewById(R.id.dns1);
