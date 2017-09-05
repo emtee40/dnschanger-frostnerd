@@ -33,6 +33,7 @@ import com.frostnerd.dnschanger.API.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.AppSelectionActivity;
+import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.tasker.ConfigureActivity;
 import com.frostnerd.utils.general.DesignUtil;
@@ -69,6 +70,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
     public final static int USAGE_STATS_REQUEST = 13, CHOOSE_AUTOPAUSEAPPS_REQUEST = 14;
     private PreferenceSearcher preferenceSearcher = new PreferenceSearcher(this);
     private Handler handler = new Handler();
+    private Snackbar ipv6EnableQuestionSnackbar;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -429,6 +431,17 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 return false;
             }
         });
+        if(!API.isIPv6Enabled(getActivity()) && !Preferences.getBoolean(getActivity(), "ipv6_asked", false)){
+            ipv6EnableQuestionSnackbar = Snackbar.make(((MainActivity)getActivity()).getDrawerLayout(), R.string.question_enable_ipv6, Snackbar.LENGTH_INDEFINITE);
+            ipv6EnableQuestionSnackbar.setAction(R.string.yes, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    scrollToPreference("debug_category"); //Scrolling to a lower preference because the wanted one would be at the bottom of the screen otherwise
+                }
+            });
+            ipv6EnableQuestionSnackbar.show();
+            Preferences.put(getActivity(), "ipv6_asked", true);
+        }
     }
 
     private Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
@@ -457,6 +470,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
 //        if(devicePolicyManager.isAdminActive(deviceAdmin)){
 //            ((SwitchPreference)findPreference("device_admin")).setChecked(true);
 //        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if(ipv6EnableQuestionSnackbar != null)ipv6EnableQuestionSnackbar.dismiss();
+        super.onDestroy();
     }
 
     @Override

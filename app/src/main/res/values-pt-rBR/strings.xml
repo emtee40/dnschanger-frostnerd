@@ -217,4 +217,5 @@
     <string name="query_title_answer">Responda</string>
     <string name="query_destination_info">A consulta será enviada para [x]</string>
     <string name="query_error_occured">Ocorreu um erro: [error]</string>
+    <string name="question_enable_ipv6">Deseja ativar o IPv6?</string>
 </resources>
