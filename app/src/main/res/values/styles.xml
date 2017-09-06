@@ -84,6 +84,7 @@
         <item name="android:textColorHighlight">#EEEEEE</item>
         <item name="android:textColorTertiary">#EEEEEE</item>
         <item name="android:textColorAlertDialogListItem">#EEEEEE</item>
+        <item name="textColorAlertDialogListItem">#EEEEEE</item>
         <item name="android:editTextColor">#EEEEEE</item>
 
         <item name="color">#EEEEEE</item>
@@ -106,6 +107,7 @@
         <item name="android:textColorHighlight">#B0BEC5</item>
         <item name="android:textColorTertiary">#BDBDBD</item>
         <item name="android:textColorAlertDialogListItem">#E0E0E0</item>
+        <item name="textColorAlertDialogListItem">#E0E0E0</item>
         <item name="android:editTextColor">#E0E0E0</item>
 
         <item name="color">#E0E0E0</item>
@@ -128,6 +130,7 @@
         <item name="android:textColorHighlight">#E0E0E0</item>
         <item name="android:textColorTertiary">#EEEEEE</item>
         <item name="android:textColorAlertDialogListItem">#EEEEEE</item>
+        <item name="textColorAlertDialogListItem">#EEEEEE</item>
         <item name="android:editTextColor">#BDBDBD</item>
 
         <item name="color">#BDBDBD</item>
