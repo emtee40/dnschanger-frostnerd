@@ -219,4 +219,6 @@
     <string name="query_error_occured">Ein Fehler is aufgetreten: [error]</string>
     <string name="query_destination_info">Anfrage wird an [x] gesendet</string>
     <string name="question_enable_ipv6">Möchtest du IPv6 aktivieren?</string>
+    <string name="nav_title_libraries">Bibliotheken</string>
+    <string name="dialog_libraries_text">Diese app enthält von Bibliotheken, welchen von anderen Entwicklern erstellt wurden. Deren Namen, Ersteller und Lizenzen sind hier aufgelistet.</string>
 </resources>

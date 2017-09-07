@@ -434,6 +434,20 @@ public class MainActivity extends NavigationDrawerActivity {
                 return false;
             }
         });
+        itemCreator.createItemAndContinue(R.string.nav_title_libraries, R.drawable.ic_library_books, new DrawerItem.ClickListener() {
+            @Override
+            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
+                String licenseText = "\n- - - - - - - - - - - -\ndnsjava by Brian Wellington - http://www.xbill.org/dnsjava/\n\n" + getString(R.string.license_bsd_2).replace("[yearrange]", "1998-2001").replace("[author]", "Brian Wellington");
+                dialog1 = new AlertDialog.Builder(MainActivity.this).setTitle(R.string.nav_title_libraries).setNegativeButton(R.string.close, null)
+                        .setMessage(getString(R.string.dialog_libraries_text) + licenseText).show();
+                return false;
+            }
+
+            @Override
+            public boolean onLongClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+                return false;
+            }
+        });
         itemCreator.createItemAndContinue(R.string.title_about, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_info)), new DrawerItem.ClickListener() {
             @Override
             public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {

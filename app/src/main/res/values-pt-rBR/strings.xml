@@ -218,4 +218,6 @@
     <string name="query_destination_info">A consulta será enviada para [x]</string>
     <string name="query_error_occured">Ocorreu um erro: [error]</string>
     <string name="question_enable_ipv6">Deseja ativar o IPv6?</string>
+    <string name="nav_title_libraries">Bibliotecas</string>
+    <string name="dialog_libraries_text">This app containes libraries created by third parties. The libraries, their creators and the licenses are listed below.</string>
 </resources>
