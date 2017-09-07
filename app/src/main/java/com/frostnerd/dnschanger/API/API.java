@@ -17,6 +17,8 @@ import android.net.NetworkCapabilities;
 import android.os.Build;
 import android.os.Bundle;
 import android.service.quicksettings.TileService;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.TypedValue;
 
@@ -31,6 +33,15 @@ import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.preferences.Preferences;
 
+import org.xbill.DNS.DClass;
+import org.xbill.DNS.Message;
+import org.xbill.DNS.Name;
+import org.xbill.DNS.Record;
+import org.xbill.DNS.Resolver;
+import org.xbill.DNS.SimpleResolver;
+import org.xbill.DNS.Type;
+
+import java.io.IOException;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -345,5 +356,81 @@ public final class API {
                 Preferences.getBoolean(context, "setting_show_notification", true) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             context.startForegroundService(intent);
         }else context.startService(intent);
+    }
+
+    public static void startDNSServerConnectivityCheck(@NonNull final Context context, @NonNull final ConnectivityCheckCallback callback){
+        runAsyncDNSQuery(isIPv4Enabled(context) ? getDNS1(context) : getDNS1V6(context), "frostnerd.com", false, Type.A, DClass.ANY, new DNSQueryResultListener() {
+            @Override
+            public void onSuccess(Message response) {
+                callback.onCheckDone(true);
+            }
+
+            @Override
+            public void onError(@Nullable Exception e) {
+                callback.onCheckDone(false);
+            }
+        }, 2);
+    }
+
+    public static void startDNSServerConnectivityCheck(@NonNull final Context context, @NonNull final String dnsAddress, @NonNull final ConnectivityCheckCallback callback){
+        runAsyncDNSQuery(dnsAddress, "frostnerd.com", false, Type.A, DClass.ANY, new DNSQueryResultListener() {
+            @Override
+            public void onSuccess(Message response) {
+                callback.onCheckDone(true);
+            }
+
+            @Override
+            public void onError(@Nullable Exception e) {
+                callback.onCheckDone(false);
+            }
+        }, 2);
+    }
+
+    public static void runAsyncDNSQuery(final String server, final String query, final boolean tcp, final int type,
+                                        final int dClass, final DNSQueryResultListener resultListener, final int timeout){
+        new Thread(){
+            @Override
+            public void run() {
+                try {
+                    Resolver resolver = new SimpleResolver(server);
+                    resolver.setTCP(tcp);
+                    resolver.setTimeout(timeout);
+                    Name name = Name.fromString(query.endsWith(".") ? query : query + ".");
+                    Record record = Record.newRecord(name, type, dClass);
+                    Message query = Message.newQuery(record);
+                    Message response = resolver.send(query);
+                    if(response.getSectionRRsets(1) == null)throw new IllegalStateException("Answer is null");
+                    resultListener.onSuccess(response);
+                } catch (IOException e) {
+                    resultListener.onError(e);
+                }
+            }
+        }.start();
+    }
+
+    public static Message runSyncDNSQuery(final String server, final String query, final boolean tcp, final int type,
+                                        final int dClass, final int timeout){
+                try {
+                    Resolver resolver = new SimpleResolver(server);
+                    resolver.setTCP(tcp);
+                    resolver.setTimeout(timeout);
+                    Name name = Name.fromString(query.endsWith(".") ? query : query + ".");
+                    Record record = Record.newRecord(name, type, dClass);
+                    Message mquery = Message.newQuery(record);
+                    Message response = resolver.send(mquery);
+                    if(response.getSectionRRsets(1) == null)throw new IllegalStateException("Answer is null");
+                    return response;
+                } catch (IOException e) {
+                    return null;
+                }
+    }
+
+    public interface ConnectivityCheckCallback{
+        public void onCheckDone(boolean result);
+    }
+
+    public interface DNSQueryResultListener{
+        public void onSuccess(Message response);
+        public void onError(@Nullable Exception e);
     }
 }
