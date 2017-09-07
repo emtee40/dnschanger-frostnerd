@@ -26,6 +26,4 @@ Feel free to contribute to this project, it's completely free to sign up and I'd
 © Daniel Wolf 2017
 All rights reserved.<br>
 
-
-
-daniel.wolf@frostnerd.com
+This app uses the library dnsjava. License:
