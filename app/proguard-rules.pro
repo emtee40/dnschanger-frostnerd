@@ -21,3 +21,4 @@
 
 # See http://stackoverflow.com/questions/5701126, happens in dnsjava
 -optimizations !code/allocation/variable
+-keep class android.support.v7.widget.SearchView { *; }
