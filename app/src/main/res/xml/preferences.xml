@@ -150,10 +150,10 @@
     <PreferenceCategory
         android:key="general_category"
         android:title="@string/title_general">
-        <!--<SwitchPreference-->
-        <!--android:key="device_admin"-->
-        <!--android:summary="@string/summary_device_admin_activate"-->
-        <!--android:title="@string/title_device_admin" />-->
+        <SwitchPreference
+            android:key="device_admin"
+            android:summary="@string/summary_device_admin_activate"
+            android:title="@string/title_device_admin" />
 
         <CheckBoxPreference
             android:defaultValue="true"
