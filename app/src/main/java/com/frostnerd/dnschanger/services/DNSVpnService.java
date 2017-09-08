@@ -393,48 +393,6 @@ public class DNSVpnService extends VpnService {
         super.onTaskRemoved(rootIntent);
     }
 
-    //As the service could be removed from RAM when the main activity is destroyed this function memorizes what settings where used if that happens.
-    /*private void backupSettings(){
-        LogFactory.writeMessage(this, LOG_TAG, "Backing up settings to resume with them as soon as the service restarts");
-        Set<String> settings = new ArraySet<>();
-        settings.add(VPNServiceArgument.ARGUMENT_DNS1 + ";;" + dns1);
-        settings.add(VPNServiceArgument.ARGUMENT_DNS2 + ";;" +  dns2);
-        settings.add(VPNServiceArgument.ARGUMENT_DNS1V6 + ";;" + dns1_v6);
-        settings.add(VPNServiceArgument.ARGUMENT_DNS2V6 + ";;" + dns2_v6);
-        settings.add(VPNServiceArgument.FLAG_STARTED_WITH_TASKER + ";;" + startedWithTasker);
-        settings.add(VPNServiceArgument.FLAG_FIXED_DNS + ";;" + fixedDNS);
-        settings.add(VPNServiceArgument.COMMAND_START_VPN + ";;" + threadRunning);
-        settings.add("Running;;" + threadRunning);
-        Preferences.put(this, "settings_backup", settings);
-        Preferences.put(this, "settings_backuped", true);
-        LogFactory.writeMessage(this, LOG_TAG, "Backup finished");
-    }*/
-
-    /*private Intent restoreSettings(Intent i){
-        return i;
-        LogFactory.writeMessage(this, LOG_TAG, "Restoring settings if needed...");
-        if(Preferences.getBoolean(this, "settings_backuped",false)){
-            LogFactory.writeMessage(this, LOG_TAG, "Settings of previous service state were saved");
-            Preferences.put(this, "settings_backuped", false);
-            Set<String> settings = Preferences.getStringSet(this, "settings_backup");
-            String key, value;
-            String splt[];
-            for(VPNServiceArgument argument: VPNServiceArgument.values()){
-                for(String s: settings){
-                    splt = s.split(";;");
-                    key = splt[0];
-                    value = splt[1];
-                    if(key.equalsIgnoreCase(argument.getArgument())){
-                        LogFactory.writeMessage(this, LOG_TAG, "Putting " + key + ": '" + value + "'");
-                        IntentUtil.putExtra(key, i, Preferences.getType(value).parseTo(value));
-                    }
-                }
-            }
-            Preferences.put(this, "settings_backup", null);
-        }else LogFactory.writeMessage(this, LOG_TAG, "No setting were previously saved.");
-        return i;
-    }*/
-
     @Override
     public IBinder onBind(Intent intent) {
         return (intent.getBooleanExtra(VPNServiceArgument.FLAG_GET_BINDER.getArgument(),false) && serviceRunning) ? new ServiceBinder() : null;
