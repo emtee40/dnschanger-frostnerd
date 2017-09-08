@@ -65,10 +65,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        isCreating = true;
         currentDB = db;
-        db.execSQL("CREATE TABLE Shortcuts(Name TEXT, dns1 TEXT, dns2 TEXT, dns1v6 TEXT, dns2v6 TEXT)");
-        db.execSQL("CREATE TABLE DNSEntries(ID INTEGER PRIMARY KEY AUTOINCREMENT,Name TEXT, dns1 TEXT, dns2 TEXT, dns1v6 TEXT, dns2v6 TEXT,description TEXT DEFAULT '', CustomEntry BOOLEAN DEFAULT 0)");
+        isCreating = true;
+        db.execSQL("CREATE TABLE IF NOT EXISTS Shortcuts(Name TEXT, dns1 TEXT, dns2 TEXT, dns1v6 TEXT, dns2v6 TEXT)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS DNSEntries(ID INTEGER PRIMARY KEY AUTOINCREMENT,Name TEXT, dns1 TEXT, dns2 TEXT, dns1v6 TEXT, dns2v6 TEXT,description TEXT DEFAULT '', CustomEntry BOOLEAN DEFAULT 0)");
         for(DNSEntry entry: defaultDNSEntries){
             saveDNSEntry(entry);
         }
@@ -107,7 +107,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
         if (!Preferences.getBoolean(context, "dnsentries_created", false)) {
-            getWritableDatabase().execSQL("DELETE FROM DNSEntries");
+            db.execSQL("DELETE FROM DNSEntries");
             for(DNSEntry entry: defaultDNSEntries){
                 saveDNSEntry(entry);
             }
@@ -117,7 +117,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Preferences.put(context, "dnsentries_created", true);
         }
         if (!Preferences.getBoolean(context, "dnsentries_description", false)) {
-            getWritableDatabase().execSQL("ALTER TABLE DNSEntries ADD COLUMN description TEXT DEFAULT ''");
+            db.execSQL("ALTER TABLE DNSEntries ADD COLUMN description TEXT DEFAULT ''");
             Preferences.put(context, "dnsentries_description", true);
         }
     }

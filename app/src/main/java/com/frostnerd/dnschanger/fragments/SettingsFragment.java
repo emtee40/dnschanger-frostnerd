@@ -1,18 +1,18 @@
 package com.frostnerd.dnschanger.fragments;
 
+import android.app.SearchManager;
 import android.app.admin.DevicePolicyManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
-import android.support.v14.preference.PreferenceFragment;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -21,28 +21,37 @@ import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
-import android.support.v7.preference.PreferenceScreen;
+import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 
 import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.API.VPNServiceArgument;
-import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.AppSelectionActivity;
-import com.frostnerd.dnschanger.receivers._AdminReceiver;
+import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.tasker.ConfigureActivity;
+import com.frostnerd.utils.general.DesignUtil;
+import com.frostnerd.utils.general.IntentUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.permissions.PermissionsUtil;
 import com.frostnerd.utils.preferences.Preferences;
+import com.frostnerd.utils.preferences.searchablepreferences.SearchSettings;
+import com.frostnerd.utils.preferences.searchablepreferences.v14.PreferenceSearcher;
+import com.frostnerd.utils.preferences.searchablepreferences.v14.SearchablePreference;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -50,23 +59,30 @@ import java.util.Set;
  * <p>
  * development@frostnerd.com
  */
-public class SettingsFragment extends PreferenceFragment {
-    private boolean usageRevokeHidden = false;
+public class SettingsFragment extends PreferenceFragmentCompat implements SearchablePreference, SearchView.OnQueryTextListener{
+    private boolean usageRevokeHidden = false, awaitingPinChange = false;
     private PreferenceCategory automatingCategory, debugCategory;
     private Preference removeUsagePreference, sendDebugPreference;
     private DevicePolicyManager devicePolicyManager;
     //private ComponentName deviceAdmin;
     public static final int REQUEST_CODE_ENABLE_ADMIN = 1, REQUEST_CREATE_SHORTCUT = 2, REQUEST_EXCLUDE_APPS = 3;
-    public final static String LOG_TAG = "[SettingsActivity]";
+    public final static String LOG_TAG = "[SettingsActivity]", ARGUMENT_SCROLL_TO_SETTING = "scroll_to_setting";
     public final static int USAGE_STATS_REQUEST = 13, CHOOSE_AUTOPAUSEAPPS_REQUEST = 14;
-    private PreferenceScreen preferenceScreen;
+    private PreferenceSearcher preferenceSearcher = new PreferenceSearcher(this);
+    private Handler handler = new Handler();
+    private Snackbar ipv6EnableQuestionSnackbar;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
+        if(getArguments() != null && getArguments().containsKey(ARGUMENT_SCROLL_TO_SETTING)){
+            String key = getArguments().getString(ARGUMENT_SCROLL_TO_SETTING, null);
+            if(key != null && !key.equals("")){
+                scrollToPreference(key);
+            }
+        }
     }
 
-    //Theme, getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +90,6 @@ public class SettingsFragment extends PreferenceFragment {
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Added preferences from resources");
         devicePolicyManager = (DevicePolicyManager)getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
         //deviceAdmin = new ComponentName(getActivity(), _AdminReceiver.class);
-        preferenceScreen = (PreferenceScreen)findPreference("preferences");
         findPreference("setting_start_boot").setOnPreferenceChangeListener(changeListener);
         findPreference("setting_show_notification").setOnPreferenceChangeListener(changeListener);
         findPreference("show_used_dns").setOnPreferenceChangeListener(changeListener);
@@ -83,46 +98,9 @@ public class SettingsFragment extends PreferenceFragment {
         findPreference("notification_on_stop").setOnPreferenceChangeListener(changeListener);
         findPreference("shortcut_click_again_disable").setOnPreferenceChangeListener(changeListener);
         findPreference("shortcut_click_override_settings").setOnPreferenceChangeListener(changeListener);
-        findPreference("pin_value").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                preference.setSummary(getString(R.string.summary_pin_value).replace("[[x]]", ""+newValue));
-                return true;
-            }
-        });
-        findPreference("pin_value").setSummary(getString(R.string.summary_pin_value).replace("[[x]]", Preferences.getString(getActivity(), "pin_value", "1234")));
         if(API.isTaskerInstalled(getActivity()))findPreference("warn_automation_tasker").setSummary(R.string.summary_automation_warn);
         else ((PreferenceCategory)findPreference("automation")).removePreference(findPreference("warn_automation_tasker"));
-        findPreference("setting_info").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                LogFactory.writeMessage(getActivity(), LOG_TAG, preference.getKey() + " clicked");
-                new AlertDialog.Builder(getActivity(),ThemeHandler.getDialogTheme(getActivity())).setTitle(R.string.information).setMessage(R.string.settings_information_text).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                }).show();
-                return true;
-            }
-        });
-        findPreference("contact_dev").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                LogFactory.writeMessage(getActivity(), LOG_TAG, preference.getKey() + " clicked");
-                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                        "mailto","support@frostnerd.com", null));
-                String body = "\n\n\n\n\n\n\nSystem:\nApp version: " + BuildConfig.VERSION_CODE + " (" + BuildConfig.VERSION_NAME + ")\n"+
-                        "Android: " + Build.VERSION.SDK_INT + " (" + Build.VERSION.RELEASE + " - " + Build.VERSION.CODENAME + ")";
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, "support@frostnerd.com");
-                emailIntent.putExtra(Intent.EXTRA_TEXT, body);
-                LogFactory.writeMessage(getActivity(), LOG_TAG, "Now showing chooser for contacting dev", emailIntent);
-                startActivity(Intent.createChooser(emailIntent, getString(R.string.contact_developer)));
-                return true;
-            }
-        });
-        findPreference("auto_pause").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        /*findPreference("auto_pause").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 LogFactory.writeMessage(getActivity(), LOG_TAG, "Preference " + preference.getKey() + " was changed to " +
@@ -160,41 +138,11 @@ public class SettingsFragment extends PreferenceFragment {
                         putExtra("infoText", getString(R.string.autopause_appselect_info_text)),CHOOSE_AUTOPAUSEAPPS_REQUEST);
                 return true;
             }
-        });
-        findPreference("placeholder_version").setSummary(getString(R.string.summary_version).replace("[[version]]", BuildConfig.VERSION_NAME).replace("[[code]]", BuildConfig.VERSION_CODE + ""));
+        });*/
         automatingCategory = (PreferenceCategory)getPreferenceScreen().findPreference("automation");
-        removeUsagePreference = findPreference("remove_usage_data");
-        removeUsagePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                startActivityForResult(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS), USAGE_STATS_REQUEST);
-                return true;
-            }
-        });
-        boolean canAccessUsageStats = PermissionsUtil.hasUsageStatsPermission(getActivity());
-        if(!canAccessUsageStats || Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
-            usageRevokeHidden = true;
-            automatingCategory.removePreference(removeUsagePreference);
-            if(!canAccessUsageStats){
-                ((CheckBoxPreference)findPreference("auto_pause")).setChecked(false);
-                Preferences.put(getActivity(), "auto_pause",false);
-            }
-        }
+        /*
         findPreference("autopause_appselect").setTitle(getString(R.string.title_autopause_apps).
                 replace("[[count]]", Preferences.getStringSet(getActivity(), "autopause_apps").size()+""));
-        findPreference("share_app").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                LogFactory.writeMessage(getActivity(), LOG_TAG, preference.getKey() + " clicked");
-                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                sharingIntent.setType("text/plain");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.app_share_text));
-                LogFactory.writeMessage(getActivity(), LOG_TAG, "Showing chooser for share", sharingIntent);
-                startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_using)));
-                return true;
-            }
-        });
         /*findPreference("export_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -369,8 +317,7 @@ public class SettingsFragment extends PreferenceFragment {
                         dialogTheme = val.equalsIgnoreCase("1") ? R.style.DialogTheme : (val.equalsIgnoreCase("2") ? R.style.DialogTheme_Mono : R.style.DialogTheme_Dark);
                 ThemeHandler.updateAppTheme(getActivity(), theme);
                 ThemeHandler.updateDialogTheme(getActivity(), dialogTheme);
-                getActivity().setResult(AppCompatActivity.RESULT_FIRST_USER, new Intent().putExtra("themeupdated",true));
-                getActivity().finish();
+                IntentUtil.restartActivity(getActivity());
                 return true;
             }
         });
@@ -400,6 +347,7 @@ public class SettingsFragment extends PreferenceFragment {
                 else if(API.isServiceRunning(getActivity())){
                     getActivity().startService(new Intent(getActivity(), DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true));
                 }
+                v6Enabled.setEnabled(val);
                 return val;
             }
         });
@@ -423,27 +371,77 @@ public class SettingsFragment extends PreferenceFragment {
         v6Enabled.setEnabled(v4Enabled.isEnabled());
         if(Preferences.getBoolean(getActivity(), "excluded_whitelist", false)){
             findPreference("excluded_whitelist").setSummary(R.string.excluded_apps_info_text_whitelist);
+        }else{
+            findPreference("excluded_whitelist").setTitle(R.string.blacklist);
         }
         findPreference("excluded_whitelist").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 boolean newValue = (boolean)o;
                 Preferences.put(getActivity(), "app_whitelist_configured", true);
+                Preferences.put(getActivity(), "excluded_whitelist", o);
                 preference.setSummary(newValue ? R.string.excluded_apps_info_text_whitelist : R.string.excluded_apps_info_text_blacklist);
+                preference.setTitle(newValue ? R.string.whitelist : R.string.blacklist);
+                Set<String> selected = Preferences.getStringSet(getActivity(), "excluded_apps");
+                Set<String> flipped = new HashSet<>();
+                List<ApplicationInfo> packages = getActivity().getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
+                for (ApplicationInfo packageInfo : packages) {
+                    if(selected.contains(packageInfo.packageName))continue;
+                    flipped.add(packageInfo.packageName);
+                }
+                Preferences.put(getActivity(), "excluded_apps", flipped);
                 return true;
             }
         });
         findPreference("setting_pin_enabled").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
+            public boolean onPreferenceChange(final Preference preference, Object newValue) {
                 if((boolean)newValue){
-                    if(Preferences.getString(getActivity(), "pin_value", "1234").equals("1234"))getPreferenceManager().showDialog(findPreference("pin_value"));
+                    if(Preferences.getString(getActivity(), "pin_value", "1234").equals("1234")){
+                        getPreferenceManager().showDialog(findPreference("pin_value"));
+                        awaitingPinChange = true;
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(awaitingPinChange && !DesignUtil.hasOpenDialogs(getActivity())){
+                                    ((CheckBoxPreference)preference).setChecked(false);
+                                    awaitingPinChange = false;
+                                }
+                                if(awaitingPinChange)handler.postDelayed(this, 250);
+                            }
+                        },250);
+                    }
                     if (!((CheckBoxPreference)findPreference("pin_app")).isChecked())((CheckBoxPreference)findPreference("pin_app")).setChecked(true);
                 }
                 return true;
             }
         });
-
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            Preference pref = findPreference("setting_show_notification");
+            ((CheckBoxPreference)pref).setChecked(true);
+            pref.setSummary(pref.getSummary() + "\n" + getString(R.string.no_disable_android_o));
+            pref.setEnabled(false);
+            findPreference("show_used_dns").setDependency("");
+        }
+        findPreference("pin_value").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                awaitingPinChange = false;
+                Preferences.put(getActivity(), "pin_value", "" + newValue);
+                return false;
+            }
+        });
+        if(!API.isIPv6Enabled(getActivity()) && !Preferences.getBoolean(getActivity(), "ipv6_asked", false)){
+            ipv6EnableQuestionSnackbar = Snackbar.make(((MainActivity)getActivity()).getDrawerLayout(), R.string.question_enable_ipv6, Snackbar.LENGTH_INDEFINITE);
+            ipv6EnableQuestionSnackbar.setAction(R.string.yes, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    scrollToPreference("debug_category"); //Scrolling to a lower preference because the wanted one would be at the bottom of the screen otherwise
+                }
+            });
+            ipv6EnableQuestionSnackbar.show();
+            Preferences.put(getActivity(), "ipv6_asked", true);
+        }
     }
 
     private Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
@@ -472,6 +470,12 @@ public class SettingsFragment extends PreferenceFragment {
 //        if(devicePolicyManager.isAdminActive(deviceAdmin)){
 //            ((SwitchPreference)findPreference("device_admin")).setChecked(true);
 //        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if(ipv6EnableQuestionSnackbar != null)ipv6EnableQuestionSnackbar.dismiss();
+        super.onDestroy();
     }
 
     @Override
@@ -534,5 +538,51 @@ public class SettingsFragment extends PreferenceFragment {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_settings, menu);
+
+        SearchManager searchManager = (SearchManager)getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+        searchView.setOnQueryTextListener(this);
+    }
+
+    private Pattern emptySearchPattern = Pattern.compile("[\\s]*?");
+    @Override
+    public boolean preferenceMatches(Preference preference, String search) {
+        if(search == null || search.equals("") || emptySearchPattern.matcher(search).matches())return true;
+        Pattern pattern = Pattern.compile("(?i).*?" + search + ".*");
+        if(preference.getTitle() == null && preference.getSummary() != null){
+            return pattern.matcher(preference.getSummary()).matches();
+        }else if (preference.getSummary() == null && preference.getTitle() != null) {
+            return pattern.matcher(preference.getTitle()).matches();
+        } else
+            return preference.getSummary() != null && pattern.matcher(preference.getTitle() + "" + preference.getSummary()).matches();
+    }
+
+    @Override
+    public SearchSettings getSearchOptions() {
+        return new SearchSettings.Builder().hideCategoriesWithNoChildren(true).matchCategories(false).build();
+    }
+
+    @Override
+    public android.support.v7.preference.PreferenceGroup getTopLevelPreferenceGroup() {
+        return getPreferenceScreen();
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        preferenceSearcher.search(newText);
+        return true;
     }
 }

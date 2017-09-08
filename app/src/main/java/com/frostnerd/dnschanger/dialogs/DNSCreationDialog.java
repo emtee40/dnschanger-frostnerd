@@ -41,8 +41,8 @@ public class DNSCreationDialog extends AlertDialog {
     public DNSCreationDialog(@NonNull Context context, @NonNull final OnCreationFinishedListener listener) {
         super(context, ThemeHandler.getDialogTheme(context));
         setView(view = LayoutInflater.from(context).inflate(R.layout.dialog_create_dns_entry, null, false));
-        final boolean ipv4Enabled = Preferences.getBoolean(context, "setting_ipv4_enabled", true),
-                ipv6Enabled = !ipv4Enabled || Preferences.getBoolean(context, "setting_ipv6_enabled", true);
+        final boolean ipv4Enabled = API.isIPv4Enabled(context),
+                ipv6Enabled = !ipv4Enabled || API.isIPv6Enabled(context);
         settingV6 = !ipv4Enabled;
         ed_dns1 = (EditText) view.findViewById(R.id.dns1);
         ed_dns2 = (EditText) view.findViewById(R.id.dns2);

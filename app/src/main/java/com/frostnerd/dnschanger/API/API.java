@@ -1,6 +1,8 @@
 package com.frostnerd.dnschanger.API;
 
+import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -9,9 +11,15 @@ import android.content.pm.ShortcutManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Icon;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.os.Build;
 import android.os.Bundle;
 import android.service.quicksettings.TileService;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.util.TypedValue;
 
 import com.frostnerd.dnschanger.LogFactory;
@@ -25,7 +33,18 @@ import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.preferences.Preferences;
 
+import org.xbill.DNS.DClass;
+import org.xbill.DNS.Message;
+import org.xbill.DNS.Name;
+import org.xbill.DNS.Record;
+import org.xbill.DNS.Resolver;
+import org.xbill.DNS.SimpleResolver;
+import org.xbill.DNS.Type;
+
+import java.io.IOException;
+import java.net.NetworkInterface;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -40,6 +59,7 @@ import java.util.List;
 public final class API {
     public static final String BROADCAST_SERVICE_STATUS_CHANGE = "com.frostnerd.dnschanger.VPN_SERVICE_CHANGE";
     public static final String BROADCAST_SERVICE_STATE_REQUEST = "com.frostnerd.dnschanger.VPN_STATE_CHANGE";
+    public static final String BROADCAST_SHORTCUT_CREATED = "com.frostnerd.dnschanger.SHORTCUT_CREATED";
     public static final String LOG_TAG = "[API]";
     private static DatabaseHelper dbHelper;
 
@@ -108,6 +128,16 @@ public final class API {
         return false;*/
     }
 
+    public static boolean isServiceRunning(Context context, Class serviceClass){
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : am.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static boolean isServiceRunningNative(Context context) {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         String name = DNSVpnService.class.getName();
@@ -120,7 +150,7 @@ public final class API {
     }
 
     public static boolean isIPv6Enabled(Context context) {
-        return Preferences.getBoolean(context, "setting_ipv6_enabled", true);
+        return Preferences.getBoolean(context, "setting_ipv6_enabled", false);
     }
 
     public static boolean isIPv4Enabled(Context context) {
@@ -153,10 +183,10 @@ public final class API {
     }
 
     public static void terminate() {
-        if (dbHelper != null)dbHelper.close();
+        if (dbHelper != null) dbHelper.close();
     }
 
-    public static DatabaseHelper getDBHelper(Context context){
+    public static DatabaseHelper getDBHelper(Context context) {
         return dbHelper == null ?
                 (dbHelper = (Preferences.getBoolean(context, "legacy_backup", false) ?
                         new DatabaseHelper(context) :
@@ -164,11 +194,11 @@ public final class API {
                 dbHelper;
     }
 
-    private static SQLiteDatabase getLegacyDatabase(Context context){
+    private static SQLiteDatabase getLegacyDatabase(Context context) {
         return context.openOrCreateDatabase("data.db", SQLiteDatabase.OPEN_READWRITE, null);
     }
 
-    private static List<DNSEntry> getDNSEntries(Context context){
+    private static List<DNSEntry> getDNSEntries(Context context) {
         List<DNSEntry> entries = new ArrayList<>();
         try {
             Cursor cursor = getLegacyDatabase(context).rawQuery("SELECT * FROM DNSEntries", new String[]{});
@@ -246,7 +276,8 @@ public final class API {
     }*/
 
     public static synchronized void deleteDatabase(Context context) {
-        dbHelper.close();dbHelper = null;
+        if(dbHelper != null)dbHelper.close();
+        dbHelper = null;
         context.getDatabasePath("data.db").delete();
     }
 
@@ -264,13 +295,27 @@ public final class API {
     public static void createShortcut(Context context, String dns1, String dns2, String dns1V6, String dns2V6, String name) {
         LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG}, "Creating shortcut");
         Intent shortcutIntent = new Intent(context, ShortcutActivity.class);
+        shortcutIntent.setAction("com.frostnerd.dnschanger.RUN_VPN_FROM_SHORTCUT");
         shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         shortcutIntent.putExtra("dns1", dns1);
         shortcutIntent.putExtra("dns2", dns2);
         shortcutIntent.putExtra("dns1v6", dns1V6);
         shortcutIntent.putExtra("dns2v6", dns2V6);
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            ShortcutManager shortcutManager = (ShortcutManager) context.getSystemService(Activity.SHORTCUT_SERVICE);
+            if (shortcutManager.isRequestPinShortcutSupported()) {
+                ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(context, StringUtil.randomString(30))
+                        .setIcon(Icon.createWithResource(context, R.mipmap.ic_launcher))
+                        .setShortLabel(name)
+                        .setLongLabel(name)
+                        .setIntent(shortcutIntent)
+                        .build();
+                PendingIntent intent = PendingIntent.getBroadcast(context, 0, new Intent(API.BROADCAST_SHORTCUT_CREATED), 0);
+                shortcutManager.requestPinShortcut(shortcutInfo, intent.getIntentSender());
+                return;
+            }
+        }
         Intent addIntent = new Intent();
         addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
         addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, name);
@@ -281,5 +326,111 @@ public final class API {
         context.sendBroadcast(addIntent);
     }
 
+    public static boolean isAnyVPNRunning(Context context){
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP)return isAnyVPNRunningV21(context);
+        else{
+            try {
+                for (NetworkInterface networkInterface : Collections.list(NetworkInterface.getNetworkInterfaces())) {
+                    if(networkInterface.getName().equals("tun0"))return true;
+                }
+            } catch (Exception ignored) {
 
+            }
+            return false;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private static boolean isAnyVPNRunningV21(Context context){
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        for (Network network : cm.getAllNetworks()) {
+            NetworkCapabilities caps = cm.getNetworkCapabilities(network);
+            if(caps.hasTransport(NetworkCapabilities.TRANSPORT_VPN) && !caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN))return true;
+        }
+        return false;
+    }
+
+    public static void startService(Context context, Intent intent){
+        if(Preferences.getBoolean(context, "everything_disabled", false))return;
+        if(intent.getComponent().getClassName().equals(DNSVpnService.class.getName()) &&
+                Preferences.getBoolean(context, "setting_show_notification", true) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            context.startForegroundService(intent);
+        }else context.startService(intent);
+    }
+
+    public static void startDNSServerConnectivityCheck(@NonNull final Context context, @NonNull final ConnectivityCheckCallback callback){
+        runAsyncDNSQuery(isIPv4Enabled(context) ? getDNS1(context) : getDNS1V6(context), "frostnerd.com", false, Type.A, DClass.ANY, new DNSQueryResultListener() {
+            @Override
+            public void onSuccess(Message response) {
+                callback.onCheckDone(true);
+            }
+
+            @Override
+            public void onError(@Nullable Exception e) {
+                callback.onCheckDone(false);
+            }
+        }, 2);
+    }
+
+    public static void startDNSServerConnectivityCheck(@NonNull final Context context, @NonNull final String dnsAddress, @NonNull final ConnectivityCheckCallback callback){
+        runAsyncDNSQuery(dnsAddress, "frostnerd.com", false, Type.A, DClass.ANY, new DNSQueryResultListener() {
+            @Override
+            public void onSuccess(Message response) {
+                callback.onCheckDone(true);
+            }
+
+            @Override
+            public void onError(@Nullable Exception e) {
+                callback.onCheckDone(false);
+            }
+        }, 2);
+    }
+
+    public static void runAsyncDNSQuery(final String server, final String query, final boolean tcp, final int type,
+                                        final int dClass, final DNSQueryResultListener resultListener, final int timeout){
+        new Thread(){
+            @Override
+            public void run() {
+                try {
+                    Resolver resolver = new SimpleResolver(server);
+                    resolver.setTCP(tcp);
+                    resolver.setTimeout(timeout);
+                    Name name = Name.fromString(query.endsWith(".") ? query : query + ".");
+                    Record record = Record.newRecord(name, type, dClass);
+                    Message query = Message.newQuery(record);
+                    Message response = resolver.send(query);
+                    if(response.getSectionRRsets(1) == null)throw new IllegalStateException("Answer is null");
+                    resultListener.onSuccess(response);
+                } catch (IOException e) {
+                    resultListener.onError(e);
+                }
+            }
+        }.start();
+    }
+
+    public static Message runSyncDNSQuery(final String server, final String query, final boolean tcp, final int type,
+                                        final int dClass, final int timeout){
+                try {
+                    Resolver resolver = new SimpleResolver(server);
+                    resolver.setTCP(tcp);
+                    resolver.setTimeout(timeout);
+                    Name name = Name.fromString(query.endsWith(".") ? query : query + ".");
+                    Record record = Record.newRecord(name, type, dClass);
+                    Message mquery = Message.newQuery(record);
+                    Message response = resolver.send(mquery);
+                    if(response.getSectionRRsets(1) == null)throw new IllegalStateException("Answer is null");
+                    return response;
+                } catch (IOException e) {
+                    return null;
+                }
+    }
+
+    public interface ConnectivityCheckCallback{
+        public void onCheckDone(boolean result);
+    }
+
+    public interface DNSQueryResultListener{
+        public void onSuccess(Message response);
+        public void onError(@Nullable Exception e);
+    }
 }

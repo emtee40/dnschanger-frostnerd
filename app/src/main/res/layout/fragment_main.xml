@@ -19,7 +19,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <com.frostnerd.utils.design.MaterialEditText
@@ -27,8 +27,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:allowCollapse="false"
+                app:animationDuration="0"
                 app:image="@drawable/ic_language"
-                app:indicatorVisibilityWhenUnused="gone"
+                app:indicatorState="undefined"
+                app:indicatorVisibilityWhenUnused="hidden"
                 app:revealDelay="0"
                 app:revealType="revealInstant">
 
@@ -43,7 +45,8 @@
                     android:nextFocusDown="@+id/dns2"
                     android:nextFocusForward="@+id/dns2"
                     android:text="8.8.8.8"
-                    android:textColor="#FFF" />
+                    android:textColor="#FFF"
+                    tools:ignore="HardcodedText" />
             </com.frostnerd.utils.design.MaterialEditText>
 
 
@@ -51,10 +54,11 @@
                 android:id="@+id/met_dns2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="5dp"
                 app:allowCollapse="false"
+                app:animationDuration="0"
                 app:image="@drawable/ic_language"
-                app:indicatorVisibilityWhenUnused="gone"
+                app:indicatorState="undefined"
+                app:indicatorVisibilityWhenUnused="hidden"
                 app:revealDelay="0"
                 app:revealType="revealInstant">
 
@@ -68,14 +72,14 @@
                     android:inputType="numberDecimal"
                     android:nextFocusUp="@id/dns1"
                     android:text="8.8.4.4"
-                    android:textColor="#FFF" />
+                    android:textColor="#FFF"
+                    tools:ignore="HardcodedText" />
             </com.frostnerd.utils.design.MaterialEditText>
 
             <LinearLayout
                 android:id="@+id/default_dns_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
                 android:background="?attr/inputElementColor"
                 android:clickable="true"
                 android:onClick="openDefaultDNSDialog"
@@ -102,7 +106,6 @@
                     android:textColor="#FFF" />
             </LinearLayout>
 
-
             <Button
                 android:id="@+id/startStopButton"
                 style="@style/Widget.AppCompat.Button.Borderless"
@@ -112,47 +115,6 @@
                 android:background="?attr/cardColor"
                 android:text="@string/start"
                 android:textColor="#FFF" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/rate"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
-                    android:layout_toLeftOf="@+id/settings"
-                    android:layout_weight="1"
-                    android:background="?attr/cardColor"
-                    android:onClick="rateApp"
-                    android:text="@string/rate"
-                    android:textColor="#FFF" />
-
-                <ImageView
-                    android:id="@+id/settings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:background="?attr/inputElementColor"
-                    android:paddingLeft="3dp"
-                    android:paddingRight="3dp"
-                    android:src="@drawable/ic_settings" />
-
-                <Button
-                    android:id="@+id/dnsInfo"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@+id/settings"
-                    android:layout_weight="1"
-                    android:background="?attr/inputElementColor"
-                    android:onClick="openDNSInfoDialog"
-                    android:text="@string/info_dns_button"
-                    android:textColor="#FFF" />
-            </RelativeLayout>
 
             <View
                 android:id="@+id/running_indicator"

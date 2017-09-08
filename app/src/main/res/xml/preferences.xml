@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:key="preferences">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:key="preferences">
 
     <PreferenceCategory android:title="@string/notification">
         <CheckBoxPreference
@@ -55,7 +57,7 @@
             android:summary="@string/summary_disable_network_change"
             android:title="@string/title_disable_network_change" />
 
-        <CheckBoxPreference
+        <!--<CheckBoxPreference
             android:id="@+id/setting_auto_pause"
             android:checked="false"
             android:defaultValue="false"
@@ -67,12 +69,7 @@
         <Preference
             android:dependency="auto_pause"
             android:key="autopause_appselect"
-            android:title="@string/title_autopause_apps" />
-
-        <Preference
-            android:key="remove_usage_data"
-            android:summary="@string/summary_remove_usage_data"
-            android:title="@string/title_remove_usage_data" />
+            android:title="@string/title_autopause_apps" />-->
     </PreferenceCategory>
     <PreferenceCategory
         android:key="pin_category"
@@ -121,7 +118,7 @@
             android:summary="@string/summary_import_settings"
             android:title="@string/title_import_settings" />
     </PreferenceCategory>-->
-    <PreferenceCategory android:title="@string/shortcuts">
+    <PreferenceCategory android:title="@string/shortcuts" android:key="shortcut_category">
         <CheckBoxPreference
             android:key="shortcut_click_again_disable"
             android:summary="@string/summary_shortcut_click_again_disable"
@@ -154,9 +151,9 @@
         android:key="general_category"
         android:title="@string/title_general">
         <!--<SwitchPreference-->
-            <!--android:key="device_admin"-->
-            <!--android:summary="@string/summary_device_admin_activate"-->
-            <!--android:title="@string/title_device_admin" />-->
+        <!--android:key="device_admin"-->
+        <!--android:summary="@string/summary_device_admin_activate"-->
+        <!--android:title="@string/title_device_admin" />-->
 
         <CheckBoxPreference
             android:defaultValue="true"
@@ -165,7 +162,7 @@
             android:title="@string/title_enable_ipv4" />
 
         <CheckBoxPreference
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:key="setting_ipv6_enabled"
             android:summary="@string/summary_enable_ipv6"
             android:title="@string/title_enable_ipv6" />
@@ -200,25 +197,10 @@
             android:key="send_debug"
             android:summary="@string/summary_send_debug"
             android:title="@string/title_send_debug" />
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/title_about">
-        <Preference
-            android:key="setting_info"
-            android:title="@string/title_info" />
-        <Preference
-            android:key="contact_dev"
-            android:title="@string/contact_developer" />
 
         <Preference
             android:key="reset"
             android:summary="@string/summary_reset"
             android:title="@string/title_reset" />
-
-        <Preference
-            android:key="share_app"
-            android:summary="@string/summary_share_app"
-            android:title="@string/title_share_app" />
-        <Preference android:key="placeholder_version" />
     </PreferenceCategory>
 </PreferenceScreen>

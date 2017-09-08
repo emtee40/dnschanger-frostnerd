@@ -33,9 +33,11 @@ public class TileStartStop extends android.service.quicksettings.TileService {
         super.onTileAdded();
         LogFactory.writeMessage(this, LOG_TAG, "Tile added");
         Tile tile = getQsTile();
-        tile.setState(Tile.STATE_INACTIVE);
-        tile.setLabel(getString(R.string.tile_start));
-        tile.updateTile();
+        if(tile != null){
+            tile.setState(Tile.STATE_INACTIVE);
+            tile.setLabel(getString(R.string.tile_start));
+            tile.updateTile();
+        }else API.updateTiles(this);
     }
 
     @Override

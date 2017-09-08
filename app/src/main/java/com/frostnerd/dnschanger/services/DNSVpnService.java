@@ -1,5 +1,6 @@
 package com.frostnerd.dnschanger.services;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -13,10 +14,11 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.ParcelFileDescriptor;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat;
 
 import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.VPNServiceArgument;
+import com.frostnerd.dnschanger.DNSChanger;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
@@ -120,7 +122,7 @@ public class DNSVpnService extends VpnService {
         LogFactory.writeMessage(this, LOG_TAG, "Clearing Variables");
         if(stopReason != null && notificationManager != null && Preferences.getBoolean(this, "notification_on_stop", false)){
             String reasonText = getString(R.string.notification_reason_stopped).replace("[reason]", stopReason);
-            notificationManager.notify(NOTIFICATION_ID+1, new NotificationCompat.Builder(this).setAutoCancel(true)
+            notificationManager.notify(NOTIFICATION_ID+1, new NotificationCompat.Builder(this, createNotificationChannel()).setAutoCancel(true)
                     .setOngoing(false).setContentText(reasonText).setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText(reasonText))
                     .setSmallIcon(R.drawable.ic_stat_small_icon).setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0))
                     .build());
@@ -140,7 +142,10 @@ public class DNSVpnService extends VpnService {
         afterThreadStop.clear();
         afterThreadStop = null;
         LogFactory.writeMessage(this, LOG_TAG, "Variables cleared");
-        if(stopSelf)stopSelf();
+        if(stopSelf){
+            stopForeground(true);
+            stopSelf();
+        }
     }
 
     private void updateNotification() { //Well, this method is a mess.
@@ -169,8 +174,8 @@ public class DNSVpnService extends VpnService {
         excludedAppsText = !Preferences.getBoolean(this, "app_whitelist_configured",false) ? "" : excludedAppsText;
         if(Preferences.getBoolean(this, "show_used_dns",true)){
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Showing used DNS servers in notification");
-            boolean ipv6Enabled = Preferences.getBoolean(DNSVpnService.this, "setting_ipv6_enabled", true),
-                    ipv4Enabled = Preferences.getBoolean(DNSVpnService.this, "setting_ipv4_enabled", true);
+            boolean ipv6Enabled = API.isIPv6Enabled(this),
+                    ipv4Enabled = API.isIPv4Enabled(this);
             StringBuilder contentText = new StringBuilder();
             if(ipv4Enabled){
                 contentText.append("DNS 1: ").append(getCurrentDNS1()).append("\n");
@@ -191,13 +196,14 @@ public class DNSVpnService extends VpnService {
             notificationBuilder.setContentText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused));
         }
         LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Updating notification");
-        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        startForeground(NOTIFICATION_ID, notificationBuilder.build());
     }
 
     private void initNotification(){
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (notificationBuilder == null) {
             LogFactory.writeMessage(this,new String[]{LOG_TAG, "[NOTIFICATION]"} , "Initiating Notification");
-            notificationBuilder = new android.support.v7.app.NotificationCompat.Builder(this);
+            notificationBuilder = new NotificationCompat.Builder(this, createNotificationChannel());
             notificationBuilder.setSmallIcon(R.drawable.ic_stat_small_icon); //TODO Update Image
             notificationBuilder.setContentTitle(getString(R.string.app_name));
             notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0));
@@ -206,9 +212,27 @@ public class DNSVpnService extends VpnService {
             notificationBuilder.setUsesChronometer(true);
             notificationBuilder.addAction(new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_pause, getString(R.string.action_pause),null));
             notificationBuilder.addAction(new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_stop, getString(R.string.action_stop),null));
-            notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel("defaultchannel", getString(R.string.notification_channel_default), NotificationManager.IMPORTANCE_HIGH);
+                channel.enableLights(false);
+                channel.enableVibration(false);
+                channel.setDescription(getString(R.string.notification_channel_default_description));
+                notificationManager.createNotificationChannel(channel);
+                notificationBuilder.setChannelId("defaultchannel");
+            }
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification created (Not yet posted)");
         }
+    }
+
+    private String createNotificationChannel(){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("defaultchannel", getString(R.string.notification_channel_default), NotificationManager.IMPORTANCE_HIGH);
+            channel.enableLights(false);
+            channel.enableVibration(false);
+            channel.setDescription(getString(R.string.notification_channel_default_description));
+            notificationManager.createNotificationChannel(channel);
+        }
+        return "defaultchannel";
     }
 
     public static synchronized void startWithSetDNS(final Context context, final String dns1, final String dns2, final String dns1v6, final String dns2v6){
@@ -276,6 +300,8 @@ public class DNSVpnService extends VpnService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         //intent = intent == null ? intent : restoreSettings(intent);
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Got StartCommand", intent);
+        if(variablesCleared && intent != null && !(IntentUtil.checkExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(),intent) ||
+                IntentUtil.checkExtra(VPNServiceArgument.COMMAND_STOP_VPN.getArgument(),intent)))return START_STICKY;
         serviceRunning = intent == null || !intent.getBooleanExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(), false);
         excludedApps = Preferences.getStringSet(this, "excluded_apps");
         excludedWhitelisted = Preferences.getBoolean(DNSVpnService.this, "excluded_whitelist", false);
@@ -324,6 +350,9 @@ public class DNSVpnService extends VpnService {
             }
             API.updateTiles(this);
         }else LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]", LogFactory.Tag.ERROR.toString()}, "Intent given is null. This isn't normal behavior");
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            Preferences.put(this, "setting_show_notification", true);
+        }
         updateNotification();
         return START_REDELIVER_INTENT;
     }
@@ -343,7 +372,7 @@ public class DNSVpnService extends VpnService {
     @Override
     public void onDestroy() {
         LogFactory.writeMessage(this, LOG_TAG, "Destroying");
-        clearVars(false);
+        //clearVars(false);
         super.onDestroy();
         API.updateTiles(this);
         LogFactory.writeMessage(this, LOG_TAG, "Destroyed.");
@@ -447,10 +476,10 @@ public class DNSVpnService extends VpnService {
                 threadRunning = true;
                 LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Starting Thread (run)");
                 runThread = true;
-                Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
+                Thread.setDefaultUncaughtExceptionHandler(((DNSChanger)getApplication()).getExcpetionHandler());
                 if(notificationBuilder != null) notificationBuilder.setWhen(System.currentTimeMillis());
-                boolean ipv6Enabled = Preferences.getBoolean(DNSVpnService.this, "setting_ipv6_enabled", true),
-                ipv4Enabled = Preferences.getBoolean(DNSVpnService.this, "setting_ipv4_enabled", true);
+                boolean ipv6Enabled = API.isIPv6Enabled(DNSVpnService.this),
+                        ipv4Enabled = API.isIPv4Enabled(DNSVpnService.this);
                 try {
                     LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying " + addresses.size() + " different addresses before passing any thrown exception to the upper layer");
                     for(String address: addresses.keySet()){
@@ -559,10 +588,13 @@ public class DNSVpnService extends VpnService {
                     try{
                         if(excludedWhitelisted){
                             for(String s: excludedApps){
+                                if(s.equals("com.android.vending"))continue;
                                 builder = builder.addAllowedApplication(s);
                             }
                         }else{
+                            builder = builder.addDisallowedApplication("com.android.vending");
                             for(String s: excludedApps){
+                                if(s.equals("com.android.vending"))continue;
                                 builder = builder.addDisallowedApplication(s);
                             }
                         }

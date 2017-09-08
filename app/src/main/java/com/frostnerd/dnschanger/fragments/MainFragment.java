@@ -6,19 +6,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Configuration;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.net.Uri;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.util.ArraySet;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.OrientationHelper;
@@ -35,29 +32,17 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.dnschanger.activities.MainActivity;
-import com.frostnerd.dnschanger.activities.SettingsActivity;
-import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
-import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
 import com.frostnerd.dnschanger.services.DNSVpnService;
-import com.frostnerd.dnschanger.tasker.ConfigureActivity;
 import com.frostnerd.utils.design.MaterialEditText;
-import com.frostnerd.utils.general.IntentUtil;
-import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
-
-import java.util.Arrays;
-import java.util.Random;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -89,6 +74,19 @@ public class MainFragment extends Fragment {
         }
     };
     private View contentView;
+    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sp, String s) {
+            if(s.equals("everything_disabled")){
+                boolean value = Preferences.getBoolean(getActivity(), "everything_disabled", false);
+                startStopButton.setEnabled(!value);
+                startStopButton.setClickable(!value);
+                startStopButton.setAlpha(value ? 0.50f : 1f);
+                if(value)connectionText.setText(R.string.info_functionality_disabled);
+                else setIndicatorState(vpnRunning);
+            }
+        }
+    };
 
     private void setIndicatorState(boolean vpnRunning) {
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Changing IndicatorState to " + vpnRunning);
@@ -121,11 +119,9 @@ public class MainFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         settingV6 = !API.isIPv4Enabled(getActivity()) || (API.isIPv6Enabled(getActivity()) && settingV6);
+        setHasOptionsMenu(true);
         boolean vertical = getResources().getConfiguration().orientation == OrientationHelper.VERTICAL;
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Created Activity", getActivity().getIntent());
-        API.updateTiles(getActivity());
-        LogFactory.writeMessage(getActivity(), LOG_TAG, "Launching ConnectivityBackgroundService");
-        getActivity().startService(new Intent(getActivity(), ConnectivityBackgroundService.class));
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Setting ContentView");
         met_dns1 = (MaterialEditText) findViewById(R.id.met_dns1);
         met_dns2 = (MaterialEditText) findViewById(R.id.met_dns2);
@@ -135,13 +131,14 @@ public class MainFragment extends Fragment {
         connectionText = (TextView)findViewById(R.id.connection_status_text);
         wrapper = findViewById(R.id.activity_main);
         running_indicator = findViewById(R.id.running_indicator);
+        startStopButton = (Button) findViewById(R.id.startStopButton);
+
         dns1.setText(Preferences.getString(getActivity(),settingV6 ? "dns1-v6" : "dns1", settingV6 ? "2001:4860:4860::8888" : "8.8.8.8"));
         dns2.setText(Preferences.getString(getActivity(),settingV6 ? "dns1-v6" : "dns1", settingV6 ? "2001:4860:4860::8844" : "8.8.4.4"));
         if(settingV6){
             dns1.setInputType(InputType.TYPE_CLASS_TEXT);
             dns2.setInputType(InputType.TYPE_CLASS_TEXT);
         }
-        startStopButton = (Button) findViewById(R.id.startStopButton);
         startStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,12 +170,14 @@ public class MainFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(vpnRunning && doStopVPN && !wasStartedWithTasker)stopVpn();
-                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6,false)) {
-                    met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
-                } else {
-                    met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
-                    Preferences.put(getActivity(), settingV6 ? "dns1-v6" :"dns1", s.toString());
+                if(before != count){
+                    if(vpnRunning && doStopVPN && !wasStartedWithTasker)stopVpn();
+                    if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6,false)) {
+                        met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
+                    } else {
+                        met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
+                        Preferences.put(getActivity(), settingV6 ? "dns1-v6" :"dns1", s.toString());
+                    }
                 }
             }
 
@@ -195,12 +194,14 @@ public class MainFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(vpnRunning && doStopVPN && !wasStartedWithTasker)stopVpn();
-                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6, true)) {
-                    met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
-                } else {
-                    met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
-                    Preferences.put(getActivity(), settingV6 ? "dns2-v6" : "dns2", s.toString());
+                if(before != count){
+                    if(vpnRunning && doStopVPN && !wasStartedWithTasker)stopVpn();
+                    if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6, true)) {
+                        met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
+                    } else {
+                        met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
+                        Preferences.put(getActivity(), settingV6 ? "dns2-v6" : "dns2", s.toString());
+                    }
                 }
             }
 
@@ -209,59 +210,7 @@ public class MainFragment extends Fragment {
 
             }
         });
-        findViewById(R.id.settings).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i;
-                LogFactory.writeMessage(getActivity(), LOG_TAG, "Opening Settings",
-                        i = new Intent(getActivity(), SettingsActivity.class));
-                startActivityForResult(i,REQUEST_SETTINGS);
-            }
-        });
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
-        int random = new Random().nextInt(100), launches = Preferences.getInteger(getActivity(), "launches", 0);
-        Preferences.put(getActivity(), "launches", launches+1);
-        if(!Preferences.getBoolean(getActivity(), "first_run",true) && !Preferences.getBoolean(getActivity(), "rated",false) && random <= (launches >= 3 ? 8 : 3)){
-            LogFactory.writeMessage(getActivity(), LOG_TAG, "Showing dialog requesting rating");
-            new AlertDialog.Builder(getActivity(),ThemeHandler.getDialogTheme(getActivity())).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ((MainActivity)getActivity()).rateApp(null);
-                }
-            }).setNegativeButton(R.string.dont_ask_again, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Preferences.put(getActivity(), "rated",true);
-                    dialog.cancel();
-                }
-            }).setNeutralButton(R.string.not_now, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            }).setMessage(R.string.rate_request_text).setTitle(R.string.rate).show();
-            LogFactory.writeMessage(getActivity(), LOG_TAG, "Dialog is now being shown");
-        }
-        if(Preferences.getBoolean(getActivity(), "first_run", true) && API.isTaskerInstalled(getActivity())){
-            LogFactory.writeMessage(getActivity(), LOG_TAG, "Showing dialog telling the user that this app supports Tasker");
-            new AlertDialog.Builder(getActivity(),ThemeHandler.getDialogTheme(getActivity())).setTitle(R.string.tasker_support).setMessage(R.string.app_supports_tasker_text).setPositiveButton(R.string.got_it, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            }).show();
-            LogFactory.writeMessage(getActivity(), LOG_TAG, "Dialog is now being shown");
-        }
-        if(Preferences.getBoolean(getActivity(), "first_run", true)) Preferences.put(getActivity(), "excluded_apps", new ArraySet<>(Arrays.asList(getResources().getStringArray(R.array.default_blacklist))));
-        API.updateAppShortcuts(getActivity());
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                API.getDBHelper(getActivity()).getReadableDatabase();
-            }
-        }).start();
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Done with OnCreate");
-        Preferences.put(getActivity(), "first_run", false);
     }
 
     private View findViewById(@IdRes int id){
@@ -271,11 +220,22 @@ public class MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Preferences.getDefaultPreferences(getActivity()).registerOnSharedPreferenceChangeListener(preferenceChangeListener);
         settingV6 = !API.isIPv4Enabled(getActivity()) || (API.isIPv6Enabled(getActivity()) && settingV6);
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Got OnResume");
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Sending ServiceStateRequest as broadcast");
         vpnRunning = API.isServiceRunning(getActivity());
-        setIndicatorState(vpnRunning);
+        if(Preferences.getBoolean(getActivity(), "everything_disabled", false)){
+            startStopButton.setEnabled(false);
+            startStopButton.setClickable(false);
+            startStopButton.setAlpha(0.50f);
+            connectionText.setText(R.string.info_functionality_disabled);
+        }else{
+            startStopButton.setEnabled(true);
+            startStopButton.setClickable(true);
+            startStopButton.setAlpha(1f);
+            setIndicatorState(vpnRunning);
+        }
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(serviceStateReceiver, new IntentFilter(API.BROADCAST_SERVICE_STATUS_CHANGE));
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATE_REQUEST));
         doStopVPN = false;
@@ -299,6 +259,7 @@ public class MainFragment extends Fragment {
         super.onPause();
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Got OnPause");
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(serviceStateReceiver);
+        Preferences.getDefaultPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(preferenceChangeListener);
     }
 
     @Override
@@ -340,18 +301,6 @@ public class MainFragment extends Fragment {
                     LogFactory.writeMessage(getActivity(), LOG_TAG, "Dialog is now being shown");
                 }else stopVpn();
             }
-        }else if(requestCode == 1 && resultCode == Activity.RESULT_OK){
-            final Snackbar snackbar = Snackbar.make(wrapper, R.string.shortcut_created, Snackbar.LENGTH_INDEFINITE);
-            snackbar.setAction(R.string.show, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    snackbar.dismiss();
-                    Utils.goToLauncher(getActivity());
-                }
-            });
-            snackbar.show();
-        }else if(requestCode == REQUEST_SETTINGS && resultCode == Activity.RESULT_FIRST_USER){
-            if(IntentUtil.checkExtra("themeupdated",data))IntentUtil.restartActivity(getActivity());
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -361,7 +310,7 @@ public class MainFragment extends Fragment {
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Starting VPN",
                 i = DNSVpnService.getStartVPNIntent(getActivity()));
         wasStartedWithTasker = false;
-        getActivity().startService(i);
+        API.startService(getActivity(), i);
         vpnRunning = true;
         setIndicatorState(true);
     }
@@ -371,7 +320,6 @@ public class MainFragment extends Fragment {
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Stopping VPN",
                 i = DNSVpnService.getDestroyIntent(getActivity()));
         getActivity().startService(i);
-        getActivity().stopService(new Intent(getActivity(), DNSVpnService.class));
         vpnRunning = false;
         setIndicatorState(false);
     }
@@ -394,24 +342,7 @@ public class MainFragment extends Fragment {
             dns2.setInputType(InputType.TYPE_CLASS_TEXT);
             ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
             doStopVPN = true;
-        }else if(item.getItemId() == R.id.create_shortcut){
-            Intent i;
-            LogFactory.writeMessage(getActivity(), LOG_TAG, "User wants to create a shortcut",
-                    i = new Intent(getActivity(), ConfigureActivity.class).putExtra("creatingShortcut", true));
-            startActivityForResult(i,1);
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        // Checks the orientation of the screen
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Toast.makeText(getActivity(), "landscape", Toast.LENGTH_SHORT).show();
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-            Toast.makeText(getActivity(), "portrait", Toast.LENGTH_SHORT).show();
-        }
     }
 }
