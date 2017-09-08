@@ -158,7 +158,7 @@ public class DNSVpnService extends VpnService {
             return;
         }else LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification is enabled");
         boolean pinProtected = Preferences.getBoolean(this, "pin_notification",false);
-        android.support.v4.app.NotificationCompat.Action a1 = notificationBuilder.mActions.get(0);
+        NotificationCompat.Action a1 = notificationBuilder.mActions.get(0);
         a1.icon = threadRunning ? R.drawable.ic_stat_pause : R.drawable.ic_stat_resume;
         a1.title = getString(threadRunning ? R.string.action_pause : R.string.action_resume);
         a1.actionIntent = pinProtected ? PendingIntent.getActivity(this,0,new Intent(this, PinActivity.class).setAction(new Random().nextInt(50) + "_action").
@@ -186,13 +186,13 @@ public class DNSVpnService extends VpnService {
                 contentText.append("DNSV6 2: ").append(getCurrentDNS2V6()).append(!excludedAppsText.equals("") ? "\n" : "");
             }
             contentText.append(excludedAppsText);
-            notificationBuilder.setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().
+            notificationBuilder.setStyle(new NotificationCompat.BigTextStyle().
                     bigText(contentText.toString()));
             notificationBuilder.setSubText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused));
         }else{
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Not showing used DNS Servers in notification");
             notificationBuilder.setSubText("");
-            notificationBuilder.setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().setSummaryText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused) + excludedAppsText));
+            notificationBuilder.setStyle(new NotificationCompat.BigTextStyle().setSummaryText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused) + excludedAppsText));
             notificationBuilder.setContentText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused));
         }
         LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Updating notification");
@@ -212,8 +212,10 @@ public class DNSVpnService extends VpnService {
             notificationBuilder.setUsesChronometer(true);
             notificationBuilder.addAction(new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_pause, getString(R.string.action_pause),null));
             notificationBuilder.addAction(new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_stop, getString(R.string.action_stop),null));
+            notificationBuilder.setColorized(false);
+            notificationBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                NotificationChannel channel = new NotificationChannel("defaultchannel", getString(R.string.notification_channel_default), NotificationManager.IMPORTANCE_HIGH);
+                NotificationChannel channel = new NotificationChannel("defaultchannel", getString(R.string.notification_channel_default), NotificationManager.IMPORTANCE_LOW);
                 channel.enableLights(false);
                 channel.enableVibration(false);
                 channel.setDescription(getString(R.string.notification_channel_default_description));
@@ -226,9 +228,10 @@ public class DNSVpnService extends VpnService {
 
     private String createNotificationChannel(){
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("defaultchannel", getString(R.string.notification_channel_default), NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel channel = new NotificationChannel("defaultchannel", getString(R.string.notification_channel_default), NotificationManager.IMPORTANCE_LOW);
             channel.enableLights(false);
             channel.enableVibration(false);
+            channel.setImportance(NotificationManager.IMPORTANCE_LOW);
             channel.setDescription(getString(R.string.notification_channel_default_description));
             notificationManager.createNotificationChannel(channel);
         }
