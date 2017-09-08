@@ -2,6 +2,7 @@ package com.frostnerd.dnschanger.fragments;
 
 import android.app.SearchManager;
 import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,6 +35,7 @@ import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.AppSelectionActivity;
 import com.frostnerd.dnschanger.activities.MainActivity;
+import com.frostnerd.dnschanger.receivers.AdminReceiver;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.tasker.ConfigureActivity;
 import com.frostnerd.utils.general.DesignUtil;
@@ -64,7 +66,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
     private PreferenceCategory automatingCategory, debugCategory;
     private Preference removeUsagePreference, sendDebugPreference;
     private DevicePolicyManager devicePolicyManager;
-    //private ComponentName deviceAdmin;
+    private ComponentName deviceAdmin;
     public static final int REQUEST_CODE_ENABLE_ADMIN = 1, REQUEST_CREATE_SHORTCUT = 2, REQUEST_EXCLUDE_APPS = 3;
     public final static String LOG_TAG = "[SettingsActivity]", ARGUMENT_SCROLL_TO_SETTING = "scroll_to_setting";
     public final static int USAGE_STATS_REQUEST = 13, CHOOSE_AUTOPAUSEAPPS_REQUEST = 14;
@@ -89,7 +91,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Created Activity");
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Added preferences from resources");
         devicePolicyManager = (DevicePolicyManager)getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
-        //deviceAdmin = new ComponentName(getActivity(), _AdminReceiver.class);
+        deviceAdmin = new ComponentName(getActivity(), AdminReceiver.class);
         findPreference("setting_start_boot").setOnPreferenceChangeListener(changeListener);
         findPreference("setting_show_notification").setOnPreferenceChangeListener(changeListener);
         findPreference("show_used_dns").setOnPreferenceChangeListener(changeListener);
@@ -165,12 +167,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 return true;
             }
         });*/
-        /*if(devicePolicyManager.isAdminActive(deviceAdmin)) ((SwitchPreference) findPreference("device_admin")).setChecked(true);
+        if(devicePolicyManager.isAdminActive(deviceAdmin)) ((SwitchPreference) findPreference("device_admin")).setChecked(true);
         else{
             ((SwitchPreference) findPreference("device_admin")).setChecked(false);
             Preferences.put(getActivity(),"device_admin", false);
-        }*/
-        /*findPreference("device_admin").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        }
+        findPreference("device_admin").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 LogFactory.writeMessage(getActivity(), LOG_TAG, "Preference " + preference.getKey() + " was changed to " +
@@ -209,7 +211,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 }
                 return true;
             }
-        });*/
+        });
         sendDebugPreference = findPreference("send_debug");
         debugCategory = (PreferenceCategory)findPreference("debug_category");
         if(!Preferences.getBoolean(getActivity(), "debug",false))debugCategory.removePreference(sendDebugPreference);
@@ -471,9 +473,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
     public void onResume() {
         super.onResume();
         LogFactory.writeMessage(getActivity(), LOG_TAG, "Resuming Activity");
-//        if(devicePolicyManager.isAdminActive(deviceAdmin)){
-//            ((SwitchPreference)findPreference("device_admin")).setChecked(true);
-//        }
+        if(devicePolicyManager.isAdminActive(deviceAdmin)){
+            ((SwitchPreference)findPreference("device_admin")).setChecked(true);
+        }
     }
 
     @Override
@@ -519,9 +521,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                         i = new Intent(getActivity(), DNSVpnService.class));
                 getActivity().startService(i);
             }
-        /*}else if(requestCode == REQUEST_CODE_ENABLE_ADMIN && resultCode == AppCompatActivity.RESULT_OK && devicePolicyManager.isAdminActive(deviceAdmin)){
+        }else if(requestCode == REQUEST_CODE_ENABLE_ADMIN && resultCode == AppCompatActivity.RESULT_OK && devicePolicyManager.isAdminActive(deviceAdmin)){
             LogFactory.writeMessage(getActivity(), LOG_TAG, "Deviceadmin was activated");
-            ((SwitchPreference)findPreference("device_admin")).setChecked(true);*/
+            ((SwitchPreference)findPreference("device_admin")).setChecked(true);
         }else if(requestCode == REQUEST_CREATE_SHORTCUT && resultCode == AppCompatActivity.RESULT_OK){
             final Snackbar snackbar = Snackbar.make(getListView(), R.string.shortcut_created, Snackbar.LENGTH_INDEFINITE);
             snackbar.setAction(R.string.show, new View.OnClickListener() {
