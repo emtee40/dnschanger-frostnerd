@@ -3,13 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:key="preferences">
 
-    <PreferenceCategory android:title="@string/notification">
+    <PreferenceCategory android:title="@string/notification" android:key="notification_category">
         <CheckBoxPreference
             android:id="@+id/setting_show_notification"
             android:defaultValue="true"
             android:key="setting_show_notification"
             android:summary="@string/summary_notification"
             android:title="@string/title_notification" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="setting_show_notification"
+            android:key="hide_notification_icon"
+            android:summary="@string/summary_disable_notification_icon"
+            android:title="@string/title_disable_notification_icon" />
 
         <CheckBoxPreference
             android:id="@+id/setting_show_used_dns"
@@ -100,10 +107,10 @@
             android:summary="@string/summary_pin_app_shortcut"
             android:title="@string/title_pin_app_shortcut" />
         <EditTextPreference
+            android:defaultValue="1234"
             android:dependency="setting_pin_enabled"
             android:inputType="textPassword"
             android:key="pin_value"
-            android:defaultValue="1234"
             android:summary="@string/summary_pin_value"
             android:title="@string/title_pin_value" />
     </PreferenceCategory>
@@ -118,7 +125,9 @@
             android:summary="@string/summary_import_settings"
             android:title="@string/title_import_settings" />
     </PreferenceCategory>-->
-    <PreferenceCategory android:title="@string/shortcuts" android:key="shortcut_category">
+    <PreferenceCategory
+        android:key="shortcut_category"
+        android:title="@string/shortcuts">
         <CheckBoxPreference
             android:key="shortcut_click_again_disable"
             android:summary="@string/summary_shortcut_click_again_disable"
@@ -141,9 +150,9 @@
             android:title="@string/title_exclude_apps" />
 
         <SwitchPreference
-            android:summary="@string/excluded_apps_info_text_blacklist"
-            android:key="excluded_whitelist"
             android:defaultValue="false"
+            android:key="excluded_whitelist"
+            android:summary="@string/excluded_apps_info_text_blacklist"
             android:title="@string/whitelist" />
     </PreferenceCategory>
 

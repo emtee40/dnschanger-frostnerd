@@ -221,4 +221,6 @@
     <string name="question_enable_ipv6">Möchtest du IPv6 aktivieren?</string>
     <string name="nav_title_libraries">Bibliotheken</string>
     <string name="dialog_libraries_text">Diese app enthält von Bibliotheken, welchen von anderen Entwicklern erstellt wurden. Deren Namen, Ersteller und Lizenzen sind hier aufgelistet.</string>
+    <string name="title_disable_notification_icon">Benachrichtigungssymbol deaktivieren</string>
+    <string name="summary_disable_notification_icon">Deaktiviert das DNS Icon in der Benachrichtigungszeile. Dieses wird in der vergrößerten Ansicht im Benachrichtigungsbereich weiterhin angezeigt.</string>
 </resources>

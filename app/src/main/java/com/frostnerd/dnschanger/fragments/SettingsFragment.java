@@ -422,6 +422,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             pref.setSummary(pref.getSummary() + "\n" + getString(R.string.no_disable_android_o));
             pref.setEnabled(false);
             findPreference("show_used_dns").setDependency("");
+            // Because notification channels cannot update their importance this feature isn't available in Android O and above.
+            ((PreferenceCategory)findPreference("notification_category")).removePreference(findPreference("hide_notification_icon"));
+        }else{
+            findPreference("hide_notification_icon").setOnPreferenceChangeListener(changeListener);
         }
         findPreference("pin_value").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -452,7 +456,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             Preferences.put(getActivity(),preference.getKey(),newValue);
             String key = preference.getKey();
             if((key.equalsIgnoreCase("setting_show_notification") || key.equalsIgnoreCase("show_used_dns") ||
-                    key.equalsIgnoreCase("auto_pause")) && API.isServiceRunning(getActivity())){
+                    key.equalsIgnoreCase("auto_pause") || key.equalsIgnoreCase("hide_notification_icon")) && API.isServiceRunning(getActivity())){
                 Intent i;
                 LogFactory.writeMessage(getActivity(), LOG_TAG, "Updating DNSVPNService, as a relevant setting " +
                         "(notification/autopause) changed", i = new Intent(getActivity(), DNSVpnService.class));

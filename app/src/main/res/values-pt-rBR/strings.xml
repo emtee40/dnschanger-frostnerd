@@ -220,4 +220,6 @@
     <string name="question_enable_ipv6">Deseja ativar o IPv6?</string>
     <string name="nav_title_libraries">Bibliotecas</string>
     <string name="dialog_libraries_text">This app containes libraries created by third parties. The libraries, their creators and the licenses are listed below.</string>
+    <string name="title_disable_notification_icon">Desativar ícone de notificação</string>
+    <string name="summary_disable_notification_icon">Desativa o ícone dns mostrado na barra de notificação. Ainda será visível ao abrir a área de notificação.</string>
 </resources>

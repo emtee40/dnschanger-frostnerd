@@ -125,7 +125,7 @@ public class DNSVpnService extends VpnService {
             notificationManager.notify(NOTIFICATION_ID+1, new NotificationCompat.Builder(this, createNotificationChannel()).setAutoCancel(true)
                     .setOngoing(false).setContentText(reasonText).setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText(reasonText))
                     .setSmallIcon(R.drawable.ic_stat_small_icon).setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0))
-                    .build());
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT).build());
         }
         serviceRunning = false;
         stopThread();
@@ -195,6 +195,8 @@ public class DNSVpnService extends VpnService {
             notificationBuilder.setStyle(new NotificationCompat.BigTextStyle().setSummaryText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused) + excludedAppsText));
             notificationBuilder.setContentText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused));
         }
+        notificationBuilder.setPriority(Preferences.getBoolean(this, "hide_notification_icon", false) ?
+                NotificationCompat.PRIORITY_MIN : NotificationCompat.PRIORITY_LOW);
         LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Updating notification");
         startForeground(NOTIFICATION_ID, notificationBuilder.build());
     }
@@ -213,15 +215,6 @@ public class DNSVpnService extends VpnService {
             notificationBuilder.addAction(new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_pause, getString(R.string.action_pause),null));
             notificationBuilder.addAction(new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_stop, getString(R.string.action_stop),null));
             notificationBuilder.setColorized(false);
-            notificationBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                NotificationChannel channel = new NotificationChannel("defaultchannel", getString(R.string.notification_channel_default), NotificationManager.IMPORTANCE_LOW);
-                channel.enableLights(false);
-                channel.enableVibration(false);
-                channel.setDescription(getString(R.string.notification_channel_default_description));
-                notificationManager.createNotificationChannel(channel);
-                notificationBuilder.setChannelId("defaultchannel");
-            }
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification created (Not yet posted)");
         }
     }
@@ -231,7 +224,6 @@ public class DNSVpnService extends VpnService {
             NotificationChannel channel = new NotificationChannel("defaultchannel", getString(R.string.notification_channel_default), NotificationManager.IMPORTANCE_LOW);
             channel.enableLights(false);
             channel.enableVibration(false);
-            channel.setImportance(NotificationManager.IMPORTANCE_LOW);
             channel.setDescription(getString(R.string.notification_channel_default_description));
             notificationManager.createNotificationChannel(channel);
         }
