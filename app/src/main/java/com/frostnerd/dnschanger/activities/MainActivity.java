@@ -36,6 +36,7 @@ import com.frostnerd.dnschanger.fragments.DnsQueryFragment;
 import com.frostnerd.dnschanger.fragments.MainFragment;
 import com.frostnerd.dnschanger.fragments.SettingsFragment;
 import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
+import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.tasker.ConfigureActivity;
 import com.frostnerd.utils.design.material.navigationdrawer.DrawerItem;
 import com.frostnerd.utils.design.material.navigationdrawer.DrawerItemCreator;
@@ -157,6 +158,7 @@ public class MainActivity extends NavigationDrawerActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 text.setText(b ? R.string.cardview_text_disabled : R.string.cardview_text);
                 Preferences.put(MainActivity.this, "everything_disabled", b);
+                if(API.isServiceRunning(MainActivity.this))startService(DNSVpnService.getDestroyIntent(MainActivity.this));
             }
         });
         cardView.setOnClickListener(new View.OnClickListener() {
