@@ -154,7 +154,7 @@ public class DNSVpnService extends VpnService {
         initNotification();
         if(!Preferences.getBoolean(this, "setting_show_notification",true)){
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification is disabled");
-            notificationManager.cancel(NOTIFICATION_ID);
+            stopForeground(true);
             return;
         }else LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification is enabled");
         boolean pinProtected = Preferences.getBoolean(this, "pin_notification",false);
