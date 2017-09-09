@@ -198,7 +198,7 @@ public class DNSVpnService extends VpnService {
         boolean hideIcon = Preferences.getBoolean(this, "hide_notification_icon", false);
         notificationBuilder.setPriority(hideIcon ?
                 NotificationCompat.PRIORITY_MIN : NotificationCompat.PRIORITY_LOW);
-        notificationBuilder.setChannelId(hideIcon ? "defaultchannel" : "noIconChannel");
+        notificationBuilder.setChannelId(hideIcon ? "noIconChannel" : "defaultchannel");
         LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Updating notification");
         startForeground(NOTIFICATION_ID, notificationBuilder.build());
     }
