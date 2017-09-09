@@ -442,7 +442,7 @@ public class DNSVpnService extends VpnService {
                 threadRunning = true;
                 LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Starting Thread (run)");
                 runThread = true;
-                Thread.setDefaultUncaughtExceptionHandler(((DNSChanger)getApplication()).getExcpetionHandler());
+                Thread.setDefaultUncaughtExceptionHandler(((DNSChanger)getApplication()).getExceptionHandler());
                 if(notificationBuilder != null) notificationBuilder.setWhen(System.currentTimeMillis());
                 boolean ipv6Enabled = API.isIPv6Enabled(DNSVpnService.this),
                         ipv4Enabled = API.isIPv4Enabled(DNSVpnService.this);
