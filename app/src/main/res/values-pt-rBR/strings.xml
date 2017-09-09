@@ -222,4 +222,6 @@
     <string name="dialog_libraries_text">This app containes libraries created by third parties. The libraries, their creators and the licenses are listed below.</string>
     <string name="title_disable_notification_icon">Desativar ícone de notificação</string>
     <string name="summary_disable_notification_icon">Desativa o ícone dns mostrado na barra de notificação. Ainda será visível ao abrir a área de notificação.</string>
+    <string name="notification_channel_hiddenicon">Canal sem ícone</string>
+    <string name="notification_channel_hiddenicon_description">Este canal não mostra nenhum ícone na barra de notificação</string>
 </resources>
