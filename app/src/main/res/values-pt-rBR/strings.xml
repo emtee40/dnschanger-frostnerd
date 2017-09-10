@@ -225,4 +225,5 @@
     <string name="notification_channel_hiddenicon">Canal sem ícone</string>
     <string name="notification_channel_hiddenicon_description">Este canal não mostra nenhum ícone na barra de notificação</string>
     <string name="notification_ipv6_text">Vá para as configurações se quiser habilitar o IPv6.</string>
+    <string name="mail_debug_text">Escreva uma pequena mensagem descrevendo por que você envia os arquivos de log</string>
 </resources>

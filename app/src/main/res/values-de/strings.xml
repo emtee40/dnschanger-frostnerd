@@ -226,4 +226,5 @@
     <string name="notification_channel_hiddenicon">Channel ohne Icon</string>
     <string name="notification_channel_hiddenicon_description">Dieser Channel zeigt kein Symbol in der Benachrichtigungsleiste</string>
     <string name="notification_ipv6_text">Öffne die Einstellungen um IPv6 zu aktivieren.</string>
+    <string name="mail_debug_text">Schreibe eine kleine Nachricht, warum du die Logdateien sendest</string>
 </resources>

@@ -255,6 +255,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                         "mailto","support@frostnerd.com", null));
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+                emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.mail_debug_text));
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, "support@frostnerd.com");
                 for(ResolveInfo resolveInfo: getActivity().getPackageManager().queryIntentActivities(emailIntent, PackageManager.MATCH_DEFAULT_ONLY)){
                     getActivity().grantUriPermission(resolveInfo.activityInfo.packageName,zipURI, Intent.FLAG_GRANT_READ_URI_PERMISSION );
