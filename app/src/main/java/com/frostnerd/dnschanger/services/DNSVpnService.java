@@ -186,6 +186,7 @@ public class DNSVpnService extends VpnService {
                 contentText.append("DNSV6 2: ").append(getCurrentDNS2V6()).append(!excludedAppsText.equals("") ? "\n" : "");
             }
             contentText.append(excludedAppsText);
+            if(!ipv6Enabled)contentText.append("\n").append(getString(R.string.notification_ipv6_text));
             notificationBuilder.setStyle(new NotificationCompat.BigTextStyle().
                     bigText(contentText.toString()));
             notificationBuilder.setSubText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused));

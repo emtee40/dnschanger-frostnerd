@@ -225,4 +225,5 @@
     <string name="summary_disable_notification_icon">Deaktiviert das DNS Icon in der Benachrichtigungszeile. Dieses wird in der vergrößerten Ansicht im Benachrichtigungsbereich weiterhin angezeigt.</string>
     <string name="notification_channel_hiddenicon">Channel ohne Icon</string>
     <string name="notification_channel_hiddenicon_description">Dieser Channel zeigt kein Symbol in der Benachrichtigungsleiste</string>
+    <string name="notification_ipv6_text">Öffne die Einstellungen um IPv6 zu aktivieren.</string>
 </resources>
