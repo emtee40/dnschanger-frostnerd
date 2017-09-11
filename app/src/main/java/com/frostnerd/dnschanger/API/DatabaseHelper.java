@@ -106,6 +106,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
+        isCreating = true;
+        currentDB = db;
         if (!Preferences.getBoolean(context, "dnsentries_created", false)) {
             db.execSQL("DELETE FROM DNSEntries");
             for(DNSEntry entry: defaultDNSEntries){
@@ -120,6 +122,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE DNSEntries ADD COLUMN description TEXT DEFAULT ''");
             Preferences.put(context, "dnsentries_description", true);
         }
+        isCreating = false;
+        currentDB = null;
     }
 
     public synchronized void saveDNSEntry(DNSEntry entry){
