@@ -112,8 +112,7 @@ public class ErrorDialogActivity extends Activity {
     public static void show(Context context, Throwable t){
         Intent i;
         LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG} , "Showing Stacktrace for " + t.getMessage(),
-                i = new Intent(context, ErrorDialogActivity.class).putExtra("stacktrace",LogFactory.stacktraceToString(t)).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        .setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT));
+                i = new Intent(context, ErrorDialogActivity.class).putExtra("stacktrace",LogFactory.stacktraceToString(t)).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
         context.startActivity(i);
     }
 
