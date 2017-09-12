@@ -2,6 +2,8 @@ package com.frostnerd.dnschanger.API;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
@@ -424,6 +426,29 @@ public final class API {
                 } catch (IOException e) {
                     return null;
                 }
+    }
+
+    public static String createNotificationChannel(Context context, boolean allowHiding){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+            if(allowHiding && Preferences.getBoolean(context, "hide_notification_icon", false)){
+                NotificationChannel channel = new NotificationChannel("noIconChannel", context.getString(R.string.notification_channel_hiddenicon), NotificationManager.IMPORTANCE_MIN);
+                channel.enableLights(false);
+                channel.enableVibration(false);
+                channel.setDescription(context.getString(R.string.notification_channel_hiddenicon_description));
+                notificationManager.createNotificationChannel(channel);
+                return "noIconChannel";
+            }else{
+                NotificationChannel channel = new NotificationChannel("defaultchannel", context.getString(R.string.notification_channel_default), NotificationManager.IMPORTANCE_LOW);
+                channel.enableLights(false);
+                channel.enableVibration(false);
+                channel.setDescription(context.getString(R.string.notification_channel_default_description));
+                notificationManager.createNotificationChannel(channel);
+                return "defaultchannel";
+            }
+        }else{
+            return "defaultchannel";
+        }
     }
 
     public interface ConnectivityCheckCallback{
