@@ -142,10 +142,6 @@ public class MainActivity extends NavigationDrawerActivity {
             LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
         }
         API.updateTiles(this);
-        if(!API.isServiceRunning(this, ConnectivityBackgroundService.class)){
-            LogFactory.writeMessage(this, LOG_TAG, "Launching ConnectivityBackgroundService");
-            this.startService(new Intent(this, ConnectivityBackgroundService.class));
-        }
         View cardView = getLayoutInflater().inflate(R.layout.main_cardview, null, false);
         final TextView text = cardView.findViewById(R.id.text);
         final Switch button = cardView.findViewById(R.id.cardview_switch);
