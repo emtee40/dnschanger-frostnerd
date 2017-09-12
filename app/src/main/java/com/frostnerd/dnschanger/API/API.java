@@ -5,6 +5,8 @@ import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -24,16 +26,27 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.TypedValue;
 
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.RetryStrategy;
+import com.firebase.jobdispatcher.Trigger;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.activities.ShortcutActivity;
+import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
+import com.frostnerd.dnschanger.services.jobs.ConnectivityJobAPI21;
 import com.frostnerd.dnschanger.services.DNSVpnService;
+import com.frostnerd.dnschanger.services.jobs.ConnectivityJobFirebase;
 import com.frostnerd.dnschanger.tiles.TilePauseResume;
 import com.frostnerd.dnschanger.tiles.TileStartStop;
 import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.preferences.Preferences;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import org.xbill.DNS.DClass;
 import org.xbill.DNS.Message;
@@ -448,6 +461,38 @@ public final class API {
             }
         }else{
             return "defaultchannel";
+        }
+    }
+
+    public static boolean arePlayServicesInstalled(Context context){
+        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+        return googleApiAvailability.isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS;
+    }
+
+    public static void runBackgroundConnectivityCheck(Context context){
+        if(arePlayServicesInstalled(context)){
+            LogFactory.writeMessage(context, LOG_TAG, "Play services are installed. Using FirebaseJobDispatcher.");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                LogFactory.writeMessage(context, LOG_TAG, "Canceling possibly started job (ConnectivityJobAPI21)");
+                JobScheduler scheduler = (JobScheduler)context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+                scheduler.cancel(0);
+            }
+            FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
+            Job job = dispatcher.newJobBuilder().setService(ConnectivityJobFirebase.class)
+                    .setTag("connectivity-job").setLifetime(Lifetime.FOREVER).setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
+                    .setRecurring(true).setReplaceCurrent(true).setTrigger(Trigger.executionWindow(0, 0)).build();
+            dispatcher.mustSchedule(job);
+        }else{
+            LogFactory.writeMessage(context, LOG_TAG, "Play services are not installed.");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                LogFactory.writeMessage(context, LOG_TAG, "Using JobScheduler");
+                JobScheduler scheduler = (JobScheduler)context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+                scheduler.schedule(new JobInfo.Builder(0, new ComponentName(context, ConnectivityJobAPI21.class)).setPersisted(true)
+                        .setRequiresCharging(false).setMinimumLatency(0).setOverrideDeadline(0).build());
+            }else{
+                LogFactory.writeMessage(context, LOG_TAG, "Starting Service (API below 21)");
+                context.startService(new Intent(context, ConnectivityBackgroundService.class));
+            }
         }
     }
 

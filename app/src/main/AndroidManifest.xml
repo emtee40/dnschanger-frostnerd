@@ -120,12 +120,17 @@
         </receiver>
 
         <service
-            android:exported="false"
-            android:name=".services.ConnectivityJob">
+            android:name=".services.jobs.ConnectivityJobFirebase"
+            android:exported="false">
             <intent-filter>
-                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
             </intent-filter>
         </service>
+        <service android:name=".services.ConnectivityBackgroundService" />
+        <service
+            android:name=".services.jobs.ConnectivityJobAPI21"
+            android:label="Connectivity Service"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity
             android:name=".activities.ShortcutActivity"

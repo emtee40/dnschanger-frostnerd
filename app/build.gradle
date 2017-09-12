@@ -35,4 +35,5 @@ dependencies {
     compile project(path: ':AndroidUtils:library')
     testCompile 'junit:junit:4.12'
     compile 'dnsjava:dnsjava:2.1.8'
+    compile 'com.google.android.gms:play-services-base:11.0.4'
 }

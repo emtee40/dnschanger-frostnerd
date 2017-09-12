@@ -1,4 +1,4 @@
-package com.frostnerd.dnschanger.services;
+package com.frostnerd.dnschanger.services.jobs;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,13 +11,12 @@ import android.net.NetworkRequest;
 import android.net.VpnService;
 import android.os.Build;
 
-import com.firebase.jobdispatcher.JobParameters;
-import com.firebase.jobdispatcher.JobService;
 import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
+import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.widgets.BasicWidget;
 import com.frostnerd.utils.general.WidgetUtil;
 import com.frostnerd.utils.preferences.Preferences;
@@ -31,16 +30,17 @@ import com.frostnerd.utils.preferences.Preferences;
  * <p>
  * development@frostnerd.com
  */
-public class ConnectivityJob extends JobService{
+public class NetworkCheckHandle {
     private BroadcastReceiver connectivityChange;
     private ConnectivityManager.NetworkCallback networkCallback;
     private ConnectivityManager connectivityManager;
-    private static final String LOG_TAG = "[ConnectivityJob]";
+    private Context context;
+    private final String LOG_TAG;
 
-    @Override
-    public boolean onStartJob(JobParameters job) {
-        LogFactory.writeMessage(this, LOG_TAG, "Job created");
-        connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+    public NetworkCheckHandle(Context context, String logTag){
+        this.context = context;
+        LOG_TAG = logTag;
+        connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             NetworkRequest.Builder builder = new NetworkRequest.Builder();
             connectivityManager.registerNetworkCallback(builder.build(), networkCallback = new ConnectivityManager.NetworkCallback(){
@@ -57,53 +57,53 @@ public class ConnectivityJob extends JobService{
                 }
             });
         }else{
-            registerReceiver(connectivityChange = new BroadcastReceiver() {
+            context.registerReceiver(connectivityChange = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     handleConnectivityChange(!intent.hasExtra("noConnectivity"), intent.getIntExtra("networkType", -1));
                 }
             }, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
+        handleInitialState();
+    }
 
+    private void handleInitialState(){
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
         if (activeNetwork == null) {
-            LogFactory.writeMessage(this, LOG_TAG, "No active network.");
+            LogFactory.writeMessage(context, LOG_TAG, "No active network.");
         }else{
-            LogFactory.writeMessage(this, LOG_TAG, "[OnCreate] Thread running: " + API.isServiceThreadRunning());
+            LogFactory.writeMessage(context, LOG_TAG, "[OnCreate] Thread running: " + API.isServiceThreadRunning());
             if (!API.isServiceThreadRunning()) {
-                if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI && Preferences.getBoolean(this, "setting_auto_wifi", false)) {
-                    LogFactory.writeMessage(this, LOG_TAG, "[OnCreate] Connected to WIFI and setting_auto_wifi is true. Starting Service..");
+                if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI && Preferences.getBoolean(context, "setting_auto_wifi", false)) {
+                    LogFactory.writeMessage(context, LOG_TAG, "[OnCreate] Connected to WIFI and setting_auto_wifi is true. Starting Service..");
                     startService();
-                } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE && Preferences.getBoolean(this, "setting_auto_mobile", false)) {
-                    LogFactory.writeMessage(this, LOG_TAG, "[OnCreate] Connected to MOBILE and setting_auto_mobile is true. Starting Service..");
+                } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE && Preferences.getBoolean(context, "setting_auto_mobile", false)) {
+                    LogFactory.writeMessage(context, LOG_TAG, "[OnCreate] Connected to MOBILE and setting_auto_mobile is true. Starting Service..");
                     startService();
                 }
             }
         }
-        LogFactory.writeMessage(this, LOG_TAG, "Done with onStartJob");
-        return true;
     }
 
-
-    @Override
-    public boolean onStopJob(JobParameters job) {
+    public void stop(){
         if(networkCallback != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)connectivityManager.unregisterNetworkCallback(networkCallback);
-        else if(connectivityChange != null)unregisterReceiver(connectivityChange);
-        return true;
+        else if(connectivityChange != null)context.unregisterReceiver(connectivityChange);
+        connectivityManager = null;
+        context = null;
     }
 
     private void startService() {
-        LogFactory.writeMessage(this, LOG_TAG, "Trying to start DNSVPNService");
-        Intent i = VpnService.prepare(this);
-        LogFactory.writeMessage(this, LOG_TAG, "VPNService Prepare Intent", i);
+        LogFactory.writeMessage(context, LOG_TAG, "Trying to start DNSVPNService");
+        Intent i = VpnService.prepare(context);
+        LogFactory.writeMessage(context, LOG_TAG, "VPNService Prepare Intent", i);
         if (i == null) {
-            LogFactory.writeMessage(this, LOG_TAG, "VPNService is already prepared. Starting DNSVPNService",
-                    i = DNSVpnService.getStartVPNIntent(this).putExtra(VPNServiceArgument.FLAG_DONT_START_IF_RUNNING.getArgument(), true).
+            LogFactory.writeMessage(context, LOG_TAG, "VPNService is already prepared. Starting DNSVPNService",
+                    i = DNSVpnService.getStartVPNIntent(context).putExtra(VPNServiceArgument.FLAG_DONT_START_IF_RUNNING.getArgument(), true).
                             putExtra(VPNServiceArgument.FLAG_FIXED_DNS.getArgument(),false));
-            API.startService(this, i);
+            API.startService(context, i);
         } else {
-            LogFactory.writeMessage(this, LOG_TAG, "VPNService is NOT prepared. Starting BackgroundVpnConfigureActivity");
-            BackgroundVpnConfigureActivity.startBackgroundConfigure(this, true);
+            LogFactory.writeMessage(context, LOG_TAG, "VPNService is NOT prepared. Starting BackgroundVpnConfigureActivity");
+            BackgroundVpnConfigureActivity.startBackgroundConfigure(context, true);
         }
     }
 
@@ -122,23 +122,23 @@ public class ConnectivityJob extends JobService{
     }
 
     private void handleConnectivityChange(boolean connected, ConnectionType connectionType){
-        if(Preferences.getBoolean(this, "everything_disabled", false))return;
-        boolean serviceRunning = API.isServiceRunning(this),
+        if(Preferences.getBoolean(context, "everything_disabled", false))return;
+        boolean serviceRunning = API.isServiceRunning(context),
                 serviceThreadRunning = API.isServiceThreadRunning(),
-                autoWifi = Preferences.getBoolean(this, "setting_auto_wifi", false),
-                autoMobile = Preferences.getBoolean(this, "setting_auto_mobile", false),
-                disableNetChange = Preferences.getBoolean(this, "setting_disable_netchange", false);
-        LogFactory.writeMessage(this, LOG_TAG, "Connectivity changed. Connected: " + connected + ", type: " + connectionType);
-        LogFactory.writeMessage(this, LOG_TAG, "Service running: " + serviceRunning + "; Thread running: " + serviceThreadRunning);
-        API.updateTiles(this);
-        WidgetUtil.updateAllWidgets(this, BasicWidget.class);
+                autoWifi = Preferences.getBoolean(context, "setting_auto_wifi", false),
+                autoMobile = Preferences.getBoolean(context, "setting_auto_mobile", false),
+                disableNetChange = Preferences.getBoolean(context, "setting_disable_netchange", false);
+        LogFactory.writeMessage(context, LOG_TAG, "Connectivity changed. Connected: " + connected + ", type: " + connectionType);
+        LogFactory.writeMessage(context, LOG_TAG, "Service running: " + serviceRunning + "; Thread running: " + serviceThreadRunning);
+        API.updateTiles(context);
+        WidgetUtil.updateAllWidgets(context, BasicWidget.class);
         Intent i;
         if(connectionType == ConnectionType.VPN)return;
         if (!connected && disableNetChange && serviceRunning) {
-            LogFactory.writeMessage(this, LOG_TAG,
+            LogFactory.writeMessage(context, LOG_TAG,
                     "Destroying DNSVPNService, as device is not connected and setting_disable_netchange is true",
-                    i = DNSVpnService.getDestroyIntent(this, getString(R.string.reason_stop_network_change)));
-            startService(i);
+                    i = DNSVpnService.getDestroyIntent(context, context.getString(R.string.reason_stop_network_change)));
+            context.startService(i);
             return;
         }
         //if (!connected || type == ConnectivityManager.TYPE_BLUETOOTH || type == ConnectivityManager.TYPE_DUMMY || type == ConnectivityManager.TYPE_VPN)
@@ -146,18 +146,18 @@ public class ConnectivityJob extends JobService{
             return;
         if (!serviceThreadRunning) {
             if (connectionType == ConnectionType.WIFI && autoWifi) {
-                LogFactory.writeMessage(this, LOG_TAG, "Connected to WIFI and setting_auto_wifi is true. Starting Service..");
+                LogFactory.writeMessage(context, LOG_TAG, "Connected to WIFI and setting_auto_wifi is true. Starting Service..");
                 startService();
             } else if (connectionType == ConnectionType.MOBILE && autoMobile) {
-                LogFactory.writeMessage(this, LOG_TAG, "Connected to MOBILE and setting_auto_mobile is true. Starting Service..");
+                LogFactory.writeMessage(context, LOG_TAG, "Connected to MOBILE and setting_auto_mobile is true. Starting Service..");
                 startService();
             }
         }else {
-            if (!(connectionType == ConnectionType.WIFI && autoWifi) && !(connectionType == ConnectionType.MOBILE && autoMobile) && Preferences.getBoolean(this, "setting_disable_netchange", false) && serviceRunning) {
-                LogFactory.writeMessage(this, LOG_TAG,
+            if (!(connectionType == ConnectionType.WIFI && autoWifi) && !(connectionType == ConnectionType.MOBILE && autoMobile) && Preferences.getBoolean(context, "setting_disable_netchange", false) && serviceRunning) {
+                LogFactory.writeMessage(context, LOG_TAG,
                         "Not on WIFI or MOBILE and setting_disable_netchange is true. Destroying DNSVPNService.",
-                        i =DNSVpnService.getDestroyIntent(this, getString(R.string.reason_stop_network_change)));
-                startService(i);
+                        i =DNSVpnService.getDestroyIntent(context, context.getString(R.string.reason_stop_network_change)));
+                context.startService(i);
             }
         }
     }
