@@ -13,8 +13,8 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.ParcelFileDescriptor;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.VPNServiceArgument;
@@ -122,7 +122,7 @@ public class DNSVpnService extends VpnService {
         LogFactory.writeMessage(this, LOG_TAG, "Clearing Variables");
         if(stopReason != null && notificationManager != null && Preferences.getBoolean(this, "notification_on_stop", false)){
             String reasonText = getString(R.string.notification_reason_stopped).replace("[reason]", stopReason);
-            notificationManager.notify(NOTIFICATION_ID+1, new NotificationCompat.Builder(this, createNotificationChannel(false)).setAutoCancel(true)
+            notificationManager.notify(NOTIFICATION_ID+1, new NotificationCompat.Builder(this, API.createNotificationChannel(this, false)).setAutoCancel(true)
                     .setOngoing(false).setContentText(reasonText).setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText(reasonText))
                     .setSmallIcon(R.drawable.ic_stat_small_icon).setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0))
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT).build());
@@ -199,8 +199,8 @@ public class DNSVpnService extends VpnService {
         boolean hideIcon = Preferences.getBoolean(this, "hide_notification_icon", false);
         notificationBuilder.setPriority(hideIcon ?
                 NotificationCompat.PRIORITY_MIN : NotificationCompat.PRIORITY_LOW);
-        notificationBuilder.setChannelId(createNotificationChannel(true));
-        LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Updating notification");
+        notificationBuilder.setChannelId(API.createNotificationChannel(this, true));
+        LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification was posted");
         startForeground(NOTIFICATION_ID, notificationBuilder.build());
     }
 
@@ -208,7 +208,7 @@ public class DNSVpnService extends VpnService {
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (notificationBuilder == null) {
             LogFactory.writeMessage(this,new String[]{LOG_TAG, "[NOTIFICATION]"} , "Initiating Notification");
-            notificationBuilder = new NotificationCompat.Builder(this, createNotificationChannel(true));
+            notificationBuilder = new NotificationCompat.Builder(this, API.createNotificationChannel(this, true));
             notificationBuilder.setSmallIcon(R.drawable.ic_stat_small_icon); //TODO Update Image
             notificationBuilder.setContentTitle(getString(R.string.app_name));
             notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0));
@@ -219,28 +219,6 @@ public class DNSVpnService extends VpnService {
             notificationBuilder.addAction(new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_stop, getString(R.string.action_stop),null));
             notificationBuilder.setColorized(false);
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification created (Not yet posted)");
-        }
-    }
-
-    private String createNotificationChannel(boolean allowHiding){
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            if(allowHiding && Preferences.getBoolean(this, "hide_notification_icon", false)){
-                NotificationChannel channel = new NotificationChannel("noIconChannel", getString(R.string.notification_channel_hiddenicon), NotificationManager.IMPORTANCE_MIN);
-                channel.enableLights(false);
-                channel.enableVibration(false);
-                channel.setDescription(getString(R.string.notification_channel_hiddenicon_description));
-                notificationManager.createNotificationChannel(channel);
-                return "noIconChannel";
-            }else{
-                NotificationChannel channel = new NotificationChannel("defaultchannel", getString(R.string.notification_channel_default), NotificationManager.IMPORTANCE_LOW);
-                channel.enableLights(false);
-                channel.enableVibration(false);
-                channel.setDescription(getString(R.string.notification_channel_default_description));
-                notificationManager.createNotificationChannel(channel);
-                return "defaultchannel";
-            }
-        }else{
-            return "defaultchannel";
         }
     }
 

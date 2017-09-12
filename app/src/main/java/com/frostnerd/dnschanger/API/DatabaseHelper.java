@@ -41,7 +41,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "data";
     private static final int DATABASE_VERSION = 1;
     private SQLiteDatabase currentDB;
-    private boolean isCreating;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -66,7 +65,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         currentDB = db;
-        isCreating = true;
         db.execSQL("CREATE TABLE IF NOT EXISTS Shortcuts(Name TEXT, dns1 TEXT, dns2 TEXT, dns1v6 TEXT, dns2v6 TEXT)");
         db.execSQL("CREATE TABLE IF NOT EXISTS DNSEntries(ID INTEGER PRIMARY KEY AUTOINCREMENT,Name TEXT, dns1 TEXT, dns2 TEXT, dns1v6 TEXT, dns2v6 TEXT,description TEXT DEFAULT '', CustomEntry BOOLEAN DEFAULT 0)");
         for(DNSEntry entry: defaultDNSEntries){
@@ -78,7 +76,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Preferences.put(context, "dnsentries_description", true);
         Preferences.put(context, "dnsentries_created", true);
         Preferences.put(context, "legacy_backup", true);
-        isCreating = false;
         currentDB = null;
     }
 
@@ -89,7 +86,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public SQLiteDatabase getWritableDatabase() {
-        if(isCreating && currentDB != null){
+        if(currentDB != null){
             return currentDB;
         }
         return super.getWritableDatabase();
@@ -97,7 +94,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public SQLiteDatabase getReadableDatabase() {
-        if(isCreating && currentDB != null){
+        if(currentDB != null){
             return currentDB;
         }
         return super.getReadableDatabase();
@@ -106,7 +103,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
-        isCreating = true;
         currentDB = db;
         if (!Preferences.getBoolean(context, "dnsentries_created", false)) {
             db.execSQL("DELETE FROM DNSEntries");
@@ -122,7 +118,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE DNSEntries ADD COLUMN description TEXT DEFAULT ''");
             Preferences.put(context, "dnsentries_description", true);
         }
-        isCreating = false;
         currentDB = null;
     }
 
