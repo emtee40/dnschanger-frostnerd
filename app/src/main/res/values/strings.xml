@@ -235,5 +235,4 @@
     <string name="notification_channel_hiddenicon_description">This channel shows no icon in the notification bar</string>
     <string name="notification_ipv6_text">Go to the settings if you want to enable IPv6.</string>
     <string name="mail_debug_text">Write a small message describing why you send the log files</string>
-    <string name="shared_user_label" translatable="false">Frostnerd Apps</string>
 </resources>
