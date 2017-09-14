@@ -13,12 +13,12 @@
     <permission
         android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
         android:protectionLevel="signature" />
-    <!--<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
 
-    <!--<uses-permission
-        android:name="android.permission.PACKAGE_USAGE_STATS"
-        tools:ignore="ProtectedPermissions" />-->
+    <permission
+        android:name="com.frostnerd.dnschanger.ACCESS_DATA"
+        android:description="@string/permissions_description_access_data"
+        android:label="@string/permissions_label_access_data"
+        android:protectionLevel="signature" />
 
     <uses-feature
         android:name="android.hardware.touchscreen"
@@ -127,6 +127,15 @@
             </intent-filter>
         </service>
         <service android:name=".services.ConnectivityBackgroundService" />
+        <service
+            android:name=".services.DataService"
+            android:exported="true"
+            android:permission="com.frostnerd.dnschanger.ACCESS_DATA"
+            android:process=":exported" >
+            <intent-filter>
+                <action android:name="com.frostnerd.dnschanger.services.DataService"/>
+            </intent-filter>
+        </service>
         <service
             android:name=".services.jobs.ConnectivityJobAPI21"
             android:label="Connectivity Service"
