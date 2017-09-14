@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.frostnerd.dnschanger"
+    android:sharedUserId="frostnerd_apps"
+    android:sharedUserLabel="@string/shared_user_label"
     android:installLocation="internalOnly">
 
     <uses-permission android:name="android.permission.INTERNET" />
