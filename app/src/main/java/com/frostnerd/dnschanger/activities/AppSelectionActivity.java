@@ -120,7 +120,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        listAdapter.filter(newText);
+        if(listAdapter != null && findViewById(R.id.progress).getVisibility() != View.VISIBLE)listAdapter.filter(newText);
         return true;
     }
 
