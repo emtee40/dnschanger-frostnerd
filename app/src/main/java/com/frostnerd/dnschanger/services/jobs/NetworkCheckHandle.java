@@ -36,6 +36,7 @@ public class NetworkCheckHandle {
     private ConnectivityManager connectivityManager;
     private Context context;
     private final String LOG_TAG;
+    private boolean running = true;
 
     public NetworkCheckHandle(Context context, String logTag){
         this.context = context;
@@ -86,6 +87,7 @@ public class NetworkCheckHandle {
     }
 
     public void stop(){
+        running = false;
         if(networkCallback != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)connectivityManager.unregisterNetworkCallback(networkCallback);
         else if(connectivityChange != null)context.unregisterReceiver(connectivityChange);
         connectivityManager = null;
@@ -122,7 +124,7 @@ public class NetworkCheckHandle {
     }
 
     private void handleConnectivityChange(boolean connected, ConnectionType connectionType){
-        if(Preferences.getBoolean(context, "everything_disabled", false))return;
+        if(Preferences.getBoolean(context, "everything_disabled", false) || !running)return;
         boolean serviceRunning = API.isServiceRunning(context),
                 serviceThreadRunning = API.isServiceThreadRunning(),
                 autoWifi = Preferences.getBoolean(context, "setting_auto_wifi", false),
