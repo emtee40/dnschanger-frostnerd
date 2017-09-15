@@ -196,6 +196,7 @@ public class DNSVpnService extends VpnService {
             notificationBuilder.setStyle(new NotificationCompat.BigTextStyle().setSummaryText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused) + excludedAppsText));
             notificationBuilder.setContentText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused));
         }
+        notificationBuilder.setUsesChronometer(threadRunning);
         boolean hideIcon = Preferences.getBoolean(this, "hide_notification_icon", false);
         notificationBuilder.setPriority(hideIcon ?
                 NotificationCompat.PRIORITY_MIN : NotificationCompat.PRIORITY_LOW);
