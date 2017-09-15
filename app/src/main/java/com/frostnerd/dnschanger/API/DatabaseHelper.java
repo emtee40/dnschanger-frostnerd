@@ -122,7 +122,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public synchronized void saveDNSEntry(DNSEntry entry){
-        ContentValues values = new ContentValues(5);
+        ContentValues values = new ContentValues(7);
         values.put("Name", entry.getName());
         values.put("dns1", entry.getDns1());
         values.put("dns2", entry.getDns2());
@@ -131,6 +131,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("description", entry.getDescription());
         values.put("CustomEntry", entry.isCustomEntry());
         getWritableDatabase().insert("DNSEntries", null, values);
+    }
+
+    public synchronized void editEntry(DNSEntry entry){
+        ContentValues values = new ContentValues(7);
+        values.put("Name", entry.getName());
+        values.put("dns1", entry.getDns1());
+        values.put("dns2", entry.getDns2());
+        values.put("dns1v6", entry.getDns1V6());
+        values.put("dns2v6", entry.getDns2V6());
+        values.put("description", entry.getDescription());
+        values.put("CustomEntry", entry.isCustomEntry());
+        getWritableDatabase().update("DNSEntries", values, "ID=" + entry.getID(), null);
     }
 
     public synchronized void removeDNSEntry(int ID){

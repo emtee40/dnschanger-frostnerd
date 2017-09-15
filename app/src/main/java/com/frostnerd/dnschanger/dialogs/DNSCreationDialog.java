@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.frostnerd.dnschanger.API.API;
+import com.frostnerd.dnschanger.API.DNSEntry;
 import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.services.DNSVpnService;
@@ -37,19 +38,42 @@ public class DNSCreationDialog extends AlertDialog {
     private MaterialEditText met_name, met_dns1, met_dns2;
     private Vibrator vibrator;
     private boolean settingV6;
+    private Mode mode;
+    private DNSEntry editedEntry;
+
+    public DNSCreationDialog(@NonNull Context context, @NonNull final OnEditingFinishedListener listener, final DNSEntry entry) {
+        this(context, new OnCreationFinishedListener() {
+            @Override
+            public void onCreationFinished(String name, String dns1, String dns2, String dns1V6, String dns2V6) {
+                DNSEntry newEntry = new DNSEntry(entry.getID(), name, dns1, dns2, dns1V6, dns2V6, entry.getDescription(), entry.isCustomEntry());
+                listener.editingFinished(newEntry);
+            }
+        });
+        mode = Mode.EDITING;
+        editedEntry = entry;
+        setTitle(R.string.edit);
+        dns1 = entry.getDns1();
+        dns2 = entry.getDns2();
+        dns1V6 = entry.getDns1V6();
+        dns2V6 = entry.getDns2V6();
+        ed_dns1.setText(settingV6 ? dns1V6 : dns1);
+        ed_dns2.setText(settingV6 ? dns2V6 : dns2);
+        ed_name.setText(entry.getName());
+    }
 
     public DNSCreationDialog(@NonNull Context context, @NonNull final OnCreationFinishedListener listener) {
         super(context, ThemeHandler.getDialogTheme(context));
+        this.mode = Mode.CREATION;
         setView(view = LayoutInflater.from(context).inflate(R.layout.dialog_create_dns_entry, null, false));
         final boolean ipv4Enabled = API.isIPv4Enabled(context),
                 ipv6Enabled = !ipv4Enabled || API.isIPv6Enabled(context);
         settingV6 = !ipv4Enabled;
-        ed_dns1 = (EditText) view.findViewById(R.id.dns1);
-        ed_dns2 = (EditText) view.findViewById(R.id.dns2);
-        ed_name = (EditText) view.findViewById(R.id.name);
-        met_name = (MaterialEditText) view.findViewById(R.id.met_name);
-        met_dns1 = (MaterialEditText) view.findViewById(R.id.met_dns1);
-        met_dns2 = (MaterialEditText) view.findViewById(R.id.met_dns2);
+        ed_dns1 = view.findViewById(R.id.dns1);
+        ed_dns2 = view.findViewById(R.id.dns2);
+        ed_name = view.findViewById(R.id.name);
+        met_name = view.findViewById(R.id.met_name);
+        met_dns1 = view.findViewById(R.id.met_dns1);
+        met_dns2 = view.findViewById(R.id.met_dns2);
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
         ed_dns1.setText(settingV6 ? dns1V6 : dns1);
@@ -143,5 +167,13 @@ public class DNSCreationDialog extends AlertDialog {
 
     public static interface OnCreationFinishedListener {
         public void onCreationFinished(String name, String dns1, String dns2, String dns1V6, String dns2V6);
+    }
+
+    public static interface OnEditingFinishedListener{
+        public void editingFinished(DNSEntry entry);
+    }
+
+    public enum Mode{
+        CREATION,EDITING
     }
 }

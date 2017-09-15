@@ -178,7 +178,7 @@
     <string name="summary_enable_app_shortcuts">Enables app shortcuts. Long click on the apps shortcut in the launcher to open the menu</string>
     <string name="notification_x_whitelisted">[x] apps whitelisted</string>
     <string name="notification_x_blacklisted">[x] apps blacklisted</string>
-    <string name="default_dns_explain_delete">Long click on an entry to delete it. Click on additional entries to delete them as well.</string>
+    <string name="default_dns_explain_delete">Long click on an entry to delete or edit it. Click on additional entries to delete them as well.</string>
     <string name="summary_enable_ipv4">Enable IPv4. This allows to provide ipv4 addresses to use as dns servers</string>
     <string name="title_enable_ipv4">Enable IPv4</string>
     <string name="warning_disabling_v4">Most Android versions can\'t access the internet anymore when DNS Changer is running and no IPv4 address is provided. You\'ll have to try for your device though.</string>
@@ -237,4 +237,5 @@
     <string name="mail_debug_text">Write a small message describing why you send the log files</string>
     <string name="permissions_label_access_data">Access data</string>
     <string name="permissions_description_access_data">Allows the app to access data of DNS Changer in general</string>
+    <string name="edit">Edit</string>
 </resources>

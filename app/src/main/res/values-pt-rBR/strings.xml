@@ -171,7 +171,7 @@
     <string name="summary_enable_app_shortcuts">Habilitar atalhos. Pressione o atalho de aplicativos do iniciador para abrir o menu</string>
     <string name="notification_x_whitelisted">[x] apps na lista branca</string>
     <string name="notification_x_blacklisted">[x] apps na lista negra</string>
-    <string name="default_dns_explain_delete">Pressione uma entrada para excluí-la. Toque em entradas adicionais para excluí-las também.</string>
+    <string name="default_dns_explain_delete">Pressione uma entrada para excluí-la ou editá-la. Toque em entradas adicionais para excluí-las também.</string>
     <string name="summary_enable_ipv4">Habilitar IPv4. Isto permite fornecer endereços IPv4 para usar como servidores DNS.</string>
     <string name="title_enable_ipv4">Habilitar IPv4</string>
     <string name="warning_disabling_v4">Most Android versions can\'t access the internet anymore when DNS Changer is running and no IPv4 address is provided. You\'ll have to try for your device though.</string>
@@ -228,4 +228,5 @@
     <string name="mail_debug_text">Escreva uma pequena mensagem descrevendo por que você envia os arquivos de log</string>
     <string name="permissions_label_access_data">Dados de acesso</string>
     <string name="permissions_description_access_data">Permite que o aplicativo acesse dados do DNS Changer em geral</string>
+    <string name="edit">Editar</string>
 </resources>
