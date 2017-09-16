@@ -142,6 +142,7 @@ public class MainFragment extends Fragment {
         startStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(getActivity() == null)return;
                 final Intent i = VpnService.prepare(getActivity());
                 LogFactory.writeMessage(getActivity(), LOG_TAG, "Startbutton clicked. Configuring VPN if needed");
                 if (i != null){
