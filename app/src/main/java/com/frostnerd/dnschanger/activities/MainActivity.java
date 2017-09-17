@@ -86,6 +86,7 @@ public class MainActivity extends NavigationDrawerActivity {
             snackbar.show();
         }
     };
+    public static MainActivity currentContext;
 
     @Override
     protected void onResume() {
@@ -102,6 +103,7 @@ public class MainActivity extends NavigationDrawerActivity {
         backgroundColor = ThemeHandler.resolveThemeAttribute(getTheme(), android.R.attr.colorBackground);
         textColor = ThemeHandler.resolveThemeAttribute(getTheme(), android.R.attr.textColor);
         super.onCreate(savedInstanceState);
+        currentContext = this;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -189,6 +191,7 @@ public class MainActivity extends NavigationDrawerActivity {
         if(defaultDnsDialog != null && defaultDnsDialog.isShowing())defaultDnsDialog.cancel();
         unregisterReceiver(shortcutReceiver);
         super.onDestroy();
+        currentContext = null;
     }
 
     @NonNull
