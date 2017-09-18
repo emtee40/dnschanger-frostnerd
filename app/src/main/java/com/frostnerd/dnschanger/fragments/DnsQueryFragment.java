@@ -1,5 +1,6 @@
 package com.frostnerd.dnschanger.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.adapters.QueryResultAdapter;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.networking.NetworkUtil;
@@ -86,8 +88,8 @@ public class DnsQueryFragment extends Fragment {
                 runQuery(edQuery.getText().toString() + ".");
             }
         });
-        resultList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        infoText.setText(getString(R.string.query_destination_info).replace("[x]", API.getDNS1(getActivity())));
+        resultList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        infoText.setText(getString(R.string.query_destination_info).replace("[x]", API.getDNS1(getContext())));
         return contentView;
     }
 
@@ -98,7 +100,7 @@ public class DnsQueryFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    Resolver resolver = new SimpleResolver(API.getDNS1(getActivity()));
+                    Resolver resolver = new SimpleResolver(API.getDNS1(getContext()));
                     resolver.setTCP(true);
                     Name name = Name.fromString(adjustedQuery);
                     Record record = Record.newRecord(name, Type.ANY, DClass.IN);
@@ -108,8 +110,8 @@ public class DnsQueryFragment extends Fragment {
                             authority = response.getSectionRRsets(2),
                             additional = response.getSectionRRsets(3);
                     if(answer == null)throw new IOException("RESULT NULL");
-                    if(getActivity() != null){
-                        final QueryResultAdapter adapter = new QueryResultAdapter(getActivity(), answer, authority, additional);
+                    if(getContext() != null){
+                        final QueryResultAdapter adapter = new QueryResultAdapter(getContext(), answer, authority, additional);
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -120,7 +122,7 @@ public class DnsQueryFragment extends Fragment {
                     }
                 } catch (final IOException e) {
                     e.printStackTrace();
-                    if(getActivity() != null)getActivity().runOnUiThread(new Runnable() {
+                    if(getContext() != null)getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             handleException(e);
@@ -145,7 +147,7 @@ public class DnsQueryFragment extends Fragment {
 
     private void resetElements(){
         if(showingError){
-            infoText.setText(getString(R.string.query_destination_info).replace("[x]", API.getDNS1(getActivity())));
+            infoText.setText(getString(R.string.query_destination_info).replace("[x]", API.getDNS1(getContext())));
             showingError = false;
         }
     }
@@ -157,5 +159,11 @@ public class DnsQueryFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public Context getContext() {
+        Context context = super.getContext();
+        return context == null ? MainActivity.currentContext : context;
     }
 }

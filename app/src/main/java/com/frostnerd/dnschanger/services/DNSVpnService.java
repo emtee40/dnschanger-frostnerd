@@ -61,7 +61,7 @@ public class DNSVpnService extends VpnService {
     private NotificationManager notificationManager;
     private final int NOTIFICATION_ID = 112;
     private String dns1,dns2,dns1_v6,dns2_v6, stopReason, currentDNS1, currentDNS2, currentDNS1V6, currentDNS2V6;
-    private Vector<Runnable> afterThreadStop = new Vector<>();
+    private final Vector<Runnable> afterThreadStop = new Vector<>();
     private boolean fixedDNS = false, startedWithTasker = false, autoPaused = false, runThread = true, variablesCleared = false, threadInWhile = false;
     private BroadcastReceiver stateRequestReceiver = new BroadcastReceiver() {
         @Override
@@ -139,8 +139,9 @@ public class DNSVpnService extends VpnService {
         autoPauseApps = null;
         uncaughtExceptionHandler = null;
         threadRunning = false;
-        afterThreadStop.clear();
-        afterThreadStop = null;
+        synchronized (afterThreadStop){
+            afterThreadStop.clear();
+        }
         LogFactory.writeMessage(this, LOG_TAG, "Variables cleared");
         if(stopSelf){
             stopForeground(true);
@@ -422,7 +423,7 @@ public class DNSVpnService extends VpnService {
                 threadRunning = true;
                 LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Starting Thread (run)");
                 runThread = true;
-                Thread.setDefaultUncaughtExceptionHandler(((DNSChanger)getApplication()).getExceptionHandler());
+                Thread.setDefaultUncaughtExceptionHandler(((DNSChanger)getApplicationContext()).getExceptionHandler());
                 if(notificationBuilder != null) notificationBuilder.setWhen(System.currentTimeMillis());
                 boolean ipv6Enabled = API.isIPv6Enabled(DNSVpnService.this),
                         ipv4Enabled = API.isIPv4Enabled(DNSVpnService.this);
@@ -521,8 +522,10 @@ public class DNSVpnService extends VpnService {
                     updateNotification();
                     broadcastCurrentState(false);
                     if(afterThreadStop != null && serviceRunning){
-                        for(Runnable r: afterThreadStop)r.run();
-                        afterThreadStop.clear();
+                        synchronized (afterThreadStop){
+                            for(Runnable r: afterThreadStop)r.run();
+                            afterThreadStop.clear();
+                        }
                     }
                     vpnThread = null;
                     LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Done with finally block");

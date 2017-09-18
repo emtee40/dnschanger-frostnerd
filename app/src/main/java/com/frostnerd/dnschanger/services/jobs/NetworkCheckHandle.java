@@ -47,14 +47,18 @@ public class NetworkCheckHandle {
             connectivityManager.registerNetworkCallback(builder.build(), networkCallback = new ConnectivityManager.NetworkCallback(){
                 @Override
                 public void onAvailable(Network network) {
-                    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-                    handleConnectivityChange(activeNetwork);
+                    if(running){
+                        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+                        handleConnectivityChange(activeNetwork);
+                    }
                 }
 
                 @Override
                 public void onLost(Network network) {
-                    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-                    handleConnectivityChange(activeNetwork);
+                    if(running){
+                        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+                        handleConnectivityChange(activeNetwork);
+                    }
                 }
             });
         }else{
@@ -90,7 +94,7 @@ public class NetworkCheckHandle {
         running = false;
         if(networkCallback != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)connectivityManager.unregisterNetworkCallback(networkCallback);
         else if(connectivityChange != null)context.unregisterReceiver(connectivityChange);
-        connectivityManager = null;
+        connectivityManager = null;networkCallback = null;
         context = null;
     }
 

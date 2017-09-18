@@ -86,6 +86,7 @@ public class MainActivity extends NavigationDrawerActivity {
             snackbar.show();
         }
     };
+    public static MainActivity currentContext;
 
     @Override
     protected void onResume() {
@@ -102,6 +103,7 @@ public class MainActivity extends NavigationDrawerActivity {
         backgroundColor = ThemeHandler.resolveThemeAttribute(getTheme(), android.R.attr.colorBackground);
         textColor = ThemeHandler.resolveThemeAttribute(getTheme(), android.R.attr.textColor);
         super.onCreate(savedInstanceState);
+        currentContext = this;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -109,6 +111,7 @@ public class MainActivity extends NavigationDrawerActivity {
             }
         }).start();
         API.updateAppShortcuts(this);
+        API.runBackgroundConnectivityCheck(this);
         Preferences.put(this, "first_run", false);
         if(Preferences.getBoolean(this, "first_run", true)) Preferences.put(this, "excluded_apps", new ArraySet<>(Arrays.asList(getResources().getStringArray(R.array.default_blacklist))));
         if(Preferences.getBoolean(this, "first_run", true) && API.isTaskerInstalled(this)){
@@ -189,6 +192,7 @@ public class MainActivity extends NavigationDrawerActivity {
         if(defaultDnsDialog != null && defaultDnsDialog.isShowing())defaultDnsDialog.cancel();
         unregisterReceiver(shortcutReceiver);
         super.onDestroy();
+        currentContext = null;
     }
 
     @NonNull
