@@ -639,19 +639,19 @@ public class DNSVpnService extends VpnService {
     }
 
     public String getCurrentDNS1() {
-        return !threadRunning || currentDNS1 == null ? dns1 : currentDNS1;
+        return !threadRunning || currentDNS1 == null ? (dns1 == null ? "" : dns1) : currentDNS1;
     }
 
     public String getCurrentDNS2() {
-        return !threadRunning || currentDNS2 == null ? dns2 : currentDNS2;
+        return !threadRunning || currentDNS2 == null ? (dns2 == null ? "" : dns2) : currentDNS2;
     }
 
     public String getCurrentDNS1V6() {
-        return !threadRunning || currentDNS1V6 == null? dns1_v6 : currentDNS1V6;
+        return !threadRunning || currentDNS1V6 == null? (dns1_v6 == null ? "" : dns1_v6) : currentDNS1V6;
     }
 
     public String getCurrentDNS2V6() {
-        return !threadRunning || currentDNS2V6 == null ? dns2_v6 : currentDNS2V6;
+        return !threadRunning || currentDNS2V6 == null ? (dns2_v6 == null ? "" : dns2_v6) : currentDNS2V6;
     }
     public boolean startedFromShortcut(){
         return fixedDNS && !startedWithTasker;
