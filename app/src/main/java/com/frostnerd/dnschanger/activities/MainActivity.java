@@ -111,6 +111,7 @@ public class MainActivity extends NavigationDrawerActivity {
             }
         }).start();
         API.updateAppShortcuts(this);
+        API.runBackgroundConnectivityCheck(this);
         Preferences.put(this, "first_run", false);
         if(Preferences.getBoolean(this, "first_run", true)) Preferences.put(this, "excluded_apps", new ArraySet<>(Arrays.asList(getResources().getStringArray(R.array.default_blacklist))));
         if(Preferences.getBoolean(this, "first_run", true) && API.isTaskerInstalled(this)){
