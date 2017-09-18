@@ -112,7 +112,7 @@ public class DnsQueryFragment extends Fragment {
                     if(answer == null)throw new IOException("RESULT NULL");
                     if(getContext() != null){
                         final QueryResultAdapter adapter = new QueryResultAdapter(getContext(), answer, authority, additional);
-                        getActivity().runOnUiThread(new Runnable() {
+                        API.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 resultList.setAdapter(adapter);
@@ -122,7 +122,7 @@ public class DnsQueryFragment extends Fragment {
                     }
                 } catch (final IOException e) {
                     e.printStackTrace();
-                    if(getContext() != null)getActivity().runOnUiThread(new Runnable() {
+                    if(getContext() != null)API.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             handleException(e);

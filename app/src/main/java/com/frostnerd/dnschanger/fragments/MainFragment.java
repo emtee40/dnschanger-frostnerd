@@ -122,7 +122,7 @@ public class MainFragment extends Fragment {
         settingV6 = !API.isIPv4Enabled(getContext()) || (API.isIPv6Enabled(getContext()) && settingV6);
         setHasOptionsMenu(true);
         boolean vertical = getResources().getConfiguration().orientation == OrientationHelper.VERTICAL;
-        LogFactory.writeMessage(getContext(), LOG_TAG, "Created Activity", getActivity().getIntent());
+        LogFactory.writeMessage(getContext(), LOG_TAG, "Created Activity", API.getActivity(this).getIntent());
         LogFactory.writeMessage(getContext(), LOG_TAG, "Setting ContentView");
         met_dns1 = (MaterialEditText) findViewById(R.id.met_dns1);
         met_dns2 = (MaterialEditText) findViewById(R.id.met_dns2);
@@ -251,9 +251,9 @@ public class MainFragment extends Fragment {
             dns2.setInputType(InputType.TYPE_CLASS_TEXT);
         }
         ((AppCompatActivity)getContext()).getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
-        getActivity().invalidateOptionsMenu();
+        API.getActivity(this).invalidateOptionsMenu();
         doStopVPN = true;
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        API.getActivity(this).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     @Override
@@ -337,7 +337,7 @@ public class MainFragment extends Fragment {
         if(item.getItemId() == R.id.menu_switch_ip_version){
             doStopVPN = false;
             settingV6 = !settingV6;
-            getActivity().invalidateOptionsMenu();
+            API.getActivity(this).invalidateOptionsMenu();
             dns1.setText(Preferences.getString(getContext(),settingV6 ? "dns1-v6" : "dns1", settingV6 ? "2001:4860:4860::8888" : "8.8.8.8"));
             dns2.setText(Preferences.getString(getContext(),settingV6 ? "dns2-v6" : "dns2", settingV6 ? "2001:4860:4860::8844" : "8.8.4.4"));
             dns1.setInputType(InputType.TYPE_CLASS_TEXT);

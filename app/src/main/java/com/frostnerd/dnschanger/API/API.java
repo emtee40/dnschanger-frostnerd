@@ -24,10 +24,13 @@ import android.service.quicksettings.TileService;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.TypedValue;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.activities.ShortcutActivity;
 import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
@@ -466,6 +469,19 @@ public final class API {
             LogFactory.writeMessage(context, LOG_TAG, "Starting Service (API below 21)");
             context.startService(new Intent(context, ConnectivityBackgroundService.class));
         }
+    }
+
+    /**
+     * This Method is used instead of getActivity() in a fragment because getActivity() returns null in some rare cases
+     * @param fragment
+     * @return
+     */
+    public static FragmentActivity getActivity(Fragment fragment){
+        if(fragment.getActivity() == null){
+            if(fragment.getContext() != null && fragment.getContext() instanceof FragmentActivity){
+                return (FragmentActivity)fragment.getContext();
+            }else return MainActivity.currentContext;
+        }else return fragment.getActivity();
     }
 
     public interface ConnectivityCheckCallback{

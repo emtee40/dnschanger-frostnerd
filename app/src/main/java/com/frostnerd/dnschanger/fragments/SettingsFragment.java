@@ -301,7 +301,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                         Preferences.flushBuffer();
                         API.deleteDatabase(getContext());
                         LogFactory.writeMessage(getContext(), LOG_TAG, "Reset finished.");
-                        getActivity().finish();
+                        API.getActivity(SettingsFragment.this).finish();
                     }
                 }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
@@ -320,7 +320,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                         dialogTheme = val.equalsIgnoreCase("1") ? R.style.DialogTheme : (val.equalsIgnoreCase("2") ? R.style.DialogTheme_Mono : R.style.DialogTheme_Dark);
                 ThemeHandler.updateAppTheme(getContext(), theme);
                 ThemeHandler.updateDialogTheme(getContext(), dialogTheme);
-                IntentUtil.restartActivity(getActivity());
+                IntentUtil.restartActivity(API.getActivity(SettingsFragment.this));
                 return true;
             }
         });
@@ -406,7 +406,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                if(awaitingPinChange && !DesignUtil.hasOpenDialogs(getActivity())){
+                                if(awaitingPinChange && !DesignUtil.hasOpenDialogs(API.getActivity(SettingsFragment.this))){
                                     ((CheckBoxPreference)preference).setChecked(false);
                                     awaitingPinChange = false;
                                 }
@@ -552,7 +552,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
 
         SearchManager searchManager = (SearchManager)getContext().getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(API.getActivity(this).getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
         searchView.setOnQueryTextListener(this);
     }
