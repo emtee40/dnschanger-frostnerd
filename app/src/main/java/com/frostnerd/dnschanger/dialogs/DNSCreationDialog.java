@@ -16,10 +16,8 @@ import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.DNSEntry;
 import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.networking.NetworkUtil;
-import com.frostnerd.utils.preferences.Preferences;
 
 /**
  * Copyright Daniel Wolf 2017

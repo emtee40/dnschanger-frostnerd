@@ -12,8 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
-import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.services.DNSVpnService;
 
 /**
  * Copyright Daniel Wolf 2017

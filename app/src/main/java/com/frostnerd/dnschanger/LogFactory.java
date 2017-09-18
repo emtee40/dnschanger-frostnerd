@@ -2,9 +2,7 @@ package com.frostnerd.dnschanger;
 
 import android.content.Context;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Build;
-import android.util.Log;
 
 import com.frostnerd.utils.preferences.Preferences;
 
@@ -26,8 +24,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 

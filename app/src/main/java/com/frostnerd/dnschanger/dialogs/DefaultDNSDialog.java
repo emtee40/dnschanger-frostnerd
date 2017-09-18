@@ -15,7 +15,6 @@ import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.DNSEntry;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.utils.networking.NetworkUtil;
-import com.frostnerd.utils.preferences.Preferences;
 
 import java.util.ArrayList;
 import java.util.List;
