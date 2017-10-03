@@ -99,6 +99,7 @@ public class NetworkCheckHandle {
     }
 
     private void startService() {
+        if(!running || context == null)return;
         LogFactory.writeMessage(context, LOG_TAG, "Trying to start DNSVPNService");
         Intent i = VpnService.prepare(context);
         LogFactory.writeMessage(context, LOG_TAG, "VPNService Prepare Intent", i);
