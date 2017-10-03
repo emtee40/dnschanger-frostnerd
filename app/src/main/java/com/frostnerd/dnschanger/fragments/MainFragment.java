@@ -20,6 +20,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.OrientationHelper;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.TypedValue;
@@ -36,6 +37,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.API.API;
+import com.frostnerd.dnschanger.API.CharacterTextFilter;
 import com.frostnerd.dnschanger.API.DNSEntry;
 import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
@@ -45,6 +47,8 @@ import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
+
+import java.util.regex.Pattern;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -229,6 +233,24 @@ public class MainFragment extends Fragment {
         met_dns2.setLabelText(label2);
     }
 
+    private void setEditTextState(){
+        if(!settingV6){
+            InputFilter filter = new CharacterTextFilter(Pattern.compile("[0-9.]"));
+            dns1.setFilters(new InputFilter[]{filter});
+            dns2.setFilters(new InputFilter[]{filter});
+            dns1.setText(Preferences.getString(getContext(), "dns1", "8.8.8.8"));
+            dns2.setText(Preferences.getString(getContext(), "dns2", "8.8.4.4"));
+        }else{
+            InputFilter filter = new CharacterTextFilter(Pattern.compile("[0-9.:a-f]"));
+            dns1.setFilters(new InputFilter[]{filter});
+            dns2.setFilters(new InputFilter[]{filter});
+            dns1.setText(Preferences.getString(getContext(), "dns1-v6", "2001:4860:4860::8888"));
+            dns2.setText(Preferences.getString(getContext(), "dns2-v6", "2001:4860:4860::8844"));
+            dns1.setInputType(InputType.TYPE_CLASS_TEXT);
+            dns2.setInputType(InputType.TYPE_CLASS_TEXT);
+        }
+    }
+
     private View findViewById(@IdRes int id){
         return contentView.findViewById(id);
     }
@@ -255,15 +277,7 @@ public class MainFragment extends Fragment {
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(serviceStateReceiver, new IntentFilter(API.BROADCAST_SERVICE_STATUS_CHANGE));
         LocalBroadcastManager.getInstance(getContext()).sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATE_REQUEST));
         doStopVPN = false;
-        if(!settingV6){
-            dns1.setText(Preferences.getString(getContext(), "dns1", "8.8.8.8"));
-            dns2.setText(Preferences.getString(getContext(), "dns2", "8.8.4.4"));
-        }else{
-            dns1.setText(Preferences.getString(getContext(), "dns1-v6", "2001:4860:4860::8888"));
-            dns2.setText(Preferences.getString(getContext(), "dns2-v6", "2001:4860:4860::8844"));
-            dns1.setInputType(InputType.TYPE_CLASS_TEXT);
-            dns2.setInputType(InputType.TYPE_CLASS_TEXT);
-        }
+        setEditTextState();
         ((AppCompatActivity)getContext()).getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
         API.getActivity(this).invalidateOptionsMenu();
         doStopVPN = true;
@@ -352,10 +366,7 @@ public class MainFragment extends Fragment {
             doStopVPN = false;
             settingV6 = !settingV6;
             API.getActivity(this).invalidateOptionsMenu();
-            dns1.setText(Preferences.getString(getContext(),settingV6 ? "dns1-v6" : "dns1", settingV6 ? "2001:4860:4860::8888" : "8.8.8.8"));
-            dns2.setText(Preferences.getString(getContext(),settingV6 ? "dns2-v6" : "dns2", settingV6 ? "2001:4860:4860::8844" : "8.8.4.4"));
-            dns1.setInputType(InputType.TYPE_CLASS_TEXT);
-            dns2.setInputType(InputType.TYPE_CLASS_TEXT);
+            setEditTextState();
             ((AppCompatActivity)getContext()).getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
             doStopVPN = true;
         }
