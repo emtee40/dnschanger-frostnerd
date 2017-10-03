@@ -241,7 +241,7 @@ public class MainFragment extends Fragment {
             dns1.setText(Preferences.getString(getContext(), "dns1", "8.8.8.8"));
             dns2.setText(Preferences.getString(getContext(), "dns2", "8.8.4.4"));
         }else{
-            InputFilter filter = new CharacterTextFilter(Pattern.compile("[0-9.:a-f]"));
+            InputFilter filter = new CharacterTextFilter(Pattern.compile("[0-9:a-f]"));
             dns1.setFilters(new InputFilter[]{filter});
             dns2.setFilters(new InputFilter[]{filter});
             dns1.setText(Preferences.getString(getContext(), "dns1-v6", "2001:4860:4860::8888"));
