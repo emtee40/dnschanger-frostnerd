@@ -36,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.API.API;
+import com.frostnerd.dnschanger.API.DNSEntry;
 import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
@@ -179,6 +180,7 @@ public class MainFragment extends Fragment {
                     } else {
                         met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
                         Preferences.put(getContext(), settingV6 ? "dns1-v6" :"dns1", s.toString());
+                        setEditTextLabel();
                     }
                 }
             }
@@ -203,6 +205,7 @@ public class MainFragment extends Fragment {
                     } else {
                         met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
                         Preferences.put(getContext(), settingV6 ? "dns2-v6" : "dns2", s.toString());
+                        setEditTextLabel();
                     }
                 }
             }
@@ -212,7 +215,18 @@ public class MainFragment extends Fragment {
 
             }
         });
+        setEditTextLabel();
         LogFactory.writeMessage(getContext(), LOG_TAG, "Done with OnCreate");
+    }
+
+    private void setEditTextLabel(){
+        String label1 = "DNS 1", label2 = "DNS 2";
+        for(DNSEntry entry: API.getDBHelper(getContext()).getDNSEntries()){
+            if(entry.hasIP(dns1.getText().toString()))label1 = "DNS 1 (" + entry.getName() + ")";
+            if(entry.hasIP(dns2.getText().toString()))label2 = "DNS 2 (" + entry.getName() + ")";
+        }
+        met_dns1.setLabelText(label1);
+        met_dns2.setLabelText(label2);
     }
 
     private View findViewById(@IdRes int id){
