@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.frostnerd.utils.preferences.Preferences;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +21,6 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final List<DNSEntry> defaultDNSEntries = new ArrayList<>();
     private static final HashMap<String, DNSEntry> additionalDefaultEntries = new HashMap<>();
-    private Context context;
     static {
         defaultDNSEntries.add(new DNSEntry(0, "Google", "8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844", "",false));
         defaultDNSEntries.add(new DNSEntry(0, "OpenDNS", "208.67.222.222", "208.67.220.220", "2620:0:ccc::2", "2620:0:ccd::2", "",false));
@@ -44,17 +42,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = context;
-    }
-
-    public DatabaseHelper(Context context, List<DNSEntry> entries){
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        if(entries.size() != 0){
-            defaultDNSEntries.clear();
-            additionalDefaultEntries.clear();
-            defaultDNSEntries.addAll(entries);
-        }
-        this.context = context;
     }
 
     @Override
@@ -73,9 +60,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         for (String s : additionalDefaultEntries.keySet()) {
             saveDNSEntry(additionalDefaultEntries.get(s));
         }
-        Preferences.put(context, "dnsentries_description", true);
-        Preferences.put(context, "dnsentries_created", true);
-        Preferences.put(context, "legacy_backup", true);
         currentDB = null;
     }
 
@@ -98,27 +82,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return currentDB;
         }
         return super.getReadableDatabase();
-    }
-
-    @Override
-    public void onOpen(SQLiteDatabase db) {
-        super.onOpen(db);
-        currentDB = db;
-        if (!Preferences.getBoolean(context, "dnsentries_created", false)) {
-            db.execSQL("DELETE FROM DNSEntries");
-            for(DNSEntry entry: defaultDNSEntries){
-                saveDNSEntry(entry);
-            }
-            for (String s : additionalDefaultEntries.keySet()) {
-                saveDNSEntry(additionalDefaultEntries.get(s));
-            }
-            Preferences.put(context, "dnsentries_created", true);
-        }
-        if (!Preferences.getBoolean(context, "dnsentries_description", false)) {
-            db.execSQL("ALTER TABLE DNSEntries ADD COLUMN description TEXT DEFAULT ''");
-            Preferences.put(context, "dnsentries_description", true);
-        }
-        currentDB = null;
     }
 
     public synchronized void saveDNSEntry(DNSEntry entry){
