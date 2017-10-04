@@ -1,13 +1,22 @@
 package com.frostnerd.dnschanger.activities;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.KeyguardManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
+import android.os.CancellationSignal;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.ThemeHandler;
@@ -16,6 +25,7 @@ import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.utils.design.MaterialEditText;
+import com.frostnerd.utils.general.DesignUtil;
 import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.general.VariableChecker;
 import com.frostnerd.utils.preferences.Preferences;
@@ -35,6 +45,8 @@ public class PinActivity extends Activity {
     private String pin;
     private Vibrator vibrator;
     private static final String LOG_TAG = "[PinActivity]";
+    private ImageView fingerprintImage;
+    private Handler handler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,19 +69,20 @@ public class PinActivity extends Activity {
                 LogFactory.writeMessage(this, LOG_TAG, "We are doing something in the notification and pin for it is not enabled. Not asking for pin");
             } else if (!main && !Preferences.getBoolean(this, "pin_tile", false)) {
                 LogFactory.writeMessage(this, LOG_TAG, "We are doing something in the tiles and pin for it is not enabled. Not asking for pin");
-            }else if(!main && !Preferences.getBoolean(this, "pin_app_shortcut", false)){
+            } else if (!main && !Preferences.getBoolean(this, "pin_app_shortcut", false)) {
                 LogFactory.writeMessage(this, LOG_TAG, "We are doing something in an app shortcut and pin for it is not enabled. Not asking for pin");
             }
             continueToFollowing(main);
         }
         LogFactory.writeMessage(this, LOG_TAG, "Have to ask for pin.");
-        setContentView(R.layout.pin_dialog);
+        setContentView(R.layout.dialog_pin);
         LogFactory.writeMessage(this, LOG_TAG, "Content set");
         pin = Preferences.getString(this, "pin_value", "1234");
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         met = (MaterialEditText) findViewById(R.id.pin_dialog_met);
         pinInput = (EditText) findViewById(R.id.pin_dialog_pin);
-        if(!VariableChecker.isInteger(pin))pinInput.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        if (!VariableChecker.isInteger(pin))
+            pinInput.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         findViewById(R.id.pin_dialog_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +104,42 @@ public class PinActivity extends Activity {
                 }
             }
         });
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M && Preferences.getBoolean(this, "pin_fingerprint", false)) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) == PackageManager.PERMISSION_GRANTED){
+                FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
+                KeyguardManager keyguardManager = getSystemService(KeyguardManager.class);
+                fingerprintImage = findViewById(R.id.image);
+                if(fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints() && keyguardManager.isKeyguardSecure()) {
+                    handler = new Handler();
+                    final int color = ThemeHandler.getColor(this, android.R.attr.textColor, 0);
+                    fingerprintManager.authenticate(null, new CancellationSignal(), 0, new FingerprintManager.AuthenticationCallback() {
+                        @Override
+                        public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
+                            met.setIndicatorState(MaterialEditText.IndicatorState.CORRECT);
+                            continueToFollowing(main);
+                            fingerprintImage.setImageDrawable(DesignUtil.setDrawableColor
+                                    (DesignUtil.getDrawable(PinActivity.this, R.drawable.ic_fingerprint), Color.GREEN));
+                        }
+
+                        @Override
+                        public void onAuthenticationFailed() {
+                            met.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
+                            vibrator.vibrate(200);
+                            fingerprintImage.setImageDrawable(DesignUtil.setDrawableColor
+                                    (DesignUtil.getDrawable(PinActivity.this, R.drawable.ic_fingerprint), Color.RED));
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    met.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
+                                    fingerprintImage.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(PinActivity.this, R.drawable.ic_fingerprint), color));
+                                }
+                            }, 3500);
+                        }
+                    }, null);
+                    fingerprintImage.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_fingerprint), color));
+                }
+            }
+        }
         LogFactory.writeMessage(this, LOG_TAG, "Activity fully created.");
     }
 

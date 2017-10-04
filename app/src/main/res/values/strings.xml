@@ -250,4 +250,6 @@
         <item>You can now configure the WIFI names on which DNS Changer starts automatically</item>
         <item>Bugfixes</item>
     </string-array>
+    <string name="summary_pin_fingerprint">Allow authentication using any saved fingerprint</string>
+    <string name="title_pin_fingerprint">Fingerprint</string>
 </resources>
