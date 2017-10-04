@@ -43,6 +43,7 @@ import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
+import com.frostnerd.dnschanger.dialogs.NewFeaturesDialog;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.networking.NetworkUtil;
@@ -220,6 +221,9 @@ public class MainFragment extends Fragment {
             }
         });
         setEditTextLabel();
+        if(NewFeaturesDialog.shouldShowDialog(getContext())){
+            new NewFeaturesDialog(getContext()).show();
+        }
         LogFactory.writeMessage(getContext(), LOG_TAG, "Done with OnCreate");
     }
 
