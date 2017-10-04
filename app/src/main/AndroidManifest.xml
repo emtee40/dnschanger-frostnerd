@@ -8,6 +8,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission
+        android:name="android.permission.USE_FINGERPRINT"
+        android:required="false" />
 
     <permission
         android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
@@ -123,9 +126,9 @@
             android:name=".services.DataService"
             android:exported="true"
             android:permission="com.frostnerd.dnschanger.ACCESS_DATA"
-            android:process=":exported" >
+            android:process=":exported">
             <intent-filter>
-                <action android:name="com.frostnerd.dnschanger.services.DataService"/>
+                <action android:name="com.frostnerd.dnschanger.services.DataService" />
             </intent-filter>
         </service>
         <service

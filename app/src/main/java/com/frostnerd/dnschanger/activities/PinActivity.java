@@ -1,13 +1,20 @@
 package com.frostnerd.dnschanger.activities;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.KeyguardManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
+import android.os.CancellationSignal;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.ThemeHandler;
@@ -16,6 +23,7 @@ import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.utils.design.MaterialEditText;
+import com.frostnerd.utils.general.DesignUtil;
 import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.general.VariableChecker;
 import com.frostnerd.utils.preferences.Preferences;
@@ -57,19 +65,20 @@ public class PinActivity extends Activity {
                 LogFactory.writeMessage(this, LOG_TAG, "We are doing something in the notification and pin for it is not enabled. Not asking for pin");
             } else if (!main && !Preferences.getBoolean(this, "pin_tile", false)) {
                 LogFactory.writeMessage(this, LOG_TAG, "We are doing something in the tiles and pin for it is not enabled. Not asking for pin");
-            }else if(!main && !Preferences.getBoolean(this, "pin_app_shortcut", false)){
+            } else if (!main && !Preferences.getBoolean(this, "pin_app_shortcut", false)) {
                 LogFactory.writeMessage(this, LOG_TAG, "We are doing something in an app shortcut and pin for it is not enabled. Not asking for pin");
             }
             continueToFollowing(main);
         }
         LogFactory.writeMessage(this, LOG_TAG, "Have to ask for pin.");
-        setContentView(R.layout.pin_dialog);
+        setContentView(R.layout.dialog_pin);
         LogFactory.writeMessage(this, LOG_TAG, "Content set");
         pin = Preferences.getString(this, "pin_value", "1234");
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         met = (MaterialEditText) findViewById(R.id.pin_dialog_met);
         pinInput = (EditText) findViewById(R.id.pin_dialog_pin);
-        if(!VariableChecker.isInteger(pin))pinInput.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        if (!VariableChecker.isInteger(pin))
+            pinInput.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         findViewById(R.id.pin_dialog_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +100,19 @@ public class PinActivity extends Activity {
                 }
             }
         });
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M && Preferences.getBoolean(this, "pin_fingerprint", false)) {
+            FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
+            KeyguardManager keyguardManager = getSystemService(KeyguardManager.class);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) == PackageManager.PERMISSION_GRANTED &&
+                    fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints() && keyguardManager.isKeyguardSecure()){
+                fingerprintManager.authenticate(null, new CancellationSignal(), 0, new FingerprintManager.AuthenticationCallback() {
+                    @Override
+                    public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
+                        continueToFollowing(main);
+                    }
+                }, null);
+            }
+        }
         LogFactory.writeMessage(this, LOG_TAG, "Activity fully created.");
     }
 
