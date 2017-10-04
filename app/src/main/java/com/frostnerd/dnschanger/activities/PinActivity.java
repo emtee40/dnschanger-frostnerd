@@ -5,9 +5,11 @@ import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
 import android.os.CancellationSignal;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -43,6 +45,8 @@ public class PinActivity extends Activity {
     private String pin;
     private Vibrator vibrator;
     private static final String LOG_TAG = "[PinActivity]";
+    private ImageView fingerprintImage;
+    private Handler handler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -101,18 +105,39 @@ public class PinActivity extends Activity {
             }
         });
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M && Preferences.getBoolean(this, "pin_fingerprint", false)) {
-            FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
-            KeyguardManager keyguardManager = getSystemService(KeyguardManager.class);
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) == PackageManager.PERMISSION_GRANTED &&
-                    fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints() && keyguardManager.isKeyguardSecure()){
-                fingerprintManager.authenticate(null, new CancellationSignal(), 0, new FingerprintManager.AuthenticationCallback() {
-                    @Override
-                    public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
-                        continueToFollowing(main);
-                    }
-                }, null);
-                int color = ThemeHandler.getColor(this, android.R.attr.textColor, 0);
-                ((ImageView)findViewById(R.id.image)).setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_fingerprint), color));
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) == PackageManager.PERMISSION_GRANTED){
+                FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
+                KeyguardManager keyguardManager = getSystemService(KeyguardManager.class);
+                fingerprintImage = findViewById(R.id.image);
+                if(fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints() && keyguardManager.isKeyguardSecure()) {
+                    handler = new Handler();
+                    final int color = ThemeHandler.getColor(this, android.R.attr.textColor, 0);
+                    fingerprintManager.authenticate(null, new CancellationSignal(), 0, new FingerprintManager.AuthenticationCallback() {
+                        @Override
+                        public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
+                            met.setIndicatorState(MaterialEditText.IndicatorState.CORRECT);
+                            continueToFollowing(main);
+                            fingerprintImage.setImageDrawable(DesignUtil.setDrawableColor
+                                    (DesignUtil.getDrawable(PinActivity.this, R.drawable.ic_fingerprint), Color.GREEN));
+                        }
+
+                        @Override
+                        public void onAuthenticationFailed() {
+                            met.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
+                            vibrator.vibrate(200);
+                            fingerprintImage.setImageDrawable(DesignUtil.setDrawableColor
+                                    (DesignUtil.getDrawable(PinActivity.this, R.drawable.ic_fingerprint), Color.RED));
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    met.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
+                                    fingerprintImage.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(PinActivity.this, R.drawable.ic_fingerprint), color));
+                                }
+                            }, 3500);
+                        }
+                    }, null);
+                    fingerprintImage.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_fingerprint), color));
+                }
             }
         }
         LogFactory.writeMessage(this, LOG_TAG, "Activity fully created.");
