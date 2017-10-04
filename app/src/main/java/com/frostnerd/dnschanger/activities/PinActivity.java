@@ -111,6 +111,8 @@ public class PinActivity extends Activity {
                         continueToFollowing(main);
                     }
                 }, null);
+                int color = ThemeHandler.getColor(this, android.R.attr.textColor, 0);
+                ((ImageView)findViewById(R.id.image)).setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_fingerprint), color));
             }
         }
         LogFactory.writeMessage(this, LOG_TAG, "Activity fully created.");
