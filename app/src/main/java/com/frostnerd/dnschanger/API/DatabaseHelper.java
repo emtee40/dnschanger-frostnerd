@@ -66,14 +66,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if(oldVersion < 2){
+            currentDB = db;
             db.execSQL("ALTER TABLE DNSEntries ADD COLUMN ShortName TEXT");
             for(DNSEntry entry: getDNSEntries()){
-                if(entry.isCustomEntry()){
+                if(!entry.isCustomEntry()){
                     DNSEntry def = findDefaultEntryByName(entry.getName());
                     entry.setShortName(def == null ? entry.getName() : def.getShortName());
                 }else entry.setShortName(entry.getName());
                 editEntry(entry);
             }
+            currentDB = null;
         }
     }
 
