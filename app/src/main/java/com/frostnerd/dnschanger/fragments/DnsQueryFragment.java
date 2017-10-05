@@ -121,7 +121,6 @@ public class DnsQueryFragment extends Fragment {
                         });
                     }
                 } catch (final IOException e) {
-                    e.printStackTrace();
                     if(getContext() != null && isAdded())API.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
