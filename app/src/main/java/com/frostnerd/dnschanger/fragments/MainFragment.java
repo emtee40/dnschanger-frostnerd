@@ -37,7 +37,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.API.API;
-import com.frostnerd.dnschanger.API.CharacterTextFilter;
 import com.frostnerd.dnschanger.API.DNSEntry;
 import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
@@ -49,6 +48,7 @@ import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.design.dialogs.LoadingDialog;
 import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
+import com.frostnerd.utils.textfilers.InputCharacterFilter;
 
 import org.xbill.DNS.DClass;
 import org.xbill.DNS.Message;
@@ -246,13 +246,13 @@ public class MainFragment extends Fragment {
 
     private void setEditTextState(){
         if(!settingV6){
-            InputFilter filter = new CharacterTextFilter(Pattern.compile("[0-9.]"));
+            InputFilter filter = new InputCharacterFilter(Pattern.compile("[0-9.]"));
             dns1.setFilters(new InputFilter[]{filter});
             dns2.setFilters(new InputFilter[]{filter});
             dns1.setText(Preferences.getString(getContext(), "dns1", "8.8.8.8"));
             dns2.setText(Preferences.getString(getContext(), "dns2", "8.8.4.4"));
         }else{
-            InputFilter filter = new CharacterTextFilter(Pattern.compile("[0-9:a-f]"));
+            InputFilter filter = new InputCharacterFilter(Pattern.compile("[0-9:a-f]"));
             dns1.setFilters(new InputFilter[]{filter});
             dns2.setFilters(new InputFilter[]{filter});
             dns1.setText(Preferences.getString(getContext(), "dns1-v6", "2001:4860:4860::8888"));
