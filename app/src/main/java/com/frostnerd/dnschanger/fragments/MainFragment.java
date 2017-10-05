@@ -347,47 +347,57 @@ public class MainFragment extends Fragment {
     }
 
     private void startVpn() {
-        final LoadingDialog dialog = new LoadingDialog(getContext(), R.string.checking_connectivity, R.string.dialog_connectivity_description);
-        dialog.show();
-        checkDNSReachability(new DNSReachabilityCallback() {
-            @Override
-            public void checkFinished(List<String> unreachable, List<String> reachable) {
-                dialog.dismiss();
-                if(unreachable.size() == 0){
-                    start();
-                }else{
-                    String _text = getString(R.string.no_connectivity_warning_text);
-                    StringBuilder builder = new StringBuilder();
-                    _text = _text.replace("[x]", unreachable.size() + reachable.size() + "");
-                    _text = _text.replace("[y]", unreachable.size() + "");
-                    for(String s: unreachable)builder.append("- ").append(s).append("\n");
-                    _text = _text.replace("[servers]", builder.toString());
-                    final String text = _text;
-                    ((MainActivity)getContext()).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            new AlertDialog.Builder(getContext(), ThemeHandler.getDialogTheme(getContext()))
-                                    .setTitle(R.string.warning).setCancelable(true).setPositiveButton(R.string.start, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    start();
-                                }
-                            }).setNegativeButton(R.string.cancel, null).setMessage(text).show();
-                        }
-                    });
+        if(Preferences.getBoolean(getContext(), "check_connectivity", false)){
+            final LoadingDialog dialog = new LoadingDialog(getContext(), R.string.checking_connectivity, R.string.dialog_connectivity_description);
+            dialog.show();
+            checkDNSReachability(new DNSReachabilityCallback() {
+                @Override
+                public void checkFinished(List<String> unreachable, List<String> reachable) {
+                    dialog.dismiss();
+                    if(unreachable.size() == 0){
+                        start();
+                    }else{
+                        String _text = getString(R.string.no_connectivity_warning_text);
+                        StringBuilder builder = new StringBuilder();
+                        _text = _text.replace("[x]", unreachable.size() + reachable.size() + "");
+                        _text = _text.replace("[y]", unreachable.size() + "");
+                        for(String s: unreachable)builder.append("- ").append(s).append("\n");
+                        _text = _text.replace("[servers]", builder.toString());
+                        final String text = _text;
+                        ((MainActivity)getContext()).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                new AlertDialog.Builder(getContext(), ThemeHandler.getDialogTheme(getContext()))
+                                        .setTitle(R.string.warning).setCancelable(true).setPositiveButton(R.string.start, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        start();
+                                    }
+                                }).setNegativeButton(R.string.cancel, null).setMessage(text).show();
+                            }
+                        });
+                    }
                 }
-            }
 
-            private void start(){
-                Intent i;
-                LogFactory.writeMessage(getContext(), LOG_TAG, "Starting VPN",
-                        i = DNSVpnService.getStartVPNIntent(getContext()));
-                wasStartedWithTasker = false;
-                API.startService(getContext(), i);
-                vpnRunning = true;
-                setIndicatorState(true);
-            }
-        });
+                private void start(){
+                    Intent i;
+                    LogFactory.writeMessage(getContext(), LOG_TAG, "Starting VPN",
+                            i = DNSVpnService.getStartVPNIntent(getContext()));
+                    wasStartedWithTasker = false;
+                    API.startService(getContext(), i);
+                    vpnRunning = true;
+                    setIndicatorState(true);
+                }
+            });
+        }else{
+            Intent i;
+            LogFactory.writeMessage(getContext(), LOG_TAG, "Starting VPN",
+                    i = DNSVpnService.getStartVPNIntent(getContext()));
+            wasStartedWithTasker = false;
+            API.startService(getContext(), i);
+            vpnRunning = true;
+            setIndicatorState(true);
+        }
     }
 
     private void stopVpn() {

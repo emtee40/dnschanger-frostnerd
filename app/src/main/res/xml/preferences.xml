@@ -187,7 +187,6 @@
             android:summary="@string/summary_enable_app_shortcuts"
             android:title="@string/title_enable_app_shortcuts" />
 
-
         <ListPreference
             android:defaultValue="1"
             android:entries="@array/theme"
@@ -201,6 +200,13 @@
     <PreferenceCategory
         android:key="debug_category"
         android:title="@string/title_debug_category">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="check_connectivity"
+            android:summary="@string/summary_check_connectivity"
+            android:title="@string/title_check_connectivity" />
+
         <SwitchPreference
             android:defaultValue="false"
             android:key="debug"

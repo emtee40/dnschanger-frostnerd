@@ -255,4 +255,6 @@
     <string name="checking_connectivity">Checking connectivity</string>
     <string name="dialog_connectivity_description">Checking whether the DNS servers are reachable</string>
     <string name="no_connectivity_warning_text">Out of [x] servers [y] are unreachable:\n\n[servers]\nThe server(s) might be offline, not reachable (maybe you aren\'t connected to a network?) or blocked by your ISP.</string>
+    <string name="summary_check_connectivity">Check whether the configured DNS servers are reachable each time the start button is clicked</string>
+    <string name="title_check_connectivity">Check connectivity</string>
 </resources>
