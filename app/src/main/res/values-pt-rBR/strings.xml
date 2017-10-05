@@ -230,4 +230,7 @@
     <string name="permissions_description_access_data">Permite que o aplicativo acesse dados do DNS Changer em geral</string>
     <string name="edit">Editar</string>
     <string name="new_features">Novas funcionalidades</string>
+    <string name="checking_connectivity">Verificando a conectividade</string>
+    <string name="dialog_connectivity_description">Verificando se os servidores DNS estão acessíveis</string>
+    <string name="no_connectivity_warning_text">Fora de [x] servidores [y] são inacessíveis:\n\n[servers]\nOs servidores podem estar offline, não acessíveis (talvez você não esteja conectado a uma rede?) Ou bloqueado pelo seu ISP.</string>
 </resources>

@@ -46,9 +46,16 @@ import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.dialogs.NewFeaturesDialog;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.utils.design.MaterialEditText;
+import com.frostnerd.utils.design.dialogs.LoadingDialog;
 import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
 
+import org.xbill.DNS.DClass;
+import org.xbill.DNS.Message;
+import org.xbill.DNS.Type;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -340,13 +347,47 @@ public class MainFragment extends Fragment {
     }
 
     private void startVpn() {
-        Intent i;
-        LogFactory.writeMessage(getContext(), LOG_TAG, "Starting VPN",
-                i = DNSVpnService.getStartVPNIntent(getContext()));
-        wasStartedWithTasker = false;
-        API.startService(getContext(), i);
-        vpnRunning = true;
-        setIndicatorState(true);
+        final LoadingDialog dialog = new LoadingDialog(getContext(), R.string.checking_connectivity, R.string.dialog_connectivity_description);
+        dialog.show();
+        checkDNSReachability(new DNSReachabilityCallback() {
+            @Override
+            public void checkFinished(List<String> unreachable, List<String> reachable) {
+                dialog.dismiss();
+                if(unreachable.size() == 0){
+                    start();
+                }else{
+                    String _text = getString(R.string.no_connectivity_warning_text);
+                    StringBuilder builder = new StringBuilder();
+                    _text = _text.replace("[x]", unreachable.size() + reachable.size() + "");
+                    _text = _text.replace("[y]", unreachable.size() + "");
+                    for(String s: unreachable)builder.append("- ").append(s).append("\n");
+                    _text = _text.replace("[servers]", builder.toString());
+                    final String text = _text;
+                    ((MainActivity)getContext()).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            new AlertDialog.Builder(getContext(), ThemeHandler.getDialogTheme(getContext()))
+                                    .setTitle(R.string.warning).setCancelable(true).setPositiveButton(R.string.start, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    start();
+                                }
+                            }).setNegativeButton(R.string.cancel, null).setMessage(text).show();
+                        }
+                    });
+                }
+            }
+
+            private void start(){
+                Intent i;
+                LogFactory.writeMessage(getContext(), LOG_TAG, "Starting VPN",
+                        i = DNSVpnService.getStartVPNIntent(getContext()));
+                wasStartedWithTasker = false;
+                API.startService(getContext(), i);
+                vpnRunning = true;
+                setIndicatorState(true);
+            }
+        });
     }
 
     private void stopVpn() {
@@ -356,6 +397,24 @@ public class MainFragment extends Fragment {
         getContext().startService(i);
         vpnRunning = false;
         setIndicatorState(false);
+    }
+
+    private void checkDNSReachability(final DNSReachabilityCallback callback){
+        List<String> servers = API.getAllDNS(getContext());
+        callback.setServers(servers.size());
+        for(final String s: servers){
+            API.runAsyncDNSQuery(s, "google.de", false, Type.A, DClass.ANY, new API.DNSQueryResultListener() {
+                @Override
+                public void onSuccess(Message response) {
+                    callback.checkProgress(s, true);
+                }
+
+                @Override
+                public void onError(@Nullable Exception e) {
+                    callback.checkProgress(s, false);
+                }
+            }, 1);
+        }
     }
 
     @Override
@@ -381,5 +440,24 @@ public class MainFragment extends Fragment {
     public Context getContext() {
         Context context = super.getContext();
         return context == null ? MainActivity.currentContext : context;
+    }
+
+    private abstract class DNSReachabilityCallback{
+        private List<String> unreachable = new ArrayList<>();
+        private List<String> reachable = new ArrayList<>();
+        private int servers;
+
+        public abstract void checkFinished(List<String> unreachable, List<String> reachable);
+
+        public final void checkProgress(String server, boolean reachable){
+            if(!reachable)unreachable.add(server);
+            else this.reachable.add(server);
+            if(this.unreachable.size() + this.reachable.size() >= servers)checkFinished(unreachable, this.reachable);
+        }
+
+        void setServers(int servers){
+            this.servers = servers;
+        }
+
     }
 }

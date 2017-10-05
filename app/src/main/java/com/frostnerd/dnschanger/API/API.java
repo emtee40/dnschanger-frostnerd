@@ -178,9 +178,21 @@ public final class API {
         return isIPv6Enabled(context) ? Preferences.getString(context, "dns1-v6", "2001:4860:4860::8888") : "";
     }
 
-
     public static String getDNS2V6(Context context) {
         return isIPv6Enabled(context) ? Preferences.getString(context, "dns2-v6", "2001:4860:4860::8844") : "";
+    }
+
+    public static List<String> getAllDNS(final Context context){
+       return new ArrayList<String>(){{
+            addIfNotEmpty(getDNS1(context));
+            addIfNotEmpty(getDNS1V6(context));
+            addIfNotEmpty(getDNS2(context));
+            addIfNotEmpty(getDNS2V6(context));
+            }
+            private void addIfNotEmpty(String s){
+                if(s != null && !s.equals(""))add(s);
+            }
+        };
     }
 
     public static boolean isServiceThreadRunning() {
@@ -334,7 +346,7 @@ public final class API {
     }
 
     public static Message runSyncDNSQuery(final String server, final String query, final boolean tcp, final int type,
-                                        final int dClass, final int timeout){
+                                          final int dClass, DNSQueryResultListener dnsQueryResultListener, final int timeout){
                 try {
                     Resolver resolver = new SimpleResolver(server);
                     resolver.setTCP(tcp);
