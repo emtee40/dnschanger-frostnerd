@@ -22,14 +22,23 @@ public class DNSChanger extends Application {
         public void uncaughtException(Thread t, Throwable e) {
             LogFactory.writeMessage(DNSChanger.this,  new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, "Caught uncaught exception");
             LogFactory.writeStackTrace(DNSChanger.this, new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, e);
-            ErrorDialogActivity.show(DNSChanger.this, e);
-            System.exit(2);
+            if(showErrorDialog(e)){
+                ErrorDialogActivity.show(DNSChanger.this, e);
+                System.exit(2);
+            }else if(defaultHandler != null)defaultHandler.uncaughtException(t, e);
         }
     };
+    private Thread.UncaughtExceptionHandler defaultHandler;
+
+    private boolean showErrorDialog(Throwable exception){
+        if(exception.getMessage() == null)return false;
+        return exception.getMessage().toLowerCase().contains("cannot create interface");
+    }
 
     @Override
     public void onCreate() {
         setTheme(ThemeHandler.getAppTheme(this));
+        defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(customHandler);
         super.onCreate();
         LogFactory.writeMessage(this, LOG_TAG, "Application created");
@@ -55,7 +64,7 @@ public class DNSChanger extends Application {
         super.onTerminate();
     }
 
-    public Thread.UncaughtExceptionHandler getExcpetionHandler() {
+    public Thread.UncaughtExceptionHandler getExceptionHandler() {
         return customHandler;
     }
 }

@@ -1,6 +1,5 @@
 package com.frostnerd.dnschanger.services;
 
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -13,8 +12,8 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.ParcelFileDescriptor;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.VPNServiceArgument;
@@ -61,7 +60,7 @@ public class DNSVpnService extends VpnService {
     private NotificationManager notificationManager;
     private final int NOTIFICATION_ID = 112;
     private String dns1,dns2,dns1_v6,dns2_v6, stopReason, currentDNS1, currentDNS2, currentDNS1V6, currentDNS2V6;
-    private Vector<Runnable> afterThreadStop = new Vector<>();
+    private final Vector<Runnable> afterThreadStop = new Vector<>();
     private boolean fixedDNS = false, startedWithTasker = false, autoPaused = false, runThread = true, variablesCleared = false, threadInWhile = false;
     private BroadcastReceiver stateRequestReceiver = new BroadcastReceiver() {
         @Override
@@ -122,10 +121,10 @@ public class DNSVpnService extends VpnService {
         LogFactory.writeMessage(this, LOG_TAG, "Clearing Variables");
         if(stopReason != null && notificationManager != null && Preferences.getBoolean(this, "notification_on_stop", false)){
             String reasonText = getString(R.string.notification_reason_stopped).replace("[reason]", stopReason);
-            notificationManager.notify(NOTIFICATION_ID+1, new NotificationCompat.Builder(this, createNotificationChannel()).setAutoCancel(true)
+            notificationManager.notify(NOTIFICATION_ID+1, new NotificationCompat.Builder(this, API.createNotificationChannel(this, false)).setAutoCancel(true)
                     .setOngoing(false).setContentText(reasonText).setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText(reasonText))
                     .setSmallIcon(R.drawable.ic_stat_small_icon).setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0))
-                    .build());
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT).build());
         }
         serviceRunning = false;
         stopThread();
@@ -139,8 +138,9 @@ public class DNSVpnService extends VpnService {
         autoPauseApps = null;
         uncaughtExceptionHandler = null;
         threadRunning = false;
-        afterThreadStop.clear();
-        afterThreadStop = null;
+        synchronized (afterThreadStop){
+            afterThreadStop.clear();
+        }
         LogFactory.writeMessage(this, LOG_TAG, "Variables cleared");
         if(stopSelf){
             stopForeground(true);
@@ -154,7 +154,7 @@ public class DNSVpnService extends VpnService {
         initNotification();
         if(!Preferences.getBoolean(this, "setting_show_notification",true)){
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification is disabled");
-            notificationManager.cancel(NOTIFICATION_ID);
+            stopForeground(true);
             return;
         }else LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification is enabled");
         boolean pinProtected = Preferences.getBoolean(this, "pin_notification",false);
@@ -186,6 +186,7 @@ public class DNSVpnService extends VpnService {
                 contentText.append("DNSV6 2: ").append(getCurrentDNS2V6()).append(!excludedAppsText.equals("") ? "\n" : "");
             }
             contentText.append(excludedAppsText);
+            if(!ipv6Enabled)contentText.append("\n").append(getString(R.string.notification_ipv6_text));
             notificationBuilder.setStyle(new NotificationCompat.BigTextStyle().
                     bigText(contentText.toString()));
             notificationBuilder.setSubText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused));
@@ -195,7 +196,12 @@ public class DNSVpnService extends VpnService {
             notificationBuilder.setStyle(new NotificationCompat.BigTextStyle().setSummaryText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused) + excludedAppsText));
             notificationBuilder.setContentText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused));
         }
-        LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Updating notification");
+        notificationBuilder.setUsesChronometer(threadRunning);
+        boolean hideIcon = Preferences.getBoolean(this, "hide_notification_icon", false);
+        notificationBuilder.setPriority(hideIcon ?
+                NotificationCompat.PRIORITY_MIN : NotificationCompat.PRIORITY_LOW);
+        notificationBuilder.setChannelId(API.createNotificationChannel(this, true));
+        LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification was posted");
         startForeground(NOTIFICATION_ID, notificationBuilder.build());
     }
 
@@ -203,7 +209,7 @@ public class DNSVpnService extends VpnService {
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (notificationBuilder == null) {
             LogFactory.writeMessage(this,new String[]{LOG_TAG, "[NOTIFICATION]"} , "Initiating Notification");
-            notificationBuilder = new NotificationCompat.Builder(this, createNotificationChannel());
+            notificationBuilder = new NotificationCompat.Builder(this, API.createNotificationChannel(this, true));
             notificationBuilder.setSmallIcon(R.drawable.ic_stat_small_icon); //TODO Update Image
             notificationBuilder.setContentTitle(getString(R.string.app_name));
             notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0));
@@ -213,29 +219,8 @@ public class DNSVpnService extends VpnService {
             notificationBuilder.addAction(new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_pause, getString(R.string.action_pause),null));
             notificationBuilder.addAction(new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_stop, getString(R.string.action_stop),null));
             notificationBuilder.setColorized(false);
-            notificationBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                NotificationChannel channel = new NotificationChannel("defaultchannel", getString(R.string.notification_channel_default), NotificationManager.IMPORTANCE_LOW);
-                channel.enableLights(false);
-                channel.enableVibration(false);
-                channel.setDescription(getString(R.string.notification_channel_default_description));
-                notificationManager.createNotificationChannel(channel);
-                notificationBuilder.setChannelId("defaultchannel");
-            }
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification created (Not yet posted)");
         }
-    }
-
-    private String createNotificationChannel(){
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("defaultchannel", getString(R.string.notification_channel_default), NotificationManager.IMPORTANCE_LOW);
-            channel.enableLights(false);
-            channel.enableVibration(false);
-            channel.setImportance(NotificationManager.IMPORTANCE_LOW);
-            channel.setDescription(getString(R.string.notification_channel_default_description));
-            notificationManager.createNotificationChannel(channel);
-        }
-        return "defaultchannel";
     }
 
     public static synchronized void startWithSetDNS(final Context context, final String dns1, final String dns2, final String dns1v6, final String dns2v6){
@@ -401,48 +386,6 @@ public class DNSVpnService extends VpnService {
         super.onTaskRemoved(rootIntent);
     }
 
-    //As the service could be removed from RAM when the main activity is destroyed this function memorizes what settings where used if that happens.
-    /*private void backupSettings(){
-        LogFactory.writeMessage(this, LOG_TAG, "Backing up settings to resume with them as soon as the service restarts");
-        Set<String> settings = new ArraySet<>();
-        settings.add(VPNServiceArgument.ARGUMENT_DNS1 + ";;" + dns1);
-        settings.add(VPNServiceArgument.ARGUMENT_DNS2 + ";;" +  dns2);
-        settings.add(VPNServiceArgument.ARGUMENT_DNS1V6 + ";;" + dns1_v6);
-        settings.add(VPNServiceArgument.ARGUMENT_DNS2V6 + ";;" + dns2_v6);
-        settings.add(VPNServiceArgument.FLAG_STARTED_WITH_TASKER + ";;" + startedWithTasker);
-        settings.add(VPNServiceArgument.FLAG_FIXED_DNS + ";;" + fixedDNS);
-        settings.add(VPNServiceArgument.COMMAND_START_VPN + ";;" + threadRunning);
-        settings.add("Running;;" + threadRunning);
-        Preferences.put(this, "settings_backup", settings);
-        Preferences.put(this, "settings_backuped", true);
-        LogFactory.writeMessage(this, LOG_TAG, "Backup finished");
-    }*/
-
-    /*private Intent restoreSettings(Intent i){
-        return i;
-        LogFactory.writeMessage(this, LOG_TAG, "Restoring settings if needed...");
-        if(Preferences.getBoolean(this, "settings_backuped",false)){
-            LogFactory.writeMessage(this, LOG_TAG, "Settings of previous service state were saved");
-            Preferences.put(this, "settings_backuped", false);
-            Set<String> settings = Preferences.getStringSet(this, "settings_backup");
-            String key, value;
-            String splt[];
-            for(VPNServiceArgument argument: VPNServiceArgument.values()){
-                for(String s: settings){
-                    splt = s.split(";;");
-                    key = splt[0];
-                    value = splt[1];
-                    if(key.equalsIgnoreCase(argument.getArgument())){
-                        LogFactory.writeMessage(this, LOG_TAG, "Putting " + key + ": '" + value + "'");
-                        IntentUtil.putExtra(key, i, Preferences.getType(value).parseTo(value));
-                    }
-                }
-            }
-            Preferences.put(this, "settings_backup", null);
-        }else LogFactory.writeMessage(this, LOG_TAG, "No setting were previously saved.");
-        return i;
-    }*/
-
     @Override
     public IBinder onBind(Intent intent) {
         return (intent.getBooleanExtra(VPNServiceArgument.FLAG_GET_BINDER.getArgument(),false) && serviceRunning) ? new ServiceBinder() : null;
@@ -479,7 +422,7 @@ public class DNSVpnService extends VpnService {
                 threadRunning = true;
                 LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Starting Thread (run)");
                 runThread = true;
-                Thread.setDefaultUncaughtExceptionHandler(((DNSChanger)getApplication()).getExcpetionHandler());
+                Thread.setDefaultUncaughtExceptionHandler(((DNSChanger)getApplicationContext()).getExceptionHandler());
                 if(notificationBuilder != null) notificationBuilder.setWhen(System.currentTimeMillis());
                 boolean ipv6Enabled = API.isIPv6Enabled(DNSVpnService.this),
                         ipv4Enabled = API.isIPv4Enabled(DNSVpnService.this);
@@ -578,8 +521,10 @@ public class DNSVpnService extends VpnService {
                     updateNotification();
                     broadcastCurrentState(false);
                     if(afterThreadStop != null && serviceRunning){
-                        for(Runnable r: afterThreadStop)r.run();
-                        afterThreadStop.clear();
+                        synchronized (afterThreadStop){
+                            for(Runnable r: afterThreadStop)r.run();
+                            afterThreadStop.clear();
+                        }
                     }
                     vpnThread = null;
                     LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Done with finally block");
@@ -694,19 +639,19 @@ public class DNSVpnService extends VpnService {
     }
 
     public String getCurrentDNS1() {
-        return !threadRunning || currentDNS1 == null ? dns1 : currentDNS1;
+        return !threadRunning || currentDNS1 == null ? (dns1 == null ? "" : dns1) : currentDNS1;
     }
 
     public String getCurrentDNS2() {
-        return !threadRunning || currentDNS2 == null ? dns2 : currentDNS2;
+        return !threadRunning || currentDNS2 == null ? (dns2 == null ? "" : dns2) : currentDNS2;
     }
 
     public String getCurrentDNS1V6() {
-        return !threadRunning || currentDNS1V6 == null? dns1_v6 : currentDNS1V6;
+        return !threadRunning || currentDNS1V6 == null? (dns1_v6 == null ? "" : dns1_v6) : currentDNS1V6;
     }
 
     public String getCurrentDNS2V6() {
-        return !threadRunning || currentDNS2V6 == null ? dns2_v6 : currentDNS2V6;
+        return !threadRunning || currentDNS2V6 == null ? (dns2_v6 == null ? "" : dns2_v6) : currentDNS2V6;
     }
     public boolean startedFromShortcut(){
         return fixedDNS && !startedWithTasker;

@@ -112,7 +112,7 @@
     <string name="message_settings_exported">Die Einstellungen wurden erfolgreich exportiert.</string>
     <string name="open_share_file">Datei öffnen/teilen</string>
     <string name="success">Operation erfolgreich</string>
-    <string name="set_device_admin_info">Diese App kann darauf eingestellt werden, sich als Geräteadmin zu setzen, um eine Deinstallation zu verhindern.\n\nDies funktioniert nur, wenn das Gerät darauf eingestellt ist, bei Deinstallation nach einem Passwort zu fragen (Meistens in Unternehmen oder in Apps zur Überwachung von Kindern durch Eltern anzutreffen)\n\nDNS Changer benutzt diese Rechte nicht, muss sie aber anfordern, um dieses Verhalten zu erziehlen.\nBevor die App deinstalliert werden kann, muss ihr das Recht des Geräteadmins entfernt werden, dies kann hier in den Einstellungen getan werden.</string>
+    <string name="set_device_admin_info">Diese App kann darauf eingestellt werden, sich als Geräteadmin zu setzen, um eine Deinstallation zu verhindern.\n\nEs werden keine security policies genutzt.\n\nDies funktioniert nur, wenn das Gerät darauf eingestellt ist, bei Deinstallation nach einem Passwort zu fragen (Meistens in Unternehmen oder in Apps zur Überwachung von Kindern durch Eltern anzutreffen)\n\nDNS Changer benutzt diese Rechte nicht, muss sie aber anfordern, um dieses Verhalten zu erziehlen.\nBevor die App deinstalliert werden kann, muss ihr das Recht des Geräteadmins entfernt werden, dies kann hier in den Einstellungen getan werden.</string>
     <string name="title_device_admin">Geräteadministrator</string>
     <string name="summary_device_admin_activate">Diese App als Geräteadministrator setzen, um Deinstallation zu verhindern</string>
     <string name="device_admin_description">Deinstallation durch Geräteadmin verhindern</string>
@@ -173,7 +173,7 @@
     <string name="summary_enable_app_shortcuts">Aktiviert app shortcuts. Klicke im Hauptbildschirm lange auf die App, um dieses Menü zu öffnen.</string>
     <string name="notification_x_blacklisted">[x] Apps auf der Blacklist</string>
     <string name="notification_x_whitelisted">[x] Apps auf der Whitelist</string>
-    <string name="default_dns_explain_delete">Halte einen Eintrag lange gedrückt, um ihn zu löschen. Klicke dannach weitere Einträge an, um diese ebenfalls zu löschen.</string>
+    <string name="default_dns_explain_delete">Halte einen Eintrag lange gedrückt, um ihn zu löschen oder zu bearbeiten. Klicke danach weitere Einträge an, um diese ebenfalls zu löschen.</string>
     <string name="summary_enable_ipv4">Aktiviert IPv4. Dies erlaubt es, IPv4 Adressen zur Nutzung als DNS Server einzustellen.</string>
     <string name="title_enable_ipv4">IPv4 aktivieren</string>
     <string name="warning_disabling_v4">Unter vielen Android Versionen besteht kein Internetzugriff, wenn IPv4 deaktiviert ist. Dies ist nur der Fall, solange DNS Changer läuft.\nOb dies für dein Gerät der Fall ist musst du testen.</string>
@@ -221,4 +221,33 @@
     <string name="question_enable_ipv6">Möchtest du IPv6 aktivieren?</string>
     <string name="nav_title_libraries">Bibliotheken</string>
     <string name="dialog_libraries_text">Diese app enthält von Bibliotheken, welchen von anderen Entwicklern erstellt wurden. Deren Namen, Ersteller und Lizenzen sind hier aufgelistet.</string>
+    <string name="title_disable_notification_icon">Benachrichtigungssymbol deaktivieren</string>
+    <string name="summary_disable_notification_icon">Deaktiviert das DNS Icon in der Benachrichtigungszeile. Dieses wird in der vergrößerten Ansicht im Benachrichtigungsbereich weiterhin angezeigt.</string>
+    <string name="notification_channel_hiddenicon">Channel ohne Icon</string>
+    <string name="notification_channel_hiddenicon_description">Dieser Channel zeigt kein Symbol in der Benachrichtigungsleiste</string>
+    <string name="notification_ipv6_text">Öffne die Einstellungen um IPv6 zu aktivieren.</string>
+    <string name="mail_debug_text">Schreibe eine kleine Nachricht, warum du die Logdateien sendest</string>
+    <string name="permissions_label_access_data">Auf Daten zugreifen</string>
+    <string name="permissions_description_access_data">Erlaubt es der App auf Daten von DNS Changer zuzugreifen</string>
+    <string name="edit">Bearbeiten</string>
+    <string name="new_features">Neue Funktionalitäten</string>
+
+    <string-array name="features_1_16">
+        <item>Diesen Dialog hinzugefügt, um über neue Features zu informieren</item>
+        <item>Im Hauptmenü wird nun der Name des DNS Servers angezeigt, welcher verwendet wird</item>
+        <item>Es können nun Domains als DNS Server genutzt werden</item>
+        <item>Die App warnt nun, sollte keine Verbindung zu dem eingestellten DNS Servern möglich sein</item>
+        <item>Optimierungen für Android TV</item>
+        <item>Es kann nun der Fingerabdruck im Pin dialog verwendet werden</item>
+        <item>Es können nun VPN Verbindungsdaten angegeben werden, um diese App als VPN zu nutzen</item>
+        <item>Es kann nun eingestellt werden, in welchen WLANs DNS Changer automatisch startet</item>
+        <item>Bugfixes</item>
+    </string-array>
+    <string name="checking_connectivity">Überprüfe Verbindung</string>
+    <string name="dialog_connectivity_description">Übeprüfe, ob die DNS Server erreichbar sind.</string>
+    <string name="no_connectivity_warning_text">Von [x] Servern sind [y] nicht erreichbar:\n\n[servers]\nDie Server können offline sein, sind nicht erreichbar (vielleicht ist keine Internetverbindung verfügbar?) oder werden von deinem Internetanbieter blockiert.</string>
+    <string name="summary_check_connectivity">Überprüfe jedes Mal, wenn auf den Startknopf gedrückt wird, ob die eingestellten DNS Server erreichbar sind</string>
+    <string name="title_check_connectivity">Verbindung Überprüfen</string>
+    <string name="title_pin_fingerprint">Fingerabdruck</string>
+    <string name="summary_pin_fingerprint">Erlaube Authentifizierung mit gespeicherten Fingerabdrücken</string>
 </resources>

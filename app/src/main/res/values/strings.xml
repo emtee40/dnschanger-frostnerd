@@ -112,7 +112,7 @@
     <string name="message_settings_exported">Settings have been exported successfully.</string>
     <string name="open_share_file">Open/share file</string>
     <string name="success">Success</string>
-    <string name="set_device_admin_info">This app can be set as device admin to prevent removing it without entering the devices Passcode first.\n\nThis feature only works if the devices admin policy is set to request passwords when removing apps (Mostly found in businesses or shipped with parental control apps)\n\nDNSChanger won\'t actually use these rights.\nDNSChanger has to be removed as device admin before trying to remove it from your phone, come back to the settings to do so.</string>
+    <string name="set_device_admin_info">This app can be set as device admin to prevent removing it without entering the devices Passcode first.\n\nNo security policies are used.\n\nThis feature only works if the devices admin policy is set to request passwords when removing apps (Mostly found in businesses or shipped with parental control apps)\n\nDNSChanger won\'t actually use these rights.\nDNSChanger has to be removed as device admin before trying to remove it from your phone, come back to the settings to do so.</string>
     <string name="title_device_admin">Device admin</string>
     <string name="summary_device_admin_activate">Activate this app as device admin to prevent uninstallation</string>
     <string name="device_admin_description">Prevent uninstall by settings as device admin</string>
@@ -178,7 +178,7 @@
     <string name="summary_enable_app_shortcuts">Enables app shortcuts. Long click on the apps shortcut in the launcher to open the menu</string>
     <string name="notification_x_whitelisted">[x] apps whitelisted</string>
     <string name="notification_x_blacklisted">[x] apps blacklisted</string>
-    <string name="default_dns_explain_delete">Long click on an entry to delete it. Click on additional entries to delete them as well.</string>
+    <string name="default_dns_explain_delete">Long click on an entry to delete or edit it. Click on additional entries to delete them as well.</string>
     <string name="summary_enable_ipv4">Enable IPv4. This allows to provide ipv4 addresses to use as dns servers</string>
     <string name="title_enable_ipv4">Enable IPv4</string>
     <string name="warning_disabling_v4">Most Android versions can\'t access the internet anymore when DNS Changer is running and no IPv4 address is provided. You\'ll have to try for your device though.</string>
@@ -229,5 +229,32 @@
     <string name="question_enable_ipv6">Do you want to enable IPv6?</string>
     <string name="nav_title_libraries">Libraries</string>
     <string name="dialog_libraries_text">This app containes libraries created by third parties. The libraries, their creators and the licenses are listed below.</string>
-    <string name="license_bsd_2" translatable="false">Copyright (c) [yearrange], [author].\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n  * Redistributions of source code must retain the above copyright notice,\n    this list of conditions and the following disclaimer.\n\n  * Redistributions in binary form must reproduce the above copyright notice,\n    this list of conditions and the following disclaimer in the documentation\n    and/or other materials provided with the distribution.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\nARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE\nLIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR\nCONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF\nSUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS\nINTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN\nCONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)\nARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE\nPOSSIBILITY OF SUCH DAMAGE.</string>
+    <string name="title_disable_notification_icon">Disable notification icon</string>
+    <string name="summary_disable_notification_icon">Disables the dns icon shown in the notification bar. Will still be visible when opening the notification area.</string>
+    <string name="notification_channel_hiddenicon">Channel with no icon</string>
+    <string name="notification_channel_hiddenicon_description">This channel shows no icon in the notification bar</string>
+    <string name="notification_ipv6_text">Go to the settings if you want to enable IPv6.</string>
+    <string name="mail_debug_text">Write a small message describing why you send the log files</string>
+    <string name="permissions_label_access_data">Access data</string>
+    <string name="permissions_description_access_data">Allows the app to access data of DNS Changer in general</string>
+    <string name="edit">Edit</string>
+    <string name="new_features">New features</string>
+    <string-array name="features_1_16">
+        <item>Added this dialog to highlight new features</item>
+        <item>The main menu now shows the name of the DNS provider being used</item>
+        <item>You can now use domains as DNS servers</item>
+        <item>The app now warns you if no connection can be established to the configured DNS server</item>
+        <item>Optimization for TVs</item>
+        <item>You can now use your fingerprint in the pin dialog</item>
+        <item>You can now provide actual VPN credentials</item>
+        <item>You can now configure the WIFI names on which DNS Changer starts automatically</item>
+        <item>Bugfixes</item>
+    </string-array>
+    <string name="summary_pin_fingerprint">Allow authentication using any saved fingerprint</string>
+    <string name="title_pin_fingerprint">Fingerprint</string>
+    <string name="checking_connectivity">Checking connectivity</string>
+    <string name="dialog_connectivity_description">Checking whether the DNS servers are reachable</string>
+    <string name="no_connectivity_warning_text">Out of [x] servers [y] are unreachable:\n\n[servers]\nThe server(s) might be offline, not reachable (maybe you aren\'t connected to a network?) or blocked by your ISP.</string>
+    <string name="summary_check_connectivity">Check whether the configured DNS servers are reachable each time the start button is clicked</string>
+    <string name="title_check_connectivity">Check connectivity</string>
 </resources>

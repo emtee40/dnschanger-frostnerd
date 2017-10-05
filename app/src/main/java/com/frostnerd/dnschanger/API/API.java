@@ -2,7 +2,11 @@ package com.frostnerd.dnschanger.API;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -20,13 +24,18 @@ import android.service.quicksettings.TileService;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.TypedValue;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.activities.ShortcutActivity;
+import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
 import com.frostnerd.dnschanger.services.DNSVpnService;
+import com.frostnerd.dnschanger.services.jobs.ConnectivityJobAPI21;
 import com.frostnerd.dnschanger.tiles.TilePauseResume;
 import com.frostnerd.dnschanger.tiles.TileStartStop;
 import com.frostnerd.utils.general.StringUtil;
@@ -169,9 +178,21 @@ public final class API {
         return isIPv6Enabled(context) ? Preferences.getString(context, "dns1-v6", "2001:4860:4860::8888") : "";
     }
 
-
     public static String getDNS2V6(Context context) {
         return isIPv6Enabled(context) ? Preferences.getString(context, "dns2-v6", "2001:4860:4860::8844") : "";
+    }
+
+    public static List<String> getAllDNS(final Context context){
+       return new ArrayList<String>(){{
+            addIfNotEmpty(getDNS1(context));
+            addIfNotEmpty(getDNS1V6(context));
+            addIfNotEmpty(getDNS2(context));
+            addIfNotEmpty(getDNS2V6(context));
+            }
+            private void addIfNotEmpty(String s){
+                if(s != null && !s.equals(""))add(s);
+            }
+        };
     }
 
     public static boolean isServiceThreadRunning() {
@@ -187,97 +208,13 @@ public final class API {
     }
 
     public static DatabaseHelper getDBHelper(Context context) {
-        return dbHelper == null ?
-                (dbHelper = (Preferences.getBoolean(context, "legacy_backup", false) ?
-                        new DatabaseHelper(context) :
-                        new DatabaseHelper(context, getDNSEntries(context)))) :
-                dbHelper;
+        return dbHelper == null ? dbHelper = new DatabaseHelper(context) : dbHelper;
     }
-
-    private static SQLiteDatabase getLegacyDatabase(Context context) {
-        return context.openOrCreateDatabase("data.db", SQLiteDatabase.OPEN_READWRITE, null);
-    }
-
-    private static List<DNSEntry> getDNSEntries(Context context) {
-        List<DNSEntry> entries = new ArrayList<>();
-        try {
-            Cursor cursor = getLegacyDatabase(context).rawQuery("SELECT * FROM DNSEntries", new String[]{});
-            if (cursor.moveToFirst()) {
-                do {
-                    entries.add(new DNSEntry(cursor.getInt(cursor.getColumnIndex("ID")), cursor.getString(cursor.getColumnIndex("Name")), cursor.getString(cursor.getColumnIndex("dns1")), cursor.getString(cursor.getColumnIndex("dns2")),
-                            cursor.getString(cursor.getColumnIndex("dns1v6")), cursor.getString(cursor.getColumnIndex("dns2v6")),
-                            cursor.getString(cursor.getColumnIndex("description")), true));
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            //This is here because the table could possibly not exist when creating the table but the entries are still queried
-        }
-        return entries;
-    }
-
-    /*private static synchronized void setupDatabase(Context context) {
-        if (database != null) return;
-        Preferences.setDebug(true);
-        database = context.openOrCreateDatabase("data.db", SQLiteDatabase.OPEN_READWRITE, null);
-        database.execSQL("CREATE TABLE IF NOT EXISTS Shortcuts(Name TEXT, dns1 TEXT, dns2 TEXT, dns1v6 TEXT, dns2v6 TEXT)");
-        database.execSQL("CREATE TABLE IF NOT EXISTS DNSEntries(ID INTEGER PRIMARY KEY AUTOINCREMENT,Name TEXT, dns1 TEXT, dns2 TEXT, dns1v6 TEXT, dns2v6 TEXT,description TEXT DEFAULT '')");
-        if (!Preferences.getBoolean(context, "dnsentries_created", false)) {
-            List<DNSEntry> prev = loadDNSEntriesFromDatabase(context);
-            defaultDNSEntries.addAll(prev);
-            database.execSQL("DROP TABLE DNSEntries");
-            database.execSQL("CREATE TABLE IF NOT EXISTS DNSEntries(ID INTEGER PRIMARY KEY AUTOINCREMENT,Name TEXT, dns1 TEXT, dns2 TEXT, " +
-                    "dns1v6 TEXT, dns2v6 TEXT, description TEXT DEFAULT '')");
-            for (DNSEntry entry : defaultDNSEntries) {
-                ContentValues values = new ContentValues(5);
-                values.put("Name", entry.getName());
-                values.put("dns1", entry.getDns1());
-                values.put("dns2", entry.getDns2());
-                values.put("dns1v6", entry.getDns1V6());
-                values.put("dns2v6", entry.getDns2V6());
-                values.put("description", entry.getDescription());
-                database.insert("DNSEntries", null, values);
-            }
-            for (String s : additionalDefaultEntries.keySet()) {
-                DNSEntry entry = additionalDefaultEntries.get(s);
-                ContentValues values = new ContentValues(5);
-                values.put("Name", entry.getName());
-                values.put("dns1", entry.getDns1());
-                values.put("dns2", entry.getDns2());
-                values.put("dns1v6", entry.getDns1V6());
-                values.put("dns2v6", entry.getDns2V6());
-                values.put("description", entry.getDescription());
-                database.insert("DNSEntries", null, values);
-                Preferences.put(context, "set_" + s, true);
-            }
-            Preferences.put(context, "dnsentries_created", true);
-            Preferences.put(context, "dnsentries_description", true);
-        } else {
-            for (String s : additionalDefaultEntries.keySet()) {
-                if (!Preferences.getBoolean(context, "set_" + s, false)) {
-                    DNSEntry entry = additionalDefaultEntries.get(s);
-                    ContentValues values = new ContentValues(5);
-                    values.put("Name", entry.getName());
-                    values.put("dns1", entry.getDns1());
-                    values.put("dns2", entry.getDns2());
-                    values.put("dns1v6", entry.getDns1V6());
-                    values.put("dns2v6", entry.getDns2V6());
-                    values.put("description", entry.getDescription());
-                    database.insert("DNSEntries", null, values);
-                    Preferences.put(context, "set_" + s, true);
-                }
-            }
-            if (!Preferences.getBoolean(context, "dnsentries_description", false)) {
-                database.execSQL("ALTER TABLE DNSEntries ADD COLUMN description TEXT DEFAULT ''");
-                Preferences.put(context, "dnsentries_description", true);
-            }
-        }
-    }*/
 
     public static synchronized void deleteDatabase(Context context) {
         if(dbHelper != null)dbHelper.close();
         dbHelper = null;
+        context.deleteDatabase("data");
         context.getDatabasePath("data.db").delete();
     }
 
@@ -409,7 +346,7 @@ public final class API {
     }
 
     public static Message runSyncDNSQuery(final String server, final String query, final boolean tcp, final int type,
-                                        final int dClass, final int timeout){
+                                          final int dClass, DNSQueryResultListener dnsQueryResultListener, final int timeout){
                 try {
                     Resolver resolver = new SimpleResolver(server);
                     resolver.setTCP(tcp);
@@ -423,6 +360,55 @@ public final class API {
                 } catch (IOException e) {
                     return null;
                 }
+    }
+
+    public static String createNotificationChannel(Context context, boolean allowHiding){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+            if(allowHiding && Preferences.getBoolean(context, "hide_notification_icon", false)){
+                NotificationChannel channel = new NotificationChannel("noIconChannel", context.getString(R.string.notification_channel_hiddenicon), NotificationManager.IMPORTANCE_MIN);
+                channel.enableLights(false);
+                channel.enableVibration(false);
+                channel.setDescription(context.getString(R.string.notification_channel_hiddenicon_description));
+                notificationManager.createNotificationChannel(channel);
+                return "noIconChannel";
+            }else{
+                NotificationChannel channel = new NotificationChannel("defaultchannel", context.getString(R.string.notification_channel_default), NotificationManager.IMPORTANCE_LOW);
+                channel.enableLights(false);
+                channel.enableVibration(false);
+                channel.setDescription(context.getString(R.string.notification_channel_default_description));
+                notificationManager.createNotificationChannel(channel);
+                return "defaultchannel";
+            }
+        }else{
+            return "defaultchannel";
+        }
+    }
+
+    public static void runBackgroundConnectivityCheck(Context context){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            LogFactory.writeMessage(context, LOG_TAG, "Using JobScheduler");
+            JobScheduler scheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+            scheduler.cancel(0);
+            scheduler.schedule(new JobInfo.Builder(0, new ComponentName(context, ConnectivityJobAPI21.class)).setPersisted(true)
+                    .setRequiresCharging(false).setMinimumLatency(0).setOverrideDeadline(0).build());
+        } else {
+            LogFactory.writeMessage(context, LOG_TAG, "Starting Service (API below 21)");
+            context.startService(new Intent(context, ConnectivityBackgroundService.class));
+        }
+    }
+
+    /**
+     * This Method is used instead of getActivity() in a fragment because getActivity() returns null in some rare cases
+     * @param fragment
+     * @return
+     */
+    public static FragmentActivity getActivity(Fragment fragment){
+        if(fragment.getActivity() == null){
+            if(fragment.getContext() != null && fragment.getContext() instanceof FragmentActivity){
+                return (FragmentActivity)fragment.getContext();
+            }else return MainActivity.currentContext;
+        }else return fragment.getActivity();
     }
 
     public interface ConnectivityCheckCallback{

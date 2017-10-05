@@ -54,4 +54,9 @@ public class DNSEntry implements Comparable<DNSEntry> {
     public int compareTo(@NonNull DNSEntry o) {
         return name.compareTo(o.name);
     }
+
+    public boolean hasIP(String ip){
+        if(ip == null || ip.equals(""))return false;
+        return ip.equals(dns1) || ip.equals(dns2) || ip.equalsIgnoreCase(dns1V6) || ip.equalsIgnoreCase(dns2V6);
+    }
 }

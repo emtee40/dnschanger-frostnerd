@@ -19,6 +19,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.util.ArraySet;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -35,7 +39,7 @@ import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
 import com.frostnerd.dnschanger.fragments.DnsQueryFragment;
 import com.frostnerd.dnschanger.fragments.MainFragment;
 import com.frostnerd.dnschanger.fragments.SettingsFragment;
-import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
+import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.tasker.ConfigureActivity;
 import com.frostnerd.utils.design.material.navigationdrawer.DrawerItem;
 import com.frostnerd.utils.design.material.navigationdrawer.DrawerItemCreator;
@@ -82,6 +86,7 @@ public class MainActivity extends NavigationDrawerActivity {
             snackbar.show();
         }
     };
+    public static MainActivity currentContext;
 
     @Override
     protected void onResume() {
@@ -98,6 +103,7 @@ public class MainActivity extends NavigationDrawerActivity {
         backgroundColor = ThemeHandler.resolveThemeAttribute(getTheme(), android.R.attr.colorBackground);
         textColor = ThemeHandler.resolveThemeAttribute(getTheme(), android.R.attr.textColor);
         super.onCreate(savedInstanceState);
+        currentContext = this;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -105,6 +111,7 @@ public class MainActivity extends NavigationDrawerActivity {
             }
         }).start();
         API.updateAppShortcuts(this);
+        API.runBackgroundConnectivityCheck(this);
         Preferences.put(this, "first_run", false);
         if(Preferences.getBoolean(this, "first_run", true)) Preferences.put(this, "excluded_apps", new ArraySet<>(Arrays.asList(getResources().getStringArray(R.array.default_blacklist))));
         if(Preferences.getBoolean(this, "first_run", true) && API.isTaskerInstalled(this)){
@@ -141,10 +148,6 @@ public class MainActivity extends NavigationDrawerActivity {
             LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
         }
         API.updateTiles(this);
-        if(!API.isServiceRunning(this, ConnectivityBackgroundService.class)){
-            LogFactory.writeMessage(this, LOG_TAG, "Launching ConnectivityBackgroundService");
-            this.startService(new Intent(this, ConnectivityBackgroundService.class));
-        }
         View cardView = getLayoutInflater().inflate(R.layout.main_cardview, null, false);
         final TextView text = cardView.findViewById(R.id.text);
         final Switch button = cardView.findViewById(R.id.cardview_switch);
@@ -157,6 +160,7 @@ public class MainActivity extends NavigationDrawerActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 text.setText(b ? R.string.cardview_text_disabled : R.string.cardview_text);
                 Preferences.put(MainActivity.this, "everything_disabled", b);
+                if(API.isServiceRunning(MainActivity.this))startService(DNSVpnService.getDestroyIntent(MainActivity.this));
             }
         });
         cardView.setOnClickListener(new View.OnClickListener() {
@@ -188,6 +192,7 @@ public class MainActivity extends NavigationDrawerActivity {
         if(defaultDnsDialog != null && defaultDnsDialog.isShowing())defaultDnsDialog.cancel();
         unregisterReceiver(shortcutReceiver);
         super.onDestroy();
+        currentContext = null;
     }
 
     @NonNull
@@ -437,9 +442,19 @@ public class MainActivity extends NavigationDrawerActivity {
         itemCreator.createItemAndContinue(R.string.nav_title_libraries, R.drawable.ic_library_books, new DrawerItem.ClickListener() {
             @Override
             public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
-                String licenseText = "\n- - - - - - - - - - - -\ndnsjava by Brian Wellington - http://www.xbill.org/dnsjava/\n\n" + getString(R.string.license_bsd_2).replace("[yearrange]", "1998-2001").replace("[author]", "Brian Wellington");
+                String licenseText = getString(R.string.dialog_libraries_text) + "\n\n- - - - - - - - - - - -\ndnsjava by Brian Wellington - http://www.xbill.org/dnsjava/\n\n" + getString(R.string.license_bsd_2).replace("[yearrange]", "1998-2011").replace("[author]", "Brian Wellington");
+                licenseText += "\n\n- - - - - - - - - - - -\nfirebase-jobdispatcher-android by Google\n\nAvailable under the [1]Apache License 2.0[2]";
+                ClickableSpan span = new ClickableSpan() {
+                    @Override
+                    public void onClick(View view) {
+                        new AlertDialog.Builder(MainActivity.this).setTitle("Apache License 2.0").setPositiveButton(R.string.close, null).setMessage(R.string.license_apache_2).show();
+                    }
+                };
+                SpannableString spannable = new SpannableString(licenseText.replaceAll("\\[.\\]",""));
+                spannable.setSpan(span, licenseText.indexOf("[1]"), licenseText.indexOf("[2]")-3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 dialog1 = new AlertDialog.Builder(MainActivity.this).setTitle(R.string.nav_title_libraries).setNegativeButton(R.string.close, null)
-                        .setMessage(getString(R.string.dialog_libraries_text) + licenseText).show();
+                        .setMessage(spannable).show();
+                ((TextView)dialog1.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
                 return false;
             }
 

@@ -15,7 +15,6 @@ import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.DNSEntry;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.utils.networking.NetworkUtil;
-import com.frostnerd.utils.preferences.Preferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,15 +77,31 @@ public class DefaultDNSDialog extends AlertDialog {
                 getButton(BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        new DNSCreationDialog(context, new DNSCreationDialog.OnCreationFinishedListener() {
-                            @Override
-                            public void onCreationFinished(String name, String dns1, String dns2, String dns1V6, String dns2V6) {
-                                API.getDBHelper(context).saveDNSEntry(new DNSEntry(0,name, dns1, dns2, dns1V6, dns2V6, "",true));
-                                localEntries.clear();
-                                localEntries = API.getDBHelper(context).getDNSEntries();
-                                list.setAdapter(adapter = new DefaultDNSAdapter());
-                            }
-                        }).show();
+                        if(removal.size() != 1){
+                            new DNSCreationDialog(context, new DNSCreationDialog.OnCreationFinishedListener() {
+                                @Override
+                                public void onCreationFinished(String name, String dns1, String dns2, String dns1V6, String dns2V6) {
+                                    API.getDBHelper(context).saveDNSEntry(new DNSEntry(0,name, dns1, dns2, dns1V6, dns2V6, "",true));
+                                    localEntries.clear();
+                                    localEntries = API.getDBHelper(context).getDNSEntries();
+                                    list.setAdapter(adapter = new DefaultDNSAdapter());
+                                }
+                            }).show();
+                        }else{
+                            new DNSCreationDialog(context, new DNSCreationDialog.OnEditingFinishedListener() {
+                                @Override
+                                public void editingFinished(DNSEntry entry) {
+                                    API.getDBHelper(context).editEntry(entry);
+                                    localEntries.clear();
+                                    localEntries = API.getDBHelper(context).getDNSEntries();
+                                    list.setAdapter(adapter = new DefaultDNSAdapter());
+                                }
+                            }, removal.get(0)).show();
+                            removal.clear();
+                            removeButtonShown = false;
+                            getButton(BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
+                            getButton(BUTTON_POSITIVE).setText(R.string.add);
+                        }
                     }
                 });
                 getButton(BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
@@ -101,6 +116,7 @@ public class DefaultDNSDialog extends AlertDialog {
                         }
                         removal.clear();
                         list.setAdapter(adapter = new DefaultDNSAdapter());
+                        getButton(BUTTON_POSITIVE).setText(R.string.add);
                     }
                 });
             }
@@ -144,13 +160,21 @@ public class DefaultDNSDialog extends AlertDialog {
                         v.setBackgroundColor(v.isSelected() ? API.resolveColor(getContext(), R.attr.inputElementColor) : API.resolveColor(getContext(), android.R.attr.windowBackground));
                         if(!removeButtonShown){
                             getButton(BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
+                            getButton(BUTTON_POSITIVE).setText(R.string.edit);
                             removeButtonShown = true;
                         }
-                        if(!v.isSelected())removal.remove((DNSEntry)v.getTag());
-                        else removal.add((DNSEntry) v.getTag());
+                        if(!v.isSelected()){
+                            if(removal.size() == 2)getButton(BUTTON_POSITIVE).setText(R.string.add);
+                            removal.remove((DNSEntry)v.getTag());
+                        }
+                        else{
+                            if(removal.size() == 1)getButton(BUTTON_POSITIVE).setText(R.string.add);
+                            removal.add((DNSEntry) v.getTag());
+                        }
                         if(removal.size() == 0){
                             removeButtonShown = false;
                             getButton(BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
+                            getButton(BUTTON_POSITIVE).setText(R.string.add);
                         }
                         return true;
                     }
@@ -161,11 +185,18 @@ public class DefaultDNSDialog extends AlertDialog {
                         if(removeButtonShown){
                             v.setSelected(!v.isSelected());
                             v.setBackgroundColor(v.isSelected() ? API.resolveColor(getContext(), R.attr.inputElementColor) : API.resolveColor(getContext(), android.R.attr.windowBackground));
-                            if(!v.isSelected())removal.remove((DNSEntry)v.getTag());
-                            else removal.add((DNSEntry) v.getTag());
+                            if(!v.isSelected()){
+                                if(removal.size() == 2)getButton(BUTTON_POSITIVE).setText(R.string.edit);
+                                removal.remove((DNSEntry)v.getTag());
+                            }
+                            else{
+                                if(removal.size() == 1)getButton(BUTTON_POSITIVE).setText(R.string.add);
+                                removal.add((DNSEntry) v.getTag());
+                            }
                             if(removal.size() == 0){
                                 removeButtonShown = false;
                                 getButton(BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
+                                getButton(BUTTON_POSITIVE).setText(R.string.add);
                             }
                         }else{
                             dismiss();

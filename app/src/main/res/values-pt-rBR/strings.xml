@@ -111,7 +111,7 @@
     <string name="message_settings_exported">As configurações foram exportadas com sucesso.</string>
     <string name="open_share_file">Abrir/Compartilhar arquivo</string>
     <string name="success">Sucesso</string>
-    <string name="set_device_admin_info">Este aplicativo pode ser configurado como administrador do dispositivo para evitar removê-lo sem digitar o código de acesso do dispositivo.\n\nEste recurso só funciona se a política de administração do dispositivo estiver configurada para solicitar senhas ao remover aplicativos (Encontrado principalmente em empresas ou fornecido com apps de controle parental)\n\nDNS Changer não usará esses direitos.\nDNS Changer deve ser removido como admin do dispositivo antes de tentar removê-lo do seu telefone, volte às configurações para fazê-lo.</string>
+    <string name="set_device_admin_info">Este aplicativo pode ser configurado como administrador do dispositivo para evitar removê-lo sem digitar o código de acesso do dispositivo.\n\nnão são utilizadas security policies.\n\nEste recurso só funciona se a política de administração do dispositivo estiver configurada para solicitar senhas ao remover aplicativos (Encontrado principalmente em empresas ou fornecido com apps de controle parental)\n\nDNS Changer não usará esses direitos.\nDNS Changer deve ser removido como admin do dispositivo antes de tentar removê-lo do seu telefone, volte às configurações para fazê-lo.</string>
     <string name="title_device_admin">Administrador do Disposito</string>
     <string name="summary_device_admin_activate">Ativar este aplicativo como administrador do dispositivo para evitar a desinstalação</string>
     <string name="device_admin_description">Impedir a desinstalação configurando como administrador do dispositivo</string>
@@ -171,7 +171,7 @@
     <string name="summary_enable_app_shortcuts">Habilitar atalhos. Pressione o atalho de aplicativos do iniciador para abrir o menu</string>
     <string name="notification_x_whitelisted">[x] apps na lista branca</string>
     <string name="notification_x_blacklisted">[x] apps na lista negra</string>
-    <string name="default_dns_explain_delete">Pressione uma entrada para excluí-la. Toque em entradas adicionais para excluí-las também.</string>
+    <string name="default_dns_explain_delete">Pressione uma entrada para excluí-la ou editá-la. Toque em entradas adicionais para excluí-las também.</string>
     <string name="summary_enable_ipv4">Habilitar IPv4. Isto permite fornecer endereços IPv4 para usar como servidores DNS.</string>
     <string name="title_enable_ipv4">Habilitar IPv4</string>
     <string name="warning_disabling_v4">Most Android versions can\'t access the internet anymore when DNS Changer is running and no IPv4 address is provided. You\'ll have to try for your device though.</string>
@@ -200,7 +200,7 @@
     <string name="feature_tiles">For quick access you can place tiles in you notification area. They can be used to start/stop and pause/resume DNS Changer.\n\nTo add them drag down the notification area, click on the pen and drag them upwards by long-clicking them.</string>
     <string name="info_text_dns">DNS significa Sistema de Nomes de Domínio.\\n\\nO Sistema de Nomes de Domínios é usado para resolver Domínios (google.com, yahoo.com, example.com...) para endereços IP (por exemplo, 192.168.178.1) para se comunicar pela Internet.\\n\\nÉ um dos sistemas mais importantes utilizados em redes baseadas em IP.</string>
     <string name="feature_pin_protection">You can pin-protect every action which starts/stops/pauses/resumes DNS Changer. Each time one of those is to be executed a dialog shows asking for the pin set by you.\n\nThis can be used for hindering the phones user from interfering with the app if the user isn\'t to tech-savvy. It was developed to stop children from stopping the app.\nTo choose what to protect open the settings.</string>
-    <string name="no_disable_android_o">This cannot be disabled on Android O and above.</string>
+    <string name="no_disable_android_o">Isso não pode ser desativado no Android O e acima.</string>
     <string name="blacklist">Blacklist</string>
     <string name="easter_egg">No easter eggs here. Go away.</string>
     <string name="cardview_title">Desativar tudo</string>
@@ -220,4 +220,21 @@
     <string name="question_enable_ipv6">Deseja ativar o IPv6?</string>
     <string name="nav_title_libraries">Bibliotecas</string>
     <string name="dialog_libraries_text">This app containes libraries created by third parties. The libraries, their creators and the licenses are listed below.</string>
+    <string name="title_disable_notification_icon">Desativar ícone de notificação</string>
+    <string name="summary_disable_notification_icon">Desativa o ícone dns mostrado na barra de notificação. Ainda será visível ao abrir a área de notificação.</string>
+    <string name="notification_channel_hiddenicon">Canal sem ícone</string>
+    <string name="notification_channel_hiddenicon_description">Este canal não mostra nenhum ícone na barra de notificação</string>
+    <string name="notification_ipv6_text">Vá para as configurações se quiser habilitar o IPv6.</string>
+    <string name="mail_debug_text">Escreva uma pequena mensagem descrevendo por que você envia os arquivos de log</string>
+    <string name="permissions_label_access_data">Dados de acesso</string>
+    <string name="permissions_description_access_data">Permite que o aplicativo acesse dados do DNS Changer em geral</string>
+    <string name="edit">Editar</string>
+    <string name="new_features">Novas funcionalidades</string>
+    <string name="checking_connectivity">Verificando a conectividade</string>
+    <string name="dialog_connectivity_description">Verificando se os servidores DNS estão acessíveis</string>
+    <string name="no_connectivity_warning_text">Fora de [x] servidores [y] são inacessíveis:\n\n[servers]\nOs servidores podem estar offline, não acessíveis (talvez você não esteja conectado a uma rede?) Ou bloqueado pelo seu ISP.</string>
+    <string name="summary_check_connectivity">Verifique se os servidores DNS configurados são acessíveis sempre que o botão Iniciar é clicado</string>
+    <string name="title_check_connectivity">Verifique a conectividade</string>
+    <string name="title_pin_fingerprint">impressão digital</string>
+    <string name="summary_pin_fingerprint">Permitir autenticação usando qualquer impressão digital salva</string>
 </resources>

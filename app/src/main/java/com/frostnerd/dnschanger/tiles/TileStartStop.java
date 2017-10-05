@@ -2,7 +2,6 @@ package com.frostnerd.dnschanger.tiles;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.service.quicksettings.Tile;
@@ -11,8 +10,8 @@ import com.frostnerd.dnschanger.API.API;
 import com.frostnerd.dnschanger.API.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.activities.PinActivity;
+import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.utils.preferences.Preferences;
 
 /**
