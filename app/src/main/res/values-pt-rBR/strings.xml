@@ -235,4 +235,6 @@
     <string name="no_connectivity_warning_text">Fora de [x] servidores [y] são inacessíveis:\n\n[servers]\nOs servidores podem estar offline, não acessíveis (talvez você não esteja conectado a uma rede?) Ou bloqueado pelo seu ISP.</string>
     <string name="summary_check_connectivity">Verifique se os servidores DNS configurados são acessíveis sempre que o botão Iniciar é clicado</string>
     <string name="title_check_connectivity">Verifique a conectividade</string>
+    <string name="title_pin_fingerprint">impressão digital</string>
+    <string name="summary_pin_fingerprint">Permitir autenticação usando qualquer impressão digital salva</string>
 </resources>

@@ -248,4 +248,6 @@
     <string name="no_connectivity_warning_text">Von [x] Servern sind [y] nicht erreichbar:\n\n[servers]\nDie Server können offline sein, sind nicht erreichbar (vielleicht ist keine Internetverbindung verfügbar?) oder werden von deinem Internetanbieter blockiert.</string>
     <string name="summary_check_connectivity">Überprüfe jedes Mal, wenn auf den Startknopf gedrückt wird, ob die eingestellten DNS Server erreichbar sind</string>
     <string name="title_check_connectivity">Verbindung Überprüfen</string>
+    <string name="title_pin_fingerprint">Fingerabdruck</string>
+    <string name="summary_pin_fingerprint">Erlaube Authentifizierung mit gespeicherten Fingerabdrücken</string>
 </resources>
