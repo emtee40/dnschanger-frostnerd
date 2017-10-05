@@ -237,8 +237,8 @@ public class MainFragment extends Fragment {
     private void setEditTextLabel(){
         String label1 = "DNS 1", label2 = "DNS 2";
         for(DNSEntry entry: API.getDBHelper(getContext()).getDNSEntries()){
-            if(entry.hasIP(dns1.getText().toString()))label1 = "DNS 1 (" + entry.getName() + ")";
-            if(entry.hasIP(dns2.getText().toString()))label2 = "DNS 2 (" + entry.getName() + ")";
+            if(entry.hasIP(dns1.getText().toString()))label1 = "DNS 1 (" + entry.getShortName() + ")";
+            if(entry.hasIP(dns2.getText().toString()))label2 = "DNS 2 (" + entry.getShortName() + ")";
         }
         met_dns1.setLabelText(label1);
         met_dns2.setLabelText(label2);
