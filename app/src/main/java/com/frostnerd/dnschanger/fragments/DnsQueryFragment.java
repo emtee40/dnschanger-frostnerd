@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.frostnerd.dnschanger.API.API;
+import com.frostnerd.dnschanger.util.API;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.adapters.QueryResultAdapter;

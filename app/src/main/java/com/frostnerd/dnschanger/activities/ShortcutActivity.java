@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 
-import com.frostnerd.dnschanger.API.API;
-import com.frostnerd.dnschanger.API.VPNServiceArgument;
+import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.utils.preferences.Preferences;

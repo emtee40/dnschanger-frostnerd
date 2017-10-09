@@ -7,9 +7,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.frostnerd.dnschanger.API.API;
-import com.frostnerd.dnschanger.API.Shortcut;
-import com.frostnerd.dnschanger.API.ThemeHandler;
+import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.Shortcut;
+import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.utils.permissions.PermissionsUtil;
 import com.frostnerd.utils.preferences.Preferences;

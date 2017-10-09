@@ -22,8 +22,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.frostnerd.dnschanger.API.API;
-import com.frostnerd.dnschanger.API.ThemeHandler;
+import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;

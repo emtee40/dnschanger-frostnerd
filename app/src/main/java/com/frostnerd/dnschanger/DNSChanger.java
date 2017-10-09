@@ -2,8 +2,8 @@ package com.frostnerd.dnschanger;
 
 import android.app.Application;
 
-import com.frostnerd.dnschanger.API.API;
-import com.frostnerd.dnschanger.API.ThemeHandler;
+import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
 
 /**

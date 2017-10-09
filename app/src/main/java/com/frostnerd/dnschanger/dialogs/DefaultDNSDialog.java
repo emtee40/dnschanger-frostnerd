@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.frostnerd.dnschanger.API.API;
-import com.frostnerd.dnschanger.API.DNSEntry;
+import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.DNSEntry;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.utils.networking.NetworkUtil;
 

@@ -11,7 +11,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import com.frostnerd.dnschanger.API.API;
+import com.frostnerd.dnschanger.util.API;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.PinActivity;

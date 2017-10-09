@@ -36,9 +36,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.frostnerd.dnschanger.API.API;
-import com.frostnerd.dnschanger.API.DNSEntry;
-import com.frostnerd.dnschanger.API.ThemeHandler;
+import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.DNSEntry;
+import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;

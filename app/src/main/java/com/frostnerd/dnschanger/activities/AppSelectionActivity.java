@@ -27,7 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.frostnerd.dnschanger.API.ThemeHandler;
+import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.R;
 
 import java.util.ArrayList;

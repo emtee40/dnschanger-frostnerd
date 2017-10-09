@@ -12,9 +12,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.frostnerd.dnschanger.API.API;
-import com.frostnerd.dnschanger.API.DNSEntry;
-import com.frostnerd.dnschanger.API.ThemeHandler;
+import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.DNSEntry;
+import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.networking.NetworkUtil;

@@ -1,4 +1,4 @@
-package com.frostnerd.dnschanger.API;
+package com.frostnerd.dnschanger.util;
 
 import android.support.annotation.NonNull;
 

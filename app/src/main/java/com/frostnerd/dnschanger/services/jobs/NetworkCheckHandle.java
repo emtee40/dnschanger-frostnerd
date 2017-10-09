@@ -11,8 +11,8 @@ import android.net.NetworkRequest;
 import android.net.VpnService;
 import android.os.Build;
 
-import com.frostnerd.dnschanger.API.API;
-import com.frostnerd.dnschanger.API.VPNServiceArgument;
+import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;

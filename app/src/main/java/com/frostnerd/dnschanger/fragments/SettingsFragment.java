@@ -33,9 +33,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
-import com.frostnerd.dnschanger.API.API;
-import com.frostnerd.dnschanger.API.ThemeHandler;
-import com.frostnerd.dnschanger.API.VPNServiceArgument;
+import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.ThemeHandler;
+import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.AppSelectionActivity;

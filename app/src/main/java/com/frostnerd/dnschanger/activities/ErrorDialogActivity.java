@@ -17,7 +17,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.widget.TextView;
 
-import com.frostnerd.dnschanger.API.ThemeHandler;
+import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;

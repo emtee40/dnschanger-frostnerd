@@ -1,4 +1,4 @@
-package com.frostnerd.dnschanger.API;
+package com.frostnerd.dnschanger.util;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -12,8 +12,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Icon;
 import android.net.ConnectivityManager;
 import android.net.Network;

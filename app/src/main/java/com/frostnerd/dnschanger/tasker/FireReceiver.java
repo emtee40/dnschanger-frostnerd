@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.frostnerd.dnschanger.API.API;
+import com.frostnerd.dnschanger.util.API;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
