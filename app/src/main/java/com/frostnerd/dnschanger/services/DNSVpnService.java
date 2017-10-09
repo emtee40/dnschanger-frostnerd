@@ -414,7 +414,6 @@ public class DNSVpnService extends VpnService {
             private int addressIndex = 0;
             private ParcelFileDescriptor tunnelInterface = null;
             private Builder builder;
-            private DatagramChannel tunnel = null;
             private DatagramSocket tunnelSocket = null;
 
             @Override
@@ -448,14 +447,9 @@ public class DNSVpnService extends VpnService {
                             tunnelInterface = builder.establish();
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface created and established.");
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Opening DatagramChannel");
-                            tunnel = DatagramChannel.open();
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "DatagramChannel opened");
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Connecting to 127.0.0.1:8087");
-                            tunnel.configureBlocking(false);
-                            tunnel.connect(new InetSocketAddress("127.0.0.1", 8087));
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Connected");
-                            LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying to protect tunnel");
-                            LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel protected: " + protect(tunnelSocket=tunnel.socket()));
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Sending broadcast with current state");
                             broadcastCurrentState(true);
                             LogFactory.writeMessage(DNSVpnService.this, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Broadcast sent");
@@ -573,12 +567,6 @@ public class DNSVpnService extends VpnService {
                     tunnelSocket.disconnect();
                     tunnelSocket.close();
                 }
-                if(tunnel != null && tunnel.isConnected()) try {
-                    tunnel.disconnect();
-                    tunnel.close();
-                } catch (IOException | IllegalStateException e) {
-                    e.printStackTrace();
-                }
                 if(tunnelInterface != null){
                     try {
                         tunnelInterface.close();
@@ -587,7 +575,6 @@ public class DNSVpnService extends VpnService {
                     }
                 }
                 builder = null;
-                tunnel = null;
                 tunnelInterface = null;
                 tunnelSocket = null;
             }
