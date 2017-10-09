@@ -112,7 +112,7 @@
     <string name="message_settings_exported">Settings have been exported successfully.</string>
     <string name="open_share_file">Open/share file</string>
     <string name="success">Success</string>
-    <string name="set_device_admin_info">This app can be set as device admin to prevent removing it without entering the devices Passcode first.\n\nThis feature only works if the devices admin policy is set to request passwords when removing apps (Mostly found in businesses or shipped with parental control apps)\n\nDNSChanger won\'t actually use these rights.\nDNSChanger has to be removed as device admin before trying to remove it from your phone, come back to the settings to do so.</string>
+    <string name="set_device_admin_info">This app can be set as device admin to prevent removing it without entering the devices Passcode first.\n\nNo security policies are used.\n\nThis feature only works if the devices admin policy is set to request passwords when removing apps (Mostly found in businesses or shipped with parental control apps)\n\nDNSChanger won\'t actually use these rights.\nDNSChanger has to be removed as device admin before trying to remove it from your phone, come back to the settings to do so.</string>
     <string name="title_device_admin">Device admin</string>
     <string name="summary_device_admin_activate">Activate this app as device admin to prevent uninstallation</string>
     <string name="device_admin_description">Prevent uninstall by settings as device admin</string>
@@ -178,12 +178,11 @@
     <string name="summary_enable_app_shortcuts">Enables app shortcuts. Long click on the apps shortcut in the launcher to open the menu</string>
     <string name="notification_x_whitelisted">[x] apps whitelisted</string>
     <string name="notification_x_blacklisted">[x] apps blacklisted</string>
-    <string name="default_dns_explain_delete">Long click on an entry to delete it. Click on additional entries to delete them as well.</string>
+    <string name="default_dns_explain_delete">Long click on an entry to delete or edit it. Click on additional entries to delete them as well.</string>
     <string name="summary_enable_ipv4">Enable IPv4. This allows to provide ipv4 addresses to use as dns servers</string>
     <string name="title_enable_ipv4">Enable IPv4</string>
     <string name="warning_disabling_v4">Most Android versions can\'t access the internet anymore when DNS Changer is running and no IPv4 address is provided. You\'ll have to try for your device though.</string>
     <string-array name="default_blacklist" translatable="false">
-        <item>com.android.vending</item>
         <item>bbc.iplayer.android</item>
     </string-array>
     <string name="x_apps_selected">[[x]] apps selected</string>
@@ -191,7 +190,7 @@
     <string name="tile_start_stop">Start / Stop</string>
     <string name="title_vpn_exclusion">VPN exclusion</string>
     <string name="search_hint">Search a setting</string>
-    <string name="unfixable_error_explaination">The background worker crashed with an exception present on some devices. This crash cannot be fixed by the app itself.\nEither try restarting the app and if that doesn\'t help try restarting your device.</string>
+    <string name="unfixable_error_explaination">The background worker crashed with an exception present on some devices. This crash cannot be fixed by the app itself.\nEither try restarting the app and if that doesn\'t help try restarting your device.\n\nIf the problem persists and your device is rooted try downloading the app Tun.ko Installer as it might be able to fix it. The developer of this app is DroidVPN Inc.\nLink: https://play.google.com/store/apps/details?id=com.aed.tun.installer</string>
     <string name="nav_title_dns">DNS</string>
     <string name="nav_title_main">Main screen</string>
     <string name="nav_title_learn">Learn</string>
@@ -210,4 +209,52 @@
     <string name="notification_channel_default_description">Default channel for posting notifications.</string>
     <string name="feature_tiles">For quick access you can place tiles in you notification area. They can be used to start/stop and pause/resume DNS Changer.\n\nTo add them drag down the notification area, click on the pen and drag them upwards by long-clicking them.</string>
     <string name="feature_pin_protection">You can pin-protect every action which starts/stops/pauses/resumes DNS Changer. Each time one of those is to be executed a dialog shows asking for the pin set by you.\n\nThis can be used for hindering the phones user from interfering with the app if the user isn\'t to tech-savvy. It was developed to stop children from stopping the app.\nTo choose what to protect open the settings.</string>
+    <string name="no_disable_android_o">This cannot be disabled on Android O and above.</string>
+    <string name="blacklist">Blacklist</string>
+    <string name="easter_egg">No easter eggs here. Go away.</string>
+    <string name="cardview_title">Disable all functionality</string>
+    <string name="cardview_text">Click here to disable everything - Automation and functionality (only temporary)</string>
+    <string name="cardview_text_disabled">Functionality is disabled. Click here to re-enable (happens automatically at reboot)</string>
+    <string name="info_functionality_disabled">All functionality has been disabled by you. Re-enable in the menu on the side to start.</string>
+    <string name="nav_title_dns_query">DNS Query</string>
+    <string name="hint_dns_lookup">DNS lookup</string>
+    <string name="run_query">Run query</string>
+    <string name="query_title_name">Name</string>
+    <string name="query_title_ttl">TTL</string>
+    <string name="query_title_dclass">D class</string>
+    <string name="query_title_type">Type</string>
+    <string name="query_title_answer">Answer</string>
+    <string name="query_destination_info">Query will be sent to [x]</string>
+    <string name="query_error_occured">An error occured: [error]</string>
+    <string name="question_enable_ipv6">Do you want to enable IPv6?</string>
+    <string name="nav_title_libraries">Libraries</string>
+    <string name="dialog_libraries_text">This app containes libraries created by third parties. The libraries, their creators and the licenses are listed below.</string>
+    <string name="title_disable_notification_icon">Disable notification icon</string>
+    <string name="summary_disable_notification_icon">Disables the dns icon shown in the notification bar. Will still be visible when opening the notification area.</string>
+    <string name="notification_channel_hiddenicon">Channel with no icon</string>
+    <string name="notification_channel_hiddenicon_description">This channel shows no icon in the notification bar</string>
+    <string name="notification_ipv6_text">Go to the settings if you want to enable IPv6.</string>
+    <string name="mail_debug_text">Write a small message describing why you send the log files</string>
+    <string name="permissions_label_access_data">Access data</string>
+    <string name="permissions_description_access_data">Allows the app to access data of DNS Changer in general</string>
+    <string name="edit">Edit</string>
+    <string name="new_features">New features</string>
+    <string-array name="features_1_16">
+        <item>Added this dialog to highlight new features</item>
+        <item>The main menu now shows the name of the DNS provider being used</item>
+        <item>You can now use domains as DNS servers</item>
+        <item>The app now warns you if no connection can be established to the configured DNS server</item>
+        <item>Optimization for TVs</item>
+        <item>You can now use your fingerprint in the pin dialog</item>
+        <item>You can now provide actual VPN credentials</item>
+        <item>You can now configure the WIFI names on which DNS Changer starts automatically</item>
+        <item>Bugfixes</item>
+    </string-array>
+    <string name="summary_pin_fingerprint">Allow authentication using any saved fingerprint</string>
+    <string name="title_pin_fingerprint">Fingerprint</string>
+    <string name="checking_connectivity">Checking connectivity</string>
+    <string name="dialog_connectivity_description">Checking whether the DNS servers are reachable</string>
+    <string name="no_connectivity_warning_text">Out of [x] servers [y] are unreachable:\n\n[servers]\nThe server(s) might be offline, not reachable (maybe you aren\'t connected to a network?) or blocked by your ISP.</string>
+    <string name="summary_check_connectivity">Check whether the configured DNS servers are reachable each time the start button is clicked</string>
+    <string name="title_check_connectivity">Check connectivity</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.frostnerd.dnschanger.API;
+package com.frostnerd.dnschanger.util;
 
 /**
  * Copyright Daniel Wolf 2017

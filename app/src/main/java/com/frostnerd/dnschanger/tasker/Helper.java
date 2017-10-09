@@ -1,6 +1,5 @@
 package com.frostnerd.dnschanger.tasker;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -51,11 +50,9 @@ public class Helper {
                 !bundle.containsKey(BUNDLE_EXTRA_DNS1V6) || !bundle.containsKey(BUNDLE_EXTRA_DNS2V6)) {
             return false;
         }
-        String dns1 = bundle.getString(BUNDLE_EXTRA_DNS1), dns2 = bundle.getString(BUNDLE_EXTRA_DNS2),
-                dns1v6 = bundle.getString(BUNDLE_EXTRA_DNS1V6), dns2v6 = bundle.getString(BUNDLE_EXTRA_DNS2V6);
+        String dns1 = bundle.getString(BUNDLE_EXTRA_DNS1), dns1v6 = bundle.getString(BUNDLE_EXTRA_DNS1V6);
 
-        return !(bundle.keySet().size() != 4 || TextUtils.isEmpty(dns1) || TextUtils.isEmpty(dns2)
-                || TextUtils.isEmpty(dns1v6) || TextUtils.isEmpty(dns2v6));
+        return !(bundle.keySet().size() != 4 || TextUtils.isEmpty(dns1) || TextUtils.isEmpty(dns1v6));
     }
 
     public static Bundle createBundle(final String dns1, final String dns2, final String dns1v6, final String dns2v6){

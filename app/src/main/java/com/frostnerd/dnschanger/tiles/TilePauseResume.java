@@ -6,12 +6,12 @@ import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.service.quicksettings.Tile;
 
-import com.frostnerd.dnschanger.API.API;
-import com.frostnerd.dnschanger.API.VPNServiceArgument;
+import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.activities.PinActivity;
+import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.utils.preferences.Preferences;
 
 /**
@@ -32,9 +32,11 @@ public class TilePauseResume extends android.service.quicksettings.TileService {
         super.onTileAdded();
         LogFactory.writeMessage(this, LOG_TAG, "Tile added");
         Tile tile = getQsTile();
-        tile.setState(Tile.STATE_UNAVAILABLE);
-        tile.setLabel(getString(R.string.not_running));
-        tile.updateTile();
+        if(tile != null){
+            tile.setState(Tile.STATE_UNAVAILABLE);
+            tile.setLabel(getString(R.string.not_running));
+            tile.updateTile();
+        }else API.updateTiles(this);
     }
 
     @Override

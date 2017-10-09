@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/AndroidUtils/AndroidUtils.iml" filepath="$PROJECT_DIR$/AndroidUtils/AndroidUtils.iml" />
       <module fileurl="file://$PROJECT_DIR$/DnsChanger.iml" filepath="$PROJECT_DIR$/DnsChanger.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dnschangertests/dnschangertests.iml" filepath="$PROJECT_DIR$/dnschangertests/dnschangertests.iml" />
       <module fileurl="file://$PROJECT_DIR$/AndroidUtils/library/library.iml" filepath="$PROJECT_DIR$/AndroidUtils/library/library.iml" />
     </modules>
   </component>

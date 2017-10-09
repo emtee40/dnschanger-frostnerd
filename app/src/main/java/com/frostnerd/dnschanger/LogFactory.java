@@ -2,9 +2,7 @@ package com.frostnerd.dnschanger;
 
 import android.content.Context;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Build;
-import android.util.Log;
 
 import com.frostnerd.utils.preferences.Preferences;
 
@@ -26,8 +24,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -174,6 +170,7 @@ public class LogFactory {
         Map<String,Object> prefs = Preferences.getAll(context, false);
         for(String key: prefs.keySet())s += key + "->" + prefs.get(key) + "; ";
         writeMessage(context, Tag.INFO, "Preferences: " + s);
+        writeMessage(context, Tag.INFO, "Prepare caller stack: " + stacktraceToString(new Throwable(), true));
         writeMessage(context, Tag.NO_TAG, "--------------------------------------------------");
         return usable;
     }
@@ -271,8 +268,11 @@ public class LogFactory {
     }
 
     private static void writeSeparateStackTrace(Context context, Throwable exception){
-        File f = new File(context.getFilesDir(), "logs/" + DATE_TIME_FORMATTER.format(new Date()) + ".error.log");
+        File dir = new File(context.getFilesDir(), "logs/");
+        if(!dir.exists())dir.mkdirs();
+        File f = new File(dir, DATE_TIME_FORMATTER.format(new Date()) + ".error.log");
         try {
+            if(!f.exists())f.createNewFile();
             BufferedWriter writer = new BufferedWriter(new FileWriter(f));
             writer.write("App Version: " + BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ")\n");
             writer.write("Android Version: " + Build.VERSION.SDK_INT + " (" + Build.VERSION.RELEASE + " - " + Build.VERSION.CODENAME + ", " +

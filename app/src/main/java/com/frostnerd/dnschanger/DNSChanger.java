@@ -2,8 +2,8 @@ package com.frostnerd.dnschanger;
 
 import android.app.Application;
 
-import com.frostnerd.dnschanger.API.API;
-import com.frostnerd.dnschanger.API.ThemeHandler;
+import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
 
 /**
@@ -17,21 +17,31 @@ import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
  */
 public class DNSChanger extends Application {
     private static final String LOG_TAG = "[DNSCHANGER-APPLICATION]";
+    private Thread.UncaughtExceptionHandler customHandler = new Thread.UncaughtExceptionHandler() {
+        @Override
+        public void uncaughtException(Thread t, Throwable e) {
+            LogFactory.writeMessage(DNSChanger.this,  new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, "Caught uncaught exception");
+            LogFactory.writeStackTrace(DNSChanger.this, new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, e);
+            if(showErrorDialog(e)){
+                ErrorDialogActivity.show(DNSChanger.this, e);
+                System.exit(2);
+            }else if(defaultHandler != null)defaultHandler.uncaughtException(t, e);
+        }
+    };
+    private Thread.UncaughtExceptionHandler defaultHandler;
+
+    private boolean showErrorDialog(Throwable exception){
+        if(exception.getMessage() == null)return false;
+        return exception.getMessage().toLowerCase().contains("cannot create interface");
+    }
 
     @Override
     public void onCreate() {
         setTheme(ThemeHandler.getAppTheme(this));
+        defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
+        Thread.setDefaultUncaughtExceptionHandler(customHandler);
         super.onCreate();
         LogFactory.writeMessage(this, LOG_TAG, "Application created");
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(Thread t, Throwable e) {
-                e.printStackTrace();
-                LogFactory.writeMessage(DNSChanger.this,  new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, "Caught uncaught exception");
-                LogFactory.writeStackTrace(DNSChanger.this, new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, e);
-                ErrorDialogActivity.show(DNSChanger.this, e);
-            }
-        });
     }
 
     @Override
@@ -52,5 +62,9 @@ public class DNSChanger extends Application {
         API.terminate();
         LogFactory.terminate();
         super.onTerminate();
+    }
+
+    public Thread.UncaughtExceptionHandler getExceptionHandler() {
+        return customHandler;
     }
 }

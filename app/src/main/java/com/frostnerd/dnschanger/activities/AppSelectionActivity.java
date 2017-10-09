@@ -27,7 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.frostnerd.dnschanger.API.ThemeHandler;
+import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.R;
 
 import java.util.ArrayList;
@@ -120,7 +120,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        listAdapter.filter(newText);
+        if(listAdapter != null && findViewById(R.id.progress).getVisibility() != View.VISIBLE)listAdapter.filter(newText);
         return true;
     }
 

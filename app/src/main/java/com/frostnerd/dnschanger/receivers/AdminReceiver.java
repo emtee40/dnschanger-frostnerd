@@ -16,7 +16,7 @@ import com.frostnerd.dnschanger.R;
  * <p>
  * development@frostnerd.com
  */
-public class _AdminReceiver extends DeviceAdminReceiver {
+public class AdminReceiver extends DeviceAdminReceiver {
     private static final String LOG_TAG = "[AdminReceiver]";
 
     @Override

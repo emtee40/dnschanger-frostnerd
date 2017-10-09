@@ -16,111 +16,119 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingRight="@dimen/activity_horizontal_margin"
             android:layout_toLeftOf="@id/middle"
-            android:orientation="vertical">
-
-            <com.frostnerd.utils.design.MaterialEditText
-                android:id="@+id/met_dns1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:allowCollapse="false"
-                app:animationDuration="0"
-                app:image="@drawable/ic_language"
-                app:indicatorVisibilityWhenUnused="gone"
-                app:revealDelay="0"
-                app:revealType="revealInstant">
-
-                <EditText
-                    android:id="@+id/dns1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:digits="0123456789."
-                    android:hint="DNS 1"
-                    android:imeOptions="actionNext"
-                    android:inputType="numberDecimal"
-                    android:nextFocusDown="@+id/dns2"
-                    android:nextFocusForward="@+id/dns2"
-                    android:text="8.8.8.8"
-                    android:textColor="#FFF" />
-            </com.frostnerd.utils.design.MaterialEditText>
-
-
-            <com.frostnerd.utils.design.MaterialEditText
-                android:id="@+id/met_dns2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                app:animationDuration="0"
-                app:allowCollapse="false"
-                app:image="@drawable/ic_language"
-                app:indicatorVisibilityWhenUnused="gone"
-                app:revealDelay="0"
-                app:revealType="revealInstant">
-
-                <EditText
-                    android:id="@+id/dns2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:digits="0123456789."
-                    android:hint="DNS 2"
-                    android:imeOptions="actionDone"
-                    android:inputType="numberDecimal"
-                    android:nextFocusUp="@id/dns1"
-                    android:text="8.8.4.4"
-                    android:textColor="#FFF" />
-            </com.frostnerd.utils.design.MaterialEditText>
+            android:layout_toStartOf="@id/middle">
 
             <LinearLayout
-                android:id="@+id/default_dns_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:background="?attr/inputElementColor"
-                android:clickable="true"
-                android:onClick="openDefaultDNSDialog"
-                android:padding="10dp">
+                android:orientation="vertical"
+                android:paddingRight="@dimen/activity_horizontal_margin">
 
-                <ImageButton
-                    android:id="@+id/default_dns_view_image"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="?attr/inputElementColor"
-                    android:src="@drawable/ic_action_import" />
-
-                <View
-                    android:layout_width="2dp"
-                    android:layout_height="match_parent"
-                    android:background="#FFF" />
-
-                <TextView
+                <com.frostnerd.utils.design.MaterialEditText
+                    android:id="@+id/met_dns1"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/default_dns"
-                    android:textColor="#FFF" />
-            </LinearLayout>
+                    android:layout_height="wrap_content"
+                    app:allowCollapse="false"
+                    app:animationDuration="0"
+                    app:image="@drawable/ic_language"
+                    app:indicatorState="undefined"
+                    app:indicatorVisibilityWhenUnused="hidden"
+                    app:revealDelay="0"
+                    app:revealType="revealInstant">
 
-        </LinearLayout>
+                    <EditText
+                        android:id="@+id/dns1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:digits="0123456789."
+                        android:hint="DNS 1"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberDecimal"
+                        android:nextFocusDown="@+id/dns2"
+                        android:nextFocusForward="@+id/dns2"
+                        android:text="8.8.8.8"
+                        android:textColor="#FFF"
+                        tools:ignore="HardcodedText" />
+                </com.frostnerd.utils.design.MaterialEditText>
+
+
+                <com.frostnerd.utils.design.MaterialEditText
+                    android:id="@+id/met_dns2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:allowCollapse="false"
+                    app:animationDuration="0"
+                    app:image="@drawable/ic_language"
+                    app:indicatorState="undefined"
+                    app:indicatorVisibilityWhenUnused="hidden"
+                    app:revealDelay="0"
+                    app:revealType="revealInstant">
+
+                    <EditText
+                        android:id="@+id/dns2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:digits="0123456789."
+                        android:hint="DNS 2"
+                        android:imeOptions="actionDone"
+                        android:inputType="numberDecimal"
+                        android:nextFocusUp="@id/dns1"
+                        android:text="8.8.4.4"
+                        android:textColor="#FFF"
+                        tools:ignore="HardcodedText" />
+                </com.frostnerd.utils.design.MaterialEditText>
+
+                <LinearLayout
+                    android:id="@+id/default_dns_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/inputElementColor"
+                    android:clickable="true"
+                    android:onClick="openDefaultDNSDialog"
+                    android:padding="10dp">
+
+                    <ImageButton
+                        android:id="@+id/default_dns_view_image"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/inputElementColor"
+                        android:src="@drawable/ic_action_import" />
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent"
+                        android:background="#FFF" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/default_dns"
+                        android:textColor="#FFF" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
 
         <View
             android:id="@+id/middle"
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="#424242"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:background="#424242" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:layout_centerInParent="true"
             android:layout_toRightOf="@id/middle"
-            android:gravity="center">
+            android:gravity="center"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -148,7 +156,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:maxHeight="64dp"
-                        android:maxWidth="64dp"/>
+                        android:maxWidth="64dp" />
                 </RelativeLayout>
 
                 <View
