@@ -178,6 +178,15 @@
                 android:value=".activities.MainActivity" />
         </activity>
 
+        <activity
+            android:name=".activities.AdvancedSettingsActivity"
+            android:parentActivityName=".activities.MainActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
+
         <service
             android:name=".tiles.TileStartStop"
             android:icon="@drawable/ic_stat_resume"

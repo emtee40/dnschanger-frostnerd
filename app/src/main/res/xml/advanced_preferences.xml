@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:title="@string/title_advanced_settings"
+        android:summary="@string/summary_advanced_settings"
+        android:key="advanced_settings" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:dependency="advanced_settings"
+        android:summary="@string/summary_custom_ports"
+        android:title="@string/title_custom_ports"
+        android:key="custom_port" />
+</PreferenceScreen>

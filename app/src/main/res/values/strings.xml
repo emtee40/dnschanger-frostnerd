@@ -257,4 +257,9 @@
     <string name="no_connectivity_warning_text">Out of [x] servers [y] are unreachable:\n\n[servers]\nThe server(s) might be offline, not reachable (maybe you aren\'t connected to a network?) or blocked by your ISP.</string>
     <string name="summary_check_connectivity">Check whether the configured DNS servers are reachable each time the start button is clicked</string>
     <string name="title_check_connectivity">Check connectivity</string>
+    <string name="summary_custom_ports">Allow the input of custom ports in the DNS fields.</string>
+    <string name="title_advanced_settings">Advanced settings</string>
+    <string name="summary_jump_advanced_settings">Click here to configure advanced settings.</string>
+    <string name="title_custom_ports">Custom ports</string>
+    <string name="summary_advanced_settings">Enable the advanced settings</string>
 </resources>

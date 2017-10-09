@@ -250,4 +250,9 @@
     <string name="title_check_connectivity">Verbindung Überprüfen</string>
     <string name="title_pin_fingerprint">Fingerabdruck</string>
     <string name="summary_pin_fingerprint">Erlaube Authentifizierung mit gespeicherten Fingerabdrücken</string>
+    <string name="summary_custom_ports">Erlaube es, in den Eingabefeldern den Port des DNS Servers anzugeben</string>
+    <string name="title_advanced_settings">Erweiterte Einstellungen</string>
+    <string name="summary_jump_advanced_settings">Klicke hier, um erweiterte Einstellungen vorzunehmen</string>
+    <string name="title_custom_ports">Angepasste ports</string>
+    <string name="summary_advanced_settings">Die erweiterten Einstellungen aktivieren</string>
 </resources>

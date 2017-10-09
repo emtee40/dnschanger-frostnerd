@@ -223,4 +223,11 @@
             android:summary="@string/summary_reset"
             android:title="@string/title_reset" />
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/title_advanced_settings">
+        <Preference
+            android:key="jump_advanced_settings"
+            android:summary="@string/summary_jump_advanced_settings"
+            android:title="@string/title_advanced_settings" />
+    </PreferenceCategory>
 </PreferenceScreen>

@@ -33,6 +33,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
+import com.frostnerd.dnschanger.activities.AdvancedSettingsActivity;
 import com.frostnerd.dnschanger.util.API;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
@@ -465,6 +466,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 awaitingPinChange = false;
                 Preferences.put(getContext(), "pin_value", "" + newValue);
                 return false;
+            }
+        });
+        findPreference("jump_advanced_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                getContext().startActivity(new Intent(getContext(), AdvancedSettingsActivity.class));
+                return true;
             }
         });
         if(!API.isIPv6Enabled(getContext()) && !Preferences.getBoolean(getContext(), "ipv6_asked", false)){
