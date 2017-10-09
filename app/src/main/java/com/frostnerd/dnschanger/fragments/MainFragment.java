@@ -36,6 +36,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.frostnerd.dnschanger.threading.VPNRunnable;
 import com.frostnerd.dnschanger.util.API;
 import com.frostnerd.dnschanger.util.DNSEntry;
 import com.frostnerd.dnschanger.util.ThemeHandler;
@@ -46,7 +47,6 @@ import com.frostnerd.dnschanger.dialogs.NewFeaturesDialog;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.design.dialogs.LoadingDialog;
-import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
 import com.frostnerd.utils.textfilers.InputCharacterFilter;
 
@@ -75,7 +75,7 @@ public class MainFragment extends Fragment {
     private ImageView connectionImage;
     private View running_indicator;
     private View wrapper;
-    public boolean settingV6 = false;
+    public boolean settingV6 = false, advancedMode;
     private final int REQUEST_SETTINGS = 13;
     private AlertDialog dialog2;
     private BroadcastReceiver serviceStateReceiver = new BroadcastReceiver() {
@@ -187,11 +187,14 @@ public class MainFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(before != count){
                     if(vpnRunning && doStopVPN && !wasStartedWithTasker)stopVpn();
-                    if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6,false)) {
+                    API.IPPortPair pair = API.validateInput(s.toString(), settingV6, false);
+                    if(pair == null || (pair.getPort() != -1 && !advancedMode)){
+                        System.out.println("PAIR: " + pair);
                         met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
-                    } else {
+                    }else{
                         met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
-                        Preferences.put(getContext(), settingV6 ? "dns1-v6" :"dns1", s.toString());
+                        Preferences.put(getContext(), settingV6 ? "dns1-v6" :"dns1", pair.getAddress());
+                        if(pair.getPort() != -1)Preferences.put(getContext(), settingV6 ? "port1v6" : "port1", pair.getPort());
                         setEditTextLabel();
                     }
                 }
@@ -212,11 +215,13 @@ public class MainFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(before != count){
                     if(vpnRunning && doStopVPN && !wasStartedWithTasker)stopVpn();
-                    if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6, true)) {
+                    API.IPPortPair pair = API.validateInput(s.toString(), settingV6, true);
+                    if(pair == null || (pair.getPort() != -1 && !advancedMode)){
                         met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
-                    } else {
+                    }else{
                         met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
-                        Preferences.put(getContext(), settingV6 ? "dns2-v6" : "dns2", s.toString());
+                        Preferences.put(getContext(), settingV6 ? "dns2-v6" :"dns2", pair.getAddress());
+                        if(pair.getPort() != -1)Preferences.put(getContext(), settingV6 ? "port2v6" : "port2", pair.getPort());
                         setEditTextLabel();
                     }
                 }
@@ -236,9 +241,11 @@ public class MainFragment extends Fragment {
 
     private void setEditTextLabel(){
         String label1 = "DNS 1", label2 = "DNS 2";
+        String dns1 = Preferences.getString(getContext(), settingV6 ? "dns1-v6" : "dns1", settingV6 ? "2001:4860:4860::8888" : "8.8.8.8");
+        String dns2 = Preferences.getString(getContext(), settingV6 ? "dns2-v6" : "dns2", settingV6 ? "2001:4860:4860::8844" : "8.8.4.4");
         for(DNSEntry entry: API.getDBHelper(getContext()).getDNSEntries()){
-            if(entry.hasIP(dns1.getText().toString()))label1 = "DNS 1 (" + entry.getShortName() + ")";
-            if(entry.hasIP(dns2.getText().toString()))label2 = "DNS 2 (" + entry.getShortName() + ")";
+            if(entry.hasIP(dns1))label1 = "DNS 1 (" + entry.getShortName() + ")";
+            if(entry.hasIP(dns2))label2 = "DNS 2 (" + entry.getShortName() + ")";
         }
         met_dns1.setLabelText(label1);
         met_dns2.setLabelText(label2);
@@ -246,13 +253,15 @@ public class MainFragment extends Fragment {
 
     private void setEditTextState(){
         if(!settingV6){
-            InputFilter filter = new InputCharacterFilter(Pattern.compile("[0-9.]"));
+            InputFilter filter = new InputCharacterFilter(advancedMode ?
+                    Pattern.compile("[0-9.:]") : Pattern.compile("[0-9.]"));
             dns1.setFilters(new InputFilter[]{filter});
             dns2.setFilters(new InputFilter[]{filter});
             dns1.setText(Preferences.getString(getContext(), "dns1", "8.8.8.8"));
             dns2.setText(Preferences.getString(getContext(), "dns2", "8.8.4.4"));
         }else{
-            InputFilter filter = new InputCharacterFilter(Pattern.compile("[0-9:a-f]"));
+            InputFilter filter = new InputCharacterFilter(advancedMode ?
+                    Pattern.compile("[0-9:a-f\\[\\]]") : Pattern.compile("[0-9:a-f]"));
             dns1.setFilters(new InputFilter[]{filter});
             dns2.setFilters(new InputFilter[]{filter});
             dns1.setText(Preferences.getString(getContext(), "dns1-v6", "2001:4860:4860::8888"));
@@ -269,6 +278,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        advancedMode = VPNRunnable.isInAdvancedMode(getContext());
         Preferences.getDefaultPreferences(getContext()).registerOnSharedPreferenceChangeListener(preferenceChangeListener);
         settingV6 = !API.isIPv4Enabled(getContext()) || (API.isIPv6Enabled(getContext()) && settingV6);
         LogFactory.writeMessage(getContext(), LOG_TAG, "Got OnResume");

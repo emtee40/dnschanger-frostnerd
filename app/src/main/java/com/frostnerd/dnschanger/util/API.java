@@ -38,6 +38,7 @@ import com.frostnerd.dnschanger.tiles.TilePauseResume;
 import com.frostnerd.dnschanger.tiles.TileStartStop;
 import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.general.Utils;
+import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
 
 import org.xbill.DNS.DClass;
@@ -53,6 +54,7 @@ import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -69,6 +71,8 @@ public final class API {
     public static final String BROADCAST_SHORTCUT_CREATED = "com.frostnerd.dnschanger.SHORTCUT_CREATED";
     public static final String LOG_TAG = "[API]";
     private static DatabaseHelper dbHelper;
+    private static Pattern ipv6WithPort = Pattern.compile("(\\[[0-9a-f:]+?\\]:[0-9]{1,5})|([0-9a-f:]+?)");
+    private static Pattern ipv4WithPort = Pattern.compile("([0-9]{1,3}\\.){3}[0-9]{1,3}(:[0-9]{1,5})?");
 
     public static synchronized void updateTiles(Context context) {
         LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG}, "Trying to update Tiles");
@@ -78,6 +82,40 @@ public final class API {
             LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG}, "Tiles updated");
         } else
             LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG}, "Not updating Tiles (Version is below Android N)");
+    }
+
+    public static IPPortPair validateInput(String input, boolean iPv6, boolean allowEmpty){
+        if(allowEmpty && input.equals(""))return new IPPortPair("", -1, iPv6);
+        System.out.println("INPUT: " + input);
+        if(iPv6){
+            if(ipv6WithPort.matcher(input).matches()){
+                if(input.contains(":")){
+                    int port = Integer.parseInt(input.split(":")[1]);
+                    String address = input.split(":")[0].replace("[","").replace("]","");
+                    return port <= 65535 && port >= 1 && NetworkUtil.isAssignableAddress(address, true) ? new IPPortPair(address, port, true) : null;
+                }else{
+                    return NetworkUtil.isAssignableAddress(input, true) ? new IPPortPair(input, -1, true) : null;
+                }
+            }else{
+                return null;
+            }
+        }else{
+            System.out.println("IPV4");
+            if(ipv4WithPort.matcher(input).matches()){
+                System.out.println("MATCHES");
+                if(input.contains(":")){
+                    int port = Integer.parseInt(input.split(":")[1]);
+                    String address = input.split(":")[0];
+                    return port <= 65535 && port >= 1 && NetworkUtil.isAssignableAddress(address, false) ? new IPPortPair(address, port, false) : null;
+                }else{
+                    System.out.println("NO PORT");
+                    return NetworkUtil.isAssignableAddress(input, false) ? new IPPortPair(input, -1, false) : null;
+                }
+            }else{
+                System.out.println("DOESNT MATCH");
+                return null;
+            }
+        }
     }
 
     public static void updateAppShortcuts(Context context) {
@@ -416,5 +454,29 @@ public final class API {
     public interface DNSQueryResultListener{
         public void onSuccess(Message response);
         public void onError(@Nullable Exception e);
+    }
+
+    public static class IPPortPair{
+        private String ip;
+        private int port;
+        private boolean ipv6;
+
+        IPPortPair(String ip, int port, boolean IPv6){
+            this.ip = ip;
+            this.port = port;
+            this.ipv6 = IPv6;
+        }
+
+        public String getAddress() {
+            return ip;
+        }
+
+        public int getPort() {
+            return port;
+        }
+
+        public boolean isIpv6() {
+            return ipv6;
+        }
     }
 }
