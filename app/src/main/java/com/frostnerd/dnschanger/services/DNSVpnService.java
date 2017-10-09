@@ -258,7 +258,7 @@ public class DNSVpnService extends VpnService {
     private void createAndRunThread(boolean runIfAlreadyRunning){
         if(vpnRunnable == null || !vpnRunnable.isThreadRunning()){
             synchronized (DNSVpnService.this){
-                vpnRunnable = new VPNRunnable(this, dns1, dns2, dns1_v6, dns2_v6, excludedApps, excludedWhitelisted, fixedDNS, startedWithTasker);
+                vpnRunnable = new VPNRunnable(this, dns1, dns2, dns1_v6, dns2_v6, excludedApps, excludedWhitelisted);
                 vpnThread = new Thread(vpnRunnable, "DNSChanger");
                 vpnThread.start();
             }
@@ -267,7 +267,7 @@ public class DNSVpnService extends VpnService {
                 @Override
                 public void run() {
                     synchronized (DNSVpnService.this){
-                        vpnRunnable = new VPNRunnable(DNSVpnService.this, dns1, dns2, dns1_v6, dns2_v6, excludedApps, excludedWhitelisted, fixedDNS, startedWithTasker);
+                        vpnRunnable = new VPNRunnable(DNSVpnService.this, dns1, dns2, dns1_v6, dns2_v6, excludedApps, excludedWhitelisted);
                         vpnThread = new Thread(vpnRunnable, "DNSChanger");
                         vpnThread.start();
                     }

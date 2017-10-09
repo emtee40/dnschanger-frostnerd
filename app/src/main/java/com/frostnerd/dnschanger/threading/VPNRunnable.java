@@ -11,8 +11,11 @@ import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.activities.InvalidDNSDialogActivity;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.dnsproxy.DNSProxy;
+import com.frostnerd.dnschanger.util.dnsproxy.DNSTCPProxy;
 import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.networking.NetworkUtil;
+import com.frostnerd.utils.preferences.Preferences;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,8 +43,9 @@ public class VPNRunnable implements Runnable {
     private DNSVpnService service;
     private String dns1, dns2, dns1v6, dns2v6;
     private Set<String> vpnApps;
-    private boolean whitelistMode, fixedDNS, startedWithTasker, running = true;
+    private boolean whitelistMode, running = true;
     private final List<Runnable> afterThreadStop = new ArrayList<>();
+    private DNSProxy dnsProxy;
     static{
         addresses.put("172.31.255.253", 30);
         addresses.put("192.168.0.131", 24);
@@ -49,7 +53,7 @@ public class VPNRunnable implements Runnable {
         addresses.put("172.31.255.1", 28);
     }
 
-    public VPNRunnable(DNSVpnService service, String dns1, String dns2, String dns1v6, String dns2v6, Set<String> vpnApps, boolean whitelistMode, boolean fixedDNS, boolean startedWithTasker){
+    public VPNRunnable(DNSVpnService service, String dns1, String dns2, String dns1v6, String dns2v6, Set<String> vpnApps, boolean whitelistMode){
         this.service = service;
         this.dns1 = dns1;
         this.dns1v6 = dns1v6;
@@ -57,8 +61,6 @@ public class VPNRunnable implements Runnable {
         this.dns2v6 = dns2v6;
         this.whitelistMode = whitelistMode;
         this.vpnApps = vpnApps;
-        this.startedWithTasker = startedWithTasker;
-        this.fixedDNS = fixedDNS;
     }
 
     @Override
@@ -72,7 +74,7 @@ public class VPNRunnable implements Runnable {
                 addressIndex++;
                 try{
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying address '" + address + "'");
-                    configure(address);
+                    configure(address, isInAdvancedMode());
                     tunnelInterface = builder.establish();
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface connected.");
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Broadcasting current state");
@@ -138,20 +140,20 @@ public class VPNRunnable implements Runnable {
         tunnelInterface = null;
     }
 
-    private void configure(String address){
+    private void configure(String address, boolean advanced){
         boolean ipv6Enabled = API.isIPv6Enabled(service), ipv4Enabled = API.isIPv4Enabled(service);
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Creating Tunnel interface");
         builder = service.createBuilder();
         builder.setSession("DnsChanger");
         if(ipv4Enabled){
             builder = builder.addAddress(address, addresses.get(address));
-            addDNSServer(dns1);
-            addDNSServer(dns2);
+            addDNSServer(dns1, advanced);
+            addDNSServer(dns2, advanced);
         }
         if(ipv6Enabled){
             builder = builder.addAddress(NetworkUtil.randomLocalIPv6Address(),48);
-            addDNSServer(dns1v6);
-            addDNSServer(dns2v6);
+            addDNSServer(dns1v6, advanced);
+            addDNSServer(dns2v6, advanced);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try{
@@ -176,10 +178,24 @@ public class VPNRunnable implements Runnable {
             builder.setMtu(1500);
         }else builder.setMtu(1280);
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface created, not yet connected");
+        if(advanced){
+            LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "We are in advanced mode, starting DNS proxy");
+            dnsProxy = new DNSTCPProxy();
+            LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "DNS proxy created, starting..");
+            dnsProxy.run();
+            LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Started DNS Proxy");
+        }
     }
 
-    private void addDNSServer(String server){
-        if(server != null && !server.equals(""))builder.addDnsServer(server);
+    private void addDNSServer(String server, boolean addRoute){
+        if(server != null && !server.equals("")){
+            builder.addDnsServer(server);
+            builder.addRoute(server, 32);
+        }
+    }
+
+    public boolean isInAdvancedMode(){
+        return Preferences.getBoolean(service, "advanced_settings", false) && (Preferences.getBoolean(service, "custom_port", false));
     }
 
     public boolean isThreadRunning(){
