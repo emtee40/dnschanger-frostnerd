@@ -5,15 +5,22 @@ android {
     buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.frostnerd.dnschanger"
-        minSdkVersion 16
+        minSdkVersion 14
         targetSdkVersion 26
-        versionCode 27
-        versionName "1.10"
+        versionCode 59
+        versionName "1.15.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug{
+            initWith(buildTypes.debug)
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
