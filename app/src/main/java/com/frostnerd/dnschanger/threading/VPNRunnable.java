@@ -1,5 +1,6 @@
 package com.frostnerd.dnschanger.threading;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.VpnService;
@@ -74,7 +75,7 @@ public class VPNRunnable implements Runnable {
                 addressIndex++;
                 try{
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying address '" + address + "'");
-                    configure(address, isInAdvancedMode());
+                    configure(address, isInAdvancedMode(service));
                     tunnelInterface = builder.establish();
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface connected.");
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Broadcasting current state");
@@ -194,8 +195,8 @@ public class VPNRunnable implements Runnable {
         }
     }
 
-    public boolean isInAdvancedMode(){
-        return Preferences.getBoolean(service, "advanced_settings", false) && (Preferences.getBoolean(service, "custom_port", false));
+    public static boolean isInAdvancedMode(Context context){
+        return Preferences.getBoolean(context, "advanced_settings", false) && (Preferences.getBoolean(context, "custom_port", false));
     }
 
     public boolean isThreadRunning(){
