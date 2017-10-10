@@ -1,6 +1,8 @@
 package com.frostnerd.dnschanger.activities;
 
 import android.os.Bundle;
+import android.preference.Preference;
+import android.view.MenuItem;
 
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.util.ThemeHandler;
@@ -22,6 +24,31 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
         setTheme(ThemeHandler.getAppTheme(this));
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.advanced_preferences);
+        findPreference("advanced_settings").setOnPreferenceChangeListener(preferenceChangeListener);
+        findPreference("custom_port").setOnPreferenceChangeListener(preferenceChangeListener);
+        findPreference("rules_activated").setOnPreferenceChangeListener(preferenceChangeListener);
         // TODO Show dialog that no warranty is offered
+    }
+
+    Preference.OnPreferenceChangeListener preferenceChangeListener = new Preference.OnPreferenceChangeListener() {
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object o) {
+            if(preference.getKey().equals("advanced_settings"))setResult(RESULT_FIRST_USER);
+            return true;
+        }
+    };
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -73,7 +73,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
     private Preference removeUsagePreference, sendDebugPreference;
     private DevicePolicyManager devicePolicyManager;
     private ComponentName deviceAdmin;
-    public static final int REQUEST_CODE_ENABLE_ADMIN = 1, REQUEST_CREATE_SHORTCUT = 2, REQUEST_EXCLUDE_APPS = 3, REQUEST_FINGERPRINT_PERMISSION = 4;
+    public static final int REQUEST_CODE_ENABLE_ADMIN = 1, REQUEST_CREATE_SHORTCUT = 2,
+            REQUEST_EXCLUDE_APPS = 3, REQUEST_FINGERPRINT_PERMISSION = 4, REQUEST_ADVANCED_SETTINGS = 5;
     public final static String LOG_TAG = "[SettingsActivity]", ARGUMENT_SCROLL_TO_SETTING = "scroll_to_setting";
     public final static int USAGE_STATS_REQUEST = 13, CHOOSE_AUTOPAUSEAPPS_REQUEST = 14;
     private PreferenceSearcher preferenceSearcher = new PreferenceSearcher(this);
@@ -471,7 +472,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         findPreference("jump_advanced_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                getContext().startActivity(new Intent(getContext(), AdvancedSettingsActivity.class));
+                startActivityForResult(new Intent(getContext(), AdvancedSettingsActivity.class), REQUEST_ADVANCED_SETTINGS);
                 return true;
             }
         });
@@ -590,6 +591,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 getContext().startService(new Intent(getContext(), DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true).
                         putExtra(VPNServiceArgument.FLAG_DONT_UPDATE_DNS.getArgument(),true));
             }
+        }else if(requestCode == REQUEST_ADVANCED_SETTINGS && resultCode == AppCompatActivity.RESULT_FIRST_USER){
+            IntentUtil.restartActivity(((MainActivity)getContext()));
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
