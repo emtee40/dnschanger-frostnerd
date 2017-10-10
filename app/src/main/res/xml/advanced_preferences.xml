@@ -3,14 +3,23 @@
 
     <SwitchPreference
         android:defaultValue="false"
-        android:title="@string/title_advanced_settings"
+        android:key="advanced_settings"
         android:summary="@string/summary_advanced_settings"
-        android:key="advanced_settings" />
+        android:title="@string/title_advanced_settings" />
 
-    <CheckBoxPreference
-        android:defaultValue="false"
-        android:dependency="advanced_settings"
-        android:summary="@string/summary_custom_ports"
-        android:title="@string/title_custom_ports"
-        android:key="custom_port" />
+    <PreferenceCategory android:title="@string/title_general">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="advanced_settings"
+            android:key="custom_port"
+            android:summary="@string/summary_custom_ports"
+            android:title="@string/title_custom_ports" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="advanced_settings"
+            android:key="rules_activated"
+            android:summary="@string/summary_rules_activated"
+            android:title="@string/title_rules_activated" />
+    </PreferenceCategory>
 </PreferenceScreen>
