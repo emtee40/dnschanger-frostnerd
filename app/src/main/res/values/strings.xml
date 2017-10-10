@@ -266,4 +266,6 @@
     <string name="nav_title_rules">Rules</string>
     <string name="title_rules_activated">Local rules</string>
     <string name="summary_rules_activated">Use the rules configured in the main menu</string>
+    <string name="host">Host</string>
+    <string name="target">Target</string>
 </resources>

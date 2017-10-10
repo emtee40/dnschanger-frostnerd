@@ -259,4 +259,6 @@
     <string name="nav_title_rules">Regeln</string>
     <string name="title_rules_activated">Lokale Regeln</string>
     <string name="summary_rules_activated">Benutze die im Hauptmenu eingestellten Regeln</string>
+    <string name="host">Host</string>
+    <string name="target">Ziel</string>
 </resources>

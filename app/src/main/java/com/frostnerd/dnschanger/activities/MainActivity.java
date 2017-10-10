@@ -30,6 +30,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.frostnerd.dnschanger.fragments.RulesFragment;
 import com.frostnerd.dnschanger.util.API;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.BuildConfig;
@@ -251,7 +252,7 @@ public class MainActivity extends NavigationDrawerActivity {
             itemCreator.createItemAndContinue(R.string.nav_title_rules, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_list_bullet_point)), new DrawerItem.FragmentCreator() {
                 @Override
                 public Fragment getFragment(@Nullable Bundle arguments) {
-                    return null;
+                    return new RulesFragment();
                 }
             });
         }
