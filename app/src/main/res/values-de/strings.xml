@@ -255,4 +255,8 @@
     <string name="summary_jump_advanced_settings">Klicke hier, um erweiterte Einstellungen vorzunehmen</string>
     <string name="title_custom_ports">Angepasste ports</string>
     <string name="summary_advanced_settings">Die erweiterten Einstellungen aktivieren</string>
+    <string name="nav_title_advanced">Erweitert</string>
+    <string name="nav_title_rules">Regeln</string>
+    <string name="title_rules_activated">Lokale Regeln</string>
+    <string name="summary_rules_activated">Benutze die im Hauptmenu eingestellten Regeln</string>
 </resources>

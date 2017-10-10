@@ -246,6 +246,15 @@ public class MainActivity extends NavigationDrawerActivity {
                 item.setInvalidateActivityMenu(true);
             }
         });
+        if(Preferences.getBoolean(this, "advanced_settings", false)){
+            itemCreator.createItemAndContinue(R.string.nav_title_advanced);
+            itemCreator.createItemAndContinue(R.string.nav_title_rules, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_list_bullet_point)), new DrawerItem.FragmentCreator() {
+                @Override
+                public Fragment getFragment(@Nullable Bundle arguments) {
+                    return null;
+                }
+            });
+        }
         itemCreator.createItemAndContinue(R.string.nav_title_learn);
         itemCreator.createItemAndContinue(R.string.nav_title_how_does_it_work, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_wrench)), new DrawerItem.ClickListener() {
             @Override

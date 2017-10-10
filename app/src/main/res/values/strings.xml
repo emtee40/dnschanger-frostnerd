@@ -262,4 +262,8 @@
     <string name="summary_jump_advanced_settings">Click here to configure advanced settings.</string>
     <string name="title_custom_ports">Custom ports</string>
     <string name="summary_advanced_settings">Enable the advanced settings</string>
+    <string name="nav_title_advanced">Advanced</string>
+    <string name="nav_title_rules">Rules</string>
+    <string name="title_rules_activated">Local rules</string>
+    <string name="summary_rules_activated">Use the rules configured in the main menu</string>
 </resources>
