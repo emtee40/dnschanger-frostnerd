@@ -91,8 +91,6 @@ public final class API {
                 if(input.contains("[")){
                     int port = Integer.parseInt(input.split("]")[1].split(":")[1]);
                     String address = input.split("]")[0].replace("[","");
-                    System.out.println("ADDR: " + address);
-                    System.out.println("PORT: " + port);
                     return port <= 65535 && port >= 1 && NetworkUtil.isAssignableAddress(address, true) ? new IPPortPair(address, port, true) : null;
                 }else{
                     return NetworkUtil.isAssignableAddress(input, true) ? new IPPortPair(input, -1, true) : null;
