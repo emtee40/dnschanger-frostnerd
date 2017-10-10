@@ -86,7 +86,6 @@ public final class API {
 
     public static IPPortPair validateInput(String input, boolean iPv6, boolean allowEmpty){
         if(allowEmpty && input.equals(""))return new IPPortPair("", -1, iPv6);
-        System.out.println("INPUT: " + input);
         if(iPv6){
             if(ipv6WithPort.matcher(input).matches()){
                 if(input.contains(":")){
@@ -100,19 +99,15 @@ public final class API {
                 return null;
             }
         }else{
-            System.out.println("IPV4");
             if(ipv4WithPort.matcher(input).matches()){
-                System.out.println("MATCHES");
                 if(input.contains(":")){
                     int port = Integer.parseInt(input.split(":")[1]);
                     String address = input.split(":")[0];
                     return port <= 65535 && port >= 1 && NetworkUtil.isAssignableAddress(address, false) ? new IPPortPair(address, port, false) : null;
                 }else{
-                    System.out.println("NO PORT");
                     return NetworkUtil.isAssignableAddress(input, false) ? new IPPortPair(input, -1, false) : null;
                 }
             }else{
-                System.out.println("DOESNT MATCH");
                 return null;
             }
         }
