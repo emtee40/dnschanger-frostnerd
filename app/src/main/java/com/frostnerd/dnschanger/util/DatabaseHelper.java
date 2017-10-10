@@ -7,6 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
+import com.frostnerd.dnschanger.R;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -54,7 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         currentDB = db;
         db.execSQL("CREATE TABLE IF NOT EXISTS Shortcuts(Name TEXT, dns1 TEXT, dns2 TEXT, dns1v6 TEXT, dns2v6 TEXT)");
         db.execSQL("CREATE TABLE IF NOT EXISTS DNSEntries(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, ShortName TEXT, dns1 TEXT, dns2 TEXT, dns1v6 TEXT, dns2v6 TEXT,description TEXT DEFAULT '', CustomEntry BOOLEAN DEFAULT 0)");
-        db.execSQL("CREATE TABLE IF NOT EXISTS DNSRules(Domain TEXT NOT NULL, IPv6 BOOL, Target TEXT NOT NULL, Wildcard BOOL, PRIMARY KEY(Domain, IPv6))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS DNSRules(Domain TEXT NOT NULL, IPv6 BOOL DEFAULT 0, Target TEXT NOT NULL, Wildcard BOOL DEFAULT 0, PRIMARY KEY(Domain, IPv6))");
         for(DNSEntry entry: defaultDNSEntries){
             saveDNSEntry(entry);
         }
@@ -62,6 +67,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             saveDNSEntry(additionalDefaultEntries.get(s));
         }
         currentDB = null;
+    }
+
+    public void loadEntries(Context context) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(context.getResources().openRawResource(R.raw.output)));
+        String line;
+        SQLiteDatabase db = getReadableDatabase();
+        int count = 0;
+        ContentValues values = new ContentValues(3);
+        while ((line=reader.readLine()) != null && count++ <= 10000) {
+            values.put("Domain", line);
+            values.put("Target", "127.0.0.1");
+            values.put("IPv6", false);
+            db.insert("DNSRules", null, values);
+            values.clear();
+            values.put("Domain", line);
+            values.put("Target", "::1");
+            values.put("IPv6", true);
+            db.insert("DNSRules", null, values);
+            values.clear();
+            System.out.println("INSERTED: " + count);
+        }
+        reader.close();
     }
 
     @Override
