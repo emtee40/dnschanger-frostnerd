@@ -14,6 +14,7 @@ import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.util.API;
 import com.frostnerd.dnschanger.util.dnsproxy.DNSProxy;
 import com.frostnerd.dnschanger.util.dnsproxy.DNSTCPProxy;
+import com.frostnerd.dnschanger.util.dnsproxy.DummyProxy;
 import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
@@ -84,9 +85,7 @@ public class VPNRunnable implements Runnable {
                     service.updateNotification();
                     API.updateAppShortcuts(service);
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "VPN Thread going into while loop");
-                    while(running){
-                        Thread.sleep(250);
-                    }
+                    dnsProxy.run();
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "VPN Thread reached end of while loop.");
                 }catch(Exception e){
                     if(!running)break;
@@ -182,10 +181,8 @@ public class VPNRunnable implements Runnable {
         if(advanced){
             LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "We are in advanced mode, starting DNS proxy");
             dnsProxy = new DNSTCPProxy();
-            LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "DNS proxy created, starting..");
-            dnsProxy.run();
-            LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Started DNS Proxy");
-        }
+            LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "DNS proxy created");
+        }else dnsProxy = new DummyProxy();
     }
 
     private void addDNSServer(String server, boolean addRoute){

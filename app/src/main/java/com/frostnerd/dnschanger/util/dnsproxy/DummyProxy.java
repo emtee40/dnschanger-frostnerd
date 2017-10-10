@@ -9,7 +9,12 @@ package com.frostnerd.dnschanger.util.dnsproxy;
  * <p>
  * development@frostnerd.com
  */
-public abstract class DNSProxy {
+public class DummyProxy extends DNSProxy {
 
-    public abstract void run() throws InterruptedException;
+    @Override
+    public void run() throws InterruptedException {
+        while(true){
+            Thread.sleep(250);
+        }
+    }
 }
