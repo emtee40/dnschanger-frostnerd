@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -16,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
+import android.widget.TextView;
 
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
@@ -40,7 +44,11 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
     private View content;
     private RecyclerView list;
     private RuleAdapter ruleAdapter;
-    private FloatingActionButton fab;
+    private FloatingActionButton fabOpen, fabWildcard, fabNew;
+    private boolean fabExpanded = false, wildcardShown = false;
+    private View wildcardWrap, newWrap;
+    private SearchView searchView;
+    private TextView wildcardTextView;
 
     @Nullable
     @Override
@@ -65,19 +73,69 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
             }
             Preferences.put(getContext(), "db_debug", true);
         }
-        fab = content.findViewById(R.id.fab);
+        fabOpen = content.findViewById(R.id.fab_open);
         list = content.findViewById(R.id.list);
+        newWrap = content.findViewById(R.id.wrap_fab_new);
+        wildcardWrap = content.findViewById(R.id.wrap_fab_wildcard);
+        fabWildcard = content.findViewById(R.id.fab_wildcard);
+        fabNew = content.findViewById(R.id.fab_new);
+        wildcardTextView = content.findViewById(R.id.text2);
+
         list.setLayoutManager(new LinearLayoutManager(getContext()));
         list.setAdapter(ruleAdapter = new RuleAdapter(getContext(), API.getDBHelper(getContext())));
         list.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if(dy > 0)fab.hide();
-                else if(dy < 0)fab.show();
+                if(dy > 0){
+                    fabOpen.hide();
+                    newWrap.setVisibility(View.INVISIBLE);
+                    wildcardWrap.setVisibility(View.INVISIBLE);
+                }else if(dy < 0)fabOpen.show();
             }
         });
-        fab.setBackgroundTintList(ColorStateList.valueOf(ThemeHandler.getColor(getContext(), R.attr.inputElementColor, Color.WHITE)));
-        fab.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_add), ThemeHandler.getColor(getContext(), android.R.attr.textColor, Color.BLACK)));
+        ColorStateList stateList = ColorStateList.valueOf(ThemeHandler.getColor(getContext(), R.attr.inputElementColor, Color.WHITE));
+        final int textColor = ThemeHandler.getColor(getContext(), android.R.attr.textColor, Color.BLACK);
+        fabNew.setBackgroundTintList(stateList);
+        fabOpen.setBackgroundTintList(stateList);
+        fabWildcard.setBackgroundTintList(stateList);
+        fabOpen.setCompatElevation(4);
+        fabWildcard.setCompatElevation(4);
+        fabNew.setCompatElevation(8);
+        fabOpen.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_settings), textColor));
+        fabNew.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_add), textColor));
+        fabWildcard.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_asterisk), textColor));
+        fabOpen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fabExpanded = !fabExpanded;
+                animateFab();
+            }
+        });
+        fabWildcard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                wildcardShown = !wildcardShown;
+                ruleAdapter.setWildcardMode(wildcardShown, true);
+                searchView.setQuery("", false);
+                if(wildcardShown){
+                    fabWildcard.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_ellipsis), textColor));
+                    wildcardTextView.setText(R.string.normal);
+                }else{
+                    fabWildcard.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_asterisk), textColor));
+                    wildcardTextView.setText(R.string.wildcard);
+                }
+            }
+        });
+    }
+
+    private void animateFab(){
+        ViewPropertyAnimatorCompat anim = ViewCompat.animate(fabOpen).rotation(fabExpanded ? 135f : -135f).withLayer().
+                setDuration(300).setInterpolator(new OvershootInterpolator());
+        ViewPropertyAnimatorCompat anim2 = ViewCompat.animate(newWrap).alpha(fabExpanded ? 1.0f : 0f).setDuration(300);
+        ViewPropertyAnimatorCompat anim3 = ViewCompat.animate(wildcardWrap).alpha(fabExpanded ? 1.0f : 0f).setDuration(300);
+        anim.start();
+        anim2.start();
+        anim3.start();
     }
 
     @Override
@@ -86,7 +144,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         inflater.inflate(R.menu.menu_rules, menu);
 
         SearchManager searchManager = (SearchManager)getContext().getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(API.getActivity(this).getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
         searchView.setOnQueryTextListener(this);

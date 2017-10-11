@@ -261,4 +261,6 @@
     <string name="summary_rules_activated">Benutze die im Hauptmenu eingestellten Regeln</string>
     <string name="host">Host</string>
     <string name="target">Ziel</string>
+    <string name="wildcard">Wildcard</string>
+    <string name="normal">Normal</string>
 </resources>
