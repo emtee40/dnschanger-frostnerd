@@ -11,6 +11,9 @@ import android.widget.TextView;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.util.DatabaseHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Copyright Daniel Wolf 2017
  * All rights reserved.
@@ -25,26 +28,38 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     private LayoutInflater inflater;
     private int count;
     private String search = "";
+    private List<Integer> rows = new ArrayList<>();
 
     public RuleAdapter(Context context, DatabaseHelper databaseHelper){
         this.databaseHelper = databaseHelper;
         inflater = LayoutInflater.from(context);
-        evaluateCount();
+        evaluateData();
     }
 
     public void search(String search){
         this.search = search;
-        evaluateCount();
+        evaluateData();
         notifyDataSetChanged();
     }
 
-    private void evaluateCount(){
+    private void evaluateData(){
         Cursor cursor;
-        if(!search.equals(""))cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT COUNT(Domain) FROM DNSRules WHERE Domain LIKE '%" + search + "%'", null);
-        else cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT COUNT(Domain) FROM DNSRules", null);
-        cursor.moveToFirst();
-        count = cursor.getInt(0);
-        cursor.close();
+        rows.clear();
+        if(!search.equals("")){
+            cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT ROWID FROM DNSRules WHERE Domain LIKE '%" + search + "%'", null);
+            count = cursor.getCount();
+            if(cursor.moveToFirst()){
+                do{
+                    rows.add((int)cursor.getLong(0));
+                }while(cursor.moveToNext());
+            }
+            cursor.close();
+        }else{
+            cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT COUNT(Domain) FROM DNSRules", null);
+            cursor.moveToFirst();
+            count = cursor.getInt(0);
+            cursor.close();
+        }
     }
 
     @Override
@@ -55,8 +70,8 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Cursor cursor;
-        if(!search.equals(""))cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Domain, IPv6, Target FROM DNSRules WHERE Domain LIKE '%" + search + "%' LIMIT " + position + ",1" , null);
-        else cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Domain, IPv6, Target FROM DNSRules LIMIT " + position + ",1", null);
+        if(!search.equals(""))cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Domain, IPv6, Target FROM DNSRules WHERE ROWID=" + rows.get(position), null);
+        else cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Domain, IPv6, Target FROM DNSRules WHERE ROWID=" + (position+1), null);
         cursor.moveToFirst();
         ((TextView)holder.itemView.findViewById(R.id.text)).setText(cursor.getString(cursor.getColumnIndex("Domain")));
         ((TextView)holder.itemView.findViewById(R.id.text2)).setText(cursor.getInt(cursor.getColumnIndex("IPv6")) == 1 ? "✓" : "x");
