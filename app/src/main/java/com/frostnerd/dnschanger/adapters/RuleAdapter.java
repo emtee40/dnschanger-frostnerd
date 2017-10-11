@@ -29,6 +29,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     private int count;
     private String search = "";
     private List<Integer> rows = new ArrayList<>();
+    private boolean wildcard = false;
 
     public RuleAdapter(Context context, DatabaseHelper databaseHelper){
         this.databaseHelper = databaseHelper;
@@ -42,11 +43,19 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
         notifyDataSetChanged();
     }
 
+    public void setWildcardMode(boolean wildcard, boolean resetSearch){
+        if(resetSearch)search = "";
+        this.wildcard = wildcard;
+        evaluateData();
+        notifyDataSetChanged();
+    }
+
     private void evaluateData(){
         Cursor cursor;
         rows.clear();
-        if(!search.equals("")){
-            cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT ROWID FROM DNSRules WHERE Domain LIKE '%" + search + "%'", null);
+        if(!search.equals("") || wildcard){
+            if(!search.equals(""))cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT ROWID FROM DNSRules WHERE Domain LIKE '%" + search + "%' AND Wildcard=?", new String[]{wildcard ? "1" : "0"});
+            else cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT ROWID FROM DNSRules WHERE Wildcard=?", new String[]{wildcard ? "1" : "0"});
             count = cursor.getCount();
             if(cursor.moveToFirst()){
                 do{
@@ -55,7 +64,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
             }
             cursor.close();
         }else{
-            cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT COUNT(Domain) FROM DNSRules", null);
+            cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT COUNT(Domain) FROM DNSRules WHERE Wildcard=?", new String[]{wildcard ? "1" : "0"});
             cursor.moveToFirst();
             count = cursor.getInt(0);
             cursor.close();
@@ -70,7 +79,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Cursor cursor;
-        if(!search.equals(""))cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Domain, IPv6, Target FROM DNSRules WHERE ROWID=" + rows.get(position), null);
+        if(!search.equals("") || wildcard)cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Domain, IPv6, Target FROM DNSRules WHERE ROWID=" + rows.get(position), null);
         else cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Domain, IPv6, Target FROM DNSRules WHERE ROWID=" + (position+1), null);
         cursor.moveToFirst();
         ((TextView)holder.itemView.findViewById(R.id.text)).setText(cursor.getString(cursor.getColumnIndex("Domain")));
