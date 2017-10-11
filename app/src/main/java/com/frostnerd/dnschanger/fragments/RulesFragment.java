@@ -2,8 +2,11 @@ package com.frostnerd.dnschanger.fragments;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +21,8 @@ import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.adapters.RuleAdapter;
 import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.ThemeHandler;
+import com.frostnerd.utils.general.DesignUtil;
 import com.frostnerd.utils.preferences.Preferences;
 
 import java.io.IOException;
@@ -35,6 +40,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
     private View content;
     private RecyclerView list;
     private RuleAdapter ruleAdapter;
+    private FloatingActionButton fab;
 
     @Nullable
     @Override
@@ -59,9 +65,19 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
             }
             Preferences.put(getContext(), "db_debug", true);
         }
+        fab = content.findViewById(R.id.fab);
         list = content.findViewById(R.id.list);
         list.setLayoutManager(new LinearLayoutManager(getContext()));
         list.setAdapter(ruleAdapter = new RuleAdapter(getContext(), API.getDBHelper(getContext())));
+        list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if(dy > 0)fab.hide();
+                else if(dy < 0)fab.show();
+            }
+        });
+        fab.setBackgroundTintList(ColorStateList.valueOf(ThemeHandler.getColor(getContext(), R.attr.inputElementColor, Color.WHITE)));
+        fab.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_add), ThemeHandler.getColor(getContext(), android.R.attr.textColor, Color.BLACK)));
     }
 
     @Override
