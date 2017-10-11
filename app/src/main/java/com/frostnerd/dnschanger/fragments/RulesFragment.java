@@ -88,8 +88,8 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if(dy > 0){
                     fabOpen.hide();
-                    newWrap.setVisibility(View.INVISIBLE);
-                    wildcardWrap.setVisibility(View.INVISIBLE);
+                    newWrap.setAlpha(0);
+                    wildcardWrap.setAlpha(0);
                 }else if(dy < 0)fabOpen.show();
             }
         });
