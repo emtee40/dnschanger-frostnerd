@@ -44,9 +44,9 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
     private View content;
     private RecyclerView list;
     private RuleAdapter ruleAdapter;
-    private FloatingActionButton fabOpen, fabWildcard, fabNew;
+    private FloatingActionButton fabOpen, fabWildcard, fabNew, fabFilter;
     private boolean fabExpanded = false, wildcardShown = false;
-    private View wildcardWrap, newWrap;
+    private View wildcardWrap, newWrap, filterWrap;
     private SearchView searchView;
     private TextView wildcardTextView;
 
@@ -76,9 +76,11 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         fabOpen = content.findViewById(R.id.fab_open);
         list = content.findViewById(R.id.list);
         newWrap = content.findViewById(R.id.wrap_fab_new);
+        filterWrap = content.findViewById(R.id.wrap_fab_filter);
         wildcardWrap = content.findViewById(R.id.wrap_fab_wildcard);
         fabWildcard = content.findViewById(R.id.fab_wildcard);
         fabNew = content.findViewById(R.id.fab_new);
+        fabFilter = content.findViewById(R.id.fab_filter);
         wildcardTextView = content.findViewById(R.id.text2);
 
         list.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -91,6 +93,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
                     fabOpen.hide();
                     fabOpen.setRotation(0);
                     newWrap.setAlpha(0);
+                    filterWrap.setAlpha(0);
                     wildcardWrap.setAlpha(0);
                 }else if(dy < 0)fabOpen.show();
             }
@@ -100,12 +103,16 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         fabNew.setBackgroundTintList(stateList);
         fabOpen.setBackgroundTintList(stateList);
         fabWildcard.setBackgroundTintList(stateList);
+        fabFilter.setBackgroundTintList(stateList);
         fabOpen.setCompatElevation(4);
         fabWildcard.setCompatElevation(4);
         fabNew.setCompatElevation(8);
+        fabFilter.setCompatElevation(4);
         fabOpen.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_settings), textColor));
         fabNew.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_add), textColor));
         fabWildcard.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_asterisk), textColor));
+        fabFilter.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_filter), textColor));
+
         fabOpen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,6 +138,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         int inputColor = ThemeHandler.getColor(getContext(), R.attr.inputElementColor, -1);
         wildcardTextView.setBackgroundColor(inputColor);
         content.findViewById(R.id.text).setBackgroundColor(inputColor);
+        content.findViewById(R.id.text3).setBackgroundColor(inputColor);
     }
 
     private void animateFab(){
@@ -138,9 +146,11 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
                 setDuration(300).setInterpolator(new OvershootInterpolator());
         ViewPropertyAnimatorCompat anim2 = ViewCompat.animate(newWrap).alpha(fabExpanded ? 1.0f : 0f).setDuration(300);
         ViewPropertyAnimatorCompat anim3 = ViewCompat.animate(wildcardWrap).alpha(fabExpanded ? 1.0f : 0f).setDuration(300);
+        ViewPropertyAnimatorCompat anim4 = ViewCompat.animate(filterWrap).alpha(fabExpanded ? 1.0f : 0f).setDuration(300);
         anim.start();
         anim2.start();
         anim3.start();
+        anim4.start();
     }
 
     @Override

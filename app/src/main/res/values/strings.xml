@@ -270,4 +270,5 @@
     <string name="target">Target</string>
     <string name="wildcard">Wildcard</string>
     <string name="normal">Normal</string>
+    <string name="filter">Filter</string>
 </resources>
