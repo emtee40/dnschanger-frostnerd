@@ -89,6 +89,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
                 if(dy > 30){
                     fabExpanded = false;
                     fabOpen.hide();
+                    fabOpen.setRotation(0);
                     newWrap.setAlpha(0);
                     wildcardWrap.setAlpha(0);
                 }else if(dy < 0)fabOpen.show();
@@ -127,6 +128,9 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
                 }
             }
         });
+        int inputColor = ThemeHandler.getColor(getContext(), R.attr.inputElementColor, -1);
+        wildcardTextView.setBackgroundColor(inputColor);
+        content.findViewById(R.id.text).setBackgroundColor(inputColor);
     }
 
     private void animateFab(){
