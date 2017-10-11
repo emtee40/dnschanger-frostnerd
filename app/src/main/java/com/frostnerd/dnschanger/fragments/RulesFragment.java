@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.adapters.RuleAdapter;
+import com.frostnerd.dnschanger.dialogs.NewRuleDialog;
 import com.frostnerd.dnschanger.util.API;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.general.DesignUtil;
@@ -133,6 +134,18 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
                     fabWildcard.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_asterisk), textColor));
                     wildcardTextView.setText(R.string.wildcard);
                 }
+            }
+        });
+        fabNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new NewRuleDialog(getContext(), new NewRuleDialog.CreationListener() {
+                    @Override
+                    public void creationFinished(String host, String target, boolean ipv6, boolean wildcard) {
+                        API.getDBHelper(getContext()).createRuleEntry(host, target, ipv6, wildcard);
+                        ruleAdapter.notifyDataSetChanged();
+                    }
+                }).show();
             }
         });
         int inputColor = ThemeHandler.getColor(getContext(), R.attr.inputElementColor, -1);
