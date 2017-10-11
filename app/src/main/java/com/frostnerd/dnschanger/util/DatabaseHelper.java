@@ -76,14 +76,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int count = 0;
         ContentValues values = new ContentValues(3);
         db.beginTransaction();
-        while ((line=reader.readLine()) != null && count++ <= 10000) {
+        while ((line=reader.readLine()) != null && count++ <= 150000) {
             values.put("Domain", line);
             values.put("Target", "127.0.0.1");
             values.put("IPv6", false);
-            db.insert("DNSRules", null, values);
+            db.insertWithOnConflict("DNSRules", null, values, SQLiteDatabase.CONFLICT_IGNORE);
             values.put("Target", "::1");
             values.put("IPv6", true);
-            db.insert("DNSRules", null, values);
+            db.insertWithOnConflict("DNSRules", null, values, SQLiteDatabase.CONFLICT_IGNORE);
             values.clear();
         }
         db.setTransactionSuccessful();
