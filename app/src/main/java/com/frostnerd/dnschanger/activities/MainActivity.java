@@ -454,14 +454,32 @@ public class MainActivity extends NavigationDrawerActivity {
             public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
                 String licenseText = getString(R.string.dialog_libraries_text) + "\n\n- - - - - - - - - - - -\ndnsjava by Brian Wellington - http://www.xbill.org/dnsjava/\n\n" + getString(R.string.license_bsd_2).replace("[yearrange]", "1998-2011").replace("[author]", "Brian Wellington");
                 licenseText += "\n\n- - - - - - - - - - - -\nfirebase-jobdispatcher-android by Google\n\nAvailable under the [1]Apache License 2.0[2]";
+                licenseText += "\n\n- - - - - - - - - - - -\npcap4j by Kaito Yamada\n\nAvailable under the [3]MIT License[4]";
+                licenseText += "\n\n- - - - - - - - - - - -\nMiniDNS by Measite\n\nAvailable under the [5]Apache License 2.0[6]";
                 ClickableSpan span = new ClickableSpan() {
+                    @Override
+                    public void onClick(View view) {
+                        new AlertDialog.Builder(MainActivity.this).setTitle("Apache License 2.0").setPositiveButton(R.string.close, null).setMessage(R.string.license_apache_2).show();
+                    }
+                }, span2 = new ClickableSpan() {
+                    @Override
+                    public void onClick(View widget) {
+                        String text = getString(R.string.mit_license);
+                        text = text.replace("[name]", "Pcap4J");
+                        text = text.replace("[author]", "Pcap4J.org");
+                        text = text.replace("[yearrange]", "2011-2017");
+                        new AlertDialog.Builder(MainActivity.this).setTitle("MIT License").setPositiveButton(R.string.close, null).setMessage(text).show();
+                    }
+                }, span3 = new ClickableSpan() {
                     @Override
                     public void onClick(View view) {
                         new AlertDialog.Builder(MainActivity.this).setTitle("Apache License 2.0").setPositiveButton(R.string.close, null).setMessage(R.string.license_apache_2).show();
                     }
                 };
                 SpannableString spannable = new SpannableString(licenseText.replaceAll("\\[.\\]",""));
-                spannable.setSpan(span, licenseText.indexOf("[1]"), licenseText.indexOf("[2]")-3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannable.setSpan(span3, licenseText.indexOf("[1]"), licenseText.indexOf("[2]")-3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannable.setSpan(span2, licenseText.indexOf("[3]")-6, licenseText.indexOf("[4]")-9, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannable.setSpan(span, licenseText.indexOf("[5]")-12, licenseText.indexOf("[6]")-15, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 dialog1 = new AlertDialog.Builder(MainActivity.this).setTitle(R.string.nav_title_libraries).setNegativeButton(R.string.close, null)
                         .setMessage(spannable).show();
                 ((TextView)dialog1.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
