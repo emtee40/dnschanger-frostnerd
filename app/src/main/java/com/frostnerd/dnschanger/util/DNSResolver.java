@@ -16,7 +16,7 @@ public class DNSResolver {
             "SELECT Target FROM DNSRules WHERE IPv6=? AND Wildcard=1 AND ? REGEXP Domain ORDER BY RANDOM() LIMIT 1";
     private static final String WILDCARD_QUERY_FIRST =
             "SELECT Target FROM DNSRules WHERE IPv6=? AND Wildcard=1 AND ? REGEXP Domain LIMIT 1";
-    private static final String NON_WILDCARD_QUERY = "SELECT Target FROM DNSRules WHERE IPv6=? AND Domain=? AND Wildcard=?";
+    private static final String NON_WILDCARD_QUERY = "SELECT Target FROM DNSRules WHERE Domain=? AND IPv6=? AND Wildcard=0";
     private static final String SUM_WILDCARD_QUERY = "SELECT SUM(Wildcard) FROM DNSRules";
     private DatabaseHelper db;
     private int wildcardCount;
@@ -46,7 +46,7 @@ public class DNSResolver {
     public String resolveNonWildcard(String host, boolean ipv6) {
         String result = null;
         Cursor cursor = db.getReadableDatabase().rawQuery(NON_WILDCARD_QUERY,
-                new String[]{host, ipv6 ? "1" : "0", "0"});
+                new String[]{host, ipv6 ? "1" : "0"});
         if (cursor.moveToFirst()) {
             result = cursor.getString(0);
         }

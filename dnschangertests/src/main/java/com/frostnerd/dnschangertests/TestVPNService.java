@@ -44,7 +44,7 @@ public class TestVPNService extends VpnService implements Runnable {
         builder.addAddress("192.168.0.10", 24);
         builder.addAddress(NetworkUtil.randomLocalIPv6Address(), 48);
         builder.addDnsServer("8.8.8.8");
-        builder.addRoute("0.0.0.0", 0);
+        builder.addRoute("8.8.8.8", 32);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder.setBlocking(true);
         }
