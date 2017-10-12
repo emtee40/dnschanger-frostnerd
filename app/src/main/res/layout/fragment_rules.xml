@@ -17,20 +17,20 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
+            android:layout_weight="0.4"
             android:text="@string/host" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:text="IPv6" />
+            android:layout_weight="0.4"
+            android:text="@string/target" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:text="@string/target" />
+            android:layout_weight="0.1"
+            android:text="IPv6" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
