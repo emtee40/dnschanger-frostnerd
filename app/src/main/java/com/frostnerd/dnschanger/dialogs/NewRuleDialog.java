@@ -104,12 +104,12 @@ public class NewRuleDialog extends AlertDialog{
                             }else{
                                 if(both.isChecked() && !API.getDBHelper(getContext()).dnsRuleExists(edHost.getText().toString())){
                                     listener.creationFinished(edHost.getText().toString(),
-                                            edTarget.getText().toString(), edTarget2.getText().toString(),
+                                            edTarget.getText().toString(), both.isChecked() ? edTarget2.getText().toString() : "",
                                             ipv6.isChecked(), wildcard.isChecked(), false);
                                     dismiss();
                                 }else if(!API.getDBHelper(getContext()).dnsRuleExists(edHost.getText().toString(), ipv6.isChecked())){
                                     listener.creationFinished(edHost.getText().toString(),
-                                            edTarget.getText().toString(), edTarget2.getText().toString(),
+                                            edTarget.getText().toString(), both.isChecked() ? edTarget2.getText().toString() : "",
                                             ipv6.isChecked(), wildcard.isChecked(), false);
                                     dismiss();
                                 }else{
