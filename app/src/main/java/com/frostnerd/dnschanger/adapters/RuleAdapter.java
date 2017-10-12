@@ -16,6 +16,7 @@ import com.frostnerd.dnschanger.util.API;
 import com.frostnerd.dnschanger.util.DatabaseHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -33,6 +34,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     private int count;
     private String search = "";
     private List<Integer> rows = new ArrayList<>();
+    private HashMap<Integer,Integer> rowRemap = new HashMap<>();
     private boolean wildcard = false;
     private Context context;
 
@@ -75,9 +77,18 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
             }
             cursor.close();
         }else{
-            cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT COUNT(Domain) FROM DNSRules WHERE Wildcard=?", new String[]{wildcard ? "1" : "0"});
+            cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT ROWID FROM DNSRules WHERE Wildcard=?", new String[]{wildcard ? "1" : "0"});
             cursor.moveToFirst();
-            count = cursor.getInt(0);
+            this.count = cursor.getCount();
+            int count = 1, rawCount = 0, id;
+            do{
+                id = (int)cursor.getLong(0);
+                if(count++ != id){
+                    rowRemap.put(rawCount, id);
+                    count = id;
+                }
+                rawCount++;
+            }while(cursor.moveToNext());
             cursor.close();
         }
     }
@@ -91,11 +102,15 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     public void onBindViewHolder(ViewHolder holder, int position) {
         Cursor cursor;
         if(!search.equals("") || wildcard)cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Domain, IPv6, Target FROM DNSRules WHERE ROWID=" + rows.get(position), null);
-        else cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Domain, IPv6, Target, Wildcard FROM DNSRules WHERE ROWID=" + (position=position+1), null);
+        else {
+            int rowID = rowRemap.containsKey(position) ? rowRemap.get(position) : position+1;
+            cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Domain, IPv6, Target, Wildcard FROM DNSRules WHERE ROWID=" + rowID, null);
+        }
+        cursor.moveToFirst();
         final String host = cursor.getString(cursor.getColumnIndex("Domain")),
-        target = cursor.getString(cursor.getColumnIndex("Target"));
+                target = cursor.getString(cursor.getColumnIndex("Target"));
         final boolean ipv6 = cursor.getInt(cursor.getColumnIndex("IPv6")) == 1,
-        wildcard = cursor.getInt(cursor.getColumnIndex("Wildcard")) == 1;
+                wildcard = cursor.getInt(cursor.getColumnIndex("Wildcard")) == 1;
         ((TextView)holder.itemView.findViewById(R.id.text)).setText(host);
         ((TextView)holder.itemView.findViewById(R.id.text2)).setText(ipv6 ? "✓" : "x");
         ((TextView)holder.itemView.findViewById(R.id.text3)).setText(target);
