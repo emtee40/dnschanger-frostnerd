@@ -28,9 +28,6 @@ import java.io.IOException;
 public class TestVPNService extends VpnService implements Runnable {
     private Builder builder;
     private ParcelFileDescriptor fd;
-    private FileDescriptor mInterruptFd;
-    private FileDescriptor mBlockFd;
-    private TestVPNProxy proxy;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -44,7 +41,6 @@ public class TestVPNService extends VpnService implements Runnable {
         builder.addAddress("192.168.0.10", 24);
         builder.addAddress(NetworkUtil.randomLocalIPv6Address(), 48);
         builder.addDnsServer("8.8.8.8");
-        builder.addRoute("8.8.8.8", 32);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder.setBlocking(true);
         }
@@ -65,13 +61,8 @@ public class TestVPNService extends VpnService implements Runnable {
 
     @Override
     public void run() {
-        proxy = new TestVPNProxy(fd, this);
         try {
-            proxy.run();
-        } catch (ErrnoException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            while (true) Thread.sleep(250);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
