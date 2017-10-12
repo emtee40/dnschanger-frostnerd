@@ -9,6 +9,7 @@ import android.system.Os;
 import android.system.OsConstants;
 import android.system.StructPollfd;
 
+import com.frostnerd.dnschanger.util.API;
 import com.frostnerd.dnschanger.util.DNSResolver;
 
 import org.pcap4j.packet.IpPacket;
@@ -29,6 +30,7 @@ import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -61,9 +63,9 @@ public class DNSUDPProxy extends DNSProxy{
     private boolean shouldRun = true;
     private final LinkedList<byte[]> writeToDevice = new LinkedList<>();
     private final static int MAX_WAITING_SOCKETS = 1000, SOCKET_TIMEOUT_MS = 10000, INSERT_CLEANUP_COUNT = 50;
-    private final Set<String> upstreamServers;
     private DNSResolver resolver;
     private VpnService vpnService;
+    private final HashMap<String, Integer> upstreamServers = new HashMap<>();
     private final LinkedHashMap<DatagramSocket, PacketWrap> futureSocketAnswers = new LinkedHashMap<DatagramSocket, PacketWrap>(){
         private int countSinceCleanup = 0;
 
@@ -97,11 +99,13 @@ public class DNSUDPProxy extends DNSProxy{
     };
 
 
-    public DNSUDPProxy(VpnService context, ParcelFileDescriptor parcelFileDescriptor, Set<String> upstreamServers){
+    public DNSUDPProxy(VpnService context, ParcelFileDescriptor parcelFileDescriptor, Set<API.IPPortPair> upstreamDNSServers){
         this.parcelFileDescriptor = parcelFileDescriptor;
-        this.upstreamServers = upstreamServers;
         resolver = new DNSResolver(context);
         this.vpnService = context;
+        for(API.IPPortPair pair: upstreamDNSServers){
+            if(pair.getAddress() != null && !pair.getAddress().equals(""))this.upstreamServers.put(pair.getAddress(), pair.getPort());
+        }
     }
 
     @Override
@@ -165,10 +169,10 @@ public class DNSUDPProxy extends DNSProxy{
             return; //Packet from device isn't IP kind and thus is discarded
         }
         InetAddress destination = packet.getHeader().getDstAddr();
-        if(destination == null || !upstreamServers.contains(destination.getHostAddress()))return;
+        if(destination == null || !upstreamServers.containsKey(destination.getHostAddress()))return;
         UdpPacket udpPacket = (UdpPacket)packet.getPayload();
         if(udpPacket.getPayload() == null){
-            DatagramPacket outPacket = new DatagramPacket(new byte[0], 0, 0, destination, 53); //TODO Port
+            DatagramPacket outPacket = new DatagramPacket(new byte[0], 0, 0, destination, upstreamServers.get(destination.getHostAddress()));
             sendPacketToUpstreamDNSServer(outPacket, null);
         }else{
             byte[] payloadData = udpPacket.getPayload().getRawData();
@@ -187,7 +191,7 @@ public class DNSUDPProxy extends DNSProxy{
                 }
                 if(builder != null)handleUpstreamDNSResponse(packet, builder.build().toArray());
             }else{
-                DatagramPacket outPacket = new DatagramPacket(payloadData, 0, payloadData.length, destination, 53); //TODO change destination port here
+                DatagramPacket outPacket = new DatagramPacket(payloadData, 0, payloadData.length, destination, upstreamServers.get(destination.getHostAddress()));
                 sendPacketToUpstreamDNSServer(outPacket, packet);
             }
         }

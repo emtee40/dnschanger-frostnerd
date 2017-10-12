@@ -456,7 +456,7 @@ public final class API {
         private int port;
         private boolean ipv6;
 
-        IPPortPair(String ip, int port, boolean IPv6){
+        public IPPortPair(String ip, int port, boolean IPv6){
             this.ip = ip;
             this.port = port;
             this.ipv6 = IPv6;
