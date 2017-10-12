@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <com.frostnerd.utils.design.MaterialEditText
+        android:id="@+id/met_target"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:allowCollapse="false"
+        app:animationDuration="0"
+        app:image="@drawable/ic_language"
+        app:indicatorState="undefined"
+        app:indicatorVisibilityWhenUnused="hidden"
+        app:revealDelay="0"
+        app:revealType="revealInstant">
+
+        <EditText
+            android:id="@+id/target"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/search_by_target"
+            android:textColor="#FFF"
+            tools:ignore="HardcodedText" />
+    </com.frostnerd.utils.design.MaterialEditText>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/radio_ipv4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="IPv4"
+            android:textColor="?android:attr/textColor" />
+
+
+        <RadioButton
+            android:id="@+id/radio_ipv6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="IPv6"
+            android:textColor="?android:attr/textColor" />
+
+        <RadioButton
+            android:id="@+id/radio_both"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/both"
+            android:textColor="?android:attr/textColor" />
+    </RadioGroup>
+
+    <CheckBox
+        android:id="@+id/show_local"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/show_local_entries"
+        android:checked="true"
+        android:textColor="?android:attr/textColor" />
+
+</LinearLayout>

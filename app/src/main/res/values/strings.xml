@@ -276,4 +276,6 @@
     <string name="both">Both</string>
     <string name="error_rule_already_exists">Rule already exists</string>
     <string name="delete">Delete</string>
+    <string name="search_by_target">Search by target</string>
+    <string name="show_local_entries">Show rules resolving to a loopback address</string>
 </resources>

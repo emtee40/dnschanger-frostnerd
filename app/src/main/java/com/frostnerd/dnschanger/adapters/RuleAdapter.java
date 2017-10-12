@@ -35,7 +35,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     private String search = "";
     private List<Integer> rows = new ArrayList<>();
     private HashMap<Integer,Integer> rowRemap = new HashMap<>();
-    private boolean wildcard = false;
+    private boolean update = true;
     private Context context;
     private HashMap<Filter, String> filterValues = new HashMap<>();
 
@@ -44,17 +44,39 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
         this.context = context;
         inflater = LayoutInflater.from(context);
         filterValues.put(ArgumentBasedFilter.SHOW_WILDCARD_ONLY, "0");
-        evaluateData();
+        reloadData();
+    }
+
+    public void setUpdateDataOnConfigChange(boolean update) {
+        this.update = update;
+    }
+
+    public void removeFilters(ArgumentBasedFilter... filters){
+        for(ArgumentBasedFilter filter: filters){
+            filterValues.remove(filter);
+        }
+        reloadData();
     }
 
     public void filter(ArgumentBasedFilter filter, String argument){
-        if(filterValues.containsKey(ArgumentBasedFilter.SHOW_IPV6_ONLY) && filter == ArgumentBasedFilter.SHOW_IPV4_ONLY){
-            filterValues.remove(ArgumentBasedFilter.SHOW_IPV6_ONLY);
-        }else if(filterValues.containsKey(ArgumentBasedFilter.SHOW_IPV4_ONLY) && filter == ArgumentBasedFilter.SHOW_IPV6_ONLY){
-            filterValues.remove(ArgumentBasedFilter.SHOW_IPV4_ONLY);
+        if(argument.equals(""))filterValues.remove(filter);
+        else{
+            if(filterValues.containsKey(ArgumentBasedFilter.SHOW_IPV6_ONLY) && filter == ArgumentBasedFilter.SHOW_IPV4_ONLY){
+                filterValues.remove(ArgumentBasedFilter.SHOW_IPV6_ONLY);
+            }else if(filterValues.containsKey(ArgumentBasedFilter.SHOW_IPV4_ONLY) && filter == ArgumentBasedFilter.SHOW_IPV6_ONLY){
+                filterValues.remove(ArgumentBasedFilter.SHOW_IPV4_ONLY);
+            }
+            filterValues.put(filter, argument);
         }
-        filterValues.put(filter, argument);
         reloadData();
+    }
+
+    public boolean hasFilter(ArgumentBasedFilter filter){
+        return filterValues.containsKey(filter);
+    }
+
+    public String getFilterValue(ArgumentBasedFilter filter){
+        return filterValues.get(filter);
     }
 
     public void setWildcardMode(boolean wildcard, boolean resetSearch){
@@ -64,6 +86,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     }
 
     public void reloadData(){
+        if(!update)return;
         evaluateData();
         notifyDataSetChanged();
     }
@@ -72,7 +95,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
         Cursor cursor;
         rows.clear();
         rowRemap.clear();
-        if(!search.equals("") || wildcard){
+        if(!search.equals("")){
             if(!search.equals(""))cursor = databaseHelper.getReadableDatabase().rawQuery(constructQuery("SELECT ROWID FROM DNSRules"), null);
             else cursor = databaseHelper.getReadableDatabase().rawQuery(constructQuery("SELECT ROWID FROM DNSRules"), null);
             count = cursor.getCount();
@@ -102,10 +125,10 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
 
     private String constructQuery(String base){
         if(filterValues.size() == 0)return base;
-        String query = base + " WHERE ";
+        String query = base + " WHERE ", newQuery;
         for(Filter filter: filterValues.keySet()){
-            query = filter.appendToQuery(query, filterValues.get(filter));
-            query += " AND ";
+            newQuery = filter.appendToQuery(query, filterValues.get(filter));
+            if(!newQuery.equals(query))query = newQuery + " AND ";
         }
         System.out.println("QUERY: " + query);
         return query.substring(0, query.length() - 4);
@@ -119,7 +142,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Cursor cursor;
-        if(!search.equals("") || wildcard)cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Domain, IPv6, Target, Wildcard FROM DNSRules WHERE ROWID=" + rows.get(position), null);
+        if(!search.equals(""))cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Domain, IPv6, Target, Wildcard FROM DNSRules WHERE ROWID=" + rows.get(position), null);
         else {
             int rowID = rowRemap.containsKey(position) ? rowRemap.get(position) : position+1;
             cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Domain, IPv6, Target, Wildcard FROM DNSRules WHERE ROWID=" + rowID, null);
@@ -197,7 +220,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
         }, SHOW_IPV4_ONLY{
             @Override
             public String appendToQuery(String query, String argument) {
-                if(argument.equals("1"))return query;
+                if(argument.equals("0"))return query;
                 return query + "IPV6=0";
             }
         }

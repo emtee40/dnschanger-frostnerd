@@ -2,6 +2,7 @@ package com.frostnerd.dnschanger.fragments;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,15 +12,21 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.R;
@@ -28,7 +35,9 @@ import com.frostnerd.dnschanger.adapters.RuleAdapter;
 import com.frostnerd.dnschanger.dialogs.NewRuleDialog;
 import com.frostnerd.dnschanger.util.API;
 import com.frostnerd.dnschanger.util.ThemeHandler;
+import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.general.DesignUtil;
+import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
 
 import java.io.IOException;
@@ -67,7 +76,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(!Preferences.getBoolean(getContext(), "db_debug", false)){
+        if (!Preferences.getBoolean(getContext(), "db_debug", false)) {
             try {
                 API.getDBHelper(getContext()).loadEntries(getContext());
             } catch (IOException e) {
@@ -90,14 +99,14 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         list.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if(dy > 30){
+                if (dy > 30) {
                     fabExpanded = false;
                     fabOpen.hide();
                     fabOpen.setRotation(0);
                     newWrap.setAlpha(0);
                     filterWrap.setAlpha(0);
                     wildcardWrap.setAlpha(0);
-                }else if(dy < 30)fabOpen.show();
+                } else if (dy < 30) fabOpen.show();
             }
         });
         ColorStateList stateList = ColorStateList.valueOf(ThemeHandler.getColor(getContext(), R.attr.inputElementColor, Color.WHITE));
@@ -128,10 +137,10 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
                 wildcardShown = !wildcardShown;
                 ruleAdapter.setWildcardMode(wildcardShown, true);
                 searchView.setQuery("", false);
-                if(wildcardShown){
+                if (wildcardShown) {
                     fabWildcard.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_ellipsis), textColor));
                     wildcardTextView.setText(R.string.normal);
-                }else{
+                } else {
                     fabWildcard.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_asterisk), textColor));
                     wildcardTextView.setText(R.string.wildcard);
                 }
@@ -145,12 +154,18 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
                     public void creationFinished(@NonNull String host, @NonNull String target, @Nullable String targetV6, boolean ipv6, boolean wildcard, boolean editingMode) {
                         boolean both = targetV6 != null && !targetV6.equals("");
                         API.getDBHelper(getContext()).createRuleEntry(host, target, !both && ipv6, wildcard);
-                        if(targetV6 != null && !targetV6.equals("")){
+                        if (targetV6 != null && !targetV6.equals("")) {
                             API.getDBHelper(getContext()).createRuleEntry(host, targetV6, true, wildcard);
                         }
                         ruleAdapter.reloadData();
                     }
                 }).show();
+            }
+        });
+        fabFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFilterDialog();
             }
         });
         int inputColor = ThemeHandler.getColor(getContext(), R.attr.inputElementColor, -1);
@@ -159,11 +174,60 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         content.findViewById(R.id.text3).setBackgroundColor(inputColor);
     }
 
-    private void showDialog(boolean edit){
+    private void showFilterDialog() {
+        View dialog = getLayoutInflater().inflate(R.layout.dialog_rule_filter, null, false);
+        final RadioButton ipv4 = dialog.findViewById(R.id.radio_ipv4), ipv6 = dialog.findViewById(R.id.radio_ipv6),
+                both = dialog.findViewById(R.id.radio_both);
+        final CheckBox showLocal = dialog.findViewById(R.id.show_local);
+        final EditText targetSearch = dialog.findViewById(R.id.target);
+        final MaterialEditText metTarget = dialog.findViewById(R.id.met_target);
+        if (ruleAdapter.hasFilter(RuleAdapter.ArgumentBasedFilter.SHOW_IPV6_ONLY))
+            ipv6.setChecked(true);
+        else if (ruleAdapter.hasFilter(RuleAdapter.ArgumentBasedFilter.SHOW_IPV4_ONLY))
+            ipv4.setChecked(true);
+        if (ruleAdapter.hasFilter(RuleAdapter.ArgumentBasedFilter.HIDE_LOCAL) &&
+                ruleAdapter.getFilterValue(RuleAdapter.ArgumentBasedFilter.HIDE_LOCAL).equals("1"))
+            showLocal.setChecked(false);
+        if (ruleAdapter.hasFilter(RuleAdapter.ArgumentBasedFilter.TARGET))
+            targetSearch.setText(ruleAdapter.getFilterValue(RuleAdapter.ArgumentBasedFilter.TARGET));
+        new AlertDialog.Builder(getContext()).setTitle(R.string.filter).setCancelable(false).setView(dialog).setNegativeButton(R.string.cancel, null).setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                ruleAdapter.setUpdateDataOnConfigChange(false);
+                if (both.isChecked())
+                    ruleAdapter.removeFilters(RuleAdapter.ArgumentBasedFilter.SHOW_IPV4_ONLY, RuleAdapter.ArgumentBasedFilter.SHOW_IPV6_ONLY);
+                else if (ipv4.isChecked())
+                    ruleAdapter.filter(RuleAdapter.ArgumentBasedFilter.SHOW_IPV4_ONLY, "1");
+                else ruleAdapter.filter(RuleAdapter.ArgumentBasedFilter.SHOW_IPV6_ONLY, "1");
+                ruleAdapter.filter(RuleAdapter.ArgumentBasedFilter.HIDE_LOCAL, showLocal.isChecked() ? "0" : "1");
+                if (metTarget.getIndicatorState() == MaterialEditText.IndicatorState.UNDEFINED)
+                    ruleAdapter.filter(RuleAdapter.ArgumentBasedFilter.TARGET, targetSearch.getText().toString());
+                ruleAdapter.setUpdateDataOnConfigChange(true);
+                ruleAdapter.reloadData();
+            }
+        }).show();
+        targetSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.equals("") || NetworkUtil.isIP(s.toString(), false) || NetworkUtil.isIP(s.toString(), true)){
+                    metTarget.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
+                }else metTarget.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
-    private void animateFab(){
+    private void animateFab() {
         ViewPropertyAnimatorCompat anim = ViewCompat.animate(fabOpen).rotation(fabExpanded ? 135f : -135f).withLayer().
                 setDuration(300).setInterpolator(new OvershootInterpolator());
         ViewPropertyAnimatorCompat anim2 = ViewCompat.animate(newWrap).alpha(fabExpanded ? 1.0f : 0f).setDuration(300);
@@ -180,7 +244,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_rules, menu);
 
-        SearchManager searchManager = (SearchManager)getContext().getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) getContext().getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(API.getActivity(this).getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
