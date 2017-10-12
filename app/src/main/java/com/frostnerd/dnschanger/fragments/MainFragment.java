@@ -251,7 +251,7 @@ public class MainFragment extends Fragment {
     }
 
     private void setEditTextState(){
-        boolean customPorts = Preferences.getBoolean(getContext(), "custom_port", false);
+        boolean customPorts = Preferences.getBoolean(getContext(), "advanced_settings", false) && Preferences.getBoolean(getContext(), "custom_port", false);
         if(settingV6 || customPorts){
             dns1.setInputType(InputType.TYPE_CLASS_TEXT);
             dns2.setInputType(InputType.TYPE_CLASS_TEXT);
