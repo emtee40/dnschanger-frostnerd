@@ -101,7 +101,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Cursor cursor;
-        if(!search.equals("") || wildcard)cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Domain, IPv6, Target FROM DNSRules WHERE ROWID=" + rows.get(position), null);
+        if(!search.equals("") || wildcard)cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Domain, IPv6, Target, Wildcard FROM DNSRules WHERE ROWID=" + rows.get(position), null);
         else {
             int rowID = rowRemap.containsKey(position) ? rowRemap.get(position) : position+1;
             cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Domain, IPv6, Target, Wildcard FROM DNSRules WHERE ROWID=" + rowID, null);
