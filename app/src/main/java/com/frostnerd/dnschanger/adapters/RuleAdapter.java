@@ -38,12 +38,14 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     private boolean update = true;
     private Context context;
     private HashMap<Filter, String> filterValues = new HashMap<>();
+    private TextView rowCount;
 
-    public RuleAdapter(Context context, DatabaseHelper databaseHelper){
+    public RuleAdapter(Context context, DatabaseHelper databaseHelper, TextView rowCount){
         this.databaseHelper = databaseHelper;
         this.context = context;
         inflater = LayoutInflater.from(context);
         filterValues.put(ArgumentBasedFilter.SHOW_WILDCARD_ONLY, "0");
+        this.rowCount = rowCount;
         reloadData();
     }
 
@@ -121,6 +123,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
             }else count = 0;
             cursor.close();
         }
+        rowCount.setText(context.getString(R.string.x_entries).replace("[x]", count + ""));
     }
 
     private String constructQuery(String base){
