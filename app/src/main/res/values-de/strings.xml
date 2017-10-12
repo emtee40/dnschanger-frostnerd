@@ -270,4 +270,6 @@
     <string name="error_rule_already_exists">Regel existiert bereits</string>
     <string name="delete">Löschen</string>
     <string name="x_entries">[x] Einträge</string>
+    <string name="show_local_entries">Zeige Regeln, welche zu einer Loopbackadresse auflösen</string>
+    <string name="search_by_target">Suche nach einem Ziel</string>
 </resources>

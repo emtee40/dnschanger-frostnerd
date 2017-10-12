@@ -237,4 +237,26 @@
     <string name="title_check_connectivity">Verifique a conectividade</string>
     <string name="title_pin_fingerprint">impressão digital</string>
     <string name="summary_pin_fingerprint">Permitir autenticação usando qualquer impressão digital salva</string>
+    <string name="x_entries">[x] entradas</string>
+    <string name="wildcard">Wildcard</string>
+    <string name="title_rules_activated">Regras locais</string>
+    <string name="title_custom_ports">Portas personalizadas</string>
+    <string name="title_advanced_settings">Configurações avançadas</string>
+    <string name="target">Alvo</string>
+    <string name="summary_rules_activated">Use as regras configuradas no menu principal</string>
+    <string name="summary_jump_advanced_settings">Clique aqui para configurar as configurações avançadas.</string>
+    <string name="summary_custom_ports">Permitir a entrada de portas personalizadas nos campos DNS.</string>
+    <string name="summary_advanced_settings">Ative as configurações avançadas</string>
+    <string name="show_local_entries">Mostrar regras resolvendo para um endereço de loopback</string>
+    <string name="search_by_target">Pesquisa por alvo</string>
+    <string name="regular_expression">Expressão regular (RegEx)</string>
+    <string name="normal">Normal</string>
+    <string name="new_rule">Nova regra</string>
+    <string name="nav_title_rules">Regras</string>
+    <string name="nav_title_advanced">Avançado</string>
+    <string name="filter">Filtro</string>
+    <string name="host">Host</string>
+    <string name="error_rule_already_exists">A regra já existe</string>
+    <string name="delete">Excluir</string>
+    <string name="both">Ambos</string>
 </resources>
