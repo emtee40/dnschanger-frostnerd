@@ -460,6 +460,17 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         }else{
             ((PreferenceCategory)findPreference("pin_category")).removePreference(findPreference("pin_fingerprint"));
         }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            findPreference("jump_advanced_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    startActivityForResult(new Intent(getContext(), AdvancedSettingsActivity.class), REQUEST_ADVANCED_SETTINGS);
+                    return true;
+                }
+            });
+        }else{
+            ((PreferenceCategory)findPreference("category_advanced")).removePreference(findPreference("jump_advanced_settings"));
+        }
         findPreference("hide_notification_icon").setOnPreferenceChangeListener(changeListener);
         findPreference("pin_value").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -467,13 +478,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 awaitingPinChange = false;
                 Preferences.put(getContext(), "pin_value", "" + newValue);
                 return false;
-            }
-        });
-        findPreference("jump_advanced_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                startActivityForResult(new Intent(getContext(), AdvancedSettingsActivity.class), REQUEST_ADVANCED_SETTINGS);
-                return true;
             }
         });
         if(!API.isIPv6Enabled(getContext()) && !Preferences.getBoolean(getContext(), "ipv6_asked", false)){
