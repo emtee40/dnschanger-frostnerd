@@ -220,6 +220,5 @@ public class VPNRunnable implements Runnable {
         cleanup();
         vpnApps.clear();
         vpnApps = null;
-        service = null;
     }
 }
