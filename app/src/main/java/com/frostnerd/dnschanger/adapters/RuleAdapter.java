@@ -130,7 +130,6 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
             newQuery = filter.appendToQuery(query, filterValues.get(filter));
             if(!newQuery.equals(query))query = newQuery + " AND ";
         }
-        System.out.println("QUERY: " + query);
         return query.substring(0, query.length() - 4);
     }
 
