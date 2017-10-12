@@ -226,6 +226,18 @@ public final class API {
         };
     }
 
+    public static int getPortForDNS(Context context, String server){
+        if(!Preferences.getBoolean(context, "custom_port", false))return 53;
+        List<String> dns = getAllDNS(context);
+        for(int i = 0; i < dns.size();i++){
+            if(dns.get(i).equals(server)){
+                return i <= 1 ? Preferences.getInteger(context, "port" + (i+1), 53) :
+                        Preferences.getInteger(context, "port" + (i-1) + "v6", 53);
+            }
+        }
+        return 53;
+    }
+
     public static boolean isServiceThreadRunning() {
         return DNSVpnService.isDNSThreadRunning();
     }
@@ -354,13 +366,14 @@ public final class API {
         }, 2);
     }
 
-    public static void runAsyncDNSQuery(final String server, final String query, final boolean tcp, final int type,
+    public static void runAsyncDNSQuery( final String server, final String query, final boolean tcp, final int type,
                                         final int dClass, final DNSQueryResultListener resultListener, final int timeout){
         new Thread(){
             @Override
             public void run() {
                 try {
                     Resolver resolver = new SimpleResolver(server);
+                    System.out.println("PORT: " + SimpleResolver.DEFAULT_PORT);
                     resolver.setTCP(tcp);
                     resolver.setTimeout(timeout);
                     Name name = Name.fromString(query.endsWith(".") ? query : query + ".");
