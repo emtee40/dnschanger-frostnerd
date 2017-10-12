@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.frostnerd.utils.design.MaterialEditText
+            android:id="@+id/met_host"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:allowCollapse="false"
+            app:animationDuration="0"
+            app:image="@drawable/ic_language"
+            app:indicatorState="undefined"
+            app:indicatorVisibilityWhenUnused="hidden"
+            app:revealDelay="0"
+            app:revealType="revealInstant">
+
+            <EditText
+                android:id="@+id/host"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/host"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@+id/target"
+                android:nextFocusForward="@+id/target"
+                android:text="example.com"
+                android:textColor="#FFF"
+                tools:ignore="HardcodedText" />
+        </com.frostnerd.utils.design.MaterialEditText>
+
+        <com.frostnerd.utils.design.MaterialEditText
+            android:id="@+id/met_target"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:allowCollapse="false"
+            app:animationDuration="0"
+            app:image="@drawable/ic_action_ipv4"
+            app:indicatorState="undefined"
+            app:indicatorVisibilityWhenUnused="hidden"
+            app:revealDelay="0"
+            app:revealType="revealInstant">
+
+            <EditText
+                android:id="@+id/target"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="IPv4"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@+id/target2"
+                android:nextFocusForward="@+id/target2"
+                android:text="127.0.0.1"
+                android:textColor="#FFF"
+                tools:ignore="HardcodedText" />
+        </com.frostnerd.utils.design.MaterialEditText>
+
+        <com.frostnerd.utils.design.MaterialEditText
+            android:id="@+id/met_target2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:allowCollapse="false"
+            app:animationDuration="0"
+            app:image="@drawable/ic_action_ipv6"
+            app:indicatorState="undefined"
+            app:indicatorVisibilityWhenUnused="hidden"
+            app:revealDelay="0"
+            app:revealType="revealInstant">
+
+            <EditText
+                android:id="@+id/target2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="IPv6"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@+id/dns2"
+                android:nextFocusForward="@+id/dns2"
+                android:text="::1"
+                android:textColor="#FFF"
+                tools:ignore="HardcodedText" />
+        </com.frostnerd.utils.design.MaterialEditText>
+
+        <CheckBox
+            android:id="@+id/wildcard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/wildcard"
+            android:textColor="?android:attr/textColor" />
+
+        <RadioGroup
+            android:id="@+id/group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <RadioButton
+                android:id="@+id/radio_ipv4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="IPv4"
+                android:textColor="?android:attr/textColor" />
+
+            <RadioButton
+                android:id="@+id/radio_ipv6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IPv6"
+                android:textColor="?android:attr/textColor" />
+
+            <RadioButton
+                android:id="@+id/radio_both"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/both"
+                android:textColor="?android:attr/textColor" />
+        </RadioGroup>
+
+    </LinearLayout>
+</ScrollView>

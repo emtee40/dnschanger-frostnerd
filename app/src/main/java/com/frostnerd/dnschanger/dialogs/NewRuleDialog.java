@@ -1,8 +1,28 @@
 package com.frostnerd.dnschanger.dialogs;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
+
+import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.ThemeHandler;
+import com.frostnerd.utils.design.MaterialEditText;
+import com.frostnerd.utils.networking.NetworkUtil;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -14,13 +34,134 @@ import android.support.v7.app.AlertDialog;
  * development@frostnerd.com
  */
 public class NewRuleDialog extends AlertDialog{
+    private MaterialEditText metHost, metTarget, metTarget2;
+    private EditText edHost, edTarget, edTarget2;
+    private CheckBox wildcard;
+    private RadioButton ipv6, ipv4, both;
+    private RadioGroup addressType;
+    private Vibrator vibrator;
+    private String v6Text = "::1", v4Text = "127.0.0.1";
 
-    public NewRuleDialog(@NonNull Context context, CreationListener listener) {
-        super(context);
+    public NewRuleDialog(@NonNull final Context context, final CreationListener listener) {
+        super(context, ThemeHandler.getDialogTheme(context));
+        View content;
+        setView(content = getLayoutInflater().inflate(R.layout.dialog_new_rule, null, false));
+        metHost = content.findViewById(R.id.met_host);
+        metTarget = content.findViewById(R.id.met_target);
+        metTarget2 = content.findViewById(R.id.met_target2);
+        edHost = content.findViewById(R.id.host);
+        edTarget = content.findViewById(R.id.target);
+        edTarget2 = content.findViewById(R.id.target2);
+        metHost = content.findViewById(R.id.met_host);
+        wildcard = content.findViewById(R.id.wildcard);
+        ipv6 = content.findViewById(R.id.radio_ipv6);
+        ipv4 = content.findViewById(R.id.radio_ipv4);
+        both = content.findViewById(R.id.radio_both);
+        addressType = content.findViewById(R.id.group);
+        setTitle(R.string.new_rule);
+        setCancelable(true);
+        setButton(BUTTON_NEUTRAL, context.getString(R.string.close), new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        setButton(BUTTON_POSITIVE, context.getString(R.string.done), (OnClickListener)null);
+        setOnShowListener(new OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                getButton(BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(inputsValid()){
+                            if(both.isChecked() && !API.getDBHelper(getContext()).dnsRuleExists(edHost.getText().toString())){
+                                listener.creationFinished(edHost.getText().toString(),
+                                        edTarget.getText().toString(), edTarget2.getText().toString(), ipv6.isChecked(), wildcard.isChecked());
+                                dismiss();
+                            }else if(!API.getDBHelper(getContext()).dnsRuleExists(edHost.getText().toString(), ipv6.isChecked())){
+                                listener.creationFinished(edHost.getText().toString(),
+                                        edTarget.getText().toString(), edTarget2.getText().toString(), ipv6.isChecked(), wildcard.isChecked());
+                                dismiss();
+                            }else{
+                                Toast.makeText(getContext(), R.string.error_rule_already_exists, Toast.LENGTH_LONG).show();
+                            }
+                        }else{
+                            vibrator.vibrate(200);
+                        }
+                    }
+                });
+            }
+        });
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(before != count)validateInput();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
+        vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        edHost.addTextChangedListener(textWatcher);
+        edTarget.addTextChangedListener(textWatcher);
+        edTarget2.addTextChangedListener(textWatcher);
+        addressType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                setTargetValues();
+                metTarget.setLabelText(ipv6.isChecked() ? "IPv6" : "IPv4");
+                metTarget.setIcon(ipv6.isChecked() ? R.drawable.ic_action_ipv6 : R.drawable.ic_action_ipv4);
+                metTarget2.setVisibility(both.isChecked() ? View.VISIBLE : View.GONE);
+                validateInput();
+            }
+        });
+        wildcard.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                metHost.setLabelText(context.getString(isChecked ? R.string.regular_expression : R.string.host));
+            }
+        });
+    }
+
+    private void setTargetValues(){
+        if(metTarget2.getVisibility() == View.VISIBLE)v6Text = edTarget2.getText().toString();
+        if(ipv6.isChecked()){
+            v4Text = edTarget.getText().toString();
+            edTarget.setText(v6Text);
+        }else if(ipv4.isChecked()){
+            v6Text = metTarget2.getVisibility() == View.VISIBLE ? edTarget2.getText().toString() : edTarget.getText().toString();
+            edTarget.setText(v4Text);
+        }else{
+            edTarget.setText(v4Text);
+            edTarget2.setText(v6Text);
+        }
+    }
+
+    private boolean inputsValid(){
+        return metHost.getIndicatorState() == MaterialEditText.IndicatorState.UNDEFINED &&
+                metTarget.getIndicatorState() == MaterialEditText.IndicatorState.UNDEFINED &&
+                (metTarget2.getVisibility() == View.GONE || metTarget2.getIndicatorState() == MaterialEditText.IndicatorState.UNDEFINED);
+    }
+
+    private void validateInput(){
+        metHost.setIndicatorState(!edHost.getText().toString().equals("")
+                ? MaterialEditText.IndicatorState.UNDEFINED : MaterialEditText.IndicatorState.INCORRECT);
+        metTarget.setIndicatorState(NetworkUtil.isIP(edTarget.getText().toString(), ipv6.isChecked())
+                ? MaterialEditText.IndicatorState.UNDEFINED : MaterialEditText.IndicatorState.INCORRECT);
+        metTarget2.setIndicatorState(NetworkUtil.isIP(edTarget2.getText().toString(), true)
+                ? MaterialEditText.IndicatorState.UNDEFINED : MaterialEditText.IndicatorState.INCORRECT);
+        getButton(BUTTON_POSITIVE).setEnabled(inputsValid());
     }
 
 
     public interface CreationListener{
-        public void creationFinished(String host, String target, boolean ipv6, boolean wildcard);
+        public void creationFinished(@NonNull String host, @NonNull String target, @Nullable String targetV6, boolean ipv6, boolean wildcard);
     }
 }

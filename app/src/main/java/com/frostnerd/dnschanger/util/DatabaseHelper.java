@@ -100,6 +100,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         getWritableDatabase().insert("DNSRules", null, values);
     }
 
+    public boolean dnsRuleExists(String host){
+        Cursor cursor = getReadableDatabase().rawQuery("SELECT ROWID FROM DNSRules WHERE Domain=?",
+                new String[]{host});
+        int count = cursor.getCount();
+        cursor.close();
+        return count == 1;
+    }
+
+    public boolean dnsRuleExists(String host, boolean ipv6){
+        Cursor cursor = getReadableDatabase().rawQuery("SELECT ROWID FROM DNSRules WHERE Domain=? and IPv6=?",
+                new String[]{host, ipv6 ? "1" : "0"});
+        int count = cursor.getCount();
+        cursor.close();
+        return count == 1;
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if(oldVersion < 2){

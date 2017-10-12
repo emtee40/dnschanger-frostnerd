@@ -50,6 +50,11 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
         notifyDataSetChanged();
     }
 
+    public void reloadData(){
+        evaluateData();
+        notifyDataSetChanged();
+    }
+
     private void evaluateData(){
         Cursor cursor;
         rows.clear();

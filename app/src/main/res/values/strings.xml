@@ -271,4 +271,8 @@
     <string name="wildcard">Wildcard</string>
     <string name="normal">Normal</string>
     <string name="filter">Filter</string>
+    <string name="new_rule">New rule</string>
+    <string name="regular_expression">Regular expression (RegEx)</string>
+    <string name="both">Both</string>
+    <string name="error_rule_already_exists">Rule already exists</string>
 </resources>

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -141,9 +142,13 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
             public void onClick(View v) {
                 new NewRuleDialog(getContext(), new NewRuleDialog.CreationListener() {
                     @Override
-                    public void creationFinished(String host, String target, boolean ipv6, boolean wildcard) {
-                        API.getDBHelper(getContext()).createRuleEntry(host, target, ipv6, wildcard);
-                        ruleAdapter.notifyDataSetChanged();
+                    public void creationFinished(@NonNull String host, @NonNull String target, @Nullable String targetV6, boolean ipv6, boolean wildcard) {
+                        boolean both = targetV6 != null && !targetV6.equals("");
+                        API.getDBHelper(getContext()).createRuleEntry(host, target, !both && ipv6, wildcard);
+                        if(targetV6 != null && !targetV6.equals("")){
+                            API.getDBHelper(getContext()).createRuleEntry(host, targetV6, true, wildcard);
+                        }
+                        ruleAdapter.reloadData();
                     }
                 }).show();
             }
