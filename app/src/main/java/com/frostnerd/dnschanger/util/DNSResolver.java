@@ -13,18 +13,11 @@ import java.util.LinkedHashMap;
  */
 public class DNSResolver {
     private static final String WILDCARD_QUERY_RANDOM =
-            "SELECT Target FROM Rules WHERE IPv6=? AND Wildcard=1 AND ? REGEXP Domain ORDER BY RANDOM() LIMIT 1";
+            "SELECT Target FROM DNSRules WHERE IPv6=? AND Wildcard=1 AND ? REGEXP Domain ORDER BY RANDOM() LIMIT 1";
     private static final String WILDCARD_QUERY_FIRST =
-            "SELECT Target FROM Rules WHERE IPv6=? AND Wildcard=1 AND ? REGEXP Domain LIMIT 1";
-    private static final String NON_WILDCARD_QUERY = "SELECT Target FROM Rules WHERE IPv6=? AND Domain=? AND Wildcard=?";
-    private static final String SUM_WILDCARD_QUERY = "SELECT SUM(Wildcard) FROM Rules";
-    private static final int MAX_BUFFER_SIZE = 1000;
-    private final LinkedHashMap<String, String> buffer = new LinkedHashMap<String, String>(){
-        @Override
-        protected boolean removeEldestEntry(Entry<String, String> eldest) {
-            return size() > MAX_BUFFER_SIZE;
-        }
-    };
+            "SELECT Target FROM DNSRules WHERE IPv6=? AND Wildcard=1 AND ? REGEXP Domain LIMIT 1";
+    private static final String NON_WILDCARD_QUERY = "SELECT Target FROM DNSRules WHERE IPv6=? AND Domain=? AND Wildcard=?";
+    private static final String SUM_WILDCARD_QUERY = "SELECT SUM(Wildcard) FROM DNSRules";
     private DatabaseHelper db;
     private int wildcardCount;
 
@@ -38,20 +31,15 @@ public class DNSResolver {
     }
 
     public String resolve(String host, boolean ipv6) {
-        return resolve(host, ipv6, true, true);
+        return resolve(host, ipv6, true);
     }
 
-    public String resolve(String host, boolean ipv6, boolean allowWildcard, boolean useCache) {
+    public String resolve(String host, boolean ipv6, boolean allowWildcard) {
         String res;
-        if (useCache && buffer.containsKey(host)) {
-            res = buffer.get(host);
-            if (res != null) return res;
-        }
         res = resolveNonWildcard(host, ipv6);
         if (res == null && allowWildcard && wildcardCount != 0) {
             res = resolveWildcard(host, ipv6, false);
         }
-        if (res != null) buffer.put(host, res);
         return res;
     }
 
