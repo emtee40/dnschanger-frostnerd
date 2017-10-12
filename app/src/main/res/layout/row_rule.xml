@@ -2,6 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:longClickable="true"
     android:orientation="horizontal"
     android:paddingBottom="3dp"
     android:paddingTop="3dp">
@@ -10,8 +13,8 @@
         android:id="@+id/text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingRight="8dp"
-        android:layout_weight="0.4" />
+        android:layout_weight="0.4"
+        android:paddingRight="8dp" />
 
     <TextView
         android:id="@+id/text3"
