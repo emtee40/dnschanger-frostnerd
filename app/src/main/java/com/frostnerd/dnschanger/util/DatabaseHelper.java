@@ -91,6 +91,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         reader.close();
     }
 
+    public void createRuleEntry(String host, String target, boolean ipv6, boolean wildcard){
+        ContentValues values = new ContentValues(3);
+        values.put("Domain", host);
+        values.put("IPv6", ipv6);
+        values.put("Target", target);
+        values.put("Wildcard", wildcard);
+        getWritableDatabase().insert("DNSRules", null, values);
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if(oldVersion < 2){
