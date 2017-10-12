@@ -89,10 +89,11 @@ public class VPNRunnable implements Runnable {
                     if(isInAdvancedMode(service) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){
                         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "We are in advanced mode, starting DNS proxy");
                         dnsProxy = new DNSUDPProxy(service, tunnelInterface, new HashSet<API.IPPortPair>(){{
-                            add(new API.IPPortPair(dns1, Preferences.getInteger(service, "port1", 53), false));
-                            add(new API.IPPortPair(dns2, Preferences.getInteger(service, "port2", 53), false));
-                            add(new API.IPPortPair(dns1v6, Preferences.getInteger(service, "port1v6", 53), false));
-                            add(new API.IPPortPair(dns2v6, Preferences.getInteger(service, "port2v6", 53), false));
+                            boolean port = Preferences.getBoolean(service, "custom_port", false);
+                            add(new API.IPPortPair(dns1, port ? Preferences.getInteger(service, "port1", 53) : 53, false));
+                            add(new API.IPPortPair(dns2, port ? Preferences.getInteger(service, "port2", 53) : 53, false));
+                            add(new API.IPPortPair(dns1v6, port ? Preferences.getInteger(service, "port1v6", 53) : 53, false));
+                            add(new API.IPPortPair(dns2v6, port ? Preferences.getInteger(service, "port2v6", 53) : 53, false));
                         }});
                         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "DNS proxy created");
                     }else dnsProxy = new DummyProxy();
