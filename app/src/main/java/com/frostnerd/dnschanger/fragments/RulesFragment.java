@@ -96,7 +96,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
                     newWrap.setAlpha(0);
                     filterWrap.setAlpha(0);
                     wildcardWrap.setAlpha(0);
-                }else if(dy < 0)fabOpen.show();
+                }else if(dy < 30)fabOpen.show();
             }
         });
         ColorStateList stateList = ColorStateList.valueOf(ThemeHandler.getColor(getContext(), R.attr.inputElementColor, Color.WHITE));
