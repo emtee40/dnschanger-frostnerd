@@ -142,7 +142,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
             public void onClick(View v) {
                 new NewRuleDialog(getContext(), new NewRuleDialog.CreationListener() {
                     @Override
-                    public void creationFinished(@NonNull String host, @NonNull String target, @Nullable String targetV6, boolean ipv6, boolean wildcard) {
+                    public void creationFinished(@NonNull String host, @NonNull String target, @Nullable String targetV6, boolean ipv6, boolean wildcard, boolean editingMode) {
                         boolean both = targetV6 != null && !targetV6.equals("");
                         API.getDBHelper(getContext()).createRuleEntry(host, target, !both && ipv6, wildcard);
                         if(targetV6 != null && !targetV6.equals("")){
@@ -157,6 +157,10 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         wildcardTextView.setBackgroundColor(inputColor);
         content.findViewById(R.id.text).setBackgroundColor(inputColor);
         content.findViewById(R.id.text3).setBackgroundColor(inputColor);
+    }
+
+    private void showDialog(boolean edit){
+
     }
 
     private void animateFab(){

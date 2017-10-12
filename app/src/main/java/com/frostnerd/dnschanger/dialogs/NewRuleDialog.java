@@ -41,6 +41,30 @@ public class NewRuleDialog extends AlertDialog{
     private RadioGroup addressType;
     private Vibrator vibrator;
     private String v6Text = "::1", v4Text = "127.0.0.1";
+    private boolean editingMode = false;
+
+    public NewRuleDialog(@NonNull Context context, final CreationListener listener, @NonNull final String host, @NonNull String target, final boolean wildcard, final boolean ipv6){
+        this(context, listener);
+        if(ipv6)v6Text = target;
+        else v4Text = target;
+        edHost.setText(host);
+        edHost.setEnabled(false);
+        edTarget.setText(target);
+        both.setVisibility(View.GONE);
+        this.ipv6.setChecked(ipv6);
+        this.wildcard.setChecked(wildcard);
+        this.addressType.setEnabled(false);
+        this.wildcard.setEnabled(false);
+        this.ipv6.setEnabled(false);
+        this.ipv4.setEnabled(false);
+        editingMode = true;
+        setButton(BUTTON_NEGATIVE, context.getString(R.string.delete), new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                listener.creationFinished(host, null, null, ipv6, wildcard, true);
+            }
+        });
+    }
 
     public NewRuleDialog(@NonNull final Context context, final CreationListener listener) {
         super(context, ThemeHandler.getDialogTheme(context));
@@ -74,16 +98,23 @@ public class NewRuleDialog extends AlertDialog{
                     @Override
                     public void onClick(View v) {
                         if(inputsValid()){
-                            if(both.isChecked() && !API.getDBHelper(getContext()).dnsRuleExists(edHost.getText().toString())){
-                                listener.creationFinished(edHost.getText().toString(),
-                                        edTarget.getText().toString(), edTarget2.getText().toString(), ipv6.isChecked(), wildcard.isChecked());
-                                dismiss();
-                            }else if(!API.getDBHelper(getContext()).dnsRuleExists(edHost.getText().toString(), ipv6.isChecked())){
-                                listener.creationFinished(edHost.getText().toString(),
-                                        edTarget.getText().toString(), edTarget2.getText().toString(), ipv6.isChecked(), wildcard.isChecked());
+                            if(editingMode){
+                                listener.creationFinished(edHost.getText().toString(), edTarget.getText().toString(), null, ipv6.isChecked(), wildcard.isChecked(), true);
                                 dismiss();
                             }else{
-                                Toast.makeText(getContext(), R.string.error_rule_already_exists, Toast.LENGTH_LONG).show();
+                                if(both.isChecked() && !API.getDBHelper(getContext()).dnsRuleExists(edHost.getText().toString())){
+                                    listener.creationFinished(edHost.getText().toString(),
+                                            edTarget.getText().toString(), edTarget2.getText().toString(),
+                                            ipv6.isChecked(), wildcard.isChecked(), false);
+                                    dismiss();
+                                }else if(!API.getDBHelper(getContext()).dnsRuleExists(edHost.getText().toString(), ipv6.isChecked())){
+                                    listener.creationFinished(edHost.getText().toString(),
+                                            edTarget.getText().toString(), edTarget2.getText().toString(),
+                                            ipv6.isChecked(), wildcard.isChecked(), false);
+                                    dismiss();
+                                }else{
+                                    Toast.makeText(getContext(), R.string.error_rule_already_exists, Toast.LENGTH_LONG).show();
+                                }
                             }
                         }else{
                             vibrator.vibrate(200);
@@ -157,11 +188,11 @@ public class NewRuleDialog extends AlertDialog{
                 ? MaterialEditText.IndicatorState.UNDEFINED : MaterialEditText.IndicatorState.INCORRECT);
         metTarget2.setIndicatorState(NetworkUtil.isIP(edTarget2.getText().toString(), true)
                 ? MaterialEditText.IndicatorState.UNDEFINED : MaterialEditText.IndicatorState.INCORRECT);
-        getButton(BUTTON_POSITIVE).setEnabled(inputsValid());
+        if(getButton(BUTTON_POSITIVE) != null)getButton(BUTTON_POSITIVE).setEnabled(inputsValid());
     }
 
 
     public interface CreationListener{
-        public void creationFinished(@NonNull String host, @NonNull String target, @Nullable String targetV6, boolean ipv6, boolean wildcard);
+        public void creationFinished(@NonNull String host, @Nullable String target, @Nullable String targetV6, boolean ipv6, boolean wildcard, boolean wasEdited);
     }
 }

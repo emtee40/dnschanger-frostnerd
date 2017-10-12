@@ -76,7 +76,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int count = 0;
         ContentValues values = new ContentValues(3);
         db.beginTransaction();
-        while ((line=reader.readLine()) != null && count++ <= 150000) {
+        while ((line=reader.readLine()) != null && count++ <= 20000) {
             values.put("Domain", line);
             values.put("Target", "127.0.0.1");
             values.put("IPv6", false);
@@ -114,6 +114,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int count = cursor.getCount();
         cursor.close();
         return count == 1;
+    }
+
+    public void editDNSRule(String host, boolean ipv6, String newTarget){
+        ContentValues values = new ContentValues(1);
+        values.put("Target", newTarget);
+        getWritableDatabase().update("DNSRules", values, "Domain=? AND IPv6=?", new String[]{host, ipv6 ? "1" : "0"});
+    }
+
+    public boolean deleteDNSRule(String host, boolean ipv6){
+        return getWritableDatabase().delete("DNSRules", "Domain=? AND IPv6=?", new String[]{host, ipv6 ? "1" : "0"}) > 0;
     }
 
     @Override
