@@ -373,7 +373,6 @@ public final class API {
             public void run() {
                 try {
                     Resolver resolver = new SimpleResolver(server);
-                    System.out.println("PORT: " + SimpleResolver.DEFAULT_PORT);
                     resolver.setTCP(tcp);
                     resolver.setTimeout(timeout);
                     Name name = Name.fromString(query.endsWith(".") ? query : query + ".");
