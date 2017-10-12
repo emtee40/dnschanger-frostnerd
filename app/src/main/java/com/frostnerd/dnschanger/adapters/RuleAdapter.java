@@ -1,5 +1,6 @@
 package com.frostnerd.dnschanger.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
@@ -36,11 +37,11 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     private List<Integer> rows = new ArrayList<>();
     private HashMap<Integer,Integer> rowRemap = new HashMap<>();
     private boolean update = true;
-    private Context context;
+    private Activity context;
     private HashMap<Filter, String> filterValues = new HashMap<>();
     private TextView rowCount;
 
-    public RuleAdapter(Context context, DatabaseHelper databaseHelper, TextView rowCount){
+    public RuleAdapter(Activity context, DatabaseHelper databaseHelper, TextView rowCount){
         this.databaseHelper = databaseHelper;
         this.context = context;
         inflater = LayoutInflater.from(context);

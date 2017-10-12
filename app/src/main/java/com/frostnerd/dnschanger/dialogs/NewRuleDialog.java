@@ -1,5 +1,6 @@
 package com.frostnerd.dnschanger.dialogs;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.VibrationEffect;
@@ -8,6 +9,7 @@ import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -43,7 +45,7 @@ public class NewRuleDialog extends AlertDialog{
     private String v6Text = "::1", v4Text = "127.0.0.1";
     private boolean editingMode = false;
 
-    public NewRuleDialog(@NonNull Context context, final CreationListener listener, @NonNull final String host, @NonNull String target, final boolean wildcard, final boolean ipv6){
+    public NewRuleDialog(@NonNull Activity context, final CreationListener listener, @NonNull final String host, @NonNull String target, final boolean wildcard, final boolean ipv6){
         this(context, listener);
         if(ipv6)v6Text = target;
         else v4Text = target;
@@ -66,7 +68,7 @@ public class NewRuleDialog extends AlertDialog{
         });
     }
 
-    public NewRuleDialog(@NonNull final Context context, final CreationListener listener) {
+    public NewRuleDialog(@NonNull final Activity context, final CreationListener listener) {
         super(context, ThemeHandler.getDialogTheme(context));
         View content;
         setView(content = getLayoutInflater().inflate(R.layout.dialog_new_rule, null, false));
@@ -90,6 +92,7 @@ public class NewRuleDialog extends AlertDialog{
                 dialog.cancel();
             }
         });
+        setButton(BUTTON_NEGATIVE, getContext().getString(R.string.import_rules), (OnClickListener)null);
         setButton(BUTTON_POSITIVE, context.getString(R.string.done), (OnClickListener)null);
         setOnShowListener(new OnShowListener() {
             @Override
@@ -119,6 +122,13 @@ public class NewRuleDialog extends AlertDialog{
                         }else{
                             vibrator.vibrate(200);
                         }
+                    }
+                });
+                if(!editingMode)getButton(BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss();
+                        new RuleImportDialog(context).show();
                     }
                 });
             }

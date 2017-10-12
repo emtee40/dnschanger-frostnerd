@@ -273,4 +273,5 @@
     <string name="show_local_entries">Zeige Regeln, welche zu einer Loopbackadresse auflösen</string>
     <string name="search_by_target">Suche nach einem Ziel</string>
     <string name="information_advanced_settings_warranty">Um die unteren Features zu realisieren werden die DNS Packets abgefangen und modifziert. Dies kann die Batterie- und RAM-Nutzung erhöhen.\n\nBenutze dies unter eigenen Risiko, durch Klicken auf OK bestätigst du, dass der Autor dieser App für keine möglichen Schäden haftbar ist.</string>
+    <string name="import_rules">Importieren</string>
 </resources>

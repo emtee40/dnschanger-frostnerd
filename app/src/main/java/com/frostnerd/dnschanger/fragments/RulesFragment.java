@@ -94,7 +94,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         fabFilter = content.findViewById(R.id.fab_filter);
         wildcardTextView = content.findViewById(R.id.text2);
 
-        ruleAdapter = new RuleAdapter(getContext(), API.getDBHelper(getContext()), (TextView)content.findViewById(R.id.row_count));
+        ruleAdapter = new RuleAdapter((MainActivity)getContext(), API.getDBHelper(getContext()), (TextView)content.findViewById(R.id.row_count));
         list.setLayoutManager(new LinearLayoutManager(getContext()));
         list.setAdapter(ruleAdapter);
         list.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -150,7 +150,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         fabNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new NewRuleDialog(getContext(), new NewRuleDialog.CreationListener() {
+                new NewRuleDialog((MainActivity)getContext(), new NewRuleDialog.CreationListener() {
                     @Override
                     public void creationFinished(@NonNull String host, @NonNull String target, @Nullable String targetV6, boolean ipv6, boolean wildcard, boolean editingMode) {
                         boolean both = targetV6 != null && !targetV6.equals("");
