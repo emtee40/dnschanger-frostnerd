@@ -255,6 +255,21 @@ public class DNSUDPProxy extends DNSProxy{
     @Override
     public void stop() {
         shouldRun = false;
+        try {
+            if(interruptedDescriptor != null) Os.close(interruptedDescriptor);
+            if(blockingDescriptor != null) Os.close(blockingDescriptor);
+        } catch (Exception ignored) {
+        }
+        synchronized (futureSocketAnswers){
+            for(DatagramSocket socket: futureSocketAnswers.keySet())socket.close();
+            futureSocketAnswers.clear();
+        }
+        upstreamServers.clear();
+        writeToDevice.clear();
+        parcelFileDescriptor = null;
+        resolver = null;
+        vpnService = null;
+        interruptedDescriptor = blockingDescriptor = null;
     }
 
     private class PacketWrap{
