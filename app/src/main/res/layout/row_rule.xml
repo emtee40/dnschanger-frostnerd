@@ -10,6 +10,7 @@
         android:id="@+id/text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:paddingRight="8dp"
         android:layout_weight="0.4" />
 
     <TextView
