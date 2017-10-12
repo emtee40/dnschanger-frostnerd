@@ -378,7 +378,12 @@ public class MainFragment extends Fragment {
                 public void checkFinished(List<String> unreachable, List<String> reachable) {
                     dialog.dismiss();
                     if(unreachable.size() == 0){
-                        start();
+                        ((MainActivity)getContext()).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                start();
+                            }
+                        });
                     }else{
                         String _text = getString(R.string.no_connectivity_warning_text);
                         StringBuilder builder = new StringBuilder();
