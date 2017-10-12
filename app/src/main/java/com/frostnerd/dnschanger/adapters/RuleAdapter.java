@@ -37,25 +37,30 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     private HashMap<Integer,Integer> rowRemap = new HashMap<>();
     private boolean wildcard = false;
     private Context context;
+    private HashMap<Filter, String> filterValues = new HashMap<>();
 
     public RuleAdapter(Context context, DatabaseHelper databaseHelper){
         this.databaseHelper = databaseHelper;
         this.context = context;
         inflater = LayoutInflater.from(context);
+        filterValues.put(ArgumentBasedFilter.SHOW_WILDCARD_ONLY, "0");
         evaluateData();
     }
 
-    public void search(String search){
-        this.search = search;
-        evaluateData();
-        notifyDataSetChanged();
+    public void filter(ArgumentBasedFilter filter, String argument){
+        if(filterValues.containsKey(ArgumentBasedFilter.SHOW_IPV6_ONLY) && filter == ArgumentBasedFilter.SHOW_IPV4_ONLY){
+            filterValues.remove(ArgumentBasedFilter.SHOW_IPV6_ONLY);
+        }else if(filterValues.containsKey(ArgumentBasedFilter.SHOW_IPV4_ONLY) && filter == ArgumentBasedFilter.SHOW_IPV6_ONLY){
+            filterValues.remove(ArgumentBasedFilter.SHOW_IPV4_ONLY);
+        }
+        filterValues.put(filter, argument);
+        reloadData();
     }
 
     public void setWildcardMode(boolean wildcard, boolean resetSearch){
         if(resetSearch)search = "";
-        this.wildcard = wildcard;
-        evaluateData();
-        notifyDataSetChanged();
+        filterValues.remove(ArgumentBasedFilter.HOST_SEARCH);
+        filter(ArgumentBasedFilter.SHOW_WILDCARD_ONLY, wildcard ? "1" : "0");
     }
 
     public void reloadData(){
@@ -66,9 +71,10 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     private void evaluateData(){
         Cursor cursor;
         rows.clear();
+        rowRemap.clear();
         if(!search.equals("") || wildcard){
-            if(!search.equals(""))cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT ROWID FROM DNSRules WHERE Domain LIKE '%" + search + "%' AND Wildcard=?", new String[]{wildcard ? "1" : "0"});
-            else cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT ROWID FROM DNSRules WHERE Wildcard=?", new String[]{wildcard ? "1" : "0"});
+            if(!search.equals(""))cursor = databaseHelper.getReadableDatabase().rawQuery(constructQuery("SELECT ROWID FROM DNSRules"), null);
+            else cursor = databaseHelper.getReadableDatabase().rawQuery(constructQuery("SELECT ROWID FROM DNSRules"), null);
             count = cursor.getCount();
             if(cursor.moveToFirst()){
                 do{
@@ -77,20 +83,32 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
             }
             cursor.close();
         }else{
-            cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT ROWID FROM DNSRules WHERE Wildcard=?", new String[]{wildcard ? "1" : "0"});
-            cursor.moveToFirst();
-            this.count = cursor.getCount();
-            int count = 1, rawCount = 0, id;
-            do{
-                id = (int)cursor.getLong(0);
-                if(count++ != id){
-                    rowRemap.put(rawCount, id);
-                    count = id;
-                }
-                rawCount++;
-            }while(cursor.moveToNext());
+            cursor = databaseHelper.getReadableDatabase().rawQuery(constructQuery("SELECT ROWID FROM DNSRules"), null);
+            if(cursor.moveToFirst()){
+                this.count = cursor.getCount();
+                int count = 1, rawCount = 0, id;
+                do{
+                    id = (int)cursor.getLong(0);
+                    if(count++ != id){
+                        rowRemap.put(rawCount, id);
+                        count = id;
+                    }
+                    rawCount++;
+                }while(cursor.moveToNext());
+            }else count = 0;
             cursor.close();
         }
+    }
+
+    private String constructQuery(String base){
+        if(filterValues.size() == 0)return base;
+        String query = base + " WHERE ";
+        for(Filter filter: filterValues.keySet()){
+            query = filter.appendToQuery(query, filterValues.get(filter));
+            query += " AND ";
+        }
+        System.out.println("QUERY: " + query);
+        return query.substring(0, query.length() - 4);
     }
 
     @Override
@@ -139,9 +157,49 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-
         public ViewHolder(View itemView) {
             super(itemView);
+        }
+    }
+
+    private interface Filter{
+        public String appendToQuery(String query, String argument);
+    }
+
+    public enum ArgumentBasedFilter implements Filter{
+        TARGET {
+            @Override
+            public String appendToQuery(String query, String argument) {
+                return query + "Target LIKE '%" + argument + "%'";
+            }
+        }, SHOW_IPV6_ONLY{
+            @Override
+            public String appendToQuery(String query, String argument) {
+                if(argument.equals("0"))return query;
+                return query + "IPv6=1";
+            }
+        }, HIDE_LOCAL {
+            @Override
+            public String appendToQuery(String query, String argument) {
+                if(argument.equals("1"))return query + "Target!='127.0.0.1' AND Target!='::1'";
+                else return query;
+            }
+        }, SHOW_WILDCARD_ONLY {
+            @Override
+            public String appendToQuery(String query, String argument) {
+                return query + "Wildcard=" + argument;
+            }
+        }, HOST_SEARCH{
+            @Override
+            public String appendToQuery(String query, String argument) {
+                return query + "Domain LIKE '%" + argument + "%'";
+            }
+        }, SHOW_IPV4_ONLY{
+            @Override
+            public String appendToQuery(String query, String argument) {
+                if(argument.equals("1"))return query;
+                return query + "IPV6=0";
+            }
         }
     }
 }

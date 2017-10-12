@@ -189,7 +189,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        ruleAdapter.search(query);
+        ruleAdapter.filter(RuleAdapter.ArgumentBasedFilter.HOST_SEARCH, query);
         return true;
     }
 
