@@ -153,7 +153,6 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
         final boolean ipv6 = cursor.getInt(cursor.getColumnIndex("IPv6")) == 1,
                 wildcard = cursor.getInt(cursor.getColumnIndex("Wildcard")) == 1;
         ((TextView)holder.itemView.findViewById(R.id.text)).setText(host);
-        ((TextView)holder.itemView.findViewById(R.id.text2)).setText(ipv6 ? "✓" : "x");
         ((TextView)holder.itemView.findViewById(R.id.text3)).setText(target);
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
