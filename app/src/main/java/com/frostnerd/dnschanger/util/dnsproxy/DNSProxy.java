@@ -1,5 +1,9 @@
 package com.frostnerd.dnschanger.util.dnsproxy;
 
+import android.system.ErrnoException;
+
+import java.io.IOException;
+
 /**
  * Copyright Daniel Wolf 2017
  * All rights reserved.
@@ -11,5 +15,6 @@ package com.frostnerd.dnschanger.util.dnsproxy;
  */
 public abstract class DNSProxy {
 
-    public abstract void run() throws InterruptedException;
+    public abstract void run() throws InterruptedException, IOException, ErrnoException;
+    public abstract void stop();
 }

@@ -10,11 +10,17 @@ package com.frostnerd.dnschanger.util.dnsproxy;
  * development@frostnerd.com
  */
 public class DummyProxy extends DNSProxy {
+    private boolean shouldRun = true;
 
     @Override
     public void run() throws InterruptedException {
-        while(true){
+        while(shouldRun){
             Thread.sleep(250);
         }
+    }
+
+    @Override
+    public void stop() {
+        shouldRun = false;
     }
 }
