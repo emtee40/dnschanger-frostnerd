@@ -279,4 +279,5 @@
     <string name="search_by_target">Search by target</string>
     <string name="show_local_entries">Show rules resolving to a loopback address</string>
     <string name="x_entries">[x] entries</string>
+    <string name="information_advanced_settings_warranty">To implement the features listed below all sent DNS packets are intercepted and modified. This may increase Battery and RAM usage.\n\nUse at your own risk, no warranty is provided. By clicking OK you agree that the author of this app isn\'t liable for any damage which may result.</string>
 </resources>

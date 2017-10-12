@@ -259,4 +259,5 @@
     <string name="error_rule_already_exists">A regra já existe</string>
     <string name="delete">Excluir</string>
     <string name="both">Ambos</string>
+    <string name="information_advanced_settings_warranty">Para implementar os recursos listados abaixo, todos os pacotes de DNS enviados são interceptados e modificados. Isso pode aumentar o uso de bateria e RAM.\n\nUse por sua conta e risco, não há garantia fornecida. Ao clicar em OK, você concorda que o autor deste aplicativo não é responsável por qualquer dano que possa resultar.</string>
 </resources>

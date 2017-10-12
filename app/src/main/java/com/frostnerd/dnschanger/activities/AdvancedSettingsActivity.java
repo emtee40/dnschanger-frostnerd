@@ -1,7 +1,10 @@
 package com.frostnerd.dnschanger.activities;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.SwitchPreference;
+import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 
 import com.frostnerd.dnschanger.R;
@@ -25,15 +28,34 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.advanced_preferences);
         findPreference("advanced_settings").setOnPreferenceChangeListener(preferenceChangeListener);
+        findPreference("advanced_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                final SwitchPreference pref = (SwitchPreference)preference;
+                if(pref.isChecked()){
+                    pref.setChecked(false);
+                    new AlertDialog.Builder(AdvancedSettingsActivity.this).setTitle(R.string.warning).setMessage(R.string.information_advanced_settings_warranty).setCancelable(true).setNegativeButton(R.string.cancel, null)
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    pref.setChecked(true);
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                }
+                return true;
+            }
+        });
         findPreference("custom_port").setOnPreferenceChangeListener(preferenceChangeListener);
         findPreference("rules_activated").setOnPreferenceChangeListener(preferenceChangeListener);
-        // TODO Show dialog that no warranty is offered
     }
 
     Preference.OnPreferenceChangeListener preferenceChangeListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object o) {
-            if(preference.getKey().equals("advanced_settings"))setResult(RESULT_FIRST_USER);
+            if (preference.getKey().equals("advanced_settings")) {
+                setResult(RESULT_FIRST_USER);
+            }
             return true;
         }
     };
@@ -45,7 +67,7 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
         }
