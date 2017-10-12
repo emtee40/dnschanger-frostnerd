@@ -59,7 +59,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
     private boolean fabExpanded = false, wildcardShown = false;
     private View wildcardWrap, newWrap, filterWrap;
     private SearchView searchView;
-    private TextView wildcardTextView;
+    private TextView wildcardTextView, rowCount;
 
     @Nullable
     @Override
@@ -71,6 +71,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        ruleAdapter = new RuleAdapter(getContext(), API.getDBHelper(getContext()));
     }
 
     @Override
@@ -93,9 +94,11 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         fabNew = content.findViewById(R.id.fab_new);
         fabFilter = content.findViewById(R.id.fab_filter);
         wildcardTextView = content.findViewById(R.id.text2);
+        rowCount = content.findViewById(R.id.row_count);
 
         list.setLayoutManager(new LinearLayoutManager(getContext()));
-        list.setAdapter(ruleAdapter = new RuleAdapter(getContext(), API.getDBHelper(getContext())));
+        list.setAdapter(ruleAdapter);
+        rowCount.setText(getString(R.string.x_entries).replace("[x]", ruleAdapter.getItemCount() + ""));
         list.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -158,6 +161,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
                             API.getDBHelper(getContext()).createRuleEntry(host, targetV6, true, wildcard);
                         }
                         ruleAdapter.reloadData();
+                        rowCount.setText(getString(R.string.x_entries).replace("[x]", ruleAdapter.getItemCount() + ""));
                     }
                 }).show();
             }
@@ -205,6 +209,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
                     ruleAdapter.filter(RuleAdapter.ArgumentBasedFilter.TARGET, targetSearch.getText().toString());
                 ruleAdapter.setUpdateDataOnConfigChange(true);
                 ruleAdapter.reloadData();
+                rowCount.setText(getString(R.string.x_entries).replace("[x]", ruleAdapter.getItemCount() + ""));
             }
         }).show();
         targetSearch.addTextChangedListener(new TextWatcher() {

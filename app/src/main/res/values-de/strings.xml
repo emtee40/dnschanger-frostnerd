@@ -269,4 +269,5 @@
     <string name="both">Beides</string>
     <string name="error_rule_already_exists">Regel existiert bereits</string>
     <string name="delete">Löschen</string>
+    <string name="x_entries">[x] Einträge</string>
 </resources>

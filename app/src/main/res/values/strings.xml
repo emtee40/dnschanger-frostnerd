@@ -278,4 +278,5 @@
     <string name="delete">Delete</string>
     <string name="search_by_target">Search by target</string>
     <string name="show_local_entries">Show rules resolving to a loopback address</string>
+    <string name="x_entries">[x] entries</string>
 </resources>
