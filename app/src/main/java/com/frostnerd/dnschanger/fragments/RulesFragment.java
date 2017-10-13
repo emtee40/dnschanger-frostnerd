@@ -149,7 +149,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
                         if (targetV6 != null && !targetV6.equals("")) {
                             API.getDBHelper(getContext()).createRuleEntry(host, targetV6, true, wildcard);
                         }
-                        ruleAdapter.reloadData();
+                        if(!wildcardShown || wildcard)ruleAdapter.reloadData();
                     }
                 }).show();
             }
