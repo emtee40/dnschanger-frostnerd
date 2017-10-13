@@ -76,14 +76,6 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (!Preferences.getBoolean(getContext(), "db_debug", false)) {
-            try {
-                API.getDBHelper(getContext()).loadEntries(getContext());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Preferences.put(getContext(), "db_debug", true);
-        }
         fabOpen = content.findViewById(R.id.fab_open);
         list = content.findViewById(R.id.list);
         newWrap = content.findViewById(R.id.wrap_fab_new);

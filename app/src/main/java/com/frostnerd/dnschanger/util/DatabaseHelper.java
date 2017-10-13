@@ -69,28 +69,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         currentDB = null;
     }
 
-    public void loadEntries(Context context) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(context.getResources().openRawResource(R.raw.output)));
-        String line;
-        SQLiteDatabase db = getReadableDatabase();
-        int count = 0;
-        ContentValues values = new ContentValues(3);
-        db.beginTransaction();
-        while ((line=reader.readLine()) != null && count++ <= 20) {
-            values.put("Domain", line);
-            values.put("Target", "127.0.0.1");
-            values.put("IPv6", false);
-            db.insertWithOnConflict("DNSRules", null, values, SQLiteDatabase.CONFLICT_IGNORE);
-            values.put("Target", "::1");
-            values.put("IPv6", true);
-            db.insertWithOnConflict("DNSRules", null, values, SQLiteDatabase.CONFLICT_IGNORE);
-            values.clear();
-        }
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        reader.close();
-    }
-
     public void createRuleEntry(String host, String target, boolean ipv6, boolean wildcard){
         ContentValues values = new ContentValues(3);
         values.put("Domain", host);
