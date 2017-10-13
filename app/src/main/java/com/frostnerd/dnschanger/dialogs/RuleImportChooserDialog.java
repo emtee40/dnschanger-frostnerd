@@ -71,7 +71,7 @@ public class RuleImportChooserDialog extends AlertDialog {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                new RuleImportProgressDialog(getContext(), file, type).show();
+                new RuleImportProgressDialog(context, file, type).show();
             }
         });
         setOnShowListener(new OnShowListener() {

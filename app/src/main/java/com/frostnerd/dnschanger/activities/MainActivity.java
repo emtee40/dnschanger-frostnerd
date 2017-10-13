@@ -206,6 +206,10 @@ public class MainActivity extends NavigationDrawerActivity {
     public void onItemClicked(DrawerItem item, boolean handle) {
     }
 
+    public Fragment currentFragment(){
+        return getCurrentFragment();
+    }
+
     @Override
     public List<DrawerItem> createDrawerItems() {
         DrawerItemCreator itemCreator = new DrawerItemCreator(this);

@@ -1,16 +1,19 @@
 package com.frostnerd.dnschanger.dialogs;
 
+import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.activities.MainActivity;
+import com.frostnerd.dnschanger.fragments.RulesFragment;
 import com.frostnerd.dnschanger.util.API;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.networking.NetworkUtil;
@@ -42,6 +45,7 @@ public class RuleImportProgressDialog extends AlertDialog {
     private static final Matcher DOMAINS_MATCHER = DOMAINS_PATTERN.matcher("");
     private int lines;
     private LineParser parser;
+    private Activity context;
     private TextView progressText;
     private AsyncTask<File, Integer, Void> asyncImport = new AsyncTask<File, Integer, Void>() {
         private int validLines = 0;
@@ -87,6 +91,12 @@ public class RuleImportProgressDialog extends AlertDialog {
             }
             if (!isCancelled()) database.setTransactionSuccessful();
             database.endTransaction();
+            if(context instanceof MainActivity){
+                Fragment fragment = ((MainActivity)context).currentFragment();
+                if(fragment instanceof RulesFragment){
+                    ((RulesFragment)fragment).getRuleAdapter().reloadData();
+                }
+            }
         }
 
         @Override
@@ -104,8 +114,9 @@ public class RuleImportProgressDialog extends AlertDialog {
         }
     };
 
-    public RuleImportProgressDialog(@NonNull Context context, File file, FileType type) {
+    public RuleImportProgressDialog(@NonNull Activity context, File file, FileType type) {
         super(context, ThemeHandler.getDialogTheme(context));
+        this.context = context;
         lines = getFileLines(file);
         setTitle(getContext().getString(R.string.importing_x_rules).replace("[x]", "" + lines));
         setCancelable(false);

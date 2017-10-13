@@ -1,7 +1,6 @@
 package com.frostnerd.dnschanger.adapters;
 
 import android.app.Activity;
-import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.R;
@@ -40,13 +40,15 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     private Activity context;
     private HashMap<Filter, String> filterValues = new HashMap<>();
     private TextView rowCount;
+    private ProgressBar updateProgress;
 
-    public RuleAdapter(Activity context, DatabaseHelper databaseHelper, TextView rowCount){
+    public RuleAdapter(Activity context, DatabaseHelper databaseHelper, TextView rowCount, ProgressBar updateProgress){
         this.databaseHelper = databaseHelper;
         this.context = context;
         inflater = LayoutInflater.from(context);
         filterValues.put(ArgumentBasedFilter.SHOW_WILDCARD_ONLY, "0");
         this.rowCount = rowCount;
+        this.updateProgress = updateProgress;
         reloadData();
     }
 
@@ -90,8 +92,21 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
 
     public void reloadData(){
         if(!update)return;
-        evaluateData();
-        notifyDataSetChanged();
+        updateProgress.setVisibility(View.VISIBLE);
+        new Thread(){
+            @Override
+            public void run() {
+                evaluateData();
+                context.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        rowCount.setText(context.getString(R.string.x_entries).replace("[x]", count + ""));
+                        notifyDataSetChanged();
+                        updateProgress.setVisibility(View.INVISIBLE);
+                    }
+                });
+            }
+        }.start();
     }
 
     private void evaluateData(){
@@ -124,7 +139,6 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
             }else count = 0;
             cursor.close();
         }
-        rowCount.setText(context.getString(R.string.x_entries).replace("[x]", count + ""));
     }
 
     private String constructQuery(String base){
