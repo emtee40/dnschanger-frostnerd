@@ -95,13 +95,15 @@ public class RuleImportChooserDialog extends AlertDialog {
                         file = f;
                         fileLabel.setText(f.getName());
                         getButton(BUTTON_POSITIVE).setVisibility(View.VISIBLE);
-                        RuleImportProgressDialog.FileType fileType = RuleImportProgressDialog.tryFindFileType(f);
-                        if(fileType != null){
-                            type = fileType;
-                            switch (type){
-                                case DNSMASQ: dnsmasq.setChecked(true);break;
-                                case HOST: hosts.setChecked(true);break;
-                                case DOMAIN_LIST: domains.setChecked(true);
+                        if(tryDetectType.isChecked()){
+                            RuleImportProgressDialog.FileType fileType = RuleImportProgressDialog.tryFindFileType(f);
+                            if(fileType != null){
+                                type = fileType;
+                                switch (type){
+                                    case DNSMASQ: dnsmasq.setChecked(true);break;
+                                    case HOST: hosts.setChecked(true);break;
+                                    case DOMAIN_LIST: domains.setChecked(true);
+                                }
                             }
                         }
                     }
