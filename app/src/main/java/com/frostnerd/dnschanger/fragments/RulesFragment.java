@@ -251,6 +251,10 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        if(newText.equals("")){
+            ruleAdapter.removeFilters(RuleAdapter.ArgumentBasedFilter.HOST_SEARCH);
+            return true;
+        }
         return false;
     }
 
