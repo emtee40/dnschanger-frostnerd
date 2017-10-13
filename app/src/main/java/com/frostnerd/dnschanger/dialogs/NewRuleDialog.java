@@ -3,13 +3,11 @@ package com.frostnerd.dnschanger.dialogs;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -128,7 +126,7 @@ public class NewRuleDialog extends AlertDialog{
                     @Override
                     public void onClick(View v) {
                         dismiss();
-                        new RuleImportDialog(context).show();
+                        new RuleImportChooserDialog(context).show();
                     }
                 });
             }

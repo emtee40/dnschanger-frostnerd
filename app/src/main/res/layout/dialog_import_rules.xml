@@ -6,6 +6,7 @@
     android:padding="16dp">
 
     <RadioGroup
+        android:id="@+id/group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -31,6 +32,13 @@
             android:text="@string/file_justdomains"
             android:textColor="?android:attr/textColor" />
     </RadioGroup>
+
+    <CheckBox
+        android:id="@+id/detect_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/detect_rule_type"
+        android:textColor="?android:attr/textColor" />
 
     <Button
         android:id="@+id/button"

@@ -274,4 +274,6 @@
     <string name="search_by_target">Suche nach einem Ziel</string>
     <string name="information_advanced_settings_warranty">Um die unteren Features zu realisieren werden die DNS Packets abgefangen und modifziert. Dies kann die Batterie- und RAM-Nutzung erhöhen.\n\nBenutze dies unter eigenen Risiko, durch Klicken auf OK bestätigst du, dass der Autor dieser App für keine möglichen Schäden haftbar ist.</string>
     <string name="import_rules">Importieren</string>
+    <string name="importing_x_rules">Importiere [x] Regeln</string>
+    <string name="rules_import_finished">[x] Zeilen wurden gelesen, von welchen [y] valide Einträge waren.</string>
 </resources>
