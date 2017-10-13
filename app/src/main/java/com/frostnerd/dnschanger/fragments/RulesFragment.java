@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -38,9 +39,6 @@ import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.general.DesignUtil;
 import com.frostnerd.utils.networking.NetworkUtil;
-import com.frostnerd.utils.preferences.Preferences;
-
-import java.io.IOException;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -86,7 +84,8 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         fabFilter = content.findViewById(R.id.fab_filter);
         wildcardTextView = content.findViewById(R.id.text2);
 
-        ruleAdapter = new RuleAdapter((MainActivity)getContext(), API.getDBHelper(getContext()), (TextView)content.findViewById(R.id.row_count));
+        ruleAdapter = new RuleAdapter((MainActivity)getContext(), API.getDBHelper(getContext()),
+                (TextView)content.findViewById(R.id.row_count), (ProgressBar)content.findViewById(R.id.progress));
         list.setLayoutManager(new LinearLayoutManager(getContext()));
         list.setAdapter(ruleAdapter);
         list.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -259,5 +258,9 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
     public Context getContext() {
         Context context = super.getContext();
         return context == null ? MainActivity.currentContext : context;
+    }
+
+    public RuleAdapter getRuleAdapter() {
+        return ruleAdapter;
     }
 }
