@@ -96,6 +96,7 @@ public class RuleImportProgressDialog extends AlertDialog {
                     }
                     publishProgress(i);
                 }
+                reader.close();
             }
             if (!isCancelled()) database.setTransactionSuccessful();
             database.endTransaction();
