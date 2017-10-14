@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -186,6 +187,13 @@ public class RuleImportProgressDialog extends AlertDialog {
                 }
             }
             reader.close();
+            if(won == null){
+                Map.Entry<FileType, Integer> max = null;
+                for(Map.Entry<FileType, Integer> entry: validLines.entrySet()){
+                    if(max == null || entry.getValue().compareTo(max.getValue()) > 0)max = entry;
+                }
+                if(max != null && ((double)max.getValue()/lines) >= 0.66)won = max.getKey();
+            }
             return won;
         }catch (IOException ignored){
 
