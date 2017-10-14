@@ -33,7 +33,6 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     private DatabaseHelper databaseHelper;
     private LayoutInflater inflater;
     private int count;
-    private String search = "";
     private List<Integer> rows = new ArrayList<>();
     private HashMap<Integer,Integer> rowRemap = new HashMap<>();
     private boolean update = true;
@@ -85,7 +84,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     }
 
     public void setWildcardMode(boolean wildcard, boolean resetSearch){
-        if(resetSearch)search = "";
+        if(resetSearch) removeFilters(ArgumentBasedFilter.HOST_SEARCH);
         filterValues.remove(ArgumentBasedFilter.HOST_SEARCH);
         filter(ArgumentBasedFilter.SHOW_WILDCARD_ONLY, wildcard ? "1" : "0");
     }
@@ -113,9 +112,8 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
         Cursor cursor;
         rows.clear();
         rowRemap.clear();
-        if(!search.equals("")){
-            if(!search.equals(""))cursor = databaseHelper.getReadableDatabase().rawQuery(constructQuery("SELECT ROWID FROM DNSRules"), null);
-            else cursor = databaseHelper.getReadableDatabase().rawQuery(constructQuery("SELECT ROWID FROM DNSRules"), null);
+        if(filterValues.containsKey(ArgumentBasedFilter.HOST_SEARCH)){
+            cursor = databaseHelper.getReadableDatabase().rawQuery(constructQuery("SELECT ROWID FROM DNSRules"), null);
             count = cursor.getCount();
             if(cursor.moveToFirst()){
                 do{
@@ -159,7 +157,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Cursor cursor;
-        if(!search.equals(""))cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Domain, IPv6, Target, Wildcard FROM DNSRules WHERE ROWID=" + rows.get(position), null);
+        if(filterValues.containsKey(ArgumentBasedFilter.HOST_SEARCH))cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Domain, IPv6, Target, Wildcard FROM DNSRules WHERE ROWID=" + rows.get(position), null);
         else {
             int rowID = rowRemap.containsKey(position) ? rowRemap.get(position) : position+1;
             cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Domain, IPv6, Target, Wildcard FROM DNSRules WHERE ROWID=" + rowID, null);
