@@ -49,6 +49,7 @@ public class RuleImportProgressDialog extends AlertDialog {
     private static final Matcher DOMAINS_MATCHER = DOMAINS_PATTERN.matcher("");
     private static final Pattern ADBLOCK_PATTERN = Pattern.compile("^\\|\\|([A-Za-z0-9]{1}[A-Za-z0-9\\-.]+)\\^");
     private static final Matcher ADBLOCK_MATCHER = ADBLOCK_PATTERN.matcher("");
+    private final int databaseConflictHandling;
     private int linesCombined;
     private Activity context;
     private TextView progressText, fileText;
@@ -86,7 +87,7 @@ public class RuleImportProgressDialog extends AlertDialog {
                         if(rule.both){
                             values.put("Target", "127.0.0.1");
                             values.put("IPv6", false);
-                            if(database.insertWithOnConflict("DNSRules", null, values, SQLiteDatabase.CONFLICT_IGNORE) != -1)
+                            if(database.insertWithOnConflict("DNSRules", null, values, databaseConflictHandling) != -1)
                                 distinctEntries++;
                             values.put("Target", "::1");
                             values.put("IPv6", true);
@@ -94,7 +95,7 @@ public class RuleImportProgressDialog extends AlertDialog {
                             values.put("Target", rule.target);
                             values.put("IPv6", rule.ipv6);
                         }
-                        if(database.insertWithOnConflict("DNSRules", null, values, SQLiteDatabase.CONFLICT_IGNORE) != -1)
+                        if(database.insertWithOnConflict("DNSRules", null, values, databaseConflictHandling) != -1)
                             distinctEntries++;
                         values.clear();
                     }
@@ -139,7 +140,7 @@ public class RuleImportProgressDialog extends AlertDialog {
         }
     };
 
-    public RuleImportProgressDialog(@NonNull Activity context, List<ImportableFile> files) {
+    public RuleImportProgressDialog(@NonNull Activity context, List<ImportableFile> files, int databaseConflictHandling) {
         super(context, ThemeHandler.getDialogTheme(context));
         this.context = context;
         this.files = files;
@@ -158,6 +159,7 @@ public class RuleImportProgressDialog extends AlertDialog {
         setView(content = getLayoutInflater().inflate(R.layout.dialog_rule_import_progress, null, false));
         progressText = content.findViewById(R.id.progress_text);
         fileText = content.findViewById(R.id.file_name);
+        this.databaseConflictHandling = databaseConflictHandling;
         asyncImport.execute();
     }
 

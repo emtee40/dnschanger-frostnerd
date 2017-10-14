@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -96,7 +97,7 @@ public class RuleImportChooserDialog extends AlertDialog {
                     if (file.getFileType() != null) importableFiles.add(file);
                 }
                 dialog.dismiss();
-                new RuleImportProgressDialog(context, importableFiles).show();
+                new RuleImportProgressDialog(context, importableFiles, SQLiteDatabase.CONFLICT_IGNORE).show();
             }
         });
         setOnShowListener(new OnShowListener() {
