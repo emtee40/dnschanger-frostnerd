@@ -284,7 +284,7 @@
     <string name="file_hosts">Hosts file</string>
     <string name="file_dnsmasq">Dnsmasq file</string>
     <string name="file_justdomains">Domain list file</string>
-    <string name="select_file">Select file</string>
+    <string name="select_files">Select file(s)</string>
     <string name="importing_x_rules">Importing [x] rules</string>
     <string name="rules_import_finished">[x] lines were read, [y] of which were valid and [z] distinct (new) Entries.</string>
     <string name="detect_rule_type">Try to detect the type</string>

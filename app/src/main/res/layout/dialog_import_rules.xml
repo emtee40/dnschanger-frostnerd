@@ -76,7 +76,7 @@
             android:background="?attr/inputElementColor"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:text="@string/select_file" />
+            android:text="@string/select_files" />
 
         <TextView
             android:id="@+id/text"
