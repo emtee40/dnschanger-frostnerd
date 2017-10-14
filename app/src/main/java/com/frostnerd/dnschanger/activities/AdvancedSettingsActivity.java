@@ -21,6 +21,8 @@ import com.frostnerd.utils.preferences.AppCompatPreferenceActivity;
  * development@frostnerd.com
  */
 public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
+    private boolean dialogShown = false;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,16 +34,10 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 final SwitchPreference pref = (SwitchPreference)preference;
+                System.out.println("IS CHECKED: " + pref.isChecked());
                 if(pref.isChecked()){
                     pref.setChecked(false);
-                    new AlertDialog.Builder(AdvancedSettingsActivity.this).setTitle(R.string.warning).setMessage(R.string.information_advanced_settings_warranty).setCancelable(true).setNegativeButton(R.string.cancel, null)
-                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    pref.setChecked(true);
-                                    dialog.dismiss();
-                                }
-                            }).show();
+                    showWarrantyDialog();
                 }
                 return true;
             }
@@ -54,11 +50,34 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public boolean onPreferenceChange(Preference preference, Object o) {
             if (preference.getKey().equals("advanced_settings")) {
-                setResult(RESULT_FIRST_USER);
+                if(!dialogShown && ((Boolean)o)){
+                    showWarrantyDialog();
+                    return false;
+                }else setResult(RESULT_FIRST_USER);
             }
             return true;
         }
     };
+
+    private void showWarrantyDialog(){
+        dialogShown = true;
+        ((SwitchPreference)findPreference("advanced_settings")).setChecked(false);
+        new AlertDialog.Builder(AdvancedSettingsActivity.this).setTitle(R.string.warning).setMessage(R.string.information_advanced_settings_warranty).setCancelable(true).setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ((SwitchPreference)findPreference("advanced_settings")).setChecked(true);
+                        setResult(RESULT_FIRST_USER);
+                        dialogShown = false;
+                        dialog.dismiss();
+                    }
+                }).setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                dialogShown = false;
+            }
+        }).show();
+    }
 
     @Override
     public void onBackPressed() {
