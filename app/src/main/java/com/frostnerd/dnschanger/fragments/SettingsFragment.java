@@ -469,7 +469,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 }
             });
         }else{
-            getPreferenceScreen().removePreference(findPreference("jump_advanced_settings"));
+            getPreferenceScreen().removePreference(findPreference("category_advanced"));
         }
         findPreference("hide_notification_icon").setOnPreferenceChangeListener(changeListener);
         findPreference("pin_value").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
