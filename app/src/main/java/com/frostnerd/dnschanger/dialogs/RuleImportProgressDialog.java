@@ -91,12 +91,6 @@ public class RuleImportProgressDialog extends AlertDialog {
             }
             if (!isCancelled()) database.setTransactionSuccessful();
             database.endTransaction();
-            if(context instanceof MainActivity){
-                Fragment fragment = ((MainActivity)context).currentFragment();
-                if(fragment instanceof RulesFragment){
-                    ((RulesFragment)fragment).getRuleAdapter().reloadData();
-                }
-            }
         }
 
         @Override
@@ -105,6 +99,12 @@ public class RuleImportProgressDialog extends AlertDialog {
                     setNeutralButton(R.string.close, null).
                     setMessage(getContext().getString(R.string.rules_import_finished).replace("[x]", "" + lines).replace("[y]", "" + validLines)).show();
             dismiss();
+            if(context instanceof MainActivity){
+                Fragment fragment = ((MainActivity)context).currentFragment();
+                if(fragment instanceof RulesFragment){
+                    ((RulesFragment)fragment).getRuleAdapter().reloadData();
+                }
+            }
         }
 
         @Override
