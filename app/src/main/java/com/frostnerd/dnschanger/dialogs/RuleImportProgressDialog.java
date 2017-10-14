@@ -170,15 +170,15 @@ public class RuleImportProgressDialog extends AlertDialog {
         return lines;
     }
 
-    public static FileType tryFindFileType(File f){
+    public static FileType tryFindFileType(File f, boolean failFast){
         try{
             HashMap<FileType, Integer> validLines = new HashMap<>();
             for(FileType type: FileType.values())validLines.put(type, 0);
             BufferedReader reader = new BufferedReader(new FileReader(f));
             String line;
-            int lines = 0;
+            int lines = 0, fileLines = failFast ? 0 : getFileLines(f);
             FileType won = null;
-            while((line = reader.readLine()) != null && lines++ <= 300){
+            while((line = reader.readLine()) != null && ((failFast && lines++ <= 300) || (!failFast && lines++ <= fileLines))){
                 for(FileType type: validLines.keySet()){
                     if(type.parseLine(line) != null){
                         validLines.put(type, validLines.get(type)+1);

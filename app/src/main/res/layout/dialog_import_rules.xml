@@ -52,6 +52,21 @@
             android:text="@string/detect_rule_type"
             android:textColor="?android:attr/textColor" />
 
+        <CheckBox
+            android:id="@+id/fail_fast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/fail_fast"
+            android:textColor="?android:attr/textColor" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/fail_fast_info"
+            android:layout_height="wrap_content"
+            android:text="@string/disable_failfast_info"
+            android:textColor="?android:attr/textColor" />
+
         <Button
             android:id="@+id/button"
             android:layout_width="wrap_content"

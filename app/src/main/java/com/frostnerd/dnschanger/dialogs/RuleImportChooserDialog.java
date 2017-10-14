@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -20,9 +21,7 @@ import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.design.dialogs.FileChooserDialog;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -36,9 +35,9 @@ import java.util.List;
  */
 public class RuleImportChooserDialog extends AlertDialog {
     private List<RuleImportProgressDialog.ImportableFile> files = new ArrayList<>();
-    private TextView fileLabel;
+    private TextView fileLabel, failFastInfo;
     private RuleImportProgressDialog.FileType type = RuleImportProgressDialog.FileType.DNSMASQ;
-    private CheckBox tryDetectType;
+    private CheckBox tryDetectType, failFast;
     private RadioButton dnsmasq,hosts, domains, adblock;
 
     public RuleImportChooserDialog(@NonNull final Activity context) {
@@ -52,10 +51,19 @@ public class RuleImportChooserDialog extends AlertDialog {
         hosts = content.findViewById(R.id.radio_hosts);
         domains = content.findViewById(R.id.radio_justdomains);
         adblock = content.findViewById(R.id.radio_adblock);
+        failFast = content.findViewById(R.id.fail_fast);
+        failFastInfo = content.findViewById(R.id.fail_fast_info);
         content.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 handlePermissionOrShowFileDialog(context);
+            }
+        });
+        tryDetectType.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                failFast.setEnabled(isChecked);
+                failFastInfo.setVisibility(isChecked ? View.VISIBLE : View.GONE);
             }
         });
         ((RadioGroup)content.findViewById(R.id.group)).setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -105,17 +113,16 @@ public class RuleImportChooserDialog extends AlertDialog {
                     }else{
                         getButton(BUTTON_POSITIVE).setVisibility(View.VISIBLE);
                         if(tryDetectType.isChecked()){
-                            RuleImportProgressDialog.FileType fileType = RuleImportProgressDialog.tryFindFileType(f);
-                            if(fileType != null){
-                                type = fileType;
-                                switch (type){
-                                    case DNSMASQ: dnsmasq.setChecked(true);break;
-                                    case HOST: hosts.setChecked(true);break;
-                                    case DOMAIN_LIST: domains.setChecked(true);break;
-                                    case ADBLOCK_FILE: adblock.setChecked(true);break;
-                                }
+                            RuleImportProgressDialog.FileType fileType = RuleImportProgressDialog.tryFindFileType(f, failFast.isChecked());
+                            type = fileType;
+                            if(type != null) switch (type){
+                                case DNSMASQ: dnsmasq.setChecked(true);break;
+                                case HOST: hosts.setChecked(true);break;
+                                case DOMAIN_LIST: domains.setChecked(true);break;
+                                case ADBLOCK_FILE: adblock.setChecked(true);break;
                             }
                         }
+                        System.out.println("ADDING TYPE: " + type);
                         files.add(new RuleImportProgressDialog.ImportableFile(f, type, lines));
                     }
                     setLabelText();
@@ -128,7 +135,7 @@ public class RuleImportChooserDialog extends AlertDialog {
                     RuleImportProgressDialog.FileType type;
                     for(File f: selected){
                         if((lines = RuleImportProgressDialog.getFileLines(f)) == 0)continue;
-                        type = RuleImportProgressDialog.tryFindFileType(f);
+                        type = RuleImportProgressDialog.tryFindFileType(f, failFast.isChecked());
                         files.add(new RuleImportProgressDialog.ImportableFile(f, type, lines));
                     }
                     setLabelText();

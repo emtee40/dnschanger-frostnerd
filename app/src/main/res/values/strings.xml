@@ -290,4 +290,6 @@
     <string name="detect_rule_type">Try to detect the type</string>
     <string name="rule_unknown_ignoring">Unknown, ignoring</string>
     <string name="file_adblock">Adblock file (Format: ||HOST^)</string>
+    <string name="fail_fast">Fail fast</string>
+    <string name="disable_failfast_info">Disable fail fast if the type cannot be detected. As this takes longer try specifying the type yourself</string>
 </resources>
