@@ -39,7 +39,7 @@ public class RuleImportChooserDialog extends AlertDialog {
     private TextView fileLabel;
     private RuleImportProgressDialog.FileType type = RuleImportProgressDialog.FileType.DNSMASQ;
     private CheckBox tryDetectType;
-    private RadioButton dnsmasq,hosts, domains;
+    private RadioButton dnsmasq,hosts, domains, adblock;
 
     public RuleImportChooserDialog(@NonNull final Activity context) {
         super(context, ThemeHandler.getDialogTheme(context));
@@ -51,6 +51,7 @@ public class RuleImportChooserDialog extends AlertDialog {
         dnsmasq = content.findViewById(R.id.radio_dnsmasq);
         hosts = content.findViewById(R.id.radio_hosts);
         domains = content.findViewById(R.id.radio_justdomains);
+        adblock = content.findViewById(R.id.radio_adblock);
         content.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +64,7 @@ public class RuleImportChooserDialog extends AlertDialog {
                 if(checkedId == R.id.radio_dnsmasq)type = RuleImportProgressDialog.FileType.DNSMASQ;
                 else if(checkedId == R.id.radio_hosts)type = RuleImportProgressDialog.FileType.HOST;
                 else if(checkedId == R.id.radio_justdomains)type = RuleImportProgressDialog.FileType.DOMAIN_LIST;
+                else if(checkedId == R.id.radio_adblock)type = RuleImportProgressDialog.FileType.ADBLOCK_FILE;
             }
         });
         setButton(BUTTON_NEUTRAL, context.getString(R.string.cancel), new OnClickListener() {
@@ -74,8 +76,12 @@ public class RuleImportChooserDialog extends AlertDialog {
         setButton(BUTTON_POSITIVE, getContext().getString(R.string.done), new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                List<RuleImportProgressDialog.ImportableFile> importableFiles = new ArrayList<>();
+                for(RuleImportProgressDialog.ImportableFile file : files){
+                    if(file.getFileType() != null)importableFiles.add(file);
+                }
                 dialog.dismiss();
-                new RuleImportProgressDialog(context, files).show();
+                new RuleImportProgressDialog(context, importableFiles).show();
             }
         });
         setOnShowListener(new OnShowListener() {
@@ -105,7 +111,8 @@ public class RuleImportChooserDialog extends AlertDialog {
                                 switch (type){
                                     case DNSMASQ: dnsmasq.setChecked(true);break;
                                     case HOST: hosts.setChecked(true);break;
-                                    case DOMAIN_LIST: domains.setChecked(true);
+                                    case DOMAIN_LIST: domains.setChecked(true);break;
+                                    case ADBLOCK_FILE: adblock.setChecked(true);break;
                                 }
                             }
                         }
@@ -121,7 +128,7 @@ public class RuleImportChooserDialog extends AlertDialog {
                     RuleImportProgressDialog.FileType type;
                     for(File f: selected){
                         if((lines = RuleImportProgressDialog.getFileLines(f)) == 0)continue;
-                        if((type = RuleImportProgressDialog.tryFindFileType(f)) == null)continue;
+                        type = RuleImportProgressDialog.tryFindFileType(f);
                         files.add(new RuleImportProgressDialog.ImportableFile(f, type, lines));
                     }
                     setLabelText();
@@ -131,7 +138,7 @@ public class RuleImportChooserDialog extends AlertDialog {
                     StringBuilder builder = new StringBuilder();
                     for(RuleImportProgressDialog.ImportableFile importableFile: files){
                         builder.append(importableFile.getFile().getName()).append(" [").
-                                append(importableFile.getFileType()).append("]").append("\n");
+                                append(importableFile.getFileType() == null ? getContext().getString(R.string.rule_unknown_ignoring) : importableFile.getFileType()).append("]").append("\n");
                     }
                     fileLabel.setText(builder.toString());
                     if(files.size() == 0)getButton(BUTTON_POSITIVE).setVisibility(View.INVISIBLE);

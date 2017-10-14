@@ -276,4 +276,5 @@
     <string name="import_rules">Importieren</string>
     <string name="importing_x_rules">Importiere [x] Regeln</string>
     <string name="rules_import_finished">[x] Zeilen wurden gelesen, von welchen [y] valide Einträge waren.</string>
+    <string name="rule_unknown_ignoring">Unbekannt, ignoriere</string>
 </resources>

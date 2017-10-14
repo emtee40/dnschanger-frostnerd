@@ -47,6 +47,8 @@ public class RuleImportProgressDialog extends AlertDialog {
     private static final Matcher HOSTS_MATCHER = HOSTS_PATTERN.matcher("");
     private static final Pattern DOMAINS_PATTERN = Pattern.compile("^([A-Za-z0-9]{1}[A-Za-z0-9\\-.]+)");
     private static final Matcher DOMAINS_MATCHER = DOMAINS_PATTERN.matcher("");
+    private static final Pattern ADBLOCK_PATTERN = Pattern.compile("^\\|\\|([A-Za-z0-9]{1}[A-Za-z0-9\\-.]+)\\^");
+    private static final Matcher ADBLOCK_MATCHER = ADBLOCK_PATTERN.matcher("");
     private int linesCombined;
     private Activity context;
     private TextView progressText, fileText;
@@ -239,6 +241,15 @@ public class RuleImportProgressDialog extends AlertDialog {
             public DNSRule parseLine(String line) {
                 if(DOMAINS_MATCHER.reset(line).find()){
                     String host = DOMAINS_MATCHER.group(1);
+                    return new DNSRule(host);
+                }
+                return null;
+            }
+        }, ADBLOCK_FILE{
+            @Override
+            public DNSRule parseLine(String line) {
+                if(ADBLOCK_MATCHER.reset(line).find()){
+                    String host = ADBLOCK_MATCHER.group(1);
                     return new DNSRule(host);
                 }
                 return null;
