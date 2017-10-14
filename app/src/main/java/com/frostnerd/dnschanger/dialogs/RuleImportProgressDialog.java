@@ -45,7 +45,7 @@ public class RuleImportProgressDialog extends AlertDialog {
     private static final Matcher DNSMASQ_MATCHER = DNSMASQ_PATTERN.matcher("");
     private static final Pattern HOSTS_PATTERN = Pattern.compile("^(?:([^#\\s]+)\\s(((?:[0-9.[^#\\s]])+$)|(?:[0-9a-fA-F:[^#\\s]]+)))|(?:^(?:([0-9.]+)|([0-9a-fA-F:]+))\\s([^#\\s]+))");
     private static final Matcher HOSTS_MATCHER = HOSTS_PATTERN.matcher("");
-    private static final Pattern DOMAINS_PATTERN = Pattern.compile("^([^#\\s=$%*/]+)");
+    private static final Pattern DOMAINS_PATTERN = Pattern.compile("^([A-Za-z0-9]{1}[A-Za-z0-9\\-.]+)");
     private static final Matcher DOMAINS_MATCHER = DOMAINS_PATTERN.matcher("");
     private int linesCombined;
     private Activity context;
