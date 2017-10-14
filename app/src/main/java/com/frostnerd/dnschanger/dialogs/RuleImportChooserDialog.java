@@ -20,7 +20,10 @@ import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.design.dialogs.FileChooserDialog;
 
 import java.io.File;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -32,7 +35,7 @@ import java.util.Arrays;
  * development@frostnerd.com
  */
 public class RuleImportChooserDialog extends AlertDialog {
-    private File file;
+    private List<RuleImportProgressDialog.ImportableFile> files = new ArrayList<>();
     private TextView fileLabel;
     private RuleImportProgressDialog.FileType type = RuleImportProgressDialog.FileType.DNSMASQ;
     private CheckBox tryDetectType;
@@ -72,7 +75,7 @@ public class RuleImportChooserDialog extends AlertDialog {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                new RuleImportProgressDialog(context, file, type).show();
+                new RuleImportProgressDialog(context, files).show();
             }
         });
         setOnShowListener(new OnShowListener() {
@@ -89,12 +92,11 @@ public class RuleImportChooserDialog extends AlertDialog {
             dialog.setFileListener(new FileChooserDialog.FileSelectedListener() {
                 @Override
                 public void fileSelected(File f, FileChooserDialog.SelectionMode selectionMode) {
-                    if(RuleImportProgressDialog.getFileLines(f) == 0){
+                    files.clear();
+                    int lines;
+                    if((lines = RuleImportProgressDialog.getFileLines(f)) == 0){
                         getButton(BUTTON_POSITIVE).setVisibility(View.INVISIBLE);
-                        fileLabel.setText("");
                     }else{
-                        file = f;
-                        fileLabel.setText(f.getName());
                         getButton(BUTTON_POSITIVE).setVisibility(View.VISIBLE);
                         if(tryDetectType.isChecked()){
                             RuleImportProgressDialog.FileType fileType = RuleImportProgressDialog.tryFindFileType(f);
@@ -107,12 +109,33 @@ public class RuleImportChooserDialog extends AlertDialog {
                                 }
                             }
                         }
+                        files.add(new RuleImportProgressDialog.ImportableFile(f, type, lines));
                     }
+                    setLabelText();
                 }
 
                 @Override
-                public void multipleFilesSelected(File... files) {
-                    System.out.println(Arrays.toString(files)); //TODO Handle
+                public void multipleFilesSelected(File... selected) {
+                    files.clear();
+                    int lines;
+                    RuleImportProgressDialog.FileType type;
+                    for(File f: selected){
+                        if((lines = RuleImportProgressDialog.getFileLines(f)) == 0)continue;
+                        if((type = RuleImportProgressDialog.tryFindFileType(f)) == null)continue;
+                        files.add(new RuleImportProgressDialog.ImportableFile(f, type, lines));
+                    }
+                    setLabelText();
+                }
+
+                private void setLabelText(){
+                    StringBuilder builder = new StringBuilder();
+                    for(RuleImportProgressDialog.ImportableFile importableFile: files){
+                        builder.append(importableFile.getFile().getName()).append(" [").
+                                append(importableFile.getFileType()).append("]").append("\n");
+                    }
+                    fileLabel.setText(builder.toString());
+                    if(files.size() == 0)getButton(BUTTON_POSITIVE).setVisibility(View.INVISIBLE);
+                    else getButton(BUTTON_POSITIVE).setVisibility(View.VISIBLE);
                 }
             });
             dialog.setCanSelectMultiple(true);

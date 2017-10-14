@@ -5,6 +5,8 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -24,6 +26,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,51 +46,55 @@ public class RuleImportProgressDialog extends AlertDialog {
     private static final Matcher HOSTS_MATCHER = HOSTS_PATTERN.matcher("");
     private static final Pattern DOMAINS_PATTERN = Pattern.compile("^([^#\\s=$%*/]+$)");
     private static final Matcher DOMAINS_MATCHER = DOMAINS_PATTERN.matcher("");
-    private int lines;
-    private LineParser parser;
+    private int linesCombined;
     private Activity context;
-    private TextView progressText;
-    private AsyncTask<File, Integer, Void> asyncImport = new AsyncTask<File, Integer, Void>() {
+    private TextView progressText, fileText;
+    private List<ImportableFile> files;
+    private AsyncTask<Void, Integer, Void> asyncImport = new AsyncTask<Void, Integer, Void>() {
         private int validLines = 0;
 
         @Override
-        protected Void doInBackground(File... params) {
+        protected Void doInBackground(Void... params) {
             try {
-                startImport(params[0]);
+                startImport();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return null;
         }
 
-        private void startImport(File f) throws IOException {
+        private void startImport() throws IOException {
             SQLiteDatabase database = API.getDBHelper(getContext()).getWritableDatabase();
             database.beginTransaction();
-            BufferedReader reader = new BufferedReader(new FileReader(f));
             String line;
             DNSRule rule;
             ContentValues values = new ContentValues(3);
-            int i = 0;
-            while (!isCancelled() && (line = reader.readLine()) != null) {
-                i++;
-                rule = parser.parseLine(line.trim());
-                if (rule != null) {
-                    validLines++;
-                    values.put("Domain", rule.host);
-                    if(rule.both){
-                        values.put("Target", "127.0.0.1");
-                        values.put("IPv6", false);
+            int i = 0, pos = 0;
+            for(ImportableFile file: files){
+                BufferedReader reader = new BufferedReader(new FileReader(file.getFile()));
+                LineParser parser = file.getFileType();
+                onProgressUpdate(-1, pos++);
+                while (!isCancelled() && (line = reader.readLine()) != null) {
+                    i++;
+                    rule = parser.parseLine(line.trim());
+                    if (rule != null) {
+                        validLines++;
+                        values.put("Domain", rule.host);
+                        if(rule.both){
+                            values.put("Target", "127.0.0.1");
+                            values.put("IPv6", false);
+                            database.insertWithOnConflict("DNSRules", null, values, SQLiteDatabase.CONFLICT_IGNORE);
+                            values.put("Target", "::1");
+                            values.put("IPv6", true);
+                        }else{
+                            values.put("Target", rule.target);
+                            values.put("IPv6", rule.ipv6);
+                        }
                         database.insertWithOnConflict("DNSRules", null, values, SQLiteDatabase.CONFLICT_IGNORE);
-                        values.put("Target", "::1");
-                        values.put("IPv6", true);
-                    }else{
-                        values.put("Target", rule.target);
-                        values.put("IPv6", rule.ipv6);
+                        values.clear();
                     }
-                    database.insertWithOnConflict("DNSRules", null, values, SQLiteDatabase.CONFLICT_IGNORE);
-                    values.clear();
+                    publishProgress(i);
                 }
-                publishProgress(i);
             }
             if (!isCancelled()) database.setTransactionSuccessful();
             database.endTransaction();
@@ -97,7 +104,7 @@ public class RuleImportProgressDialog extends AlertDialog {
         protected void onPostExecute(Void aVoid) {
             new AlertDialog.Builder(getContext(), ThemeHandler.getDialogTheme(getContext())).setTitle(R.string.done).setCancelable(true).
                     setNeutralButton(R.string.close, null).
-                    setMessage(getContext().getString(R.string.rules_import_finished).replace("[x]", "" + lines).replace("[y]", "" + validLines)).show();
+                    setMessage(getContext().getString(R.string.rules_import_finished).replace("[x]", "" + linesCombined).replace("[y]", "" + validLines)).show();
             dismiss();
             if(context instanceof MainActivity){
                 Fragment fragment = ((MainActivity)context).currentFragment();
@@ -108,17 +115,28 @@ public class RuleImportProgressDialog extends AlertDialog {
         }
 
         @Override
-        protected void onProgressUpdate(Integer... values) {
-            int i = values[0];
-            progressText.setText(i + "/" + lines);
+        protected void onProgressUpdate(final Integer... values) {
+            if(values.length == 2){
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        fileText.setText(files.get(values[1]).getFile().getName());
+                    }
+                });
+            }
+            else{
+                int i = values[0];
+                progressText.setText(i + "/" + linesCombined);
+            }
         }
     };
 
-    public RuleImportProgressDialog(@NonNull Activity context, File file, FileType type) {
+    public RuleImportProgressDialog(@NonNull Activity context, List<ImportableFile> files) {
         super(context, ThemeHandler.getDialogTheme(context));
         this.context = context;
-        lines = getFileLines(file);
-        setTitle(getContext().getString(R.string.importing_x_rules).replace("[x]", "" + lines));
+        this.files = files;
+        for(ImportableFile file: files)linesCombined += file.getLines();
+        setTitle(getContext().getString(R.string.importing_x_rules).replace("[x]", "" + linesCombined));
         setCancelable(false);
         setCanceledOnTouchOutside(false);
         setButton(BUTTON_NEUTRAL, context.getString(R.string.cancel), new OnClickListener() {
@@ -131,8 +149,8 @@ public class RuleImportProgressDialog extends AlertDialog {
         View content;
         setView(content = getLayoutInflater().inflate(R.layout.dialog_rule_import_progress, null, false));
         progressText = content.findViewById(R.id.progress_text);
-        parser = type;
-        asyncImport.execute(file);
+        fileText = content.findViewById(R.id.file_name);
+        asyncImport.execute();
     }
 
     public static int getFileLines(File f) {
@@ -216,6 +234,11 @@ public class RuleImportProgressDialog extends AlertDialog {
                 }
                 return null;
             }
+        };
+
+        @Override
+        public String toString() {
+            return super.toString();
         }
     }
 
@@ -236,6 +259,30 @@ public class RuleImportProgressDialog extends AlertDialog {
             this.host = host;
             this.target = target;
             this.ipv6 = IPv6;
+        }
+    }
+
+    public static class ImportableFile{
+        private File file;
+        private FileType fileType;
+        private int lines;
+
+        public ImportableFile(File file, FileType fileType, int lines) {
+            this.file = file;
+            this.fileType = fileType;
+            this.lines = lines;
+        }
+
+        public File getFile() {
+            return file;
+        }
+
+        public FileType getFileType() {
+            return fileType;
+        }
+
+        public int getLines() {
+            return lines;
         }
     }
 }
