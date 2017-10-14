@@ -20,6 +20,7 @@ import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.design.dialogs.FileChooserDialog;
 
 import java.io.File;
+import java.util.Arrays;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -108,7 +109,13 @@ public class RuleImportChooserDialog extends AlertDialog {
                         }
                     }
                 }
+
+                @Override
+                public void multipleFilesSelected(File... files) {
+                    System.out.println(Arrays.toString(files)); //TODO Handle
+                }
             });
+            dialog.setCanSelectMultiple(true);
             dialog.setNavigateToLastPath(true);
             dialog.showDialog();
         }else{
