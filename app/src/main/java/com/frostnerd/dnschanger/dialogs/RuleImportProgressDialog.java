@@ -158,10 +158,12 @@ public class RuleImportProgressDialog extends AlertDialog {
             FileType won = null;
             while((line = reader.readLine()) != null && lines++ <= 300){
                 for(FileType type: validLines.keySet()){
-                    if(type.parseLine(line) != null)validLines.put(type, validLines.get(type)+1);
-                    if(validLines.get(type) >= 50){
-                        won = type;
-                        break;
+                    if(type.parseLine(line) != null){
+                        validLines.put(type, validLines.get(type)+1);
+                        if(validLines.get(type) >= 50){
+                            won = type;
+                            break;
+                        }
                     }
                 }
             }
