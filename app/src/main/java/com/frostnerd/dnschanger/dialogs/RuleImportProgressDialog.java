@@ -54,7 +54,7 @@ public class RuleImportProgressDialog extends AlertDialog {
     private TextView progressText, fileText;
     private List<ImportableFile> files;
     private AsyncTask<Void, Integer, Void> asyncImport = new AsyncTask<Void, Integer, Void>() {
-        private int validLines = 0;
+        private int validLines = 0, distinctEntries = 0;
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -86,14 +86,16 @@ public class RuleImportProgressDialog extends AlertDialog {
                         if(rule.both){
                             values.put("Target", "127.0.0.1");
                             values.put("IPv6", false);
-                            database.insertWithOnConflict("DNSRules", null, values, SQLiteDatabase.CONFLICT_IGNORE);
+                            if(database.insertWithOnConflict("DNSRules", null, values, SQLiteDatabase.CONFLICT_IGNORE) != -1)
+                                distinctEntries++;
                             values.put("Target", "::1");
                             values.put("IPv6", true);
                         }else{
                             values.put("Target", rule.target);
                             values.put("IPv6", rule.ipv6);
                         }
-                        database.insertWithOnConflict("DNSRules", null, values, SQLiteDatabase.CONFLICT_IGNORE);
+                        if(database.insertWithOnConflict("DNSRules", null, values, SQLiteDatabase.CONFLICT_IGNORE) != -1)
+                            distinctEntries++;
                         values.clear();
                     }
                     publishProgress(i);
@@ -108,7 +110,9 @@ public class RuleImportProgressDialog extends AlertDialog {
         protected void onPostExecute(Void aVoid) {
             new AlertDialog.Builder(getContext(), ThemeHandler.getDialogTheme(getContext())).setTitle(R.string.done).setCancelable(true).
                     setNeutralButton(R.string.close, null).
-                    setMessage(getContext().getString(R.string.rules_import_finished).replace("[x]", "" + linesCombined).replace("[y]", "" + validLines)).show();
+                    setMessage(getContext().getString(R.string.rules_import_finished).
+                            replace("[x]", "" + linesCombined).replace("[y]", "" + validLines).
+                            replace("[z]", "" + distinctEntries)).show();
             dismiss();
             if(context instanceof MainActivity){
                 Fragment fragment = ((MainActivity)context).currentFragment();

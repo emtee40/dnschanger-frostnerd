@@ -286,7 +286,7 @@
     <string name="file_justdomains">Domain list file</string>
     <string name="select_file">Select file</string>
     <string name="importing_x_rules">Importing [x] rules</string>
-    <string name="rules_import_finished">[x] lines were read, of which [y] were valid entries.</string>
+    <string name="rules_import_finished">[x] lines were read, [y] of which were valid and [z] distinct (new) Entries.</string>
     <string name="detect_rule_type">Try to detect the type</string>
     <string name="rule_unknown_ignoring">Unknown, ignoring</string>
     <string name="file_adblock">Adblock file (Format: ||HOST^)</string>
