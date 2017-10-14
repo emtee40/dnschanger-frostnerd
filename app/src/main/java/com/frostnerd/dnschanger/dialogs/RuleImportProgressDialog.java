@@ -196,19 +196,12 @@ public class RuleImportProgressDialog extends AlertDialog {
                 if(HOSTS_MATCHER.reset(line).find()){
                     String host = HOSTS_MATCHER.group(1), target;
                     boolean ipv6 = false;
-                    if(host == null){
-                        host = HOSTS_MATCHER.group(6);
-                        target = HOSTS_MATCHER.group(4);
-                        if(target == null){
-                            ipv6 = true;
-                            target = HOSTS_MATCHER.group(5);
-                        }
+                    if(NetworkUtil.isIPv4(host) || (ipv6 = NetworkUtil.isIP(host, true))){
+                        target = host;
+                        host = HOSTS_MATCHER.group(2);
                     }else{
-                        target = HOSTS_MATCHER.group(3);
-                        if(target == null){
-                            ipv6 = true;
-                            target = HOSTS_MATCHER.group(2);
-                        }
+                        target = HOSTS_MATCHER.group(2);
+                        ipv6 = NetworkUtil.isIP(target, true);
                     }
                     if(NetworkUtil.isIP(target, ipv6))return new DNSRule(host, target, ipv6);
                 }
