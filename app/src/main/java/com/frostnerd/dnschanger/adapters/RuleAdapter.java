@@ -162,6 +162,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
                     rawCount++;
                 }while(cursor.moveToNext());
             }
+            cursor.close();
             rowRemapPos += fetchCount;
         }
     }
