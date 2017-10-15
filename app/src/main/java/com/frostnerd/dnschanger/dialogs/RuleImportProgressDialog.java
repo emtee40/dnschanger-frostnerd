@@ -73,12 +73,15 @@ public class RuleImportProgressDialog extends AlertDialog {
             database.beginTransaction();
             String line;
             DNSRule rule;
-            ContentValues values = new ContentValues(3);
-            int i = 0, pos = 0;
+            ContentValues values = new ContentValues(3), values2 = new ContentValues();
+            int i = 0, pos = 0, dbID = API.getDBHelper(getContext()).getHighestRowID("DNSRules")+1, currentCount = 0;
+            long tmp;
             for(ImportableFile file: files){
+                currentCount = 0;
                 BufferedReader reader = new BufferedReader(new FileReader(file.getFile()));
                 LineParser parser = file.getFileType();
                 onProgressUpdate(-1, pos++);
+                values2.put("RowStart", dbID);
                 while (!isCancelled() && (line = reader.readLine()) != null) {
                     i++;
                     rule = parser.parseLine(line.trim());
@@ -88,20 +91,28 @@ public class RuleImportProgressDialog extends AlertDialog {
                         if(rule.both){
                             values.put("Target", "127.0.0.1");
                             values.put("IPv6", false);
-                            if(database.insertWithOnConflict("DNSRules", null, values, databaseConflictHandling) != -1)
+                            if(database.insertWithOnConflict("DNSRules", null, values, databaseConflictHandling) != -1){
                                 distinctEntries++;
+                                currentCount++;
+                            }
                             values.put("Target", "::1");
                             values.put("IPv6", true);
                         }else{
                             values.put("Target", rule.target);
                             values.put("IPv6", rule.ipv6);
                         }
-                        if(database.insertWithOnConflict("DNSRules", null, values, databaseConflictHandling) != -1)
+                        if((tmp = database.insertWithOnConflict("DNSRules", null, values, databaseConflictHandling)) != -1){
+                            dbID = (int)tmp;
                             distinctEntries++;
+                            currentCount++;
+                        }
                         values.clear();
                     }
                     publishProgress(i);
                 }
+                values2.put("RowEnd", dbID);
+                values2.put("Filename", file.getFile().getName());
+                if(!isCancelled() && currentCount != 0)database.insert("DNSRuleImports", null, values2);
                 reader.close();
             }
             if (!isCancelled()) database.setTransactionSuccessful();

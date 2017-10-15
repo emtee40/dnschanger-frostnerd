@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,6 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS DNSEntries(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, ShortName TEXT, dns1 TEXT, dns2 TEXT, dns1v6 TEXT, dns2v6 TEXT,description TEXT DEFAULT '', CustomEntry BOOLEAN DEFAULT 0)");
         db.execSQL("CREATE TABLE IF NOT EXISTS DNSRules(Domain TEXT NOT NULL, IPv6 BOOL DEFAULT 0, Target TEXT NOT NULL, Wildcard BOOL DEFAULT 0, PRIMARY KEY(Domain, IPv6))");
         db.execSQL("CREATE TABLE IF NOT EXISTS DNSQueries(Host TEXT NOT NULL, IPv6 BOOL DEFAULT 0, Time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(Host, Time))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS DNSRuleImports(Filename TEXT NOT NULL, Time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, RowStart INTEGER, RowEnd INTEGER, PRIMARY KEY(Filename, Time))");
         for(DNSEntry entry: defaultDNSEntries){
             saveDNSEntry(entry);
         }
@@ -79,6 +81,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
             db.execSQL("CREATE TABLE IF NOT EXISTS DNSRules(Domain TEXT NOT NULL, IPv6 BOOL DEFAULT 0, Target TEXT NOT NULL, Wildcard BOOL DEFAULT 0, PRIMARY KEY(Domain, IPv6))");
             db.execSQL("CREATE TABLE IF NOT EXISTS DNSQueries(Host TEXT NOT NULL, IPv6 BOOL DEFAULT 0, Time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(Host, Time))");
+            db.execSQL("CREATE TABLE IF NOT EXISTS DNSRuleImports(Filename TEXT NOT NULL, Time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, RowStart INTEGER, RowEnd INTEGER, PRIMARY KEY(Filename, Time))");
             currentDB = null;
         }
     }
@@ -178,6 +181,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("dns2v6", dns2V6);
         values.put("Name", name);
         getWritableDatabase().insert("Shortcuts", null, values);
+    }
+
+    public synchronized void createDNSRuleImport(String filename, int rowIDStart, int rowIDEnd){
+        ContentValues values = new ContentValues(3);
+        values.put("Filename", filename);
+        values.put("RowStart", rowIDStart);
+        values.put("RowEnd", rowIDEnd);
+        getWritableDatabase().insert("DNSRuleImports", null, values);
+    }
+
+    public int getHighestRowID(String table){
+        Cursor cursor = getReadableDatabase().rawQuery("SELECT MAX(ROWID) FROM " + table, null);
+        int max = -1;
+        if(cursor.moveToFirst()) max = cursor.getInt(0);
+        cursor.close();
+        return max;
+    }
+
+    public synchronized DNSRuleImport[] getDNSRuleImports(){
+        Cursor cursor = getReadableDatabase().rawQuery("SELECT Filename, Time, ROWID FROM DNSRuleImports", new String[]{});
+        if(cursor.moveToFirst()){
+            DNSRuleImport[] imports = new DNSRuleImport[cursor.getCount()];
+            int i = 0;
+            do{
+                imports[i++] = new DNSRuleImport(cursor.getString(0), Timestamp.valueOf(cursor.getString(1)), cursor.getInt(2));
+            }while(cursor.moveToNext());
+            cursor.close();
+            return imports;
+        }else{
+            cursor.close();
+            return new DNSRuleImport[]{};
+        }
     }
 
     public synchronized Shortcut[] getShortcuts() {
