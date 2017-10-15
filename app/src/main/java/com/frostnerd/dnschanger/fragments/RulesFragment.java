@@ -126,16 +126,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         fabWildcard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                wildcardShown = !wildcardShown;
-                ruleAdapter.setWildcardMode(wildcardShown, true);
-                searchView.setQuery("", false);
-                if (wildcardShown) {
-                    fabWildcard.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_ellipsis), textColor));
-                    wildcardTextView.setText(R.string.normal);
-                } else {
-                    fabWildcard.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_asterisk), textColor));
-                    wildcardTextView.setText(R.string.wildcard);
-                }
+
             }
         });
         fabNew.setOnClickListener(new View.OnClickListener() {
@@ -170,31 +161,67 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         View dialog = getLayoutInflater().inflate(R.layout.dialog_rule_filter, null, false);
         final RadioButton ipv4 = dialog.findViewById(R.id.radio_ipv4), ipv6 = dialog.findViewById(R.id.radio_ipv6),
                 both = dialog.findViewById(R.id.radio_both);
-        final CheckBox showLocal = dialog.findViewById(R.id.show_local);
+        final CheckBox showLocal = dialog.findViewById(R.id.show_local),
+            showNormal = dialog.findViewById(R.id.show_normal), showWildcard = dialog.findViewById(R.id.show_wildcard);
         final EditText targetSearch = dialog.findViewById(R.id.target);
         final MaterialEditText metTarget = dialog.findViewById(R.id.met_target);
-        if (ruleAdapter.hasFilter(RuleAdapter.ArgumentBasedFilter.SHOW_IPV6_ONLY))
+        if(ruleAdapter.hasFilter(RuleAdapter.ArgumentLessFilter.SHOW_IPV6) && ruleAdapter.hasFilter(RuleAdapter.ArgumentLessFilter.SHOW_IPV4))
+            both.setChecked(true);
+        else if (ruleAdapter.hasFilter(RuleAdapter.ArgumentLessFilter.SHOW_IPV6))
             ipv6.setChecked(true);
-        else if (ruleAdapter.hasFilter(RuleAdapter.ArgumentBasedFilter.SHOW_IPV4_ONLY))
+        else if (ruleAdapter.hasFilter(RuleAdapter.ArgumentLessFilter.SHOW_IPV4))
             ipv4.setChecked(true);
-        if (ruleAdapter.hasFilter(RuleAdapter.ArgumentBasedFilter.HIDE_LOCAL) &&
-                ruleAdapter.getFilterValue(RuleAdapter.ArgumentBasedFilter.HIDE_LOCAL).equals("1"))
+        if (ruleAdapter.hasFilter(RuleAdapter.ArgumentLessFilter.HIDE_LOCAL))
             showLocal.setChecked(false);
         if (ruleAdapter.hasFilter(RuleAdapter.ArgumentBasedFilter.TARGET))
             targetSearch.setText(ruleAdapter.getFilterValue(RuleAdapter.ArgumentBasedFilter.TARGET));
+        if (!ruleAdapter.hasFilter(RuleAdapter.ArgumentLessFilter.SHOW_NORMAL))
+            showNormal.setChecked(false);
+        if (!ruleAdapter.hasFilter(RuleAdapter.ArgumentLessFilter.SHOW_WILDCARD))
+            showWildcard.setChecked(false);
+
         new AlertDialog.Builder(getContext()).setTitle(R.string.filter).setCancelable(false).setView(dialog).setNegativeButton(R.string.cancel, null).setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 ruleAdapter.setUpdateDataOnConfigChange(false);
-                if (both.isChecked())
-                    ruleAdapter.removeFilters(RuleAdapter.ArgumentBasedFilter.SHOW_IPV4_ONLY, RuleAdapter.ArgumentBasedFilter.SHOW_IPV6_ONLY);
-                else if (ipv4.isChecked())
-                    ruleAdapter.filter(RuleAdapter.ArgumentBasedFilter.SHOW_IPV4_ONLY, "1");
-                else ruleAdapter.filter(RuleAdapter.ArgumentBasedFilter.SHOW_IPV6_ONLY, "1");
-                ruleAdapter.filter(RuleAdapter.ArgumentBasedFilter.HIDE_LOCAL, showLocal.isChecked() ? "0" : "1");
-                if (metTarget.getIndicatorState() == MaterialEditText.IndicatorState.UNDEFINED)
+                if (both.isChecked()){
+                    ruleAdapter.filter(RuleAdapter.ArgumentLessFilter.SHOW_IPV4);
+                    ruleAdapter.filter(RuleAdapter.ArgumentLessFilter.SHOW_IPV6);
+                }else if (ipv4.isChecked()){
+                    ruleAdapter.filter(RuleAdapter.ArgumentLessFilter.SHOW_IPV4);
+                    ruleAdapter.removeFilters(RuleAdapter.ArgumentLessFilter.SHOW_IPV6);
+                }else{
+                    ruleAdapter.filter(RuleAdapter.ArgumentLessFilter.SHOW_IPV6);
+                    ruleAdapter.removeFilters(RuleAdapter.ArgumentLessFilter.SHOW_IPV4);
+                }
+
+                if(!showLocal.isChecked()){
+                    ruleAdapter.filter(RuleAdapter.ArgumentLessFilter.HIDE_LOCAL);
+                }else{
+                    ruleAdapter.removeFilters(RuleAdapter.ArgumentLessFilter.HIDE_LOCAL);
+                }
+
+                if (metTarget.getIndicatorState() == MaterialEditText.IndicatorState.UNDEFINED && !targetSearch.getText().toString().equals("")){
                     ruleAdapter.filter(RuleAdapter.ArgumentBasedFilter.TARGET, targetSearch.getText().toString());
+                }else{
+                    ruleAdapter.removeFilters(RuleAdapter.ArgumentBasedFilter.TARGET);
+                }
+
+                if(showNormal.isChecked()){
+                    ruleAdapter.filter(RuleAdapter.ArgumentLessFilter.SHOW_NORMAL);
+                }else{
+                    ruleAdapter.removeFilters(RuleAdapter.ArgumentLessFilter.SHOW_NORMAL);
+                }
+
+                if(showWildcard.isChecked()){
+                    wildcardShown = true;
+                    ruleAdapter.filter(RuleAdapter.ArgumentLessFilter.SHOW_WILDCARD);
+                }else{
+                    wildcardShown = false;
+                    ruleAdapter.removeFilters(RuleAdapter.ArgumentLessFilter.SHOW_WILDCARD);
+                }
+
                 ruleAdapter.setUpdateDataOnConfigChange(true);
                 ruleAdapter.reloadData();
             }

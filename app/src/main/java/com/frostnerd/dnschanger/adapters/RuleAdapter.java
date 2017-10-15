@@ -48,9 +48,12 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
         this.databaseHelper = databaseHelper;
         this.context = context;
         inflater = LayoutInflater.from(context);
-        filterValues.put(ArgumentBasedFilter.SHOW_WILDCARD_ONLY, "0");
         this.rowCount = rowCount;
         this.updateProgress = updateProgress;
+        filterValues.put(ArgumentLessFilter.SHOW_NORMAL, "0");
+        filterValues.put(ArgumentLessFilter.SHOW_WILDCARD, "0");
+        filterValues.put(ArgumentLessFilter.SHOW_IPV4, "0");
+        filterValues.put(ArgumentLessFilter.SHOW_IPV6, "0");
         reloadData();
     }
 
@@ -58,38 +61,43 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
         this.update = update;
     }
 
+    public void removeFilters(Filter... filters){
+        for(Filter filter: filters){
+            filterValues.remove(filter);
+        }
+        reloadData();
+    }
+
+    public void removeFilters(ArgumentLessFilter... filters){
+        for(Filter filter: filters){
+            filterValues.remove(filter);
+        }
+        reloadData();
+    }
+
     public void removeFilters(ArgumentBasedFilter... filters){
-        for(ArgumentBasedFilter filter: filters){
+        for(Filter filter: filters){
             filterValues.remove(filter);
         }
         reloadData();
     }
 
     public void filter(ArgumentBasedFilter filter, String argument){
-        if(argument.equals(""))filterValues.remove(filter);
-        else{
-            if(filterValues.containsKey(ArgumentBasedFilter.SHOW_IPV6_ONLY) && filter == ArgumentBasedFilter.SHOW_IPV4_ONLY){
-                filterValues.remove(ArgumentBasedFilter.SHOW_IPV6_ONLY);
-            }else if(filterValues.containsKey(ArgumentBasedFilter.SHOW_IPV4_ONLY) && filter == ArgumentBasedFilter.SHOW_IPV6_ONLY){
-                filterValues.remove(ArgumentBasedFilter.SHOW_IPV4_ONLY);
-            }
-            filterValues.put(filter, argument);
-        }
+        filterValues.put(filter, argument);
         reloadData();
     }
 
-    public boolean hasFilter(ArgumentBasedFilter filter){
+    public void filter(ArgumentLessFilter filter){
+        filterValues.put(filter, "");
+        reloadData();
+    }
+
+    public boolean hasFilter(Filter filter){
         return filterValues.containsKey(filter);
     }
 
     public String getFilterValue(ArgumentBasedFilter filter){
         return filterValues.get(filter);
-    }
-
-    public void setWildcardMode(boolean wildcard, boolean resetSearch){
-        if(resetSearch) removeFilters(ArgumentBasedFilter.HOST_SEARCH);
-        filterValues.remove(ArgumentBasedFilter.HOST_SEARCH);
-        filter(ArgumentBasedFilter.SHOW_WILDCARD_ONLY, wildcard ? "1" : "0");
     }
 
     public void reloadData(){
@@ -112,6 +120,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     }
 
     private void evaluateData(){
+        System.out.println("Filters: " + filterValues.keySet());
         Cursor cursor;
         rows.clear();
         rowRemap.clear();
@@ -171,9 +180,10 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
         if(filterValues.size() == 0)return base;
         String query = base + " WHERE ", newQuery;
         for(Filter filter: filterValues.keySet()){
-            newQuery = filter.appendToQuery(query, filterValues.get(filter));
+            newQuery = filter.appendToQuery(query, filterValues.get(filter), filterValues);
             if(!newQuery.equals(query))query = newQuery + " AND ";
         }
+        System.out.println("QUERY: " + query);
         return query.substring(0, query.length() - 4);
     }
 
@@ -236,42 +246,52 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     }
 
     private interface Filter{
-        public String appendToQuery(String query, String argument);
+        public String appendToQuery(String query, String argument, HashMap<Filter, String> filterValues);
+    }
+
+    public enum ArgumentLessFilter implements Filter{
+        SHOW_IPV6 {
+            @Override
+            public String appendToQuery(String query, String argument, HashMap<Filter, String> filterValues) {
+                if(filterValues.containsKey(SHOW_IPV4))return query;
+                return query + "IPv6=1";
+            }
+        }, HIDE_LOCAL {
+            @Override
+            public String appendToQuery(String query, String argument, HashMap<Filter, String> filterValues) {
+               return query + "Target!='127.0.0.1' AND Target!='::1'";
+            }
+        }, SHOW_WILDCARD {
+            @Override
+            public String appendToQuery(String query, String argument, HashMap<Filter, String> filterValues) {
+                if(filterValues.containsKey(SHOW_NORMAL))return query;
+                return query + "Wildcard=1";
+            }
+        }, SHOW_IPV4 {
+            @Override
+            public String appendToQuery(String query, String argument, HashMap<Filter, String> filterValues) {
+                if(filterValues.containsKey(SHOW_IPV6))return query;
+                return query + "IPV6=0";
+            }
+        }, SHOW_NORMAL{
+            @Override
+            public String appendToQuery(String query, String argument, HashMap<Filter, String> filterValues) {
+                if(filterValues.containsKey(SHOW_WILDCARD))return query;
+                return query + "Wildcard=0";
+            }
+        }
     }
 
     public enum ArgumentBasedFilter implements Filter{
         TARGET {
             @Override
-            public String appendToQuery(String query, String argument) {
+            public String appendToQuery(String query, String argument, HashMap<Filter, String> filterValues) {
                 return query + "Target LIKE '%" + argument + "%'";
-            }
-        }, SHOW_IPV6_ONLY{
-            @Override
-            public String appendToQuery(String query, String argument) {
-                if(argument.equals("0"))return query;
-                return query + "IPv6=1";
-            }
-        }, HIDE_LOCAL {
-            @Override
-            public String appendToQuery(String query, String argument) {
-                if(argument.equals("1"))return query + "Target!='127.0.0.1' AND Target!='::1'";
-                else return query;
-            }
-        }, SHOW_WILDCARD_ONLY {
-            @Override
-            public String appendToQuery(String query, String argument) {
-                return query + "Wildcard=" + argument;
             }
         }, HOST_SEARCH{
             @Override
-            public String appendToQuery(String query, String argument) {
+            public String appendToQuery(String query, String argument, HashMap<Filter, String> filterValues) {
                 return query + "Domain LIKE '%" + argument + "%'";
-            }
-        }, SHOW_IPV4_ONLY{
-            @Override
-            public String appendToQuery(String query, String argument) {
-                if(argument.equals("0"))return query;
-                return query + "IPV6=0";
             }
         }
     }

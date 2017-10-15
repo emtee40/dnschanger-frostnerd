@@ -299,4 +299,6 @@
     <string name="title_export_queries">Export queries</string>
     <string name="summary_export_queries">Exports all queries in a text file to a folder of your choice</string>
     <string name="x_lines">[x] lines</string>
+    <string name="show_normal_entries">Show normal entries</string>
+    <string name="show_wildcard_entries">Show wildcard entries</string>
 </resources>
