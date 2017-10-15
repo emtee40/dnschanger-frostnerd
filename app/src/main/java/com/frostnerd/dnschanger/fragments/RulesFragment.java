@@ -53,11 +53,10 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
     private View content;
     private RecyclerView list;
     private RuleAdapter ruleAdapter;
-    private FloatingActionButton fabOpen, fabWildcard, fabNew, fabFilter;
+    private FloatingActionButton fabOpen, fabSQL, fabNew, fabFilter;
     private boolean fabExpanded = false, wildcardShown = false;
     private View wildcardWrap, newWrap, filterWrap;
     private SearchView searchView;
-    private TextView wildcardTextView;
 
     @Nullable
     @Override
@@ -78,11 +77,10 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         list = content.findViewById(R.id.list);
         newWrap = content.findViewById(R.id.wrap_fab_new);
         filterWrap = content.findViewById(R.id.wrap_fab_filter);
-        wildcardWrap = content.findViewById(R.id.wrap_fab_wildcard);
-        fabWildcard = content.findViewById(R.id.fab_wildcard);
+        wildcardWrap = content.findViewById(R.id.wrap_fab_sql);
+        fabSQL = content.findViewById(R.id.fab_sql);
         fabNew = content.findViewById(R.id.fab_new);
         fabFilter = content.findViewById(R.id.fab_filter);
-        wildcardTextView = content.findViewById(R.id.text2);
 
         ruleAdapter = new RuleAdapter((MainActivity)getContext(), API.getDBHelper(getContext()),
                 (TextView)content.findViewById(R.id.row_count), (ProgressBar)content.findViewById(R.id.progress));
@@ -105,15 +103,15 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         final int textColor = ThemeHandler.getColor(getContext(), android.R.attr.textColor, Color.BLACK);
         fabNew.setBackgroundTintList(stateList);
         fabOpen.setBackgroundTintList(stateList);
-        fabWildcard.setBackgroundTintList(stateList);
+        fabSQL.setBackgroundTintList(stateList);
         fabFilter.setBackgroundTintList(stateList);
         fabOpen.setCompatElevation(4);
-        fabWildcard.setCompatElevation(4);
+        fabSQL.setCompatElevation(4);
         fabNew.setCompatElevation(8);
         fabFilter.setCompatElevation(4);
         fabOpen.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_settings), textColor));
         fabNew.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_add), textColor));
-        fabWildcard.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_asterisk), textColor));
+        fabSQL.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_chart), textColor));
         fabFilter.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_filter), textColor));
 
         fabOpen.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +121,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
                 animateFab();
             }
         });
-        fabWildcard.setOnClickListener(new View.OnClickListener() {
+        fabSQL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -152,7 +150,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
             }
         });
         int inputColor = ThemeHandler.getColor(getContext(), R.attr.inputElementColor, -1);
-        wildcardTextView.setBackgroundColor(inputColor);
+        content.findViewById(R.id.text2).setBackgroundColor(inputColor);
         content.findViewById(R.id.text).setBackgroundColor(inputColor);
         content.findViewById(R.id.text3).setBackgroundColor(inputColor);
     }

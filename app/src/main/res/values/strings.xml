@@ -301,4 +301,5 @@
     <string name="x_lines">[x] lines</string>
     <string name="show_normal_entries">Show normal entries</string>
     <string name="show_wildcard_entries">Show wildcard entries</string>
+    <string name="sql_actions">SQL actions</string>
 </resources>
