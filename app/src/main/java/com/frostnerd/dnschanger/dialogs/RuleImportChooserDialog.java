@@ -218,7 +218,9 @@ public class RuleImportChooserDialog extends AlertDialog {
                     StringBuilder builder = new StringBuilder();
                     for (RuleImportProgressDialog.ImportableFile importableFile : files) {
                         builder.append(importableFile.getFile().getName()).append(" [").
-                                append(importableFile.getFileType() == null ? getContext().getString(R.string.rule_unknown_ignoring) : importableFile.getFileType()).append("]").append("\n");
+                                append(importableFile.getFileType() == null ? getContext().getString(R.string.rule_unknown_ignoring) : importableFile.getFileType()).
+                                append(", ").append(getContext().getString(R.string.x_lines).replace("[x]", "" + importableFile.getLines())).
+                                append("]").append("\n");
                     }
                     fileLabel.setText(builder.toString());
                     if (files.size() == 0) getButton(BUTTON_POSITIVE).setVisibility(View.INVISIBLE);

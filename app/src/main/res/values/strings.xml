@@ -298,4 +298,5 @@
     <string name="summary_query_logging">Log all DNS queries when the app is running</string>
     <string name="title_export_queries">Export queries</string>
     <string name="summary_export_queries">Exports all queries in a text file to a folder of your choice</string>
+    <string name="x_lines">[x] lines</string>
 </resources>
