@@ -94,7 +94,7 @@ public class VPNRunnable implements Runnable {
                             add(new API.IPPortPair(dns2, port ? Preferences.getInteger(service, "port2", 53) : 53, false));
                             add(new API.IPPortPair(dns1v6, port ? Preferences.getInteger(service, "port1v6", 53) : 53, false));
                             add(new API.IPPortPair(dns2v6, port ? Preferences.getInteger(service, "port2v6", 53) : 53, false));
-                        }}, Preferences.getBoolean(service, "rules_activated", false));
+                        }}, Preferences.getBoolean(service, "rules_activated", false), Preferences.getBoolean(service, "query_logging", false));
                         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "DNS proxy created");
                     }else dnsProxy = new DummyProxy();
                     dnsProxy.run();
@@ -201,7 +201,9 @@ public class VPNRunnable implements Runnable {
 
     public static boolean isInAdvancedMode(Context context){
         return Preferences.getBoolean(context, "advanced_settings", false) &&
-                (Preferences.getBoolean(context, "custom_port", false) || Preferences.getBoolean(context, "rules_activated", false));
+                (Preferences.getBoolean(context, "custom_port", false) ||
+                        Preferences.getBoolean(context, "rules_activated", false) ||
+                        Preferences.getBoolean(context, "query_logging", false));
     }
 
     public boolean isThreadRunning(){

@@ -294,4 +294,8 @@
     <string name="disable_failfast_info">Disable fail fast if the type cannot be detected. As this takes longer try specifying the type yourself.</string>
     <string name="loading">Loading</string>
     <string name="wait_importing_rules">Detecting file types, please wait..</string>
+    <string name="title_query_logging">Query logging</string>
+    <string name="summary_query_logging">Log all DNS queries when the app is running</string>
+    <string name="title_export_queries">Export queries</string>
+    <string name="summary_export_queries">Exports all queries in a text file to a folder of your choice</string>
 </resources>

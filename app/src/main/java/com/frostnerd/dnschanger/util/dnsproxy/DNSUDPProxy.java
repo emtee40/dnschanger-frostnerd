@@ -11,6 +11,7 @@ import android.system.StructPollfd;
 
 import com.frostnerd.dnschanger.util.API;
 import com.frostnerd.dnschanger.util.DNSResolver;
+import com.frostnerd.dnschanger.util.QueryLogger;
 
 import org.pcap4j.packet.IpPacket;
 import org.pcap4j.packet.IpSelector;
@@ -60,10 +61,11 @@ public class DNSUDPProxy extends DNSProxy{
     private FileDescriptor interruptedDescriptor = null;
     private FileDescriptor blockingDescriptor = null;
     private ParcelFileDescriptor parcelFileDescriptor;
-    private boolean shouldRun = true, resolveLocalRules;
+    private boolean shouldRun = true, resolveLocalRules, queryLogging;
     private final LinkedList<byte[]> writeToDevice = new LinkedList<>();
     private final static int MAX_WAITING_SOCKETS = 1000, SOCKET_TIMEOUT_MS = 10000, INSERT_CLEANUP_COUNT = 50;
     private DNSResolver resolver;
+    private QueryLogger queryLogger;
     private VpnService vpnService;
     private final HashMap<String, Integer> upstreamServers = new HashMap<>();
     private final LinkedHashMap<DatagramSocket, PacketWrap> futureSocketAnswers = new LinkedHashMap<DatagramSocket, PacketWrap>(){
@@ -99,7 +101,8 @@ public class DNSUDPProxy extends DNSProxy{
     };
 
 
-    public DNSUDPProxy(VpnService context, ParcelFileDescriptor parcelFileDescriptor, Set<API.IPPortPair> upstreamDNSServers, boolean resolveLocalRules){
+    public DNSUDPProxy(VpnService context, ParcelFileDescriptor parcelFileDescriptor,
+                       Set<API.IPPortPair> upstreamDNSServers, boolean resolveLocalRules, boolean queryLogging){
         this.parcelFileDescriptor = parcelFileDescriptor;
         resolver = new DNSResolver(context);
         this.vpnService = context;
@@ -107,6 +110,8 @@ public class DNSUDPProxy extends DNSProxy{
             if(pair.getAddress() != null && !pair.getAddress().equals(""))this.upstreamServers.put(pair.getAddress(), pair.getPort());
         }
         this.resolveLocalRules = resolveLocalRules;
+        this.queryLogging = queryLogging;
+        if(queryLogging)queryLogger = new QueryLogger(API.getDBHelper(context));
     }
 
     @Override
@@ -180,6 +185,7 @@ public class DNSUDPProxy extends DNSProxy{
             DNSMessage dnsMsg = new DNSMessage(payloadData);
             if(dnsMsg.getQuestion() == null)return;
             String query = dnsMsg.getQuestion().name.toString(), target;
+            if(queryLogging)queryLogger.logQuery(query, dnsMsg.getQuestion().type == Record.TYPE.AAAA);
             if(resolveLocalRules && (target = resolver.resolve(query, dnsMsg.getQuestion().type == Record.TYPE.AAAA ,true)) != null){
                 DNSMessage.Builder builder = null;
                 if(dnsMsg.getQuestion().type == Record.TYPE.A){
