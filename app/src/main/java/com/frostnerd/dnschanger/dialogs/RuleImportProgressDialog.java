@@ -222,8 +222,7 @@ public class RuleImportProgressDialog extends AlertDialog {
                         if(target.equals("0.0.0.0"))return new DNSRule(host);
                         else return new DNSRule(host, target, false);
                     }else if((target = DNSMASQ_MATCHER.group(3)) != null && NetworkUtil.isIP(target, true)){
-                        if(target.equals("0.0.0.0"))return new DNSRule(host);
-                        else return new DNSRule(host, target, true);
+                        return new DNSRule(host, target, true);
                     }
                 }
                 return null;
@@ -241,7 +240,7 @@ public class RuleImportProgressDialog extends AlertDialog {
                         target = HOSTS_MATCHER.group(2);
                         ipv6 = NetworkUtil.isIP(target, true);
                     }
-                    if(target.equals("0.0.0.0"))return new DNSRule(host);
+                    if(!ipv6 && target.equals("0.0.0.0"))return new DNSRule(host);
                     else if(NetworkUtil.isIP(target, ipv6))return new DNSRule(host, target, ipv6);
                 }
                 return null;
