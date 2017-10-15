@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.dialogs.NewRuleDialog;
 import com.frostnerd.dnschanger.util.API;
-import com.frostnerd.dnschanger.util.DatabaseHelper;
+import com.frostnerd.dnschanger.database.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;

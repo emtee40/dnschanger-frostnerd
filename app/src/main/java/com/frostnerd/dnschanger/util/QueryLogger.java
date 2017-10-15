@@ -2,6 +2,8 @@ package com.frostnerd.dnschanger.util;
 
 import android.content.ContentValues;
 
+import com.frostnerd.dnschanger.database.DatabaseHelper;
+
 /**
  * Copyright Daniel Wolf 2017
  * All rights reserved.

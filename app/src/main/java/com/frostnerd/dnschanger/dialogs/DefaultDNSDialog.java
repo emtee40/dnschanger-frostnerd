@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.util.API;
-import com.frostnerd.dnschanger.util.DNSEntry;
+import com.frostnerd.dnschanger.database.DNSEntry;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.utils.networking.NetworkUtil;
 

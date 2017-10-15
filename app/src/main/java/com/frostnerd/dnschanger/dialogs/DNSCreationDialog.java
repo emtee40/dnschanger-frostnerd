@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.frostnerd.dnschanger.util.API;
-import com.frostnerd.dnschanger.util.DNSEntry;
+import com.frostnerd.dnschanger.database.DNSEntry;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.utils.design.MaterialEditText;

@@ -3,7 +3,7 @@ package com.frostnerd.dnschanger.util;
 import android.content.Context;
 import android.database.Cursor;
 
-import java.util.LinkedHashMap;
+import com.frostnerd.dnschanger.database.DatabaseHelper;
 
 /**
  * Copyright Daniel Wolf 2017

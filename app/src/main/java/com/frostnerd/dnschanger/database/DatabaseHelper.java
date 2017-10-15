@@ -1,4 +1,4 @@
-package com.frostnerd.dnschanger.util;
+package com.frostnerd.dnschanger.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,11 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
-import com.frostnerd.dnschanger.R;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -70,6 +65,46 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         currentDB = null;
     }
 
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if(oldVersion < 2){
+            currentDB = db;
+            db.execSQL("ALTER TABLE DNSEntries ADD COLUMN ShortName TEXT");
+            for(DNSEntry entry: getDNSEntries()){
+                if(!entry.isCustomEntry()){
+                    DNSEntry def = findDefaultEntryByName(entry.getName());
+                    entry.setShortName(def == null ? entry.getName() : def.getShortName());
+                }else entry.setShortName(entry.getName());
+                editEntry(entry);
+            }
+            db.execSQL("CREATE TABLE IF NOT EXISTS DNSRules(Domain TEXT NOT NULL, IPv6 BOOL DEFAULT 0, Target TEXT NOT NULL, Wildcard BOOL DEFAULT 0, PRIMARY KEY(Domain, IPv6))");
+            db.execSQL("CREATE TABLE IF NOT EXISTS DNSQueries(Host TEXT NOT NULL, IPv6 BOOL DEFAULT 0, Time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(Host, Time))");
+            currentDB = null;
+        }
+    }
+
+    @Override
+    public SQLiteDatabase getWritableDatabase() {
+        if(currentDB != null){
+            return currentDB;
+        }
+        return super.getWritableDatabase();
+    }
+
+    @Override
+    public SQLiteDatabase getReadableDatabase() {
+        if(currentDB != null){
+            return currentDB;
+        }
+        return super.getReadableDatabase();
+    }
+
+    private DNSEntry findDefaultEntryByName(String name){
+        for(DNSEntry entry: defaultDNSEntries)if(entry.getName().equals(name))return entry;
+        for(DNSEntry entry: additionalDefaultEntries.values())if(entry.getName().equals(name))return entry;
+        return null;
+    }
+
     public void createRuleEntry(String host, String target, boolean ipv6, boolean wildcard){
         ContentValues values = new ContentValues(3);
         values.put("Domain", host);
@@ -103,46 +138,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean deleteDNSRule(String host, boolean ipv6){
         return getWritableDatabase().delete("DNSRules", "Domain=? AND IPv6=?", new String[]{host, ipv6 ? "1" : "0"}) > 0;
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if(oldVersion < 2){
-            currentDB = db;
-            db.execSQL("ALTER TABLE DNSEntries ADD COLUMN ShortName TEXT");
-            for(DNSEntry entry: getDNSEntries()){
-                if(!entry.isCustomEntry()){
-                    DNSEntry def = findDefaultEntryByName(entry.getName());
-                    entry.setShortName(def == null ? entry.getName() : def.getShortName());
-                }else entry.setShortName(entry.getName());
-                editEntry(entry);
-            }
-            db.execSQL("CREATE TABLE IF NOT EXISTS DNSRules(Domain TEXT NOT NULL, IPv6 BOOL DEFAULT 0, Target TEXT NOT NULL, Wildcard BOOL DEFAULT 0, PRIMARY KEY(Domain, IPv6))");
-            db.execSQL("CREATE TABLE IF NOT EXISTS DNSQueries(Host TEXT NOT NULL, IPv6 BOOL DEFAULT 0, Time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(Host, Time))");
-            currentDB = null;
-        }
-    }
-
-    private DNSEntry findDefaultEntryByName(String name){
-        for(DNSEntry entry: defaultDNSEntries)if(entry.getName().equals(name))return entry;
-        for(DNSEntry entry: additionalDefaultEntries.values())if(entry.getName().equals(name))return entry;
-        return null;
-    }
-
-    @Override
-    public SQLiteDatabase getWritableDatabase() {
-        if(currentDB != null){
-            return currentDB;
-        }
-        return super.getWritableDatabase();
-    }
-
-    @Override
-    public SQLiteDatabase getReadableDatabase() {
-        if(currentDB != null){
-            return currentDB;
-        }
-        return super.getReadableDatabase();
     }
 
     public synchronized void saveDNSEntry(DNSEntry entry){
