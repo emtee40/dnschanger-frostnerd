@@ -120,7 +120,6 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     }
 
     private void evaluateData(){
-        System.out.println("Filters: " + filterValues.keySet());
         Cursor cursor;
         rows.clear();
         rowRemap.clear();
@@ -183,7 +182,6 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
             newQuery = filter.appendToQuery(query, filterValues.get(filter), filterValues);
             if(!newQuery.equals(query))query = newQuery + " AND ";
         }
-        System.out.println("QUERY: " + query);
         return query.substring(0, query.length() - 4);
     }
 
