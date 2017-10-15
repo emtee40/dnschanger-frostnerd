@@ -60,7 +60,7 @@ public class DNSUDPProxy extends DNSProxy{
     private FileDescriptor interruptedDescriptor = null;
     private FileDescriptor blockingDescriptor = null;
     private ParcelFileDescriptor parcelFileDescriptor;
-    private boolean shouldRun = true;
+    private boolean shouldRun = true, resolveLocalRules;
     private final LinkedList<byte[]> writeToDevice = new LinkedList<>();
     private final static int MAX_WAITING_SOCKETS = 1000, SOCKET_TIMEOUT_MS = 10000, INSERT_CLEANUP_COUNT = 50;
     private DNSResolver resolver;
@@ -99,13 +99,14 @@ public class DNSUDPProxy extends DNSProxy{
     };
 
 
-    public DNSUDPProxy(VpnService context, ParcelFileDescriptor parcelFileDescriptor, Set<API.IPPortPair> upstreamDNSServers){
+    public DNSUDPProxy(VpnService context, ParcelFileDescriptor parcelFileDescriptor, Set<API.IPPortPair> upstreamDNSServers, boolean resolveLocalRules){
         this.parcelFileDescriptor = parcelFileDescriptor;
         resolver = new DNSResolver(context);
         this.vpnService = context;
         for(API.IPPortPair pair: upstreamDNSServers){
             if(pair.getAddress() != null && !pair.getAddress().equals(""))this.upstreamServers.put(pair.getAddress(), pair.getPort());
         }
+        this.resolveLocalRules = resolveLocalRules;
     }
 
     @Override
@@ -178,9 +179,8 @@ public class DNSUDPProxy extends DNSProxy{
             byte[] payloadData = udpPacket.getPayload().getRawData();
             DNSMessage dnsMsg = new DNSMessage(payloadData);
             if(dnsMsg.getQuestion() == null)return;
-            String query = dnsMsg.getQuestion().name.toString();
-            String target = resolver.resolve(query, dnsMsg.getQuestion().type == Record.TYPE.AAAA ,true);
-            if(target != null){
+            String query = dnsMsg.getQuestion().name.toString(), target;
+            if(resolveLocalRules && (target = resolver.resolve(query, dnsMsg.getQuestion().type == Record.TYPE.AAAA ,true)) != null){
                 DNSMessage.Builder builder = null;
                 if(dnsMsg.getQuestion().type == Record.TYPE.A){
                     builder = dnsMsg.asBuilder().setQrFlag(true).addAnswer(
