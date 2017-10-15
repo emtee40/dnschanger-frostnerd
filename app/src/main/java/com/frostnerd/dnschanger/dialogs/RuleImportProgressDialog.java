@@ -26,6 +26,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -178,7 +179,7 @@ public class RuleImportProgressDialog extends AlertDialog {
 
     public static FileType tryFindFileType(File f, boolean failFast){
         try{
-            HashMap<FileType, Integer> validLines = new HashMap<>();
+            HashMap<FileType, Integer> validLines = new LinkedHashMap<>();
             for(FileType type: FileType.values())validLines.put(type, 0);
             BufferedReader reader = new BufferedReader(new FileReader(f));
             String line;
@@ -242,20 +243,20 @@ public class RuleImportProgressDialog extends AlertDialog {
                 }
                 return null;
             }
-        }, DOMAIN_LIST {
-            @Override
-            public DNSRule parseLine(String line) {
-                if(DOMAINS_MATCHER.reset(line).find()){
-                    String host = DOMAINS_MATCHER.group(1);
-                    return new DNSRule(host);
-                }
-                return null;
-            }
         }, ADBLOCK_FILE{
             @Override
             public DNSRule parseLine(String line) {
                 if(ADBLOCK_MATCHER.reset(line).find()){
                     String host = ADBLOCK_MATCHER.group(1);
+                    return new DNSRule(host);
+                }
+                return null;
+            }
+        }, DOMAIN_LIST {
+            @Override
+            public DNSRule parseLine(String line) {
+                if(DOMAINS_MATCHER.reset(line).find()){
+                    String host = DOMAINS_MATCHER.group(1);
                     return new DNSRule(host);
                 }
                 return null;
