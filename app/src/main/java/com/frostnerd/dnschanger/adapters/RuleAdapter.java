@@ -30,7 +30,8 @@ import java.util.List;
  * development@frostnerd.com
  */
 public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
-    private static final int ROW_REMAP_FETCH_COUNT = 80, MAX_ROW_ID_CACHE_COUNT = 10000;
+    private static final int ROW_REMAP_FETCH_COUNT = 80, MAX_ROW_ID_CACHE_COUNT = 10000,
+            ROW_REMAP_FETCH_COUNT_WHEN_SEARCHING = ROW_REMAP_FETCH_COUNT*3;
     private DatabaseHelper databaseHelper;
     private LayoutInflater inflater;
     private int count;
@@ -145,7 +146,9 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
 
     private void loadRowRemap(int position){
         if(rowRemap.size() == 0 || position+1 >= rowRemap.size()){
-            int fetchCount = position > rowRemapPos ? position+1 : ROW_REMAP_FETCH_COUNT;
+            int fetchCount = position > rowRemapPos ? position+1 :
+                    (filterValues.containsKey(ArgumentBasedFilter.HOST_SEARCH) ?
+                            ROW_REMAP_FETCH_COUNT_WHEN_SEARCHING : ROW_REMAP_FETCH_COUNT);
             Cursor cursor = databaseHelper.getReadableDatabase().
                     rawQuery(constructQuery("SELECT ROWID FROM DNSRules") + " LIMIT " + rowRemapPos + "," + fetchCount, null);
             if(cursor.moveToFirst()){
