@@ -228,6 +228,23 @@ public final class API {
         };
     }
 
+    public static List<IPPortPair> getAllDNSPairs(final Context context){
+        return new ArrayList<IPPortPair>(){{
+            addIfNotEmpty(getDNS1(context), 1);
+            addIfNotEmpty(getDNS1V6(context), 2);
+            addIfNotEmpty(getDNS2(context), 3);
+            addIfNotEmpty(getDNS2V6(context), 4);
+        }
+            private void addIfNotEmpty(String s, int id) {
+                if (s != null && !s.equals("")) {
+                    System.out.println("Key for " + id + " port" + (id >= 3 ? "2" : "1") + (id % 2 == 0 ? "v6" : ""));
+                    int port = Preferences.getInteger(context, "port" + (id >= 3 ? "2" : "1") + (id % 2 == 0 ? "v6" : ""), 53);
+                    add(new IPPortPair(s, port, id % 2 == 0));
+                }
+            }
+        };
+    }
+
     public static int getPortForDNS(Context context, String server){
         if(!Preferences.getBoolean(context, "custom_port", false))return 53;
         List<String> dns = getAllDNS(context);
