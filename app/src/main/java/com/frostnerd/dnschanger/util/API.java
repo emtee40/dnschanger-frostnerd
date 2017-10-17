@@ -229,7 +229,9 @@ public final class API {
     }
 
     public static List<IPPortPair> getAllDNSPairs(final Context context){
-        return new ArrayList<IPPortPair>(){{
+        return new ArrayList<IPPortPair>(){
+            private boolean customPorts = Preferences.getBoolean(context, "custom_port", false);
+            {
             addIfNotEmpty(getDNS1(context), 1);
             addIfNotEmpty(getDNS1V6(context), 2);
             addIfNotEmpty(getDNS2(context), 3);
@@ -237,8 +239,9 @@ public final class API {
         }
             private void addIfNotEmpty(String s, int id) {
                 if (s != null && !s.equals("")) {
-                    System.out.println("Key for " + id + " port" + (id >= 3 ? "2" : "1") + (id % 2 == 0 ? "v6" : ""));
-                    int port = Preferences.getInteger(context, "port" + (id >= 3 ? "2" : "1") + (id % 2 == 0 ? "v6" : ""), 53);
+                    int port = customPorts ?
+                            Preferences.getInteger(context, "port" + (id >= 3 ? "2" : "1") + (id % 2 == 0 ? "v6" : ""), 53)
+                            : 53;
                     add(new IPPortPair(s, port, id % 2 == 0));
                 }
             }
