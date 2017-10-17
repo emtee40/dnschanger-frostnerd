@@ -265,7 +265,7 @@ public class MainFragment extends Fragment {
                     s2 = Preferences.getString(getContext(), "dns2", "8.8.4.4");
             if(customPorts){
                 s1 += ":" + Preferences.getInteger(getContext(), "port1", 53);
-                s2 += ":" + Preferences.getInteger(getContext(), "port2", 53);
+                if(!s2.equals(""))s2 += ":" + Preferences.getInteger(getContext(), "port2", 53);
             }
             dns1.setText(s1);
             dns2.setText(s2);
@@ -277,7 +277,7 @@ public class MainFragment extends Fragment {
             String s1 = Preferences.getString(getContext(), "dns1-v6", "2001:4860:4860::8888"), s2 = Preferences.getString(getContext(), "dns2-v6", "2001:4860:4860::8844");
             if(customPorts){
                 s1 = "[" + s1 + "]:" + Preferences.getInteger(getContext(), "port2v6", 53);
-                s2 = "[" + s2 + "]:" + Preferences.getInteger(getContext(), "port2v6", 53);
+                if(!s2.equals(""))s2 = "[" + s2 + "]:" + Preferences.getInteger(getContext(), "port2v6", 53);
             }
             dns1.setText(s1);
             dns2.setText(s2);
