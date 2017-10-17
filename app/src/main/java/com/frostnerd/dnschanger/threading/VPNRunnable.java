@@ -154,13 +154,13 @@ public class VPNRunnable implements Runnable {
         builder.setSession("DnsChanger");
         if(ipv4Enabled){
             builder = builder.addAddress(address, addresses.get(address));
-            addDNSServer(dns1, advanced);
-            addDNSServer(dns2, advanced);
+            addDNSServer(dns1, advanced, false);
+            addDNSServer(dns2, advanced, false);
         }
         if(ipv6Enabled){
             builder = builder.addAddress(NetworkUtil.randomLocalIPv6Address(),48);
-            addDNSServer(dns1v6, advanced);
-            addDNSServer(dns2v6, advanced);
+            addDNSServer(dns1v6, advanced, true);
+            addDNSServer(dns2v6, advanced, true);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try{
@@ -187,10 +187,10 @@ public class VPNRunnable implements Runnable {
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface created, not yet connected");
     }
 
-    private void addDNSServer(String server, boolean addRoute){
+    private void addDNSServer(String server, boolean addRoute, boolean ipv6){
         if(server != null && !server.equals("")){
             builder.addDnsServer(server);
-            if(addRoute)builder.addRoute(server, 32);
+            if(addRoute)builder.addRoute(server, ipv6 ? 128 : 32);
         }
     }
 
