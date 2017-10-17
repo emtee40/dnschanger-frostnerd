@@ -228,15 +228,19 @@ public final class API {
         };
     }
 
-    public static List<IPPortPair> getAllDNSPairs(final Context context){
+    public static List<IPPortPair> getAllDNSPairs(final Context context, final boolean enabledOnly){
         return new ArrayList<IPPortPair>(){
             private boolean customPorts = Preferences.getBoolean(context, "custom_port", false);
             {
-            addIfNotEmpty(getDNS1(context), 1);
-            addIfNotEmpty(getDNS1V6(context), 2);
-            addIfNotEmpty(getDNS2(context), 3);
-            addIfNotEmpty(getDNS2V6(context), 4);
-        }
+                if(!enabledOnly || isIPv4Enabled(context)){
+                    addIfNotEmpty(getDNS1(context), 1);
+                    addIfNotEmpty(getDNS2(context), 3);
+                }
+                if(!enabledOnly || isIPv6Enabled(context)){
+                    addIfNotEmpty(getDNS1V6(context), 2);
+                    addIfNotEmpty(getDNS2V6(context), 4);
+                }
+            }
             private void addIfNotEmpty(String s, int id) {
                 if (s != null && !s.equals("")) {
                     int port = customPorts ?

@@ -88,7 +88,7 @@ public class VPNRunnable implements Runnable {
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "VPN Thread going into while loop");
                     if(isInAdvancedMode(service) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){
                         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "We are in advanced mode, starting DNS proxy");
-                        dnsProxy = new DNSUDPProxy(service, tunnelInterface, new HashSet<>(API.getAllDNSPairs(service))
+                        dnsProxy = new DNSUDPProxy(service, tunnelInterface, new HashSet<>(API.getAllDNSPairs(service, true))
                                 ,Preferences.getBoolean(service, "rules_activated", false), Preferences.getBoolean(service, "query_logging", false));
                         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "DNS proxy created");
                     }else dnsProxy = new DummyProxy();
