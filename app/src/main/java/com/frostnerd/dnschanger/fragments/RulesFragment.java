@@ -138,7 +138,10 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
                         if (targetV6 != null && !targetV6.equals("")) {
                             API.getDBHelper(getContext()).createRuleEntry(host, targetV6, true, wildcard);
                         }
-                        if(wildcard == wildcardShown)ruleAdapter.reloadData();
+                        if(wildcard == wildcardShown){
+                            list.scrollTo(0, 0);
+                            ruleAdapter.reloadData();
+                        }
                     }
                 }).show();
             }
@@ -221,6 +224,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
                 }
 
                 ruleAdapter.setUpdateDataOnConfigChange(true);
+                list.scrollTo(0, 0);
                 ruleAdapter.reloadData();
             }
         }).show();
