@@ -49,11 +49,12 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
     Preference.OnPreferenceChangeListener preferenceChangeListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object o) {
+            setResult(RESULT_FIRST_USER);
             if (preference.getKey().equals("advanced_settings")) {
-                if(!dialogShown && ((Boolean)o)){
+                if(!dialogShown && ((Boolean)o)) {
                     showWarrantyDialog();
                     return false;
-                }else setResult(RESULT_FIRST_USER);
+                }
             }
             return true;
         }
