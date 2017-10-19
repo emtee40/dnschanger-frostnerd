@@ -153,7 +153,7 @@ public class MainActivity extends NavigationDrawerActivity {
         View cardView = getLayoutInflater().inflate(R.layout.main_cardview, null, false);
         final TextView text = cardView.findViewById(R.id.text);
         final Switch button = cardView.findViewById(R.id.cardview_switch);
-        if(Preferences.getBoolean(this, "everything_disabled", false)){
+        if(PreferencesAccessor.isEverythingDisabled(this)){
             button.setChecked(true);
             text.setText(R.string.cardview_text_disabled);
         }
@@ -607,7 +607,7 @@ public class MainActivity extends NavigationDrawerActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(!startedActivity && (Preferences.getBoolean(this, "pin_app", false) && Preferences.getBoolean(this, "setting_pin_enabled", false)))finish();
+        if(!startedActivity && (PreferencesAccessor.isPinProtected(this, PreferencesAccessor.PinProtectable.APP)))finish();
     }
 
     @Override

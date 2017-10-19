@@ -37,7 +37,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
-import com.frostnerd.dnschanger.threading.VPNRunnable;
 import com.frostnerd.dnschanger.util.DNSQueryUtil;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
@@ -194,8 +193,8 @@ public class MainFragment extends Fragment {
                     }else{
                         if(pair.getPort() == -1)pair.setPort(53);
                         met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
-                        Preferences.put(getContext(), settingV6 ? "dns1-v6" :"dns1", pair.getAddress());
-                        Preferences.put(getContext(), settingV6 ? "port1v6" : "port1", pair.getPort());
+                        if(settingV6) PreferencesAccessor.Type.DNS1_V6.saveDNSPair(pair);
+                        else PreferencesAccessor.Type.DNS1.saveDNSPair(pair);
                         setEditTextLabel();
                     }
                 }
@@ -222,8 +221,8 @@ public class MainFragment extends Fragment {
                     }else{
                         if(pair.getPort() == -1)pair.setPort(53);
                         met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
-                        Preferences.put(getContext(), settingV6 ? "dns2-v6" :"dns2", pair.getAddress());
-                        Preferences.put(getContext(), settingV6 ? "port2v6" : "port2", pair.getPort());
+                        if(settingV6) PreferencesAccessor.Type.DNS2_V6.saveDNSPair(pair);
+                        else PreferencesAccessor.Type.DNS2.saveDNSPair(pair);
                         setEditTextLabel();
                     }
                 }
@@ -243,18 +242,25 @@ public class MainFragment extends Fragment {
 
     private void setEditTextLabel(){
         String label1 = "DNS 1", label2 = "DNS 2";
-        String dns1 = Preferences.getString(getContext(), settingV6 ? "dns1-v6" : "dns1", settingV6 ? "2001:4860:4860::8888" : "8.8.8.8");
-        String dns2 = Preferences.getString(getContext(), settingV6 ? "dns2-v6" : "dns2", settingV6 ? "2001:4860:4860::8844" : "8.8.4.4");
-        for(DNSEntry entry: Util.getDBHelper(getContext()).getDNSEntries()){
-            if(entry.hasIP(dns1))label1 = "DNS 1 (" + entry.getShortName() + ")";
-            if(entry.hasIP(dns2))label2 = "DNS 2 (" + entry.getShortName() + ")";
+        if(settingV6){
+            DNSEntry entry;
+            if((entry = PreferencesAccessor.Type.DNS1_V6.findMatchingDatabaseEntry(getContext())) != null)
+                label1 += " (" + entry.getShortName() + ")";
+            if((entry = PreferencesAccessor.Type.DNS2_V6.findMatchingDatabaseEntry(getContext())) != null)
+                label2 += " (" + entry.getShortName() + ")";
+        }else{
+            DNSEntry entry;
+            if((entry = PreferencesAccessor.Type.DNS1.findMatchingDatabaseEntry(getContext())) != null)
+                label1 += " (" + entry.getShortName() + ")";
+            if((entry = PreferencesAccessor.Type.DNS2.findMatchingDatabaseEntry(getContext())) != null)
+                label2 += " (" + entry.getShortName() + ")";
         }
         met_dns1.setLabelText(label1);
         met_dns2.setLabelText(label2);
     }
 
     private void setEditTextState(){
-        boolean customPorts = Preferences.getBoolean(getContext(), "advanced_settings", false) && Preferences.getBoolean(getContext(), "custom_port", false);
+        boolean customPorts = PreferencesAccessor.areCustomPortsEnabled(getContext());
         if(settingV6 || customPorts){
             dns1.setInputType(InputType.TYPE_CLASS_TEXT);
             dns2.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -264,26 +270,19 @@ public class MainFragment extends Fragment {
                     Pattern.compile("[0-9.:]") : Pattern.compile("[0-9.]"));
             dns1.setFilters(new InputFilter[]{filter});
             dns2.setFilters(new InputFilter[]{filter});
-            String s1 = Preferences.getString(getContext(), "dns1", "8.8.8.8"),
-                    s2 = Preferences.getString(getContext(), "dns2", "8.8.4.4");
-            if(customPorts){
-                s1 += ":" + Preferences.getInteger(getContext(), "port1", 53);
-                if(!s2.equals(""))s2 += ":" + Preferences.getInteger(getContext(), "port2", 53);
-            }
-            dns1.setText(s1);
-            dns2.setText(s2);
+            IPPortPair p1 = PreferencesAccessor.Type.DNS1.getPair(getContext()),
+                    p2 = PreferencesAccessor.Type.DNS2.getPair(getContext());
+            dns1.setText(p1.formatForTextfield(customPorts));
+            dns2.setText(p2.formatForTextfield(customPorts));
         }else{
             InputFilter filter = new InputCharacterFilter(advancedMode ?
                     Pattern.compile("[0-9:a-f\\[\\]]") : Pattern.compile("[0-9:a-f]"));
             dns1.setFilters(new InputFilter[]{filter});
             dns2.setFilters(new InputFilter[]{filter});
-            String s1 = Preferences.getString(getContext(), "dns1-v6", "2001:4860:4860::8888"), s2 = Preferences.getString(getContext(), "dns2-v6", "2001:4860:4860::8844");
-            if(customPorts){
-                s1 = "[" + s1 + "]:" + Preferences.getInteger(getContext(), "port2v6", 53);
-                if(!s2.equals(""))s2 = "[" + s2 + "]:" + Preferences.getInteger(getContext(), "port2v6", 53);
-            }
-            dns1.setText(s1);
-            dns2.setText(s2);
+            IPPortPair p1 = PreferencesAccessor.Type.DNS1_V6.getPair(getContext()),
+                    p2 = PreferencesAccessor.Type.DNS2_V6.getPair(getContext());
+            dns1.setText(p1.formatForTextfield(customPorts));
+            dns2.setText(p2.formatForTextfield(customPorts));
         }
     }
 
@@ -294,13 +293,13 @@ public class MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        advancedMode = PreferencesAccessor.isAdvancedModeEnabled(getContext());
+        advancedMode = PreferencesAccessor.isRunningInAdvancedMode(getContext());
         Preferences.getDefaultPreferences(getContext()).registerOnSharedPreferenceChangeListener(preferenceChangeListener);
         settingV6 = !PreferencesAccessor.isIPv4Enabled(getContext()) || (PreferencesAccessor.isIPv6Enabled(getContext()) && settingV6);
         LogFactory.writeMessage(getContext(), LOG_TAG, "Got OnResume");
         LogFactory.writeMessage(getContext(), LOG_TAG, "Sending ServiceStateRequest as broadcast");
         vpnRunning = Util.isServiceRunning(getContext());
-        if(Preferences.getBoolean(getContext(), "everything_disabled", false)){
+        if(PreferencesAccessor.isEverythingDisabled(getContext())){
             startStopButton.setEnabled(false);
             startStopButton.setClickable(false);
             startStopButton.setAlpha(0.50f);
@@ -373,7 +372,7 @@ public class MainFragment extends Fragment {
     }
 
     private void startVpn() {
-        if(Preferences.getBoolean(getContext(), "check_connectivity", false)){
+        if(PreferencesAccessor.checkConnectivityOnStart(getContext())){
             final LoadingDialog dialog = new LoadingDialog(getContext(), R.string.checking_connectivity, R.string.dialog_connectivity_description);
             dialog.show();
             checkDNSReachability(new DNSReachabilityCallback() {

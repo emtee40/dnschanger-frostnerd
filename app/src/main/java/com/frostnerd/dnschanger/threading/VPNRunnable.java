@@ -1,6 +1,5 @@
 package com.frostnerd.dnschanger.threading;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.VpnService;
@@ -18,7 +17,6 @@ import com.frostnerd.dnschanger.util.dnsproxy.DNSUDPProxy;
 import com.frostnerd.dnschanger.util.dnsproxy.DummyProxy;
 import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.networking.NetworkUtil;
-import com.frostnerd.utils.preferences.Preferences;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -78,7 +76,7 @@ public class VPNRunnable implements Runnable {
                 addressIndex++;
                 try{
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying address '" + address + "'");
-                    configure(address, PreferencesAccessor.isAdvancedModeEnabled(service));
+                    configure(address, PreferencesAccessor.isRunningInAdvancedMode(service));
                     tunnelInterface = builder.establish();
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface connected.");
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Broadcasting current state");
@@ -87,10 +85,10 @@ public class VPNRunnable implements Runnable {
                     service.updateNotification();
                     Util.updateAppShortcuts(service);
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "VPN Thread going into while loop");
-                    if(PreferencesAccessor.isAdvancedModeEnabled(service) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){
+                    if(PreferencesAccessor.isRunningInAdvancedMode(service) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){
                         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "We are in advanced mode, starting DNS proxy");
                         dnsProxy = new DNSUDPProxy(service, tunnelInterface, new HashSet<>(PreferencesAccessor.getAllDNSPairs(service, true))
-                                ,Preferences.getBoolean(service, "rules_activated", false), Preferences.getBoolean(service, "query_logging", false));
+                                ,PreferencesAccessor.areRulesEnabled(service), PreferencesAccessor.isQueryLoggingEnabled(service));
                         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "DNS proxy created");
                     }else dnsProxy = new DummyProxy();
                     dnsProxy.run();

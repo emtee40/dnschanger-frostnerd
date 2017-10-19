@@ -17,6 +17,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.widget.TextView;
 
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
@@ -85,7 +86,7 @@ public class ErrorDialogActivity extends Activity {
                     emailIntent.putExtra(Intent.EXTRA_EMAIL, "support@frostnerd.com");
                     emailIntent.putExtra(Intent.EXTRA_TEXT, body);
                     LogFactory.writeMessage(ErrorDialogActivity.this, LOG_TAG,"User choose to send Email to dev", emailIntent);
-                    if(Preferences.getBoolean(ErrorDialogActivity.this, "debug",false)){
+                    if(PreferencesAccessor.isDebugEnabled(ErrorDialogActivity.this)){
                         File zip = LogFactory.zipLogFiles(ErrorDialogActivity.this);
                         if(zip != null){
                             Uri zipURI = FileProvider.getUriForFile(ErrorDialogActivity.this,"com.frostnerd.dnschanger",zip);

@@ -6,13 +6,13 @@ import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.service.quicksettings.Tile;
 
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.services.DNSVpnService;
-import com.frostnerd.utils.preferences.Preferences;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -70,7 +70,7 @@ public class TileStartStop extends android.service.quicksettings.TileService {
     public void onClick() {
         super.onClick();
         LogFactory.writeMessage(this, LOG_TAG, "Tile clicked");
-        boolean pinProtected = Preferences.getBoolean(this, "pin_tile", false),
+        boolean pinProtected = PreferencesAccessor.isPinProtected(this, PreferencesAccessor.PinProtectable.TILE),
         running = Util.isServiceRunning(this);
         Intent i;
         if (pinProtected) {

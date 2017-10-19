@@ -1,7 +1,6 @@
 package com.frostnerd.dnschanger.util;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -33,11 +32,9 @@ import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.services.jobs.ConnectivityJobAPI21;
 import com.frostnerd.dnschanger.tiles.TilePauseResume;
 import com.frostnerd.dnschanger.tiles.TileStartStop;
-import com.frostnerd.utils.general.IntentUtil;
 import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.networking.NetworkUtil;
-import com.frostnerd.utils.preferences.Preferences;
 
 import org.xbill.DNS.Message;
 
@@ -105,11 +102,11 @@ public final class Util {
     public static void updateAppShortcuts(Context context) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N_MR1) {
             ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
-            if (!Preferences.getBoolean(context, "setting_app_shortcuts_enabled", false)) {
+            if (!PreferencesAccessor.areAppShortcutsEnabled(context)) {
                 shortcutManager.removeAllDynamicShortcuts();
                 return;
             }
-            boolean pinProtected = Preferences.getBoolean(context, "pin_app_shortcut", false);
+            boolean pinProtected = PreferencesAccessor.isPinProtected(context, PreferencesAccessor.PinProtectable.APP_SHORTCUT);
             List<ShortcutInfo> shortcutInfos = new ArrayList<>();
             if (isServiceThreadRunning()) {
                 Bundle extras1 = new Bundle();
@@ -206,9 +203,9 @@ public final class Util {
     }
 
     public static void startService(Context context, Intent intent){
-        if(Preferences.getBoolean(context, "everything_disabled", false))return;
+        if(PreferencesAccessor.isEverythingDisabled(context))return;
         if(intent.getComponent().getClassName().equals(DNSVpnService.class.getName()) &&
-                Preferences.getBoolean(context, "setting_show_notification", true) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                PreferencesAccessor.isNotificationEnabled(context) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             context.startForegroundService(intent);
         }else context.startService(intent);
     }
@@ -216,7 +213,7 @@ public final class Util {
     public static String createNotificationChannel(Context context, boolean allowHiding){
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-            if(allowHiding && Preferences.getBoolean(context, "hide_notification_icon", false)){
+            if(allowHiding && PreferencesAccessor.shouldHideNotificationIcon(context)){
                 NotificationChannel channel = new NotificationChannel("noIconChannel", context.getString(R.string.notification_channel_hiddenicon), NotificationManager.IMPORTANCE_MIN);
                 channel.enableLights(false);
                 channel.enableVibration(false);

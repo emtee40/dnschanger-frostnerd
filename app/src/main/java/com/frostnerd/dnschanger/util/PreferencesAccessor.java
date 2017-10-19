@@ -78,6 +78,19 @@ public class PreferencesAccessor {
                 Preferences.getBoolean(context, "query_logging", false);
     }
 
+    public static boolean isPinProtectionEnabled(Context context){
+        return Preferences.getBoolean(context, "setting_pin_enabled", false);
+    }
+
+    public static String getPinCode(Context context){
+        return Preferences.getString(context, "pin_value", "1234");
+    }
+
+    public static boolean canUseFingerprintForPin(Context context){
+        return Preferences.getBoolean(context, "pin_fingerprint", false);
+    }
+
+
     public static String getDNS1(Context context) {
         return isIPv4Enabled(context) ? Preferences.getString(context, "dns1", "8.8.8.8") : "";
     }

@@ -112,49 +112,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             findPreference("warn_automation_tasker").setSummary(R.string.summary_automation_warn);
         else
             ((PreferenceCategory) findPreference("automation")).removePreference(findPreference("warn_automation_tasker"));
-        /*findPreference("auto_pause").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                LogFactory.writeMessage(getContext(), LOG_TAG, "Preference " + preference.getKey() + " was changed to " +
-                        newValue + ", Type: " + Preferences.getType(newValue));
-                if(!((Boolean) newValue))return true;
-                if(!PermissionsUtil.hasUsageStatsPermission(getContext())){
-                    LogFactory.writeMessage(getContext(), LOG_TAG, "Access to usage stats is not yet granted. Showing dialog explaining why it's needed");
-                    new AlertDialog.Builder(getContext(),ThemeHandler.getDialogTheme(getContext())).setTitle(R.string.information).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent i;
-                            LogFactory.writeMessage(getContext(), LOG_TAG, "User clicked OK in Usage stats access dialog, opening Usage Stats settings",
-                                    i = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
-                            startActivityForResult(i, USAGE_STATS_REQUEST);
-                            dialog.cancel();
-                        }
-                    }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            LogFactory.writeMessage(getContext(), LOG_TAG, "User cancelled the request for access to usage stats dialog");
-                            dialog.cancel();
-                        }
-                    }).setMessage(R.string.usage_stats_info_text).setCancelable(false).show();
-                    LogFactory.writeMessage(getContext(), LOG_TAG, "Dialog is now being shown");
-                    return false;
-                }else return true;
-            }
-        });
-        findPreference("autopause_appselect").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                LogFactory.writeMessage(getContext(), LOG_TAG, preference.getKey() + " clicked");
-                Set<String> apps = Preferences.getStringSet(getContext(), "autopause_apps");
-                startActivityForResult(new Intent(getContext(), AppSelectionActivity.class).putExtra("apps", Collections.list(Collections.enumeration(apps))).
-                        putExtra("infoText", getString(R.string.autopause_appselect_info_text)),CHOOSE_AUTOPAUSEAPPS_REQUEST);
-                return true;
-            }
-        });*/
         automatingCategory = (PreferenceCategory) getPreferenceScreen().findPreference("automation");
-        /*
-        findPreference("autopause_appselect").setTitle(getString(R.string.title_autopause_apps).
-                replace("[[count]]", Preferences.getStringSet(getContext(), "autopause_apps").size()+""));
         /*findPreference("export_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -225,7 +183,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         });
         sendDebugPreference = findPreference("send_debug");
         debugCategory = (PreferenceCategory) findPreference("debug_category");
-        if (!Preferences.getBoolean(getContext(), "debug", false))
+        if (!PreferencesAccessor.isDebugEnabled(getContext()))
             debugCategory.removePreference(sendDebugPreference);
         findPreference("debug").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override

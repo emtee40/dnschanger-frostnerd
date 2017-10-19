@@ -11,6 +11,7 @@ import android.net.NetworkRequest;
 import android.net.VpnService;
 import android.os.Build;
 
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
@@ -129,7 +130,7 @@ public class NetworkCheckHandle {
     }
 
     private void handleConnectivityChange(boolean connected, ConnectionType connectionType){
-        if(Preferences.getBoolean(context, "everything_disabled", false) || !running)return;
+        if(PreferencesAccessor.isEverythingDisabled(context) || !running)return;
         boolean serviceRunning = Util.isServiceRunning(context),
                 serviceThreadRunning = Util.isServiceThreadRunning(),
                 autoWifi = Preferences.getBoolean(context, "setting_auto_wifi", false),

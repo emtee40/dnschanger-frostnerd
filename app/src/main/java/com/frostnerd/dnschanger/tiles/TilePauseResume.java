@@ -6,13 +6,13 @@ import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.service.quicksettings.Tile;
 
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.services.DNSVpnService;
-import com.frostnerd.utils.preferences.Preferences;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -79,7 +79,7 @@ public class TilePauseResume extends android.service.quicksettings.TileService {
             LogFactory.writeMessage(this, LOG_TAG, "Service not running. Returning");
             return;
         }
-        boolean pinProtected = Preferences.getBoolean(this, "pin_tile", false),
+        boolean pinProtected = PreferencesAccessor.isPinProtected(this, PreferencesAccessor.PinProtectable.TILE),
                 running = Util.isServiceThreadRunning();
         Intent i;
         if(pinProtected){
