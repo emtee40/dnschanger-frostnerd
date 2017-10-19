@@ -18,6 +18,9 @@ import android.service.quicksettings.TileService;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Base64;
+import android.util.Base64InputStream;
+import android.util.Base64OutputStream;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
@@ -38,6 +41,12 @@ import com.frostnerd.utils.networking.NetworkUtil;
 
 import org.xbill.DNS.Message;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -174,7 +183,7 @@ public final class Util {
         shortcutIntent.setAction("com.frostnerd.dnschanger.RUN_VPN_FROM_SHORTCUT");
         shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        shortcutIntent.putExtra("servers", servers);
+        shortcutIntent.putExtra("servers", serializableToString(servers));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             ShortcutManager shortcutManager = (ShortcutManager) context.getSystemService(Activity.SHORTCUT_SERVICE);
             if (shortcutManager.isRequestPinShortcutSupported()) {
@@ -254,6 +263,34 @@ public final class Util {
                 return (FragmentActivity)fragment.getContext();
             }else return MainActivity.currentContext;
         }else return fragment.getActivity();
+    }
+
+    public static String serializableToString(Serializable serializable){
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(
+                    new Base64OutputStream(baos, Base64.NO_PADDING
+                            | Base64.NO_WRAP));
+            oos.writeObject(serializable);
+            oos.close();
+            return baos.toString("UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static <T extends Serializable> T serializableFromString(String s){
+        try {
+            return (T) new ObjectInputStream(new Base64InputStream(
+                    new ByteArrayInputStream(s.getBytes()), Base64.NO_PADDING
+                    | Base64.NO_WRAP)).readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public interface ConnectivityCheckCallback{

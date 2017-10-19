@@ -24,20 +24,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.frostnerd.dnschanger.database.entities.IPPortPair;
-import com.frostnerd.dnschanger.util.PreferencesAccessor;
-import com.frostnerd.dnschanger.util.Util;
-import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.ThemeHandler;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.design.MaterialEditText;
-import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
 import com.frostnerd.utils.textfilers.InputCharacterFilter;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 import java.util.regex.Pattern;
 
 /**
@@ -361,19 +360,14 @@ public class ConfigureActivity extends AppCompatActivity {
     }
 
     private ArrayList<IPPortPair> createPortPair(){
-        return new ArrayList<IPPortPair>() {
-            {
-                add(dns1);
-                add(dns2);
-                add(dns1V6);
-                add(dns2V6);
-            }
-
-            @Override
-            public boolean add(IPPortPair pair) {
-                return !TextUtils.isEmpty(pair.getAddress()) && ((ipv4Enabled && !pair.isIpv6()) ||
-                ipv6Enabled && pair.isIpv6()) &&  super.add(pair);
-            }
-        };
+        ArrayList<IPPortPair> list =  new ArrayList<>();
+        list.add(dns1);list.add(dns2);list.add(dns1V6);list.add(dns2V6);
+        IPPortPair pair;
+        for(Iterator<IPPortPair> iterator = list.iterator(); iterator.hasNext();){
+            pair = iterator.next();
+            if(TextUtils.isEmpty(pair.getAddress()) || (!ipv4Enabled && !pair.isIpv6()) || (!ipv6Enabled && pair.isIpv6()))
+                iterator.remove();
+        }
+        return list;
     }
 }

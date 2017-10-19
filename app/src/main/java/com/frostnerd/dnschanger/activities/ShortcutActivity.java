@@ -8,15 +8,14 @@ import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
+import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
-import com.frostnerd.dnschanger.LogFactory;
-import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.utils.preferences.Preferences;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -35,7 +34,7 @@ public class ShortcutActivity extends AppCompatActivity {
         Intent i = getIntent();
         LogFactory.writeMessage(this, LOG_TAG, "Activity created", i);
         final ArrayList<IPPortPair> upstreamServers;
-        if(i.hasExtra("servers"))upstreamServers = (ArrayList<IPPortPair>) i.getSerializableExtra("servers");
+        if(i.hasExtra("servers"))upstreamServers = Util.serializableFromString(i.getStringExtra("servers"));
         else{
             upstreamServers = new ArrayList<>();
             String dns1 = i.getStringExtra("dns1"), dns2 = i.getStringExtra("dns2"),
