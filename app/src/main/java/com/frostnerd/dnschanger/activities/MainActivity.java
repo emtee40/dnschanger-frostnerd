@@ -31,6 +31,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.fragments.RulesFragment;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.BuildConfig;
@@ -251,14 +252,28 @@ public class MainActivity extends NavigationDrawerActivity {
                 item.setInvalidateActivityMenu(true);
             }
         });
-        if(Preferences.getBoolean(this, "advanced_settings", false)){
+        if(PreferencesAccessor.isAdvancedModeEnabled(this)){
             itemCreator.createItemAndContinue(R.string.nav_title_advanced);
-            itemCreator.createItemAndContinue(R.string.nav_title_rules, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_list_bullet_point)), new DrawerItem.FragmentCreator() {
+            itemCreator.createItemAndContinue(R.string.title_advanced_settings, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_settings)), new DrawerItem.ClickListener() {
                 @Override
-                public Fragment getFragment(@Nullable Bundle arguments) {
-                    return new RulesFragment();
+                public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
+                    startActivity(new Intent(MainActivity.this, AdvancedSettingsActivity.class));
+                    return true;
+                }
+
+                @Override
+                public boolean onLongClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+                    return false;
                 }
             });
+            if(PreferencesAccessor.areRulesEnabled(this)){
+                itemCreator.createItemAndContinue(R.string.nav_title_rules, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_list_bullet_point)), new DrawerItem.FragmentCreator() {
+                    @Override
+                    public Fragment getFragment(@Nullable Bundle arguments) {
+                        return new RulesFragment();
+                    }
+                });
+            }
         }
         itemCreator.createItemAndContinue(R.string.nav_title_learn);
         itemCreator.createItemAndContinue(R.string.nav_title_how_does_it_work, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_wrench)), new DrawerItem.ClickListener() {
