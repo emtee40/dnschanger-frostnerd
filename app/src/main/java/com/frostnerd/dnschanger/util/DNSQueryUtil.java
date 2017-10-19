@@ -26,8 +26,8 @@ import java.io.IOException;
 public class DNSQueryUtil {
 
     public static void startDNSServerConnectivityCheck(@NonNull final Context context, @NonNull final Util.ConnectivityCheckCallback callback){
-        runAsyncDNSQuery(PreferencesAccessor.isIPv4Enabled(context) ? PreferencesAccessor.getDNS1(context) :
-                PreferencesAccessor.getDNS1V6(context), "frostnerd.com", false, Type.A, DClass.ANY, new Util.DNSQueryResultListener() {
+        runAsyncDNSQuery(PreferencesAccessor.isIPv4Enabled(context) ? PreferencesAccessor.Type.DNS1.getPair(context).getAddress() :
+                PreferencesAccessor.Type.DNS1_V6.getPair(context).getAddress(), "frostnerd.com", false, Type.A, DClass.ANY, new Util.DNSQueryResultListener() {
             @Override
             public void onSuccess(Message response) {
                 callback.onCheckDone(true);

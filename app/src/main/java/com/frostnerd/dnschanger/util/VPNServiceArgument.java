@@ -12,7 +12,7 @@ package com.frostnerd.dnschanger.util;
 public enum VPNServiceArgument {
     COMMAND_START_VPN("start_vpn"), COMMAND_STOP_VPN("stop_vpn"), COMMAND_STOP_SERVICE("destroy_vpn"), FLAG_FIXED_DNS("fixeddns"),
     FLAG_STARTED_WITH_TASKER("startedWithTasker"), ARGUMENT_STOP_REASON("reason_for_stop"), FLAG_GET_BINDER("i_wanna_bind"),
-    ARGUMENT_DNS1("dns1"), ARGUMENT_DNS2("dns2"), ARGUMENT_DNS1V6("dns1-v6"), ARGUMENT_DNS2V6("dns2-v6"),
+    ARGUMENT_UPSTREAM_SERVERS("upstream_servers"),
     ARGUMENT_CALLER_TRACE("caller_trace"), FLAG_DONT_START_IF_RUNNING("dont_start_running"), FLAG_DONT_UPDATE_DNS("dont_update_dns");
 
     private final String argument;

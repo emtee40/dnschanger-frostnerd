@@ -107,7 +107,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         findPreference("setting_disable_netchange").setOnPreferenceChangeListener(changeListener);
         findPreference("notification_on_stop").setOnPreferenceChangeListener(changeListener);
         findPreference("shortcut_click_again_disable").setOnPreferenceChangeListener(changeListener);
-        findPreference("shortcut_click_override_settings").setOnPreferenceChangeListener(changeListener);
         if (Util.isTaskerInstalled(getContext()))
             findPreference("warn_automation_tasker").setSummary(R.string.summary_automation_warn);
         else

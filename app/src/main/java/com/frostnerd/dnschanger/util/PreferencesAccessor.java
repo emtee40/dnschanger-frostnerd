@@ -91,19 +91,19 @@ public class PreferencesAccessor {
     }
 
 
-    public static String getDNS1(Context context) {
+    private static String getDNS1(Context context) {
         return isIPv4Enabled(context) ? Preferences.getString(context, "dns1", "8.8.8.8") : "";
     }
 
-    public static String getDNS2(Context context) {
+    private static String getDNS2(Context context) {
         return isIPv4Enabled(context) ? Preferences.getString(context, "dns2", "8.8.4.4") : "";
     }
 
-    public static String getDNS1V6(Context context) {
+    private static String getDNS1V6(Context context) {
         return isIPv6Enabled(context) ? Preferences.getString(context, "dns1-v6", "2001:4860:4860::8888") : "";
     }
 
-    public static String getDNS2V6(Context context) {
+    private static String getDNS2V6(Context context) {
         return isIPv6Enabled(context) ? Preferences.getString(context, "dns2-v6", "2001:4860:4860::8844") : "";
     }
 
@@ -111,20 +111,7 @@ public class PreferencesAccessor {
         return pinProtectable.isEnabled(context);
     }
 
-    public static List<String> getAllDNS(final Context context){
-        return new ArrayList<String>(){{
-            addIfNotEmpty(getDNS1(context));
-            addIfNotEmpty(getDNS1V6(context));
-            addIfNotEmpty(getDNS2(context));
-            addIfNotEmpty(getDNS2V6(context));
-        }
-            private void addIfNotEmpty(String s){
-                if(s != null && !s.equals(""))add(s);
-            }
-        };
-    }
-
-    public static List<IPPortPair> getAllDNSPairs(final Context context, final boolean enabledOnly){
+    public static ArrayList<IPPortPair> getAllDNSPairs(final Context context, final boolean enabledOnly){
         return new ArrayList<IPPortPair>(){
             private boolean customPorts = areCustomPortsEnabled(context);
             {

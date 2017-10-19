@@ -1,6 +1,10 @@
 package com.frostnerd.dnschanger.database.entities;
 
-public class IPPortPair {
+import com.frostnerd.dnschanger.util.Util;
+
+import java.io.Serializable;
+
+public class IPPortPair implements Serializable{
     private String ip;
     private int port;
     private boolean ipv6;
@@ -9,6 +13,10 @@ public class IPPortPair {
         this.ip = ip;
         this.port = port;
         this.ipv6 = IPv6;
+    }
+
+    public static IPPortPair wrap(String s){
+        return Util.validateInput(s, s.contains("[") || s.matches("[a-fA-F0-9:]+"), true);
     }
 
     public String getAddress() {

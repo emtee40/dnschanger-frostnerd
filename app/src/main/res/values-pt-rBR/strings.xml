@@ -128,8 +128,6 @@
     <string name="widget_not_running">DNS Changer não foi lançado</string>
     <string name="title_shortcut_click_again_disable">Toque Duplo no Atalho Para Parar</string>
     <string name="summary_shortcut_click_again_disable">Parar DNS Changer ao tocar no atalho que foi iniciado</string>
-    <string name="title_shortcut_click_override_settings">Substituir Configurações</string>
-    <string name="summary_shortcut_click_override_settings">Substituir os servidores DNS das configurações ao iniciar o DNS Changer por um atalho</string>
     <string name="summary_notification_on_stop">Mostrar uma notificação com a razão pela qual DNS Changer foi parado automaticamente</string>
     <string name="title_notification_on_stop">Notificar ao Parar</string>
     <string name="title_create_shortcut">Criar Atalho</string>

@@ -5,10 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 
 
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.database.entities.Shortcut;
 
 import java.sql.Timestamp;
@@ -57,7 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         currentDB = db;
-        db.execSQL("CREATE TABLE IF NOT EXISTS Shortcuts(Name TEXT, dns1 TEXT, dns2 TEXT, dns1v6 TEXT, dns2v6 TEXT)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS Shortcuts(Serialized TEXT)");
         db.execSQL("CREATE TABLE IF NOT EXISTS DNSEntries(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, ShortName TEXT, dns1 TEXT, dns2 TEXT, dns1v6 TEXT, dns2v6 TEXT,description TEXT DEFAULT '', CustomEntry BOOLEAN DEFAULT 0)");
         db.execSQL("CREATE TABLE IF NOT EXISTS DNSRules(Domain TEXT NOT NULL, IPv6 BOOL DEFAULT 0, Target TEXT NOT NULL, Wildcard BOOL DEFAULT 0, PRIMARY KEY(Domain, IPv6))");
         db.execSQL("CREATE TABLE IF NOT EXISTS DNSQueries(Host TEXT NOT NULL, IPv6 BOOL DEFAULT 0, Time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(Host, Time))");
@@ -73,8 +75,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        currentDB = db;
         if(oldVersion < 2){
-            currentDB = db;
             db.execSQL("ALTER TABLE DNSEntries ADD COLUMN ShortName TEXT");
             for(DNSEntry entry: getDNSEntries()){
                 if(!entry.isCustomEntry()){
@@ -86,8 +88,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("CREATE TABLE IF NOT EXISTS DNSRules(Domain TEXT NOT NULL, IPv6 BOOL DEFAULT 0, Target TEXT NOT NULL, Wildcard BOOL DEFAULT 0, PRIMARY KEY(Domain, IPv6))");
             db.execSQL("CREATE TABLE IF NOT EXISTS DNSQueries(Host TEXT NOT NULL, IPv6 BOOL DEFAULT 0, Time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(Host, Time))");
             db.execSQL("CREATE TABLE IF NOT EXISTS DNSRuleImports(Filename TEXT NOT NULL, Time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, RowStart INTEGER, RowEnd INTEGER, PRIMARY KEY(Filename, Time))");
-            currentDB = null;
+
+            Cursor cursor = db.rawQuery("SELECT * FROM Shortcuts", new String[]{});
+            List<String[]> data = new ArrayList<>();
+            if (cursor.moveToFirst()) {
+                do{
+                    data.add(new String[]{cursor.getString(cursor.getColumnIndex("Name")), cursor.getString(cursor.getColumnIndex("dns1")), cursor.getString(cursor.getColumnIndex("dns2")),
+                            cursor.getString(cursor.getColumnIndex("dns1v6")), cursor.getString(cursor.getColumnIndex("dns2v6"))});
+                }while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.execSQL("DROP TABLE Shortcuts");
+            db.execSQL("CREATE TABLE IF NOT EXISTS Shortcuts(Serialized TEXT)");
+            List<IPPortPair> pairs = new ArrayList<IPPortPair>(){
+                @Override
+                public boolean add(IPPortPair o) {
+                    return !TextUtils.isEmpty(o.getAddress()) && super.add(o);
+                }
+            };
+            for(String[] d: data){
+                pairs.add(new IPPortPair(d[1], 53, false));
+                pairs.add(new IPPortPair(d[2], 53, false));
+                pairs.add(new IPPortPair(d[3], 53, true));
+                pairs.add(new IPPortPair(d[4], 53, true));
+                saveShortcut(null, d[0]);
+                pairs.clear();
+            }
         }
+        currentDB = null;
     }
 
     @Override
@@ -177,13 +205,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         getWritableDatabase().execSQL("DELETE FROM DNSEntries WHERE ID=" + ID);
     }
 
-    public synchronized void saveShortcut(String dns1, String dns2, String dns1V6, String dns2V6, String name) {
+    public synchronized void saveShortcut(ArrayList<IPPortPair> servers, String name) {
         ContentValues values = new ContentValues();
-        values.put("dns1", dns1);
-        values.put("dns2", dns2);
-        values.put("dns1v6", dns1V6);
-        values.put("dns2v6", dns2V6);
-        values.put("Name", name);
+        values.put("Serialized", new Shortcut(name, servers).toString());
         getWritableDatabase().insert("Shortcuts", null, values);
     }
 
@@ -220,13 +244,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public synchronized Shortcut[] getShortcuts() {
-        Cursor cursor = getReadableDatabase().rawQuery("SELECT * FROM Shortcuts", new String[]{});
+        Cursor cursor = getReadableDatabase().rawQuery("SELECT Serialized FROM Shortcuts", new String[]{});
         if (cursor.moveToFirst()) {
             Shortcut[] shortcuts = new Shortcut[cursor.getCount()];
             int i = 0;
             do {
-                shortcuts[i++] = new Shortcut(cursor.getString(cursor.getColumnIndex("Name")), cursor.getString(cursor.getColumnIndex("dns1")), cursor.getString(cursor.getColumnIndex("dns2")),
-                        cursor.getString(cursor.getColumnIndex("dns1v6")), cursor.getString(cursor.getColumnIndex("dns2v6")));
+                shortcuts[i++] = Shortcut.fromString(cursor.getString(0));
             } while (cursor.moveToNext());
             return shortcuts;
         } else {

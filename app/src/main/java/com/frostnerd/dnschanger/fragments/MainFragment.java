@@ -266,7 +266,7 @@ public class MainFragment extends Fragment {
             dns2.setInputType(InputType.TYPE_CLASS_TEXT);
         }
         if(!settingV6){
-            InputFilter filter = new InputCharacterFilter(advancedMode ?
+            InputFilter filter = new InputCharacterFilter(customPorts ?
                     Pattern.compile("[0-9.:]") : Pattern.compile("[0-9.]"));
             dns1.setFilters(new InputFilter[]{filter});
             dns2.setFilters(new InputFilter[]{filter});
@@ -275,7 +275,7 @@ public class MainFragment extends Fragment {
             dns1.setText(p1.formatForTextfield(customPorts));
             dns2.setText(p2.formatForTextfield(customPorts));
         }else{
-            InputFilter filter = new InputCharacterFilter(advancedMode ?
+            InputFilter filter = new InputCharacterFilter(customPorts ?
                     Pattern.compile("[0-9:a-f\\[\\]]") : Pattern.compile("[0-9:a-f]"));
             dns1.setFilters(new InputFilter[]{filter});
             dns2.setFilters(new InputFilter[]{filter});
@@ -440,18 +440,18 @@ public class MainFragment extends Fragment {
     }
 
     private void checkDNSReachability(final DNSReachabilityCallback callback){
-        List<String> servers = PreferencesAccessor.getAllDNS(getContext());
+        List<IPPortPair> servers = PreferencesAccessor.getAllDNSPairs(getContext(), true);
         callback.setServers(servers.size());
-        for(final String s: servers){
-            DNSQueryUtil.runAsyncDNSQuery(s, "google.de", false, Type.A, DClass.ANY, new Util.DNSQueryResultListener() {
+        for(final IPPortPair pair: servers){
+            DNSQueryUtil.runAsyncDNSQuery(pair.getAddress(), "google.de", false, Type.A, DClass.ANY, new Util.DNSQueryResultListener() {
                 @Override
                 public void onSuccess(Message response) {
-                    callback.checkProgress(s, true);
+                    callback.checkProgress(pair.getAddress(), true);
                 }
 
                 @Override
                 public void onError(@Nullable Exception e) {
-                    callback.checkProgress(s, false);
+                    callback.checkProgress(pair.getAddress(), false);
                 }
             }, 1);
         }

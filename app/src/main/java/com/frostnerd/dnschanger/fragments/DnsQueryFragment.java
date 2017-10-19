@@ -16,11 +16,11 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.frostnerd.dnschanger.util.PreferencesAccessor;
-import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.adapters.QueryResultAdapter;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.networking.NetworkUtil;
 
@@ -90,8 +90,12 @@ public class DnsQueryFragment extends Fragment {
             }
         });
         resultList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        infoText.setText(getString(R.string.query_destination_info).replace("[x]", PreferencesAccessor.getDNS1(getContext())));
+        infoText.setText(getString(R.string.query_destination_info).replace("[x]", getDefaultDNSServer()));
         return contentView;
+    }
+    
+    private String getDefaultDNSServer(){
+        return PreferencesAccessor.Type.DNS1.getPair(getContext()).getAddress();
     }
 
     private void runQuery(String queryText){
@@ -101,7 +105,7 @@ public class DnsQueryFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    Resolver resolver = new SimpleResolver(PreferencesAccessor.getDNS1(getContext()));
+                    Resolver resolver = new SimpleResolver(getDefaultDNSServer());
                     resolver.setTCP(true);
                     Name name = Name.fromString(adjustedQuery);
                     Record record = Record.newRecord(name, Type.ANY, DClass.IN);
@@ -148,7 +152,7 @@ public class DnsQueryFragment extends Fragment {
 
     private void resetElements(){
         if(showingError){
-            infoText.setText(getString(R.string.query_destination_info).replace("[x]", PreferencesAccessor.getDNS1(getContext())));
+            infoText.setText(getString(R.string.query_destination_info).replace("[x]", getDefaultDNSServer()));
             showingError = false;
         }
     }

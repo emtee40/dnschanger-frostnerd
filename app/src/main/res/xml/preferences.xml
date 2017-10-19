@@ -137,10 +137,6 @@
             android:key="shortcut_click_again_disable"
             android:summary="@string/summary_shortcut_click_again_disable"
             android:title="@string/title_shortcut_click_again_disable" />
-        <CheckBoxPreference
-            android:key="shortcut_click_override_settings"
-            android:summary="@string/summary_shortcut_click_override_settings"
-            android:title="@string/title_shortcut_click_override_settings" />
 
         <Preference
             android:key="create_shortcut"

@@ -9,6 +9,7 @@ import android.os.ParcelFileDescriptor;
 import com.frostnerd.dnschanger.DNSChanger;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.activities.InvalidDNSDialogActivity;
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
@@ -43,8 +44,8 @@ public class VPNRunnable implements Runnable {
     private ParcelFileDescriptor tunnelInterface = null;
     private VpnService.Builder builder;
     private DNSVpnService service;
-    private String dns1, dns2, dns1v6, dns2v6;
     private Set<String> vpnApps;
+    private List<IPPortPair> upstreamServers;
     private boolean whitelistMode, running = true;
     private final List<Runnable> afterThreadStop = new ArrayList<>();
     private DNSProxy dnsProxy;
@@ -55,14 +56,11 @@ public class VPNRunnable implements Runnable {
         addresses.put("172.31.255.1", 28);
     }
 
-    public VPNRunnable(DNSVpnService service, String dns1, String dns2, String dns1v6, String dns2v6, Set<String> vpnApps, boolean whitelistMode){
+    public VPNRunnable(DNSVpnService service, List<IPPortPair> upstreamServers, Set<String> vpnApps, boolean whitelistMode){
         this.service = service;
-        this.dns1 = dns1;
-        this.dns1v6 = dns1v6;
-        this.dns2 = dns2;
-        this.dns2v6 = dns2v6;
         this.whitelistMode = whitelistMode;
         this.vpnApps = vpnApps;
+        this.upstreamServers = upstreamServers;
     }
 
     @Override
@@ -87,7 +85,7 @@ public class VPNRunnable implements Runnable {
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "VPN Thread going into while loop");
                     if(PreferencesAccessor.isRunningInAdvancedMode(service) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){
                         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "We are in advanced mode, starting DNS proxy");
-                        dnsProxy = new DNSUDPProxy(service, tunnelInterface, new HashSet<>(PreferencesAccessor.getAllDNSPairs(service, true))
+                        dnsProxy = new DNSUDPProxy(service, tunnelInterface, new HashSet<>(upstreamServers)
                                 ,PreferencesAccessor.areRulesEnabled(service), PreferencesAccessor.isQueryLoggingEnabled(service));
                         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "DNS proxy created");
                     }else dnsProxy = new DummyProxy();
@@ -151,15 +149,11 @@ public class VPNRunnable implements Runnable {
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Creating Tunnel interface");
         builder = service.createBuilder();
         builder.setSession("DnsChanger");
-        if(ipv4Enabled){
-            builder = builder.addAddress(address, addresses.get(address));
-            addDNSServer(dns1, advanced, false);
-            addDNSServer(dns2, advanced, false);
-        }
-        if(ipv6Enabled){
-            builder = builder.addAddress(NetworkUtil.randomLocalIPv6Address(),48);
-            addDNSServer(dns1v6, advanced, true);
-            addDNSServer(dns2v6, advanced, true);
+        if(ipv4Enabled) builder = builder.addAddress(address, addresses.get(address));
+        if(ipv6Enabled) builder = builder.addAddress(NetworkUtil.randomLocalIPv6Address(),48);
+        for(IPPortPair pair: upstreamServers){
+            if((pair.isIpv6() && ipv6Enabled) || (!pair.isIpv6() && ipv4Enabled))
+                addDNSServer(pair.getAddress(), advanced, pair.isIpv6());
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try{

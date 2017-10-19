@@ -165,19 +165,16 @@ public final class Util {
 
     public static void createShortcut(Context context, Shortcut shortcut) {
         if (shortcut == null) return;
-        createShortcut(context, shortcut.getDns1(), shortcut.getDns2(), shortcut.getDns1v6(), shortcut.getDns2v6(), shortcut.getName());
+        createShortcut(context, shortcut.getServers(), shortcut.getName());
     }
 
-    public static void createShortcut(Context context, String dns1, String dns2, String dns1V6, String dns2V6, String name) {
+    public static void createShortcut(Context context, ArrayList<IPPortPair> servers, String name) {
         LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG}, "Creating shortcut");
         Intent shortcutIntent = new Intent(context, ShortcutActivity.class);
         shortcutIntent.setAction("com.frostnerd.dnschanger.RUN_VPN_FROM_SHORTCUT");
         shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        shortcutIntent.putExtra("dns1", dns1);
-        shortcutIntent.putExtra("dns2", dns2);
-        shortcutIntent.putExtra("dns1v6", dns1V6);
-        shortcutIntent.putExtra("dns2v6", dns2V6);
+        shortcutIntent.putExtra("servers", servers);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             ShortcutManager shortcutManager = (ShortcutManager) context.getSystemService(Activity.SHORTCUT_SERVICE);
             if (shortcutManager.isRequestPinShortcutSupported()) {
