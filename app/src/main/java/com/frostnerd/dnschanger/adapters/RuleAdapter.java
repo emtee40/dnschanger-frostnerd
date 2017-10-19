@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.dialogs.NewRuleDialog;
-import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 
 import java.util.ArrayList;
@@ -219,9 +219,9 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
                 new NewRuleDialog(context, new NewRuleDialog.CreationListener() {
                     @Override
                     public void creationFinished(@NonNull String host, @Nullable String target, @Nullable String targetV6, boolean ipv6, boolean wildcard, boolean editingMode) {
-                        if(target != null)API.getDBHelper(context).editDNSRule(host, ipv6, target);
+                        if(target != null) Util.getDBHelper(context).editDNSRule(host, ipv6, target);
                         else{
-                            API.getDBHelper(context).deleteDNSRule(host, ipv6);
+                            Util.getDBHelper(context).deleteDNSRule(host, ipv6);
                         }
                         reloadData();
                     }

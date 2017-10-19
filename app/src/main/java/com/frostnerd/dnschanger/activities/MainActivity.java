@@ -31,7 +31,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.fragments.RulesFragment;
-import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
@@ -95,7 +95,7 @@ public class MainActivity extends NavigationDrawerActivity {
         startedActivity = false;
         // Receiver is not unregistered in onPause() because the app is in the background when a shortcut
         // is created
-        registerReceiver(shortcutReceiver, new IntentFilter(API.BROADCAST_SHORTCUT_CREATED));
+        registerReceiver(shortcutReceiver, new IntentFilter(Util.BROADCAST_SHORTCUT_CREATED));
     }
 
     @Override
@@ -108,14 +108,14 @@ public class MainActivity extends NavigationDrawerActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                API.getDBHelper(MainActivity.this).getReadableDatabase();
+                Util.getDBHelper(MainActivity.this).getReadableDatabase();
             }
         }).start();
-        API.updateAppShortcuts(this);
-        API.runBackgroundConnectivityCheck(this);
+        Util.updateAppShortcuts(this);
+        Util.runBackgroundConnectivityCheck(this);
         Preferences.put(this, "first_run", false);
         if(Preferences.getBoolean(this, "first_run", true)) Preferences.put(this, "excluded_apps", new ArraySet<>(Arrays.asList(getResources().getStringArray(R.array.default_blacklist))));
-        if(Preferences.getBoolean(this, "first_run", true) && API.isTaskerInstalled(this)){
+        if(Preferences.getBoolean(this, "first_run", true) && Util.isTaskerInstalled(this)){
             LogFactory.writeMessage(this, LOG_TAG, "Showing dialog telling the user that this app supports Tasker");
             new AlertDialog.Builder(this,ThemeHandler.getDialogTheme(this)).setTitle(R.string.tasker_support).setMessage(R.string.app_supports_tasker_text).setPositiveButton(R.string.got_it, new DialogInterface.OnClickListener() {
                 @Override
@@ -148,7 +148,7 @@ public class MainActivity extends NavigationDrawerActivity {
             }).setMessage(R.string.rate_request_text).setTitle(R.string.rate).show();
             LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
         }
-        API.updateTiles(this);
+        Util.updateTiles(this);
         View cardView = getLayoutInflater().inflate(R.layout.main_cardview, null, false);
         final TextView text = cardView.findViewById(R.id.text);
         final Switch button = cardView.findViewById(R.id.cardview_switch);
@@ -161,7 +161,7 @@ public class MainActivity extends NavigationDrawerActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 text.setText(b ? R.string.cardview_text_disabled : R.string.cardview_text);
                 Preferences.put(MainActivity.this, "everything_disabled", b);
-                if(API.isServiceRunning(MainActivity.this))startService(DNSVpnService.getDestroyIntent(MainActivity.this));
+                if(Util.isServiceRunning(MainActivity.this))startService(DNSVpnService.getDestroyIntent(MainActivity.this));
             }
         });
         cardView.setOnClickListener(new View.OnClickListener() {
@@ -336,7 +336,7 @@ public class MainActivity extends NavigationDrawerActivity {
                 return false;
             }
         });
-        if(API.isTaskerInstalled(this)){
+        if(Util.isTaskerInstalled(this)){
             itemCreator.createItemAndContinue(R.string.tasker_support, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_thumb_up)), new DrawerItem.ClickListener() {
                 @Override
                 public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {

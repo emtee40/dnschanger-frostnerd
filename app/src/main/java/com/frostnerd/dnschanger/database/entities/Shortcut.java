@@ -1,4 +1,4 @@
-package com.frostnerd.dnschanger.database;
+package com.frostnerd.dnschanger.database.entities;
 
 public class Shortcut {
     private String name, dns1, dns2, dns1v6, dns2v6;

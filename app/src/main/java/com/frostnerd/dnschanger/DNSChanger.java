@@ -2,16 +2,16 @@ package com.frostnerd.dnschanger;
 
 import android.app.Application;
 
-import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
 
 /**
  * Copyright Daniel Wolf 2017
  * All rights reserved.
- *
+ * <p>
  * Terms on usage of my code can be found here: https://git.frostnerd.com/PublicAndroidApps/DnsChanger/blob/master/README.md
- *
+ * <p>
  * <p>
  * development@frostnerd.com
  */
@@ -20,18 +20,18 @@ public class DNSChanger extends Application {
     private Thread.UncaughtExceptionHandler customHandler = new Thread.UncaughtExceptionHandler() {
         @Override
         public void uncaughtException(Thread t, Throwable e) {
-            LogFactory.writeMessage(DNSChanger.this,  new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, "Caught uncaught exception");
+            LogFactory.writeMessage(DNSChanger.this, new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, "Caught uncaught exception");
             LogFactory.writeStackTrace(DNSChanger.this, new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, e);
-            if(showErrorDialog(e)){
+            if (showErrorDialog(e)) {
                 ErrorDialogActivity.show(DNSChanger.this, e);
                 System.exit(2);
-            }else if(defaultHandler != null)defaultHandler.uncaughtException(t, e);
+            } else if (defaultHandler != null) defaultHandler.uncaughtException(t, e);
         }
     };
     private Thread.UncaughtExceptionHandler defaultHandler;
 
-    private boolean showErrorDialog(Throwable exception){
-        if(exception.getMessage() == null)return false;
+    private boolean showErrorDialog(Throwable exception) {
+        if (exception.getMessage() == null) return false;
         return exception.getMessage().toLowerCase().contains("cannot create interface");
     }
 
@@ -59,7 +59,7 @@ public class DNSChanger extends Application {
     @Override
     public void onTerminate() {
         LogFactory.writeMessage(this, LOG_TAG, "Application terminated");
-        API.terminate();
+        Util.getDBHelper(this).close();
         LogFactory.terminate();
         super.onTerminate();
     }

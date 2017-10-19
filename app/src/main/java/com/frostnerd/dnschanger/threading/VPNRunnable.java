@@ -11,7 +11,8 @@ import com.frostnerd.dnschanger.DNSChanger;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.activities.InvalidDNSDialogActivity;
 import com.frostnerd.dnschanger.services.DNSVpnService;
-import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.dnsproxy.DNSProxy;
 import com.frostnerd.dnschanger.util.dnsproxy.DNSUDPProxy;
 import com.frostnerd.dnschanger.util.dnsproxy.DummyProxy;
@@ -84,11 +85,11 @@ public class VPNRunnable implements Runnable {
                     service.broadcastCurrentState();
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Broadcast sent");
                     service.updateNotification();
-                    API.updateAppShortcuts(service);
+                    Util.updateAppShortcuts(service);
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "VPN Thread going into while loop");
                     if(isInAdvancedMode(service) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){
                         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "We are in advanced mode, starting DNS proxy");
-                        dnsProxy = new DNSUDPProxy(service, tunnelInterface, new HashSet<>(API.getAllDNSPairs(service, true))
+                        dnsProxy = new DNSUDPProxy(service, tunnelInterface, new HashSet<>(PreferencesAccessor.getAllDNSPairs(service, true))
                                 ,Preferences.getBoolean(service, "rules_activated", false), Preferences.getBoolean(service, "query_logging", false));
                         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "DNS proxy created");
                     }else dnsProxy = new DummyProxy();
@@ -112,8 +113,8 @@ public class VPNRunnable implements Runnable {
         }finally {
             running = false;
             LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "VPN Thread is in finally block");
-            API.updateAppShortcuts(service);
-            API.updateTiles(service);
+            Util.updateAppShortcuts(service);
+            Util.updateTiles(service);
             cleanup();
             service.updateNotification();
             service.broadcastCurrentState();
@@ -148,7 +149,7 @@ public class VPNRunnable implements Runnable {
     }
 
     private void configure(String address, boolean advanced){
-        boolean ipv6Enabled = API.isIPv6Enabled(service), ipv4Enabled = API.isIPv4Enabled(service);
+        boolean ipv6Enabled = PreferencesAccessor.isIPv6Enabled(service), ipv4Enabled = PreferencesAccessor.isIPv4Enabled(service);
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Creating Tunnel interface");
         builder = service.createBuilder();
         builder.setSession("DnsChanger");

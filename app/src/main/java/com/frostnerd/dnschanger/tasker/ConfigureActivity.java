@@ -22,7 +22,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
@@ -57,7 +58,7 @@ public class ConfigureActivity extends AppCompatActivity {
 
     private boolean checkValidity(){
         return wasEdited && NetworkUtil.isAssignableAddress(dns1,false,false) && NetworkUtil.isAssignableAddress(dns2,false,true) &&
-                (!API.isIPv6Enabled(this) || (NetworkUtil.isAssignableAddress(dns1V6,true,false) &&
+                (!PreferencesAccessor.isIPv6Enabled(this) || (NetworkUtil.isAssignableAddress(dns1V6,true,false) &&
                 NetworkUtil.isAssignableAddress(dns2V6,true,true))) && met_name.getIndicatorState() == MaterialEditText.IndicatorState.CORRECT;
     }
 
@@ -70,8 +71,8 @@ public class ConfigureActivity extends AppCompatActivity {
         LogFactory.writeMessage(this, LOG_TAG, "Activity created", getIntent());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        ipv4Enabled = API.isIPv4Enabled(this);
-        ipv6Enabled = !ipv4Enabled || API.isIPv6Enabled(this);
+        ipv4Enabled = PreferencesAccessor.isIPv4Enabled(this);
+        ipv6Enabled = !ipv4Enabled || PreferencesAccessor.isIPv6Enabled(this);
         settingV6 = !ipv4Enabled;
 
         ed_dns1 = findViewById(R.id.dns1);
@@ -312,10 +313,10 @@ public class ConfigureActivity extends AppCompatActivity {
             }
         }else if(!cancelled && checkValidity() && creatingShortcut){
             LogFactory.writeMessage(this, LOG_TAG, "Cancelled, valid, creating shortcut");
-            API.createShortcut(this, dns1, dns2, dns1V6, dns2V6, ed_name.getText().toString());
+            Util.createShortcut(this, dns1, dns2, dns1V6, dns2V6, ed_name.getText().toString());
             setResult(RESULT_OK);
             LogFactory.writeMessage(this, LOG_TAG, "Shortcut added to Launcher");
-            API.getDBHelper(this).saveShortcut(dns1, dns2, dns1V6, dns2V6, ed_name.getText().toString());
+            Util.getDBHelper(this).saveShortcut(dns1, dns2, dns1V6, dns2V6, ed_name.getText().toString());
         }
         super.finish();
     }

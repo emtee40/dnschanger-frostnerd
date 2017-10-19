@@ -34,7 +34,8 @@ import android.view.MenuInflater;
 import android.view.View;
 
 import com.frostnerd.dnschanger.activities.AdvancedSettingsActivity;
-import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
@@ -107,7 +108,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         findPreference("notification_on_stop").setOnPreferenceChangeListener(changeListener);
         findPreference("shortcut_click_again_disable").setOnPreferenceChangeListener(changeListener);
         findPreference("shortcut_click_override_settings").setOnPreferenceChangeListener(changeListener);
-        if (API.isTaskerInstalled(getContext()))
+        if (Util.isTaskerInstalled(getContext()))
             findPreference("warn_automation_tasker").setSummary(R.string.summary_automation_warn);
         else
             ((PreferenceCategory) findPreference("automation")).removePreference(findPreference("warn_automation_tasker"));
@@ -311,9 +312,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                         LogFactory.writeMessage(getContext(), LOG_TAG, "Resetting..");
                         Preferences.getDefaultPreferences(getContext()).edit().clear().commit();
                         Preferences.flushBuffer();
-                        API.deleteDatabase(getContext());
+                        Util.deleteDatabase(getContext());
                         LogFactory.writeMessage(getContext(), LOG_TAG, "Reset finished.");
-                        API.getActivity(SettingsFragment.this).finish();
+                        Util.getActivity(SettingsFragment.this).finish();
                     }
                 }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
@@ -332,7 +333,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                         dialogTheme = val.equalsIgnoreCase("1") ? R.style.DialogTheme : (val.equalsIgnoreCase("2") ? R.style.DialogTheme_Mono : R.style.DialogTheme_Dark);
                 ThemeHandler.updateAppTheme(getContext(), theme);
                 ThemeHandler.updateDialogTheme(getContext(), dialogTheme);
-                IntentUtil.restartActivity(API.getActivity(SettingsFragment.this));
+                IntentUtil.restartActivity(Util.getActivity(SettingsFragment.this));
                 return true;
             }
         });
@@ -357,12 +358,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     v6Enabled.setEnabled(val);
-                                    if (API.isServiceRunning(getContext()))
+                                    if (Util.isServiceRunning(getContext()))
                                         getContext().startService(new Intent(getContext(), DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true));
                                     v4Enabled.setChecked(val);
                                 }
                             }).setTitle(R.string.warning).setMessage(R.string.warning_disabling_v4).show();
-                else if (API.isServiceRunning(getContext())) {
+                else if (Util.isServiceRunning(getContext())) {
                     getContext().startService(new Intent(getContext(), DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true));
                 }
                 v6Enabled.setEnabled(val);
@@ -381,7 +382,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 boolean val = (boolean) newValue;
                 v4Enabled.setEnabled(val);
                 Preferences.put(getContext(), preference.getKey(), newValue);
-                if (API.isServiceRunning(getContext()))
+                if (Util.isServiceRunning(getContext()))
                     getContext().startService(new Intent(getContext(), DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true));
                 return true;
             }
@@ -422,7 +423,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                if (awaitingPinChange && !DesignUtil.hasOpenDialogs(API.getActivity(SettingsFragment.this))) {
+                                if (awaitingPinChange && !DesignUtil.hasOpenDialogs(Util.getActivity(SettingsFragment.this))) {
                                     ((CheckBoxPreference) preference).setChecked(false);
                                     awaitingPinChange = false;
                                 }
@@ -480,7 +481,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 return false;
             }
         });
-        if(!API.isIPv6Enabled(getContext()) && !Preferences.getBoolean(getContext(), "ipv6_asked", false)){
+        if(!PreferencesAccessor.isIPv6Enabled(getContext()) && !Preferences.getBoolean(getContext(), "ipv6_asked", false)){
             ipv6EnableQuestionSnackbar = Snackbar.make(((MainActivity)getContext()).getDrawerLayout(), R.string.question_enable_ipv6, Snackbar.LENGTH_INDEFINITE);
             ipv6EnableQuestionSnackbar.setAction(R.string.yes, new View.OnClickListener() {
                 @Override
@@ -511,13 +512,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             Preferences.put(getContext(),preference.getKey(),newValue);
             String key = preference.getKey();
             if((key.equalsIgnoreCase("setting_show_notification") || key.equalsIgnoreCase("show_used_dns") ||
-                    key.equalsIgnoreCase("auto_pause") || key.equalsIgnoreCase("hide_notification_icon")) && API.isServiceRunning(getContext())){
+                    key.equalsIgnoreCase("auto_pause") || key.equalsIgnoreCase("hide_notification_icon")) && Util.isServiceRunning(getContext())){
                 Intent i;
                 LogFactory.writeMessage(getContext(), LOG_TAG, "Updating DNSVPNService, as a relevant setting " +
                         "(notification/autopause) changed", i = new Intent(getContext(), DNSVpnService.class));
                 getContext().startService(i);
             }
-            if(key.equals("pin_app_shortcut") || key.equals("setting_app_shortcuts_enabled"))API.updateAppShortcuts(getContext());
+            if(key.equals("pin_app_shortcut") || key.equals("setting_app_shortcuts_enabled")) Util.updateAppShortcuts(getContext());
             return true;
         }
     };
@@ -568,7 +569,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             if(apps.size() != getResources().getStringArray(R.array.default_blacklist).length)Preferences.put(getContext(), "app_whitelist_configured", true);
             Preferences.put(getContext(), "autopause_apps", new HashSet<String>(apps));
             Preferences.put(getContext(), "autopause_apps_count", apps.size());
-            if(API.isServiceRunning(getContext())){
+            if(Util.isServiceRunning(getContext())){
                 Intent i;
                 LogFactory.writeMessage(getContext(), LOG_TAG, "Restarting DNSVPNService because the autopause apps changed",
                         i = new Intent(getContext(), DNSVpnService.class));
@@ -591,7 +592,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             ArrayList<String> apps = data.getStringArrayListExtra("apps");
             Preferences.put(getContext(), "excluded_apps", new HashSet<String>(apps));
             Preferences.put(getContext(), "excluded_whitelist", data.getBooleanExtra("whitelist",false));
-            if(API.isServiceRunning(getContext())){
+            if(Util.isServiceRunning(getContext())){
                 getContext().startService(new Intent(getContext(), DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true).
                         putExtra(VPNServiceArgument.FLAG_DONT_UPDATE_DNS.getArgument(),true));
             }
@@ -608,7 +609,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
 
         SearchManager searchManager = (SearchManager)getContext().getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(API.getActivity(this).getComponentName()));
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(Util.getActivity(this).getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
         searchView.setOnQueryTextListener(this);
     }

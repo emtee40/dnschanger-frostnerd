@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 
-import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.services.DNSVpnService;
@@ -38,7 +38,7 @@ public class ShortcutActivity extends AppCompatActivity {
             Preferences.put(this, "dns2-v6", dns2v6);
         }
         LogFactory.writeMessage(this, LOG_TAG, "DNS1: " + dns1 + ", DNS2: " + dns2 + ", DNS1V6: " + dns1v6 + ", DNS2V6: " + dns2v6);
-        if(API.isServiceRunning(this)){
+        if(Util.isServiceRunning(this)){
             LogFactory.writeMessage(this, LOG_TAG, "Service is already running");
             if(Preferences.getBoolean(this, "shortcut_click_again_disable",false)){
                 LogFactory.writeMessage(this, LOG_TAG, "shortcut_click_again_disable is true. Checking if service was started via same shortcut");
@@ -80,13 +80,13 @@ public class ShortcutActivity extends AppCompatActivity {
     }
 
     private void start(final String dns1, final String dns2, final String dns1v6, final String dns2v6){
-        if(API.isServiceRunning(this))bindService(DNSVpnService.getBinderIntent(this), new ServiceConnection() {
+        if(Util.isServiceRunning(this))bindService(DNSVpnService.getBinderIntent(this), new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder binder) {
                 DNSVpnService service = ((DNSVpnService.ServiceBinder)binder).getService();
                 LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Connected to service");
                 LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Started via shortcut: " + service.startedFromShortcut());
-                boolean threadRunning = API.isServiceThreadRunning();
+                boolean threadRunning = Util.isServiceThreadRunning();
                 if(!(service.getCurrentDNS1().equals(dns1) && service.getCurrentDNS2().equals(dns2)
                         && service.getCurrentDNS1V6().equals(dns1v6) && service.getCurrentDNS2V6().equals(dns2v6))){
                     unbindService(this);

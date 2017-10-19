@@ -34,7 +34,7 @@ import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.adapters.RuleAdapter;
 import com.frostnerd.dnschanger.dialogs.NewRuleDialog;
-import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.general.DesignUtil;
@@ -82,7 +82,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         fabNew = content.findViewById(R.id.fab_new);
         fabFilter = content.findViewById(R.id.fab_filter);
 
-        ruleAdapter = new RuleAdapter((MainActivity)getContext(), API.getDBHelper(getContext()),
+        ruleAdapter = new RuleAdapter((MainActivity)getContext(), Util.getDBHelper(getContext()),
                 (TextView)content.findViewById(R.id.row_count), (ProgressBar)content.findViewById(R.id.progress));
         list.setLayoutManager(new LinearLayoutManager(getContext()));
         list.setAdapter(ruleAdapter);
@@ -134,9 +134,9 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
                     @Override
                     public void creationFinished(@NonNull String host, @NonNull String target, @Nullable String targetV6, boolean ipv6, boolean wildcard, boolean editingMode) {
                         boolean both = targetV6 != null && !targetV6.equals("");
-                        API.getDBHelper(getContext()).createRuleEntry(host, target, !both && ipv6, wildcard);
+                        Util.getDBHelper(getContext()).createRuleEntry(host, target, !both && ipv6, wildcard);
                         if (targetV6 != null && !targetV6.equals("")) {
-                            API.getDBHelper(getContext()).createRuleEntry(host, targetV6, true, wildcard);
+                            Util.getDBHelper(getContext()).createRuleEntry(host, targetV6, true, wildcard);
                         }
                         if(wildcard == wildcardShown){
                             list.scrollTo(0, 0);
@@ -267,7 +267,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
 
         SearchManager searchManager = (SearchManager) getContext().getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(API.getActivity(this).getComponentName()));
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(Util.getActivity(this).getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
         searchView.setOnQueryTextListener(this);
     }

@@ -9,9 +9,10 @@ import android.system.Os;
 import android.system.OsConstants;
 import android.system.StructPollfd;
 
-import com.frostnerd.dnschanger.util.API;
-import com.frostnerd.dnschanger.util.DNSResolver;
-import com.frostnerd.dnschanger.util.QueryLogger;
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.util.Util;
+import com.frostnerd.dnschanger.database.accessors.DNSResolver;
+import com.frostnerd.dnschanger.database.accessors.QueryLogger;
 
 import org.pcap4j.packet.IpPacket;
 import org.pcap4j.packet.IpSelector;
@@ -102,16 +103,16 @@ public class DNSUDPProxy extends DNSProxy{
 
 
     public DNSUDPProxy(VpnService context, ParcelFileDescriptor parcelFileDescriptor,
-                       Set<API.IPPortPair> upstreamDNSServers, boolean resolveLocalRules, boolean queryLogging){
+                       Set<IPPortPair> upstreamDNSServers, boolean resolveLocalRules, boolean queryLogging){
         this.parcelFileDescriptor = parcelFileDescriptor;
         resolver = new DNSResolver(context);
         this.vpnService = context;
-        for(API.IPPortPair pair: upstreamDNSServers){
+        for(IPPortPair pair: upstreamDNSServers){
             if(pair.getAddress() != null && !pair.getAddress().equals(""))this.upstreamServers.put(pair.getAddress(), pair.getPort());
         }
         this.resolveLocalRules = resolveLocalRules;
         this.queryLogging = queryLogging;
-        if(queryLogging)queryLogger = new QueryLogger(API.getDBHelper(context));
+        if(queryLogging)queryLogger = new QueryLogger(Util.getDBHelper(context));
     }
 
     @Override

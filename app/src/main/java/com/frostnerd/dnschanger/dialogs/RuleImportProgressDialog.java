@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.fragments.RulesFragment;
-import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.networking.NetworkUtil;
 
@@ -69,12 +69,12 @@ public class RuleImportProgressDialog extends AlertDialog {
         }
 
         private void startImport() throws IOException {
-            SQLiteDatabase database = API.getDBHelper(getContext()).getWritableDatabase();
+            SQLiteDatabase database = Util.getDBHelper(getContext()).getWritableDatabase();
             database.beginTransaction();
             String line;
             DNSRule rule;
             ContentValues values = new ContentValues(3), values2 = new ContentValues();
-            int i = 0, pos = 0, dbID = API.getDBHelper(getContext()).getHighestRowID("DNSRules")+1, currentCount = 0;
+            int i = 0, pos = 0, dbID = Util.getDBHelper(getContext()).getHighestRowID("DNSRules")+1, currentCount = 0;
             long tmp;
             for(ImportableFile file: files){
                 currentCount = 0;

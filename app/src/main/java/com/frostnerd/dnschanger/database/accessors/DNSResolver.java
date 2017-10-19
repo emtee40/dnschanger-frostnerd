@@ -1,9 +1,10 @@
-package com.frostnerd.dnschanger.util;
+package com.frostnerd.dnschanger.database.accessors;
 
 import android.content.Context;
 import android.database.Cursor;
 
 import com.frostnerd.dnschanger.database.DatabaseHelper;
+import com.frostnerd.dnschanger.util.Util;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -22,7 +23,7 @@ public class DNSResolver {
     private int wildcardCount;
 
     public DNSResolver(Context context) {
-        db = API.getDBHelper(context);
+        db = Util.getDBHelper(context);
         Cursor cursor = db.getReadableDatabase().rawQuery(SUM_WILDCARD_QUERY, null);
         if (cursor.moveToFirst()) {
             wildcardCount = cursor.getInt(0);

@@ -7,6 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
+import com.frostnerd.dnschanger.database.entities.DNSEntry;
+import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
+import com.frostnerd.dnschanger.database.entities.Shortcut;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;

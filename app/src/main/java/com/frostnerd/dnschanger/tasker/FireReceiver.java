@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
@@ -36,12 +36,12 @@ public class FireReceiver extends BroadcastReceiver {
                 Intent i;
                 LogFactory.writeMessage(context, LOG_TAG, "Action: Stop DNS",
                         i = DNSVpnService.getDestroyIntent(context, context.getString(R.string.reason_stop_tasker)));
-                if(API.isServiceRunning(context))context.startService(i);
+                if(Util.isServiceRunning(context))context.startService(i);
             }else if(bundle.containsKey(Helper.BUNDLE_EXTRA_PAUSE_DNS)){
                 Intent i;
                 LogFactory.writeMessage(context, LOG_TAG, "Action: Pause DNS",
                         i = DNSVpnService.getStopVPNIntent(context));
-                if(API.isServiceRunning(context))context.startService(i);
+                if(Util.isServiceRunning(context))context.startService(i);
             }else if(bundle.containsKey(Helper.BUNDLE_EXTRA_RESUME_DNS)){
                 LogFactory.writeMessage(context, LOG_TAG, "Action: Resume DNS");
                 LogFactory.writeMessage(context, LOG_TAG, "Starting BackgroundVpnConfigureActivity");

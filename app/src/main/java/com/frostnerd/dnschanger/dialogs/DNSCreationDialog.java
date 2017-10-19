@@ -12,8 +12,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.frostnerd.dnschanger.util.API;
-import com.frostnerd.dnschanger.database.DNSEntry;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.Util;
+import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.utils.design.MaterialEditText;
@@ -63,8 +64,8 @@ public class DNSCreationDialog extends AlertDialog {
         super(context, ThemeHandler.getDialogTheme(context));
         this.mode = Mode.CREATION;
         setView(view = LayoutInflater.from(context).inflate(R.layout.dialog_create_dns_entry, null, false));
-        final boolean ipv4Enabled = API.isIPv4Enabled(context),
-                ipv6Enabled = !ipv4Enabled || API.isIPv6Enabled(context);
+        final boolean ipv4Enabled = PreferencesAccessor.isIPv4Enabled(context),
+                ipv6Enabled = !ipv4Enabled || PreferencesAccessor.isIPv6Enabled(context);
         settingV6 = !ipv4Enabled;
         ed_dns1 = view.findViewById(R.id.dns1);
         ed_dns2 = view.findViewById(R.id.dns2);
@@ -159,7 +160,7 @@ public class DNSCreationDialog extends AlertDialog {
 
     private boolean isConfigurationValid() {
         return NetworkUtil.isAssignableAddress(dns1, false, false) && NetworkUtil.isAssignableAddress(dns2, false, true) &&
-                (!API.isIPv6Enabled(getContext()) || (NetworkUtil.isAssignableAddress(dns1V6, true, false) &&
+                (!PreferencesAccessor.isIPv6Enabled(getContext()) || (NetworkUtil.isAssignableAddress(dns1V6, true, false) &&
                         NetworkUtil.isAssignableAddress(dns2V6, true, true))) && met_name.getIndicatorState() == MaterialEditText.IndicatorState.CORRECT;
     }
 

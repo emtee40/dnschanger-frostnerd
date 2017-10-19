@@ -11,7 +11,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.PinActivity;
@@ -31,7 +31,7 @@ public class BasicWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
         LogFactory.writeMessage(context, LOG_TAG, "Updating " + appWidgetIds.length + " Widgets.");
-        if (API.isServiceRunning(context)) {
+        if (Util.isServiceRunning(context)) {
             LogFactory.writeMessage(context, LOG_TAG, "Waiting for broadcast...");
             LocalBroadcastManager.getInstance(context).registerReceiver(new BroadcastReceiver() {
                 @Override
@@ -45,7 +45,7 @@ public class BasicWidget extends AppWidgetProvider {
                     LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
                     LogFactory.writeMessage(context, LOG_TAG, appWidgetIds.length + " Widgets updated.");
                 }
-            }, new IntentFilter(API.BROADCAST_SERVICE_STATUS_CHANGE));
+            }, new IntentFilter(Util.BROADCAST_SERVICE_STATUS_CHANGE));
         } else {
             LogFactory.writeMessage(context, LOG_TAG, "Service not running.");
             updateWidgetsNotRunning(context, appWidgetManager, appWidgetIds);

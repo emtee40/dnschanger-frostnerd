@@ -13,18 +13,12 @@ import android.content.Intent;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.graphics.drawable.Icon;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkCapabilities;
 import android.os.Build;
 import android.os.Bundle;
 import android.service.quicksettings.TileService;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.TypedValue;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
@@ -32,29 +26,22 @@ import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.activities.ShortcutActivity;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
-import com.frostnerd.dnschanger.database.Shortcut;
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.database.entities.Shortcut;
 import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.services.jobs.ConnectivityJobAPI21;
 import com.frostnerd.dnschanger.tiles.TilePauseResume;
 import com.frostnerd.dnschanger.tiles.TileStartStop;
+import com.frostnerd.utils.general.IntentUtil;
 import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
 
-import org.xbill.DNS.DClass;
 import org.xbill.DNS.Message;
-import org.xbill.DNS.Name;
-import org.xbill.DNS.Record;
-import org.xbill.DNS.Resolver;
-import org.xbill.DNS.SimpleResolver;
-import org.xbill.DNS.Type;
 
-import java.io.IOException;
-import java.net.NetworkInterface;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -67,11 +54,11 @@ import java.util.regex.Pattern;
  * <p>
  * development@frostnerd.com
  */
-public final class API {
+public final class Util {
     public static final String BROADCAST_SERVICE_STATUS_CHANGE = "com.frostnerd.dnschanger.VPN_SERVICE_CHANGE";
     public static final String BROADCAST_SERVICE_STATE_REQUEST = "com.frostnerd.dnschanger.VPN_STATE_CHANGE";
     public static final String BROADCAST_SHORTCUT_CREATED = "com.frostnerd.dnschanger.SHORTCUT_CREATED";
-    public static final String LOG_TAG = "[API]";
+    public static final String LOG_TAG = "[Util]";
     private static DatabaseHelper dbHelper;
     private static Pattern ipv6WithPort = Pattern.compile("(\\[[0-9a-f:]+\\]:[0-9]{1,5})|([0-9a-f:]+)");
     private static Pattern ipv4WithPort = Pattern.compile("([0-9]{1,3}\\.){3}[0-9]{1,3}(:[0-9]{1,5})?");
@@ -156,112 +143,8 @@ public final class API {
         }
     }
 
-    // This is dirty. Like really dirty. But sometimes the running check returns running when the
-    // service isn't running. This is a workaround.
     public static boolean isServiceRunning(Context c) {
-        return DNSVpnService.isServiceRunning() || isServiceRunningNative(c);
-        /*ActivityManager am = (ActivityManager) c.getSystemService(Context.ACTIVITY_SERVICE);
-        String name = DNSVpnService.class.getName();
-        for (ActivityManager.RunningServiceInfo service : am.getRunningServices(Integer.MAX_VALUE)) {
-            if (name.equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;*/
-    }
-
-    public static boolean isServiceRunning(Context context, Class serviceClass){
-        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : am.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static boolean isServiceRunningNative(Context context) {
-        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        String name = DNSVpnService.class.getName();
-        for (ActivityManager.RunningServiceInfo service : am.getRunningServices(Integer.MAX_VALUE)) {
-            if (name.equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean isIPv6Enabled(Context context) {
-        return Preferences.getBoolean(context, "setting_ipv6_enabled", false);
-    }
-
-    public static boolean isIPv4Enabled(Context context) {
-        return Preferences.getBoolean(context, "setting_ipv4_enabled", true);
-    }
-
-    public static String getDNS1(Context context) {
-        return isIPv4Enabled(context) ? Preferences.getString(context, "dns1", "8.8.8.8") : "";
-    }
-
-    public static String getDNS2(Context context) {
-        return isIPv4Enabled(context) ? Preferences.getString(context, "dns2", "8.8.4.4") : "";
-    }
-
-    public static String getDNS1V6(Context context) {
-        return isIPv6Enabled(context) ? Preferences.getString(context, "dns1-v6", "2001:4860:4860::8888") : "";
-    }
-
-    public static String getDNS2V6(Context context) {
-        return isIPv6Enabled(context) ? Preferences.getString(context, "dns2-v6", "2001:4860:4860::8844") : "";
-    }
-
-    public static List<String> getAllDNS(final Context context){
-       return new ArrayList<String>(){{
-            addIfNotEmpty(getDNS1(context));
-            addIfNotEmpty(getDNS1V6(context));
-            addIfNotEmpty(getDNS2(context));
-            addIfNotEmpty(getDNS2V6(context));
-            }
-            private void addIfNotEmpty(String s){
-                if(s != null && !s.equals(""))add(s);
-            }
-        };
-    }
-
-    public static List<IPPortPair> getAllDNSPairs(final Context context, final boolean enabledOnly){
-        return new ArrayList<IPPortPair>(){
-            private boolean customPorts = Preferences.getBoolean(context, "custom_port", false);
-            {
-                if(!enabledOnly || isIPv4Enabled(context)){
-                    addIfNotEmpty(getDNS1(context), 1);
-                    addIfNotEmpty(getDNS2(context), 3);
-                }
-                if(!enabledOnly || isIPv6Enabled(context)){
-                    addIfNotEmpty(getDNS1V6(context), 2);
-                    addIfNotEmpty(getDNS2V6(context), 4);
-                }
-            }
-            private void addIfNotEmpty(String s, int id) {
-                if (s != null && !s.equals("")) {
-                    int port = customPorts ?
-                            Preferences.getInteger(context, "port" + (id >= 3 ? "2" : "1") + (id % 2 == 0 ? "v6" : ""), 53)
-                            : 53;
-                    add(new IPPortPair(s, port, id % 2 == 0));
-                }
-            }
-        };
-    }
-
-    public static int getPortForDNS(Context context, String server){
-        if(!Preferences.getBoolean(context, "custom_port", false))return 53;
-        List<String> dns = getAllDNS(context);
-        for(int i = 0; i < dns.size();i++){
-            if(dns.get(i).equals(server)){
-                return i <= 1 ? Preferences.getInteger(context, "port" + (i+1), 53) :
-                        Preferences.getInteger(context, "port" + (i-1) + "v6", 53);
-            }
-        }
-        return 53;
+        return DNSVpnService.isServiceRunning() || Utils.isServiceRunning(c, DNSVpnService.class);
     }
 
     public static boolean isServiceThreadRunning() {
@@ -270,10 +153,6 @@ public final class API {
 
     public static boolean isTaskerInstalled(Context context) {
         return Utils.isPackageInstalled(context, "net.dinglisch.android.taskerm");
-    }
-
-    public static void terminate() {
-        if (dbHelper != null) dbHelper.close();
     }
 
     public static DatabaseHelper getDBHelper(Context context) {
@@ -285,12 +164,6 @@ public final class API {
         dbHelper = null;
         context.deleteDatabase("data");
         context.getDatabasePath("data.db").delete();
-    }
-
-    public static int resolveColor(Context context, int attrID) {
-        TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(attrID, typedValue, true);
-        return typedValue.data;
     }
 
     public static void createShortcut(Context context, Shortcut shortcut) {
@@ -317,7 +190,7 @@ public final class API {
                         .setLongLabel(name)
                         .setIntent(shortcutIntent)
                         .build();
-                PendingIntent intent = PendingIntent.getBroadcast(context, 0, new Intent(API.BROADCAST_SHORTCUT_CREATED), 0);
+                PendingIntent intent = PendingIntent.getBroadcast(context, 0, new Intent(Util.BROADCAST_SHORTCUT_CREATED), 0);
                 shortcutManager.requestPinShortcut(shortcutInfo, intent.getIntentSender());
                 return;
             }
@@ -332,103 +205,12 @@ public final class API {
         context.sendBroadcast(addIntent);
     }
 
-    public static boolean isAnyVPNRunning(Context context){
-        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP)return isAnyVPNRunningV21(context);
-        else{
-            try {
-                for (NetworkInterface networkInterface : Collections.list(NetworkInterface.getNetworkInterfaces())) {
-                    if(networkInterface.getName().equals("tun0"))return true;
-                }
-            } catch (Exception ignored) {
-
-            }
-            return false;
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private static boolean isAnyVPNRunningV21(Context context){
-        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        for (Network network : cm.getAllNetworks()) {
-            NetworkCapabilities caps = cm.getNetworkCapabilities(network);
-            if(caps.hasTransport(NetworkCapabilities.TRANSPORT_VPN) && !caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN))return true;
-        }
-        return false;
-    }
-
     public static void startService(Context context, Intent intent){
         if(Preferences.getBoolean(context, "everything_disabled", false))return;
         if(intent.getComponent().getClassName().equals(DNSVpnService.class.getName()) &&
                 Preferences.getBoolean(context, "setting_show_notification", true) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             context.startForegroundService(intent);
         }else context.startService(intent);
-    }
-
-    public static void startDNSServerConnectivityCheck(@NonNull final Context context, @NonNull final ConnectivityCheckCallback callback){
-        runAsyncDNSQuery(isIPv4Enabled(context) ? getDNS1(context) : getDNS1V6(context), "frostnerd.com", false, Type.A, DClass.ANY, new DNSQueryResultListener() {
-            @Override
-            public void onSuccess(Message response) {
-                callback.onCheckDone(true);
-            }
-
-            @Override
-            public void onError(@Nullable Exception e) {
-                callback.onCheckDone(false);
-            }
-        }, 2);
-    }
-
-    public static void startDNSServerConnectivityCheck(@NonNull final Context context, @NonNull final String dnsAddress, @NonNull final ConnectivityCheckCallback callback){
-        runAsyncDNSQuery(dnsAddress, "frostnerd.com", false, Type.A, DClass.ANY, new DNSQueryResultListener() {
-            @Override
-            public void onSuccess(Message response) {
-                callback.onCheckDone(true);
-            }
-
-            @Override
-            public void onError(@Nullable Exception e) {
-                callback.onCheckDone(false);
-            }
-        }, 2);
-    }
-
-    public static void runAsyncDNSQuery( final String server, final String query, final boolean tcp, final int type,
-                                        final int dClass, final DNSQueryResultListener resultListener, final int timeout){
-        new Thread(){
-            @Override
-            public void run() {
-                try {
-                    Resolver resolver = new SimpleResolver(server);
-                    resolver.setTCP(tcp);
-                    resolver.setTimeout(timeout);
-                    Name name = Name.fromString(query.endsWith(".") ? query : query + ".");
-                    Record record = Record.newRecord(name, type, dClass);
-                    Message query = Message.newQuery(record);
-                    Message response = resolver.send(query);
-                    if(response.getSectionRRsets(1) == null)throw new IllegalStateException("Answer is null");
-                    resultListener.onSuccess(response);
-                } catch (IOException e) {
-                    resultListener.onError(e);
-                }
-            }
-        }.start();
-    }
-
-    public static Message runSyncDNSQuery(final String server, final String query, final boolean tcp, final int type,
-                                          final int dClass, DNSQueryResultListener dnsQueryResultListener, final int timeout){
-                try {
-                    Resolver resolver = new SimpleResolver(server);
-                    resolver.setTCP(tcp);
-                    resolver.setTimeout(timeout);
-                    Name name = Name.fromString(query.endsWith(".") ? query : query + ".");
-                    Record record = Record.newRecord(name, type, dClass);
-                    Message mquery = Message.newQuery(record);
-                    Message response = resolver.send(mquery);
-                    if(response.getSectionRRsets(1) == null)throw new IllegalStateException("Answer is null");
-                    return response;
-                } catch (IOException e) {
-                    return null;
-                }
     }
 
     public static String createNotificationChannel(Context context, boolean allowHiding){
@@ -462,7 +244,7 @@ public final class API {
             scheduler.schedule(new JobInfo.Builder(0, new ComponentName(context, ConnectivityJobAPI21.class)).setPersisted(true)
                     .setRequiresCharging(false).setMinimumLatency(0).setOverrideDeadline(0).build());
         } else {
-            LogFactory.writeMessage(context, LOG_TAG, "Starting Service (API below 21)");
+            LogFactory.writeMessage(context, LOG_TAG, "Starting Service (Util below 21)");
             context.startService(new Intent(context, ConnectivityBackgroundService.class));
         }
     }
@@ -488,45 +270,4 @@ public final class API {
         public void onSuccess(Message response);
         public void onError(@Nullable Exception e);
     }
-
-    public static class IPPortPair{
-        private String ip;
-        private int port;
-        private boolean ipv6;
-
-        public IPPortPair(String ip, int port, boolean IPv6){
-            this.ip = ip;
-            this.port = port;
-            this.ipv6 = IPv6;
-        }
-
-        public String getAddress() {
-            return ip;
-        }
-
-        public int getPort() {
-            return port;
-        }
-
-        public boolean isIpv6() {
-            return ipv6;
-        }
-
-        public void setIp(String ip) {
-            this.ip = ip;
-        }
-
-        public void setPort(int port) {
-            this.port = port;
-        }
-
-        public void setIpv6(boolean ipv6) {
-            this.ipv6 = ipv6;
-        }
-
-        @Override
-        public String toString() {
-            return ipv6 ? "[" + getAddress() + "]:" + getPort() : getAddress() + ":" + getPort();
-        }
     }
-}

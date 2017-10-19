@@ -36,9 +36,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.threading.VPNRunnable;
-import com.frostnerd.dnschanger.util.API;
-import com.frostnerd.dnschanger.database.DNSEntry;
+import com.frostnerd.dnschanger.util.DNSQueryUtil;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.Util;
+import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
@@ -132,10 +135,10 @@ public class MainFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        settingV6 = !API.isIPv4Enabled(getContext()) || (API.isIPv6Enabled(getContext()) && settingV6);
+        settingV6 = !PreferencesAccessor.isIPv4Enabled(getContext()) || (PreferencesAccessor.isIPv6Enabled(getContext()) && settingV6);
         setHasOptionsMenu(true);
         boolean vertical = getResources().getConfiguration().orientation == OrientationHelper.VERTICAL;
-        LogFactory.writeMessage(getContext(), LOG_TAG, "Created Activity", API.getActivity(this).getIntent());
+        LogFactory.writeMessage(getContext(), LOG_TAG, "Created Activity", Util.getActivity(this).getIntent());
         LogFactory.writeMessage(getContext(), LOG_TAG, "Setting ContentView");
         met_dns1 = (MaterialEditText) findViewById(R.id.met_dns1);
         met_dns2 = (MaterialEditText) findViewById(R.id.met_dns2);
@@ -185,7 +188,7 @@ public class MainFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(before != count){
                     if(vpnRunning && doStopVPN && !wasStartedWithTasker)stopVpn();
-                    API.IPPortPair pair = API.validateInput(s.toString(), settingV6, false);
+                    IPPortPair pair = Util.validateInput(s.toString(), settingV6, false);
                     if(pair == null || (pair.getPort() != -1 && !advancedMode)){
                         met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                     }else{
@@ -213,7 +216,7 @@ public class MainFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(before != count){
                     if(vpnRunning && doStopVPN && !wasStartedWithTasker)stopVpn();
-                    API.IPPortPair pair = API.validateInput(s.toString(), settingV6, true);
+                    IPPortPair pair = Util.validateInput(s.toString(), settingV6, true);
                     if(pair == null || (pair.getPort() != -1 && !advancedMode)){
                         met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                     }else{
@@ -242,7 +245,7 @@ public class MainFragment extends Fragment {
         String label1 = "DNS 1", label2 = "DNS 2";
         String dns1 = Preferences.getString(getContext(), settingV6 ? "dns1-v6" : "dns1", settingV6 ? "2001:4860:4860::8888" : "8.8.8.8");
         String dns2 = Preferences.getString(getContext(), settingV6 ? "dns2-v6" : "dns2", settingV6 ? "2001:4860:4860::8844" : "8.8.4.4");
-        for(DNSEntry entry: API.getDBHelper(getContext()).getDNSEntries()){
+        for(DNSEntry entry: Util.getDBHelper(getContext()).getDNSEntries()){
             if(entry.hasIP(dns1))label1 = "DNS 1 (" + entry.getShortName() + ")";
             if(entry.hasIP(dns2))label2 = "DNS 2 (" + entry.getShortName() + ")";
         }
@@ -293,10 +296,10 @@ public class MainFragment extends Fragment {
         super.onResume();
         advancedMode = VPNRunnable.isInAdvancedMode(getContext());
         Preferences.getDefaultPreferences(getContext()).registerOnSharedPreferenceChangeListener(preferenceChangeListener);
-        settingV6 = !API.isIPv4Enabled(getContext()) || (API.isIPv6Enabled(getContext()) && settingV6);
+        settingV6 = !PreferencesAccessor.isIPv4Enabled(getContext()) || (PreferencesAccessor.isIPv6Enabled(getContext()) && settingV6);
         LogFactory.writeMessage(getContext(), LOG_TAG, "Got OnResume");
         LogFactory.writeMessage(getContext(), LOG_TAG, "Sending ServiceStateRequest as broadcast");
-        vpnRunning = API.isServiceRunning(getContext());
+        vpnRunning = Util.isServiceRunning(getContext());
         if(Preferences.getBoolean(getContext(), "everything_disabled", false)){
             startStopButton.setEnabled(false);
             startStopButton.setClickable(false);
@@ -308,14 +311,14 @@ public class MainFragment extends Fragment {
             startStopButton.setAlpha(1f);
             setIndicatorState(vpnRunning);
         }
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(serviceStateReceiver, new IntentFilter(API.BROADCAST_SERVICE_STATUS_CHANGE));
-        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(new Intent(API.BROADCAST_SERVICE_STATE_REQUEST));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(serviceStateReceiver, new IntentFilter(Util.BROADCAST_SERVICE_STATUS_CHANGE));
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(new Intent(Util.BROADCAST_SERVICE_STATE_REQUEST));
         doStopVPN = false;
         setEditTextState();
         ((AppCompatActivity)getContext()).getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
-        API.getActivity(this).invalidateOptionsMenu();
+        Util.getActivity(this).invalidateOptionsMenu();
         doStopVPN = true;
-        API.getActivity(this).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        Util.getActivity(this).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     @Override
@@ -412,7 +415,7 @@ public class MainFragment extends Fragment {
                     LogFactory.writeMessage(getContext(), LOG_TAG, "Starting VPN",
                             i = DNSVpnService.getStartVPNIntent(getContext()));
                     wasStartedWithTasker = false;
-                    API.startService(getContext(), i);
+                    Util.startService(getContext(), i);
                     vpnRunning = true;
                     setIndicatorState(true);
                 }
@@ -422,7 +425,7 @@ public class MainFragment extends Fragment {
             LogFactory.writeMessage(getContext(), LOG_TAG, "Starting VPN",
                     i = DNSVpnService.getStartVPNIntent(getContext()));
             wasStartedWithTasker = false;
-            API.startService(getContext(), i);
+            Util.startService(getContext(), i);
             vpnRunning = true;
             setIndicatorState(true);
         }
@@ -438,10 +441,10 @@ public class MainFragment extends Fragment {
     }
 
     private void checkDNSReachability(final DNSReachabilityCallback callback){
-        List<String> servers = API.getAllDNS(getContext());
+        List<String> servers = PreferencesAccessor.getAllDNS(getContext());
         callback.setServers(servers.size());
         for(final String s: servers){
-            API.runAsyncDNSQuery(s, "google.de", false, Type.A, DClass.ANY, new API.DNSQueryResultListener() {
+            DNSQueryUtil.runAsyncDNSQuery(s, "google.de", false, Type.A, DClass.ANY, new Util.DNSQueryResultListener() {
                 @Override
                 public void onSuccess(Message response) {
                     callback.checkProgress(s, true);
@@ -458,7 +461,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu,inflater);
-        inflater.inflate(API.isIPv6Enabled(getContext()) ? (API.isIPv4Enabled(getContext()) ? ((settingV6 ? R.menu.menu_main_v6 : R.menu.menu_main)) : R.menu.menu_main_no_ipv6) : R.menu.menu_main_no_ipv6,menu);
+        inflater.inflate(PreferencesAccessor.isIPv6Enabled(getContext()) ? (PreferencesAccessor.isIPv4Enabled(getContext()) ? ((settingV6 ? R.menu.menu_main_v6 : R.menu.menu_main)) : R.menu.menu_main_no_ipv6) : R.menu.menu_main_no_ipv6,menu);
     }
 
     @Override
@@ -466,7 +469,7 @@ public class MainFragment extends Fragment {
         if(item.getItemId() == R.id.menu_switch_ip_version){
             doStopVPN = false;
             settingV6 = !settingV6;
-            API.getActivity(this).invalidateOptionsMenu();
+            Util.getActivity(this).invalidateOptionsMenu();
             setEditTextState();
             ((AppCompatActivity)getContext()).getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
             doStopVPN = true;

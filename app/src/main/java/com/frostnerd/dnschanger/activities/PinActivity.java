@@ -18,7 +18,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
@@ -158,7 +158,7 @@ public class PinActivity extends Activity {
                             putExtra(VPNServiceArgument.COMMAND_STOP_VPN.getArgument(), getIntent().getBooleanExtra("stop_vpn", false)).
                             putExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(), getIntent().getBooleanExtra("destroy", false)).
                             putExtra(VPNServiceArgument.ARGUMENT_STOP_REASON.getArgument(), getIntent().hasExtra("destroy") ? getIntent().getStringExtra("reason") : null).setAction(StringUtil.randomString(40)));
-            API.startService(this,i);
+            Util.startService(this,i);
             LogFactory.writeMessage(this, LOG_TAG, "Service Started");
         }
         finish();

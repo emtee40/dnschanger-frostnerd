@@ -1,4 +1,4 @@
-package com.frostnerd.dnschanger.database;
+package com.frostnerd.dnschanger.database.entities;
 
 import java.sql.Timestamp;
 
