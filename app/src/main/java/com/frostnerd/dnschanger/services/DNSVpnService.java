@@ -124,8 +124,12 @@ public class DNSVpnService extends VpnService {
                 if((ipv4Enabled && !pair.isIpv6()) || (ipv6Enabled && pair.isIpv6()))
                     contentText.append(pair.formatForTextfield(customPorts)).append("\n");
             }
-            contentText.append("\n");
-            contentText.append(excludedAppsText);
+            if(!excludedAppsText.equals("")){
+                contentText.append("\n");
+                contentText.append(excludedAppsText);
+            }else{
+                contentText.setLength(contentText.length()-1);
+            }
             if(!ipv6Enabled)contentText.append("\n").append(getString(R.string.notification_ipv6_text));
             notificationBuilder.setStyle(new NotificationCompat.BigTextStyle().
                     bigText(contentText.toString()));
