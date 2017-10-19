@@ -34,7 +34,6 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 final SwitchPreference pref = (SwitchPreference)preference;
-                System.out.println("IS CHECKED: " + pref.isChecked());
                 if(pref.isChecked()){
                     pref.setChecked(false);
                     showWarrantyDialog();
