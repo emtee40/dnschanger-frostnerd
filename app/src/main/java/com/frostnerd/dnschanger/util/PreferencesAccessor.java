@@ -2,6 +2,7 @@ package com.frostnerd.dnschanger.util;
 
 import android.content.Context;
 
+import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.utils.preferences.Preferences;
 
@@ -27,6 +28,56 @@ public class PreferencesAccessor {
         return Preferences.getBoolean(context, "setting_ipv4_enabled", true);
     }
 
+    public static boolean isEverythingDisabled(Context context){
+        return Preferences.getBoolean(context, "everything_disabled", false);
+    }
+
+    public static boolean checkConnectivityOnStart(Context context){
+        return Preferences.getBoolean(context, "check_connectivity", false);
+    }
+
+    public static boolean isDebugEnabled(Context context){
+        return Preferences.getBoolean(context, "debug", false);
+    }
+
+    public static boolean shouldHideNotificationIcon(Context context){
+        return Preferences.getBoolean(context, "hide_notification_icon", false);
+    }
+
+    public static boolean isNotificationEnabled(Context context){
+        return Preferences.getBoolean(context, "setting_show_notification", true);
+    }
+
+    public static boolean areAppShortcutsEnabled(Context context){
+        return Preferences.getBoolean(context, "setting_app_shortcuts_enabled", false);
+    }
+
+    public static boolean isAdvancedModeEnabled(Context context){
+        return Preferences.getBoolean(context, "advanced_settings", false);
+    }
+
+    public static boolean isRunningInAdvancedMode(Context context){
+        return Preferences.getBoolean(context, "advanced_settings", false) &&
+                (Preferences.getBoolean(context, "custom_port", false) ||
+                        Preferences.getBoolean(context, "rules_activated", false) ||
+                        Preferences.getBoolean(context, "query_logging", false));
+    }
+
+    public static boolean areCustomPortsEnabled(Context context){
+        return Preferences.getBoolean(context, "advanced_settings", false) &&
+                Preferences.getBoolean(context, "custom_port", false);
+    }
+
+    public static boolean areRulesEnabled(Context context){
+        return Preferences.getBoolean(context, "advanced_settings", false) &&
+                Preferences.getBoolean(context, "rules_activated", false);
+    }
+
+    public static boolean isQueryLoggingEnabled(Context context){
+        return Preferences.getBoolean(context, "advanced_settings", false) &&
+                Preferences.getBoolean(context, "query_logging", false);
+    }
+
     public static String getDNS1(Context context) {
         return isIPv4Enabled(context) ? Preferences.getString(context, "dns1", "8.8.8.8") : "";
     }
@@ -43,48 +94,8 @@ public class PreferencesAccessor {
         return isIPv6Enabled(context) ? Preferences.getString(context, "dns2-v6", "2001:4860:4860::8844") : "";
     }
 
-    public static IPPortPair getDNS1Pair(Context context){
-        return isIPv4Enabled(context) ? new IPPortPair(getDNS1(context), getPort1(context), false) : null;
-    }
-
-    public static IPPortPair getDNS2Pair(Context context){
-        return isIPv4Enabled(context) ? new IPPortPair(getDNS2(context), getPort2(context), false) : null;
-    }
-
-    public static IPPortPair getDNS1V6Pair(Context context){
-        return isIPv6Enabled(context) ? new IPPortPair(getDNS1V6(context), getPort1V6(context), false) : null;
-    }
-
-    public static IPPortPair getDNS2V6Pair(Context context){
-        return isIPv6Enabled(context) ? new IPPortPair(getDNS2V6(context), getPort2V6(context), false) : null;
-    }
-
-    public static int getPort1(Context context){
-        return areCustomPortsEnabled(context) ? Preferences.getInteger(context, "port1", 53) : 53;
-    }
-
-    public static int getPort2(Context context){
-        return areCustomPortsEnabled(context) ? Preferences.getInteger(context, "port2", 53) : 53;
-    }
-
-    public static int getPort1V6(Context context){
-        return areCustomPortsEnabled(context) ? Preferences.getInteger(context, "port1v6", 53) : 53;
-    }
-
-    public static int getPort2V6(Context context){
-        return areCustomPortsEnabled(context) ? Preferences.getInteger(context, "port2v6", 53) : 53;
-    }
-
-    public static boolean isAdvancedModeEnabled(Context context){
-        return Preferences.getBoolean(context, "advanced_settings", false) &&
-                (Preferences.getBoolean(context, "custom_port", false) ||
-                        Preferences.getBoolean(context, "rules_activated", false) ||
-                        Preferences.getBoolean(context, "query_logging", false));
-    }
-
-    public static boolean areCustomPortsEnabled(Context context){
-        return Preferences.getBoolean(context, "advanced_settings", false) &&
-                Preferences.getBoolean(context, "custom_port", false);
+    public static boolean isPinProtected(Context context, PinProtectable pinProtectable){
+        return pinProtectable.isEnabled(context);
     }
 
     public static List<String> getAllDNS(final Context context){
@@ -102,7 +113,7 @@ public class PreferencesAccessor {
 
     public static List<IPPortPair> getAllDNSPairs(final Context context, final boolean enabledOnly){
         return new ArrayList<IPPortPair>(){
-            private boolean customPorts = Preferences.getBoolean(context, "custom_port", false);
+            private boolean customPorts = areCustomPortsEnabled(context);
             {
                 if(!enabledOnly || isIPv4Enabled(context)){
                     addIfNotEmpty(getDNS1(context), 1);
@@ -124,15 +135,72 @@ public class PreferencesAccessor {
         };
     }
 
-    public static int getPortForDNS(Context context, String server){
-        if(!Preferences.getBoolean(context, "custom_port", false))return 53;
-        List<String> dns = getAllDNS(context);
-        for(int i = 0; i < dns.size();i++){
-            if(dns.get(i).equals(server)){
-                return i <= 1 ? Preferences.getInteger(context, "port" + (i+1), 53) :
-                        Preferences.getInteger(context, "port" + (i-1) + "v6", 53);
-            }
+    public enum Type{
+        DNS1("dns1", "port1", "8.8.8.8"),
+        DNS2("dns2", "port2", "8.8.4.4"),
+        DNS1_V6("dns1-v6", "port1v6", "2001:4860:4860::8888"),
+        DNS2_V6("dns2-v6", "port2v6", "2001:4860:4860::8844");
+
+        private final String dnsKey, portKey, defaultAddress;
+        Type(String dnsKey, String portKey, String defaultAddress){
+            this.dnsKey = dnsKey;
+            this.portKey = portKey;
+            this.defaultAddress = defaultAddress;
         }
-        return 53;
+
+        public static Type fromKey(String key){
+            for(Type val: values()){
+                if(val.dnsKey.equalsIgnoreCase(key))return val;
+            }
+            return null;
+        }
+
+        private boolean isIPv6(){
+            return dnsKey.contains("v6");
+        }
+
+        private boolean isAddressTypeEnabled(Context context){
+            return (isIPv6() && isIPv6Enabled(context)) || (!isIPv6() && isIPv4Enabled(context));
+        }
+
+        private int getPort(Context context){
+            return areCustomPortsEnabled(context) ? Preferences.getInteger(context, portKey, 53) : 53;
+        }
+
+        private String getServerAddress(Context context){
+            return Preferences.getString(context, dnsKey, defaultAddress);
+        }
+
+        public IPPortPair getPair(Context context){
+            return isAddressTypeEnabled(context) ? new IPPortPair(getServerAddress(context), getPort(context), isIPv6()) :
+                    new IPPortPair("", -1, false);
+        }
+
+        public DNSEntry findMatchingDatabaseEntry(Context context){
+            String address = getServerAddress(context);
+            for(DNSEntry entry: Util.getDBHelper(context).getDNSEntries()){
+                if(entry.hasIP(address))return entry;
+            }
+            return null;
+        }
+
+        public void saveDNSPair(IPPortPair pair){
+
+        }
+    }
+
+    public enum PinProtectable{
+        APP("pin_app"), APP_SHORTCUT("pin_app_shortcut"), TILE("pin_tile"), NOTIFICATION("pin_notification");
+
+        private final String settingsKey;
+        PinProtectable(String settingsKey){
+            this.settingsKey = settingsKey;
+        }
+
+        private boolean isEnabled(Context context){
+            return Preferences.getBoolean(context, "setting_pin_enabled", false) &&
+                    Preferences.getBoolean(context, settingsKey, false);
+        }
+
     }
 }

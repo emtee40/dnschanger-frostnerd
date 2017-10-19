@@ -39,4 +39,13 @@ public class IPPortPair {
     public String toString() {
         return ipv6 ? "[" + getAddress() + "]:" + getPort() : getAddress() + ":" + getPort();
     }
+
+    public String formatForTextfield(boolean customPorts){
+        if(ip.equals(""))return "";
+        if(ipv6){
+            return customPorts ? "[" + ip + "]:" + port : ip;
+        }else{
+            return customPorts ? ip + ":" + port : ip;
+        }
+    }
 }
