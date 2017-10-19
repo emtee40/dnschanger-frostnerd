@@ -43,6 +43,50 @@ public class PreferencesAccessor {
         return isIPv6Enabled(context) ? Preferences.getString(context, "dns2-v6", "2001:4860:4860::8844") : "";
     }
 
+    public static IPPortPair getDNS1Pair(Context context){
+        return isIPv4Enabled(context) ? new IPPortPair(getDNS1(context), getPort1(context), false) : null;
+    }
+
+    public static IPPortPair getDNS2Pair(Context context){
+        return isIPv4Enabled(context) ? new IPPortPair(getDNS2(context), getPort2(context), false) : null;
+    }
+
+    public static IPPortPair getDNS1V6Pair(Context context){
+        return isIPv6Enabled(context) ? new IPPortPair(getDNS1V6(context), getPort1V6(context), false) : null;
+    }
+
+    public static IPPortPair getDNS2V6Pair(Context context){
+        return isIPv6Enabled(context) ? new IPPortPair(getDNS2V6(context), getPort2V6(context), false) : null;
+    }
+
+    public static int getPort1(Context context){
+        return areCustomPortsEnabled(context) ? Preferences.getInteger(context, "port1", 53) : 53;
+    }
+
+    public static int getPort2(Context context){
+        return areCustomPortsEnabled(context) ? Preferences.getInteger(context, "port2", 53) : 53;
+    }
+
+    public static int getPort1V6(Context context){
+        return areCustomPortsEnabled(context) ? Preferences.getInteger(context, "port1v6", 53) : 53;
+    }
+
+    public static int getPort2V6(Context context){
+        return areCustomPortsEnabled(context) ? Preferences.getInteger(context, "port2v6", 53) : 53;
+    }
+
+    public static boolean isAdvancedModeEnabled(Context context){
+        return Preferences.getBoolean(context, "advanced_settings", false) &&
+                (Preferences.getBoolean(context, "custom_port", false) ||
+                        Preferences.getBoolean(context, "rules_activated", false) ||
+                        Preferences.getBoolean(context, "query_logging", false));
+    }
+
+    public static boolean areCustomPortsEnabled(Context context){
+        return Preferences.getBoolean(context, "advanced_settings", false) &&
+                Preferences.getBoolean(context, "custom_port", false);
+    }
+
     public static List<String> getAllDNS(final Context context){
         return new ArrayList<String>(){{
             addIfNotEmpty(getDNS1(context));

@@ -78,7 +78,7 @@ public class VPNRunnable implements Runnable {
                 addressIndex++;
                 try{
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying address '" + address + "'");
-                    configure(address, isInAdvancedMode(service));
+                    configure(address, PreferencesAccessor.isAdvancedModeEnabled(service));
                     tunnelInterface = builder.establish();
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface connected.");
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Broadcasting current state");
@@ -87,7 +87,7 @@ public class VPNRunnable implements Runnable {
                     service.updateNotification();
                     Util.updateAppShortcuts(service);
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "VPN Thread going into while loop");
-                    if(isInAdvancedMode(service) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){
+                    if(PreferencesAccessor.isAdvancedModeEnabled(service) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){
                         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "We are in advanced mode, starting DNS proxy");
                         dnsProxy = new DNSUDPProxy(service, tunnelInterface, new HashSet<>(PreferencesAccessor.getAllDNSPairs(service, true))
                                 ,Preferences.getBoolean(service, "rules_activated", false), Preferences.getBoolean(service, "query_logging", false));
@@ -193,13 +193,6 @@ public class VPNRunnable implements Runnable {
             builder.addDnsServer(server);
             if(addRoute)builder.addRoute(server, ipv6 ? 128 : 32);
         }
-    }
-
-    public static boolean isInAdvancedMode(Context context){
-        return Preferences.getBoolean(context, "advanced_settings", false) &&
-                (Preferences.getBoolean(context, "custom_port", false) ||
-                        Preferences.getBoolean(context, "rules_activated", false) ||
-                        Preferences.getBoolean(context, "query_logging", false));
     }
 
     public boolean isThreadRunning(){

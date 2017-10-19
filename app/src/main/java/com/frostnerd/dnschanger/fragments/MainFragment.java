@@ -294,7 +294,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        advancedMode = VPNRunnable.isInAdvancedMode(getContext());
+        advancedMode = PreferencesAccessor.isAdvancedModeEnabled(getContext());
         Preferences.getDefaultPreferences(getContext()).registerOnSharedPreferenceChangeListener(preferenceChangeListener);
         settingV6 = !PreferencesAccessor.isIPv4Enabled(getContext()) || (PreferencesAccessor.isIPv6Enabled(getContext()) && settingV6);
         LogFactory.writeMessage(getContext(), LOG_TAG, "Got OnResume");
