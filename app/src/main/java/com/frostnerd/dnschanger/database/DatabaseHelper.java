@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.text.TextUtils;
-
 
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
@@ -64,8 +62,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS DNSRules(Domain TEXT NOT NULL, IPv6 BOOL DEFAULT 0, Target TEXT NOT NULL, Wildcard BOOL DEFAULT 0, PRIMARY KEY(Domain, IPv6))");
         db.execSQL("CREATE TABLE IF NOT EXISTS DNSQueries(Host TEXT NOT NULL, IPv6 BOOL DEFAULT 0, Time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(Host, Time))");
         db.execSQL("CREATE TABLE IF NOT EXISTS DNSRuleImports(Filename TEXT NOT NULL, Time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, RowStart INTEGER, RowEnd INTEGER, PRIMARY KEY(Filename, Time))");
-        db.execSQL("CREATE TABLE IF NOT EXISTS ShortcutAddress(ShortcutID INTEGER, ID INTEGER AUTOINCREMENT, Address VARCHAR(50)," +
-                " Port INTEGER, IPv6 BOOL, FOREIGN KEY(ShortcutID) REFERENCES Shortcut(ID), PRIMARY KEY(ID, ShortcutID))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS ShortcutAddress(ShortcutID INTEGER, Address VARCHAR(50)," +
+                " Port INTEGER, IPv6 BOOL, FOREIGN KEY(ShortcutID) REFERENCES Shortcut(ID))");
         for(DNSEntry entry: defaultDNSEntries){
             saveDNSEntry(entry);
         }
@@ -102,8 +100,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
             db.execSQL("DROP TABLE Shortcuts");
             db.execSQL("CREATE TABLE IF NOT EXISTS Shortcut(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT)");
-            db.execSQL("CREATE TABLE IF NOT EXISTS ShortcutAddress(ShortcutID INTEGER, ID INTEGER PRIMARY KEY AUTOINCREMENT, Address VARCHAR(50)," +
-                    " Port INTEGER, IPv6 BOOL, FOREIGN KEY(ShortcutID) REFERENCES Shortcut(ID), PRIMARY KEY(ID, ShortcutID))");
+            db.execSQL("CREATE TABLE IF NOT EXISTS ShortcutAddress(ShortcutID INTEGER, Address VARCHAR(50)," +
+                    " Port INTEGER, IPv6 BOOL, FOREIGN KEY(ShortcutID) REFERENCES Shortcut(ID), PRIMARY KEY(ShortcutID))");
             ContentValues values = new ContentValues();
             int id;
             for(String[] d: data){
