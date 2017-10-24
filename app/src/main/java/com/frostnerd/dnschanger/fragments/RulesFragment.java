@@ -55,7 +55,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
     private RuleAdapter ruleAdapter;
     private FloatingActionButton fabOpen, fabSQL, fabNew, fabFilter;
     private boolean fabExpanded = false, wildcardShown = false;
-    private View wildcardWrap, newWrap, filterWrap;
+    private View sqlWrap, newWrap, filterWrap;
     private SearchView searchView;
 
     @Nullable
@@ -77,7 +77,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         list = content.findViewById(R.id.list);
         newWrap = content.findViewById(R.id.wrap_fab_new);
         filterWrap = content.findViewById(R.id.wrap_fab_filter);
-        wildcardWrap = content.findViewById(R.id.wrap_fab_sql);
+        sqlWrap = content.findViewById(R.id.wrap_fab_sql);
         fabSQL = content.findViewById(R.id.fab_sql);
         fabNew = content.findViewById(R.id.fab_new);
         fabFilter = content.findViewById(R.id.fab_filter);
@@ -95,7 +95,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
                     fabOpen.setRotation(0);
                     newWrap.setAlpha(0);
                     filterWrap.setAlpha(0);
-                    wildcardWrap.setAlpha(0);
+                    sqlWrap.setAlpha(0);
                 } else if (dy < 30) fabOpen.show();
             }
         });
@@ -252,7 +252,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         ViewPropertyAnimatorCompat anim = ViewCompat.animate(fabOpen).rotation(fabExpanded ? 135f : -135f).withLayer().
                 setDuration(300).setInterpolator(new OvershootInterpolator());
         ViewPropertyAnimatorCompat anim2 = ViewCompat.animate(newWrap).alpha(fabExpanded ? 1.0f : 0f).setDuration(300);
-        ViewPropertyAnimatorCompat anim3 = ViewCompat.animate(wildcardWrap).alpha(fabExpanded ? 1.0f : 0f).setDuration(300);
+        ViewPropertyAnimatorCompat anim3 = ViewCompat.animate(sqlWrap).alpha(fabExpanded ? 1.0f : 0f).setDuration(300);
         ViewPropertyAnimatorCompat anim4 = ViewCompat.animate(filterWrap).alpha(fabExpanded ? 1.0f : 0f).setDuration(300);
         anim.start();
         anim2.start();
