@@ -193,8 +193,8 @@ public class MainFragment extends Fragment {
                     }else{
                         if(pair.getPort() == -1)pair.setPort(53);
                         met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
-                        if(settingV6) PreferencesAccessor.Type.DNS1_V6.saveDNSPair(pair);
-                        else PreferencesAccessor.Type.DNS1.saveDNSPair(pair);
+                        if(settingV6) PreferencesAccessor.Type.DNS1_V6.saveDNSPair(getContext(), pair);
+                        else PreferencesAccessor.Type.DNS1.saveDNSPair(getContext(), pair);
                         setEditTextLabel();
                     }
                 }
@@ -221,8 +221,8 @@ public class MainFragment extends Fragment {
                     }else{
                         if(pair.getPort() == -1)pair.setPort(53);
                         met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
-                        if(settingV6) PreferencesAccessor.Type.DNS2_V6.saveDNSPair(pair);
-                        else PreferencesAccessor.Type.DNS2.saveDNSPair(pair);
+                        if(settingV6) PreferencesAccessor.Type.DNS2_V6.saveDNSPair(getContext(), pair);
+                        else PreferencesAccessor.Type.DNS2.saveDNSPair(getContext(), pair);
                         setEditTextLabel();
                     }
                 }

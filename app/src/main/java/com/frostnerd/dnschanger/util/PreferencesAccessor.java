@@ -184,8 +184,9 @@ public class PreferencesAccessor {
             return null;
         }
 
-        public void saveDNSPair(IPPortPair pair){
-
+        public void saveDNSPair(Context context, IPPortPair pair){
+            Preferences.put(context, portKey, pair.getPort() == -1 ? 53 : pair.getPort());
+            Preferences.put(context, dnsKey, pair.getAddress());
         }
     }
 
