@@ -233,11 +233,8 @@
     <string-array name="features_1_16">
         <item>Diesen Dialog hinzugefügt, um über neue Features zu informieren</item>
         <item>Im Hauptmenü wird nun der Name des DNS Servers angezeigt, welcher verwendet wird</item>
-        <item>Es können nun Domains als DNS Server genutzt werden</item>
         <item>Die App warnt nun, sollte keine Verbindung zu dem eingestellten DNS Servern möglich sein</item>
-        <item>Optimierungen für Android TV</item>
         <item>Es kann nun der Fingerabdruck im Pin dialog verwendet werden</item>
-        <item>Es können nun VPN Verbindungsdaten angegeben werden, um diese App als VPN zu nutzen</item>
         <item>Es kann nun eingestellt werden, in welchen WLANs DNS Changer automatisch startet</item>
         <item>Bugfixes</item>
     </string-array>
@@ -275,4 +272,22 @@
     <string name="importing_x_rules">Importiere [x] Regeln</string>
     <string name="rules_import_finished">[x] Zeilen wurden gelesen, von welchen [y] valide und [z] einzigartige (neue) Einträge waren.</string>
     <string name="rule_unknown_ignoring">Unbekannt, ignoriere</string>
+    <string name="sql_actions">SQL Aktionen</string>
+    <string name="show_wildcard_entries">Zeige Wildcard Einträge</string>
+    <string name="show_normal_entries">Zeige normale Einträge</string>
+    <string name="x_lines">[x] Zeilen</string>
+    <string name="summary_export_queries">Exportiert alle Anfragen in eine Textdatei in einem beliebigen Ordner</string>
+    <string name="title_export_queries">Exportiere Anfragen</string>
+    <string name="title_query_logging">Anfragenspeicherung</string>
+    <string name="loading">Lade</string>
+    <string name="wait_importing_rules">Erkenne Dateitypen, bitte warten...</string>
+    <string name="file_hosts">Hosts Datei</string>
+    <string name="file_dnsmasq">Dnsmasq Datei</string>
+    <string name="file_justdomains">Domainliste</string>
+    <string name="select_files">Wähle Datei(en)</string>
+    <string name="detect_rule_type">Versuche, den Dateityp zu erkennen</string>
+    <string name="file_adblock">Adblock Datei (Format: ||HOST^)</string>
+    <string name="fail_fast">Schnell fehlschlagen</string>
+    <string name="summary_query_logging">Speichere alle DNS Anfragen wenn die App aktiviert ist</string>
+    <string name="disable_failfast_info">Deaktivere \'schnell fehlschlagen\" falls der Typ nicht erkannt werden kann. Da dies jedoch länger dauert, versuche den Typ selbst anzugeben.</string>
 </resources>

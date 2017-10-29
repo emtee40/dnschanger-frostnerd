@@ -240,11 +240,8 @@
     <string-array name="features_1_16">
         <item>Added this dialog to highlight new features</item>
         <item>The main menu now shows the name of the DNS provider being used</item>
-        <item>You can now use domains as DNS servers</item>
         <item>The app now warns you if no connection can be established to the configured DNS server</item>
-        <item>Optimization for TVs</item>
         <item>You can now use your fingerprint in the pin dialog</item>
-        <item>You can now provide actual VPN credentials</item>
         <item>You can now configure the WIFI names on which DNS Changer starts automatically</item>
         <item>Bugfixes</item>
     </string-array>

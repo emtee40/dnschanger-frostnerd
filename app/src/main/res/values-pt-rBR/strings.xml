@@ -258,4 +258,35 @@
     <string name="delete">Excluir</string>
     <string name="both">Ambos</string>
     <string name="information_advanced_settings_warranty">Para implementar os recursos listados abaixo, todos os pacotes de DNS enviados são interceptados e modificados. Isso pode aumentar o uso de bateria e RAM.\n\nUse por sua conta e risco, não há garantia fornecida. Ao clicar em OK, você concorda que o autor deste aplicativo não é responsável por qualquer dano que possa resultar.</string>
+    <string name="import_rules">Importar</string>
+    <string name="file_hosts">Hosts file</string>
+    <string name="file_dnsmasq">Dnsmasq file</string>
+    <string name="file_justdomains">Domain list</string>
+    <string name="select_files">Selecionar arquivos</string>
+    <string name="importing_x_rules">Importando [x] regras</string>
+    <string name="rules_import_finished">[x] linhas foram lidas, [y] das quais eram válidas e [z] distintas (novas) Entradas.</string>
+    <string name="detect_rule_type">Tente detectar o tipo</string>
+    <string name="rule_unknown_ignoring">Desconhecido, ignorando</string>
+    <string name="file_adblock">Adblock file (Format: ||HOST^)</string>
+    <string name="fail_fast">Fail rápido</string>
+    <string name="loading">Carregando</string>
+    <string name="title_query_logging">Query logging</string>
+    <string name="title_export_queries">Exportar queries</string>
+    <string name="summary_query_logging">Registre todas as consultas de DNS quando o aplicativo estiver sendo executado</string>
+    <string name="x_lines">[x] linhas</string>
+    <string name="show_normal_entries">Mostrar entradas normais</string>
+    <string name="show_wildcard_entries">Mostrar entradas do curinga</string>
+    <string name="sql_actions">Ações SQL</string>
+    <string name="disable_failfast_info">Desativar falha rapidamente se o tipo não puder ser detectado. Como isso leva mais tempo, tente especificar o tipo você mesmo.</string>
+    <string name="wait_importing_rules">Detectando tipos de arquivo, aguarde ...</string>
+    <string name="summary_export_queries">Exporta todas as consultas em um arquivo de texto para uma pasta de sua escolha</string>
+
+    <string-array name="features_1_16">
+        <item>Adicionado esta caixa de diálogo para destacar novos recursos</item>
+        <item>O menu principal agora mostra o nome do provedor DNS que está sendo usado</item>
+        <item>O aplicativo agora avisa se nenhuma conexão pode ser estabelecida para o servidor DNS configurado</item>
+        <item>Agora você pode usar sua impressão digital na caixa de diálogo do pino</item>
+        <item>Agora você pode configurar os nomes WIFI em que o DNS Changer inicia automaticamente</item>
+        <item>Bugfixes</item>
+    </string-array>
 </resources>
