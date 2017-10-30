@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">DnsChanger</string>
-    <string name="start">开动</string>
+    <string name="start">开始</string>
     <string name="stop">停止</string>
     <string name="rate">评分</string>
     <string name="info_dns_button">关于 DNS 的信息</string>
@@ -14,7 +14,7 @@
     <string name="summary_notification">当 DNSChanger 正在运行时显示通知</string>
     <string name="title_start_boot">开机自启</string>
     <string name="summary_start_boot">当你的手机启动时自动打开 DNSChanger</string>
-    <string name="subtitle_configuring">正在配置 [[x]]</string>
+    <string name="subtitle_configuring">配置 [[x]]</string>
     <string name="menu_title_configure_v4">配置 IPv4</string>
     <string name="menu_title_configure_v6">配置 IPv6</string>
     <string name="action_resume">恢复</string>
@@ -38,8 +38,8 @@
     <string name="done">完成</string>
     <string name="check_validity">请检查你的输入内容的有效性</string>
     <string name="press_back_again">再次点按返回键以离开 (放弃更改!)</string>
-    <string name="tasker_automation_conflict_text">这个应用已设为网络类型发生变更时开动/停止 VPN (要么 Wifi 要么 3G)。\n这可能会与这个 Tasker 插件发生冲突，也就是这个操作可能会被应用本身所覆写 (在给定时间内有且只能运行一个 VPN).\n\n是否要停用这些冲突的设置?</string>
-    <string name="shortcut_conflict_text">这个应用已设为网络类型发生变更时开动/停止 VPN (要么 Wifi 要么 3G)。\n这可能会与任何设置发生冲突，也就是从快捷方式中启动为操作可能会被应用本身所覆写 (在给定时间内有且只能运行一个 VPN)。\n\n是否要停用这些冲突的设置?</string>
+    <string name="tasker_automation_conflict_text">这个应用已设为网络类型发生变更时开始/停止 VPN (要么 Wifi 要么 3G)。\n这可能会与这个 Tasker 插件发生冲突，也就是这个操作可能会被应用本身所覆写 (在给定时间内有且只能运行一个 VPN).\n\n是否要停用这些冲突的设置?</string>
+    <string name="shortcut_conflict_text">这个应用已设为网络类型发生变更时开始/停止 VPN (要么 Wifi 要么 3G)。\n这可能会与任何设置发生冲突，也就是从快捷方式中启动为操作可能会被应用本身所覆写 (在给定时间内有且只能运行一个 VPN)。\n\n是否要停用这些冲突的设置?</string>
     <string name="warning">警告</string>
     <string name="yes">是</string>
     <string name="no">否</string>
@@ -75,14 +75,14 @@
     <string name="title_pin_app">保护应用</string>
     <string name="summary_pin_app">当启动应用时询问 PIN码</string>
     <string name="title_category_pin">PIN码保护</string>
-    <string name="summary_version">版本 [[version]] ([[code]])\n\n© Daniel Wolf 2017\n保留所有权利\n\nBrazilian translation by Lukinhas\nChinese translation by Majida Whale</string>
+    <string name="summary_version">版本 [[version]] ([[code]])\n\n© Daniel Wolf 2017\n保留所有权利\n\nBrazilian translation by Lukinhas\n\nChinese Simplified translation by Majida Whale</string>
     <string name="usage_stats_info_text">要在某个应用在前台运行时自动暂停 DNS Changer，这个应用需要使用情况数据的访问权。\n\n在下一个窗口中，请授予 DNSChanger对这个数据的访问权，否则你将不能够使用这个设置。\n\n\n除了当前正在运行的应用程序之外，不需要其他数据。不会保存或者传输数据。\n如果你想要查看源代码，源代码现已公开可用 https://git.frostnerd.com/PublicAndroidApps/DnsChanger</string>
     <string name="title_remove_usage_data">移除使用情况数据的访问权</string>
     <string name="summary_remove_usage_data">已授予使用情况数据的访问权。点击此处可撤回这项权限。</string>
     <string name="autopause_appselect_info_text">各个有记号的应用都会在前台运行时自动暂停 DNS Changer 。例如在已更改 DNS 时无法下载商店里的应用时会很有用。 </string>
 
     <string-array name="tasker_configure_actions">
-        <item>开动 DNSChanger</item>
+        <item>开始 DNSChanger</item>
         <item>停止 DNSChanger</item>
         <item>暂停 DNSChanger</item>
         <item>恢复 DNSChanger</item>
@@ -91,13 +91,13 @@
     <string name="vpn_error_explain">这个应用异常崩溃。这有可能是意味着这个应用不支持你的手机/ROM 亦或者发生常规错误(很有可能表明我在哪些地方出了错)。\n\n不管怎样，发送崩溃报告会极大地帮助我并很将其修复。\n是否要将其发送给我?</string>
     <string name="send_crash_report">发送崩溃报告</string>
     <string name="deep_link_title">DNS Changer by Frostnerd</string>
-    <string name="summary_pin_tile">当从快捷设置中开动/停止时询问PIN码</string>
+    <string name="summary_pin_tile">当从快捷设置中开始/停止时询问PIN码</string>
     <string name="title_pin_tile">保护快捷设置</string>
     <string name="tile_start">开启 DNS Changer</string>
     <string name="tile_stop">停止 DNS Changer</string>
     <string name="tile_pause">暂停 DNS Changer</string>
     <string name="tile_resume">恢复 DNS Changer</string>
-    <string name="summary_disable_network_change">在切换网络 (例如 Wifi 切换为 3G) 时自动停用。DNS Changer will activate again if set so in the previous settings.</string>
+    <string name="summary_disable_network_change">在切换网络 (例如 Wifi 切换为 3G) 时自动停用。如果设定了上一个设置，将重新激活 DNS Changer。</string>
     <string name="title_disable_network_change">在网络切换时停用</string>
     <string name="title_share_app">分享这个应用</string>
     <string name="summary_share_app">将这个应用分享给你的朋友或者其他人会帮助这个应用让更多的人知道。</string>
@@ -161,31 +161,23 @@
         <item>暗色</item>
     </string-array>
 
-    <string-array name="themeValues" translatable="false">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
     <string name="remove">移除</string>
     <string name="whitelist">白名单</string>
     <string name="select_all">全选</string>
     <string name="deselect_all">反选</string>
-    <string name="summary_pin_app_shortcut">当从应用快捷方式中开动/停止时询问 PIN码</string>
+    <string name="summary_pin_app_shortcut">当从应用快捷方式中开始/停止时询问 PIN码</string>
     <string name="title_pin_app_shortcut">保护应用快捷方式</string>
     <string name="title_enable_app_shortcuts">启用应用快捷方式</string>
     <string name="summary_enable_app_shortcuts">启用应用快捷方式。在启动器中长按应用快捷方式以打开菜单</string>
     <string name="notification_x_whitelisted">[x] 个应用已加白名单</string>
     <string name="notification_x_blacklisted">[x] 个应用已加黑名单</string>
-    <string name="default_dns_explain_delete">长按条目以删除或编辑。点击附加条目可同时删除。</string>
+    <string name="default_dns_explain_delete">长按条目以删除或编辑。点击额外条目可同时删除。</string>
     <string name="summary_enable_ipv4">启用 IPv4。 允许提供 ipv4 地址用作为 DNS 服务器</string>
     <string name="title_enable_ipv4">启用 IPv4</string>
     <string name="warning_disabling_v4">大多数 Android 版本在 DNS Changer 正在运行及未提供 IPv4 地址时都不能再访问互联网。可是，你需要为你的设备尝试一下。</string>
-    <string-array name="default_blacklist" translatable="false">
-        <item>bbc.iplayer.android</item>
-    </string-array>
     <string name="x_apps_selected">已选择 [[x]] 个应用</string>
     <string name="tile_pause_resume">暂停 / 恢复</string>
-    <string name="tile_start_stop">开动 / 停止</string>
+    <string name="tile_start_stop">开始 / 停止</string>
     <string name="title_vpn_exclusion">VPN 排除</string>
     <string name="search_hint">搜索设置项</string>
     <string name="unfixable_error_explaination">后台工作程序因在一些设备上发生异常而崩溃。这个崩溃无法通过应用本身修复。\n这时可试着重新启动应用，如果没有帮助，可以重新开机。\n\n如果问题仍然存在并且你的设备已经 Root ，可尝试下载应用 Tun.ko Installer，有可能会修复。这个应用的开发者是 DroidVPN Inc.\nLink: https://play.google.com/store/apps/details?id=com.aed.tun.installer</string>
@@ -197,16 +189,16 @@
     <string name="nav_title_features">功能</string>
     <string name="nav_title_tiles">瓷贴</string>
     <string name="nav_title_pin_protection">PIN码保护</string>
-    <string name="nav_title_more">和更多</string>
-    <string name="about_text">这个应用是开源的。源代码可以在 git.frostnerd.com 中找到。\n图标源自 Google (Material icon pack - https://material.io/icons).\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2017\n保留所有权利\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger\n\nBrazilian translation by Lukinhas</string>
+    <string name="nav_title_more">更多</string>
+    <string name="about_text">这个应用是开源的。源代码可以在 git.frostnerd.com 中找到。\n图标源自 Google (Material icon pack - https://material.io/icons).\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2017\n保留所有权利\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger\n\nBrazilian translation by Lukinhas\n\nChinese Simplified translation by Majida Whale</string>
     <string name="close">关闭</string>
-    <string name="info_text_how_does_it_work">Android 允许你在 WiFi 设置中配置 DNS 服务器 - 但是在移动连接中则不可以 (3G, 4G…)。然而，需要你使用静态 IP 地址，不允许轻松切换并不能使用 IPv6，与这个应用相比时的其他缺点之中。\n\n这个应用采用的是 Android 的 VPN 结构以允许设备动态地设置 DNS 服务器。要达到这个，需要创建一个将同台设备用作为末端的局域 VPN - 这意味着 VPN 连接既不能连接到互联网也不能被外部检测到。\n由于这个虚拟 VPN 可以动态地开动/停止，允许一系列功能及自动化。 这个 VPN 不能点击且自身读取不到数据。这只是个更改 DNS 服务器的中间人。\n\n如果你对这个技术方面的内容感兴趣，可以访问我的git: git.frostnerd.com.</string>
+    <string name="info_text_how_does_it_work">Android 允许你在 WiFi 设置中配置 DNS 服务器 - 但是在移动连接中则不可以 (3G, 4G…)。然而，需要你使用静态 IP 地址，不允许轻松切换并不能使用 IPv6，与这个应用相比时的其他缺点之中。\n\n这个应用采用的是 Android 的 VPN 结构以允许设备动态地设置 DNS 服务器。要达到这个，需要创建一个将同台设备用作为末端的局域 VPN - 这意味着 VPN 连接既不能连接到互联网也不能被外部检测到。\n由于这个虚拟 VPN 可以动态地开始/停止，允许一系列功能及自动化。 这个 VPN 不能点击且自身读取不到数据。这只是个更改 DNS 服务器的中间人。\n\n如果你对这个技术方面的内容感兴趣，可以访问我的git: git.frostnerd.com.</string>
     <string name="create_one">创建一个</string>
     <string name="feature_shortcuts">使用这个应用，你可以在你的主屏幕上创建快捷方式。这些快捷方式包含 DNS 设置，无需打开应用即可通过点击更改你的 DNS 服务器。\n如果你想在不同的服务器中快速切换，这样做会显得尤其方便 - 只需创建多个快捷方式并放置在你的主屏幕上。\n\n你可以在设置中配置这些快捷方式的行为</string>
     <string name="notification_channel_default">默认通道</string>
     <string name="notification_channel_default_description">发布通知的默认通道</string>
-    <string name="feature_tiles">为了快速访问，你可以在通知区域放置瓷贴。它们可用于开动/停止及暂停/恢复 DNS Changer。\n\n要添加瓷贴，只需下拉通知区域，点击钢笔图标并通过长按将瓷贴向上拖曳即可。</string>
-    <string name="feature_pin_protection">你可以使用 PIN码保护每一个开动/停止/暂停/恢复 DNS Changer 的操作。每次执行操作时，都会向你显示询问 PIN码的对话框。\n\n如果用户不精通技术，这样可用于防止手机用户干扰到应用。专为阻止小孩停止该应用而开发。\n选择要在打开设置保护的项目。</string>
+    <string name="feature_tiles">为了快速访问，你可以在通知区域放置瓷贴。它们可用于开始/停止及暂停/恢复 DNS Changer。\n\n要添加瓷贴，只需下拉通知区域，点击钢笔图标并通过长按将瓷贴向上拖曳即可。</string>
+    <string name="feature_pin_protection">你可以使用 PIN码保护每一个开始/停止/暂停/恢复 DNS Changer 的操作。每次执行操作时，都会向你显示询问 PIN码的对话框。\n\n如果用户不精通技术，这样可用于防止手机用户干扰到应用。专为阻止小孩停止该应用而开发。\n打开设置可选择要保护的项目。</string>
     <string name="no_disable_android_o">这个无法在 Android O 及更高系统版本上停用</string>
     <string name="blacklist">黑名单</string>
     <string name="easter_egg">这里没有复活节彩蛋，走开啦</string>
@@ -221,7 +213,7 @@
     <string name="query_title_ttl">TTL</string>
     <string name="query_title_dclass">D 类</string>
     <string name="query_title_type">类型</string>
-    <string name="query_title_answer">回答</string>
+    <string name="query_title_answer">回应</string>
     <string name="query_destination_info">查询(项)将发送至 [x]</string>
     <string name="query_error_occured">发生错误: [error]</string>
     <string name="question_enable_ipv6">是否要启用 IPv6?</string>
@@ -253,7 +245,7 @@
     <string name="checking_connectivity">正在检查连通性</string>
     <string name="dialog_connectivity_description">正在检查 DNS 服务器是否可达</string>
     <string name="no_connectivity_warning_text"> [x] 个服务器中有 [y] 个不可达:\n\n[servers]\n(这些)服务器有可能离线、不可达(有可能你未连接到网络?) 亦或者被你的 ISP(网络服务器提供者) 拦截。</string>
-    <string name="summary_check_connectivity">每当点击开动按钮时检查已配置的 DNS 服务器是否可达</string>
+    <string name="summary_check_connectivity">每当点击开始按钮时检查已配置的 DNS 服务器是否可达</string>
     <string name="title_check_connectivity">检查连通性</string>
     <string name="summary_custom_ports">允许在 DNS 字段中输入自定义端口</string>
     <string name="title_advanced_settings">高级设置</string>
@@ -277,7 +269,7 @@
     <string name="search_by_target">按目标搜索</string>
     <string name="show_local_entries">Show rules resolving to a loopback address</string>
     <string name="x_entries">[x] 个条目</string>
-    <string name="information_advanced_settings_warranty">要实现如下列所示的这些功能，所有已发送的 DNS 的数据包都会被拦截以及修改。这样可能会增加耗电和 RAM 使用量。\n\n如果使用请自行承担风险。点击确定即表明你同意这个应用的作者对所可能导致的任何风险概不负责。</string>
+    <string name="information_advanced_settings_warranty">要实现如下列所示的这些功能，所有已发送的 DNS 的数据包都会被拦截以及修改。这样可能会增加耗电和 RAM 使用量。\n\n如果使用请自行承担风险。点击 OK 即表明你同意这个应用的作者对所可能导致的任何风险概不负责。</string>
     <string name="import_rules">导入</string>
     <string name="file_hosts">Hosts 文件</string>
     <string name="file_dnsmasq">Dnsmasq 文件</string>
