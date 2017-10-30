@@ -75,7 +75,7 @@
     <string name="title_pin_app">保护应用</string>
     <string name="summary_pin_app">当启动应用时询问 PIN码</string>
     <string name="title_category_pin">PIN码保护</string>
-    <string name="summary_version">版本 [[version]] ([[code]])\n\n© Daniel Wolf 2017\n保留所有权利\n\nBrazilian translation by Lukinhas</string>
+    <string name="summary_version">版本 [[version]] ([[code]])\n\n© Daniel Wolf 2017\n保留所有权利\n\nBrazilian translation by Lukinhas\nChinese translation by Majida Whale</string>
     <string name="usage_stats_info_text">要在某个应用在前台运行时自动暂停 DNS Changer，这个应用需要使用情况数据的访问权。\n\n在下一个窗口中，请授予 DNSChanger对这个数据的访问权，否则你将不能够使用这个设置。\n\n\n除了当前正在运行的应用程序之外，不需要其他数据。不会保存或者传输数据。\n如果你想要查看源代码，源代码现已公开可用 https://git.frostnerd.com/PublicAndroidApps/DnsChanger</string>
     <string name="title_remove_usage_data">移除使用情况数据的访问权</string>
     <string name="summary_remove_usage_data">已授予使用情况数据的访问权。点击此处可撤回这项权限。</string>
