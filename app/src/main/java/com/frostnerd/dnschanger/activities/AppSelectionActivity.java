@@ -58,7 +58,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         super.onCreate(savedInstanceState);
         setTheme(ThemeHandler.getAppTheme(this));
         setContentView(R.layout.activity_app_select);
-        appList = (RecyclerView) findViewById(R.id.app_list);
+        appList = findViewById(R.id.app_list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         onlyInternet = getIntent() != null && getIntent().getBooleanExtra("onlyInternet",false);
         currentSelected = getIntent() != null && getIntent().hasExtra("apps") ? getIntent().getStringArrayListExtra("apps") : new ArrayList<String>();
@@ -83,7 +83,6 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
             }
         }).start();
         getSupportActionBar().setSubtitle(getString(R.string.x_apps_selected).replace("[[x]]", currentSelected.size() + ""));
-        //Preferences.getStringSet(this, "autopause_apps");
     }
 
     @Override
@@ -129,11 +128,11 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         private List<AppEntry> searchedApps = new ArrayList<>();
         private boolean apply = true;
 
-        public AppListAdapter() {
+        AppListAdapter() {
             List<ApplicationInfo> packages = getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
             AppEntry entry;
             for (ApplicationInfo packageInfo : packages) {
-                entry = new AppEntry(getPackageManager(), packageInfo);
+                entry = new AppEntry(packageInfo);
                 //if (!entry.isSystemApp()) apps.add(entry);
                 if(!onlyInternet || entry.hasPermission(Manifest.permission.INTERNET))apps.add(entry);
             }
@@ -143,7 +142,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         public void filter(String search){
             searchedApps.clear();
             if(search.equals("")){
-                for(AppEntry entry: apps)searchedApps.add(entry);
+                searchedApps.addAll(apps);
             }else{
                 for(AppEntry entry: apps){
                     if(entry.getTitle().toLowerCase().contains(search.toLowerCase()))searchedApps.add(entry);
@@ -164,12 +163,12 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
             }else{
                 int offSet = 1;
                 AppEntry entry = searchedApps.get(position - offSet);
-                CheckBox checkBox = (CheckBox) holder.contentView.findViewById(R.id.app_selected_indicator);
+                CheckBox checkBox = holder.contentView.findViewById(R.id.app_selected_indicator);
                 ((ImageView) holder.contentView.findViewById(R.id.app_image)).setImageDrawable(entry.getIcon());
                 ((TextView) holder.contentView.findViewById(R.id.app_title)).setText(entry.getTitle());
                 holder.contentView.setClickable(true);
                 checkBox.setOnCheckedChangeListener(null);
-                checkBox.setChecked(currentSelected.contains(entry.packageName));
+                checkBox.setChecked(currentSelected.contains(entry.getPackageName()));
                 holder.contentView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -180,8 +179,8 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if(!apply)return;
-                        if (isChecked)currentSelected.add(holder.appEntry.packageName);
-                        else currentSelected.remove(holder.appEntry.packageName);
+                        if (isChecked)currentSelected.add(holder.appEntry.getPackageName());
+                        else currentSelected.remove(holder.appEntry.getPackageName());
                         listAdapter.notifyItemChanged(0);
                         getSupportActionBar().setSubtitle(getString(R.string.x_apps_selected).replace("[[x]]", currentSelected.size() + ""));
                         changed = true;
@@ -201,12 +200,12 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
             return searchedApps.size() + 1;
         }
 
-        public final class ViewHolder extends RecyclerView.ViewHolder {
+        final class ViewHolder extends RecyclerView.ViewHolder {
             private RelativeLayout contentView;
             private AppEntry appEntry;
             private int type;
 
-            public ViewHolder(RelativeLayout layout, int type) {
+            ViewHolder(RelativeLayout layout, int type) {
                 super(layout);
                 this.contentView = layout;
                 this.type = type;
@@ -215,16 +214,10 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
     }
 
     private class AppEntry implements Comparable<AppEntry> {
-        private ApplicationInfo info;
-        private Drawable icon;
-        private String title;
-        private String packageName;
+        private final ApplicationInfo info;
 
-        public AppEntry(PackageManager pm, ApplicationInfo info) {
+        AppEntry(ApplicationInfo info) {
             this.info = info;
-            icon = info.loadIcon(pm);
-            title = pm.getApplicationLabel(info).toString();
-            packageName = info.packageName;
         }
 
         public ApplicationInfo getRawInfo() {
@@ -232,7 +225,11 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         }
 
         public String getTitle() {
-            return title;
+            return getPackageManager().getApplicationLabel(info).toString();
+        }
+
+        public String getPackageName(){
+            return info.packageName;
         }
 
         public boolean isSystemApp() {
@@ -240,17 +237,17 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         }
 
         private Drawable getIcon() {
-            return icon;
+            return info.loadIcon(getPackageManager());
         }
 
         @Override
         public int compareTo(@NonNull AppEntry o) {
-            return title.compareTo(o.title);
+            return getTitle().compareTo(o.getTitle());
         }
 
         public boolean hasPermission(String s){
             try {
-                PackageInfo info = getPackageManager().getPackageInfo(packageName, PackageManager.GET_PERMISSIONS);
+                PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_PERMISSIONS);
                 String[] permissions = info.requestedPermissions;
                 if(permissions == null)return false;
                 for(int i = 0; i < permissions.length; i++){
