@@ -47,7 +47,6 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
     private long lastBackPress;
     private ArrayList<String> currentSelected;
     private RecyclerView appList;
-    private RecyclerView.LayoutManager listLayoutManager;
     private AppListAdapter listAdapter;
     private boolean changed;
     private String infoTextWhitelist, infoTextBlacklist;
@@ -65,8 +64,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         infoTextWhitelist = getIntent() != null && getIntent().hasExtra("infoTextWhitelist") ? getIntent().getStringExtra("infoTextWhitelist") : null;
         infoTextBlacklist = getIntent() != null && getIntent().hasExtra("infoTextBlacklist") ? getIntent().getStringExtra("infoTextBlacklist") : null;
         whiteList = getIntent() != null && getIntent().getBooleanExtra("whitelist", false);
-        listLayoutManager = new LinearLayoutManager(this);
-        appList.setLayoutManager(listLayoutManager);
+        appList.setLayoutManager(new LinearLayoutManager(this));
         appList.setHasFixedSize(true);
         ((SimpleItemAnimator) appList.getItemAnimator()).setSupportsChangeAnimations(false);
         new Thread(new Runnable() {
@@ -101,6 +99,14 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
             lastBackPress = System.currentTimeMillis();
             Toast.makeText(this, R.string.press_back_again, Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        listAdapter.apps.clear();
+        listAdapter.searchedApps.clear();
+        listAdapter = null;
     }
 
     @Override
