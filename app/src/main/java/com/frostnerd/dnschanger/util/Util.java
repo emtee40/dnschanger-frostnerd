@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
@@ -162,7 +163,15 @@ public final class Util {
     }
 
     public static DatabaseHelper getDBHelper(Context context) {
-        return dbHelper == null ? dbHelper = new DatabaseHelper(context) : dbHelper;
+        if(dbHelper != null){
+            if(context instanceof Service && !(dbHelper.getContext() instanceof Service)){ //Helper was create using the Activity but now the service is running
+                dbHelper.close();
+                return dbHelper = new DatabaseHelper(context);
+            }else if(dbHelper.getContext() instanceof Service && !isServiceRunning(dbHelper.getContext())){ //Helper was create by a service which is no longer running
+                dbHelper.close();
+                return dbHelper = new DatabaseHelper(context);
+            }else return dbHelper;
+        }else return dbHelper = new DatabaseHelper(context);
     }
 
     public static synchronized void deleteDatabase(Context context) {

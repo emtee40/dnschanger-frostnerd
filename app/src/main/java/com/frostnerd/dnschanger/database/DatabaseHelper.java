@@ -44,9 +44,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "data";
     private static final int DATABASE_VERSION = 2;
     private SQLiteDatabase currentDB;
+    private Context context;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    @Override
+    public synchronized void close() {
+        context = null;
+        super.close();
     }
 
     @Override
