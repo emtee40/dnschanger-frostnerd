@@ -136,7 +136,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
                 //if (!entry.isSystemApp()) apps.add(entry);
                 if(!onlyInternet || entry.hasPermission(Manifest.permission.INTERNET))apps.add(entry);
             }
-            filter("");
+            searchedApps.addAll(apps);
         }
 
         public void filter(String search){
