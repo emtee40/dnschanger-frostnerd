@@ -297,4 +297,8 @@
     <string name="show_normal_entries">Show normal entries</string>
     <string name="show_wildcard_entries">Show wildcard entries</string>
     <string name="sql_actions">SQL actions</string>
+    <string name="title_dns_over_tcp">DNS over TCP</string>
+    <string name="summary_dns_over_tcp">Forward the DNS queries using TCP, not UDP</string>
+    <string name="title_tcp_timeout">TCP Timeout</string>
+    <string name="summary_tcp_timeout">Sets the time in milliseconds after which the app stops trying to reach the upstream DNS server</string>
 </resources>

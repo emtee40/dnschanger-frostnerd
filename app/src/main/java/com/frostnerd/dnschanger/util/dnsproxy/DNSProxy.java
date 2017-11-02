@@ -1,6 +1,5 @@
 package com.frostnerd.dnschanger.util.dnsproxy;
 
-import android.content.Context;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;

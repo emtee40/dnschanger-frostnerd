@@ -7,7 +7,6 @@ import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.utils.preferences.Preferences;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -57,24 +56,24 @@ public class PreferencesAccessor {
     }
 
     public static boolean isRunningInAdvancedMode(Context context){
-        return Preferences.getBoolean(context, "advanced_settings", false) &&
-                (Preferences.getBoolean(context, "custom_port", false) ||
-                        Preferences.getBoolean(context, "rules_activated", false) ||
-                        Preferences.getBoolean(context, "query_logging", false));
+        return areCustomPortsEnabled(context) ||
+                areRulesEnabled(context) ||
+                isQueryLoggingEnabled(context) ||
+                sendDNSOverTCP(context);
     }
 
     public static boolean areCustomPortsEnabled(Context context){
-        return Preferences.getBoolean(context, "advanced_settings", false) &&
+        return isAdvancedModeEnabled(context) &&
                 Preferences.getBoolean(context, "custom_port", false);
     }
 
     public static boolean areRulesEnabled(Context context){
-        return Preferences.getBoolean(context, "advanced_settings", false) &&
+        return isAdvancedModeEnabled(context) &&
                 Preferences.getBoolean(context, "rules_activated", false);
     }
 
     public static boolean isQueryLoggingEnabled(Context context){
-        return Preferences.getBoolean(context, "advanced_settings", false) &&
+        return isAdvancedModeEnabled(context) &&
                 Preferences.getBoolean(context, "query_logging", false);
     }
 
@@ -91,11 +90,12 @@ public class PreferencesAccessor {
     }
 
     public static boolean sendDNSOverTCP(Context context){
-        return Preferences.getBoolean(context, "dns_over_tcp", false);
+        return isAdvancedModeEnabled(context) &&
+                Preferences.getBoolean(context, "dns_over_tcp", false);
     }
 
     public static int getTCPTimeout(Context context){
-        return Preferences.getInteger(context,"tcp_timeout", 500);
+        return Integer.parseInt(Preferences.getString(context,"tcp_timeout", "500"));
     }
 
 

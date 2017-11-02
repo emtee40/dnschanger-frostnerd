@@ -289,4 +289,8 @@
         <item>Agora você pode configurar os nomes WIFI em que o DNS Changer inicia automaticamente</item>
         <item>Bugfixes</item>
     </string-array>
+    <string name="title_dns_over_tcp">DNS sobre TCP</string>
+    <string name="summary_dns_over_tcp">Reencaminhar as consultas de DNS usando TCP (em vez de UDP)</string>
+    <string name="title_tcp_timeout">TCP Timeout</string>
+    <string name="summary_tcp_timeout">Define o tempo em milissegundos após o qual o aplicativo pára de tentar alcançar o servidor DNS a montante</string>
 </resources>
