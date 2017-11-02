@@ -90,6 +90,14 @@ public class PreferencesAccessor {
         return Preferences.getBoolean(context, "pin_fingerprint", false);
     }
 
+    public static boolean sendDNSOverTCP(Context context){
+        return Preferences.getBoolean(context, "dns_over_tcp", false);
+    }
+
+    public static int getTCPTimeout(Context context){
+        return Preferences.getInteger(context,"tcp_timeout", 500);
+    }
+
 
     private static String getDNS1(Context context) {
         return isIPv4Enabled(context) ? Preferences.getString(context, "dns1", "8.8.8.8") : "";
