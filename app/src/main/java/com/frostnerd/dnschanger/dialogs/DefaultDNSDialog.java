@@ -31,7 +31,7 @@ import java.util.List;
  * development@frostnerd.com
  */
 public class DefaultDNSDialog extends AlertDialog {
-    View layout;
+    View layout, lastLongClicked;
     private OnProviderSelectedListener listener;
     private List<DNSEntry> localEntries = new ArrayList<>();
     private DefaultDNSAdapter adapter;
@@ -99,6 +99,8 @@ public class DefaultDNSDialog extends AlertDialog {
                                     list.setAdapter(adapter = new DefaultDNSAdapter());
                                 }
                             }, removal.get(0)).show();
+                            lastLongClicked.setSelected(false);
+                            lastLongClicked.setBackgroundColor(DesignUtil.resolveColor(getContext(), android.R.attr.windowBackground));
                             removal.clear();
                             removeButtonShown = false;
                             getButton(BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
@@ -158,6 +160,7 @@ public class DefaultDNSDialog extends AlertDialog {
                 holder.layout.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
+                        lastLongClicked = v;
                         v.setSelected(!v.isSelected());
                         v.setBackgroundColor(v.isSelected() ? DesignUtil.resolveColor(getContext(), R.attr.inputElementColor) : DesignUtil.resolveColor(getContext(), android.R.attr.windowBackground));
                         if (!removeButtonShown) {
