@@ -209,7 +209,8 @@ public class DNSUDPProxy extends DNSProxy{
             DatagramSocket socket = new DatagramSocket();
             vpnService.protect(socket); //The sent packets shouldn't be handled by this class
             socket.send(outgoingPacket);
-            futureSocketAnswers.put(socket, new PacketWrap(ipPacket));
+            if(ipPacket != null) futureSocketAnswers.put(socket, new PacketWrap(ipPacket));
+            else socket.close();
         }catch(IOException exception){
             handleUpstreamDNSResponse(ipPacket, outgoingPacket.getData());
         }
