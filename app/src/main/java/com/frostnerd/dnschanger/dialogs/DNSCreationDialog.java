@@ -63,6 +63,10 @@ public class DNSCreationDialog extends AlertDialog {
     public DNSCreationDialog(@NonNull Context context, @NonNull final OnCreationFinishedListener listener) {
         super(context, ThemeHandler.getDialogTheme(context));
         this.mode = Mode.CREATION;
+        dns1 = PreferencesAccessor.Type.DNS1.getPair(context).getAddress();
+        dns2 = PreferencesAccessor.Type.DNS2.getPair(context).getAddress();
+        dns1V6 = PreferencesAccessor.Type.DNS1_V6.getPair(context).getAddress();
+        dns2V6 = PreferencesAccessor.Type.DNS2_V6.getPair(context).getAddress();
         setView(view = LayoutInflater.from(context).inflate(R.layout.dialog_create_dns_entry, null, false));
         final boolean ipv4Enabled = PreferencesAccessor.isIPv4Enabled(context),
                 ipv6Enabled = !ipv4Enabled || PreferencesAccessor.isIPv6Enabled(context);
