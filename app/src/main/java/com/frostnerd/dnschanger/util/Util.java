@@ -249,7 +249,7 @@ public final class Util {
     }
 
     public static void runBackgroundConnectivityCheck(Context context){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LogFactory.writeMessage(context, LOG_TAG, "Using JobScheduler");
             JobScheduler scheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
             scheduler.cancel(0);
