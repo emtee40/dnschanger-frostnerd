@@ -258,7 +258,7 @@ public class MainActivity extends NavigationDrawerActivity {
                 @Override
                 public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
                     startActivity(new Intent(MainActivity.this, AdvancedSettingsActivity.class));
-                    return true;
+                    return false;
                 }
 
                 @Override
