@@ -47,7 +47,6 @@ public class DefaultDNSDialog extends AlertDialog {
         List<DNSEntry> tmp = new ArrayList<>();
         if (!ipv4Enabled || !ipv6Enabled) {
             for (DNSEntry entry : localEntries) {
-                System.out.println(entry);
                 if ((!ipv4Enabled && NetworkUtil.isAssignableAddress(entry.getDns1V6().getAddress(), true)) ||
                         (!ipv6Enabled && NetworkUtil.isAssignableAddress(entry.getDns1().getAddress(), false))) {
                     tmp.add(entry);
