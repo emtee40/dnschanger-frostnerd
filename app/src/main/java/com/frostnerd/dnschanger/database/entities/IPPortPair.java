@@ -62,8 +62,13 @@ public class IPPortPair extends Entity implements Serializable{
 
     @Override
     public String toString() {
+       return toString(true);
+    }
+
+    public String toString(boolean port){
         if(isEmpty())return "";
-        return ipv6 ? "[" + getAddress() + "]:" + getPort() : getAddress() + ":" + getPort();
+        if(port)return ipv6 ? "[" + getAddress() + "]:" + getPort() : getAddress() + ":" + getPort();
+        else return getAddress();
     }
 
     public String formatForTextfield(boolean customPorts){

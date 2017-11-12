@@ -588,15 +588,16 @@ public class MainActivity extends NavigationDrawerActivity {
         defaultDnsDialog = new DefaultDNSDialog(this, ThemeHandler.getDialogTheme(this), new DefaultDNSDialog.OnProviderSelectedListener() {
             @Override
             public void onProviderSelected(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6) {
+                boolean port = PreferencesAccessor.areCustomPortsEnabled(MainActivity.this);
                 if(mainFragment.settingV6){
-                    mainFragment.dns1.setText(dns1V6.toString());
-                    mainFragment.dns2.setText(dns2V6.toString());
+                    mainFragment.dns1.setText(dns1V6.toString(port));
+                    mainFragment.dns2.setText(dns2V6.toString(port));
                     Preferences.put(MainActivity.this, "dns1", dns1);
                     Preferences.put(MainActivity.this, "dns2", dns2);
                 }else{
-                    mainFragment.dns1.setText(dns1.toString());
-                    mainFragment.dns2.setText(dns2.toString());
-                   Preferences.put(MainActivity.this, "dns1-v6", dns1V6);
+                    mainFragment.dns1.setText(dns1.toString(port));
+                    mainFragment.dns2.setText(dns2.toString(port));
+                    Preferences.put(MainActivity.this, "dns1-v6", dns1V6);
                     Preferences.put(MainActivity.this, "dns2-v6", dns2V6);
                 }
             }
