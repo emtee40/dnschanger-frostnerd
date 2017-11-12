@@ -30,6 +30,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.fragments.RulesFragment;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
@@ -584,18 +585,18 @@ public class MainActivity extends NavigationDrawerActivity {
 
     public void openDefaultDNSDialog(View v) {
         LogFactory.writeMessage(this, LOG_TAG, "Opening DefaultDNSDialog");
-        defaultDnsDialog = new DefaultDNSDialog(this, ThemeHandler.getDialogTheme(this), new DefaultDNSDialog.OnProviderSelectedListener(){
+        defaultDnsDialog = new DefaultDNSDialog(this, ThemeHandler.getDialogTheme(this), new DefaultDNSDialog.OnProviderSelectedListener() {
             @Override
-            public void onProviderSelected(String name, String dns1, String dns2, String dns1V6, String dns2V6) {
+            public void onProviderSelected(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6) {
                 if(mainFragment.settingV6){
-                    if(!dns1V6.equals(""))mainFragment.dns1.setText(dns1V6);
-                    mainFragment.dns2.setText(dns2V6);
-                    if(!dns1.equals(""))Preferences.put(MainActivity.this, "dns1", dns1);
+                    mainFragment.dns1.setText(dns1V6.toString());
+                    mainFragment.dns2.setText(dns2V6.toString());
+                    Preferences.put(MainActivity.this, "dns1", dns1);
                     Preferences.put(MainActivity.this, "dns2", dns2);
                 }else{
-                    if(!dns1.equals(""))mainFragment.dns1.setText(dns1);
-                    mainFragment.dns2.setText(dns2);
-                    if(!dns1V6.equals(""))Preferences.put(MainActivity.this, "dns1-v6", dns1V6);
+                    mainFragment.dns1.setText(dns1.toString());
+                    mainFragment.dns2.setText(dns2.toString());
+                   Preferences.put(MainActivity.this, "dns1-v6", dns1V6);
                     Preferences.put(MainActivity.this, "dns2-v6", dns2V6);
                 }
             }

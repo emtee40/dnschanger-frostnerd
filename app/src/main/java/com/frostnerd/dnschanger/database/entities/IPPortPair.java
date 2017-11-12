@@ -1,13 +1,26 @@
 package com.frostnerd.dnschanger.database.entities;
 
 import com.frostnerd.dnschanger.util.Util;
+import com.frostnerd.utils.database.orm.Entity;
+import com.frostnerd.utils.database.orm.annotations.AutoIncrement;
+import com.frostnerd.utils.database.orm.annotations.PrimaryKey;
+import com.frostnerd.utils.database.orm.annotations.Table;
 
 import java.io.Serializable;
 
-public class IPPortPair implements Serializable{
+@Table(name = "IPPortPair")
+public class IPPortPair extends Entity implements Serializable{
     private String ip;
     private int port;
     private boolean ipv6;
+
+    @PrimaryKey
+    @AutoIncrement
+    private int id;
+
+    public IPPortPair(){
+
+    }
 
     public IPPortPair(String ip, int port, boolean IPv6) {
         this.ip = ip;
@@ -17,6 +30,10 @@ public class IPPortPair implements Serializable{
 
     public static IPPortPair wrap(String s){
         return Util.validateInput(s, s.contains("[") || s.matches("[a-fA-F0-9:]+"), true);
+    }
+
+    public static IPPortPair wrap(String s, int defPort){
+        return Util.validateInput(s, s.contains("[") || s.matches("[a-fA-F0-9:]+"), true, defPort);
     }
 
     public String getAddress() {
@@ -45,6 +62,7 @@ public class IPPortPair implements Serializable{
 
     @Override
     public String toString() {
+        if(isEmpty())return "";
         return ipv6 ? "[" + getAddress() + "]:" + getPort() : getAddress() + ":" + getPort();
     }
 
@@ -56,4 +74,9 @@ public class IPPortPair implements Serializable{
             return customPorts ? ip + ":" + port : ip;
         }
     }
+
+    public boolean isEmpty(){
+        return getAddress().equals("");
+    }
+
 }

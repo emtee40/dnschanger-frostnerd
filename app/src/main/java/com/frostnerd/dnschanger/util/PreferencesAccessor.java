@@ -186,7 +186,7 @@ public class PreferencesAccessor {
 
         public DNSEntry findMatchingDatabaseEntry(Context context){
             String address = getServerAddress(context);
-            for(DNSEntry entry: Util.getDBHelper(context).getDNSEntries()){
+            for(DNSEntry entry: Util.getDBHelper(context).getAll(DNSEntry.class)){
                 if(entry.hasIP(address))return entry;
             }
             return null;

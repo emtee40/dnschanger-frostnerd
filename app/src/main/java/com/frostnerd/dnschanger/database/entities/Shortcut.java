@@ -1,32 +1,51 @@
 package com.frostnerd.dnschanger.database.entities;
 
 import com.frostnerd.dnschanger.util.Util;
+import com.frostnerd.utils.database.orm.Entity;
+import com.frostnerd.utils.database.orm.annotations.ForeignKey;
+import com.frostnerd.utils.database.orm.annotations.NotNull;
+import com.frostnerd.utils.database.orm.annotations.Table;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Shortcut implements Serializable {
-    private ArrayList<IPPortPair> servers;
-    private final String name;
+@Table(name = "Shortcut")
+public class Shortcut extends Entity implements Serializable {
+    @NotNull
+    private IPPortPair dns1, dns1v6;
+    private IPPortPair dns2, dns2v6;
+    @NotNull
+    private String name;
 
-    public Shortcut(String name, ArrayList<IPPortPair> servers) {
+    public Shortcut(IPPortPair dns1, IPPortPair dns2, IPPortPair dns1v6, IPPortPair dns2v6, String name) {
+        this.dns1 = dns1;
+        this.dns2 = dns2;
+        this.dns1v6 = dns1v6;
+        this.dns2v6 = dns2v6;
         this.name = name;
-        this.servers = servers;
     }
 
-    public ArrayList<IPPortPair> getServers() {
-        return servers;
+    public Shortcut(){
+
+    }
+
+    public IPPortPair getDns1() {
+        return dns1;
+    }
+
+    public IPPortPair getDns1v6() {
+        return dns1v6;
+    }
+
+    public IPPortPair getDns2() {
+        return dns2;
+    }
+
+    public IPPortPair getDns2v6() {
+        return dns2v6;
     }
 
     public String getName() {
         return name;
-    }
-
-    public String toString() {
-        return Util.serializableToString(this);
-    }
-
-    public static Shortcut fromString(String s) {
-        return Util.serializableFromString(s);
     }
 }

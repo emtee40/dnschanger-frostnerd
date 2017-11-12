@@ -2,6 +2,7 @@ package com.frostnerd.dnschanger.dialogs;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -15,9 +16,11 @@ import android.widget.TextView;
 
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
+import com.frostnerd.dnschanger.database.entities.DNSQuery;
 import com.frostnerd.dnschanger.fragments.RulesFragment;
-import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.ThemeHandler;
+import com.frostnerd.dnschanger.util.Util;
+import com.frostnerd.utils.database.orm.parser.Column;
 import com.frostnerd.utils.networking.NetworkUtil;
 
 import java.io.BufferedReader;
@@ -50,111 +53,13 @@ public class RuleImportProgressDialog extends AlertDialog {
     private static final Matcher DOMAINS_MATCHER = DOMAINS_PATTERN.matcher("");
     private static final Pattern ADBLOCK_PATTERN = Pattern.compile("^\\|\\|([A-Za-z0-9]{1}[A-Za-z0-9\\-.]+)\\^");
     private static final Matcher ADBLOCK_MATCHER = ADBLOCK_PATTERN.matcher("");
-    private final int databaseConflictHandling;
     private int linesCombined;
-    private Activity context;
     private TextView progressText, fileText;
     private List<ImportableFile> files;
-    private AsyncTask<Void, Integer, Void> asyncImport = new AsyncTask<Void, Integer, Void>() {
-        private int validLines = 0, distinctEntries = 0;
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                startImport();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        private void startImport() throws IOException {
-            SQLiteDatabase database = Util.getDBHelper(getContext()).getWritableDatabase();
-            database.beginTransaction();
-            String line;
-            DNSRule rule;
-            ContentValues values = new ContentValues(3), values2 = new ContentValues();
-            int i = 0, pos = 0, dbID = Util.getDBHelper(getContext()).getHighestRowID("DNSRules")+1, currentCount = 0;
-            long tmp;
-            for(ImportableFile file: files){
-                currentCount = 0;
-                BufferedReader reader = new BufferedReader(new FileReader(file.getFile()));
-                LineParser parser = file.getFileType();
-                onProgressUpdate(-1, pos++);
-                values2.put("RowStart", dbID);
-                while (!isCancelled() && (line = reader.readLine()) != null) {
-                    i++;
-                    rule = parser.parseLine(line.trim());
-                    if (rule != null) {
-                        validLines++;
-                        values.put("Domain", rule.host);
-                        if(rule.both){
-                            values.put("Target", "127.0.0.1");
-                            values.put("IPv6", false);
-                            if(database.insertWithOnConflict("DNSRules", null, values, databaseConflictHandling) != -1){
-                                distinctEntries++;
-                                currentCount++;
-                            }
-                            values.put("Target", "::1");
-                            values.put("IPv6", true);
-                        }else{
-                            values.put("Target", rule.target);
-                            values.put("IPv6", rule.ipv6);
-                        }
-                        if((tmp = database.insertWithOnConflict("DNSRules", null, values, databaseConflictHandling)) != -1){
-                            dbID = (int)tmp;
-                            distinctEntries++;
-                            currentCount++;
-                        }
-                        values.clear();
-                    }
-                    publishProgress(i);
-                }
-                values2.put("RowEnd", dbID);
-                values2.put("Filename", file.getFile().getName());
-                if(!isCancelled() && currentCount != 0)database.insert("DNSRuleImports", null, values2);
-                reader.close();
-            }
-            if (!isCancelled()) database.setTransactionSuccessful();
-            database.endTransaction();
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            new AlertDialog.Builder(getContext(), ThemeHandler.getDialogTheme(getContext())).setTitle(R.string.done).setCancelable(true).
-                    setNeutralButton(R.string.close, null).
-                    setMessage(getContext().getString(R.string.rules_import_finished).
-                            replace("[x]", "" + linesCombined).replace("[y]", "" + validLines).
-                            replace("[z]", "" + distinctEntries)).show();
-            dismiss();
-            if(context instanceof MainActivity){
-                Fragment fragment = ((MainActivity)context).currentFragment();
-                if(fragment instanceof RulesFragment){
-                    ((RulesFragment)fragment).getRuleAdapter().reloadData();
-                }
-            }
-        }
-
-        @Override
-        protected void onProgressUpdate(final Integer... values) {
-            if(values.length == 2){
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        fileText.setText(files.get(values[1]).getFile().getName());
-                    }
-                });
-            }
-            else{
-                int i = values[0];
-                progressText.setText(i + "/" + linesCombined);
-            }
-        }
-    };
+    private AsyncTask<Void, Integer, Void> asyncImport;
 
     public RuleImportProgressDialog(@NonNull Activity context, List<ImportableFile> files, int databaseConflictHandling) {
         super(context, ThemeHandler.getDialogTheme(context));
-        this.context = context;
         this.files = files;
         for(ImportableFile file: files)linesCombined += file.getLines();
         setTitle(getContext().getString(R.string.importing_x_rules).replace("[x]", "" + linesCombined));
@@ -171,8 +76,15 @@ public class RuleImportProgressDialog extends AlertDialog {
         setView(content = getLayoutInflater().inflate(R.layout.dialog_rule_import_progress, null, false));
         progressText = content.findViewById(R.id.progress_text);
         fileText = content.findViewById(R.id.file_name);
-        this.databaseConflictHandling = databaseConflictHandling;
+        asyncImport = new AsyncImport(this, files, databaseConflictHandling, linesCombined);
         asyncImport.execute();
+    }
+
+    @Override
+    public void dismiss() {
+        asyncImport = null;
+        files = null;
+        super.dismiss();
     }
 
     public static int getFileLines(File f) {
@@ -324,5 +236,119 @@ public class RuleImportProgressDialog extends AlertDialog {
         public int getLines() {
             return lines;
         }
+    }
+
+    private static class AsyncImport extends AsyncTask<Void, Integer, Void>{
+        private int validLines = 0, distinctEntries = 0;
+        private List<ImportableFile> files;
+        private Context context;
+        private int databaseConflictHandling;
+        private int linesCombined;
+        private RuleImportProgressDialog dialog;
+
+        public AsyncImport(RuleImportProgressDialog dialog, List<ImportableFile> files, int databaseConflictHandling, int linesCombined){
+            this.context = dialog.getContext();
+            this.files = files;
+            this.databaseConflictHandling = databaseConflictHandling;
+            this.linesCombined = linesCombined;
+            this.dialog = dialog;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                startImport();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        private void startImport() throws IOException {
+            SQLiteDatabase database = Util.getDBHelper(context).getWritableDatabase();
+            database.beginTransaction();
+            String line;
+            DNSRule rule;
+            ContentValues values = new ContentValues(3), values2 = new ContentValues();
+            int i = 0, pos = 0, dbID = Util.getDBHelper(context).getHighestRowID(DNSQuery.class)+1, currentCount = 0;
+            long tmp;
+            for(ImportableFile file: files){
+                currentCount = 0;
+                BufferedReader reader = new BufferedReader(new FileReader(file.getFile()));
+                LineParser parser = file.getFileType();
+                onProgressUpdate(-1, pos++);
+                values2.put("RowStart", dbID);
+                while (!isCancelled() && (line = reader.readLine()) != null) {
+                    i++;
+                    rule = parser.parseLine(line.trim());
+                    if (rule != null) {
+                        validLines++;
+                        values.put("Domain", rule.host);
+                        if(rule.both){
+                            values.put("Target", "127.0.0.1");
+                            values.put("IPv6", false);
+                            if(database.insertWithOnConflict("DNSRules", null, values, databaseConflictHandling) != -1){
+                                distinctEntries++;
+                                currentCount++;
+                            }
+                            values.put("Target", "::1");
+                            values.put("IPv6", true);
+                        }else{
+                            values.put("Target", rule.target);
+                            values.put("IPv6", rule.ipv6);
+                        }
+                        if((tmp = database.insertWithOnConflict("DNSRules", null, values, databaseConflictHandling)) != -1){
+                            dbID = (int)tmp;
+                            distinctEntries++;
+                            currentCount++;
+                        }
+                        values.clear();
+                    }
+                    publishProgress(i);
+                }
+                values2.put("RowEnd", dbID);
+                values2.put("Filename", file.getFile().getName());
+                if(!isCancelled() && currentCount != 0)database.insert("DNSRuleImports", null, values2);
+                reader.close();
+            }
+            if (!isCancelled()) database.setTransactionSuccessful();
+            database.endTransaction();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            new AlertDialog.Builder(context, ThemeHandler.getDialogTheme(context)).setTitle(R.string.done).setCancelable(true).
+                    setNeutralButton(R.string.close, null).
+                    setMessage(context.getString(R.string.rules_import_finished).
+                            replace("[x]", "" + linesCombined).replace("[y]", "" + validLines).
+                            replace("[z]", "" + distinctEntries)).show();
+            dialog.dismiss();
+            if(context instanceof MainActivity){
+                Fragment fragment = ((MainActivity)context).currentFragment();
+                if(fragment instanceof RulesFragment){
+                    ((RulesFragment)fragment).getRuleAdapter().reloadData();
+                }
+            }
+            context = null;
+            dialog = null;
+            files = null;
+        }
+
+        @Override
+        protected void onProgressUpdate(final Integer... values) {
+            if(values.length == 2){
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog.fileText.setText(files.get(values[1]).getFile().getName());
+                    }
+                });
+            }
+            else{
+                int i = values[0];
+                dialog.progressText.setText(i + "/" + linesCombined);
+            }
+        }
+
     }
 }

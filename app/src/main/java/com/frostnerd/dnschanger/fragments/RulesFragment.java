@@ -134,9 +134,9 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
                     @Override
                     public void creationFinished(@NonNull String host, @NonNull String target, @Nullable String targetV6, boolean ipv6, boolean wildcard, boolean editingMode) {
                         boolean both = targetV6 != null && !targetV6.equals("");
-                        Util.getDBHelper(getContext()).createRuleEntry(host, target, !both && ipv6, wildcard);
+                        Util.getDBHelper(getContext()).createDNSRule(host, target, !both && ipv6, wildcard);
                         if (targetV6 != null && !targetV6.equals("")) {
-                            Util.getDBHelper(getContext()).createRuleEntry(host, targetV6, true, wildcard);
+                            Util.getDBHelper(getContext()).createDNSRule(host, targetV6, true, wildcard);
                         }
                         if(wildcard == wildcardShown){
                             list.scrollTo(0, 0);

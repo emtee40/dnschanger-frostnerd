@@ -236,17 +236,17 @@ public class ConfigureActivity extends AppCompatActivity {
     public void openDefaultDNSDialog(View v){
         defaultDNSDialog = new DefaultDNSDialog(this, ThemeHandler.getDialogTheme(this), new DefaultDNSDialog.OnProviderSelectedListener() {
             @Override
-            public void onProviderSelected(String name, String dns1, String dns2, String dns1V6, String dns2V6) {
+            public void onProviderSelected(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6) {
                 if(settingV6){
-                    ed_dns1.setText(dns1V6);
-                    ed_dns2.setText(dns2V6);
-                    ConfigureActivity.this.dns1 = IPPortPair.wrap(dns1);
-                    ConfigureActivity.this.dns2 = IPPortPair.wrap(dns2);
+                    ed_dns1.setText(dns1V6.toString());
+                    ed_dns2.setText(dns2V6.toString());
+                    ConfigureActivity.this.dns1 = dns1;
+                    ConfigureActivity.this.dns2 = dns2;
                 }else{
-                    ed_dns1.setText(dns1);
-                    ed_dns2.setText(dns2);
-                    ConfigureActivity.this.dns1V6 = IPPortPair.wrap(dns1V6);
-                    ConfigureActivity.this.dns2V6 = IPPortPair.wrap(dns2V6);
+                    ed_dns1.setText(dns1.toString());
+                    ed_dns2.setText(dns2.toString());
+                    ConfigureActivity.this.dns1V6 = dns1V6;
+                    ConfigureActivity.this.dns2V6 = dns2V6;
                 }
             }
         });
@@ -354,7 +354,11 @@ public class ConfigureActivity extends AppCompatActivity {
             Util.createShortcut(this, createPortPair(), ed_name.getText().toString());
             setResult(RESULT_OK);
             LogFactory.writeMessage(this, LOG_TAG, "Shortcut added to Launcher");
-            Util.getDBHelper(this).saveShortcut(createPortPair(), ed_name.getText().toString());
+            Util.getDBHelper(this).createShortcut(ed_name.getText().toString(),
+                    ipv4Enabled ? dns1 : null,
+                    !TextUtils.isEmpty(dns2.getAddress()) && ipv4Enabled ? dns2 : null,
+                    ipv6Enabled ? dns1V6 : null,
+                    !TextUtils.isEmpty(dns2V6.getAddress()) && ipv6Enabled ? dns2V6 : null);
         }
         super.finish();
     }

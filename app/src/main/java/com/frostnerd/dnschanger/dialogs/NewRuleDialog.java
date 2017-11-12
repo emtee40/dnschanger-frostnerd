@@ -105,7 +105,7 @@ public class NewRuleDialog extends AlertDialog{
                             }else{
                                 if(both.isChecked() && !Util.getDBHelper(getContext()).dnsRuleExists(edHost.getText().toString())){
                                     listener.creationFinished(edHost.getText().toString(),
-                                            edTarget.getText().toString(), both.isChecked() ? edTarget2.getText().toString() : "",
+                                            edTarget.getText().toString(), edTarget2.getText().toString(),
                                             ipv6.isChecked(), wildcard.isChecked(), false);
                                     dismiss();
                                 }else if(!Util.getDBHelper(getContext()).dnsRuleExists(edHost.getText().toString(), ipv6.isChecked())){
@@ -194,7 +194,7 @@ public class NewRuleDialog extends AlertDialog{
                 ? MaterialEditText.IndicatorState.UNDEFINED : MaterialEditText.IndicatorState.INCORRECT);
         metTarget.setIndicatorState(NetworkUtil.isIP(edTarget.getText().toString(), ipv6.isChecked())
                 ? MaterialEditText.IndicatorState.UNDEFINED : MaterialEditText.IndicatorState.INCORRECT);
-        metTarget2.setIndicatorState(NetworkUtil.isIP(edTarget2.getText().toString(), true)
+        metTarget2.setIndicatorState(NetworkUtil.isIP(edTarget2.getText().toString(), true) && !edTarget2.getText().toString().equals("")
                 ? MaterialEditText.IndicatorState.UNDEFINED : MaterialEditText.IndicatorState.INCORRECT);
         if(getButton(BUTTON_POSITIVE) != null)getButton(BUTTON_POSITIVE).setEnabled(inputsValid());
     }

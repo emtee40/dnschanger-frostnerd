@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
@@ -41,13 +42,14 @@ public class DefaultDNSDialog extends AlertDialog {
 
     public DefaultDNSDialog(@NonNull final Context context, final int theme, @NonNull final OnProviderSelectedListener listener) {
         super(context, theme);
-        localEntries = Util.getDBHelper(context).getDNSEntries();
+        localEntries = Util.getDBHelper(context).getAll(DNSEntry.class);
         boolean ipv4Enabled = PreferencesAccessor.isIPv4Enabled(context), ipv6Enabled = !ipv4Enabled || PreferencesAccessor.isIPv6Enabled(context);
         List<DNSEntry> tmp = new ArrayList<>();
         if (!ipv4Enabled || !ipv6Enabled) {
             for (DNSEntry entry : localEntries) {
-                if ((!ipv4Enabled && NetworkUtil.isAssignableAddress(entry.getDns1V6(), true)) ||
-                        (!ipv6Enabled && NetworkUtil.isAssignableAddress(entry.getDns1(), false))) {
+                System.out.println(entry);
+                if ((!ipv4Enabled && NetworkUtil.isAssignableAddress(entry.getDns1V6().getAddress(), true)) ||
+                        (!ipv6Enabled && NetworkUtil.isAssignableAddress(entry.getDns1().getAddress(), false))) {
                     tmp.add(entry);
                 }
             }
@@ -56,7 +58,7 @@ public class DefaultDNSDialog extends AlertDialog {
         this.listener = listener;
         layout = LayoutInflater.from(context).inflate(R.layout.dialog_default_dns, null, false);
         setView(layout);
-        list = (RecyclerView) layout.findViewById(R.id.defaultDnsDialogList);
+        list = layout.findViewById(R.id.defaultDnsDialogList);
         list.setLayoutManager(new LinearLayoutManager(context));
         list.setAdapter(adapter = new DefaultDNSAdapter());
         list.setHasFixedSize(true);
@@ -82,10 +84,11 @@ public class DefaultDNSDialog extends AlertDialog {
                         if (removal.size() != 1) {
                             new DNSCreationDialog(context, new DNSCreationDialog.OnCreationFinishedListener() {
                                 @Override
-                                public void onCreationFinished(String name, String dns1, String dns2, String dns1V6, String dns2V6) {
-                                    Util.getDBHelper(context).saveDNSEntry(new DNSEntry(0, name, name, dns1, dns2, dns1V6, dns2V6, "", true));
+                                public void onCreationFinished(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6) {
+                                    Util.getDBHelper(context).insert(new DNSEntry(name, name, dns1,
+                                            dns2, dns1V6, dns2V6, "", true));
                                     localEntries.clear();
-                                    localEntries = Util.getDBHelper(context).getDNSEntries();
+                                    localEntries = Util.getDBHelper(context).getAll(DNSEntry.class);
                                     list.setAdapter(adapter = new DefaultDNSAdapter());
                                 }
                             }).show();
@@ -93,9 +96,9 @@ public class DefaultDNSDialog extends AlertDialog {
                             new DNSCreationDialog(context, new DNSCreationDialog.OnEditingFinishedListener() {
                                 @Override
                                 public void editingFinished(DNSEntry entry) {
-                                    Util.getDBHelper(context).editEntry(entry);
+                                    Util.getDBHelper(context).update(entry);
                                     localEntries.clear();
-                                    localEntries = Util.getDBHelper(context).getDNSEntries();
+                                    localEntries = Util.getDBHelper(context).getAll(DNSEntry.class);
                                     list.setAdapter(adapter = new DefaultDNSAdapter());
                                 }
                             }, removal.get(0)).show();
@@ -115,7 +118,7 @@ public class DefaultDNSDialog extends AlertDialog {
                         removeButtonShown = false;
                         v.setVisibility(View.INVISIBLE);
                         for (DNSEntry entry : removal) {
-                            Util.getDBHelper(context).removeDNSEntry(entry.getID());
+                            Util.getDBHelper(context).delete(entry);
                             localEntries.remove(entry);
                         }
                         removal.clear();
@@ -129,7 +132,7 @@ public class DefaultDNSDialog extends AlertDialog {
     }
 
     public static interface OnProviderSelectedListener {
-        public void onProviderSelected(String name, String dns1, String dns2, String dns1V6, String dns2V6);
+        public void onProviderSelected(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6);
     }
 
     private class DefaultDNSAdapter extends RecyclerView.Adapter<DefaultDNSAdapter.ViewHolder> {

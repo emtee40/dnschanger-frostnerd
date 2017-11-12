@@ -74,7 +74,7 @@ public class SettingsImportActivity extends Activity {
             while ((line = reader.readLine()) != null) {
                 if (line.equals("") || line.startsWith("[")) continue;
                 if(line.startsWith("'")){
-                    Util.createShortcut(c, Shortcut.fromString(line.split("'")[1]));
+                    //Util.createShortcut(c, Shortcut.fromString(line.split("'")[1]));
                 }
                 else data += line;
             }

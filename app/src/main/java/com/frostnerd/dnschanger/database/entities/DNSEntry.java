@@ -2,40 +2,108 @@ package com.frostnerd.dnschanger.database.entities;
 
 import android.support.annotation.NonNull;
 
-public class DNSEntry implements Comparable<DNSEntry> {
-    private String name, dns1, dns2, dns1V6, dns2V6, description, shortName;
-    private int ID;
+import com.frostnerd.dnschanger.database.serializers.IPPortSerializer;
+import com.frostnerd.utils.database.orm.Entity;
+import com.frostnerd.utils.database.orm.annotations.AutoIncrement;
+import com.frostnerd.utils.database.orm.annotations.Named;
+import com.frostnerd.utils.database.orm.annotations.PrimaryKey;
+import com.frostnerd.utils.database.orm.annotations.Serialized;
+import com.frostnerd.utils.database.orm.annotations.Table;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+
+@Table(name = "DNSEntry")
+public class DNSEntry extends Entity implements Comparable<DNSEntry>{
+    @Serialized(using = IPPortSerializer.class)
+    @Named(name = "dns1")
+    private IPPortPair dns1;
+
+    @Named(name = "dns2")
+    @Serialized(using = IPPortSerializer.class)
+    private IPPortPair dns2;
+
+    @Named(name = "dns1v6")
+    @Serialized(using = IPPortSerializer.class)
+    private IPPortPair dns1V6;
+
+    @Named(name = "dns2v6")
+    @Serialized(using = IPPortSerializer.class)
+    private IPPortPair dns2V6;
+
+    @Named(name = "name")
+    private String name;
+
+    @Named(name = "description")
+    private String description;
+
+    @Named(name = "shortname")
+    private String shortName;
+
+    @Named(name = "customentry")
     private boolean customEntry;
 
-    public DNSEntry(int id, String name, String shortName, String dns1, String dns2, String dns1V6, String dns2V6, String description, boolean customEntry) {
+    @PrimaryKey
+    @AutoIncrement
+    @Named(name = "id")
+    private int ID;
+
+    public static final List<DNSEntry> defaultDNSEntries = new ArrayList<>();
+    public static final HashMap<String, DNSEntry> additionalDefaultEntries = new HashMap<>();
+    static {
+        defaultDNSEntries.add(DNSEntry.constructSimple("Google", "Google", "8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844", "",false));
+        defaultDNSEntries.add(DNSEntry.constructSimple( "OpenDNS", "OpenDNS", "208.67.222.222", "208.67.220.220", "2620:0:ccc::2", "2620:0:ccd::2", "",false));
+        defaultDNSEntries.add(DNSEntry.constructSimple("Level3", "Level3", "209.244.0.3", "209.244.0.4", "", "", "",false));
+        defaultDNSEntries.add(DNSEntry.constructSimple("FreeDNS", "FreeDNS", "37.235.1.174", "37.235.1.177", "", "", "",false));
+        defaultDNSEntries.add(DNSEntry.constructSimple("Yandex", "Yandex", "77.88.8.8", "77.88.8.1", "2a02:6b8::feed:0ff", "2a02:6b8:0:1::feed:0ff", "",false));
+        defaultDNSEntries.add(DNSEntry.constructSimple("Verisign", "Verisign", "64.6.64.6", "64.6.65.6", "2620:74:1b::1:1", "2620:74:1c::2:2", "",false));
+        defaultDNSEntries.add(DNSEntry.constructSimple("Alternate", "Alternate", "198.101.242.72", "23.253.163.53", "", "", "",false));
+        defaultDNSEntries.add(DNSEntry.constructSimple("Norton Connectsafe - Security", "Norton Connectsafe", "199.85.126.10", "199.85.127.10", "", "", "",false));
+        defaultDNSEntries.add(DNSEntry.constructSimple("Norton Connectsafe - Security + Pornography" , "Norton Connectsafe", "199.85.126.20", "199.85.127.20", "", "", "",false));
+        defaultDNSEntries.add(DNSEntry.constructSimple("Norton Connectsafe - Security + Pornography + Other", "Norton Connectsafe", "199.85.126.30", "199.85.127.30", "", "", "",false));
+        Collections.sort(defaultDNSEntries);
+
+        additionalDefaultEntries.put("unblockr", DNSEntry.constructSimple("Unblockr", "Unblockr", "178.62.57.141", "139.162.231.18", "", "", "Non-public DNS server for kodi. Visit unblockr.net for more information.",false));
+    }
+
+    public DNSEntry(String name, String shortName, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6, String description, boolean customEntry) {
         this.name = name;
         this.dns1 = dns1;
         this.dns2 = dns2;
         this.dns1V6 = dns1V6;
         this.dns2V6 = dns2V6;
-        this.ID = id;
         this.description = description;
         this.customEntry = customEntry;
         this.shortName = shortName;
+    }
+
+    public DNSEntry(){
+
+    }
+
+    public static DNSEntry constructSimple(String name, String shortName, String dns1, String dns2, String dns1V6, String dns2V6, String description, boolean customEntry){
+        return new DNSEntry(name, shortName, IPPortPair.wrap(dns1),IPPortPair.wrap(dns2),IPPortPair.wrap(dns1V6),IPPortPair.wrap(dns2V6), description, customEntry);
     }
 
     public String getName() {
         return name;
     }
 
-    public String getDns1() {
+    public IPPortPair getDns1() {
         return dns1;
     }
 
-    public String getDns2() {
+    public IPPortPair getDns2() {
         return dns2;
     }
 
-    public String getDns1V6() {
+    public IPPortPair getDns1V6() {
         return dns1V6;
     }
 
-    public String getDns2V6() {
+    public IPPortPair getDns2V6() {
         return dns2V6;
     }
 
@@ -59,19 +127,19 @@ public class DNSEntry implements Comparable<DNSEntry> {
         this.name = name;
     }
 
-    public void setDns1(String dns1) {
+    public void setDns1(IPPortPair dns1) {
         this.dns1 = dns1;
     }
 
-    public void setDns2(String dns2) {
+    public void setDns2(IPPortPair dns2) {
         this.dns2 = dns2;
     }
 
-    public void setDns1V6(String dns1V6) {
+    public void setDns1V6(IPPortPair dns1V6) {
         this.dns1V6 = dns1V6;
     }
 
-    public void setDns2V6(String dns2V6) {
+    public void setDns2V6(IPPortPair dns2V6) {
         this.dns2V6 = dns2V6;
     }
 
@@ -90,6 +158,26 @@ public class DNSEntry implements Comparable<DNSEntry> {
 
     public boolean hasIP(String ip){
         if(ip == null || ip.equals(""))return false;
-        return ip.equals(dns1) || ip.equals(dns2) || ip.equalsIgnoreCase(dns1V6) || ip.equalsIgnoreCase(dns2V6);
+        return entryAddressMatches(ip, dns1) || entryAddressMatches(ip, dns2) ||
+                entryAddressMatches(ip, dns1V6) || entryAddressMatches(ip, dns2V6);
+    }
+
+    @Override
+    public String toString() {
+        return "DNSEntry{" +
+                "dns1=" + dns1 +
+                ", dns2=" + dns2 +
+                ", dns1V6=" + dns1V6 +
+                ", dns2V6=" + dns2V6 +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", shortName='" + shortName + '\'' +
+                ", customEntry=" + customEntry +
+                ", ID=" + ID +
+                '}';
+    }
+
+    private boolean entryAddressMatches(String ip, IPPortPair pair){
+        return ip != null && pair != null && ip.equals(pair.getAddress());
     }
 }
