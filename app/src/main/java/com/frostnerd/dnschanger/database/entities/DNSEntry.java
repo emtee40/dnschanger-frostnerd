@@ -6,9 +6,11 @@ import com.frostnerd.dnschanger.database.serializers.IPPortSerializer;
 import com.frostnerd.utils.database.orm.Entity;
 import com.frostnerd.utils.database.orm.annotations.AutoIncrement;
 import com.frostnerd.utils.database.orm.annotations.Named;
+import com.frostnerd.utils.database.orm.annotations.NotNull;
 import com.frostnerd.utils.database.orm.annotations.PrimaryKey;
 import com.frostnerd.utils.database.orm.annotations.Serialized;
 import com.frostnerd.utils.database.orm.annotations.Table;
+import com.frostnerd.utils.database.orm.annotations.Unique;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,6 +21,7 @@ import java.util.List;
 public class DNSEntry extends Entity implements Comparable<DNSEntry>{
     @Serialized(using = IPPortSerializer.class)
     @Named(name = "dns1")
+    @NotNull
     private IPPortPair dns1;
 
     @Named(name = "dns2")
@@ -27,6 +30,7 @@ public class DNSEntry extends Entity implements Comparable<DNSEntry>{
 
     @Named(name = "dns1v6")
     @Serialized(using = IPPortSerializer.class)
+    @NotNull
     private IPPortPair dns1V6;
 
     @Named(name = "dns2v6")
@@ -34,6 +38,8 @@ public class DNSEntry extends Entity implements Comparable<DNSEntry>{
     private IPPortPair dns2V6;
 
     @Named(name = "name")
+    @NotNull
+    @Unique
     private String name;
 
     @Named(name = "description")
@@ -84,7 +90,8 @@ public class DNSEntry extends Entity implements Comparable<DNSEntry>{
     }
 
     public static DNSEntry constructSimple(String name, String shortName, String dns1, String dns2, String dns1V6, String dns2V6, String description, boolean customEntry){
-        return new DNSEntry(name, shortName, IPPortPair.wrap(dns1),IPPortPair.wrap(dns2),IPPortPair.wrap(dns1V6),IPPortPair.wrap(dns2V6), description, customEntry);
+        return new DNSEntry(name, shortName, IPPortPair.wrap(dns1, 53),IPPortPair.wrap(dns2, 53),
+                IPPortPair.wrap(dns1V6, 53),IPPortPair.wrap(dns2V6, 53), description, customEntry);
     }
 
     public String getName() {
