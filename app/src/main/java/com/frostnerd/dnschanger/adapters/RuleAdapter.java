@@ -13,8 +13,10 @@ import android.widget.TextView;
 
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
+import com.frostnerd.dnschanger.database.entities.DNSRule;
 import com.frostnerd.dnschanger.dialogs.NewRuleDialog;
 import com.frostnerd.dnschanger.util.Util;
+import com.frostnerd.utils.database.orm.parser.Column;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +45,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     private TextView rowCount;
     private ProgressBar updateProgress;
     private int rowRemapPos = 0;
+    private Column<DNSRule> ipv6Column, hostColumn, targetColumn, wildcardColumn;
 
     public RuleAdapter(Activity context, DatabaseHelper databaseHelper, TextView rowCount, ProgressBar updateProgress){
         this.databaseHelper = databaseHelper;
@@ -54,6 +57,10 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
         filterValues.put(ArgumentLessFilter.SHOW_WILDCARD, "0");
         filterValues.put(ArgumentLessFilter.SHOW_IPV4, "0");
         filterValues.put(ArgumentLessFilter.SHOW_IPV6, "0");
+        ipv6Column = databaseHelper.findColumn(DNSRule.class, "ipv6");
+        hostColumn = databaseHelper.findColumn(DNSRule.class, "host");
+        targetColumn = databaseHelper.findColumn(DNSRule.class, "target");
+        wildcardColumn = databaseHelper.findColumn(DNSRule.class, "wildcard");
         reloadData();
     }
 
@@ -197,20 +204,20 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
             if(count > MAX_ROW_ID_CACHE_COUNT){
                 loadRowRemap(position);
                 int rowID = rowRemap.containsKey(position) ? rowRemap.get(position) : position+1;
-                cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Host, IPv6, Target, Wildcard FROM DNSRule WHERE ROWID=" + rowID, null);
+                cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT * FROM DNSRule WHERE ROWID=" + rowID, null);
             }else{
-                cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Host, IPv6, Target, Wildcard FROM DNSRule WHERE ROWID=" + rows.get(position), null);
+                cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT * FROM DNSRule WHERE ROWID=" + rows.get(position), null);
             }
         }else {
             loadRowRemap(position);
             int rowID = rowRemap.containsKey(position) ? rowRemap.get(position) : position+1;
-            cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Host, IPv6, Target, Wildcard FROM DNSRule WHERE ROWID=" + rowID, null);
+            cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT * FROM DNSRule WHERE ROWID=" + rowID, null);
         }
         cursor.moveToFirst();
-        final String host = cursor.getString(cursor.getColumnIndex("Host")),
-                target = cursor.getString(cursor.getColumnIndex("Target"));
-        final boolean ipv6 = cursor.getInt(cursor.getColumnIndex("IPv6")) == 1,
-                wildcard = cursor.getInt(cursor.getColumnIndex("Wildcard")) == 1;
+        final String host = cursor.getString(cursor.getColumnIndex(hostColumn.getColumnName())),
+                target = cursor.getString(cursor.getColumnIndex(targetColumn.getColumnName()));
+        final boolean ipv6 = cursor.getInt(cursor.getColumnIndex(ipv6Column.getColumnName())) == 1,
+                wildcard = cursor.getInt(cursor.getColumnIndex(wildcardColumn.getColumnName())) == 1;
         ((TextView)holder.itemView.findViewById(R.id.text)).setText(host);
         ((TextView)holder.itemView.findViewById(R.id.text3)).setText(target);
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -252,7 +259,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
             @Override
             public String appendToQuery(String query, String argument, HashMap<Filter, String> filterValues) {
                 if(filterValues.containsKey(SHOW_IPV4))return query;
-                return query + "IPv6=1";
+                return query + "Ipv6=1";
             }
         }, HIDE_LOCAL {
             @Override
@@ -269,7 +276,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
             @Override
             public String appendToQuery(String query, String argument, HashMap<Filter, String> filterValues) {
                 if(filterValues.containsKey(SHOW_IPV6))return query;
-                return query + "IPV6=0";
+                return query + "Ipv6=0";
             }
         }, SHOW_NORMAL{
             @Override
@@ -284,7 +291,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
         TARGET {
             @Override
             public String appendToQuery(String query, String argument, HashMap<Filter, String> filterValues) {
-                return query + "Target LIKE '%" + argument + "%'";
+                return query +  "Target LIKE '%" + argument + "%'";
             }
         }, HOST_SEARCH{
             @Override
