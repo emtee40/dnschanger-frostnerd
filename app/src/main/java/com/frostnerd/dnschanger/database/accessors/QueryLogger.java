@@ -3,6 +3,7 @@ package com.frostnerd.dnschanger.database.accessors;
 import android.content.ContentValues;
 
 import com.frostnerd.dnschanger.database.DatabaseHelper;
+import com.frostnerd.dnschanger.database.entities.DNSQuery;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -21,9 +22,6 @@ public class QueryLogger {
     }
 
     public void logQuery(String query, boolean ipv6){
-        ContentValues values = new ContentValues(2);
-        values.put("Host", query);
-        values.put("IPv6", ipv6);
-        helper.getWritableDatabase().insert("DNSQueries", null, values);
+        helper.insert(new DNSQuery(query, ipv6, System.currentTimeMillis()));
     }
 }
