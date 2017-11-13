@@ -1,9 +1,9 @@
 package com.frostnerd.dnschanger.database.entities;
 
 import com.frostnerd.utils.database.orm.Entity;
-import com.frostnerd.utils.database.orm.annotations.AutoIncrement;
 import com.frostnerd.utils.database.orm.annotations.NotNull;
 import com.frostnerd.utils.database.orm.annotations.PrimaryKey;
+import com.frostnerd.utils.database.orm.annotations.RowID;
 import com.frostnerd.utils.database.orm.annotations.Table;
 
 /**
@@ -24,6 +24,8 @@ public class DNSRule extends Entity{
     @PrimaryKey
     private boolean ipv6 = false;
     private boolean wildcard = false;
+    @RowID
+    private long rowid;
 
     public DNSRule(){
 
@@ -54,5 +56,20 @@ public class DNSRule extends Entity{
 
     public void setTarget(String target) {
         this.target = target;
+    }
+
+    public long getRowid() {
+        return rowid;
+    }
+
+    @Override
+    public String toString() {
+        return "DNSRule{" +
+                "host='" + host + '\'' +
+                ", target='" + target + '\'' +
+                ", ipv6=" + ipv6 +
+                ", wildcard=" + wildcard +
+                ", rowid=" + rowid +
+                '}';
     }
 }
