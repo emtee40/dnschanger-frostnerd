@@ -126,7 +126,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
         rowRemapPos = 0;
         loadRowRemap(0);
         if(filterValues.containsKey(ArgumentBasedFilter.HOST_SEARCH)){
-            cursor = databaseHelper.getReadableDatabase().rawQuery(constructQuery("SELECT ROWID FROM DNSRules"), null);
+            cursor = databaseHelper.getReadableDatabase().rawQuery(constructQuery("SELECT ROWID FROM DNSRule"), null);
             count = cursor.getCount();
             if(count > MAX_ROW_ID_CACHE_COUNT){
                 loadRowRemap(0);
@@ -145,7 +145,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     }
 
     private int queryDBRuleCount(){
-        Cursor cursor = databaseHelper.getReadableDatabase().rawQuery(constructQuery("SELECT COUNT(*) FROM DNSRules"), null);
+        Cursor cursor = databaseHelper.getReadableDatabase().rawQuery(constructQuery("SELECT COUNT(*) FROM DNSRule"), null);
         int count = 0;
         if(cursor.moveToFirst())count = cursor.getInt(0);
         cursor.close();
@@ -158,7 +158,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
                     (filterValues.containsKey(ArgumentBasedFilter.HOST_SEARCH) ?
                             ROW_REMAP_FETCH_COUNT_WHEN_SEARCHING : ROW_REMAP_FETCH_COUNT);
             Cursor cursor = databaseHelper.getReadableDatabase().
-                    rawQuery(constructQuery("SELECT ROWID FROM DNSRules") + " LIMIT " + rowRemapPos + "," + fetchCount, null);
+                    rawQuery(constructQuery("SELECT ROWID FROM DNSRule") + " LIMIT " + rowRemapPos + "," + fetchCount, null);
             if(cursor.moveToFirst()){
                 int id, count = rowRemapPos+1, rawCount = rowRemapPos;
                 do{
@@ -197,14 +197,14 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
             if(count > MAX_ROW_ID_CACHE_COUNT){
                 loadRowRemap(position);
                 int rowID = rowRemap.containsKey(position) ? rowRemap.get(position) : position+1;
-                cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Host, IPv6, Target, Wildcard FROM DNSRules WHERE ROWID=" + rowID, null);
+                cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Host, IPv6, Target, Wildcard FROM DNSRule WHERE ROWID=" + rowID, null);
             }else{
-                cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Host, IPv6, Target, Wildcard FROM DNSRules WHERE ROWID=" + rows.get(position), null);
+                cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Host, IPv6, Target, Wildcard FROM DNSRule WHERE ROWID=" + rows.get(position), null);
             }
         }else {
             loadRowRemap(position);
             int rowID = rowRemap.containsKey(position) ? rowRemap.get(position) : position+1;
-            cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Host, IPv6, Target, Wildcard FROM DNSRules WHERE ROWID=" + rowID, null);
+            cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT Host, IPv6, Target, Wildcard FROM DNSRule WHERE ROWID=" + rowID, null);
         }
         cursor.moveToFirst();
         final String host = cursor.getString(cursor.getColumnIndex("Host")),
