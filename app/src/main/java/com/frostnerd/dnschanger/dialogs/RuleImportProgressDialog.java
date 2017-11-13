@@ -16,11 +16,11 @@ import android.widget.TextView;
 
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
-import com.frostnerd.dnschanger.database.entities.DNSQuery;
+import com.frostnerd.dnschanger.database.entities.DNSRule;
+import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
 import com.frostnerd.dnschanger.fragments.RulesFragment;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Util;
-import com.frostnerd.utils.database.orm.parser.Column;
 import com.frostnerd.utils.networking.NetworkUtil;
 
 import java.io.BufferedReader;
@@ -137,22 +137,22 @@ public class RuleImportProgressDialog extends AlertDialog {
     public enum FileType implements LineParser {
         DNSMASQ {
             @Override
-            public DNSRule parseLine(String line) {
+            public TemporaryDNSRule parseLine(String line) {
                 if(DNSMASQ_MATCHER.reset(line).find()){
                     String host = DNSMASQ_MATCHER.group(1);
                     String target = DNSMASQ_MATCHER.group(2);
                     if(target != null && NetworkUtil.isIP(target, false)){
-                        if(target.equals("0.0.0.0"))return new DNSRule(host);
-                        else return new DNSRule(host, target, false);
+                        if(target.equals("0.0.0.0"))return new TemporaryDNSRule(host);
+                        else return new TemporaryDNSRule(host, target, false);
                     }else if((target = DNSMASQ_MATCHER.group(3)) != null && NetworkUtil.isIP(target, true)){
-                        return new DNSRule(host, target, true);
+                        return new TemporaryDNSRule(host, target, true);
                     }
                 }
                 return null;
             }
         }, HOST {
             @Override
-            public DNSRule parseLine(String line) {
+            public TemporaryDNSRule parseLine(String line) {
                 if(HOSTS_MATCHER.reset(line).find()){
                     String host = HOSTS_MATCHER.group(1), target;
                     boolean ipv6 = false;
@@ -163,26 +163,26 @@ public class RuleImportProgressDialog extends AlertDialog {
                         target = HOSTS_MATCHER.group(2);
                         ipv6 = NetworkUtil.isIP(target, true);
                     }
-                    if(!ipv6 && target.equals("0.0.0.0"))return new DNSRule(host);
-                    else if(NetworkUtil.isIP(target, ipv6))return new DNSRule(host, target, ipv6);
+                    if(!ipv6 && target.equals("0.0.0.0"))return new TemporaryDNSRule(host);
+                    else if(NetworkUtil.isIP(target, ipv6))return new TemporaryDNSRule(host, target, ipv6);
                 }
                 return null;
             }
         }, ADBLOCK_FILE{
             @Override
-            public DNSRule parseLine(String line) {
+            public TemporaryDNSRule parseLine(String line) {
                 if(ADBLOCK_MATCHER.reset(line).find()){
                     String host = ADBLOCK_MATCHER.group(1);
-                    return new DNSRule(host);
+                    return new TemporaryDNSRule(host);
                 }
                 return null;
             }
         }, DOMAIN_LIST {
             @Override
-            public DNSRule parseLine(String line) {
+            public TemporaryDNSRule parseLine(String line) {
                 if(DOMAINS_MATCHER.reset(line).find()){
                     String host = DOMAINS_MATCHER.group(1);
-                    return new DNSRule(host);
+                    return new TemporaryDNSRule(host);
                 }
                 return null;
             }
@@ -195,19 +195,19 @@ public class RuleImportProgressDialog extends AlertDialog {
     }
 
     private interface LineParser {
-        public DNSRule parseLine(String line);
+        public TemporaryDNSRule parseLine(String line);
     }
 
-    private static class DNSRule {
+    private static class TemporaryDNSRule {
         String host, target;
         boolean ipv6, both = false;
 
-        public DNSRule(String host){
+        public TemporaryDNSRule(String host){
             this.host = host;
             both = true;
         }
 
-        public DNSRule(String host, String target, boolean IPv6) {
+        public TemporaryDNSRule(String host, String target, boolean IPv6) {
             this.host = host;
             this.target = target;
             this.ipv6 = IPv6;
@@ -268,37 +268,39 @@ public class RuleImportProgressDialog extends AlertDialog {
             SQLiteDatabase database = Util.getDBHelper(context).getWritableDatabase();
             database.beginTransaction();
             String line;
-            DNSRule rule;
-            ContentValues values = new ContentValues(3), values2 = new ContentValues();
-            int i = 0, pos = 0, dbID = Util.getDBHelper(context).getHighestRowID(DNSQuery.class)+1, currentCount = 0;
-            long tmp;
+            TemporaryDNSRule rule;
+            ContentValues values = new ContentValues(3);
+            int i = 0, pos = 0, currentCount, rowID;
+            String ruleTableName = Util.getDBHelper(context).getTableName(DNSRule.class),
+                columnHost = Util.getDBHelper(context).findColumn(DNSRule.class, "host").getColumnName(),
+                columnTarget = Util.getDBHelper(context).findColumn(DNSRule.class, "target").getColumnName(),
+                columnIPv6 = Util.getDBHelper(context).findColumn(DNSRule.class, "ipv6").getColumnName();
             for(ImportableFile file: files){
                 currentCount = 0;
                 BufferedReader reader = new BufferedReader(new FileReader(file.getFile()));
                 LineParser parser = file.getFileType();
                 onProgressUpdate(-1, pos++);
-                values2.put("RowStart", dbID);
+                rowID = Util.getDBHelper(context).getHighestRowID(DNSRule.class);
                 while (!isCancelled() && (line = reader.readLine()) != null) {
                     i++;
                     rule = parser.parseLine(line.trim());
                     if (rule != null) {
                         validLines++;
-                        values.put("Domain", rule.host);
+                        values.put(columnHost, rule.host);
                         if(rule.both){
-                            values.put("Target", "127.0.0.1");
-                            values.put("IPv6", false);
-                            if(database.insertWithOnConflict("DNSRules", null, values, databaseConflictHandling) != -1){
+                            values.put(columnTarget, "127.0.0.1");
+                            values.put(columnIPv6, false);
+                            if(database.insertWithOnConflict(ruleTableName, null, values, databaseConflictHandling) != -1){
                                 distinctEntries++;
                                 currentCount++;
                             }
-                            values.put("Target", "::1");
-                            values.put("IPv6", true);
+                            values.put(columnTarget, "::1");
+                            values.put(columnIPv6, true);
                         }else{
-                            values.put("Target", rule.target);
-                            values.put("IPv6", rule.ipv6);
+                            values.put(columnTarget, rule.target);
+                            values.put(columnIPv6, rule.ipv6);
                         }
-                        if((tmp = database.insertWithOnConflict("DNSRules", null, values, databaseConflictHandling)) != -1){
-                            dbID = (int)tmp;
+                        if(database.insertWithOnConflict(ruleTableName, null, values, databaseConflictHandling) != -1){
                             distinctEntries++;
                             currentCount++;
                         }
@@ -306,9 +308,9 @@ public class RuleImportProgressDialog extends AlertDialog {
                     }
                     publishProgress(i);
                 }
-                values2.put("RowEnd", dbID);
-                values2.put("Filename", file.getFile().getName());
-                if(!isCancelled() && currentCount != 0)database.insert("DNSRuleImports", null, values2);
+                if(!isCancelled() && currentCount != 0) Util.getDBHelper(context).insert(new DNSRuleImport(file.getFile().getName(), System.currentTimeMillis(),
+                        Util.getDBHelper(context).getByRowID(DNSRule.class, rowID),
+                        Util.getDBHelper(context).getLastRow(DNSRule.class)));
                 reader.close();
             }
             if (!isCancelled()) database.setTransactionSuccessful();
