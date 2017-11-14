@@ -289,7 +289,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
             @Override
             public WhereCondition getCondition(String argument, HashMap<Filter, String> filterValues) {
                 if(filterValues.containsKey(SHOW_WILDCARD))return null;
-                return WhereCondition.equal(wildcardColumn, "0");
+                return WhereCondition.equal(wildcardColumn, "1").not();
             }
         }
     }
