@@ -17,6 +17,10 @@ import com.frostnerd.dnschanger.database.entities.DNSRule;
 import com.frostnerd.dnschanger.dialogs.NewRuleDialog;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.database.orm.parser.Column;
+import com.frostnerd.utils.database.orm.statementoptions.queryoptions.LimitOption;
+import com.frostnerd.utils.database.orm.statementoptions.queryoptions.QueryOption;
+import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
+import com.frostnerd.utils.general.ArrayUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +49,8 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     private TextView rowCount;
     private ProgressBar updateProgress;
     private int rowRemapPos = 0;
-    private Column<DNSRule> ipv6Column, hostColumn, targetColumn, wildcardColumn;
+    private static Column<DNSRule> ipv6Column, hostColumn, targetColumn, wildcardColumn, rowIDColumn;
+    private WhereCondition[] whereConditions;
 
     public RuleAdapter(Activity context, DatabaseHelper databaseHelper, TextView rowCount, ProgressBar updateProgress){
         this.databaseHelper = databaseHelper;
@@ -61,6 +66,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
         hostColumn = databaseHelper.findColumn(DNSRule.class, "host");
         targetColumn = databaseHelper.findColumn(DNSRule.class, "target");
         wildcardColumn = databaseHelper.findColumn(DNSRule.class, "wildcard");
+        rowIDColumn = databaseHelper.getRowIDColumn(DNSRule.class);
         reloadData();
     }
 
@@ -109,6 +115,9 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
 
     public void reloadData(){
         if(!update)return;
+        List<WhereCondition> conditions = getFilterConditions();
+        if(conditions != null)whereConditions = conditions.toArray(new WhereCondition[conditions.size()]);
+        else whereConditions = new WhereCondition[0];
         updateProgress.setVisibility(View.VISIBLE);
         new Thread(){
             @Override
@@ -133,7 +142,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
         rowRemapPos = 0;
         loadRowRemap(0);
         if(filterValues.containsKey(ArgumentBasedFilter.HOST_SEARCH)){
-            cursor = databaseHelper.getReadableDatabase().rawQuery(constructQuery("SELECT ROWID FROM DNSRule"), null);
+            cursor = databaseHelper.getSQLHandler(DNSRule.class).selectCursor(databaseHelper, false, new Column[]{rowIDColumn}, whereConditions);
             count = cursor.getCount();
             if(count > MAX_ROW_ID_CACHE_COUNT){
                 loadRowRemap(0);
@@ -152,11 +161,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     }
 
     private int queryDBRuleCount(){
-        Cursor cursor = databaseHelper.getReadableDatabase().rawQuery(constructQuery("SELECT COUNT(*) FROM DNSRule"), null);
-        int count = 0;
-        if(cursor.moveToFirst())count = cursor.getInt(0);
-        cursor.close();
-        return count;
+        return databaseHelper.getCount(DNSRule.class, whereConditions);
     }
 
     private void loadRowRemap(int position){
@@ -164,8 +169,8 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
             int fetchCount = position > rowRemapPos ? position+1 :
                     (filterValues.containsKey(ArgumentBasedFilter.HOST_SEARCH) ?
                             ROW_REMAP_FETCH_COUNT_WHEN_SEARCHING : ROW_REMAP_FETCH_COUNT);
-            Cursor cursor = databaseHelper.getReadableDatabase().
-                    rawQuery(constructQuery("SELECT ROWID FROM DNSRule") + " LIMIT " + rowRemapPos + "," + fetchCount, null);
+            Cursor cursor = databaseHelper.getSQLHandler(DNSRule.class).selectCursor(databaseHelper,
+                    false, new Column[]{rowIDColumn}, ArrayUtil.combine(QueryOption.class, new LimitOption(fetchCount, rowRemapPos), whereConditions));
             if(cursor.moveToFirst()){
                 int id, count = rowRemapPos+1, rawCount = rowRemapPos;
                 do{
@@ -182,14 +187,16 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
         }
     }
 
-    private String constructQuery(String base){
-        if(filterValues.size() == 0)return base;
-        String query = base + " WHERE ", newQuery;
+    private List<WhereCondition> getFilterConditions(){
+        if(filterValues.size() == 0)return null;
+        List<WhereCondition> conditions = new ArrayList<>();
+        WhereCondition condition;
         for(Filter filter: filterValues.keySet()){
-            newQuery = filter.appendToQuery(query, filterValues.get(filter), filterValues);
-            if(!newQuery.equals(query))query = newQuery + " AND ";
+            if((condition = filter.getCondition(filterValues.get(filter), filterValues)) != null){
+                conditions.add(filter.getCondition(filterValues.get(filter), filterValues));
+            }
         }
-        return query.substring(0, query.length() - 4);
+        return conditions;
     }
 
     @Override
@@ -199,27 +206,25 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Cursor cursor;
+        final DNSRule rule;
         if(filterValues.containsKey(ArgumentBasedFilter.HOST_SEARCH)){
             if(count > MAX_ROW_ID_CACHE_COUNT){
                 loadRowRemap(position);
                 int rowID = rowRemap.containsKey(position) ? rowRemap.get(position) : position+1;
-                cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT * FROM DNSRule WHERE ROWID=" + rowID, null);
+                rule = databaseHelper.getSQLHandler(DNSRule.class).selectFirstRow(databaseHelper, false,
+                        WhereCondition.equal(rowIDColumn, ""+rowID));
             }else{
-                cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT * FROM DNSRule WHERE ROWID=" + rows.get(position), null);
+                rule = databaseHelper.getSQLHandler(DNSRule.class).selectFirstRow(databaseHelper, false,
+                        WhereCondition.equal(rowIDColumn, ""+ rows.get(position)));
             }
         }else {
             loadRowRemap(position);
             int rowID = rowRemap.containsKey(position) ? rowRemap.get(position) : position+1;
-            cursor = databaseHelper.getReadableDatabase().rawQuery("SELECT * FROM DNSRule WHERE ROWID=" + rowID, null);
+            rule = databaseHelper.getSQLHandler(DNSRule.class).selectFirstRow(databaseHelper, false,
+                    WhereCondition.equal(rowIDColumn, "" + rowID));
         }
-        cursor.moveToFirst();
-        final String host = cursor.getString(cursor.getColumnIndex(hostColumn.getColumnName())),
-                target = cursor.getString(cursor.getColumnIndex(targetColumn.getColumnName()));
-        final boolean ipv6 = cursor.getInt(cursor.getColumnIndex(ipv6Column.getColumnName())) == 1,
-                wildcard = cursor.getInt(cursor.getColumnIndex(wildcardColumn.getColumnName())) == 1;
-        ((TextView)holder.itemView.findViewById(R.id.text)).setText(host);
-        ((TextView)holder.itemView.findViewById(R.id.text3)).setText(target);
+        ((TextView)holder.itemView.findViewById(R.id.text)).setText(rule.getHost());
+        ((TextView)holder.itemView.findViewById(R.id.text3)).setText(rule.getTarget());
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -232,11 +237,10 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
                         }
                         reloadData();
                     }
-                }, host, target, wildcard, ipv6).show();
+                }, rule.getHost(), rule.getTarget(), rule.isWildcard(), rule.isIpv6()).show();
                 return true;
             }
         });
-        cursor.close();
     }
 
     @Override
@@ -251,38 +255,39 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     }
 
     private interface Filter{
-        public String appendToQuery(String query, String argument, HashMap<Filter, String> filterValues);
+        public WhereCondition getCondition(String argument, HashMap<Filter, String> filterValues);
     }
 
     public enum ArgumentLessFilter implements Filter{
         SHOW_IPV6 {
             @Override
-            public String appendToQuery(String query, String argument, HashMap<Filter, String> filterValues) {
-                if(filterValues.containsKey(SHOW_IPV4))return query;
-                return query + "Ipv6=1";
+            public WhereCondition getCondition(String argument, HashMap<Filter, String> filterValues) {
+                if(filterValues.containsKey(SHOW_IPV4))return null;
+                return WhereCondition.equal(ipv6Column, "1");
             }
         }, HIDE_LOCAL {
             @Override
-            public String appendToQuery(String query, String argument, HashMap<Filter, String> filterValues) {
-               return query + "Target!='127.0.0.1' AND Target!='::1'";
+            public WhereCondition getCondition(String argument, HashMap<Filter, String> filterValues) {
+                return WhereCondition.equal(targetColumn, "127.0.0.1").not()
+                        .and(WhereCondition.equal(targetColumn, "::1").not());
             }
         }, SHOW_WILDCARD {
             @Override
-            public String appendToQuery(String query, String argument, HashMap<Filter, String> filterValues) {
-                if(filterValues.containsKey(SHOW_NORMAL))return query;
-                return query + "Wildcard=1";
+            public WhereCondition getCondition(String argument, HashMap<Filter, String> filterValues) {
+                if(filterValues.containsKey(SHOW_NORMAL))return null;
+                return WhereCondition.equal(wildcardColumn, "1");
             }
         }, SHOW_IPV4 {
             @Override
-            public String appendToQuery(String query, String argument, HashMap<Filter, String> filterValues) {
-                if(filterValues.containsKey(SHOW_IPV6))return query;
-                return query + "Ipv6=0";
+            public WhereCondition getCondition(String argument, HashMap<Filter, String> filterValues) {
+                if(filterValues.containsKey(SHOW_IPV6))return null;
+                return WhereCondition.equal(ipv6Column, "0");
             }
         }, SHOW_NORMAL{
             @Override
-            public String appendToQuery(String query, String argument, HashMap<Filter, String> filterValues) {
-                if(filterValues.containsKey(SHOW_WILDCARD))return query;
-                return query + "Wildcard=0";
+            public WhereCondition getCondition(String argument, HashMap<Filter, String> filterValues) {
+                if(filterValues.containsKey(SHOW_WILDCARD))return null;
+                return WhereCondition.equal(wildcardColumn, "0");
             }
         }
     }
@@ -290,13 +295,13 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     public enum ArgumentBasedFilter implements Filter{
         TARGET {
             @Override
-            public String appendToQuery(String query, String argument, HashMap<Filter, String> filterValues) {
-                return query +  "Target LIKE '%" + argument + "%'";
+            public WhereCondition getCondition(String argument, HashMap<Filter, String> filterValues) {
+                return WhereCondition.like(targetColumn, "%" + argument + "%");
             }
         }, HOST_SEARCH{
             @Override
-            public String appendToQuery(String query, String argument, HashMap<Filter, String> filterValues) {
-                return query + "Host LIKE '%" + argument + "%'";
+            public WhereCondition getCondition(String argument, HashMap<Filter, String> filterValues) {
+                return WhereCondition.like(hostColumn, "%" + argument + "%");
             }
         }
     }
