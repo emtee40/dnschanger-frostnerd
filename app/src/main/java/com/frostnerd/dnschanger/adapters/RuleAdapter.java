@@ -51,6 +51,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     private int rowRemapPos = 0;
     private static Column<DNSRule> ipv6Column, hostColumn, targetColumn, wildcardColumn, rowIDColumn;
     private WhereCondition[] whereConditions;
+    private Column[] rowIDProjection;
 
     public RuleAdapter(Activity context, DatabaseHelper databaseHelper, TextView rowCount, ProgressBar updateProgress){
         this.databaseHelper = databaseHelper;
@@ -67,6 +68,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
         targetColumn = databaseHelper.findColumn(DNSRule.class, "target");
         wildcardColumn = databaseHelper.findColumn(DNSRule.class, "wildcard");
         rowIDColumn = databaseHelper.getRowIDColumn(DNSRule.class);
+        rowIDProjection = new Column[]{rowIDColumn};
         reloadData();
     }
 
@@ -142,7 +144,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
         rowRemapPos = 0;
         loadRowRemap(0);
         if(filterValues.containsKey(ArgumentBasedFilter.HOST_SEARCH)){
-            cursor = databaseHelper.getSQLHandler(DNSRule.class).selectCursor(databaseHelper, false, new Column[]{rowIDColumn}, whereConditions);
+            cursor = databaseHelper.getSQLHandler(DNSRule.class).selectCursor(databaseHelper, false, rowIDProjection, whereConditions);
             count = cursor.getCount();
             if(count > MAX_ROW_ID_CACHE_COUNT){
                 loadRowRemap(0);
@@ -170,7 +172,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
                     (filterValues.containsKey(ArgumentBasedFilter.HOST_SEARCH) ?
                             ROW_REMAP_FETCH_COUNT_WHEN_SEARCHING : ROW_REMAP_FETCH_COUNT);
             Cursor cursor = databaseHelper.getSQLHandler(DNSRule.class).selectCursor(databaseHelper,
-                    false, new Column[]{rowIDColumn}, ArrayUtil.combine(QueryOption.class, new LimitOption(fetchCount, rowRemapPos), whereConditions));
+                    false, rowIDProjection, ArrayUtil.combine(QueryOption.class, new LimitOption(fetchCount, rowRemapPos), whereConditions));
             if(cursor.moveToFirst()){
                 int id, count = rowRemapPos+1, rawCount = rowRemapPos;
                 do{
