@@ -195,7 +195,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
         WhereCondition condition;
         for(Filter filter: filterValues.keySet()){
             if((condition = filter.getCondition(filterValues.get(filter), filterValues)) != null){
-                conditions.add(filter.getCondition(filterValues.get(filter), filterValues));
+                conditions.add(condition);
             }
         }
         return conditions;
