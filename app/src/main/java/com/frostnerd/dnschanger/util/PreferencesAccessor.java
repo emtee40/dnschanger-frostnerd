@@ -196,8 +196,13 @@ public class PreferencesAccessor {
         }
 
         public void saveDNSPair(Context context, IPPortPair pair){
+            if(!canBeEmpty() && pair.isEmpty())return;
             Preferences.put(context, portKey, pair.getPort() == -1 ? 53 : pair.getPort());
             Preferences.put(context, dnsKey, pair.getAddress());
+        }
+
+        public boolean canBeEmpty(){
+            return this == DNS2 || this == DNS2_V6;
         }
     }
 
