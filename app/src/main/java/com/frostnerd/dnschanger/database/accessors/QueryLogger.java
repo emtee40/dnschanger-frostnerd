@@ -4,6 +4,7 @@ import android.content.ContentValues;
 
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
+import com.frostnerd.utils.database.orm.parser.ParsedEntity;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -16,12 +17,18 @@ import com.frostnerd.dnschanger.database.entities.DNSQuery;
  */
 public class QueryLogger {
     private DatabaseHelper helper;
+    private final String insertStatement;
 
     public QueryLogger(DatabaseHelper databaseHelper){
         this.helper = databaseHelper;
+        String host = databaseHelper.findColumn(DNSQuery.class, "host").getColumnName(),
+                ipv6 = databaseHelper.findColumn(DNSQuery.class, "ipv6").getColumnName(),
+                time = databaseHelper.findColumn(DNSQuery.class, "time").getColumnName();
+        insertStatement = "INSERT INTO " + databaseHelper.getTableName(DNSQuery.class) + "(" + host +
+                "," + ipv6 + "," + time + ")VALUES(?,?,?)";
     }
 
     public void logQuery(String query, boolean ipv6){
-        helper.insert(new DNSQuery(query, ipv6, System.currentTimeMillis()));
+        helper.getWritableDatabase().execSQL(insertStatement, new Object[]{query, ipv6, System.currentTimeMillis()});
     }
 }
