@@ -39,12 +39,10 @@ public class DNSCreationDialog extends AlertDialog {
     private MaterialEditText met_name, met_dns1, met_dns2;
     private Vibrator vibrator;
     private boolean settingV6;
-    private final boolean advancedMode;
     private Mode mode;
     private DNSEntry editedEntry;
     private boolean customPorts;
     {
-        advancedMode = PreferencesAccessor.isRunningInAdvancedMode(getContext());
         customPorts = PreferencesAccessor.areCustomPortsEnabled(getContext());
     }
 
@@ -138,7 +136,7 @@ public class DNSCreationDialog extends AlertDialog {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(before != count){
                     IPPortPair pair = Util.validateInput(s.toString(), settingV6, false);
-                    if(pair == null || (pair.getPort() != -1 && pair.getPort() != 53 && !advancedMode)){
+                    if(pair == null || (pair.getPort() != -1 && pair.getPort() != 53 && !customPorts)){
                         met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                     }else{
                         if(pair.getPort() == -1)pair.setPort(53);
@@ -164,7 +162,7 @@ public class DNSCreationDialog extends AlertDialog {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(before != count){
                     IPPortPair pair = Util.validateInput(s.toString(), settingV6, true);
-                    if(pair == null || (pair.getPort() != -1 && pair.getPort() != 53 && !advancedMode)){
+                    if(pair == null || (pair.getPort() != -1 && pair.getPort() != 53 && !customPorts)){
                         met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                     }else{
                         if(pair.getPort() == -1)pair.setPort(53);
