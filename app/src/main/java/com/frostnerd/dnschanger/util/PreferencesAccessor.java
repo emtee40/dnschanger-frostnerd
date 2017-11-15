@@ -182,8 +182,7 @@ public class PreferencesAccessor {
         }
 
         public IPPortPair getPair(Context context){
-            return isAddressTypeEnabled(context) ? new IPPortPair(getServerAddress(context), getPort(context), isIPv6()) :
-                    new IPPortPair("", -1, false);
+            return new IPPortPair(getServerAddress(context), getPort(context), isIPv6());
         }
 
         public DNSEntry findMatchingDatabaseEntry(Context context){
