@@ -592,13 +592,13 @@ public class MainActivity extends NavigationDrawerActivity {
                 if(mainFragment.settingV6){
                     mainFragment.dns1.setText(dns1V6.toString(port));
                     mainFragment.dns2.setText(dns2V6.toString(port));
-                    Preferences.put(MainActivity.this, "dns1", dns1);
-                    Preferences.put(MainActivity.this, "dns2", dns2);
+                    PreferencesAccessor.Type.DNS1.saveDNSPair(MainActivity.this, dns1);
+                    PreferencesAccessor.Type.DNS2.saveDNSPair(MainActivity.this, dns2);
                 }else{
                     mainFragment.dns1.setText(dns1.toString(port));
                     mainFragment.dns2.setText(dns2.toString(port));
-                    Preferences.put(MainActivity.this, "dns1-v6", dns1V6);
-                    Preferences.put(MainActivity.this, "dns2-v6", dns2V6);
+                    PreferencesAccessor.Type.DNS1_V6.saveDNSPair(MainActivity.this, dns1V6);
+                    PreferencesAccessor.Type.DNS2_V6.saveDNSPair(MainActivity.this, dns2V6);
                 }
             }
         });
