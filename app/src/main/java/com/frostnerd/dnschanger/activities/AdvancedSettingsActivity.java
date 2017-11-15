@@ -43,6 +43,7 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
         });
         findPreference("custom_port").setOnPreferenceChangeListener(preferenceChangeListener);
         findPreference("rules_activated").setOnPreferenceChangeListener(preferenceChangeListener);
+        findPreference("query_logging").setOnPreferenceChangeListener(preferenceChangeListener);
     }
 
     Preference.OnPreferenceChangeListener preferenceChangeListener = new Preference.OnPreferenceChangeListener() {
