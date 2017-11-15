@@ -1,6 +1,7 @@
 package com.frostnerd.dnschanger.database.entities;
 
 import com.frostnerd.utils.database.orm.Entity;
+import com.frostnerd.utils.database.orm.annotations.Named;
 import com.frostnerd.utils.database.orm.annotations.PrimaryKey;
 import com.frostnerd.utils.database.orm.annotations.Table;
 
@@ -16,9 +17,12 @@ import com.frostnerd.utils.database.orm.annotations.Table;
 @Table(name = "DNSQuery")
 public class DNSQuery extends Entity {
     @PrimaryKey
+    @Named(name = "Host")
     private String host;
+    @Named(name = "Ipv6")
     private boolean ipv6;
     @PrimaryKey
+    @Named(name = "Time")
     private long time;
 
     public DNSQuery(String host, boolean ipv6, long time) {

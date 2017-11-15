@@ -3,6 +3,7 @@ package com.frostnerd.dnschanger.database.entities;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.database.orm.Entity;
 import com.frostnerd.utils.database.orm.annotations.AutoIncrement;
+import com.frostnerd.utils.database.orm.annotations.Named;
 import com.frostnerd.utils.database.orm.annotations.PrimaryKey;
 import com.frostnerd.utils.database.orm.annotations.Table;
 
@@ -10,8 +11,11 @@ import java.io.Serializable;
 
 @Table(name = "IPPortPair")
 public class IPPortPair extends Entity implements Serializable{
+    @Named(name = "IP")
     private String ip;
+    @Named(name = "Port")
     private int port;
+    @Named(name = "Ipv6")
     private boolean ipv6;
 
     @PrimaryKey

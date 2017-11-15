@@ -3,6 +3,7 @@ package com.frostnerd.dnschanger.database.entities;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.database.orm.Entity;
 import com.frostnerd.utils.database.orm.annotations.ForeignKey;
+import com.frostnerd.utils.database.orm.annotations.Named;
 import com.frostnerd.utils.database.orm.annotations.NotNull;
 import com.frostnerd.utils.database.orm.annotations.Table;
 
@@ -12,9 +13,17 @@ import java.util.ArrayList;
 @Table(name = "Shortcut")
 public class Shortcut extends Entity implements Serializable {
     @NotNull
-    private IPPortPair dns1, dns1v6;
-    private IPPortPair dns2, dns2v6;
+    @Named(name = "Dns1")
+    private IPPortPair dns1;
     @NotNull
+    @Named(name = "Dns1v6")
+    private IPPortPair dns1v6;
+    @Named(name = "Dns2")
+    private IPPortPair dns2;
+    @Named(name = "Dns2v6")
+    private IPPortPair dns2v6;
+    @NotNull
+    @Named(name = "Name")
     private String name;
 
     public Shortcut(IPPortPair dns1, IPPortPair dns2, IPPortPair dns1v6, IPPortPair dns2v6, String name) {

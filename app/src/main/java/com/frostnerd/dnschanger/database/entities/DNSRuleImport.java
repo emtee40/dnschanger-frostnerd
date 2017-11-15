@@ -2,9 +2,9 @@ package com.frostnerd.dnschanger.database.entities;
 
 import com.frostnerd.utils.database.orm.Entity;
 import com.frostnerd.utils.database.orm.annotations.ForeignKey;
+import com.frostnerd.utils.database.orm.annotations.Named;
 import com.frostnerd.utils.database.orm.annotations.Table;
 
-import java.sql.Timestamp;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -17,10 +17,16 @@ import java.sql.Timestamp;
  */
 @Table(name = "DNSRuleImport")
 public class DNSRuleImport extends Entity{
+    @Named(name = "Filename")
     private String filename;
+    @Named(name = "Time")
     private long time;
     @ForeignKey(referencedEntity = DNSRule.class, referencedField = "rowid")
-    private DNSRule firstInsert, lastInsert;
+    @Named(name = "FirstInsert")
+    private DNSRule firstInsert;
+    @ForeignKey(referencedEntity = DNSRule.class, referencedField = "rowid")
+    @Named(name = "LastInsert")
+    private DNSRule lastInsert;
 
     public DNSRuleImport(String filename, long time, DNSRule firstInsert, DNSRule lastInsert) {
         this.filename = filename;
