@@ -42,8 +42,10 @@ public class DNSCreationDialog extends AlertDialog {
     private final boolean advancedMode;
     private Mode mode;
     private DNSEntry editedEntry;
+    private boolean customPorts;
     {
         advancedMode = PreferencesAccessor.isRunningInAdvancedMode(getContext());
+        customPorts = PreferencesAccessor.areCustomPortsEnabled(getContext());
     }
 
     public DNSCreationDialog(@NonNull Context context, @NonNull final OnEditingFinishedListener listener, final DNSEntry entry) {
@@ -61,8 +63,8 @@ public class DNSCreationDialog extends AlertDialog {
         dns2 = entry.getDns2();
         dns1V6 = entry.getDns1V6();
         dns2V6 = entry.getDns2V6();
-        ed_dns1.setText(settingV6 ? dns1V6.toString() : dns1.toString());
-        ed_dns2.setText(settingV6 ? dns2V6.toString() : dns2.toString());
+        ed_dns1.setText(settingV6 ? dns1V6.toString(customPorts) : dns1.toString(customPorts));
+        ed_dns2.setText(settingV6 ? dns2V6.toString(customPorts) : dns2.toString(customPorts));
         ed_name.setText(entry.getName());
     }
 
@@ -85,8 +87,8 @@ public class DNSCreationDialog extends AlertDialog {
         met_dns2 = view.findViewById(R.id.met_dns2);
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
-        ed_dns1.setText(settingV6 ? dns1V6.toString() : dns1.toString());
-        ed_dns2.setText(settingV6 ? dns2V6.toString() : dns2.toString());
+        ed_dns1.setText(settingV6 ? dns1V6.toString(customPorts) : dns1.toString(customPorts));
+        ed_dns2.setText(settingV6 ? dns2V6.toString(customPorts) : dns2.toString(customPorts));
         setTitle(R.string.new_entry);
         setButton(BUTTON_NEGATIVE, context.getString(R.string.cancel), new OnClickListener() {
             @Override
@@ -119,8 +121,8 @@ public class DNSCreationDialog extends AlertDialog {
                     @Override
                     public void onClick(View v) {
                         settingV6 = !settingV6;
-                        ed_dns1.setText(settingV6 ? dns1V6.toString() : dns1.toString());
-                        ed_dns2.setText(settingV6 ? dns2V6.toString() : dns2.toString());
+                        ed_dns1.setText(settingV6 ? dns1V6.toString(customPorts) : dns1.toString(customPorts));
+                        ed_dns2.setText(settingV6 ? dns2V6.toString(customPorts) : dns2.toString(customPorts));
                         ((Button) v).setText(settingV6 ? "V4" : "V6");
                     }
                 });
