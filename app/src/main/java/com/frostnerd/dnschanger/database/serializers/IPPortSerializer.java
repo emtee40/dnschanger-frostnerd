@@ -12,7 +12,7 @@ import com.frostnerd.utils.database.orm.Serializer;
  * <p>
  * development@frostnerd.com
  */
-public class IPPortSerializer implements Serializer<IPPortPair> {
+public class IPPortSerializer extends Serializer<IPPortPair> {
     @Override
     public String serialize(IPPortPair ipPortPair) {
         return ipPortPair.toString();
