@@ -6,6 +6,8 @@ import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +21,9 @@ import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.utils.design.MaterialEditText;
-import com.frostnerd.utils.networking.NetworkUtil;
+import com.frostnerd.utils.textfilers.InputCharacterFilter;
+
+import java.util.regex.Pattern;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -122,6 +126,19 @@ public class DNSCreationDialog extends AlertDialog {
                         ed_dns1.setText(settingV6 ? dns1V6.toString(customPorts) : dns1.toString(customPorts));
                         ed_dns2.setText(settingV6 ? dns2V6.toString(customPorts) : dns2.toString(customPorts));
                         ((Button) v).setText(settingV6 ? "V4" : "V6");
+                        if(settingV6){
+                            InputFilter filter = new InputCharacterFilter(customPorts ?
+                                    Pattern.compile("[0-9:a-f\\[\\]]") : Pattern.compile("[0-9:a-f]"));
+                            ed_dns1.setInputType(InputType.TYPE_CLASS_TEXT);
+                            ed_dns2.setInputType(InputType.TYPE_CLASS_TEXT);
+                            ed_dns2.setFilters(new InputFilter[]{filter});
+                            ed_dns1.setFilters(new InputFilter[]{filter});
+                        }else{
+                            InputFilter filter = new InputCharacterFilter(customPorts ?
+                                    Pattern.compile("[0-9.:]") : Pattern.compile("[0-9.]"));
+                            ed_dns2.setFilters(new InputFilter[]{filter});
+                            ed_dns1.setFilters(new InputFilter[]{filter});
+                        }
                     }
                 });
             }
