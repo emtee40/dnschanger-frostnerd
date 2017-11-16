@@ -181,9 +181,11 @@ public class DNSCreationDialog extends AlertDialog {
     }
 
     private boolean isConfigurationValid() {
-        return dns1 != null && dns1V6 != null &&
+        return dns1 != null && dns1V6 != null && ((PreferencesAccessor.isIPv4Enabled(getContext()) && !dns1.isEmpty()) ||
+                (PreferencesAccessor.isIPv6Enabled(getContext()) && !dns1V6.isEmpty())) &&
                 met_dns1.getIndicatorState() == MaterialEditText.IndicatorState.UNDEFINED &&
-                met_dns2.getIndicatorState() == MaterialEditText.IndicatorState.UNDEFINED;
+                met_dns2.getIndicatorState() == MaterialEditText.IndicatorState.UNDEFINED &&
+                met_name.getIndicatorState() == MaterialEditText.IndicatorState.UNDEFINED;
     }
 
     public static interface OnCreationFinishedListener {
