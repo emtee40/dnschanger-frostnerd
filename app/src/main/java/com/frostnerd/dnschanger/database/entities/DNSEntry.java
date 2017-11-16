@@ -89,6 +89,12 @@ public class DNSEntry extends Entity implements Comparable<DNSEntry>{
 
     }
 
+    public static DNSEntry findDefaultEntryByLongName(String name){
+        for(DNSEntry entry: defaultDNSEntries)if(entry.getName().equalsIgnoreCase(name))return entry;
+        for(DNSEntry entry: additionalDefaultEntries.values())if(entry.getName().equalsIgnoreCase(name))return entry;
+        return null;
+    }
+
     public static DNSEntry constructSimple(String name, String shortName, String dns1, String dns2, String dns1V6, String dns2V6, String description, boolean customEntry){
         return new DNSEntry(name, shortName, IPPortPair.wrap(dns1, 53),IPPortPair.wrap(dns2, 53),
                 IPPortPair.wrap(dns1V6, 53),IPPortPair.wrap(dns2V6, 53), description, customEntry);
