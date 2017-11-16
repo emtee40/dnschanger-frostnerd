@@ -186,13 +186,13 @@ public class PreferencesAccessor {
         }
 
         public DNSEntry findMatchingDatabaseEntry(Context context){
-            String address = getServerAddress(context);
+            String address = "%" + getServerAddress(context) + "%";
             ParsedEntity<DNSEntry> parsedEntity = Util.getDBHelper(context).getSQLHandler(DNSEntry.class);
             return parsedEntity.selectFirstRow(Util.getDBHelper(context)
-            , false, WhereCondition.like(parsedEntity.getTable().findColumn("dns1"), address + "%").nextOr(),
-                    WhereCondition.like(parsedEntity.getTable().findColumn("dns2"), address + "%").nextOr(),
-                    WhereCondition.like(parsedEntity.getTable().findColumn("dns1v6"), address + "%").nextOr(),
-                    WhereCondition.like(parsedEntity.getTable().findColumn("dns2v6"), address + "%"));
+            , false, WhereCondition.like(parsedEntity.getTable().findColumn("dns1"), address).nextOr(),
+                    WhereCondition.like(parsedEntity.getTable().findColumn("dns2"), address).nextOr(),
+                    WhereCondition.like(parsedEntity.getTable().findColumn("dns1v6"), address).nextOr(),
+                    WhereCondition.like(parsedEntity.getTable().findColumn("dns2v6"), address));
         }
 
         public void saveDNSPair(Context context, IPPortPair pair){
