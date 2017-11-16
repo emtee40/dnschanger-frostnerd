@@ -121,6 +121,6 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
 
 
     public void createShortcut(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1v6, IPPortPair dns2v6){
-        insert(new Shortcut(dns1, dns2, dns1v6, dns2v6, name));
+        insert(new Shortcut(name, dns1, dns2, dns1v6, dns2v6));
     }
 }

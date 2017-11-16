@@ -26,7 +26,7 @@ public class Shortcut extends Entity implements Serializable {
     @Named(name = "Name")
     private String name;
 
-    public Shortcut(IPPortPair dns1, IPPortPair dns2, IPPortPair dns1v6, IPPortPair dns2v6, String name) {
+    public Shortcut(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1v6, IPPortPair dns2v6) {
         this.dns1 = dns1;
         this.dns2 = dns2;
         this.dns1v6 = dns1v6;
