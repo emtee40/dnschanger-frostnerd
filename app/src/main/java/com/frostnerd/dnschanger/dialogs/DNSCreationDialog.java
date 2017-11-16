@@ -108,7 +108,6 @@ public class DNSCreationDialog extends AlertDialog {
                     @Override
                     public void onClick(View v) {
                         if (isConfigurationValid()) {
-                            System.out.println("CREATING");
                             listener.onCreationFinished(ed_name.getText().toString(), dns1, dns2, dns1V6, dns2V6);
                             dismiss();
                         } else {
