@@ -134,16 +134,14 @@ public class DNSCreationDialog extends AlertDialog {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(before != count){
-                    IPPortPair pair = Util.validateInput(s.toString(), settingV6, false);
-                    if(pair == null || (pair.getPort() != -1 && pair.getPort() != 53 && !customPorts)){
-                        met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
-                    }else{
-                        if(pair.getPort() == -1)pair.setPort(53);
-                        met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
-                        if(settingV6) dns1V6 = pair;
-                        else dns1 = pair;
-                    }
+                IPPortPair pair = Util.validateInput(s.toString(), settingV6, false);
+                if (pair == null || (pair.getPort() != -1 && pair.getPort() != 53 && !customPorts)) {
+                    met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
+                } else {
+                    if (pair.getPort() == -1) pair.setPort(53);
+                    met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
+                    if (settingV6) dns1V6 = pair;
+                    else dns1 = pair;
                 }
             }
 
@@ -160,16 +158,14 @@ public class DNSCreationDialog extends AlertDialog {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(before != count){
-                    IPPortPair pair = Util.validateInput(s.toString(), settingV6, true);
-                    if(pair == null || (pair.getPort() != -1 && pair.getPort() != 53 && !customPorts)){
-                        met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
-                    }else{
-                        if(pair.getPort() == -1)pair.setPort(53);
-                        met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
-                        if(settingV6) dns2V6 = pair;
-                        else dns2 = pair;
-                    }
+                IPPortPair pair = Util.validateInput(s.toString(), settingV6, true);
+                if (pair == null || (pair.getPort() != -1 && pair.getPort() != 53 && !customPorts)) {
+                    met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
+                } else {
+                    if (pair.getPort() == -1) pair.setPort(53);
+                    met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
+                    if (settingV6) dns2V6 = pair;
+                    else dns2 = pair;
                 }
             }
 

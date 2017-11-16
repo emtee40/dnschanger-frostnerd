@@ -139,7 +139,7 @@ public class NewRuleDialog extends AlertDialog{
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(before != count)validateInput();
+                validateInput();
             }
 
             @Override
