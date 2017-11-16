@@ -108,6 +108,7 @@ public class DNSCreationDialog extends AlertDialog {
                     @Override
                     public void onClick(View v) {
                         if (isConfigurationValid()) {
+                            System.out.println("CREATING");
                             listener.onCreationFinished(ed_name.getText().toString(), dns1, dns2, dns1V6, dns2V6);
                             dismiss();
                         } else {
@@ -185,7 +186,7 @@ public class DNSCreationDialog extends AlertDialog {
                 (PreferencesAccessor.isIPv6Enabled(getContext()) && !dns1V6.isEmpty())) &&
                 met_dns1.getIndicatorState() == MaterialEditText.IndicatorState.UNDEFINED &&
                 met_dns2.getIndicatorState() == MaterialEditText.IndicatorState.UNDEFINED &&
-                met_name.getIndicatorState() == MaterialEditText.IndicatorState.UNDEFINED;
+                met_name.getIndicatorState() == MaterialEditText.IndicatorState.CORRECT;
     }
 
     public static interface OnCreationFinishedListener {
