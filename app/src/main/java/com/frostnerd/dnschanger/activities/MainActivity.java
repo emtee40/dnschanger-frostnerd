@@ -110,7 +110,7 @@ public class MainActivity extends NavigationDrawerActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Util.getDBHelper(MainActivity.this).getWritableDatabase();
+                Util.getDBHelper(MainActivity.this);
             }
         }).start();
         Util.updateAppShortcuts(this);

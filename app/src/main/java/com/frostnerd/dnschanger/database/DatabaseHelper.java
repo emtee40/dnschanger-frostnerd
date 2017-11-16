@@ -37,45 +37,33 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
         add(IPPortPair.class);
         add(Shortcut.class);
     }};
-    private SQLiteDatabase currentDB;
-    private ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, DATABASE_VERSION, entities);
         this.context = context;
+        getWritableDatabase();
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
-        super.onCreate(db);
-        currentDB = db;
+    public void onAfterCreate(SQLiteDatabase db) {
         for(DNSEntry entry: DNSEntry.defaultDNSEntries){
             insert(entry);
         }
         for (DNSEntry entry: DNSEntry.additionalDefaultEntries.values()) {
             insert(entry);
         }
-        currentDB = null;
     }
 
     @Override
-    public SQLiteDatabase getWritableDatabase() {
-        readWriteLock.writeLock();
-        return currentDB == null ? super.getWritableDatabase() : currentDB;
+    public void onBeforeCreate(SQLiteDatabase db) {
+
     }
 
     @Override
-    public SQLiteDatabase getReadableDatabase() {
-        readWriteLock.readLock();
-        return currentDB == null ? super.getReadableDatabase() : currentDB;
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        currentDB = db;
+    public void onBeforeUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        System.out.println(">>>>>>>>>>>>>>UPDATING DATABASE (" + oldVersion + " TO " + newVersion + ")");
+        for(int i = 0; i <= 10; i++) System.out.println(i + "-<-<->><<" );
         if(oldVersion <= 1){
-            readWriteLock.readLock();
-            readWriteLock.writeLock();
             Cursor cursor = db.rawQuery("SELECT Name, dns1, dns2, dns1v6, dns2v6 FROM Shortcuts", null);
             List<Shortcut> shortcuts = new ArrayList<>();
             List<DNSEntry> entries = new ArrayList<>();
@@ -106,11 +94,14 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
             db.execSQL("DROP TABLE IF EXISTS Shortcuts");
             db.execSQL("DROP TABLE IF EXISTS DNSEntries");
             onCreate(db);
-            currentDB = db; //currentDB is reset by onCreate
             for(DNSEntry entry: entries)insert(entry);
             for(Shortcut shortcut: shortcuts)insert(shortcut);
-        }else super.onUpgrade(db, oldVersion, newVersion);
-        currentDB = null;
+        }
+    }
+
+    @Override
+    public void onAfterUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
     }
 
     @Override
