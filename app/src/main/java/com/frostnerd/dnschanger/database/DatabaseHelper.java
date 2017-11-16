@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -37,6 +38,7 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
         add(Shortcut.class);
     }};
     private SQLiteDatabase currentDB;
+    private ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, DATABASE_VERSION, entities);
@@ -58,17 +60,21 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
 
     @Override
     public SQLiteDatabase getWritableDatabase() {
+        readWriteLock.writeLock();
         return currentDB == null ? super.getWritableDatabase() : currentDB;
     }
 
     @Override
     public SQLiteDatabase getReadableDatabase() {
+        readWriteLock.readLock();
         return currentDB == null ? super.getReadableDatabase() : currentDB;
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if(oldVersion == 1){
+        if(oldVersion >= 1){
+            readWriteLock.readLock();
+            readWriteLock.writeLock();
             Cursor cursor = db.rawQuery("SELECT Name, dns1, dns2, dns1v6, dns2v6 FROM Shortcuts", null);
             List<Shortcut> shortcuts = new ArrayList<>();
             List<DNSEntry> entries = new ArrayList<>();
