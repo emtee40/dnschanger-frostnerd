@@ -476,6 +476,7 @@ public class MainActivity extends NavigationDrawerActivity {
                 licenseText += "\n\n- - - - - - - - - - - -\nfirebase-jobdispatcher-android by Google\n\nAvailable under the [1]Apache License 2.0[2]";
                 licenseText += "\n\n- - - - - - - - - - - -\npcap4j by Kaito Yamada\n\nAvailable under the [3]MIT License[4]";
                 licenseText += "\n\n- - - - - - - - - - - -\nMiniDNS by Measite\n\nAvailable under the [5]Apache License 2.0[6]";
+                licenseText += "\n\n- - - - - - - - - - - -\nMaterial icon pack by Google\n\nAvailable under the [7]Apache License 2.0[8]";
                 ClickableSpan span = new ClickableSpan() {
                     @Override
                     public void onClick(View view) {
@@ -495,11 +496,17 @@ public class MainActivity extends NavigationDrawerActivity {
                     public void onClick(View view) {
                         new AlertDialog.Builder(MainActivity.this).setTitle("Apache License 2.0").setPositiveButton(R.string.close, null).setMessage(R.string.license_apache_2).show();
                     }
+                }, span4 = new ClickableSpan() {
+                    @Override
+                    public void onClick(View view) {
+                        new AlertDialog.Builder(MainActivity.this).setTitle("Apache License 2.0").setPositiveButton(R.string.close, null).setMessage(R.string.license_apache_2).show();
+                    }
                 };
                 SpannableString spannable = new SpannableString(licenseText.replaceAll("\\[.\\]",""));
                 spannable.setSpan(span3, licenseText.indexOf("[1]"), licenseText.indexOf("[2]")-3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 spannable.setSpan(span2, licenseText.indexOf("[3]")-6, licenseText.indexOf("[4]")-9, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 spannable.setSpan(span, licenseText.indexOf("[5]")-12, licenseText.indexOf("[6]")-15, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannable.setSpan(span4, licenseText.indexOf("[7]")-18, licenseText.indexOf("[8]")-21, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 dialog1 = new AlertDialog.Builder(MainActivity.this).setTitle(R.string.nav_title_libraries).setNegativeButton(R.string.close, null)
                         .setMessage(spannable).show();
                 ((TextView)dialog1.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
