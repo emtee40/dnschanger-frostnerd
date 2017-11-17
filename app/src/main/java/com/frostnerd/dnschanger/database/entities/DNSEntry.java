@@ -69,6 +69,7 @@ public class DNSEntry extends Entity implements Comparable<DNSEntry>{
         defaultDNSEntries.add(DNSEntry.constructSimple("Norton Connectsafe - Security", "Norton Connectsafe", "199.85.126.10", "199.85.127.10", "", "", "",false));
         defaultDNSEntries.add(DNSEntry.constructSimple("Norton Connectsafe - Security + Pornography" , "Norton Connectsafe", "199.85.126.20", "199.85.127.20", "", "", "",false));
         defaultDNSEntries.add(DNSEntry.constructSimple("Norton Connectsafe - Security + Pornography + Other", "Norton Connectsafe", "199.85.126.30", "199.85.127.30", "", "", "",false));
+        defaultDNSEntries.add(DNSEntry.constructSimple("Quad9", "Quad9", "9.9.9.9", "", "2620:fe::fe", "", "", false));
         Collections.sort(defaultDNSEntries);
 
         additionalDefaultEntries.put("unblockr", DNSEntry.constructSimple("Unblockr", "Unblockr", "178.62.57.141", "139.162.231.18", "", "", "Non-public DNS server for kodi. Visit unblockr.net for more information.",false));
