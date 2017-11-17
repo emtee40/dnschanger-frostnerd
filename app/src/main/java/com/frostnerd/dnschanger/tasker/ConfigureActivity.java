@@ -289,10 +289,10 @@ public class ConfigureActivity extends AppCompatActivity {
         InputFilter filter;
         if(settingV6){
             filter = new InputCharacterFilter(customPorts ?
-                    Pattern.compile("[0-9.:]") : Pattern.compile("[0-9.]"));
+                    Pattern.compile("[0-9:a-f\\[\\]]") : Pattern.compile("[0-9:a-f]"));
         }else{
             filter = new InputCharacterFilter(customPorts ?
-                    Pattern.compile("[0-9:a-f\\[\\]]") : Pattern.compile("[0-9:a-f]"));
+                    Pattern.compile("[0-9.:]") : Pattern.compile("[0-9.]"));
         }
         ed_dns1.setFilters(new InputFilter[]{filter});
         ed_dns2.setFilters(new InputFilter[]{filter});
