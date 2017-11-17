@@ -44,6 +44,15 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
         findPreference("custom_port").setOnPreferenceChangeListener(preferenceChangeListener);
         findPreference("rules_activated").setOnPreferenceChangeListener(preferenceChangeListener);
         findPreference("query_logging").setOnPreferenceChangeListener(preferenceChangeListener);
+        findPreference("export_queries").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                new AlertDialog.Builder(AdvancedSettingsActivity.this).setTitle("Beta release")
+                        .setMessage("This feature is still missing in this beta release. It'll be added later on.")
+                        .setNeutralButton(R.string.close, null).show();
+                return true;
+            }
+        });
     }
 
     Preference.OnPreferenceChangeListener preferenceChangeListener = new Preference.OnPreferenceChangeListener() {
