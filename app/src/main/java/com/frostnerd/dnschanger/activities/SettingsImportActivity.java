@@ -7,8 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.frostnerd.dnschanger.util.API;
-import com.frostnerd.dnschanger.util.Shortcut;
+import com.frostnerd.dnschanger.util.Util;
+import com.frostnerd.dnschanger.database.entities.Shortcut;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.utils.permissions.PermissionsUtil;
@@ -74,7 +74,7 @@ public class SettingsImportActivity extends Activity {
             while ((line = reader.readLine()) != null) {
                 if (line.equals("") || line.startsWith("[")) continue;
                 if(line.startsWith("'")){
-                    API.createShortcut(c, Shortcut.fromString(line.split("'")[1]));
+                    //Util.createShortcut(c, Shortcut.fromString(line.split("'")[1]));
                 }
                 else data += line;
             }

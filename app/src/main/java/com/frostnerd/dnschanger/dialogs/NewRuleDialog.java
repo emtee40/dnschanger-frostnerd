@@ -1,8 +1,8 @@
 package com.frostnerd.dnschanger.dialogs;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -19,7 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.networking.NetworkUtil;
@@ -43,7 +43,7 @@ public class NewRuleDialog extends AlertDialog{
     private String v6Text = "::1", v4Text = "127.0.0.1";
     private boolean editingMode = false;
 
-    public NewRuleDialog(@NonNull Context context, final CreationListener listener, @NonNull final String host, @NonNull String target, final boolean wildcard, final boolean ipv6){
+    public NewRuleDialog(@NonNull Activity context, final CreationListener listener, @NonNull final String host, @NonNull String target, final boolean wildcard, final boolean ipv6){
         this(context, listener);
         if(ipv6)v6Text = target;
         else v4Text = target;
@@ -66,7 +66,7 @@ public class NewRuleDialog extends AlertDialog{
         });
     }
 
-    public NewRuleDialog(@NonNull final Context context, final CreationListener listener) {
+    public NewRuleDialog(@NonNull final Activity context, final CreationListener listener) {
         super(context, ThemeHandler.getDialogTheme(context));
         View content;
         setView(content = getLayoutInflater().inflate(R.layout.dialog_new_rule, null, false));
@@ -90,6 +90,7 @@ public class NewRuleDialog extends AlertDialog{
                 dialog.cancel();
             }
         });
+        setButton(BUTTON_NEGATIVE, getContext().getString(R.string.import_rules), (OnClickListener)null);
         setButton(BUTTON_POSITIVE, context.getString(R.string.done), (OnClickListener)null);
         setOnShowListener(new OnShowListener() {
             @Override
@@ -102,12 +103,12 @@ public class NewRuleDialog extends AlertDialog{
                                 listener.creationFinished(edHost.getText().toString(), edTarget.getText().toString(), null, ipv6.isChecked(), wildcard.isChecked(), true);
                                 dismiss();
                             }else{
-                                if(both.isChecked() && !API.getDBHelper(getContext()).dnsRuleExists(edHost.getText().toString())){
+                                if(both.isChecked() && !Util.getDBHelper(getContext()).dnsRuleExists(edHost.getText().toString())){
                                     listener.creationFinished(edHost.getText().toString(),
-                                            edTarget.getText().toString(), both.isChecked() ? edTarget2.getText().toString() : "",
+                                            edTarget.getText().toString(), edTarget2.getText().toString(),
                                             ipv6.isChecked(), wildcard.isChecked(), false);
                                     dismiss();
-                                }else if(!API.getDBHelper(getContext()).dnsRuleExists(edHost.getText().toString(), ipv6.isChecked())){
+                                }else if(!Util.getDBHelper(getContext()).dnsRuleExists(edHost.getText().toString(), ipv6.isChecked())){
                                     listener.creationFinished(edHost.getText().toString(),
                                             edTarget.getText().toString(), both.isChecked() ? edTarget2.getText().toString() : "",
                                             ipv6.isChecked(), wildcard.isChecked(), false);
@@ -121,6 +122,13 @@ public class NewRuleDialog extends AlertDialog{
                         }
                     }
                 });
+                if(!editingMode)getButton(BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss();
+                        new RuleImportChooserDialog(context).show();
+                    }
+                });
             }
         });
         TextWatcher textWatcher = new TextWatcher() {
@@ -131,7 +139,7 @@ public class NewRuleDialog extends AlertDialog{
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(before != count)validateInput();
+                validateInput();
             }
 
             @Override
@@ -186,7 +194,7 @@ public class NewRuleDialog extends AlertDialog{
                 ? MaterialEditText.IndicatorState.UNDEFINED : MaterialEditText.IndicatorState.INCORRECT);
         metTarget.setIndicatorState(NetworkUtil.isIP(edTarget.getText().toString(), ipv6.isChecked())
                 ? MaterialEditText.IndicatorState.UNDEFINED : MaterialEditText.IndicatorState.INCORRECT);
-        metTarget2.setIndicatorState(NetworkUtil.isIP(edTarget2.getText().toString(), true)
+        metTarget2.setIndicatorState(NetworkUtil.isIP(edTarget2.getText().toString(), true) && !edTarget2.getText().toString().equals("")
                 ? MaterialEditText.IndicatorState.UNDEFINED : MaterialEditText.IndicatorState.INCORRECT);
         if(getButton(BUTTON_POSITIVE) != null)getButton(BUTTON_POSITIVE).setEnabled(inputsValid());
     }

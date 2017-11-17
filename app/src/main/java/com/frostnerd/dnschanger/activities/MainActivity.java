@@ -30,8 +30,11 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.fragments.QueryLogFragment;
 import com.frostnerd.dnschanger.fragments.RulesFragment;
-import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
@@ -95,7 +98,7 @@ public class MainActivity extends NavigationDrawerActivity {
         startedActivity = false;
         // Receiver is not unregistered in onPause() because the app is in the background when a shortcut
         // is created
-        registerReceiver(shortcutReceiver, new IntentFilter(API.BROADCAST_SHORTCUT_CREATED));
+        registerReceiver(shortcutReceiver, new IntentFilter(Util.BROADCAST_SHORTCUT_CREATED));
     }
 
     @Override
@@ -108,14 +111,14 @@ public class MainActivity extends NavigationDrawerActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                API.getDBHelper(MainActivity.this).getReadableDatabase();
+                Util.getDBHelper(MainActivity.this);
             }
         }).start();
-        API.updateAppShortcuts(this);
-        API.runBackgroundConnectivityCheck(this);
+        Util.updateAppShortcuts(this);
+        Util.runBackgroundConnectivityCheck(this);
         Preferences.put(this, "first_run", false);
         if(Preferences.getBoolean(this, "first_run", true)) Preferences.put(this, "excluded_apps", new ArraySet<>(Arrays.asList(getResources().getStringArray(R.array.default_blacklist))));
-        if(Preferences.getBoolean(this, "first_run", true) && API.isTaskerInstalled(this)){
+        if(Preferences.getBoolean(this, "first_run", true) && Util.isTaskerInstalled(this)){
             LogFactory.writeMessage(this, LOG_TAG, "Showing dialog telling the user that this app supports Tasker");
             new AlertDialog.Builder(this,ThemeHandler.getDialogTheme(this)).setTitle(R.string.tasker_support).setMessage(R.string.app_supports_tasker_text).setPositiveButton(R.string.got_it, new DialogInterface.OnClickListener() {
                 @Override
@@ -148,11 +151,11 @@ public class MainActivity extends NavigationDrawerActivity {
             }).setMessage(R.string.rate_request_text).setTitle(R.string.rate).show();
             LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
         }
-        API.updateTiles(this);
+        Util.updateTiles(this);
         View cardView = getLayoutInflater().inflate(R.layout.main_cardview, null, false);
         final TextView text = cardView.findViewById(R.id.text);
         final Switch button = cardView.findViewById(R.id.cardview_switch);
-        if(Preferences.getBoolean(this, "everything_disabled", false)){
+        if(PreferencesAccessor.isEverythingDisabled(this)){
             button.setChecked(true);
             text.setText(R.string.cardview_text_disabled);
         }
@@ -161,7 +164,7 @@ public class MainActivity extends NavigationDrawerActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 text.setText(b ? R.string.cardview_text_disabled : R.string.cardview_text);
                 Preferences.put(MainActivity.this, "everything_disabled", b);
-                if(API.isServiceRunning(MainActivity.this))startService(DNSVpnService.getDestroyIntent(MainActivity.this));
+                if(Util.isServiceRunning(MainActivity.this))startService(DNSVpnService.getDestroyIntent(MainActivity.this));
             }
         });
         cardView.setOnClickListener(new View.OnClickListener() {
@@ -206,6 +209,10 @@ public class MainActivity extends NavigationDrawerActivity {
     public void onItemClicked(DrawerItem item, boolean handle) {
     }
 
+    public Fragment currentFragment(){
+        return getCurrentFragment();
+    }
+
     @Override
     public List<DrawerItem> createDrawerItems() {
         DrawerItemCreator itemCreator = new DrawerItemCreator(this);
@@ -247,14 +254,36 @@ public class MainActivity extends NavigationDrawerActivity {
                 item.setInvalidateActivityMenu(true);
             }
         });
-        if(Preferences.getBoolean(this, "advanced_settings", false)){
+        if(PreferencesAccessor.isAdvancedModeEnabled(this)){
             itemCreator.createItemAndContinue(R.string.nav_title_advanced);
-            itemCreator.createItemAndContinue(R.string.nav_title_rules, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_list_bullet_point)), new DrawerItem.FragmentCreator() {
+            itemCreator.createItemAndContinue(R.string.title_advanced_settings, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_settings)), new DrawerItem.ClickListener() {
                 @Override
-                public Fragment getFragment(@Nullable Bundle arguments) {
-                    return new RulesFragment();
+                public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
+                    startActivity(new Intent(MainActivity.this, AdvancedSettingsActivity.class));
+                    return false;
+                }
+
+                @Override
+                public boolean onLongClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+                    return false;
                 }
             });
+            if(PreferencesAccessor.areRulesEnabled(this)){
+                itemCreator.createItemAndContinue(R.string.nav_title_rules, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_list_bullet_point)), new DrawerItem.FragmentCreator() {
+                    @Override
+                    public Fragment getFragment(@Nullable Bundle arguments) {
+                        return new RulesFragment();
+                    }
+                });
+            }
+            if(PreferencesAccessor.isQueryLoggingEnabled(this)){
+                itemCreator.createItemAndContinue(R.string.nav_title_query_log, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_timelapse)), new DrawerItem.FragmentCreator() {
+                    @Override
+                    public Fragment getFragment(@Nullable Bundle arguments) {
+                        return new QueryLogFragment();
+                    }
+                });
+            }
         }
         itemCreator.createItemAndContinue(R.string.nav_title_learn);
         itemCreator.createItemAndContinue(R.string.nav_title_how_does_it_work, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_wrench)), new DrawerItem.ClickListener() {
@@ -332,7 +361,7 @@ public class MainActivity extends NavigationDrawerActivity {
                 return false;
             }
         });
-        if(API.isTaskerInstalled(this)){
+        if(Util.isTaskerInstalled(this)){
             itemCreator.createItemAndContinue(R.string.tasker_support, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_thumb_up)), new DrawerItem.ClickListener() {
                 @Override
                 public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
@@ -456,6 +485,7 @@ public class MainActivity extends NavigationDrawerActivity {
                 licenseText += "\n\n- - - - - - - - - - - -\nfirebase-jobdispatcher-android by Google\n\nAvailable under the [1]Apache License 2.0[2]";
                 licenseText += "\n\n- - - - - - - - - - - -\npcap4j by Kaito Yamada\n\nAvailable under the [3]MIT License[4]";
                 licenseText += "\n\n- - - - - - - - - - - -\nMiniDNS by Measite\n\nAvailable under the [5]Apache License 2.0[6]";
+                licenseText += "\n\n- - - - - - - - - - - -\nMaterial icon pack by Google\n\nAvailable under the [7]Apache License 2.0[8]";
                 ClickableSpan span = new ClickableSpan() {
                     @Override
                     public void onClick(View view) {
@@ -475,11 +505,17 @@ public class MainActivity extends NavigationDrawerActivity {
                     public void onClick(View view) {
                         new AlertDialog.Builder(MainActivity.this).setTitle("Apache License 2.0").setPositiveButton(R.string.close, null).setMessage(R.string.license_apache_2).show();
                     }
+                }, span4 = new ClickableSpan() {
+                    @Override
+                    public void onClick(View view) {
+                        new AlertDialog.Builder(MainActivity.this).setTitle("Apache License 2.0").setPositiveButton(R.string.close, null).setMessage(R.string.license_apache_2).show();
+                    }
                 };
                 SpannableString spannable = new SpannableString(licenseText.replaceAll("\\[.\\]",""));
                 spannable.setSpan(span3, licenseText.indexOf("[1]"), licenseText.indexOf("[2]")-3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 spannable.setSpan(span2, licenseText.indexOf("[3]")-6, licenseText.indexOf("[4]")-9, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 spannable.setSpan(span, licenseText.indexOf("[5]")-12, licenseText.indexOf("[6]")-15, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannable.setSpan(span4, licenseText.indexOf("[7]")-18, licenseText.indexOf("[8]")-21, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 dialog1 = new AlertDialog.Builder(MainActivity.this).setTitle(R.string.nav_title_libraries).setNegativeButton(R.string.close, null)
                         .setMessage(spannable).show();
                 ((TextView)dialog1.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
@@ -565,19 +601,22 @@ public class MainActivity extends NavigationDrawerActivity {
 
     public void openDefaultDNSDialog(View v) {
         LogFactory.writeMessage(this, LOG_TAG, "Opening DefaultDNSDialog");
-        defaultDnsDialog = new DefaultDNSDialog(this, ThemeHandler.getDialogTheme(this), new DefaultDNSDialog.OnProviderSelectedListener(){
+        defaultDnsDialog = new DefaultDNSDialog(this, ThemeHandler.getDialogTheme(this), new DefaultDNSDialog.OnProviderSelectedListener() {
             @Override
-            public void onProviderSelected(String name, String dns1, String dns2, String dns1V6, String dns2V6) {
+            public void onProviderSelected(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6) {
+                boolean port = PreferencesAccessor.areCustomPortsEnabled(MainActivity.this);
                 if(mainFragment.settingV6){
-                    if(!dns1V6.equals(""))mainFragment.dns1.setText(dns1V6);
-                    mainFragment.dns2.setText(dns2V6);
-                    if(!dns1.equals(""))Preferences.put(MainActivity.this, "dns1", dns1);
-                    Preferences.put(MainActivity.this, "dns2", dns2);
+                    mainFragment.dns1.setText(dns1V6.toString(port));
+                    mainFragment.dns2.setText(dns2V6.toString(port));
+                    boolean ipEnabled = PreferencesAccessor.isIPv4Enabled(MainActivity.this);
+                    if(ipEnabled)PreferencesAccessor.Type.DNS1.saveDNSPair(MainActivity.this, dns1);
+                    if(ipEnabled)PreferencesAccessor.Type.DNS2.saveDNSPair(MainActivity.this, dns2);
                 }else{
-                    if(!dns1.equals(""))mainFragment.dns1.setText(dns1);
-                    mainFragment.dns2.setText(dns2);
-                    if(!dns1V6.equals(""))Preferences.put(MainActivity.this, "dns1-v6", dns1V6);
-                    Preferences.put(MainActivity.this, "dns2-v6", dns2V6);
+                    mainFragment.dns1.setText(dns1.toString(port));
+                    mainFragment.dns2.setText(dns2.toString(port));
+                    boolean ipEnabled = PreferencesAccessor.isIPv6Enabled(MainActivity.this);
+                    if(ipEnabled)PreferencesAccessor.Type.DNS1_V6.saveDNSPair(MainActivity.this, dns1V6);
+                    if(ipEnabled)PreferencesAccessor.Type.DNS2_V6.saveDNSPair(MainActivity.this, dns2V6);
                 }
             }
         });
@@ -588,7 +627,7 @@ public class MainActivity extends NavigationDrawerActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(!startedActivity && (Preferences.getBoolean(this, "pin_app", false) && Preferences.getBoolean(this, "setting_pin_enabled", false)))finish();
+        if(!startedActivity && (PreferencesAccessor.isPinProtected(this, PreferencesAccessor.PinProtectable.APP)))finish();
     }
 
     @Override

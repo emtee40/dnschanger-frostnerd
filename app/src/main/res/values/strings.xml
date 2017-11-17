@@ -75,7 +75,7 @@
     <string name="title_pin_app">Protect App</string>
     <string name="summary_pin_app">Ask for the pin when starting the app</string>
     <string name="title_category_pin">Pin protection</string>
-    <string name="summary_version">Version [[version]] ([[code]])\n\n© Daniel Wolf 2017\nAll rights reserved\n\nBrazilian translation by Lukinhas</string>
+    <string name="summary_version">Version [[version]] ([[code]])\n\n© Daniel Wolf 2017\nAll rights reserved\n\nBrazilian translation by Lukinhas\nChinese translation by Majida Whale</string>
     <string name="usage_stats_info_text">To automatically pause DNS Changer when a certain app is in the front, this app needs access to usage data. \n\nIn the next window, please grant DNSChanger access to this data or else you won\'t be able to use this setting.\n\n\nNo data execept for currently running applications is requested. No data is saved or transmitted.\nThe source code is publicy available at https://git.frostnerd.com/PublicAndroidApps/DnsChanger if you want to make sure yourself.</string>
     <string name="title_remove_usage_data">Remove access to usage data</string>
     <string name="summary_remove_usage_data">Access to usage data was granted. Click here to revoke that permission.</string>
@@ -129,8 +129,6 @@
     <string name="widget_not_running">DNS Changer is not launched</string>
     <string name="title_shortcut_click_again_disable">Reclick shortcut to stop</string>
     <string name="summary_shortcut_click_again_disable">Stop DNS Changer when reclicking the shortcut it was started with</string>
-    <string name="title_shortcut_click_override_settings">Override settings</string>
-    <string name="summary_shortcut_click_override_settings">Override DNS servers from settings when starting DNS Changer from a shortcut</string>
     <string name="summary_notification_on_stop">Show a notification with the reason why DNS Changer was stopped automatically</string>
     <string name="title_notification_on_stop">Notify on stop</string>
     <string name="title_create_shortcut">Create a shortcut</string>
@@ -242,11 +240,8 @@
     <string-array name="features_1_16">
         <item>Added this dialog to highlight new features</item>
         <item>The main menu now shows the name of the DNS provider being used</item>
-        <item>You can now use domains as DNS servers</item>
         <item>The app now warns you if no connection can be established to the configured DNS server</item>
-        <item>Optimization for TVs</item>
         <item>You can now use your fingerprint in the pin dialog</item>
-        <item>You can now provide actual VPN credentials</item>
         <item>You can now configure the WIFI names on which DNS Changer starts automatically</item>
         <item>Bugfixes</item>
     </string-array>
@@ -279,4 +274,33 @@
     <string name="search_by_target">Search by target</string>
     <string name="show_local_entries">Show rules resolving to a loopback address</string>
     <string name="x_entries">[x] entries</string>
+    <string name="information_advanced_settings_warranty">To implement the features listed below all sent DNS packets are intercepted and modified. This may increase Battery and RAM usage.\n\nUse at your own risk, no warranty is provided. By clicking OK you agree that the author of this app isn\'t liable for any damage which may result.</string>
+    <string name="import_rules">Import</string>
+    <string name="file_hosts">Hosts file</string>
+    <string name="file_dnsmasq">Dnsmasq file</string>
+    <string name="file_justdomains">Domain list file</string>
+    <string name="select_files">Select file(s)</string>
+    <string name="importing_x_rules">Importing [x] rules</string>
+    <string name="rules_import_finished">[x] lines were read, [y] of which were valid and [z] distinct (new) Entries.</string>
+    <string name="detect_rule_type">Try to detect the type</string>
+    <string name="rule_unknown_ignoring">Unknown, ignoring</string>
+    <string name="file_adblock">Adblock file (Format: ||HOST^)</string>
+    <string name="fail_fast">Fail fast</string>
+    <string name="disable_failfast_info">Disable fail fast if the type cannot be detected. As this takes longer try specifying the type yourself.</string>
+    <string name="loading">Loading</string>
+    <string name="wait_importing_rules">Detecting file types, please wait..</string>
+    <string name="title_query_logging">Query logging</string>
+    <string name="summary_query_logging">Log all DNS queries when the app is running</string>
+    <string name="title_export_queries">Export queries</string>
+    <string name="summary_export_queries">Exports all queries in a text file to a folder of your choice</string>
+    <string name="x_lines">[x] lines</string>
+    <string name="show_normal_entries">Show normal entries</string>
+    <string name="show_wildcard_entries">Show wildcard entries</string>
+    <string name="sql_actions">SQL actions</string>
+    <string name="title_dns_over_tcp">DNS over TCP</string>
+    <string name="summary_dns_over_tcp">Forward the DNS queries using TCP, not UDP</string>
+    <string name="title_tcp_timeout">TCP Timeout</string>
+    <string name="summary_tcp_timeout">Sets the time in milliseconds after which the app stops trying to reach the upstream DNS server</string>
+    <string name="nav_title_query_log">Query log</string>
+    <string name="dont_show_again">Don\'t show again</string>
 </resources>

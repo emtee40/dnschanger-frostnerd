@@ -6,13 +6,13 @@ import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.service.quicksettings.Tile;
 
-import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.services.DNSVpnService;
-import com.frostnerd.utils.preferences.Preferences;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -36,7 +36,7 @@ public class TilePauseResume extends android.service.quicksettings.TileService {
             tile.setState(Tile.STATE_UNAVAILABLE);
             tile.setLabel(getString(R.string.not_running));
             tile.updateTile();
-        }else API.updateTiles(this);
+        }else Util.updateTiles(this);
     }
 
     @Override
@@ -50,10 +50,10 @@ public class TilePauseResume extends android.service.quicksettings.TileService {
         super.onStartListening();
         LogFactory.writeMessage(this, LOG_TAG, "Start listening");
         Tile tile = getQsTile();
-        if(API.isServiceRunning(this)){
+        if(Util.isServiceRunning(this)){
             LogFactory.writeMessage(this, LOG_TAG, "Service running");
             tile.setState(Tile.STATE_ACTIVE);
-            if(API.isServiceThreadRunning()){
+            if(Util.isServiceThreadRunning()){
                 LogFactory.writeMessage(this, LOG_TAG, "Service-Thread running");
                 tile.setLabel(getString(R.string.tile_pause));
                 tile.setIcon(Icon.createWithResource(this, R.drawable.ic_stat_pause));
@@ -75,12 +75,12 @@ public class TilePauseResume extends android.service.quicksettings.TileService {
     public void onClick() {
         super.onClick();
         LogFactory.writeMessage(this, LOG_TAG, "Tile clicked");
-        if(!API.isServiceRunning(this)){
+        if(!Util.isServiceRunning(this)){
             LogFactory.writeMessage(this, LOG_TAG, "Service not running. Returning");
             return;
         }
-        boolean pinProtected = Preferences.getBoolean(this, "pin_tile", false),
-                running = API.isServiceThreadRunning();
+        boolean pinProtected = PreferencesAccessor.isPinProtected(this, PreferencesAccessor.PinProtectable.TILE),
+                running = Util.isServiceThreadRunning();
         Intent i;
         if(pinProtected){
             LogFactory.writeMessage(this, LOG_TAG, "Tile is Pin protected. Starting PinActivity",

@@ -9,7 +9,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,14 +24,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.frostnerd.dnschanger.util.API;
-import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.ThemeHandler;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.design.MaterialEditText;
-import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
+import com.frostnerd.utils.textfilers.InputCharacterFilter;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.regex.Pattern;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -45,20 +53,36 @@ public class ConfigureActivity extends AppCompatActivity {
     private EditText ed_dns1, ed_dns2, ed_name;
     private boolean cancelled = false, creatingShortcut;
     private DefaultDNSDialog defaultDNSDialog;
-    private String dns1 = "8.8.8.8", dns2 = "8.8.4.4", dns1V6 ="2001:4860:4860::8888", dns2V6 = "2001:4860:4860::8844";
+    private IPPortPair dns1 = IPPortPair.wrap("8.8.8.8" ,53), dns2 = IPPortPair.wrap("8.8.4.4", 53),
+            dns1V6 = IPPortPair.wrap("2001:4860:4860::8888", 53), dns2V6 = IPPortPair.wrap("2001:4860:4860::8844", 53);
     private boolean settingV6 = false, wasEdited = false, ipv4Enabled, ipv6Enabled;
     private long lastBackPress = 0;
-    private Action currentAction;
+    private Action currentAction = Action.START;
     private static final String LOG_TAG = "[ConfigureActivity]";
+    private boolean customPorts;
 
     private enum Action{
-        PAUSE, START, STOP, RESUME
+        PAUSE(2), START(0), STOP(1), RESUME(3);
+
+        private final int positionInList;
+        Action(int pos){
+            this.positionInList = pos;
+        }
+
+        public static Action getAction(int pos){
+            switch(pos){
+                case 0: return START;
+                case 1: return STOP;
+                case 2: return PAUSE;
+            }
+            return RESUME;
+        }
     }
 
     private boolean checkValidity(){
-        return wasEdited && NetworkUtil.isAssignableAddress(dns1,false,false) && NetworkUtil.isAssignableAddress(dns2,false,true) &&
-                (!API.isIPv6Enabled(this) || (NetworkUtil.isAssignableAddress(dns1V6,true,false) &&
-                NetworkUtil.isAssignableAddress(dns2V6,true,true))) && met_name.getIndicatorState() == MaterialEditText.IndicatorState.CORRECT;
+        return wasEdited && met_dns1.getIndicatorState() == MaterialEditText.IndicatorState.UNDEFINED
+                && met_dns2.getIndicatorState() == MaterialEditText.IndicatorState.UNDEFINED
+                && met_name.getIndicatorState() == MaterialEditText.IndicatorState.CORRECT;
     }
 
 
@@ -69,9 +93,10 @@ public class ConfigureActivity extends AppCompatActivity {
         setContentView(R.layout.tasker_configure_layout);
         LogFactory.writeMessage(this, LOG_TAG, "Activity created", getIntent());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        customPorts = PreferencesAccessor.areCustomPortsEnabled(this);
 
-        ipv4Enabled = API.isIPv4Enabled(this);
-        ipv6Enabled = !ipv4Enabled || API.isIPv6Enabled(this);
+        ipv4Enabled = PreferencesAccessor.isIPv4Enabled(this);
+        ipv6Enabled = !ipv4Enabled || PreferencesAccessor.isIPv6Enabled(this);
         settingV6 = !ipv4Enabled;
 
         ed_dns1 = findViewById(R.id.dns1);
@@ -86,18 +111,30 @@ public class ConfigureActivity extends AppCompatActivity {
         creatingShortcut = getIntent() != null && getIntent().getBooleanExtra("creatingShortcut", false);
         LogFactory.writeMessage(this, LOG_TAG, "Creating Shortcut: " + creatingShortcut);
         Helper.scrub(bundle);
-        if(savedInstanceState == null){
-            if(Helper.isBundleValid(bundle)){
+        if (savedInstanceState == null) {
+            if (Helper.isBundleValid(this, bundle)) {
                 LogFactory.writeMessage(this, LOG_TAG, "Editing existing Tasker Configuration");
-                if(bundle.containsKey(Helper.BUNDLE_EXTRA_DNS1))dns1 = bundle.getString(Helper.BUNDLE_EXTRA_DNS1);
-                if(bundle.containsKey(Helper.BUNDLE_EXTRA_DNS2))dns2 = bundle.getString(Helper.BUNDLE_EXTRA_DNS2);
-                if(bundle.containsKey(Helper.BUNDLE_EXTRA_DNS1V6))dns1V6 = bundle.getString(Helper.BUNDLE_EXTRA_DNS1V6);
-                if(bundle.containsKey(Helper.BUNDLE_EXTRA_DNS2V6))dns2V6 = bundle.getString(Helper.BUNDLE_EXTRA_DNS2V6);
-                if(getIntent().hasExtra(Helper.EXTRA_BLURB))ed_name.setText(getIntent().getStringExtra(Helper.EXTRA_BLURB));
+                if (bundle.containsKey(Helper.BUNDLE_EXTRA_DNS1))
+                    dns1 = IPPortPair.wrap(bundle.getString(Helper.BUNDLE_EXTRA_DNS1));
+                if (bundle.containsKey(Helper.BUNDLE_EXTRA_DNS2))
+                    dns2 = IPPortPair.wrap(bundle.getString(Helper.BUNDLE_EXTRA_DNS2));
+                if (bundle.containsKey(Helper.BUNDLE_EXTRA_DNS1V6))
+                    dns1V6 = IPPortPair.wrap(bundle.getString(Helper.BUNDLE_EXTRA_DNS1V6));
+                if (bundle.containsKey(Helper.BUNDLE_EXTRA_DNS2V6))
+                    dns2V6 = IPPortPair.wrap(bundle.getString(Helper.BUNDLE_EXTRA_DNS2V6));
+                if (getIntent().hasExtra(Helper.EXTRA_BLURB))
+                    ed_name.setText(getIntent().getStringExtra(Helper.EXTRA_BLURB));
+
+                if(bundle.containsKey(Helper.BUNDLE_EXTRA_PAUSE_DNS))
+                    currentAction = Action.PAUSE;
+                if(bundle.containsKey(Helper.BUNDLE_EXTRA_RESUME_DNS))
+                    currentAction = Action.RESUME;
+                if(bundle.containsKey(Helper.BUNDLE_EXTRA_STOP_DNS))
+                    currentAction = Action.STOP;
             }
         }
-        ed_dns1.setText(settingV6 ? dns1V6 : dns1);
-        ed_dns2.setText(settingV6 ? dns2V6 : dns2);
+        ed_dns1.setText(settingV6 ? dns1V6.formatForTextfield(customPorts) : dns1.formatForTextfield(customPorts));
+        ed_dns2.setText(settingV6 ? dns2V6.formatForTextfield(customPorts) : dns2.formatForTextfield(customPorts));
         ed_dns1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -106,13 +143,14 @@ public class ConfigureActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6, false)) {
+                IPPortPair pair = Util.validateInput(s.toString(), settingV6, false);
+                if(pair == null || (pair.getPort() != -1 && !customPorts)){
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
-                } else {
+                }else{
                     wasEdited = true;
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
-                    if(settingV6)dns1V6 = s.toString();
-                    else dns1 = s.toString();
+                    if(settingV6)dns1V6 = pair;
+                    else dns1 = pair;
                 }
             }
 
@@ -129,13 +167,14 @@ public class ConfigureActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!NetworkUtil.isAssignableAddress(s.toString(),settingV6, true)) {
+                IPPortPair pair = Util.validateInput(s.toString(), settingV6, true);
+                if(pair == null || (pair.getPort() != -1 && !customPorts)){
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
-                } else {
+                }else{
                     wasEdited = true;
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
-                    if(settingV6)dns2V6 = s.toString();
-                    else dns2 = s.toString();
+                    if(settingV6)dns2V6 = pair;
+                    else dns2 = pair;
                 }
             }
 
@@ -189,7 +228,7 @@ public class ConfigureActivity extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     if(position != 0)findViewById(R.id.wrapper).setVisibility(View.INVISIBLE);
                     else findViewById(R.id.wrapper).setVisibility(View.VISIBLE);
-                    currentAction = position == 0 ? Action.START : (position == 1 ? Action.STOP : (position == 2 ? Action.PAUSE : Action.RESUME));
+                    currentAction = Action.getAction(position);
                 }
 
                 @Override
@@ -198,6 +237,7 @@ public class ConfigureActivity extends AppCompatActivity {
                 }
             });
             actionSpinner.getBackground().setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
+            actionSpinner.setSelection(currentAction.positionInList);
         }
         findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,18 +253,24 @@ public class ConfigureActivity extends AppCompatActivity {
             }
         });
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        setInputType();
     }
 
     public void openDefaultDNSDialog(View v){
         defaultDNSDialog = new DefaultDNSDialog(this, ThemeHandler.getDialogTheme(this), new DefaultDNSDialog.OnProviderSelectedListener() {
             @Override
-            public void onProviderSelected(String name, String dns1, String dns2, String dns1V6, String dns2V6) {
-                ConfigureActivity.this.dns1 = dns1.equals("") ? ConfigureActivity.this.dns1 : dns1;
-                ConfigureActivity.this.dns2 = dns2;
-                ConfigureActivity.this.dns1V6 = dns1V6.equals("") ? ConfigureActivity.this.dns1V6 : dns1V6;
-                ConfigureActivity.this.dns2V6 = dns2V6;
-                ed_dns1.setText(settingV6 ? dns1V6 : dns1);
-                ed_dns2.setText(settingV6 ? dns2V6 : dns2);
+            public void onProviderSelected(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6) {
+                if(settingV6){
+                    ed_dns1.setText(dns1V6.toString(customPorts));
+                    ed_dns2.setText(dns2V6.toString(customPorts));
+                    ConfigureActivity.this.dns1 = dns1;
+                    ConfigureActivity.this.dns2 = dns2;
+                }else{
+                    ed_dns1.setText(dns1.toString(customPorts));
+                    ed_dns2.setText(dns2.toString(customPorts));
+                    ConfigureActivity.this.dns1V6 = dns1V6;
+                    ConfigureActivity.this.dns2V6 = dns2V6;
+                }
             }
         });
         defaultDNSDialog.show();
@@ -247,16 +293,32 @@ public class ConfigureActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.menu_switch_ip_version){
             settingV6 = !settingV6;
             invalidateOptionsMenu();
-            ed_dns1.setText(settingV6 ? dns1V6 : dns1);
-            ed_dns2.setText(settingV6 ? dns2V6 : dns2);
-            ed_dns1.setInputType(InputType.TYPE_CLASS_TEXT);
-            ed_dns2.setInputType(InputType.TYPE_CLASS_TEXT);
+            ed_dns1.setText(settingV6 ? dns1V6.formatForTextfield(customPorts) : dns1.formatForTextfield(customPorts));
+            ed_dns2.setText(settingV6 ? dns2V6.formatForTextfield(customPorts) : dns2.formatForTextfield(customPorts));
+            setInputType();
             getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
         }else if(item.getItemId() == android.R.id.home){
             lastBackPress = System.currentTimeMillis();
             onBackPressed();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setInputType(){
+        if(settingV6 || customPorts){
+            ed_dns1.setInputType(InputType.TYPE_CLASS_TEXT);
+            ed_dns2.setInputType(InputType.TYPE_CLASS_TEXT);
+        }
+        InputFilter filter;
+        if(settingV6){
+            filter = new InputCharacterFilter(customPorts ?
+                    Pattern.compile("[0-9:a-f\\[\\]]") : Pattern.compile("[0-9:a-f]"));
+        }else{
+            filter = new InputCharacterFilter(customPorts ?
+                    Pattern.compile("[0-9.:]") : Pattern.compile("[0-9.]"));
+        }
+        ed_dns1.setFilters(new InputFilter[]{filter});
+        ed_dns2.setFilters(new InputFilter[]{filter});
     }
 
     @Override
@@ -312,11 +374,27 @@ public class ConfigureActivity extends AppCompatActivity {
             }
         }else if(!cancelled && checkValidity() && creatingShortcut){
             LogFactory.writeMessage(this, LOG_TAG, "Cancelled, valid, creating shortcut");
-            API.createShortcut(this, dns1, dns2, dns1V6, dns2V6, ed_name.getText().toString());
+            Util.createShortcut(this, createPortPair(), ed_name.getText().toString());
             setResult(RESULT_OK);
             LogFactory.writeMessage(this, LOG_TAG, "Shortcut added to Launcher");
-            API.getDBHelper(this).saveShortcut(dns1, dns2, dns1V6, dns2V6, ed_name.getText().toString());
+            Util.getDBHelper(this).createShortcut(ed_name.getText().toString(),
+                    ipv4Enabled ? dns1 : null,
+                    !TextUtils.isEmpty(dns2.getAddress()) && ipv4Enabled ? dns2 : null,
+                    ipv6Enabled ? dns1V6 : null,
+                    !TextUtils.isEmpty(dns2V6.getAddress()) && ipv6Enabled ? dns2V6 : null);
         }
         super.finish();
+    }
+
+    private ArrayList<IPPortPair> createPortPair(){
+        ArrayList<IPPortPair> list =  new ArrayList<>();
+        list.add(dns1);list.add(dns2);list.add(dns1V6);list.add(dns2V6);
+        IPPortPair pair;
+        for(Iterator<IPPortPair> iterator = list.iterator(); iterator.hasNext();){
+            pair = iterator.next();
+            if(TextUtils.isEmpty(pair.getAddress()) || (!ipv4Enabled && !pair.isIpv6()) || (!ipv6Enabled && pair.isIpv6()))
+                iterator.remove();
+        }
+        return list;
     }
 }

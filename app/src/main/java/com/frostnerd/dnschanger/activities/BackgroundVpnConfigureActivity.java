@@ -9,11 +9,15 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
-import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.dialogs.VPNInfoDialog;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.services.DNSVpnService;
+
+import java.util.ArrayList;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -38,11 +42,11 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
         context.startActivity(new Intent(context, BackgroundVpnConfigureActivity.class).putExtra("startService", startService).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
-    public static void startWithFixedDNS(final Context context, final String dns1, final String dns2, final String dns1v6, final String dns2v6, boolean startedWithTasker) {
+    public static void startWithFixedDNS(final Context context, ArrayList<IPPortPair> upstreamServers, boolean startedWithTasker) {
         LogFactory.writeMessage(context, LOG_TAG, "[STATIC] Starting with fixed DNS. Started with tasker: " +startedWithTasker);
-        LogFactory.writeMessage(context, LOG_TAG, "[STATIC] DNS1: " + dns1 + ", DNS2: " + dns2 + ", DNS1V6: " + dns1v6 + ", DNS2V6: " + dns2v6);
+        LogFactory.writeMessage(context, LOG_TAG, "[STATIC] " + upstreamServers);
         context.startActivity(new Intent(context, BackgroundVpnConfigureActivity.class).putExtra("fixeddns", true).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .putExtra("dns1", dns1).putExtra("dns2", dns2).putExtra("dns1-v6", dns1v6).putExtra("dns2-v6", dns2v6).putExtra("startService", true).putExtra("startedWithTasker", startedWithTasker));
+                .putExtra("servers", upstreamServers).putExtra("startService", true).putExtra("startedWithTasker", startedWithTasker));
     }
 
     @Override
@@ -57,16 +61,9 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
         LogFactory.writeMessage(this, LOG_TAG, "Starting Service: " + startService);
         if (intent != null && intent.getBooleanExtra("fixeddns", false)) {
             LogFactory.writeMessage(this, LOG_TAG, "Intent is not null and fixeddns is false");
-            String dns1 = "8.8.8.8";
-            String dns2 = "8.8.4.4";
-            String dns1_v6 = "2001:4860:4860::8888";
+            ArrayList<IPPortPair> servers = (ArrayList<IPPortPair>) intent.getSerializableExtra("servers");
             startedWithTasker = intent.getBooleanExtra("startedWithTasker", false);
-            String dns2_v6 = "2001:4860:4860::8844";
-            if (intent.hasExtra("dns1")) dns1 = intent.getStringExtra("dns1");
-            if (intent.hasExtra("dns2")) dns2 = intent.getStringExtra("dns2");
-            if (intent.hasExtra("dns1-v6")) dns1_v6 = intent.getStringExtra("dns1-v6");
-            if (intent.hasExtra("dns2-v6")) dns2_v6 = intent.getStringExtra("dns2-v6");
-            serviceIntent = DNSVpnService.getStartVPNIntent(this, dns1, dns2, dns1_v6, dns2_v6, startedWithTasker,intent.getBooleanExtra("fixeddns", false));
+            serviceIntent = DNSVpnService.getStartVPNIntent(this, servers, startedWithTasker,intent.getBooleanExtra("fixeddns", false));
             LogFactory.writeMessage(this, LOG_TAG, "ServiceIntent created", serviceIntent);
         }else serviceIntent = DNSVpnService.getStartVPNIntent(this);
         if (conf != null) {
@@ -84,7 +81,7 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
             LogFactory.writeMessage(this, LOG_TAG, "Access to VPN was already granted.");
             if (startService){
                 LogFactory.writeMessage(this, LOG_TAG, "Starting DNSVPNService");
-                API.startService(this,serviceIntent);
+                Util.startService(this,serviceIntent);
             }
             setResult(RESULT_OK);
             finish();
@@ -93,8 +90,7 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
 
     private void showDialog(DialogInterface.OnClickListener click) {
         LogFactory.writeMessage(this, LOG_TAG, "Showing VPN Request Info Dialog");
-        dialog1 = new AlertDialog.Builder(this, ThemeHandler.getDialogTheme(this)).setTitle(getString(R.string.information) + " - " + getString(R.string.app_name)).setMessage(R.string.vpn_explain)
-                .setCancelable(false).setPositiveButton(R.string.ok, click).show();
+        new VPNInfoDialog(this, click);
         LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
     }
 
@@ -114,7 +110,7 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
                 LogFactory.writeMessage(this, LOG_TAG, "Access was granted");
                 if (startService){
                     LogFactory.writeMessage(this, LOG_TAG, "Starting service", serviceIntent);
-                    API.startService(this,serviceIntent);
+                    Util.startService(this,serviceIntent);
                 }
                 setResult(RESULT_OK);
                 finish();

@@ -6,13 +6,13 @@ import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.service.quicksettings.Tile;
 
-import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.services.DNSVpnService;
-import com.frostnerd.utils.preferences.Preferences;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -36,7 +36,7 @@ public class TileStartStop extends android.service.quicksettings.TileService {
             tile.setState(Tile.STATE_INACTIVE);
             tile.setLabel(getString(R.string.tile_start));
             tile.updateTile();
-        }else API.updateTiles(this);
+        }else Util.updateTiles(this);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class TileStartStop extends android.service.quicksettings.TileService {
         LogFactory.writeMessage(this, LOG_TAG, "Start listening");
         Tile tile = getQsTile();
         tile.setState(Tile.STATE_INACTIVE);
-        if (API.isServiceRunning(this)) {
+        if (Util.isServiceRunning(this)) {
             LogFactory.writeMessage(this, LOG_TAG, "Service not running (State set to Active)");
             tile.setState(Tile.STATE_ACTIVE);
             tile.setLabel(getString(R.string.tile_stop));
@@ -70,8 +70,8 @@ public class TileStartStop extends android.service.quicksettings.TileService {
     public void onClick() {
         super.onClick();
         LogFactory.writeMessage(this, LOG_TAG, "Tile clicked");
-        boolean pinProtected = Preferences.getBoolean(this, "pin_tile", false),
-        running = API.isServiceRunning(this);
+        boolean pinProtected = PreferencesAccessor.isPinProtected(this, PreferencesAccessor.PinProtectable.TILE),
+        running = Util.isServiceRunning(this);
         Intent i;
         if (pinProtected) {
             LogFactory.writeMessage(this, LOG_TAG, "Tile is Pin protected. Starting PinActivity",

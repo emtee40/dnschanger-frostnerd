@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.utils.preferences.Preferences;
 
 import java.io.BufferedInputStream;
@@ -137,7 +138,7 @@ public class LogFactory {
     public static synchronized boolean prepare(Context context) {
         if(!enabled && ready)return false;
         if (ready) return usable;
-        enabled = Preferences.getBoolean(context, "debug", false);
+        enabled = PreferencesAccessor.isDebugEnabled(context);
         if(!enabled){
             ready = true;
             enabled = false;

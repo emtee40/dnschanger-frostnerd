@@ -1,15 +1,19 @@
 package com.frostnerd.dnschanger.tasker;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+
 /**
  * Copyright Daniel Wolf 2017
  * All rights reserved.
- *
+ * <p>
  * Terms on usage of my code can be found here: https://git.frostnerd.com/PublicAndroidApps/DnsChanger/blob/master/README.md
- *
+ * <p>
  * <p>
  * development@frostnerd.com
  */
@@ -20,7 +24,8 @@ public class Helper {
             BUNDLE_EXTRA_DNS2V6 = "com.frostnerd.dnschanger.dns2v6",
             BUNDLE_EXTRA_STOP_DNS = "com.frostnerd.dnschanger.stopdns",
             BUNDLE_EXTRA_PAUSE_DNS = "com.frostnerd.dnschanger.pausedns",
-            BUNDLE_EXTRA_RESUME_DNS = "com.frostnerd.dnschanger.resumedns";
+            BUNDLE_EXTRA_RESUME_DNS = "com.frostnerd.dnschanger.resumedns",
+            BUNDLE_EXTRA_V2= "com.frostnerd.dnschanger.v2";
 
     public static final String EXTRA_BUNDLE = "com.twofortyfouram.locale.intent.extra.BUNDLE";
     public static final String ACTION_FIRE_SETTINGS = "com.twofortyfouram.locale.intent.action.FIRE_SETTING";
@@ -43,24 +48,26 @@ public class Helper {
         return false;
     }
 
-    public static boolean isBundleValid(final Bundle bundle) {
+    public static boolean isBundleValid(Context context, Bundle bundle) {
         if (null == bundle) return false;
-        if(bundle.containsKey(BUNDLE_EXTRA_STOP_DNS) || bundle.containsKey(BUNDLE_EXTRA_RESUME_DNS)|| bundle.containsKey(BUNDLE_EXTRA_PAUSE_DNS))return true;
-        if (!bundle.containsKey(BUNDLE_EXTRA_DNS1) || !bundle.containsKey(BUNDLE_EXTRA_DNS2) ||
-                !bundle.containsKey(BUNDLE_EXTRA_DNS1V6) || !bundle.containsKey(BUNDLE_EXTRA_DNS2V6)) {
+        if (bundle.containsKey(BUNDLE_EXTRA_STOP_DNS) || bundle.containsKey(BUNDLE_EXTRA_RESUME_DNS) || bundle.containsKey(BUNDLE_EXTRA_PAUSE_DNS))
+            return true;
+        if (!bundle.containsKey(BUNDLE_EXTRA_DNS1) && !bundle.containsKey(BUNDLE_EXTRA_DNS2) &&
+                !bundle.containsKey(BUNDLE_EXTRA_DNS1V6) && !bundle.containsKey(BUNDLE_EXTRA_DNS2V6)) {
             return false;
         }
         String dns1 = bundle.getString(BUNDLE_EXTRA_DNS1), dns1v6 = bundle.getString(BUNDLE_EXTRA_DNS1V6);
-
-        return !(bundle.keySet().size() != 4 || TextUtils.isEmpty(dns1) || TextUtils.isEmpty(dns1v6));
+        return (PreferencesAccessor.isIPv4Enabled(context) && !TextUtils.isEmpty(dns1)) ||
+                (PreferencesAccessor.isIPv6Enabled(context) && !TextUtils.isEmpty(dns1v6));
     }
 
-    public static Bundle createBundle(final String dns1, final String dns2, final String dns1v6, final String dns2v6){
+    public static Bundle createBundle(final IPPortPair dns1, final IPPortPair dns2, final IPPortPair dns1v6, final IPPortPair dns2v6) {
         final Bundle bundle = new Bundle();
-        bundle.putString(BUNDLE_EXTRA_DNS1, dns1);
-        bundle.putString(BUNDLE_EXTRA_DNS2, dns2);
-        bundle.putString(BUNDLE_EXTRA_DNS1V6, dns1v6);
-        bundle.putString(BUNDLE_EXTRA_DNS2V6, dns2v6);
+        bundle.putBoolean(BUNDLE_EXTRA_V2, true);
+        if(!dns1.isEmpty())bundle.putString(BUNDLE_EXTRA_DNS1, dns1.toString());
+        if(!dns2.isEmpty())bundle.putString(BUNDLE_EXTRA_DNS2, dns2.toString());
+        if(!dns1v6.isEmpty())bundle.putString(BUNDLE_EXTRA_DNS1V6, dns1v6.toString());
+        if(!dns2v6.isEmpty())bundle.putString(BUNDLE_EXTRA_DNS2V6, dns2v6.toString());
         return bundle;
     }
 }

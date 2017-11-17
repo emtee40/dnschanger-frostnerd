@@ -41,7 +41,7 @@ build_release:
    - release
   artifacts:
     paths:
-    - app/build/outputs/apk
+    - app/release/app-release.apk
     
 unitTests:
   stage: test
@@ -56,7 +56,7 @@ unitTests:
 upload:
   stage: webdeploy
   script:
-    - cp -f app/build/outputs/apk/app-debug.apk $DEV_DEPLOY_DIR/$CI_COMMIT_REF_NAME-$CI_PIPELINE_ID.apk
+    - cp -f app/build/outputs/apk/debug/app-debug.apk $DEV_DEPLOY_DIR/$CI_COMMIT_REF_NAME-$CI_PIPELINE_ID.apk
     - /./home/public/gitrunner/logCIBuilds.sh $DEV_DEPLOY_DIR
     - ln -s -f $DEV_DEPLOY_DIR/$CI_COMMIT_REF_NAME-$CI_PIPELINE_ID.apk $DEV_DEPLOY_DIR/0_latest_$CI_COMMIT_REF_NAME.apk
   except:
@@ -73,7 +73,7 @@ upload:
 upload_release:
   stage: webdeploy
   script:
-    - cp -f app/build/outputs/apk/app-release.apk $RELEASE_DEPLOY_DIR/$(/./home/public/gitrunner/determineAppVersionName.sh app/build/outputs/apk/app-release.apk).apk
+    - cp -f app/release/app-release.apk $RELEASE_DEPLOY_DIR/$(/./home/public/gitrunner/determineAppVersionName.sh app/release/app-release.apk).apk
   only:
     - release
 

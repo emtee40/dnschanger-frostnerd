@@ -74,7 +74,7 @@
     <string name="title_pin_app">Proteger App</string>
     <string name="summary_pin_app">Solicitar PIN ao iniciar o app</string>
     <string name="title_category_pin">Proteção PIN</string>
-    <string name="summary_version">Versão [[version]] ([[code]])\n\n© Daniel Wolf 2017\nTodos os direitos reservados\n\nTradução brasileira de Lukinhas</string>
+    <string name="summary_version">Versão [[version]] ([[code]])\n\n© Daniel Wolf 2017\nTodos os direitos reservados\n\nTradução brasileira de Lukinhas\nTradução chinesa por Majida Whale</string>
     <string name="usage_stats_info_text">Para pausar o DNS Changer automaticamente quando um determinado aplicativo está na frente, este app precisa acessar dados de uso. \n\nNa próxima janela, por favor, conceda DNS Changer acessar esses dados ou então você não poderá usar essa configuração.\n\n\nNão são solicitados dados, exceto para apps em execução. Nenhum dado é salvo ou transmitido.\nO código-fonte está disponível publicamente em https://git.frostnerd.com/PublicAndroidApps/DnsChanger se você quer ter certeza de si mesmo.</string>
     <string name="title_remove_usage_data">Remover Acesso aos Dados de Uso</string>
     <string name="summary_remove_usage_data">O acesso aos dados de uso foi concedido. Clique aqui para revogar essa permissão.</string>
@@ -128,8 +128,6 @@
     <string name="widget_not_running">DNS Changer não foi lançado</string>
     <string name="title_shortcut_click_again_disable">Toque Duplo no Atalho Para Parar</string>
     <string name="summary_shortcut_click_again_disable">Parar DNS Changer ao tocar no atalho que foi iniciado</string>
-    <string name="title_shortcut_click_override_settings">Substituir Configurações</string>
-    <string name="summary_shortcut_click_override_settings">Substituir os servidores DNS das configurações ao iniciar o DNS Changer por um atalho</string>
     <string name="summary_notification_on_stop">Mostrar uma notificação com a razão pela qual DNS Changer foi parado automaticamente</string>
     <string name="title_notification_on_stop">Notificar ao Parar</string>
     <string name="title_create_shortcut">Criar Atalho</string>
@@ -174,13 +172,13 @@
     <string name="default_dns_explain_delete">Pressione uma entrada para excluí-la ou editá-la. Toque em entradas adicionais para excluí-las também.</string>
     <string name="summary_enable_ipv4">Habilitar IPv4. Isto permite fornecer endereços IPv4 para usar como servidores DNS.</string>
     <string name="title_enable_ipv4">Habilitar IPv4</string>
-    <string name="warning_disabling_v4">Most Android versions can\'t access the internet anymore when DNS Changer is running and no IPv4 address is provided. You\'ll have to try for your device though.</string>
+    <string name="warning_disabling_v4">A maioria das versões Android não podem mais acessar a internet quando o DNS Changer está ativo e nenhum endereço IPv4 é fornecido. No entanto, você terá que tentar para seu dispositivo.</string>
     <string name="x_apps_selected">[[x]] apps seleccionado</string>
     <string name="tile_pause_resume">Pausar / Continuar</string>
     <string name="tile_start_stop">Iniciar / Parar</string>
     <string name="title_vpn_exclusion">Exclusão VPN</string>
     <string name="search_hint">Procure uma configuração</string>
-    <string name="unfixable_error_explaination">The background worker crashed with an exception present on some devices. This crash cannot be fixed by the app itself.\nEither try restarting the app and if that doesn\'t help try restarting your device.\n\nIf the problem persists and your device is rooted try downloading the app Tun.ko Installer as it might be able to fix it. The developer of this app is DroidVPN Inc.\nLink: https://play.google.com/store/apps/details?id=com.aed.tun.installer</string>
+    <string name="unfixable_error_explaination">O trabalhado de fundo caiu com uma exceção presente em alguns dispositivos. Esta falha não pode ser corrigida pelo próprio app.\nTente reiniciar o app e, se isso não ajudar, tente reiniciar seu dispositivo.\n\nSe o problema persistir e o seu dispositivo estiver rooteado, tente baixar o app Tun.ko Installer, pois poderá conrrigi-lo. O desenvolvedor deste aplicativo DroidVPN Inc.\nLink: https://play.google.com/store/apps/details?id=com.aed.tun.installer</string>
     <string name="nav_title_dns">DNS</string>
     <string name="nav_title_main">Tela principal</string>
     <string name="nav_title_learn">Aprender</string>
@@ -192,22 +190,22 @@
     <string name="nav_title_more">E mais</string>
     <string name="about_text">Este aplicativo é de código aberto. O código-fonte pode ser encontrado em git.frostnerd.com\nÍcones do google são usados (Material icon pack - https://material.io/icons).\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2017\nAll rights reserved.\n\nTradução brasileira por Lukinhas</string>
     <string name="close">Fecha</string>
-    <string name="info_text_how_does_it_work">You can configure the behavior of them in the settings.</string>
+    <string name="info_text_how_does_it_work">Você pode configurar o comportamento nas configurações.</string>
     <string name="create_one">Criar</string>
-    <string name="feature_shortcuts">Using this app you can create shortcuts on your home screen. These shortcuts contain DNS settings and change your DNS servers by clicking them without needing you to open the app.</string>
+    <string name="feature_shortcuts">Usando este app, você pode criar atalhos na tela inicial. Esses atalhos contêm configurações de DNS e alteram seus servidores DNS clicando neles sem precisar abrir o aplicativo.</string>
     <string name="notification_channel_default">Canal padrão</string>
-    <string name="notification_channel_default_description">Default channel for posting notifications.</string>
-    <string name="feature_tiles">For quick access you can place tiles in you notification area. They can be used to start/stop and pause/resume DNS Changer.\n\nTo add them drag down the notification area, click on the pen and drag them upwards by long-clicking them.</string>
-    <string name="info_text_dns">DNS significa Sistema de Nomes de Domínio.\\n\\nO Sistema de Nomes de Domínios é usado para resolver Domínios (google.com, yahoo.com, example.com...) para endereços IP (por exemplo, 192.168.178.1) para se comunicar pela Internet.\\n\\nÉ um dos sistemas mais importantes utilizados em redes baseadas em IP.</string>
-    <string name="feature_pin_protection">You can pin-protect every action which starts/stops/pauses/resumes DNS Changer. Each time one of those is to be executed a dialog shows asking for the pin set by you.\n\nThis can be used for hindering the phones user from interfering with the app if the user isn\'t to tech-savvy. It was developed to stop children from stopping the app.\nTo choose what to protect open the settings.</string>
-    <string name="no_disable_android_o">Isso não pode ser desativado no Android O e acima.</string>
-    <string name="blacklist">Blacklist</string>
-    <string name="easter_egg">No easter eggs here. Go away.</string>
-    <string name="cardview_title">Desativar tudo</string>
-    <string name="cardview_text">Click here to disable everything - Automation and functionality (only temporary)</string>
-    <string name="cardview_text_disabled">Functionality is disabled. Click here to re-enabled (happens automatically at reboot)</string>
-    <string name="info_functionality_disabled">All functionality has been disabled by you. Re-enable in the menu on the side to start.</string>
-    <string name="run_query">Run query</string>
+    <string name="notification_channel_default_description">DCanal padrão para publicar notificações.</string>
+    <string name="feature_tiles">Para acesso rápido, você pode colocar telhas na sua área de notificação. Elas podem ser usadas para iniciar/parar e pausar/continuar o DNS Changer.\n\nPara adicioná-las, arraste para baixo a área de notificação, clique na caneta e arraste-as para cima pressionando-as.</string>
+    <string name="info_text_dns">DNS significa Sistema de Nomes de Domínio.\n\nO Sistema de Nomes de Domínios é usado para resolver Domínios (google.com, yahoo.com, example.com...) para endereços IP (por exemplo, 192.168.178.1) para se comunicar pela Internet.\n\nÉ um dos sistemas mais importantes utilizados em redes baseadas em IP.</string>
+    <string name="feature_pin_protection">Você pode proteger todas as ações que inicia/para/pausa/continua o DNS Changer. Cada vez que uma delas for executada, uma caixa de diálogo solicitará o PIN definido por você.\n\nIsso pode ser usado para impedir outro usuário do telefone de interferir com o aplicativo se o usuário não for experiente. Foi desenvolvido para impedir que as crianças parassem o aplicativo.\nPara escolher o que proteger, abra as configurações.</string>
+    <string name="no_disable_android_o">Isto não pode ser desativado no Android O e superior.</string>
+    <string name="blacklist">Lista Negra</string>
+    <string name="easter_egg">Não há easter eggs aqui. Vá embora.</string>
+    <string name="cardview_title">Desativar Tudo</string>
+    <string name="cardview_text">Clique aqui para desativar tudo - Automação e funcionalidade (apenas temporário)</string>
+    <string name="cardview_text_disabled">Funcionalidade desativada. Clique aqui para reativar (ativa automaticamente na reinicialização)</string>
+    <string name="info_functionality_disabled">Todas as funcionalidades foram desabilitadas por você. Reative no menu para começar.</string>
+    <string name="run_query">Executar</string>
     <string name="hint_dns_lookup">Pesquisa de DNS</string>
     <string name="nav_title_dns_query">DNS Query</string>
     <string name="query_title_type">Tipo</string>
@@ -259,4 +257,41 @@
     <string name="error_rule_already_exists">A regra já existe</string>
     <string name="delete">Excluir</string>
     <string name="both">Ambos</string>
+    <string name="information_advanced_settings_warranty">Para implementar os recursos listados abaixo, todos os pacotes de DNS enviados são interceptados e modificados. Isso pode aumentar o uso de bateria e RAM.\n\nUse por sua conta e risco, não há garantia fornecida. Ao clicar em OK, você concorda que o autor deste aplicativo não é responsável por qualquer dano que possa resultar.</string>
+    <string name="import_rules">Importar</string>
+    <string name="file_hosts">Hosts file</string>
+    <string name="file_dnsmasq">Dnsmasq file</string>
+    <string name="file_justdomains">Domain list</string>
+    <string name="select_files">Selecionar arquivos</string>
+    <string name="importing_x_rules">Importando [x] regras</string>
+    <string name="rules_import_finished">[x] linhas foram lidas, [y] das quais eram válidas e [z] distintas (novas) Entradas.</string>
+    <string name="detect_rule_type">Tente detectar o tipo</string>
+    <string name="rule_unknown_ignoring">Desconhecido, ignorando</string>
+    <string name="file_adblock">Adblock file (Format: ||HOST^)</string>
+    <string name="fail_fast">Fail rápido</string>
+    <string name="loading">Carregando</string>
+    <string name="title_query_logging">Query logging</string>
+    <string name="title_export_queries">Exportar queries</string>
+    <string name="summary_query_logging">Registre todas as consultas de DNS quando o aplicativo estiver sendo executado</string>
+    <string name="x_lines">[x] linhas</string>
+    <string name="show_normal_entries">Mostrar entradas normais</string>
+    <string name="show_wildcard_entries">Mostrar entradas do curinga</string>
+    <string name="sql_actions">Ações SQL</string>
+    <string name="disable_failfast_info">Desativar falha rapidamente se o tipo não puder ser detectado. Como isso leva mais tempo, tente especificar o tipo você mesmo.</string>
+    <string name="wait_importing_rules">Detectando tipos de arquivo, aguarde ...</string>
+    <string name="summary_export_queries">Exporta todas as consultas em um arquivo de texto para uma pasta de sua escolha</string>
+
+    <string-array name="features_1_16">
+        <item>Adicionado esta caixa de diálogo para destacar novos recursos</item>
+        <item>O menu principal agora mostra o nome do provedor DNS que está sendo usado</item>
+        <item>O aplicativo agora avisa se nenhuma conexão pode ser estabelecida para o servidor DNS configurado</item>
+        <item>Agora você pode usar sua impressão digital na caixa de diálogo do pino</item>
+        <item>Agora você pode configurar os nomes WIFI em que o DNS Changer inicia automaticamente</item>
+        <item>Bugfixes</item>
+    </string-array>
+    <string name="title_dns_over_tcp">DNS sobre TCP</string>
+    <string name="summary_dns_over_tcp">Reencaminhar as consultas de DNS usando TCP (em vez de UDP)</string>
+    <string name="title_tcp_timeout">TCP Timeout</string>
+    <string name="summary_tcp_timeout">Define o tempo em milissegundos após o qual o aplicativo pára de tentar alcançar o servidor DNS a montante</string>
+    <string name="nav_title_query_log">histórico de pedidos</string>
 </resources>

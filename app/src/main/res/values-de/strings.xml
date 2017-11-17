@@ -75,7 +75,7 @@
     <string name="title_pin_app">App schützen</string>
     <string name="summary_pin_app">Nach der Pin fragen, wenn die App geöffnet wird</string>
     <string name="title_category_pin">Pin</string>
-    <string name="summary_version">Version [[version]] ([[code]])\n\n© Daniel Wolf 2017\nAll rights reserved</string>
+    <string name="summary_version">Version [[version]] ([[code]])\n\n© Daniel Wolf 2017\nAll rights reserved\nBrazilianische Übersetzung von Lukinhas\nChinesische Übersetzung von Majida Whale</string>
     <string name="usage_stats_info_text">Um DNS Changer automatisch zu pausieren, wenn sich eine bestimmte App im Vordergrund befindet, wird Zugriff auf die Nutzungsdaten benötigt.\n\nBitte gewähre DNSChanger im nächsten Fenster Zugriff auf diese Daten, oder du wirst diese Einstellung nicht nutzen können.\n\n\nEs werden keine Daten außer den aktuell laufenden Apps angefordert. Es werden keine Daten gespeichert oder übertragen.\nDer SourceCode ist öffentlich unter https://git.frostnerd.com/PublicAndroidApps/DnsChanger verfügbar, wenn du selber sichergehen willst.</string>
     <string name="title_remove_usage_data">Zugriff auf Nutzungsdaten deaktivieren</string>
     <string name="summary_remove_usage_data">Zugriff auf die Nutzungsdaten wurde gewährt. Klicke hier, um diese Berechtigung zurückzuziehen.</string>
@@ -128,9 +128,7 @@
     <string name="dialog_question_export_shortcuts">Verknüpfungen auch exportieren?\n\n(Exportiert alle Verknüpfungen, welche seit der Installation über die App erstellt wurden, auch solche, welche nicht mehr existieren)</string>
     <string name="widget_not_running">DNS Changer ist nicht aktiv</string>
     <string name="title_shortcut_click_again_disable">App durch Verknüpfung stoppen</string>
-    <string name="title_shortcut_click_override_settings">Einstellungen überschreiben</string>
     <string name="summary_shortcut_click_again_disable">DNS Changer stoppen, wenn die Verknüpfung, mit welcher die App gestartet wurde, erneut angeklickt wird</string>
-    <string name="summary_shortcut_click_override_settings">Überschreibe die DNS Einstellungen, wenn DNS Changer über eine Verknüpfung gestartet wird</string>
     <string name="summary_notification_on_stop">Zeige eine Benachrichtigung, wenn DNS Changer automatisch beendet wird</string>
     <string name="title_notification_on_stop">Bei Stopp benachrichtigen</string>
     <string name="title_create_shortcut">Eine Verknüpfung erstellen</string>
@@ -235,11 +233,8 @@
     <string-array name="features_1_16">
         <item>Diesen Dialog hinzugefügt, um über neue Features zu informieren</item>
         <item>Im Hauptmenü wird nun der Name des DNS Servers angezeigt, welcher verwendet wird</item>
-        <item>Es können nun Domains als DNS Server genutzt werden</item>
         <item>Die App warnt nun, sollte keine Verbindung zu dem eingestellten DNS Servern möglich sein</item>
-        <item>Optimierungen für Android TV</item>
         <item>Es kann nun der Fingerabdruck im Pin dialog verwendet werden</item>
-        <item>Es können nun VPN Verbindungsdaten angegeben werden, um diese App als VPN zu nutzen</item>
         <item>Es kann nun eingestellt werden, in welchen WLANs DNS Changer automatisch startet</item>
         <item>Bugfixes</item>
     </string-array>
@@ -272,4 +267,32 @@
     <string name="x_entries">[x] Einträge</string>
     <string name="show_local_entries">Zeige Regeln, welche zu einer Loopbackadresse auflösen</string>
     <string name="search_by_target">Suche nach einem Ziel</string>
+    <string name="information_advanced_settings_warranty">Um die unteren Features zu realisieren werden die DNS Packets abgefangen und modifziert. Dies kann die Batterie- und RAM-Nutzung erhöhen.\n\nBenutze dies unter eigenen Risiko, durch Klicken auf OK bestätigst du, dass der Autor dieser App für keine möglichen Schäden haftbar ist.</string>
+    <string name="import_rules">Importieren</string>
+    <string name="importing_x_rules">Importiere [x] Regeln</string>
+    <string name="rules_import_finished">[x] Zeilen wurden gelesen, von welchen [y] valide und [z] einzigartige (neue) Einträge waren.</string>
+    <string name="rule_unknown_ignoring">Unbekannt, ignoriere</string>
+    <string name="sql_actions">SQL Aktionen</string>
+    <string name="show_wildcard_entries">Zeige Wildcard Einträge</string>
+    <string name="show_normal_entries">Zeige normale Einträge</string>
+    <string name="x_lines">[x] Zeilen</string>
+    <string name="summary_export_queries">Exportiert alle Anfragen in eine Textdatei in einem beliebigen Ordner</string>
+    <string name="title_export_queries">Exportiere Anfragen</string>
+    <string name="title_query_logging">Anfragenspeicherung</string>
+    <string name="loading">Lade</string>
+    <string name="wait_importing_rules">Erkenne Dateitypen, bitte warten...</string>
+    <string name="file_hosts">Hosts Datei</string>
+    <string name="file_dnsmasq">Dnsmasq Datei</string>
+    <string name="file_justdomains">Domainliste</string>
+    <string name="select_files">Wähle Datei(en)</string>
+    <string name="detect_rule_type">Versuche, den Dateityp zu erkennen</string>
+    <string name="file_adblock">Adblock Datei (Format: ||HOST^)</string>
+    <string name="fail_fast">Schnell fehlschlagen</string>
+    <string name="summary_query_logging">Speichere alle DNS Anfragen wenn die App aktiviert ist</string>
+    <string name="disable_failfast_info">Deaktivere \'schnell fehlschlagen\" falls der Typ nicht erkannt werden kann. Da dies jedoch länger dauert, versuche den Typ selbst anzugeben.</string>
+    <string name="title_dns_over_tcp">DNS über TCP</string>
+    <string name="title_tcp_timeout">TCP Timeout</string>
+    <string name="summary_dns_over_tcp">Leitet die DNS Anfragen über TCP weiter (anstatt UDP)</string>
+    <string name="summary_tcp_timeout">Setzt die Zeit in Millisekunden, nach welcher die App einen Verbindungsversuch zu dem Server abbricht</string>
+    <string name="nav_title_query_log">Anfragenhistorie</string>
 </resources>

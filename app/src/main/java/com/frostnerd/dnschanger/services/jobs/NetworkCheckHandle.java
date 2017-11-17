@@ -11,7 +11,8 @@ import android.net.NetworkRequest;
 import android.net.VpnService;
 import android.os.Build;
 
-import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
@@ -77,8 +78,8 @@ public class NetworkCheckHandle {
         if (activeNetwork == null) {
             LogFactory.writeMessage(context, LOG_TAG, "No active network.");
         }else{
-            LogFactory.writeMessage(context, LOG_TAG, "[OnCreate] Thread running: " + API.isServiceThreadRunning());
-            if (!API.isServiceThreadRunning()) {
+            LogFactory.writeMessage(context, LOG_TAG, "[OnCreate] Thread running: " + Util.isServiceThreadRunning());
+            if (!Util.isServiceThreadRunning()) {
                 if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI && Preferences.getBoolean(context, "setting_auto_wifi", false)) {
                     LogFactory.writeMessage(context, LOG_TAG, "[OnCreate] Connected to WIFI and setting_auto_wifi is true. Starting Service..");
                     startService();
@@ -107,7 +108,7 @@ public class NetworkCheckHandle {
             LogFactory.writeMessage(context, LOG_TAG, "VPNService is already prepared. Starting DNSVPNService",
                     i = DNSVpnService.getStartVPNIntent(context).putExtra(VPNServiceArgument.FLAG_DONT_START_IF_RUNNING.getArgument(), true).
                             putExtra(VPNServiceArgument.FLAG_FIXED_DNS.getArgument(),false));
-            API.startService(context, i);
+            Util.startService(context, i);
         } else {
             LogFactory.writeMessage(context, LOG_TAG, "VPNService is NOT prepared. Starting BackgroundVpnConfigureActivity");
             BackgroundVpnConfigureActivity.startBackgroundConfigure(context, true);
@@ -129,15 +130,15 @@ public class NetworkCheckHandle {
     }
 
     private void handleConnectivityChange(boolean connected, ConnectionType connectionType){
-        if(Preferences.getBoolean(context, "everything_disabled", false) || !running)return;
-        boolean serviceRunning = API.isServiceRunning(context),
-                serviceThreadRunning = API.isServiceThreadRunning(),
+        if(PreferencesAccessor.isEverythingDisabled(context) || !running)return;
+        boolean serviceRunning = Util.isServiceRunning(context),
+                serviceThreadRunning = Util.isServiceThreadRunning(),
                 autoWifi = Preferences.getBoolean(context, "setting_auto_wifi", false),
                 autoMobile = Preferences.getBoolean(context, "setting_auto_mobile", false),
                 disableNetChange = Preferences.getBoolean(context, "setting_disable_netchange", false);
         LogFactory.writeMessage(context, LOG_TAG, "Connectivity changed. Connected: " + connected + ", type: " + connectionType);
         LogFactory.writeMessage(context, LOG_TAG, "Service running: " + serviceRunning + "; Thread running: " + serviceThreadRunning);
-        API.updateTiles(context);
+        Util.updateTiles(context);
         WidgetUtil.updateAllWidgets(context, BasicWidget.class);
         Intent i;
         if(connectionType == ConnectionType.VPN)return;

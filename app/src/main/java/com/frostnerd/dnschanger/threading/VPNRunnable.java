@@ -1,6 +1,5 @@
 package com.frostnerd.dnschanger.threading;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.VpnService;
@@ -10,14 +9,15 @@ import android.os.ParcelFileDescriptor;
 import com.frostnerd.dnschanger.DNSChanger;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.activities.InvalidDNSDialogActivity;
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.services.DNSVpnService;
-import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.dnsproxy.DNSProxy;
 import com.frostnerd.dnschanger.util.dnsproxy.DNSUDPProxy;
 import com.frostnerd.dnschanger.util.dnsproxy.DummyProxy;
 import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.networking.NetworkUtil;
-import com.frostnerd.utils.preferences.Preferences;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,8 +44,8 @@ public class VPNRunnable implements Runnable {
     private ParcelFileDescriptor tunnelInterface = null;
     private VpnService.Builder builder;
     private DNSVpnService service;
-    private String dns1, dns2, dns1v6, dns2v6;
     private Set<String> vpnApps;
+    private List<IPPortPair> upstreamServers;
     private boolean whitelistMode, running = true;
     private final List<Runnable> afterThreadStop = new ArrayList<>();
     private DNSProxy dnsProxy;
@@ -56,14 +56,11 @@ public class VPNRunnable implements Runnable {
         addresses.put("172.31.255.1", 28);
     }
 
-    public VPNRunnable(DNSVpnService service, String dns1, String dns2, String dns1v6, String dns2v6, Set<String> vpnApps, boolean whitelistMode){
+    public VPNRunnable(DNSVpnService service, List<IPPortPair> upstreamServers, Set<String> vpnApps, boolean whitelistMode){
         this.service = service;
-        this.dns1 = dns1;
-        this.dns1v6 = dns1v6;
-        this.dns2 = dns2;
-        this.dns2v6 = dns2v6;
         this.whitelistMode = whitelistMode;
         this.vpnApps = vpnApps;
+        this.upstreamServers = upstreamServers;
     }
 
     @Override
@@ -77,23 +74,20 @@ public class VPNRunnable implements Runnable {
                 addressIndex++;
                 try{
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying address '" + address + "'");
-                    configure(address, isInAdvancedMode(service));
+                    configure(address, PreferencesAccessor.isRunningInAdvancedMode(service));
                     tunnelInterface = builder.establish();
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface connected.");
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Broadcasting current state");
                     service.broadcastCurrentState();
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Broadcast sent");
                     service.updateNotification();
-                    API.updateAppShortcuts(service);
+                    Util.updateAppShortcuts(service);
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "VPN Thread going into while loop");
-                    if(isInAdvancedMode(service) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){
+                    if(PreferencesAccessor.isRunningInAdvancedMode(service) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){
                         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "We are in advanced mode, starting DNS proxy");
-                        dnsProxy = new DNSUDPProxy(service, tunnelInterface, new HashSet<API.IPPortPair>(){{
-                            add(new API.IPPortPair(dns1, Preferences.getInteger(service, "port1", 53), false));
-                            add(new API.IPPortPair(dns2, Preferences.getInteger(service, "port2", 53), false));
-                            add(new API.IPPortPair(dns1v6, Preferences.getInteger(service, "port1v6", 53), false));
-                            add(new API.IPPortPair(dns2v6, Preferences.getInteger(service, "port2v6", 53), false));
-                        }});
+                        dnsProxy = DNSProxy.createProxy(service, tunnelInterface, new HashSet<>(upstreamServers)
+                                ,PreferencesAccessor.areRulesEnabled(service), PreferencesAccessor.isQueryLoggingEnabled(service),
+                                PreferencesAccessor.sendDNSOverTCP(service));
                         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "DNS proxy created");
                     }else dnsProxy = new DummyProxy();
                     dnsProxy.run();
@@ -116,8 +110,8 @@ public class VPNRunnable implements Runnable {
         }finally {
             running = false;
             LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "VPN Thread is in finally block");
-            API.updateAppShortcuts(service);
-            API.updateTiles(service);
+            Util.updateAppShortcuts(service);
+            Util.updateTiles(service);
             cleanup();
             service.updateNotification();
             service.broadcastCurrentState();
@@ -152,19 +146,15 @@ public class VPNRunnable implements Runnable {
     }
 
     private void configure(String address, boolean advanced){
-        boolean ipv6Enabled = API.isIPv6Enabled(service), ipv4Enabled = API.isIPv4Enabled(service);
+        boolean ipv6Enabled = PreferencesAccessor.isIPv6Enabled(service), ipv4Enabled = PreferencesAccessor.isIPv4Enabled(service);
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Creating Tunnel interface");
         builder = service.createBuilder();
         builder.setSession("DnsChanger");
-        if(ipv4Enabled){
-            builder = builder.addAddress(address, addresses.get(address));
-            addDNSServer(dns1, advanced);
-            addDNSServer(dns2, advanced);
-        }
-        if(ipv6Enabled){
-            builder = builder.addAddress(NetworkUtil.randomLocalIPv6Address(),48);
-            addDNSServer(dns1v6, advanced);
-            addDNSServer(dns2v6, advanced);
+        if(ipv4Enabled) builder = builder.addAddress(address, addresses.get(address));
+        if(ipv6Enabled) builder = builder.addAddress(NetworkUtil.randomLocalIPv6Address(),48);
+        for(IPPortPair pair: upstreamServers){
+            if((pair.isIpv6() && ipv6Enabled) || (!pair.isIpv6() && ipv4Enabled))
+                addDNSServer(pair.getAddress(), advanced, pair.isIpv6());
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try{
@@ -191,16 +181,11 @@ public class VPNRunnable implements Runnable {
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface created, not yet connected");
     }
 
-    private void addDNSServer(String server, boolean addRoute){
+    private void addDNSServer(String server, boolean addRoute, boolean ipv6){
         if(server != null && !server.equals("")){
             builder.addDnsServer(server);
-            if(addRoute)builder.addRoute(server, 32);
+            if(addRoute)builder.addRoute(server, ipv6 ? 128 : 32);
         }
-    }
-
-    public static boolean isInAdvancedMode(Context context){
-        return Preferences.getBoolean(context, "advanced_settings", false) &&
-                (Preferences.getBoolean(context, "custom_port", false) || Preferences.getBoolean(context, "rules_activated", false));
     }
 
     public boolean isThreadRunning(){
@@ -209,7 +194,7 @@ public class VPNRunnable implements Runnable {
 
     public void stop(Thread thread){
         running = false;
-        dnsProxy.stop();
+        if(dnsProxy != null)dnsProxy.stop();
         cleanup();
         thread.interrupt();
     }
@@ -219,6 +204,5 @@ public class VPNRunnable implements Runnable {
         cleanup();
         vpnApps.clear();
         vpnApps = null;
-        service = null;
     }
 }

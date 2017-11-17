@@ -60,8 +60,24 @@
         android:id="@+id/show_local"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/show_local_entries"
         android:checked="true"
+        android:text="@string/show_local_entries"
+        android:textColor="?android:attr/textColor" />
+
+    <CheckBox
+        android:id="@+id/show_normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="@string/show_normal_entries"
+        android:textColor="?android:attr/textColor" />
+
+    <CheckBox
+        android:id="@+id/show_wildcard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="@string/show_wildcard_entries"
         android:textColor="?android:attr/textColor" />
 
 </LinearLayout>

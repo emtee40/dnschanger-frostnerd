@@ -18,7 +18,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.frostnerd.dnschanger.util.API;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
@@ -55,21 +56,22 @@ public class PinActivity extends Activity {
         LogFactory.writeMessage(this, LOG_TAG, "Created Activity", getIntent());
         final boolean main = getIntent() != null && !getIntent().hasExtra("redirectToService");
         LogFactory.writeMessage(this, LOG_TAG, "Returning to main after pin: " + main);
-        if (!Preferences.getBoolean(this, "setting_pin_enabled", false)) {
+        if (!PreferencesAccessor.isPinProtectionEnabled(this)) {
             LogFactory.writeMessage(this, LOG_TAG, "Pin is disabled");
             continueToFollowing(main);
             return;
         }
-        if ((main && !Preferences.getBoolean(this, "pin_app", false)) ||
-                (!main && (!Preferences.getBoolean(this, "pin_notification", false) && !Preferences.getBoolean(this, "pin_tile", false) &&
-                        !Preferences.getBoolean(this, "pin_app_shortcut", false)))) {
-            if (main && !Preferences.getBoolean(this, "pin_app", false)) {
+        if ((main && !PreferencesAccessor.isPinProtected(this, PreferencesAccessor.PinProtectable.APP)) ||
+                (!main && (!PreferencesAccessor.isPinProtected(this, PreferencesAccessor.PinProtectable.NOTIFICATION) &&
+                        !PreferencesAccessor.isPinProtected(this, PreferencesAccessor.PinProtectable.TILE) &&
+                        !PreferencesAccessor.isPinProtected(this, PreferencesAccessor.PinProtectable.APP_SHORTCUT)))) {
+            if (main && !PreferencesAccessor.isPinProtected(this, PreferencesAccessor.PinProtectable.APP)) {
                 LogFactory.writeMessage(this, LOG_TAG, "We are going to main and pin for the app is not enabled. Not asking for pin");
-            } else if (!main && !Preferences.getBoolean(this, "pin_notification", false)) {
+            } else if (!main && !PreferencesAccessor.isPinProtected(this, PreferencesAccessor.PinProtectable.NOTIFICATION)) {
                 LogFactory.writeMessage(this, LOG_TAG, "We are doing something in the notification and pin for it is not enabled. Not asking for pin");
-            } else if (!main && !Preferences.getBoolean(this, "pin_tile", false)) {
+            } else if (!main && !PreferencesAccessor.isPinProtected(this, PreferencesAccessor.PinProtectable.TILE)) {
                 LogFactory.writeMessage(this, LOG_TAG, "We are doing something in the tiles and pin for it is not enabled. Not asking for pin");
-            } else if (!main && !Preferences.getBoolean(this, "pin_app_shortcut", false)) {
+            } else if (!main && !PreferencesAccessor.isPinProtected(this, PreferencesAccessor.PinProtectable.APP_SHORTCUT)) {
                 LogFactory.writeMessage(this, LOG_TAG, "We are doing something in an app shortcut and pin for it is not enabled. Not asking for pin");
             }
             continueToFollowing(main);
@@ -77,10 +79,10 @@ public class PinActivity extends Activity {
         LogFactory.writeMessage(this, LOG_TAG, "Have to ask for pin.");
         setContentView(R.layout.dialog_pin);
         LogFactory.writeMessage(this, LOG_TAG, "Content set");
-        pin = Preferences.getString(this, "pin_value", "1234");
+        pin = PreferencesAccessor.getPinCode(this);
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        met = (MaterialEditText) findViewById(R.id.pin_dialog_met);
-        pinInput = (EditText) findViewById(R.id.pin_dialog_pin);
+        met = findViewById(R.id.pin_dialog_met);
+        pinInput = findViewById(R.id.pin_dialog_pin);
         if (!VariableChecker.isInteger(pin))
             pinInput.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         findViewById(R.id.pin_dialog_cancel).setOnClickListener(new View.OnClickListener() {
@@ -104,7 +106,7 @@ public class PinActivity extends Activity {
                 }
             }
         });
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M && Preferences.getBoolean(this, "pin_fingerprint", false)) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M && PreferencesAccessor.canUseFingerprintForPin(this)) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) == PackageManager.PERMISSION_GRANTED){
                 FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
                 KeyguardManager keyguardManager = getSystemService(KeyguardManager.class);
@@ -158,7 +160,7 @@ public class PinActivity extends Activity {
                             putExtra(VPNServiceArgument.COMMAND_STOP_VPN.getArgument(), getIntent().getBooleanExtra("stop_vpn", false)).
                             putExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(), getIntent().getBooleanExtra("destroy", false)).
                             putExtra(VPNServiceArgument.ARGUMENT_STOP_REASON.getArgument(), getIntent().hasExtra("destroy") ? getIntent().getStringExtra("reason") : null).setAction(StringUtil.randomString(40)));
-            API.startService(this,i);
+            Util.startService(this,i);
             LogFactory.writeMessage(this, LOG_TAG, "Service Started");
         }
         finish();
