@@ -57,7 +57,7 @@ public class FireReceiver extends BroadcastReceiver {
 
                 String dns1 = bundle.getString(Helper.BUNDLE_EXTRA_DNS1), dns2 = bundle.getString(Helper.BUNDLE_EXTRA_DNS2),
                         dns1v6 = bundle.getString(Helper.BUNDLE_EXTRA_DNS1V6), dns2v6 = bundle.getString(Helper.BUNDLE_EXTRA_DNS2V6);
-                if (bundle.containsKey("BUNDLE_EXTRA_V2")) {
+                if (bundle.containsKey(Helper.BUNDLE_EXTRA_V2)) {
                     if (!TextUtils.isEmpty(dns1)) servers.add(IPPortPair.wrap(dns1));
                     if (!TextUtils.isEmpty(dns2)) servers.add(IPPortPair.wrap(dns2));
                     if (!TextUtils.isEmpty(dns1v6)) servers.add(IPPortPair.wrap(dns1v6));
