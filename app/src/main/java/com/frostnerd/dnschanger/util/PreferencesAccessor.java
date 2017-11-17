@@ -100,7 +100,6 @@ public class PreferencesAccessor {
         return Integer.parseInt(Preferences.getString(context,"tcp_timeout", "500"));
     }
 
-
     private static String getDNS1(Context context) {
         return isIPv4Enabled(context) ? Preferences.getString(context, "dns1", "8.8.8.8") : "";
     }
@@ -143,6 +142,14 @@ public class PreferencesAccessor {
                 }
             }
         };
+    }
+
+    public static boolean shouldShowVPNInfoDialog(Context context){
+        return Preferences.getBoolean(context, "show_vpn_info", true);
+    }
+
+    public static void setShowVPNInfoDialog(Context context, boolean doShow){
+        Preferences.put(context, "show_vpn_info", doShow);
     }
 
     public enum Type{

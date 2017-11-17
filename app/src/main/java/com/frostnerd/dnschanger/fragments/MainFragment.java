@@ -37,6 +37,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.dialogs.VPNInfoDialog;
 import com.frostnerd.dnschanger.util.DNSQueryUtil;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
@@ -161,15 +162,13 @@ public class MainFragment extends Fragment {
                 LogFactory.writeMessage(getContext(), LOG_TAG, "Startbutton clicked. Configuring VPN if needed");
                 if (i != null){
                     LogFactory.writeMessage(getContext(), LOG_TAG, "VPN isn't prepared yet. Showing dialog explaining the VPN");
-                    dialog2 = new AlertDialog.Builder(getContext(),ThemeHandler.getDialogTheme(getContext())).setTitle(R.string.information).setMessage(R.string.vpn_explain)
-                            .setCancelable(false).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                    LogFactory.writeMessage(getContext(), LOG_TAG, "Requesting VPN access", i);
-                                    startActivityForResult(i, 0);
-                                }
-                            }).show();
+                    new VPNInfoDialog(getContext(), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int which) {
+                            startActivityForResult(i, 0);
+                            LogFactory.writeMessage(getContext(), LOG_TAG, "Requesting VPN access", i);
+                        }
+                    });
                     LogFactory.writeMessage(getContext(), LOG_TAG, "Dialog is now being shown");
                 }else{
                     LogFactory.writeMessage(getContext(), LOG_TAG, "VPNService is already configured");

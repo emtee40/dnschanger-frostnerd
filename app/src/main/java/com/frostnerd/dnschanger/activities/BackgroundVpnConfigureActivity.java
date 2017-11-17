@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.dialogs.VPNInfoDialog;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
@@ -17,7 +18,6 @@ import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -90,8 +90,7 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
 
     private void showDialog(DialogInterface.OnClickListener click) {
         LogFactory.writeMessage(this, LOG_TAG, "Showing VPN Request Info Dialog");
-        dialog1 = new AlertDialog.Builder(this, ThemeHandler.getDialogTheme(this)).setTitle(getString(R.string.information) + " - " + getString(R.string.app_name)).setMessage(R.string.vpn_explain)
-                .setCancelable(false).setPositiveButton(R.string.ok, click).show();
+        new VPNInfoDialog(this, click);
         LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
     }
 
