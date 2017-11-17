@@ -57,12 +57,26 @@ public class ConfigureActivity extends AppCompatActivity {
             dns1V6 = IPPortPair.wrap("2001:4860:4860::8888", 53), dns2V6 = IPPortPair.wrap("2001:4860:4860::8844", 53);
     private boolean settingV6 = false, wasEdited = false, ipv4Enabled, ipv6Enabled;
     private long lastBackPress = 0;
-    private Action currentAction;
+    private Action currentAction = Action.START;
     private static final String LOG_TAG = "[ConfigureActivity]";
     private boolean customPorts;
 
     private enum Action{
-        PAUSE, START, STOP, RESUME
+        PAUSE(2), START(0), STOP(1), RESUME(3);
+
+        private final int positionInList;
+        Action(int pos){
+            this.positionInList = pos;
+        }
+
+        public static Action getAction(int pos){
+            switch(pos){
+                case 0: return START;
+                case 1: return STOP;
+                case 2: return PAUSE;
+            }
+            return RESUME;
+        }
     }
 
     private boolean checkValidity(){
@@ -110,6 +124,13 @@ public class ConfigureActivity extends AppCompatActivity {
                     dns2V6 = IPPortPair.wrap(bundle.getString(Helper.BUNDLE_EXTRA_DNS2V6));
                 if (getIntent().hasExtra(Helper.EXTRA_BLURB))
                     ed_name.setText(getIntent().getStringExtra(Helper.EXTRA_BLURB));
+
+                if(bundle.containsKey(Helper.BUNDLE_EXTRA_PAUSE_DNS))
+                    currentAction = Action.PAUSE;
+                if(bundle.containsKey(Helper.BUNDLE_EXTRA_RESUME_DNS))
+                    currentAction = Action.RESUME;
+                if(bundle.containsKey(Helper.BUNDLE_EXTRA_STOP_DNS))
+                    currentAction = Action.STOP;
             }
         }
         ed_dns1.setText(settingV6 ? dns1V6.formatForTextfield(customPorts) : dns1.formatForTextfield(customPorts));
@@ -207,7 +228,7 @@ public class ConfigureActivity extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     if(position != 0)findViewById(R.id.wrapper).setVisibility(View.INVISIBLE);
                     else findViewById(R.id.wrapper).setVisibility(View.VISIBLE);
-                    currentAction = position == 0 ? Action.START : (position == 1 ? Action.STOP : (position == 2 ? Action.PAUSE : Action.RESUME));
+                    currentAction = Action.getAction(position);
                 }
 
                 @Override
@@ -216,6 +237,7 @@ public class ConfigureActivity extends AppCompatActivity {
                 }
             });
             actionSpinner.getBackground().setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
+            actionSpinner.setSelection(currentAction.positionInList);
         }
         findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {
             @Override
