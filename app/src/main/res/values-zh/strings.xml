@@ -296,4 +296,5 @@
     <string name="summary_dns_over_tcp">使用TCP（而不是UDP）转发DNS查询</string>
     <string name="title_tcp_timeout">TCP超时</string>
     <string name="summary_tcp_timeout">设置应用程序停止尝试到达上游DNS服务器的时间（以毫秒为单位）</string>
+    <string name="nav_title_query_log">请求历史</string>
 </resources>

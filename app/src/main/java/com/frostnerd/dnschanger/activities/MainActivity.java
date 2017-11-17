@@ -31,6 +31,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.fragments.QueryLogFragment;
 import com.frostnerd.dnschanger.fragments.RulesFragment;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
@@ -272,6 +273,14 @@ public class MainActivity extends NavigationDrawerActivity {
                     @Override
                     public Fragment getFragment(@Nullable Bundle arguments) {
                         return new RulesFragment();
+                    }
+                });
+            }
+            if(PreferencesAccessor.isQueryLoggingEnabled(this)){
+                itemCreator.createItemAndContinue(R.string.nav_title_query_log, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_timelapse)), new DrawerItem.FragmentCreator() {
+                    @Override
+                    public Fragment getFragment(@Nullable Bundle arguments) {
+                        return new QueryLogFragment();
                     }
                 });
             }
