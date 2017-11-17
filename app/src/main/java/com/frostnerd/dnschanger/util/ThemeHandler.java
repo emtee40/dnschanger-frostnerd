@@ -32,11 +32,11 @@ public class ThemeHandler {
     }
 
     public static int getDialogTheme(Context context) {
-        return Preferences.getInteger(context, "dialogtheme", R.style.DialogTheme);
+        return Preferences.getInteger(context, "dialogtheme", R.style.DialogTheme_Mono);
     }
 
     public static int getAppTheme(Context context) {
-        return Preferences.getInteger(context, "apptheme", R.style.AppTheme);
+        return Preferences.getInteger(context, "apptheme", R.style.AppTheme_Mono);
     }
 
     @ColorInt
