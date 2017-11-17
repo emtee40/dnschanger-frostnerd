@@ -53,8 +53,8 @@ public class ConfigureActivity extends AppCompatActivity {
     private EditText ed_dns1, ed_dns2, ed_name;
     private boolean cancelled = false, creatingShortcut;
     private DefaultDNSDialog defaultDNSDialog;
-    private IPPortPair dns1 = IPPortPair.wrap("8.8.8.8"), dns2 = IPPortPair.wrap("8.8.4.4"),
-            dns1V6 = IPPortPair.wrap("2001:4860:4860::8888"), dns2V6 = IPPortPair.wrap("2001:4860:4860::8844");
+    private IPPortPair dns1 = IPPortPair.wrap("8.8.8.8" ,53), dns2 = IPPortPair.wrap("8.8.4.4", 53),
+            dns1V6 = IPPortPair.wrap("2001:4860:4860::8888", 53), dns2V6 = IPPortPair.wrap("2001:4860:4860::8844", 53);
     private boolean settingV6 = false, wasEdited = false, ipv4Enabled, ipv6Enabled;
     private long lastBackPress = 0;
     private Action currentAction;
