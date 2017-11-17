@@ -97,18 +97,19 @@ public class ConfigureActivity extends AppCompatActivity {
         creatingShortcut = getIntent() != null && getIntent().getBooleanExtra("creatingShortcut", false);
         LogFactory.writeMessage(this, LOG_TAG, "Creating Shortcut: " + creatingShortcut);
         Helper.scrub(bundle);
-        if(savedInstanceState == null){
-            if(Helper.isBundleValid(bundle)){
+        if (savedInstanceState == null) {
+            if (Helper.isBundleValid(this, bundle)) {
                 LogFactory.writeMessage(this, LOG_TAG, "Editing existing Tasker Configuration");
-                if(bundle.containsKey(Helper.BUNDLE_EXTRA_SERVERS)){
-
-                }else{
-                    if(bundle.containsKey(Helper.BUNDLE_EXTRA_DNS1))dns1 = IPPortPair.wrap(bundle.getString(Helper.BUNDLE_EXTRA_DNS1));
-                    if(bundle.containsKey(Helper.BUNDLE_EXTRA_DNS2))dns2 = IPPortPair.wrap(bundle.getString(Helper.BUNDLE_EXTRA_DNS2));
-                    if(bundle.containsKey(Helper.BUNDLE_EXTRA_DNS1V6))dns1V6 = IPPortPair.wrap(bundle.getString(Helper.BUNDLE_EXTRA_DNS1V6));
-                    if(bundle.containsKey(Helper.BUNDLE_EXTRA_DNS2V6))dns2V6 = IPPortPair.wrap(bundle.getString(Helper.BUNDLE_EXTRA_DNS2V6));
-                }
-                if(getIntent().hasExtra(Helper.EXTRA_BLURB))ed_name.setText(getIntent().getStringExtra(Helper.EXTRA_BLURB));
+                if (bundle.containsKey(Helper.BUNDLE_EXTRA_DNS1))
+                    dns1 = IPPortPair.wrap(bundle.getString(Helper.BUNDLE_EXTRA_DNS1));
+                if (bundle.containsKey(Helper.BUNDLE_EXTRA_DNS2))
+                    dns2 = IPPortPair.wrap(bundle.getString(Helper.BUNDLE_EXTRA_DNS2));
+                if (bundle.containsKey(Helper.BUNDLE_EXTRA_DNS1V6))
+                    dns1V6 = IPPortPair.wrap(bundle.getString(Helper.BUNDLE_EXTRA_DNS1V6));
+                if (bundle.containsKey(Helper.BUNDLE_EXTRA_DNS2V6))
+                    dns2V6 = IPPortPair.wrap(bundle.getString(Helper.BUNDLE_EXTRA_DNS2V6));
+                if (getIntent().hasExtra(Helper.EXTRA_BLURB))
+                    ed_name.setText(getIntent().getStringExtra(Helper.EXTRA_BLURB));
             }
         }
         ed_dns1.setText(settingV6 ? dns1V6.formatForTextfield(customPorts) : dns1.formatForTextfield(customPorts));
