@@ -297,4 +297,5 @@
     <string name="title_tcp_timeout">TCP超时</string>
     <string name="summary_tcp_timeout">设置应用程序停止尝试到达上游DNS服务器的时间（以毫秒为单位）</string>
     <string name="nav_title_query_log">请求历史</string>
+    <string name="dont_show_again">不要再显示</string>
 </resources>

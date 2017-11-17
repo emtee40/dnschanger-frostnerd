@@ -294,4 +294,5 @@
     <string name="title_tcp_timeout">TCP Timeout</string>
     <string name="summary_tcp_timeout">Define o tempo em milissegundos após o qual o aplicativo pára de tentar alcançar o servidor DNS a montante</string>
     <string name="nav_title_query_log">histórico de pedidos</string>
+    <string name="dont_show_again">Não mostre novamente</string>
 </resources>
