@@ -88,7 +88,7 @@
         <item>Resume DNSChanger</item>
     </string-array>
     <string name="error">Error</string>
-    <string name="vpn_error_explain">The App crashed unexpectedly. This could either imply that the way this app works is not supported by your phone/ROM or a general error occured (which most likely indicated that I did something wrong).\n\nEither way, sending the crash report would help me a lot and could possibly lead to a fix.\nDo you want to send it to me?</string>
+    <string name="vpn_error_explain">The App crashed unexpectedly. This could either imply that the way this app works is not supported by your phone/ROM or a general error occurred (which most likely indicated that I did something wrong).\n\nEither way, sending the crash report would help me a lot and could possibly lead to a fix.\nDo you want to send it to me?</string>
     <string name="send_crash_report">Send crash report</string>
     <string name="deep_link_title">DNS Changer by Frostnerd</string>
     <string name="summary_pin_tile">Ask for the pin when starting/stopping from QuickSettings</string>
@@ -100,7 +100,7 @@
     <string name="summary_disable_network_change">Automatically disable when changing network (e.g Wifi to 3G). DNS Changer will activate again if set so in the previous settings.</string>
     <string name="title_disable_network_change">Disable on network change</string>
     <string name="title_share_app">Share this app</string>
-    <string name="summary_share_app">Sharing this app with your friends or other people would really help alot spreading this app.</string>
+    <string name="summary_share_app">Sharing this app with your friends or other people would really help a lot spreading this app.</string>
     <string name="app_share_text">Hey, have a look at this DNS changing app for android. You can download it here: https://play.google.com/store/apps/details?id=com.frostnerd.dnschanger</string>
     <string name="share_using">Share using</string>
     <string name="title_import_export">Import / Export</string>
@@ -223,10 +223,10 @@
     <string name="query_title_type">Type</string>
     <string name="query_title_answer">Answer</string>
     <string name="query_destination_info">Query will be sent to [x]</string>
-    <string name="query_error_occured">An error occured: [error]</string>
+    <string name="query_error_occured">An error occurred: [error]</string>
     <string name="question_enable_ipv6">Do you want to enable IPv6?</string>
     <string name="nav_title_libraries">Libraries</string>
-    <string name="dialog_libraries_text">This app containes libraries created by third parties. The libraries, their creators and the licenses are listed below.</string>
+    <string name="dialog_libraries_text">This app contains libraries created by third parties. The libraries, their creators and the licenses are listed below.</string>
     <string name="title_disable_notification_icon">Disable notification icon</string>
     <string name="summary_disable_notification_icon">Disables the dns icon shown in the notification bar. Will still be visible when opening the notification area.</string>
     <string name="notification_channel_hiddenicon">Channel with no icon</string>
