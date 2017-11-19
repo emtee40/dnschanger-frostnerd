@@ -408,9 +408,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             }else{
                 FingerprintManager fingerprintManager = (FingerprintManager) getContext().getSystemService(Context.FINGERPRINT_SERVICE);
                 KeyguardManager keyguardManager = getContext().getSystemService(KeyguardManager.class);
-                if (!fingerprintManager.isHardwareDetected()) {
+                if (fingerprintManager != null && !fingerprintManager.isHardwareDetected()) {
                     ((PreferenceCategory)findPreference("pin_category")).removePreference(findPreference("pin_fingerprint"));
-                }else if(!fingerprintManager.hasEnrolledFingerprints() || !keyguardManager.isKeyguardSecure()){
+                }else if(fingerprintManager == null || keyguardManager == null || !fingerprintManager.hasEnrolledFingerprints() || !keyguardManager.isKeyguardSecure()){
                     findPreference("pin_fingerprint").setDependency("");
                     findPreference("pin_fingerprint").setEnabled(false);
                 }
