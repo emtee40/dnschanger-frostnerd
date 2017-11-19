@@ -99,7 +99,8 @@ public class DNSVpnService extends VpnService {
             stopForeground(true);
             return;
         }else LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification is enabled");
-        boolean pinProtected = Preferences.getBoolean(this, "pin_notification",false), threadRunning = vpnRunnable.isThreadRunning();
+        boolean pinProtected = Preferences.getBoolean(this, "pin_notification",false),
+                threadRunning = vpnRunnable != null && vpnRunnable.isThreadRunning();
         NotificationCompat.Action a1 = notificationBuilder.mActions.get(0);
         a1.icon = threadRunning ? R.drawable.ic_stat_pause : R.drawable.ic_stat_resume;
         a1.title = getString(threadRunning ? R.string.action_pause : R.string.action_resume);
@@ -172,7 +173,7 @@ public class DNSVpnService extends VpnService {
         LogFactory.writeMessage(this, LOG_TAG, "Broadcasting current Service state",
                 i = new Intent(Util.BROADCAST_SERVICE_STATUS_CHANGE).
                         putExtra(VPNServiceArgument.ARGUMENT_UPSTREAM_SERVERS.getArgument(), upstreamServers).
-                        putExtra("vpn_running", vpnRunnable.isThreadRunning()).putExtra("started_with_tasker", startedWithTasker).putExtra("fixedDNS", fixedDNS));
+                        putExtra("vpn_running", vpnRunnable != null && vpnRunnable.isThreadRunning()).putExtra("started_with_tasker", startedWithTasker).putExtra("fixedDNS", fixedDNS));
         LocalBroadcastManager.getInstance(this).sendBroadcast(i);
         LogFactory.writeMessage(this, LOG_TAG, "Broadcasted service state.");
     }
@@ -377,7 +378,7 @@ public class DNSVpnService extends VpnService {
     }
 
     public static boolean isDNSThreadRunning(){
-        return isServiceRunning() && vpnRunnable.isThreadRunning();
+        return isServiceRunning() && vpnRunnable != null && vpnRunnable.isThreadRunning();
     }
 
     public static boolean isServiceRunning(){
