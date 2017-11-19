@@ -104,6 +104,8 @@ public class DNSUDPProxy extends DNSProxy{
 
     public DNSUDPProxy(VpnService context, ParcelFileDescriptor parcelFileDescriptor,
                        Set<IPPortPair> upstreamDNSServers, boolean resolveLocalRules, boolean queryLogging){
+        if(parcelFileDescriptor == null)throw new IllegalStateException("The ParcelFileDescriptor passed to DNSUDPProxy is null.");
+        if(context == null)throw new IllegalStateException("The DNSVPNService passed to DNSUDPProxy is null.");
         this.parcelFileDescriptor = parcelFileDescriptor;
         resolver = new DNSResolver(context);
         this.vpnService = context;

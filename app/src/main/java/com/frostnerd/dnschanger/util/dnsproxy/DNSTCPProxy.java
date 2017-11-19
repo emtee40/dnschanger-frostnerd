@@ -113,6 +113,8 @@ public class DNSTCPProxy extends DNSProxy{
 
     public DNSTCPProxy(VpnService context, ParcelFileDescriptor parcelFileDescriptor,
                        Set<IPPortPair> upstreamDNSServers, boolean resolveLocalRules, boolean queryLogging, int timeout){
+        if(parcelFileDescriptor == null)throw new IllegalStateException("The ParcelFileDescriptor passed to DNSTCPProxy is null.");
+        if(context == null)throw new IllegalStateException("The DNSVPNService passed to DNSTCPProxy is null.");
         this.parcelFileDescriptor = parcelFileDescriptor;
         resolver = new DNSResolver(context);
         this.vpnService = context;
