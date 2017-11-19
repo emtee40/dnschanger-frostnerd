@@ -57,6 +57,7 @@ public class VPNRunnable implements Runnable {
     }
 
     public VPNRunnable(DNSVpnService service, List<IPPortPair> upstreamServers, Set<String> vpnApps, boolean whitelistMode){
+        if(service == null)throw new IllegalStateException("The DNSVPNService passed to VPNRunnable is null.");
         this.service = service;
         this.whitelistMode = whitelistMode;
         this.vpnApps = vpnApps;

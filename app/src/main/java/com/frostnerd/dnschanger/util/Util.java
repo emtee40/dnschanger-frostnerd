@@ -71,6 +71,7 @@ public final class Util {
     private static Pattern ipv4WithPort = Pattern.compile("([0-9]{1,3}\\.){3}[0-9]{1,3}(:[0-9]{1,5})?");
 
     public static synchronized void updateTiles(Context context) {
+        if(context == null)throw new IllegalStateException("The context passed to updateTiles is null.");
         LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG}, "Trying to update Tiles");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             TileService.requestListeningState(context, new ComponentName(context, TileStartStop.class));

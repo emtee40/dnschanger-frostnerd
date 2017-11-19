@@ -40,6 +40,7 @@ public class NetworkCheckHandle {
     private boolean running = true;
 
     public NetworkCheckHandle(Context context, String logTag){
+        if(context == null)throw new IllegalStateException("Context passed to NetworkCheckHandle is null.");
         this.context = context;
         LOG_TAG = logTag;
         connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
