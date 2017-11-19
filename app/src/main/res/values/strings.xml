@@ -6,7 +6,7 @@
     <string name="info_dns_button">Info about DNS</string>
     <string name="default_dns">Default DNS Addresses</string>
     <string name="default_dns_title">Public DNS providers</string>
-    <string name="info_text_dns">DNS stands for Domain Name System.\n\nThe Domain Name System is used to resolve Domains (google.com, yahoo.com, example.com...) to IP Addresses (192.168.178.1 for example) to communicate over the Internet.\n\nIt is one of the most important systems used in IP-based networks.</string>
+    <string name="info_text_dns">DNS stands for Domain Name System.\n\nThe Domain Name System is used to resolve Domains (google.com, yahoo.com, example.com…) to IP Addresses (192.168.178.1 for example) to communicate over the Internet.\n\nIt is one of the most important systems used in IP-based networks.</string>
     <string name="vpn_explain">This App works without a rooted phone. \n\nTo make this possible all traffic is redirected using a VPN. This VPN redirects your traffic only locally, the data never leaves your phone using this VPN connection.\n\nYou\'ll be asked to allow the VPN connection in the next window, without permission from you the set DNS servers won\'t work.\n\n\nSource code can be found under https://git.frostnerd.com/PublicAndroidApps/DnsChanger.</string>
     <string name="information">Information</string>
     <string name="settings">Settings</string>

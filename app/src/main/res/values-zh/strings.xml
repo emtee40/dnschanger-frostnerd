@@ -6,7 +6,7 @@
     <string name="info_dns_button">关于 DNS 的信息</string>
     <string name="default_dns">默认 DNS 地址</string>
     <string name="default_dns_title">公共 DNS 提供程序</string>
-    <string name="info_text_dns">DNS 即为域名系统。\n\n域名系统通常用于解析域名 (google.com, yahoo.com, example.com...) 为 IP 地址 (例如 192.168.178.1 ) 以通过互联网进行通讯。\n\n它是用于基于 IP 网络最重要的系统之一。</string>
+    <string name="info_text_dns">DNS 即为域名系统。\n\n域名系统通常用于解析域名 (google.com, yahoo.com, example.com…) 为 IP 地址 (例如 192.168.178.1 ) 以通过互联网进行通讯。\n\n它是用于基于 IP 网络最重要的系统之一。</string>
     <string name="vpn_explain">这个应用无需 Root 权限也能工作。\n\n要做到这样，需要使用 VPN 重定向所有流量。这个 VPN 仅会局部地重定向你的流量，使用 VPN 连接永不丢失手机上的数据。\n\n在下一个窗口中，你需要允许 VPN 连接，没有权限，你设置的 DNS 服务器将不能工作。\n\n\n源代码可以在 https://git.frostnerd.com/PublicAndroidApps/DnsChanger 下找到。</string>
     <string name="information">信息</string>
     <string name="settings">设置</string>
