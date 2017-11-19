@@ -130,6 +130,7 @@ public class DNSTCPProxy extends DNSProxy{
         FileDescriptor[] pipes = Os.pipe();
         interruptedDescriptor = pipes[0];
         blockingDescriptor = pipes[1];
+        if(!shouldRun)return;
         FileInputStream inputStream = new FileInputStream(parcelFileDescriptor.getFileDescriptor());
         FileOutputStream outputStream = new FileOutputStream(parcelFileDescriptor.getFileDescriptor());
         byte[] packet = new byte[32767];
