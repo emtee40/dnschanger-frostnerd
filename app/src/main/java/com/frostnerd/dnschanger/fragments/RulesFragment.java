@@ -53,10 +53,9 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
     private View content;
     private RecyclerView list;
     private RuleAdapter ruleAdapter;
-    private FloatingActionButton fabOpen, fabSQL, fabNew, fabFilter;
+    private FloatingActionButton fabOpen;
     private boolean fabExpanded = false, wildcardShown = false;
     private View sqlWrap, newWrap, filterWrap;
-    private SearchView searchView;
 
     @Nullable
     @Override
@@ -78,9 +77,9 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         newWrap = content.findViewById(R.id.wrap_fab_new);
         filterWrap = content.findViewById(R.id.wrap_fab_filter);
         sqlWrap = content.findViewById(R.id.wrap_fab_sql);
-        fabSQL = content.findViewById(R.id.fab_sql);
-        fabNew = content.findViewById(R.id.fab_new);
-        fabFilter = content.findViewById(R.id.fab_filter);
+        FloatingActionButton fabSQL = content.findViewById(R.id.fab_sql);
+        FloatingActionButton fabNew = content.findViewById(R.id.fab_new);
+        FloatingActionButton fabFilter = content.findViewById(R.id.fab_filter);
 
         ruleAdapter = new RuleAdapter((MainActivity)getContext(), Util.getDBHelper(getContext()),
                 (TextView)content.findViewById(R.id.row_count), (ProgressBar)content.findViewById(R.id.progress));
@@ -266,7 +265,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         inflater.inflate(R.menu.menu_rules, menu);
 
         SearchManager searchManager = (SearchManager) getContext().getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(Util.getActivity(this).getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
         searchView.setOnQueryTextListener(this);

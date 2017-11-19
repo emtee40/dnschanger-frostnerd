@@ -35,7 +35,6 @@ import java.util.regex.Pattern;
  * development@frostnerd.com
  */
 public class DNSCreationDialog extends AlertDialog {
-    private View view;
     private IPPortPair dns1 = IPPortPair.wrap("8.8.8.8", 53), dns2 = IPPortPair.wrap("8.8.4.4", 53),
             dns1V6 = IPPortPair.wrap("2001:4860:4860::8888", 53), dns2V6 = IPPortPair.wrap("2001:4860:4860::8844", 53);
     private EditText ed_dns1, ed_dns2;
@@ -44,7 +43,6 @@ public class DNSCreationDialog extends AlertDialog {
     private Vibrator vibrator;
     private boolean settingV6;
     private Mode mode;
-    private DNSEntry editedEntry;
     private boolean customPorts;
     {
         customPorts = PreferencesAccessor.areCustomPortsEnabled(getContext());
@@ -59,7 +57,7 @@ public class DNSCreationDialog extends AlertDialog {
             }
         });
         mode = Mode.EDITING;
-        editedEntry = entry;
+        DNSEntry editedEntry = entry;
         setTitle(R.string.edit);
         dns1 = entry.getDns1();
         dns2 = entry.getDns2();
@@ -77,6 +75,7 @@ public class DNSCreationDialog extends AlertDialog {
         dns2 = PreferencesAccessor.Type.DNS2.getPair(context);
         dns1V6 = PreferencesAccessor.Type.DNS1_V6.getPair(context);
         dns2V6 = PreferencesAccessor.Type.DNS2_V6.getPair(context);
+        View view;
         setView(view = LayoutInflater.from(context).inflate(R.layout.dialog_create_dns_entry, null, false));
         final boolean ipv4Enabled = PreferencesAccessor.isIPv4Enabled(context),
                 ipv6Enabled = !ipv4Enabled || PreferencesAccessor.isIPv6Enabled(context);

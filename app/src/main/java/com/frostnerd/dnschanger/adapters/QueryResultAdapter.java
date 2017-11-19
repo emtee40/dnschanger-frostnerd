@@ -28,7 +28,7 @@ import java.util.List;
  * development@frostnerd.com
  */
 public class QueryResultAdapter extends RecyclerView.Adapter<QueryResultAdapter.ViewHolder> {
-    private RRset[] answer, authority, additional;
+    private RRset[] answer;
     private Context context;
     private LayoutInflater layoutInflater;
     private List<Entry> entryList = new ArrayList<>();
@@ -37,8 +37,8 @@ public class QueryResultAdapter extends RecyclerView.Adapter<QueryResultAdapter.
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.answer = answer;
-        this.authority = authority;
-        this.additional = additional;
+        RRset[] authority1 = authority;
+        RRset[] additional1 = additional;
         populateEntryList();
     }
 

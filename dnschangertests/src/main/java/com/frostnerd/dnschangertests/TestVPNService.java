@@ -26,8 +26,6 @@ import java.io.IOException;
  */
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class TestVPNService extends VpnService implements Runnable {
-    private Builder builder;
-    private ParcelFileDescriptor fd;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -37,7 +35,7 @@ public class TestVPNService extends VpnService implements Runnable {
     @Override
     public void onCreate() {
         super.onCreate();
-        builder = new Builder();
+        Builder builder = new Builder();
         builder.addAddress("192.168.0.10", 24);
         builder.addAddress(NetworkUtil.randomLocalIPv6Address(), 48);
         builder.addDnsServer("8.8.8.8");
@@ -49,7 +47,7 @@ public class TestVPNService extends VpnService implements Runnable {
             builder.allowFamily(OsConstants.AF_INET);
             builder.allowFamily(OsConstants.AF_INET6);
         }
-        fd = builder.establish();
+        ParcelFileDescriptor fd = builder.establish();
         new Thread(this).start();
     }
 

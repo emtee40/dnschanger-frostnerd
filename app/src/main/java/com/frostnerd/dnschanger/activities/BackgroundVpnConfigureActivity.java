@@ -34,7 +34,6 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
     private AlertDialog dialog1, dialog2;
     private long requestTime;
     private Intent serviceIntent;
-    private boolean startedWithTasker;
     private static String LOG_TAG = "[BackgroundVpnConfigureActivity]";
 
     public static void startBackgroundConfigure(Context context, boolean startService) {
@@ -62,7 +61,7 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
         if (intent != null && intent.getBooleanExtra("fixeddns", false)) {
             LogFactory.writeMessage(this, LOG_TAG, "Intent is not null and fixeddns is false");
             ArrayList<IPPortPair> servers = (ArrayList<IPPortPair>) intent.getSerializableExtra("servers");
-            startedWithTasker = intent.getBooleanExtra("startedWithTasker", false);
+            boolean startedWithTasker = intent.getBooleanExtra("startedWithTasker", false);
             serviceIntent = DNSVpnService.getStartVPNIntent(this, servers, startedWithTasker,intent.getBooleanExtra("fixeddns", false));
             LogFactory.writeMessage(this, LOG_TAG, "ServiceIntent created", serviceIntent);
         }else serviceIntent = DNSVpnService.getStartVPNIntent(this);
