@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     private final LayoutInflater inflater;
     private int count;
     private final List<Integer> rows = new ArrayList<>();
-    private final HashMap<Integer,Integer> rowRemap = new HashMap<>();
+    private final SparseIntArray rowRemap = new SparseIntArray();
     private boolean update = true;
     private final Activity context;
     private final HashMap<Filter, String> filterValues = new HashMap<>();
@@ -212,7 +213,8 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
         if(filterValues.containsKey(ArgumentBasedFilter.HOST_SEARCH)){
             if(count > MAX_ROW_ID_CACHE_COUNT){
                 loadRowRemap(position);
-                int rowID = rowRemap.containsKey(position) ? rowRemap.get(position) : position+1;
+                int index = rowRemap.indexOfKey(position);
+                int rowID = index >= 0 ? rowRemap.get(index) : position+1;
                 rule = databaseHelper.getSQLHandler(DNSRule.class).selectFirstRow(databaseHelper, false,
                         WhereCondition.equal(rowIDColumn, ""+rowID));
             }else{
@@ -221,7 +223,8 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
             }
         }else {
             loadRowRemap(position);
-            int rowID = rowRemap.containsKey(position) ? rowRemap.get(position) : position+1;
+            int index = rowRemap.indexOfKey(position);
+            int rowID = index >= 0 ? rowRemap.get(index) : position+1;
             rule = databaseHelper.getSQLHandler(DNSRule.class).selectFirstRow(databaseHelper, false,
                     WhereCondition.equal(rowIDColumn, "" + rowID));
         }
