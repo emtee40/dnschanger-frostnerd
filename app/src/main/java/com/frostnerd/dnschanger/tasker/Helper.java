@@ -18,7 +18,7 @@ import com.frostnerd.dnschanger.util.PreferencesAccessor;
  * development@frostnerd.com
  */
 public class Helper {
-    public static final String BUNDLE_EXTRA_DNS1 = "com.frostnerd.dnschanger.dns1",
+    static final String BUNDLE_EXTRA_DNS1 = "com.frostnerd.dnschanger.dns1",
             BUNDLE_EXTRA_DNS2 = "com.frostnerd.dnschanger.dns2",
             BUNDLE_EXTRA_DNS1V6 = "com.frostnerd.dnschanger.dns1v6",
             BUNDLE_EXTRA_DNS2V6 = "com.frostnerd.dnschanger.dns2v6",
@@ -27,17 +27,17 @@ public class Helper {
             BUNDLE_EXTRA_RESUME_DNS = "com.frostnerd.dnschanger.resumedns",
             BUNDLE_EXTRA_V2= "com.frostnerd.dnschanger.v2";
 
-    public static final String EXTRA_BUNDLE = "com.twofortyfouram.locale.intent.extra.BUNDLE";
-    public static final String ACTION_FIRE_SETTINGS = "com.twofortyfouram.locale.intent.action.FIRE_SETTING";
+    static final String EXTRA_BUNDLE = "com.twofortyfouram.locale.intent.extra.BUNDLE";
+    static final String ACTION_FIRE_SETTINGS = "com.twofortyfouram.locale.intent.action.FIRE_SETTING";
     public static final String ACTION_EDIT_SETTINGS = "com.twofortyfouram.locale.intent.action.EDIT_SETTING";
-    public static final String EXTRA_BLURB = "com.twofortyfouram.locale.intent.extra.BLURB";
+    static final String EXTRA_BLURB = "com.twofortyfouram.locale.intent.extra.BLURB";
 
-    public static boolean scrub(final Intent intent) {
+    static boolean scrub(final Intent intent) {
         if (null == intent) return false;
         return scrub(intent.getExtras());
     }
 
-    public static boolean scrub(final Bundle bundle) {
+    static boolean scrub(final Bundle bundle) {
         if (null == bundle) return false;
         try {
             bundle.containsKey(null);
@@ -48,7 +48,7 @@ public class Helper {
         return false;
     }
 
-    public static boolean isBundleValid(Context context, Bundle bundle) {
+    static boolean isBundleValid(Context context, Bundle bundle) {
         if (null == bundle) return false;
         if (bundle.containsKey(BUNDLE_EXTRA_STOP_DNS) || bundle.containsKey(BUNDLE_EXTRA_RESUME_DNS) || bundle.containsKey(BUNDLE_EXTRA_PAUSE_DNS))
             return true;
@@ -61,7 +61,7 @@ public class Helper {
                 (PreferencesAccessor.isIPv6Enabled(context) && !TextUtils.isEmpty(dns1v6));
     }
 
-    public static Bundle createBundle(final IPPortPair dns1, final IPPortPair dns2, final IPPortPair dns1v6, final IPPortPair dns2v6) {
+    static Bundle createBundle(final IPPortPair dns1, final IPPortPair dns2, final IPPortPair dns1v6, final IPPortPair dns2v6) {
         final Bundle bundle = new Bundle();
         bundle.putBoolean(BUNDLE_EXTRA_V2, true);
         if(!dns1.isEmpty())bundle.putString(BUNDLE_EXTRA_DNS1, dns1.toString());

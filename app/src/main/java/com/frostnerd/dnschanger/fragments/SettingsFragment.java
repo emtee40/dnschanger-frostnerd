@@ -74,10 +74,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
     private Preference removeUsagePreference, sendDebugPreference;
     private DevicePolicyManager devicePolicyManager;
     private ComponentName deviceAdmin;
-    public static final int REQUEST_CODE_ENABLE_ADMIN = 1, REQUEST_CREATE_SHORTCUT = 2,
+    private static final int REQUEST_CODE_ENABLE_ADMIN = 1, REQUEST_CREATE_SHORTCUT = 2,
             REQUEST_EXCLUDE_APPS = 3, REQUEST_FINGERPRINT_PERMISSION = 4, REQUEST_ADVANCED_SETTINGS = 5;
-    public final static String LOG_TAG = "[SettingsActivity]", ARGUMENT_SCROLL_TO_SETTING = "scroll_to_setting";
-    public final static int USAGE_STATS_REQUEST = 13, CHOOSE_AUTOPAUSEAPPS_REQUEST = 14;
+    private final static String LOG_TAG = "[SettingsActivity]", ARGUMENT_SCROLL_TO_SETTING = "scroll_to_setting";
+    private final static int USAGE_STATS_REQUEST = 13, CHOOSE_AUTOPAUSEAPPS_REQUEST = 14;
     private PreferenceSearcher preferenceSearcher = new PreferenceSearcher(this);
     private Handler handler = new Handler();
     private Snackbar ipv6EnableQuestionSnackbar;

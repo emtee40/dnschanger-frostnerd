@@ -56,7 +56,7 @@ public class DNSResolver {
         return res;
     }
 
-    public String resolveNonWildcard(String host, boolean ipv6) {
+    private String resolveNonWildcard(String host, boolean ipv6) {
         String result = null;
         Cursor cursor = db.getReadableDatabase().rawQuery(NON_WILDCARD_QUERY,
                 new String[]{host, ipv6 ? "1" : "0"});
@@ -67,7 +67,7 @@ public class DNSResolver {
         return result;
     }
 
-    public String resolveWildcard(String host, boolean ipv6, boolean matchFirst) {
+    private String resolveWildcard(String host, boolean ipv6, boolean matchFirst) {
         String result = null;
         Cursor cursor = db.getReadableDatabase().rawQuery(matchFirst ? WILDCARD_QUERY_FIRST : WILDCARD_QUERY_RANDOM,
                 new String[]{ipv6 ? "1" : "0", host});

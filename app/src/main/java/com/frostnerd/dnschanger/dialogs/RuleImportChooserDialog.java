@@ -37,14 +37,14 @@ import java.util.List;
  * <p>
  * development@frostnerd.com
  */
-public class RuleImportChooserDialog extends AlertDialog {
+class RuleImportChooserDialog extends AlertDialog {
     private List<RuleImportProgressDialog.ImportableFile> files = new ArrayList<>();
     private TextView fileLabel, failFastInfo;
     private RuleImportProgressDialog.FileType type = RuleImportProgressDialog.FileType.DNSMASQ;
     private CheckBox tryDetectType, failFast;
     private RadioButton dnsmasq, hosts, domains, adblock;
 
-    public RuleImportChooserDialog(@NonNull final Activity context) {
+    RuleImportChooserDialog(@NonNull final Activity context) {
         super(context, ThemeHandler.getDialogTheme(context));
         setTitle(R.string.import_rules);
         View content;

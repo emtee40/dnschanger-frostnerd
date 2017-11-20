@@ -279,7 +279,7 @@ public class DNSVpnService extends VpnService {
         }
     }
 
-    public void stopService(){
+    private void stopService(){
         clearVars(true);
     }
 

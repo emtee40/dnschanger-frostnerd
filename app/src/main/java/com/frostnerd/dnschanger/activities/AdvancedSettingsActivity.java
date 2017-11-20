@@ -55,7 +55,7 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
         });
     }
 
-    Preference.OnPreferenceChangeListener preferenceChangeListener = new Preference.OnPreferenceChangeListener() {
+    private Preference.OnPreferenceChangeListener preferenceChangeListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object o) {
             setResult(RESULT_FIRST_USER);

@@ -32,7 +32,7 @@ import java.util.List;
  * development@frostnerd.com
  */
 public class DefaultDNSDialog extends AlertDialog {
-    View layout, lastLongClicked;
+    private View layout, lastLongClicked;
     private OnProviderSelectedListener listener;
     private List<DNSEntry> localEntries = new ArrayList<>();
     private DefaultDNSAdapter adapter;

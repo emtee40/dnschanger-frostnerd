@@ -77,7 +77,7 @@ public class MainFragment extends Fragment {
     private TextView connectionText;
     private ImageView connectionImage;
     private View running_indicator;
-    public boolean settingV6 = false, advancedMode;
+    private boolean settingV6 = false, advancedMode;
     private final int REQUEST_SETTINGS = 13;
     private AlertDialog dialog2;
     private BroadcastReceiver serviceStateReceiver = new BroadcastReceiver() {

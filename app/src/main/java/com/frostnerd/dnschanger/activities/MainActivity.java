@@ -73,8 +73,8 @@ public class MainActivity extends NavigationDrawerActivity {
     private MainFragment mainFragment;
     private SettingsFragment settingsFragment;
     private DrawerItem defaultDrawerItem, settingsDrawerItem;
-    @ColorInt int backgroundColor;
-    @ColorInt int textColor;
+    @ColorInt private int backgroundColor;
+    @ColorInt private int textColor;
     private boolean startedActivity = false;
     private BroadcastReceiver shortcutReceiver = new BroadcastReceiver() {
         @Override
