@@ -34,11 +34,17 @@ import com.frostnerd.utils.networking.NetworkUtil;
  * development@frostnerd.com
  */
 public class NewRuleDialog extends AlertDialog{
-    private MaterialEditText metHost, metTarget, metTarget2;
-    private EditText edHost, edTarget, edTarget2;
-    private CheckBox wildcard;
-    private RadioButton ipv6, ipv4, both;
-    private RadioGroup addressType;
+    private MaterialEditText metHost;
+    private final MaterialEditText metTarget;
+    private final MaterialEditText metTarget2;
+    private final EditText edHost;
+    private final EditText edTarget;
+    private final EditText edTarget2;
+    private final CheckBox wildcard;
+    private final RadioButton ipv6;
+    private final RadioButton ipv4;
+    private final RadioButton both;
+    private final RadioGroup addressType;
     private Vibrator vibrator;
     private String v6Text = "::1", v4Text = "127.0.0.1";
     private boolean editingMode = false;

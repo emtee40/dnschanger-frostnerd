@@ -80,7 +80,7 @@ public class MainFragment extends Fragment {
     private boolean settingV6 = false, advancedMode;
     private final int REQUEST_SETTINGS = 13;
     private AlertDialog dialog2;
-    private BroadcastReceiver serviceStateReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver serviceStateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             LogFactory.writeMessage(getContext(), LOG_TAG, "Received ServiceState Answer", intent);
@@ -90,7 +90,7 @@ public class MainFragment extends Fragment {
         }
     };
     private View contentView;
-    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+    private final SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sp, String s) {
             if(s.equals("everything_disabled")){
@@ -477,8 +477,8 @@ public class MainFragment extends Fragment {
     }
 
     private abstract class DNSReachabilityCallback{
-        private List<String> unreachable = new ArrayList<>();
-        private List<String> reachable = new ArrayList<>();
+        private final List<String> unreachable = new ArrayList<>();
+        private final List<String> reachable = new ArrayList<>();
         private int servers;
 
         public abstract void checkFinished(List<String> unreachable, List<String> reachable);

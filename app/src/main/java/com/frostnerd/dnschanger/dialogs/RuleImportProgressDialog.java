@@ -54,7 +54,8 @@ public class RuleImportProgressDialog extends AlertDialog {
     private static final Pattern ADBLOCK_PATTERN = Pattern.compile("^\\|\\|([A-Za-z0-9]{1}[A-Za-z0-9\\-.]+)\\^");
     private static final Matcher ADBLOCK_MATCHER = ADBLOCK_PATTERN.matcher("");
     private int linesCombined;
-    private TextView progressText, fileText;
+    private final TextView progressText;
+    private final TextView fileText;
     private List<ImportableFile> files;
     private AsyncTask<Void, Integer, Void> asyncImport;
 
@@ -199,7 +200,8 @@ public class RuleImportProgressDialog extends AlertDialog {
     }
 
     private static class TemporaryDNSRule {
-        String host, target;
+        final String host;
+        String target;
         boolean ipv6, both = false;
 
         public TemporaryDNSRule(String host){
@@ -215,9 +217,9 @@ public class RuleImportProgressDialog extends AlertDialog {
     }
 
     public static class ImportableFile{
-        private File file;
-        private FileType fileType;
-        private int lines;
+        private final File file;
+        private final FileType fileType;
+        private final int lines;
 
         public ImportableFile(File file, FileType fileType, int lines) {
             this.file = file;
@@ -242,8 +244,8 @@ public class RuleImportProgressDialog extends AlertDialog {
         private int validLines = 0, distinctEntries = 0;
         private List<ImportableFile> files;
         private Context context;
-        private int databaseConflictHandling;
-        private int linesCombined;
+        private final int databaseConflictHandling;
+        private final int linesCombined;
         private RuleImportProgressDialog dialog;
 
         public AsyncImport(RuleImportProgressDialog dialog, List<ImportableFile> files, int databaseConflictHandling, int linesCombined){

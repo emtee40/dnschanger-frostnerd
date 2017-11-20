@@ -17,7 +17,7 @@ import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
  */
 public class DNSChanger extends Application {
     private static final String LOG_TAG = "[DNSCHANGER-APPLICATION]";
-    private Thread.UncaughtExceptionHandler customHandler = new Thread.UncaughtExceptionHandler() {
+    private final Thread.UncaughtExceptionHandler customHandler = new Thread.UncaughtExceptionHandler() {
         @Override
         public void uncaughtException(Thread t, Throwable e) {
             LogFactory.writeMessage(DNSChanger.this, new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, "Caught uncaught exception");

@@ -16,7 +16,7 @@ import com.frostnerd.utils.database.orm.parser.ParsedEntity;
  * development@frostnerd.com
  */
 public class QueryLogger {
-    private DatabaseHelper helper;
+    private final DatabaseHelper helper;
     private final String insertStatement;
 
     public QueryLogger(DatabaseHelper databaseHelper){

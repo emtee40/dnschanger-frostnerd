@@ -78,8 +78,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             REQUEST_EXCLUDE_APPS = 3, REQUEST_FINGERPRINT_PERMISSION = 4, REQUEST_ADVANCED_SETTINGS = 5;
     private final static String LOG_TAG = "[SettingsActivity]", ARGUMENT_SCROLL_TO_SETTING = "scroll_to_setting";
     private final static int USAGE_STATS_REQUEST = 13, CHOOSE_AUTOPAUSEAPPS_REQUEST = 14;
-    private PreferenceSearcher preferenceSearcher = new PreferenceSearcher(this);
-    private Handler handler = new Handler();
+    private final PreferenceSearcher preferenceSearcher = new PreferenceSearcher(this);
+    private final Handler handler = new Handler();
     private Snackbar ipv6EnableQuestionSnackbar;
 
     @Override
@@ -461,7 +461,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         }
     }
 
-    private Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
+    private final Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             LogFactory.writeMessage(getContext(), LOG_TAG, "Preference " + preference.getKey() + " was changed to " +
@@ -571,7 +571,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         searchView.setOnQueryTextListener(this);
     }
 
-    private Pattern emptySearchPattern = Pattern.compile("[\\s]*?");
+    private final Pattern emptySearchPattern = Pattern.compile("[\\s]*?");
     @Override
     public boolean preferenceMatches(Preference preference, String search) {
         if(search == null || search.equals("") || emptySearchPattern.matcher(search).matches())return true;

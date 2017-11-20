@@ -130,9 +130,9 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
     }
 
     private final class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHolder> {
-        private TreeSet<AppEntry> apps = new TreeSet<>();
-        private List<AppEntry> searchedApps = new ArrayList<>();
-        private boolean apply = true;
+        private final TreeSet<AppEntry> apps = new TreeSet<>();
+        private final List<AppEntry> searchedApps = new ArrayList<>();
+        private final boolean apply = true;
 
         AppListAdapter() {
             List<ApplicationInfo> packages = getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
@@ -207,9 +207,9 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         }
 
         final class ViewHolder extends RecyclerView.ViewHolder {
-            private RelativeLayout contentView;
+            private final RelativeLayout contentView;
             private AppEntry appEntry;
-            private int type;
+            private final int type;
 
             ViewHolder(RelativeLayout layout, int type) {
                 super(layout);

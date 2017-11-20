@@ -34,7 +34,7 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
     private AlertDialog dialog1, dialog2;
     private long requestTime;
     private Intent serviceIntent;
-    private static String LOG_TAG = "[BackgroundVpnConfigureActivity]";
+    private static final String LOG_TAG = "[BackgroundVpnConfigureActivity]";
 
     public static void startBackgroundConfigure(Context context, boolean startService) {
         LogFactory.writeMessage(context, LOG_TAG, "[STATIC] Starting Background configuring. Starting service: " + startService);

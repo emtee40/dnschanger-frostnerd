@@ -32,13 +32,14 @@ import java.util.List;
  * development@frostnerd.com
  */
 public class DefaultDNSDialog extends AlertDialog {
-    private View layout, lastLongClicked;
-    private OnProviderSelectedListener listener;
+    private final View layout;
+    private View lastLongClicked;
+    private final OnProviderSelectedListener listener;
     private List<DNSEntry> localEntries = new ArrayList<>();
     private DefaultDNSAdapter adapter;
     private boolean removeButtonShown;
-    private RecyclerView list;
-    private List<DNSEntry> removal = new ArrayList<>();
+    private final RecyclerView list;
+    private final List<DNSEntry> removal = new ArrayList<>();
 
     public DefaultDNSDialog(@NonNull final Context context, final int theme, @NonNull final OnProviderSelectedListener listener) {
         super(context, theme);
@@ -136,8 +137,8 @@ public class DefaultDNSDialog extends AlertDialog {
 
     private class DefaultDNSAdapter extends RecyclerView.Adapter<DefaultDNSAdapter.ViewHolder> {
         class ViewHolder extends RecyclerView.ViewHolder {
-            private View layout;
-            private int type;
+            private final View layout;
+            private final int type;
 
             public ViewHolder(View itemView, int type) {
                 super(itemView);

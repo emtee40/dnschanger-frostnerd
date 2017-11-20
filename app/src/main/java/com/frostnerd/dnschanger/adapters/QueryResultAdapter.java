@@ -28,10 +28,10 @@ import java.util.List;
  * development@frostnerd.com
  */
 public class QueryResultAdapter extends RecyclerView.Adapter<QueryResultAdapter.ViewHolder> {
-    private RRset[] answer;
-    private Context context;
-    private LayoutInflater layoutInflater;
-    private List<Entry> entryList = new ArrayList<>();
+    private final RRset[] answer;
+    private final Context context;
+    private final LayoutInflater layoutInflater;
+    private final List<Entry> entryList = new ArrayList<>();
 
     public QueryResultAdapter(Context context, RRset[] answer, RRset[] authority, RRset[] additional){
         this.context = context;
@@ -92,7 +92,7 @@ public class QueryResultAdapter extends RecyclerView.Adapter<QueryResultAdapter.
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private LinearLayout contentView;
+        private final LinearLayout contentView;
 
         public ViewHolder(LinearLayout itemView) {
             super(itemView);
@@ -106,8 +106,8 @@ public class QueryResultAdapter extends RecyclerView.Adapter<QueryResultAdapter.
     }
 
     private class Entry{
-        private RRset rset;
-        private Record record;
+        private final RRset rset;
+        private final Record record;
 
         public Entry(RRset rset, Record record) {
             this.rset = rset;

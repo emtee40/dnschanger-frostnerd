@@ -122,7 +122,7 @@ public class PreferencesAccessor {
 
     public static ArrayList<IPPortPair> getAllDNSPairs(final Context context, final boolean enabledOnly){
         return new ArrayList<IPPortPair>(){
-            private boolean customPorts = areCustomPortsEnabled(context);
+            private final boolean customPorts = areCustomPortsEnabled(context);
             {
                 if(!enabledOnly || isIPv4Enabled(context)){
                     addIfNotEmpty(getDNS1(context), 1);

@@ -306,8 +306,8 @@ public class DNSTCPProxy extends DNSProxy{
     }
 
     private class PacketWrap{
-        private IpPacket packet;
-        private long time;
+        private final IpPacket packet;
+        private final long time;
 
         public PacketWrap(IpPacket packet) {
             this.packet = packet;

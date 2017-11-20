@@ -26,7 +26,7 @@ import com.frostnerd.dnschanger.activities.PinActivity;
  * development@frostnerd.com
  */
 public class BasicWidget extends AppWidgetProvider {
-    private static String LOG_TAG = "[BasicWidget]";
+    private static final String LOG_TAG = "[BasicWidget]";
 
     @Override
     public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {

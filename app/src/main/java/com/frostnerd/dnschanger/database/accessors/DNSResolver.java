@@ -17,8 +17,8 @@ import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondi
  * development@frostnerd.com
  */
 public class DNSResolver {
-    private DatabaseHelper db;
-    private int wildcardCount;
+    private final DatabaseHelper db;
+    private final int wildcardCount;
     private final String WILDCARD_QUERY_RANDOM;
     private final String WILDCARD_QUERY_FIRST;
     private final String NON_WILDCARD_QUERY;

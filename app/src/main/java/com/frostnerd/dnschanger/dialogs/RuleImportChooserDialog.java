@@ -38,11 +38,16 @@ import java.util.List;
  * development@frostnerd.com
  */
 class RuleImportChooserDialog extends AlertDialog {
-    private List<RuleImportProgressDialog.ImportableFile> files = new ArrayList<>();
-    private TextView fileLabel, failFastInfo;
+    private final List<RuleImportProgressDialog.ImportableFile> files = new ArrayList<>();
+    private final TextView fileLabel;
+    private final TextView failFastInfo;
     private RuleImportProgressDialog.FileType type = RuleImportProgressDialog.FileType.DNSMASQ;
-    private CheckBox tryDetectType, failFast;
-    private RadioButton dnsmasq, hosts, domains, adblock;
+    private final CheckBox tryDetectType;
+    private final CheckBox failFast;
+    private final RadioButton dnsmasq;
+    private final RadioButton hosts;
+    private final RadioButton domains;
+    private final RadioButton adblock;
 
     RuleImportChooserDialog(@NonNull final Activity context) {
         super(context, ThemeHandler.getDialogTheme(context));

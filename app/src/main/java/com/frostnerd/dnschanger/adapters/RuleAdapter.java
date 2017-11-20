@@ -38,20 +38,20 @@ import java.util.List;
 public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     private static final int ROW_REMAP_FETCH_COUNT = 80, MAX_ROW_ID_CACHE_COUNT = 10000,
             ROW_REMAP_FETCH_COUNT_WHEN_SEARCHING = ROW_REMAP_FETCH_COUNT*3;
-    private DatabaseHelper databaseHelper;
-    private LayoutInflater inflater;
+    private final DatabaseHelper databaseHelper;
+    private final LayoutInflater inflater;
     private int count;
-    private List<Integer> rows = new ArrayList<>();
-    private HashMap<Integer,Integer> rowRemap = new HashMap<>();
+    private final List<Integer> rows = new ArrayList<>();
+    private final HashMap<Integer,Integer> rowRemap = new HashMap<>();
     private boolean update = true;
-    private Activity context;
-    private HashMap<Filter, String> filterValues = new HashMap<>();
-    private TextView rowCount;
-    private ProgressBar updateProgress;
+    private final Activity context;
+    private final HashMap<Filter, String> filterValues = new HashMap<>();
+    private final TextView rowCount;
+    private final ProgressBar updateProgress;
     private int rowRemapPos = 0;
     private static Column<DNSRule> ipv6Column, hostColumn, targetColumn, wildcardColumn, rowIDColumn;
     private WhereCondition[] whereConditions;
-    private Column[] rowIDProjection;
+    private final Column[] rowIDProjection;
 
     public RuleAdapter(Activity context, DatabaseHelper databaseHelper, TextView rowCount, ProgressBar updateProgress){
         this.databaseHelper = databaseHelper;

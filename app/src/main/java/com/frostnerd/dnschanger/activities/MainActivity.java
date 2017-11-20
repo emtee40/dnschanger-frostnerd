@@ -76,7 +76,7 @@ public class MainActivity extends NavigationDrawerActivity {
     @ColorInt private int backgroundColor;
     @ColorInt private int textColor;
     private boolean startedActivity = false;
-    private BroadcastReceiver shortcutReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver shortcutReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             final Snackbar snackbar = Snackbar.make(getContentFrame(), R.string.shortcut_created, Snackbar.LENGTH_INDEFINITE);

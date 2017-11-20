@@ -43,7 +43,7 @@ public class DNSCreationDialog extends AlertDialog {
     private Vibrator vibrator;
     private boolean settingV6;
     private Mode mode;
-    private boolean customPorts;
+    private final boolean customPorts;
     {
         customPorts = PreferencesAccessor.areCustomPortsEnabled(getContext());
     }
