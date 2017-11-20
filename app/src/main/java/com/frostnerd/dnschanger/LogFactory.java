@@ -167,9 +167,10 @@ public class LogFactory {
         writeMessage(context, Tag.INFO, "Device: " + Build.MODEL + " from " + Build.MANUFACTURER + " (Device: " + Build.DEVICE + ", Product: " + Build.PRODUCT + ")");
         writeMessage(context, Tag.INFO, "Language: " + Locale.getDefault().getDisplayLanguage());
         writeMessage(context, Tag.INFO, "Device RAM: " + getTotalMemory());
-        String s = "";
+        StringBuilder s = new StringBuilder();
         Map<String,Object> prefs = Preferences.getAll(context, false);
-        for(String key: prefs.keySet())s += key + "->" + prefs.get(key) + "; ";
+        for(String key: prefs.keySet())
+            s.append(key).append("->").append(prefs.get(key)).append("; ");
         writeMessage(context, Tag.INFO, "Preferences: " + s);
         writeMessage(context, Tag.INFO, "Prepare caller stack: " + stacktraceToString(new Throwable(), true));
         writeMessage(context, Tag.NO_TAG, "--------------------------------------------------");
@@ -203,9 +204,10 @@ public class LogFactory {
                 builder.append("] >");
                 builder.append(TIMESTAMP_FORMATTER.format(new Date()));
                 builder.append("<");
-                for(String s: tags)if(!s.equalsIgnoreCase(Tag.NO_TAG.toString()))builder.append(" " + s);
-                builder.append(": " + message);
-                if(printIntent)builder.append(" " + describeIntent(intent, true));
+                for(String s: tags)if(!s.equalsIgnoreCase(Tag.NO_TAG.toString()))
+                    builder.append(" ").append(s);
+                builder.append(": ").append(message);
+                if(printIntent) builder.append(" ").append(describeIntent(intent, true));
                 if(printMessagesToConsole) System.out.println(builder.toString().split("<")[1]);
                 builder.append("\n");
                 fileWriter.write(builder.toString());
@@ -304,9 +306,9 @@ public class LogFactory {
     public static String describeIntent(Intent intent, boolean printExtras){
         if(intent == null)return "Intent{NullIntent}";
         StringBuilder builder = new StringBuilder();
-        builder.append("Intent{Action:" + intent.getAction() + "; Type:" + intent.getType() + "; Package:" + intent.getPackage() +
-                "; Scheme:" + intent.getScheme() + "; Data:" + intent.getDataString() + ";");
-        if(intent.getExtras() != null)builder.append("ExtrasCount:" + intent.getExtras().size());
+        builder.append("Intent{Action:").append(intent.getAction()).append("; Type:").append(intent.getType()).append("; Package:").append(intent.getPackage()).append("; Scheme:").append(intent.getScheme()).append("; Data:").append(intent.getDataString()).append(";");
+        if(intent.getExtras() != null)
+            builder.append("ExtrasCount:").append(intent.getExtras().size());
         if(printExtras){
             builder.append("; Extras:{");
             if(intent.getExtras() == null)builder.append("Null}");
@@ -314,7 +316,7 @@ public class LogFactory {
                 String key;
                 for(Iterator<String> keys = intent.getExtras().keySet().iterator(); keys.hasNext();){
                     key = keys.next();
-                    builder.append(key + "->" + intent.getExtras().get(key));
+                    builder.append(key).append("->").append(intent.getExtras().get(key));
                     if(keys.hasNext())builder.append("; ");
                 }
                 builder.append("}");

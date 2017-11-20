@@ -67,17 +67,17 @@ public class SettingsImportActivity extends Activity {
             reader = new BufferedReader(ir);
             LogFactory.writeMessage(c, LOG_TAG, "Streams created.");
             String line;
-            String data = "";
+            StringBuilder data = new StringBuilder();
             LogFactory.writeMessage(c, LOG_TAG, "Reading data");
             while ((line = reader.readLine()) != null) {
                 if (line.equals("") || line.startsWith("[")) continue;
                 if(line.startsWith("'")){
                     //Util.createShortcut(c, Shortcut.fromString(line.split("'")[1]));
                 }
-                else data += line;
+                else data.append(line);
             }
             LogFactory.writeMessage(c, LOG_TAG, "Data read: " + data);
-            Preferences.importFromStringAndPut(c, data, "<<>>");
+            Preferences.importFromStringAndPut(c, data.toString(), "<<>>");
             LogFactory.writeMessage(c, LOG_TAG, "Imported data and added to preferences.");
         } catch (Exception e) {
             LogFactory.writeStackTrace(c, LogFactory.Tag.ERROR, e);
