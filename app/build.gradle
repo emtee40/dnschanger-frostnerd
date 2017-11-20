@@ -7,7 +7,7 @@ android {
         applicationId "com.frostnerd.dnschanger"
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 60
+        versionCode 63
         versionName "BETA 1.16"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
