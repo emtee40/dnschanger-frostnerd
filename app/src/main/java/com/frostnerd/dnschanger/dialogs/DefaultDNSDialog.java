@@ -32,7 +32,6 @@ import java.util.List;
  * development@frostnerd.com
  */
 public class DefaultDNSDialog extends AlertDialog {
-    private final View layout;
     private View lastLongClicked;
     private final OnProviderSelectedListener listener;
     private List<DNSEntry> localEntries = new ArrayList<>();
@@ -56,7 +55,7 @@ public class DefaultDNSDialog extends AlertDialog {
             localEntries = tmp;
         }
         this.listener = listener;
-        layout = LayoutInflater.from(context).inflate(R.layout.dialog_default_dns, null, false);
+        View layout = LayoutInflater.from(context).inflate(R.layout.dialog_default_dns, null, false);
         setView(layout);
         list = layout.findViewById(R.id.defaultDnsDialogList);
         list.setLayoutManager(new LinearLayoutManager(context));
