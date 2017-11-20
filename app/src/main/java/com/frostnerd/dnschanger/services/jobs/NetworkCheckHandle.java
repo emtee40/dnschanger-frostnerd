@@ -22,6 +22,8 @@ import com.frostnerd.dnschanger.widgets.BasicWidget;
 import com.frostnerd.utils.general.WidgetUtil;
 import com.frostnerd.utils.preferences.Preferences;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * Copyright Daniel Wolf 2017
  * All rights reserved.
@@ -38,6 +40,7 @@ public class NetworkCheckHandle {
     private Context context;
     private final String LOG_TAG;
     private boolean running = true;
+    private ReentrantLock contextLock = new ReentrantLock();
 
     public NetworkCheckHandle(Context context, String logTag){
         if(context == null)throw new IllegalStateException("Context passed to NetworkCheckHandle is null.");
@@ -75,6 +78,7 @@ public class NetworkCheckHandle {
     }
 
     private void handleInitialState(){
+        contextLock.lock();
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
         if (activeNetwork == null) {
             LogFactory.writeMessage(context, LOG_TAG, "No active network.");
@@ -90,6 +94,7 @@ public class NetworkCheckHandle {
                 }
             }
         }
+        contextLock.unlock();
     }
 
     public void stop(){
@@ -97,11 +102,14 @@ public class NetworkCheckHandle {
         if(networkCallback != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)connectivityManager.unregisterNetworkCallback(networkCallback);
         else if(connectivityChange != null)context.unregisterReceiver(connectivityChange);
         connectivityManager = null;networkCallback = null;
+        contextLock.lock();
         context = null;
+        contextLock.unlock();
     }
 
     private void startService() {
-        if(!running || context == null)return;
+        if(!running)return;
+        contextLock.lock();
         LogFactory.writeMessage(context, LOG_TAG, "Trying to start DNSVPNService");
         Intent i = VpnService.prepare(context);
         LogFactory.writeMessage(context, LOG_TAG, "VPNService Prepare Intent", i);
@@ -114,6 +122,7 @@ public class NetworkCheckHandle {
             LogFactory.writeMessage(context, LOG_TAG, "VPNService is NOT prepared. Starting BackgroundVpnConfigureActivity");
             BackgroundVpnConfigureActivity.startBackgroundConfigure(context, true);
         }
+        contextLock.unlock();
     }
 
     private void handleConnectivityChange(NetworkInfo networkInfo){
@@ -131,7 +140,8 @@ public class NetworkCheckHandle {
     }
 
     private void handleConnectivityChange(boolean connected, ConnectionType connectionType){
-        if(PreferencesAccessor.isEverythingDisabled(context) || !running)return;
+        if(!running || PreferencesAccessor.isEverythingDisabled(context))return;
+        contextLock.lock();
         boolean serviceRunning = Util.isServiceRunning(context),
                 serviceThreadRunning = Util.isServiceThreadRunning(),
                 autoWifi = Preferences.getBoolean(context, "setting_auto_wifi", false),
@@ -148,11 +158,14 @@ public class NetworkCheckHandle {
                     "Destroying DNSVPNService, as device is not connected and setting_disable_netchange is true",
                     i = DNSVpnService.getDestroyIntent(context, context.getString(R.string.reason_stop_network_change)));
             context.startService(i);
+            contextLock.unlock();
             return;
         }
         //if (!connected || type == ConnectivityManager.TYPE_BLUETOOTH || type == ConnectivityManager.TYPE_DUMMY || type == ConnectivityManager.TYPE_VPN)
-        if(!connected || (connectionType != ConnectionType.WIFI && connectionType != ConnectionType.MOBILE))
+        if(!connected || (connectionType != ConnectionType.WIFI && connectionType != ConnectionType.MOBILE)) {
+            contextLock.unlock();
             return;
+        }
         if (!serviceThreadRunning) {
             if (connectionType == ConnectionType.WIFI && autoWifi) {
                 LogFactory.writeMessage(context, LOG_TAG, "Connected to WIFI and setting_auto_wifi is true. Starting Service..");
@@ -169,6 +182,7 @@ public class NetworkCheckHandle {
                 context.startService(i);
             }
         }
+        contextLock.unlock();
     }
 
     private enum ConnectionType{
