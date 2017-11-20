@@ -350,7 +350,7 @@ public class LogFactory {
             str2 = localBufferedReader.readLine();//meminfo
             arrayOfString = str2.split("\\s+");
             localBufferedReader.close();
-            return Integer.valueOf(arrayOfString[1]).intValue() * 1024;
+            return Integer.valueOf(arrayOfString[1]) * 1024;
         }
         catch (IOException e){
             return -1;
