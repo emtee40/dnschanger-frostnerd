@@ -301,7 +301,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             ((PreferenceCategory) findPreference("pin_category")).removePreference(findPreference("pin_app_shortcut"));
         } else
             findPreference("setting_app_shortcuts_enabled").setOnPreferenceChangeListener(changeListener);
-        ((ListPreference) findPreference("theme")).setDefaultValue(0);
+        findPreference("theme").setDefaultValue(0);
         LogFactory.writeMessage(getContext(), LOG_TAG, "Done with onCreate");
         final CheckBoxPreference v4Enabled = (CheckBoxPreference) findPreference("setting_ipv4_enabled"),
                 v6Enabled = (CheckBoxPreference) findPreference("setting_ipv6_enabled");

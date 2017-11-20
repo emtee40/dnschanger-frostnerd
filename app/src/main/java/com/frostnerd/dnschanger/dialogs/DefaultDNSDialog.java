@@ -174,7 +174,7 @@ public class DefaultDNSDialog extends AlertDialog {
                         if (!v.isSelected()) {
                             if (removal.size() == 2)
                                 getButton(BUTTON_POSITIVE).setText(R.string.add);
-                            removal.remove((DNSEntry) v.getTag());
+                            removal.remove(v.getTag());
                         } else {
                             if (removal.size() == 1)
                                 getButton(BUTTON_POSITIVE).setText(R.string.add);
@@ -197,7 +197,7 @@ public class DefaultDNSDialog extends AlertDialog {
                             if (!v.isSelected()) {
                                 if (removal.size() == 2)
                                     getButton(BUTTON_POSITIVE).setText(R.string.edit);
-                                removal.remove((DNSEntry) v.getTag());
+                                removal.remove(v.getTag());
                             } else {
                                 if (removal.size() == 1)
                                     getButton(BUTTON_POSITIVE).setText(R.string.add);
