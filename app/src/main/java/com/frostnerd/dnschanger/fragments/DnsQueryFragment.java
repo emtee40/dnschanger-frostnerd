@@ -162,11 +162,6 @@ public class DnsQueryFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public Context getContext() {
         Context context = super.getContext();
         return context == null ? MainActivity.currentContext : context;

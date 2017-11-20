@@ -189,10 +189,6 @@ public class RuleImportProgressDialog extends AlertDialog {
             }
         };
 
-        @Override
-        public String toString() {
-            return super.toString();
-        }
     }
 
     private interface LineParser {
