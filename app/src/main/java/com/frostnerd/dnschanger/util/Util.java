@@ -338,11 +338,11 @@ public final class Util {
     }
 
     public interface ConnectivityCheckCallback{
-        public void onCheckDone(boolean result);
+        void onCheckDone(boolean result);
     }
 
     public interface DNSQueryResultListener{
-        public void onSuccess(Message response);
-        public void onError(@Nullable Exception e);
+        void onSuccess(Message response);
+        void onError(@Nullable Exception e);
     }
     }

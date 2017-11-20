@@ -187,12 +187,12 @@ public class RuleImportProgressDialog extends AlertDialog {
                 }
                 return null;
             }
-        };
+        }
 
     }
 
     private interface LineParser {
-        public TemporaryDNSRule parseLine(String line);
+        TemporaryDNSRule parseLine(String line);
     }
 
     private static class TemporaryDNSRule {

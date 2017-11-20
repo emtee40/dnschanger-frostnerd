@@ -130,8 +130,8 @@ public class DefaultDNSDialog extends AlertDialog {
         setButton(BUTTON_NEUTRAL, context.getString(R.string.remove), (OnClickListener) null);
     }
 
-    public static interface OnProviderSelectedListener {
-        public void onProviderSelected(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6);
+    public interface OnProviderSelectedListener {
+        void onProviderSelected(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6);
     }
 
     private class DefaultDNSAdapter extends RecyclerView.Adapter<DefaultDNSAdapter.ViewHolder> {

@@ -199,12 +199,12 @@ public class DNSCreationDialog extends AlertDialog {
                 met_name.getIndicatorState() == MaterialEditText.IndicatorState.CORRECT;
     }
 
-    public static interface OnCreationFinishedListener {
-        public void onCreationFinished(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6);
+    public interface OnCreationFinishedListener {
+        void onCreationFinished(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6);
     }
 
-    public static interface OnEditingFinishedListener{
-        public void editingFinished(DNSEntry entry);
+    public interface OnEditingFinishedListener{
+        void editingFinished(DNSEntry entry);
     }
 
     public enum Mode{

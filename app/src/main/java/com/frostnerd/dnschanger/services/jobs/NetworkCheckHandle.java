@@ -172,6 +172,6 @@ public class NetworkCheckHandle {
     }
 
     private enum ConnectionType{
-        MOBILE,WIFI,VPN,OTHER;
+        MOBILE,WIFI,VPN,OTHER
     }
 }

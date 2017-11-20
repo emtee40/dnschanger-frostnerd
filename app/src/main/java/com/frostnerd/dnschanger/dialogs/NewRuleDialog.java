@@ -207,6 +207,6 @@ public class NewRuleDialog extends AlertDialog{
 
 
     public interface CreationListener{
-        public void creationFinished(@NonNull String host, @Nullable String target, @Nullable String targetV6, boolean ipv6, boolean wildcard, boolean wasEdited);
+        void creationFinished(@NonNull String host, @Nullable String target, @Nullable String targetV6, boolean ipv6, boolean wildcard, boolean wasEdited);
     }
 }

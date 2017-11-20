@@ -257,7 +257,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder>{
     }
 
     private interface Filter{
-        public WhereCondition getCondition(String argument, HashMap<Filter, String> filterValues);
+        WhereCondition getCondition(String argument, HashMap<Filter, String> filterValues);
     }
 
     public enum ArgumentLessFilter implements Filter{
