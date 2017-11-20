@@ -56,7 +56,7 @@ public class ShortcutActivity extends AppCompatActivity {
                         DNSVpnService service = ((DNSVpnService.ServiceBinder)binder).getService();
                         LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Connected to service");
                         LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Started via shortcut: " + service.wasStartedFromShortcut());
-                        if(service.wasStartedFromShortcut() && service.addresesMatch(upstreamServers)){
+                        if(service.wasStartedFromShortcut() && service.addressesMatch(upstreamServers)){
                             LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Service was started via same shortcut. Stopping.");
                             unbindService(this);
                             startService(new Intent(ShortcutActivity.this, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(),true));
@@ -93,7 +93,7 @@ public class ShortcutActivity extends AppCompatActivity {
                 LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Connected to service");
                 LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Started via shortcut: " + service.wasStartedFromShortcut());
                 boolean threadRunning = Util.isServiceThreadRunning();
-                if(!service.addresesMatch(servers)){
+                if(!service.addressesMatch(servers)){
                     unbindService(this);
                     startService(DNSVpnService.getDestroyIntent(ShortcutActivity.this));
                     LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Starting BackgroundVpnConfigureActivity");

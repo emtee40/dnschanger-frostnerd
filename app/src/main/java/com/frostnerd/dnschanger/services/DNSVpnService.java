@@ -382,7 +382,7 @@ public class DNSVpnService extends VpnService {
         return serviceRunning;
     }
 
-    public boolean addresesMatch(ArrayList<IPPortPair> servers){
+    public boolean addressesMatch(ArrayList<IPPortPair> servers){
         boolean found;
         for(IPPortPair pair1: servers){
             found = false;
