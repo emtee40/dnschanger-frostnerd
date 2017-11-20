@@ -37,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class VPNRunnable implements Runnable {
     private static final String LOG_TAG = "[DNSVpnService-Runnable]";
-    private static final Map<String, Integer> addresses = new ConcurrentHashMap<String, Integer>();
+    private static final Map<String, Integer> addresses = new ConcurrentHashMap<>();
     private final String ID = "[" + StringUtil.randomString(20) + "]";
     private int addressIndex = 0;
     private ParcelFileDescriptor tunnelInterface = null;

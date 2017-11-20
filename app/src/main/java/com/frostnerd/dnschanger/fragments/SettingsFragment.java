@@ -525,7 +525,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             findPreference("autopause_appselect").setTitle(getString(R.string.title_autopause_apps).
                     replace("[[count]]", ""+ apps.size()));
             if(apps.size() != getResources().getStringArray(R.array.default_blacklist).length)Preferences.put(getContext(), "app_whitelist_configured", true);
-            Preferences.put(getContext(), "autopause_apps", new HashSet<String>(apps));
+            Preferences.put(getContext(), "autopause_apps", new HashSet<>(apps));
             Preferences.put(getContext(), "autopause_apps_count", apps.size());
             if(Util.isServiceRunning(getContext())){
                 Intent i;
@@ -548,7 +548,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             snackbar.show();
         }else if(requestCode == REQUEST_EXCLUDE_APPS && resultCode == AppCompatActivity.RESULT_OK){
             ArrayList<String> apps = data.getStringArrayListExtra("apps");
-            Preferences.put(getContext(), "excluded_apps", new HashSet<String>(apps));
+            Preferences.put(getContext(), "excluded_apps", new HashSet<>(apps));
             Preferences.put(getContext(), "excluded_whitelist", data.getBooleanExtra("whitelist",false));
             if(Util.isServiceRunning(getContext())){
                 getContext().startService(new Intent(getContext(), DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true).
