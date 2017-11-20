@@ -76,7 +76,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
     private ComponentName deviceAdmin;
     private static final int REQUEST_CODE_ENABLE_ADMIN = 1, REQUEST_CREATE_SHORTCUT = 2,
             REQUEST_EXCLUDE_APPS = 3, REQUEST_FINGERPRINT_PERMISSION = 4, REQUEST_ADVANCED_SETTINGS = 5;
-    private final static String LOG_TAG = "[SettingsActivity]", ARGUMENT_SCROLL_TO_SETTING = "scroll_to_setting";
+    private final static String LOG_TAG = "[SettingsActivity]";
+    public static final String ARGUMENT_SCROLL_TO_SETTING = "scroll_to_setting";
     private final static int USAGE_STATS_REQUEST = 13, CHOOSE_AUTOPAUSEAPPS_REQUEST = 14;
     private final PreferenceSearcher preferenceSearcher = new PreferenceSearcher(this);
     private final Handler handler = new Handler();
