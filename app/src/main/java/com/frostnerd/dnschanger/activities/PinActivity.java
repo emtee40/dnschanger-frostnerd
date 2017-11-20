@@ -29,7 +29,6 @@ import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.general.DesignUtil;
 import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.general.VariableChecker;
-import com.frostnerd.utils.preferences.Preferences;
 
 /**
  * Copyright Daniel Wolf 2017

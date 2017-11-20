@@ -25,12 +25,9 @@ import com.frostnerd.dnschanger.widgets.BasicWidget;
 import com.frostnerd.utils.general.IntentUtil;
 import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.general.WidgetUtil;
-import com.frostnerd.utils.networking.NetworkUtil;
 import com.frostnerd.utils.preferences.Preferences;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 

@@ -22,7 +22,6 @@ import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.utils.preferences.Preferences;
 
 import java.io.File;
 

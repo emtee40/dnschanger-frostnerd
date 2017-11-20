@@ -1,10 +1,7 @@
 package com.frostnerd.dnschanger.database.accessors;
 
-import android.content.ContentValues;
-
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
-import com.frostnerd.utils.database.orm.parser.ParsedEntity;
 
 /**
  * Copyright Daniel Wolf 2017

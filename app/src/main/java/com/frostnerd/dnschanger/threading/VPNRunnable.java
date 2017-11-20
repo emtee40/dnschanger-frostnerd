@@ -14,7 +14,6 @@ import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.dnsproxy.DNSProxy;
-import com.frostnerd.dnschanger.util.dnsproxy.DNSUDPProxy;
 import com.frostnerd.dnschanger.util.dnsproxy.DummyProxy;
 import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.networking.NetworkUtil;

@@ -1,14 +1,11 @@
 package com.frostnerd.dnschanger.database.entities;
 
-import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.database.orm.Entity;
-import com.frostnerd.utils.database.orm.annotations.ForeignKey;
 import com.frostnerd.utils.database.orm.annotations.Named;
 import com.frostnerd.utils.database.orm.annotations.NotNull;
 import com.frostnerd.utils.database.orm.annotations.Table;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 @Table(name = "Shortcut")
 public class Shortcut extends Entity implements Serializable {
