@@ -33,8 +33,7 @@ public class Helper {
     static final String EXTRA_BLURB = "com.twofortyfouram.locale.intent.extra.BLURB";
 
     static boolean scrub(final Intent intent) {
-        if (null == intent) return false;
-        return scrub(intent.getExtras());
+        return null != intent && scrub(intent.getExtras());
     }
 
     static boolean scrub(final Bundle bundle) {

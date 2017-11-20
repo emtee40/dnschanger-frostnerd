@@ -170,10 +170,8 @@ public class DNSEntry extends Entity implements Comparable<DNSEntry>{
         return name.compareTo(o.name);
     }
 
-    public boolean hasIP(String ip){
-        if(ip == null || ip.equals(""))return false;
-        return entryAddressMatches(ip, dns1) || entryAddressMatches(ip, dns2) ||
-                entryAddressMatches(ip, dns1V6) || entryAddressMatches(ip, dns2V6);
+    public boolean hasIP(String ip) {
+        return !(ip == null || ip.equals("")) && (entryAddressMatches(ip, dns1) || entryAddressMatches(ip, dns2) || entryAddressMatches(ip, dns1V6) || entryAddressMatches(ip, dns2V6));
     }
 
     @Override

@@ -31,8 +31,7 @@ public class DNSChanger extends Application {
     private Thread.UncaughtExceptionHandler defaultHandler;
 
     private boolean showErrorDialog(Throwable exception) {
-        if (exception.getMessage() == null) return false;
-        return exception.getMessage().toLowerCase().contains("cannot create interface");
+        return exception.getMessage() != null && exception.getMessage().toLowerCase().contains("cannot create interface");
     }
 
     @Override
