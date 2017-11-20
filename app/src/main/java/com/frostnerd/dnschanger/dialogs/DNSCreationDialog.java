@@ -57,7 +57,6 @@ public class DNSCreationDialog extends AlertDialog {
             }
         });
         mode = Mode.EDITING;
-        DNSEntry editedEntry = entry;
         setTitle(R.string.edit);
         dns1 = entry.getDns1();
         dns2 = entry.getDns2();

@@ -37,8 +37,6 @@ public class QueryResultAdapter extends RecyclerView.Adapter<QueryResultAdapter.
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.answer = answer;
-        RRset[] authority1 = authority;
-        RRset[] additional1 = additional;
         populateEntryList();
     }
 
