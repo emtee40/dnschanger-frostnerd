@@ -54,7 +54,7 @@ public class BasicWidget extends AppWidgetProvider {
 
     private void updateWidgets(final Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds, String dns1, String dns2, String dns1V6, String dns2V6) {
         RemoteViews views;
-        for (int i = 0; i < appWidgetIds.length; i++) {
+        for (int appWidgetId : appWidgetIds) {
             views = new RemoteViews(context.getPackageName(), R.layout.widget_basic);
             views = resetWidget(views);
             views.setOnClickPendingIntent(R.id.basic_widget, PendingIntent.getActivity(context, 0, new Intent(context, PinActivity.class).putExtra("main", true), 0));
@@ -62,7 +62,7 @@ public class BasicWidget extends AppWidgetProvider {
             views.setTextViewText(R.id.dns2, dns2);
             views.setTextViewText(R.id.dns1_v6, dns1V6);
             views.setTextViewText(R.id.dns2_v6, dns2V6);
-            appWidgetManager.updateAppWidget(appWidgetIds[i], views);
+            appWidgetManager.updateAppWidget(appWidgetId, views);
         }
     }
 
@@ -78,7 +78,7 @@ public class BasicWidget extends AppWidgetProvider {
 
     private void updateWidgetsNotRunning(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         RemoteViews views;
-        for (int i = 0; i < appWidgetIds.length; i++) {
+        for (int appWidgetId : appWidgetIds) {
             views = new RemoteViews(context.getPackageName(), R.layout.widget_basic);
             views.setOnClickPendingIntent(R.id.basic_widget, PendingIntent.getActivity(context, 0, new Intent(context, PinActivity.class).putExtra("main", true), 0));
             views.setTextViewText(R.id.head, context.getString(R.string.widget_not_running));
@@ -87,7 +87,7 @@ public class BasicWidget extends AppWidgetProvider {
             views.setViewVisibility(R.id.dns2_wrap, View.GONE);
             views.setViewVisibility(R.id.dns1v6_wrap, View.GONE);
             views.setViewVisibility(R.id.dns2v6_wrap, View.GONE);
-            appWidgetManager.updateAppWidget(appWidgetIds[i], views);
+            appWidgetManager.updateAppWidget(appWidgetId, views);
         }
     }
 }
