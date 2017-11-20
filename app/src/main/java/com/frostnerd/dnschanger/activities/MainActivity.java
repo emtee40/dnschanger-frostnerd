@@ -511,7 +511,7 @@ public class MainActivity extends NavigationDrawerActivity {
                         new AlertDialog.Builder(MainActivity.this).setTitle("Apache License 2.0").setPositiveButton(R.string.close, null).setMessage(R.string.license_apache_2).show();
                     }
                 };
-                SpannableString spannable = new SpannableString(licenseText.replaceAll("\\[.\\]",""));
+                SpannableString spannable = new SpannableString(licenseText.replaceAll("\\[.]",""));
                 spannable.setSpan(span3, licenseText.indexOf("[1]"), licenseText.indexOf("[2]")-3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 spannable.setSpan(span2, licenseText.indexOf("[3]")-6, licenseText.indexOf("[4]")-9, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 spannable.setSpan(span, licenseText.indexOf("[5]")-12, licenseText.indexOf("[6]")-15, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

@@ -67,7 +67,7 @@ public final class Util {
     public static final String BROADCAST_SHORTCUT_CREATED = "com.frostnerd.dnschanger.SHORTCUT_CREATED";
     private static final String LOG_TAG = "[Util]";
     private static DatabaseHelper dbHelper;
-    private static final Pattern ipv6WithPort = Pattern.compile("(\\[[0-9a-f:]+\\]:[0-9]{1,5})|([0-9a-f:]+)");
+    private static final Pattern ipv6WithPort = Pattern.compile("(\\[[0-9a-f:]+]:[0-9]{1,5})|([0-9a-f:]+)");
     private static final Pattern ipv4WithPort = Pattern.compile("([0-9]{1,3}\\.){3}[0-9]{1,3}(:[0-9]{1,5})?");
 
     public static synchronized void updateTiles(Context context) {
