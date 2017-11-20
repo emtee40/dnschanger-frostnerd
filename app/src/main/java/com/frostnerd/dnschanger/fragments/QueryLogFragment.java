@@ -11,9 +11,14 @@ import android.view.ViewGroup;
 import com.frostnerd.dnschanger.R;
 
 /**
- * Created by Daniel on 17.11.2017.
+ * Copyright Daniel Wolf 2017
+ * All rights reserved.
+ *
+ * Terms on usage of my code can be found here: https://git.frostnerd.com/PublicAndroidApps/DnsChanger/blob/master/README.md
+ *
+ * <p>
+ * development@frostnerd.com
  */
-
 public class QueryLogFragment extends Fragment {
 
     @Nullable

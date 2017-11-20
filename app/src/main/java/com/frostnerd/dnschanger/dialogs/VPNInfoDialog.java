@@ -11,9 +11,14 @@ import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 
 /**
- * Created by Daniel on 17.11.2017.
+ * Copyright Daniel Wolf 2017
+ * All rights reserved.
+ *
+ * Terms on usage of my code can be found here: https://git.frostnerd.com/PublicAndroidApps/DnsChanger/blob/master/README.md
+ *
+ * <p>
+ * development@frostnerd.com
  */
-
 public class VPNInfoDialog extends AlertDialog {
 
     public VPNInfoDialog(Context context, final DialogInterface.OnClickListener click){
