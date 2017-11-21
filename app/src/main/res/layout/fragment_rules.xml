@@ -68,7 +68,8 @@
             android:layout_gravity="end"
             android:layout_marginBottom="16dp"
             android:alpha="0"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="0dp">
 
             <TextView
                 android:id="@+id/text2"
@@ -93,8 +94,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginBottom="16dp"
+            android:layout_marginTop="0dp"
             android:alpha="0"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="0dp"
+            android:paddingTop="0dp">
 
             <TextView
                 android:id="@+id/text3"
@@ -119,8 +123,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginBottom="16dp"
+            android:layout_marginTop="0dp"
             android:alpha="0"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="0dp">
 
             <TextView
                 android:id="@+id/text"
