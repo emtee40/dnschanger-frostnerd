@@ -31,7 +31,7 @@ public class RuleAdapter extends DatabaseAdapter<DNSRule>{
     private final TextView rowCount;
     private static Column<DNSRule> ipv6Column, hostColumn, targetColumn, wildcardColumn, rowIDColumn;
 
-    public RuleAdapter(final Activity context, DatabaseHelper databaseHelper, TextView rowCount, ProgressBar updateProgress){
+    public RuleAdapter(final Activity context, DatabaseHelper databaseHelper, final TextView rowCount, ProgressBar updateProgress){
         super(context, databaseHelper, R.layout.row_rule, 10000);
         setOnRowLoaded(new OnRowLoaded<DNSRule>() {
             @Override
@@ -55,6 +55,12 @@ public class RuleAdapter extends DatabaseAdapter<DNSRule>{
                         return true;
                     }
                 });
+            }
+        });
+        setReloadCallback(new Runnable() {
+            @Override
+            public void run() {
+                rowCount.setText(context.getString(R.string.x_entries).replace("[x]", getItemCount() + ""));
             }
         });
         this.rowCount = rowCount;
