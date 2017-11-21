@@ -194,6 +194,7 @@ public class PreferencesAccessor {
 
         public DNSEntry findMatchingDatabaseEntry(Context context){
             String address = "%" + getServerAddress(context) + "%";
+            if(address.equals("%%"))return null;
             ParsedEntity<DNSEntry> parsedEntity = Util.getDBHelper(context).getSQLHandler(DNSEntry.class);
             return parsedEntity.selectFirstRow(Util.getDBHelper(context)
             , false, WhereCondition.like(parsedEntity.getTable().findColumn("dns1"), address).nextOr(),
