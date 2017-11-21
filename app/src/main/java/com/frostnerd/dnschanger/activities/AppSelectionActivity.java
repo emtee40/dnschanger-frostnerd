@@ -104,6 +104,8 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        appList.setAdapter(null);
+        listAdapter.update = false;
         listAdapter.apps.clear();
         listAdapter.searchedApps.clear();
         listAdapter = null;
@@ -133,6 +135,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         private final TreeSet<AppEntry> apps = new TreeSet<>();
         private final List<AppEntry> searchedApps = new ArrayList<>();
         private final boolean apply = true;
+        private boolean update = true;
 
         AppListAdapter() {
             List<ApplicationInfo> packages = getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
@@ -164,6 +167,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
+            if(!update)return;
             if (holder.type == 0){
                 ((TextView)holder.contentView.findViewById(R.id.text)).setText(whiteList ? infoTextWhitelist : infoTextBlacklist);
             }else{
