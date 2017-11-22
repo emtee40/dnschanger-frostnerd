@@ -10,7 +10,9 @@ import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.adapters.DatabaseAdapter;
+import com.frostnerd.utils.database.orm.parser.Column;
 import com.frostnerd.utils.database.orm.statementoptions.queryoptions.OrderOption;
+import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,6 +34,8 @@ public class QueryLogAdapter extends DatabaseAdapter<DNSQuery> {
             yesterdayStart = getStartOfDay(new Date(dayStart-10000)).getTime(),
             yearStart = getStartOfYear().getTime();
     private final boolean landscape;
+    private static Column<DNSQuery> hostColumn;
+
 
     public QueryLogAdapter(final @NonNull Context context, View progressView, final TextView rowCount) {
         super(context, Util.getDBHelper(context), R.layout.row_query_log, 10000);
@@ -65,10 +69,8 @@ public class QueryLogAdapter extends DatabaseAdapter<DNSQuery> {
             formatterDateYear = new SimpleDateFormat("dd.MM.yy");
         }
         setOrderOption(new OrderOption(Util.getDBHelper(context).findColumn(DNSQuery.class, "time")).desc());
+        hostColumn = Util.getDBHelper(context).findColumn(DNSQuery.class, "host");
         reloadData();
-        System.out.println("DayStart: " + dayStart);
-        System.out.println("Yesterday start: " + yesterdayStart);
-        System.out.println("Year start: " + yearStart);
     }
 
     private Date getStartOfDay(Date date) {
@@ -91,5 +93,24 @@ public class QueryLogAdapter extends DatabaseAdapter<DNSQuery> {
         calendar.set(Calendar.DAY_OF_MONTH, 0);
         calendar.set(Calendar.MONTH, 0);
         return calendar.getTime();
+    }
+
+    public enum ArgumentBasedFilter implements ArgumentFilter{
+        HOST_SEARCH{
+            @Override
+            public WhereCondition getCondition(String argument) {
+                return WhereCondition.like(hostColumn, "%" + argument + "%");
+            }
+
+            @Override
+            public boolean isResourceIntensive() {
+                return true;
+            }
+
+            @Override
+            public Filter[] exclusiveWith() {
+                return new Filter[0];
+            }
+        }
     }
 }
