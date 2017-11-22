@@ -16,7 +16,6 @@ import com.frostnerd.utils.adapters.DatabaseAdapter;
 import com.frostnerd.utils.database.orm.parser.Column;
 import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
 
-import java.util.HashMap;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -28,8 +27,10 @@ import java.util.HashMap;
  * development@frostnerd.com
  */
 public class RuleAdapter extends DatabaseAdapter<DNSRule>{
-    private final TextView rowCount;
-    private static Column<DNSRule> ipv6Column, hostColumn, targetColumn, wildcardColumn, rowIDColumn;
+    private static Column<DNSRule> ipv6Column;
+    private static Column<DNSRule> hostColumn;
+    private static Column<DNSRule> targetColumn;
+    private static Column<DNSRule> wildcardColumn;
 
     public RuleAdapter(final Activity context, DatabaseHelper databaseHelper, final TextView rowCount, ProgressBar updateProgress){
         super(context, databaseHelper, R.layout.row_rule, 10000);
@@ -63,7 +64,6 @@ public class RuleAdapter extends DatabaseAdapter<DNSRule>{
                 rowCount.setText(context.getString(R.string.x_entries).replace("[x]", getItemCount() + ""));
             }
         });
-        this.rowCount = rowCount;
         setProgressView(updateProgress);
         setUpdateDataOnConfigChange(false);
         filter(ArgumentLessFilter.SHOW_NORMAL);
@@ -74,13 +74,8 @@ public class RuleAdapter extends DatabaseAdapter<DNSRule>{
         hostColumn = databaseHelper.findColumn(DNSRule.class, "host");
         targetColumn = databaseHelper.findColumn(DNSRule.class, "target");
         wildcardColumn = databaseHelper.findColumn(DNSRule.class, "wildcard");
-        rowIDColumn = databaseHelper.getRowIDColumn(DNSRule.class);
         setUpdateDataOnConfigChange(true);
         reloadData();
-    }
-
-    private interface Filter{
-        WhereCondition getCondition(String argument, HashMap<Filter, String> filterValues);
     }
 
     public enum ArgumentLessFilter implements DatabaseAdapter.ArgumentLessFilter{
