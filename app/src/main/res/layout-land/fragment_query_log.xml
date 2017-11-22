@@ -19,14 +19,14 @@
             android:id="@+id/time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
+            android:layout_weight="0.22"
             android:text="@string/time" />
 
         <TextView
             android:id="@+id/host"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.7"
+            android:layout_weight="0.78"
             android:text="@string/host" />
 
     </LinearLayout>

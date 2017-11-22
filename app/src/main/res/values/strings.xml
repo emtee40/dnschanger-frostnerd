@@ -303,4 +303,6 @@
     <string name="summary_tcp_timeout">Sets the time in milliseconds after which the app stops trying to reach the upstream DNS server</string>
     <string name="nav_title_query_log">Query log</string>
     <string name="dont_show_again">Don\'t show again</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="time">Time</string>
 </resources>

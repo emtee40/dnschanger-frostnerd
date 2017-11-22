@@ -30,6 +30,8 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.frostnerd.dnschanger.database.DatabaseHelper;
+import com.frostnerd.dnschanger.database.entities.DNSQuery;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.fragments.QueryLogFragment;
 import com.frostnerd.dnschanger.fragments.RulesFragment;
@@ -53,7 +55,9 @@ import com.frostnerd.utils.general.DesignUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.preferences.Preferences;
 
+import java.time.chrono.HijrahEra;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -281,6 +285,11 @@ public class MainActivity extends NavigationDrawerActivity {
                     @Override
                     public Fragment getFragment(@Nullable Bundle arguments) {
                         return new QueryLogFragment();
+                    }
+                }).accessLastItemAndContinue(new DrawerItemCreator.ItemAccessor() {
+                    @Override
+                    public void access(DrawerItem item) {
+                        item.setRecreateFragmentOnConfigChange(true);
                     }
                 });
             }
