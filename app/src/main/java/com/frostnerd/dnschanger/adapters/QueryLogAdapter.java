@@ -81,7 +81,7 @@ public class QueryLogAdapter extends DatabaseAdapter<DNSQuery> {
     }
 
     public void newQueryLogged(int rowID){
-        insertAtFront(rowID, true);
+        insertAtFront(rowID, false);
     }
 
     private Date getStartOfDay(Date date) {
