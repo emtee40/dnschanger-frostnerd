@@ -15,6 +15,7 @@ import com.frostnerd.dnschanger.database.entities.DNSQuery;
 public class QueryLogger {
     private final DatabaseHelper helper;
     private final String insertStatement;
+    private static Runnable newQueryLogged;
 
     public QueryLogger(DatabaseHelper databaseHelper){
         this.helper = databaseHelper;
@@ -27,5 +28,10 @@ public class QueryLogger {
 
     public void logQuery(String query, boolean ipv6){
         helper.getWritableDatabase().execSQL(insertStatement, new Object[]{query, ipv6, System.currentTimeMillis()});
+        if(newQueryLogged != null)newQueryLogged.run();
+    }
+
+    public static void setNewQueryLoggedCallback(Runnable runnable){
+        newQueryLogged = runnable;
     }
 }
