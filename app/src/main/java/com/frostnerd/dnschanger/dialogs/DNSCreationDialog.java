@@ -52,8 +52,13 @@ public class DNSCreationDialog extends AlertDialog {
         this(context, new OnCreationFinishedListener() {
             @Override
             public void onCreationFinished(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6) {
-                DNSEntry newEntry = new DNSEntry(name, name, dns1, dns2, dns1V6, dns2V6, entry.getDescription(), entry.isCustomEntry());
-                listener.editingFinished(newEntry);
+                entry.setDns1(dns1);
+                entry.setDns2(dns2);
+                entry.setDns1V6(dns1V6);
+                entry.setDns2V6(dns2V6);
+                entry.setName(name);
+                entry.setShortName(name);
+                listener.editingFinished(entry);
             }
         });
         mode = Mode.EDITING;
