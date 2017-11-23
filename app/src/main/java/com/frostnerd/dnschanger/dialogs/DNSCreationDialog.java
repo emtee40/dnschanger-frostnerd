@@ -126,8 +126,6 @@ public class DNSCreationDialog extends AlertDialog {
                     @Override
                     public void onClick(View v) {
                         settingV6 = !settingV6;
-                        ed_dns1.setText(settingV6 ? dns1V6.toString(customPorts) : dns1.toString(customPorts));
-                        ed_dns2.setText(settingV6 ? dns2V6.toString(customPorts) : dns2.toString(customPorts));
                         ((Button) v).setText(settingV6 ? "V4" : "V6");
                         if(settingV6){
                             InputFilter filter = new InputCharacterFilter(customPorts ?
@@ -142,6 +140,8 @@ public class DNSCreationDialog extends AlertDialog {
                             ed_dns2.setFilters(new InputFilter[]{filter});
                             ed_dns1.setFilters(new InputFilter[]{filter});
                         }
+                        ed_dns1.setText(settingV6 ? dns1V6.toString(customPorts) : dns1.toString(customPorts));
+                        ed_dns2.setText(settingV6 ? dns2V6.toString(customPorts) : dns2.toString(customPorts));
                     }
                 });
             }
