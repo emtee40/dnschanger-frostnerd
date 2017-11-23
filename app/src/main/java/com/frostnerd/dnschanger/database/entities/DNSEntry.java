@@ -12,10 +12,8 @@ import com.frostnerd.utils.database.orm.annotations.Serialized;
 import com.frostnerd.utils.database.orm.annotations.Table;
 import com.frostnerd.utils.database.orm.annotations.Unique;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Comparator;
+import java.util.TreeMap;
 
 @Table(name = "DNSEntry")
 public class DNSEntry extends Entity implements Comparable<DNSEntry>{
@@ -56,23 +54,40 @@ public class DNSEntry extends Entity implements Comparable<DNSEntry>{
     @Named(name = "id")
     private int ID;
 
-    public static final List<DNSEntry> defaultDNSEntries = new ArrayList<>();
-    public static final HashMap<String, DNSEntry> additionalDefaultEntries = new HashMap<>();
+    public static final TreeMap<DNSEntry, Integer> defaultDNSEntries = new TreeMap<>(new Comparator<DNSEntry>() {
+        @Override
+        public int compare(DNSEntry dnsEntry, DNSEntry t1) {
+            return dnsEntry.compareTo(t1);
+        }
+    });
     static {
-        defaultDNSEntries.add(DNSEntry.constructSimple("Google", "Google", "8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844", "",false));
-        defaultDNSEntries.add(DNSEntry.constructSimple( "OpenDNS", "OpenDNS", "208.67.222.222", "208.67.220.220", "2620:0:ccc::2", "2620:0:ccd::2", "",false));
-        defaultDNSEntries.add(DNSEntry.constructSimple("Level3", "Level3", "209.244.0.3", "209.244.0.4", "", "", "",false));
-        defaultDNSEntries.add(DNSEntry.constructSimple("FreeDNS", "FreeDNS", "37.235.1.174", "37.235.1.177", "", "", "",false));
-        defaultDNSEntries.add(DNSEntry.constructSimple("Yandex", "Yandex", "77.88.8.8", "77.88.8.1", "2a02:6b8::feed:0ff", "2a02:6b8:0:1::feed:0ff", "",false));
-        defaultDNSEntries.add(DNSEntry.constructSimple("Verisign", "Verisign", "64.6.64.6", "64.6.65.6", "2620:74:1b::1:1", "2620:74:1c::2:2", "",false));
-        defaultDNSEntries.add(DNSEntry.constructSimple("Alternate", "Alternate", "198.101.242.72", "23.253.163.53", "", "", "",false));
-        defaultDNSEntries.add(DNSEntry.constructSimple("Norton Connectsafe - Security", "Norton Connectsafe", "199.85.126.10", "199.85.127.10", "", "", "",false));
-        defaultDNSEntries.add(DNSEntry.constructSimple("Norton Connectsafe - Security + Pornography" , "Norton Connectsafe", "199.85.126.20", "199.85.127.20", "", "", "",false));
-        defaultDNSEntries.add(DNSEntry.constructSimple("Norton Connectsafe - Security + Pornography + Other", "Norton Connectsafe", "199.85.126.30", "199.85.127.30", "", "", "",false));
-        defaultDNSEntries.add(DNSEntry.constructSimple("Quad9", "Quad9", "9.9.9.9", "", "2620:fe::fe", "", "", false));
-        Collections.sort(defaultDNSEntries);
-
-        additionalDefaultEntries.put("unblockr", DNSEntry.constructSimple("Unblockr", "Unblockr", "178.62.57.141", "139.162.231.18", "", "", "Non-public DNS server for kodi. Visit unblockr.net for more information.",false));
+        defaultDNSEntries.put(DNSEntry.constructSimple("Google", "Google", "8.8.8.8",
+                "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844", "",false), 0);
+        defaultDNSEntries.put(DNSEntry.constructSimple( "OpenDNS", "OpenDNS", "208.67.222.222",
+                "208.67.220.220", "2620:0:ccc::2", "2620:0:ccd::2", "",false), 0);
+        defaultDNSEntries.put(DNSEntry.constructSimple("Level3", "Level3", "209.244.0.3",
+                "209.244.0.4", "", "", "",false), 0);
+        defaultDNSEntries.put(DNSEntry.constructSimple("FreeDNS", "FreeDNS", "37.235.1.174",
+                "37.235.1.177", "", "", "",false), 0);
+        defaultDNSEntries.put(DNSEntry.constructSimple("Yandex", "Yandex", "77.88.8.8",
+                "77.88.8.1", "2a02:6b8::feed:0ff", "2a02:6b8:0:1::feed:0ff", "",false), 0);
+        defaultDNSEntries.put(DNSEntry.constructSimple("Verisign", "Verisign", "64.6.64.6",
+                "64.6.65.6", "2620:74:1b::1:1", "2620:74:1c::2:2", "",false), 0);
+        defaultDNSEntries.put(DNSEntry.constructSimple("Alternate", "Alternate", "198.101.242.72",
+                "23.253.163.53", "", "", "",false), 0);
+        defaultDNSEntries.put(DNSEntry.constructSimple("Norton Connectsafe - Security", "Norton Connectsafe",
+                "199.85.126.10", "199.85.127.10", "", "", "",false), 0);
+        defaultDNSEntries.put(DNSEntry.constructSimple("Norton Connectsafe - Security + Pornography" ,
+                "Norton Connectsafe", "199.85.126.20", "199.85.127.20", "", "", "",false), 0);
+        defaultDNSEntries.put(DNSEntry.constructSimple("Norton Connectsafe - Security + Pornography + Other",
+                "Norton Connectsafe", "199.85.126.30", "199.85.127.30", "", "", "",false), 0);
+        defaultDNSEntries.put(DNSEntry.constructSimple("Quad9", "Quad9", "9.9.9.9", "",
+                "2620:fe::fe", "", "", false), 2);
+        defaultDNSEntries.put(DNSEntry.constructSimple("Quad9 secondary", "Quad9 secondary", "9.9.9.10", "",
+                "2620:fe::10", "", "", false), 2);
+        defaultDNSEntries.put(DNSEntry.constructSimple("Unblockr", "Unblockr", "178.62.57.141",
+                "139.162.231.18", "", "",
+                "Non-public DNS server for kodi. Visit unblockr.net for more information.",false), 0);
     }
 
     public DNSEntry(String name, String shortName, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6, String description, boolean customEntry) {
@@ -91,8 +106,7 @@ public class DNSEntry extends Entity implements Comparable<DNSEntry>{
     }
 
     public static DNSEntry findDefaultEntryByLongName(String name){
-        for(DNSEntry entry: defaultDNSEntries)if(entry.getName().equalsIgnoreCase(name))return entry;
-        for(DNSEntry entry: additionalDefaultEntries.values())if(entry.getName().equalsIgnoreCase(name))return entry;
+        for(DNSEntry entry: defaultDNSEntries.keySet())if(entry.getName().equalsIgnoreCase(name))return entry;
         return null;
     }
 

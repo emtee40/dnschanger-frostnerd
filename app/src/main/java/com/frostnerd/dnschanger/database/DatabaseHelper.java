@@ -45,10 +45,7 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
 
     @Override
     public void onAfterCreate(SQLiteDatabase db) {
-        for(DNSEntry entry: DNSEntry.defaultDNSEntries){
-            insert(entry);
-        }
-        for (DNSEntry entry: DNSEntry.additionalDefaultEntries.values()) {
+        for(DNSEntry entry: DNSEntry.defaultDNSEntries.keySet()){
             insert(entry);
         }
     }
@@ -100,7 +97,11 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
 
     @Override
     public void onAfterUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        int version;
+        for(DNSEntry entry: DNSEntry.defaultDNSEntries.keySet()){
+            version = DNSEntry.defaultDNSEntries.get(entry);
+            if(version > oldVersion && version <= newVersion)insert(entry);
+        }
     }
 
     @Override
