@@ -3,6 +3,8 @@ package com.frostnerd.dnschanger.fragments;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +21,8 @@ import android.widget.TextView;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.adapters.QueryLogAdapter;
+import com.frostnerd.dnschanger.database.accessors.QueryLogger;
+import com.frostnerd.dnschanger.database.entities.DNSQuery;
 import com.frostnerd.dnschanger.util.Util;
 
 /**
@@ -32,16 +36,50 @@ import com.frostnerd.dnschanger.util.Util;
  */
 public class QueryLogFragment extends Fragment implements SearchView.OnQueryTextListener{
     private QueryLogAdapter queryLogAdapter;
+    private RecyclerView list;
+    private LinearLayoutManager layoutManager;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View contentView = inflater.inflate(R.layout.fragment_query_log, container, false);
-        RecyclerView list = contentView.findViewById(R.id.list);
-        list.setLayoutManager(new LinearLayoutManager(getContext()));
+        list = contentView.findViewById(R.id.list);
+        layoutManager = new LinearLayoutManager(getContext());
+        list.setLayoutManager(layoutManager);
         list.setAdapter(queryLogAdapter = new QueryLogAdapter(getContext(), contentView.findViewById(R.id.progress),
                 (TextView)contentView.findViewById(R.id.row_count)));
         return contentView;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        QueryLogger.setNewQueryLoggedCallback(null);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        QueryLogger.setNewQueryLoggedCallback(new Runnable() {
+            final Handler main = new Handler(Looper.getMainLooper());
+
+            @Override
+            public void run() {
+                if(queryLogAdapter == null)return;
+                queryLogAdapter.newQueryLogged(Util.getDBHelper(getContext()).getHighestRowID(DNSQuery.class));
+                if(!list.isComputingLayout()){
+                    main.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            queryLogAdapter.notifyItemInserted(0);
+                            if(layoutManager.findFirstVisibleItemPosition() <= 2){
+                                list.scrollToPosition(0);
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Override
