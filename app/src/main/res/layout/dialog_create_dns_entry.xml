@@ -13,7 +13,7 @@
         android:layout_marginTop="15dp"
         app:allowCollapse="false"
         app:image="@drawable/ic_language"
-        app:maxCharLength="50"
+        app:maxCharLength="60"
         app:revealDelay="0"
         app:revealType="revealInstant">
 
