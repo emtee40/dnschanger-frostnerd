@@ -75,6 +75,7 @@ public class RuleImportProgressDialog extends AlertDialog {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 asyncImport.cancel(false);
+                asyncImport = null;
                 dialog.dismiss();
             }
         });
@@ -361,7 +362,7 @@ public class RuleImportProgressDialog extends AlertDialog {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            notificationManager.cancel(NOTIFICATION_ID);
+            cleanup();
             new AlertDialog.Builder(context, ThemeHandler.getDialogTheme(context)).setTitle(R.string.done).setCancelable(true).
                     setNeutralButton(R.string.close, null).
                     setMessage(context.getString(R.string.rules_import_finished).
@@ -374,6 +375,15 @@ public class RuleImportProgressDialog extends AlertDialog {
                     ((RulesFragment)fragment).getRuleAdapter().reloadData();
                 }
             }
+        }
+
+        @Override
+        protected void onCancelled() {
+            cleanup();
+        }
+
+        private void cleanup(){
+            notificationManager.cancel(NOTIFICATION_ID);
             notificationManager = null;
             notificationBuilder = null;
             context = null;
