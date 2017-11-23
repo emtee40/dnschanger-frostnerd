@@ -71,6 +71,14 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
     }
 
     @Override
+    public void onStop() {
+        if(newRuleDialog != null){
+            newRuleDialog.dismiss();
+        }
+        super.onStop();
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         fabOpen = content.findViewById(R.id.fab_open);

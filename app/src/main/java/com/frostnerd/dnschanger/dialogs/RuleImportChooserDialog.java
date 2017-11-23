@@ -113,6 +113,12 @@ class RuleImportChooserDialog extends AlertDialog {
                 getButton(BUTTON_POSITIVE).setVisibility(View.INVISIBLE);
             }
         });
+        setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                if(importProgressDialog != null)importProgressDialog.dismiss();
+            }
+        });
     }
 
     public void setActivityPaused(boolean paused){

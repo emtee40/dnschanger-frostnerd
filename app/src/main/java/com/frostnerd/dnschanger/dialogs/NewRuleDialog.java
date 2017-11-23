@@ -71,6 +71,12 @@ public class NewRuleDialog extends AlertDialog{
                 listener.creationFinished(host, null, null, ipv6, wildcard, true);
             }
         });
+        setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                if(ruleImportChooserDialog != null)ruleImportChooserDialog.dismiss();
+            }
+        });
     }
 
     public NewRuleDialog(@NonNull final Activity context, final CreationListener listener) {

@@ -79,6 +79,13 @@ public class RuleImportProgressDialog extends AlertDialog {
                 dialog.dismiss();
             }
         });
+        setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                if(asyncImport != null)asyncImport.cancel(false);
+                asyncImport = null;
+            }
+        });
         View content;
         setView(content = getLayoutInflater().inflate(R.layout.dialog_rule_import_progress, null, false));
         progressText = content.findViewById(R.id.progress_text);
