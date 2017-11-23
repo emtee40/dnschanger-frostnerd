@@ -2,6 +2,8 @@ package com.frostnerd.dnschanger.adapters;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
@@ -31,7 +33,6 @@ public class QueryLogAdapter extends DatabaseAdapter<DNSQuery> {
     private final SimpleDateFormat timeFormatter,
             formatterDate, formatterDateYear, formatterYear = new SimpleDateFormat("yyyy");
     private final long dayStart = getStartOfDay(new Date()).getTime(),
-            yesterdayStart = getStartOfDay(new Date(dayStart-10000)).getTime(),
             yearStart = getStartOfYear().getTime();
     private final boolean landscape;
     private static Column<DNSQuery> hostColumn;
@@ -53,9 +54,15 @@ public class QueryLogAdapter extends DatabaseAdapter<DNSQuery> {
             }
         });
         setReloadCallback(new Runnable() {
+            final Handler main = new Handler(Looper.getMainLooper());
             @Override
             public void run() {
-                rowCount.setText(context.getString(R.string.x_entries).replace("[x]", getItemCount() + ""));
+                main.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        rowCount.setText(context.getString(R.string.x_entries).replace("[x]", getItemCount() + ""));
+                    }
+                });
             }
         });
         setProgressView(progressView);
@@ -71,6 +78,10 @@ public class QueryLogAdapter extends DatabaseAdapter<DNSQuery> {
         setOrderOption(new OrderOption(Util.getDBHelper(context).findColumn(DNSQuery.class, "time")).desc());
         hostColumn = Util.getDBHelper(context).findColumn(DNSQuery.class, "host");
         reloadData();
+    }
+
+    public void newQueryLogged(int rowID){
+        insertAtFront(rowID, true);
     }
 
     private Date getStartOfDay(Date date) {
