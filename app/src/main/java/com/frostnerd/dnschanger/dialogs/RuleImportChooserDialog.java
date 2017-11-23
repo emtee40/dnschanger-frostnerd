@@ -42,6 +42,7 @@ class RuleImportChooserDialog extends AlertDialog {
     private final TextView fileLabel;
     private final TextView failFastInfo;
     private RuleImportProgressDialog.FileType type = RuleImportProgressDialog.FileType.DNSMASQ;
+    private RuleImportProgressDialog importProgressDialog;
     private final CheckBox tryDetectType;
     private final CheckBox failFast;
     private final RadioButton dnsmasq;
@@ -102,7 +103,8 @@ class RuleImportChooserDialog extends AlertDialog {
                     if (file.getFileType() != null) importableFiles.add(file);
                 }
                 dialog.dismiss();
-                new RuleImportProgressDialog(context, importableFiles, SQLiteDatabase.CONFLICT_IGNORE).show();
+                importProgressDialog = new RuleImportProgressDialog(context, importableFiles, SQLiteDatabase.CONFLICT_IGNORE);
+                importProgressDialog.show();
             }
         });
         setOnShowListener(new OnShowListener() {
@@ -111,6 +113,10 @@ class RuleImportChooserDialog extends AlertDialog {
                 getButton(BUTTON_POSITIVE).setVisibility(View.INVISIBLE);
             }
         });
+    }
+
+    public void setActivityPaused(boolean paused){
+        if(importProgressDialog != null)importProgressDialog.setHostingActivityPaused(paused);
     }
 
     private void handlePermissionOrShowFileDialog(Activity activity) {

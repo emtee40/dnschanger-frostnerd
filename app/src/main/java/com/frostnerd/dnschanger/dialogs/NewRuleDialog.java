@@ -48,6 +48,7 @@ public class NewRuleDialog extends AlertDialog{
     private Vibrator vibrator;
     private String v6Text = "::1", v4Text = "127.0.0.1";
     private boolean editingMode = false;
+    private RuleImportChooserDialog ruleImportChooserDialog;
 
     public NewRuleDialog(@NonNull Activity context, final CreationListener listener, @NonNull final String host, @NonNull String target, final boolean wildcard, final boolean ipv6){
         this(context, listener);
@@ -132,7 +133,8 @@ public class NewRuleDialog extends AlertDialog{
                     @Override
                     public void onClick(View v) {
                         dismiss();
-                        new RuleImportChooserDialog(context).show();
+                        ruleImportChooserDialog =  new RuleImportChooserDialog(context);
+                        ruleImportChooserDialog.show();
                     }
                 });
             }
@@ -173,6 +175,10 @@ public class NewRuleDialog extends AlertDialog{
                 metHost.setLabelText(context.getString(isChecked ? R.string.regular_expression : R.string.host));
             }
         });
+    }
+
+    public void setActivityPaused(boolean paused){
+        if(ruleImportChooserDialog != null)ruleImportChooserDialog.setActivityPaused(paused);
     }
 
     private void setTargetValues(){

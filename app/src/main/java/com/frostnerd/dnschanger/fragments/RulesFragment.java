@@ -56,6 +56,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
     private FloatingActionButton fabOpen;
     private boolean fabExpanded = false, wildcardShown = false;
     private View sqlWrap, newWrap, filterWrap;
+    private NewRuleDialog newRuleDialog;
 
     @Nullable
     @Override
@@ -129,9 +130,9 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         fabNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new NewRuleDialog((MainActivity)getContext(), new NewRuleDialog.CreationListener() {
+                newRuleDialog = new NewRuleDialog((MainActivity)getContext(), new NewRuleDialog.CreationListener() {
                     @Override
-                    public void creationFinished(@NonNull String host, @NonNull String target, @Nullable String targetV6, boolean ipv6, boolean wildcard, boolean editingMode) {
+                    public void creationFinished(@NonNull String host, String target, @Nullable String targetV6, boolean ipv6, boolean wildcard, boolean editingMode) {
                         boolean both = targetV6 != null && !targetV6.equals("");
                         Util.getDBHelper(getContext()).createDNSRule(host, target, !both && ipv6, wildcard);
                         if (targetV6 != null && !targetV6.equals("")) {
@@ -142,7 +143,8 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
                             ruleAdapter.reloadData();
                         }
                     }
-                }).show();
+                });
+                newRuleDialog.show();
             }
         });
         fabFilter.setOnClickListener(new View.OnClickListener() {
@@ -245,6 +247,18 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
 
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(newRuleDialog != null)newRuleDialog.setActivityPaused(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(newRuleDialog != null)newRuleDialog.setActivityPaused(false);
     }
 
     private void animateFab() {

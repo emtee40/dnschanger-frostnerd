@@ -1,21 +1,26 @@
 package com.frostnerd.dnschanger.dialogs;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
+import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.database.entities.DNSRule;
 import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
 import com.frostnerd.dnschanger.fragments.RulesFragment;
@@ -57,7 +62,7 @@ public class RuleImportProgressDialog extends AlertDialog {
     private final TextView progressText;
     private final TextView fileText;
     private List<ImportableFile> files;
-    private AsyncTask<Void, Integer, Void> asyncImport;
+    private AsyncImport asyncImport;
 
     public RuleImportProgressDialog(@NonNull Activity context, List<ImportableFile> files, int databaseConflictHandling) {
         super(context, ThemeHandler.getDialogTheme(context));
@@ -77,7 +82,7 @@ public class RuleImportProgressDialog extends AlertDialog {
         setView(content = getLayoutInflater().inflate(R.layout.dialog_rule_import_progress, null, false));
         progressText = content.findViewById(R.id.progress_text);
         fileText = content.findViewById(R.id.file_name);
-        asyncImport = new AsyncImport(this, files, databaseConflictHandling, linesCombined);
+        asyncImport = new AsyncImport(context, this, files, databaseConflictHandling, linesCombined);
         asyncImport.execute();
     }
 
@@ -86,6 +91,10 @@ public class RuleImportProgressDialog extends AlertDialog {
         asyncImport = null;
         files = null;
         super.dismiss();
+    }
+
+    public void setHostingActivityPaused(boolean paused){
+        if(asyncImport != null)asyncImport.setPaused(paused);
     }
 
     public static int getFileLines(File f) {
@@ -238,18 +247,53 @@ public class RuleImportProgressDialog extends AlertDialog {
 
     private static class AsyncImport extends AsyncTask<Void, Integer, Void>{
         private int validLines = 0, distinctEntries = 0;
+        private final int NOTIFICATION_ID = 655;
         private List<ImportableFile> files;
         private Context context;
         private final int databaseConflictHandling;
         private final int linesCombined;
         private RuleImportProgressDialog dialog;
+        private NotificationCompat.Builder notificationBuilder;
+        private NotificationManager notificationManager;
+        private final int notificationUpdateCount;
+        private int lastNotificationUpdate = -1;
+        private boolean paused = false;
 
-        public AsyncImport(RuleImportProgressDialog dialog, List<ImportableFile> files, int databaseConflictHandling, int linesCombined){
+        public AsyncImport(Context context, RuleImportProgressDialog dialog, List<ImportableFile> files, int databaseConflictHandling, int linesCombined){
             this.context = dialog.getContext();
             this.files = files;
             this.databaseConflictHandling = databaseConflictHandling;
             this.linesCombined = linesCombined;
             this.dialog = dialog;
+            notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationBuilder = new NotificationCompat.Builder(context, Util.createNotificationChannel(context, false));
+            notificationBuilder.setSmallIcon(R.drawable.ic_action_import);
+            notificationBuilder.setContentTitle(context.getString(R.string.importing_x_rules).replace("[x]", ""+linesCombined));
+            notificationBuilder.setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, PinActivity.class), 0));
+            notificationBuilder.setAutoCancel(false);
+            notificationBuilder.setOngoing(true);
+            notificationBuilder.setUsesChronometer(true);
+            notificationBuilder.setColorized(false);
+            notificationBuilder.setSound(null);
+            if(linesCombined >= 750000){
+                notificationUpdateCount = linesCombined/110;
+            }else if(linesCombined >= 500000){
+                notificationUpdateCount = linesCombined/90;
+            }else if(linesCombined >= 250000){
+                notificationUpdateCount = linesCombined/70;
+            }else if(linesCombined >= 100000){
+                notificationUpdateCount = linesCombined/50;
+            }else if(linesCombined >= 50000){
+                notificationUpdateCount = linesCombined/40;
+            }else if(linesCombined >= 10000){
+                notificationUpdateCount = linesCombined/30;
+            }else if(linesCombined >= 100){
+                notificationUpdateCount = linesCombined/20;
+            }else notificationUpdateCount = 5;
+        }
+
+        public void setPaused(boolean paused) {
+            this.paused = paused;
         }
 
         @Override
@@ -317,6 +361,7 @@ public class RuleImportProgressDialog extends AlertDialog {
 
         @Override
         protected void onPostExecute(Void aVoid) {
+            notificationManager.cancel(NOTIFICATION_ID);
             new AlertDialog.Builder(context, ThemeHandler.getDialogTheme(context)).setTitle(R.string.done).setCancelable(true).
                     setNeutralButton(R.string.close, null).
                     setMessage(context.getString(R.string.rules_import_finished).
@@ -329,6 +374,8 @@ public class RuleImportProgressDialog extends AlertDialog {
                     ((RulesFragment)fragment).getRuleAdapter().reloadData();
                 }
             }
+            notificationManager = null;
+            notificationBuilder = null;
             context = null;
             dialog = null;
             files = null;
@@ -343,10 +390,14 @@ public class RuleImportProgressDialog extends AlertDialog {
                         dialog.fileText.setText(files.get(values[1]).getFile().getName());
                     }
                 });
-            }
-            else{
+            } else {
                 int i = values[0];
-                dialog.progressText.setText(i + "/" + linesCombined);
+                if(!paused)dialog.progressText.setText(i + "/" + linesCombined);
+                if(i > lastNotificationUpdate){
+                    lastNotificationUpdate += notificationUpdateCount;
+                    notificationBuilder.setContentText(i + "/" + linesCombined);
+                    notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+                }
             }
         }
 
