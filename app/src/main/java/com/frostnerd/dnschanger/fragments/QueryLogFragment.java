@@ -60,6 +60,7 @@ public class QueryLogFragment extends Fragment implements SearchView.OnQueryText
     @Override
     public void onResume() {
         super.onResume();
+        queryLogAdapter.reloadData();
         QueryLogger.setNewQueryLoggedCallback(new Runnable() {
             final Handler main = new Handler(Looper.getMainLooper());
 
@@ -116,6 +117,7 @@ public class QueryLogFragment extends Fragment implements SearchView.OnQueryText
     public boolean onQueryTextChange(String newText) {
         if(newText.equals("")){
             queryLogAdapter.removeFilters(QueryLogAdapter.ArgumentBasedFilter.HOST_SEARCH);
+            if(!list.isComputingLayout())list.scrollToPosition(0);
             return true;
         }
         return false;
