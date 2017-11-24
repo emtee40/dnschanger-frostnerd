@@ -274,6 +274,8 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/basic_widget" />
         </receiver>-->
+
+        <service android:name=".services.RuleImportService" />
     </application>
 
 </manifest>

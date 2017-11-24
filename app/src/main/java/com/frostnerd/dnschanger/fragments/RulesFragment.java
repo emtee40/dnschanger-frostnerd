@@ -260,13 +260,11 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
     @Override
     public void onPause() {
         super.onPause();
-        if(newRuleDialog != null)newRuleDialog.setActivityPaused(true);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(newRuleDialog != null)newRuleDialog.setActivityPaused(false);
     }
 
     private void animateFab() {

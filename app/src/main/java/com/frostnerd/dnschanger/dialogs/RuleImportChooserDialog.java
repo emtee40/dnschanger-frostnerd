@@ -121,10 +121,6 @@ class RuleImportChooserDialog extends AlertDialog {
         });
     }
 
-    public void setActivityPaused(boolean paused){
-        if(importProgressDialog != null)importProgressDialog.setHostingActivityPaused(paused);
-    }
-
     private void handlePermissionOrShowFileDialog(Activity activity) {
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             FileChooserDialog dialog = new FileChooserDialog(getContext(), false, FileChooserDialog.SelectionMode.FILE, ThemeHandler.getDialogTheme(getContext()));

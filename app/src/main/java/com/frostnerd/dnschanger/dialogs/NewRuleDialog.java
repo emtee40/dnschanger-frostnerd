@@ -183,10 +183,6 @@ public class NewRuleDialog extends AlertDialog{
         });
     }
 
-    public void setActivityPaused(boolean paused){
-        if(ruleImportChooserDialog != null)ruleImportChooserDialog.setActivityPaused(paused);
-    }
-
     private void setTargetValues(){
         if(metTarget2.getVisibility() == View.VISIBLE)v6Text = edTarget2.getText().toString();
         if(ipv6.isChecked()){
