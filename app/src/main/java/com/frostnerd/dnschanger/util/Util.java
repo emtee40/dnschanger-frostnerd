@@ -193,7 +193,12 @@ public final class Util {
     }
 
     public static DatabaseHelper getDBHelper(Context context) {
+        return getDBHelper(context, true);
+    }
+
+    public static DatabaseHelper getDBHelper(Context context, boolean redoWithDifferentContextType){
         if(dbHelper != null){
+            if(!redoWithDifferentContextType)return dbHelper;
             if(context instanceof Service && !(dbHelper.getContext() instanceof Service)){ //Helper was create using the Activity but now the service is running
                 dbHelper.close();
                 return dbHelper = new DatabaseHelper(context);
