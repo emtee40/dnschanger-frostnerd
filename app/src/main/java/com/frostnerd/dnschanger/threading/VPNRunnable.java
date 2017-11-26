@@ -61,6 +61,10 @@ public class VPNRunnable implements Runnable {
         this.whitelistMode = whitelistMode;
         this.vpnApps = vpnApps;
         this.upstreamServers = upstreamServers;
+        for(IPPortPair pair: this.upstreamServers){ //Remap the loopback addresses to its replacements
+            if(pair.getAddress().equals("127.0.0.1"))pair.setIp(DNSProxy.IPV4_LOOPBACK_REPLACEMENT);
+            else if(pair.getAddress().equals("::1"))pair.setIp(DNSProxy.IPV6_LOOPBACK_REPLACEMENT);
+        }
     }
 
     @Override
