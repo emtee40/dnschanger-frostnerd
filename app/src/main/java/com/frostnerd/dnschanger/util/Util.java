@@ -81,14 +81,15 @@ public final class Util {
             LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG}, "Not updating Tiles (Version is below Android N)");
     }
 
-    public static IPPortPair validateInput(String input, boolean iPv6, boolean allowEmpty) {
+    public static IPPortPair validateInput(String input, boolean iPv6, boolean allowEmpty, boolean allowLoopback) {
         if (allowEmpty && input.equals("")) return new IPPortPair("", -1, iPv6);
         if (iPv6) {
             if (ipv6WithPort.matcher(input).matches()) {
                 if (input.contains("[")) {
                     int port = Integer.parseInt(input.split("]")[1].split(":")[1]);
                     String address = input.split("]")[0].replace("[", "");
-                    return port <= 65535 && port >= 1 && NetworkUtil.isAssignableAddress(address, true) ? new IPPortPair(address, port, true) : null;
+                    boolean addressValid = (allowLoopback && NetworkUtil.isIP(address, true)) || NetworkUtil.isAssignableAddress(address, true);
+                    return port <= 65535 && port >= 1 && addressValid ? new IPPortPair(address, port, true) : null;
                 } else {
                     return NetworkUtil.isAssignableAddress(input, true) ? new IPPortPair(input, -1, true) : null;
                 }
@@ -100,7 +101,8 @@ public final class Util {
                 if (input.contains(":")) {
                     int port = Integer.parseInt(input.split(":")[1]);
                     String address = input.split(":")[0];
-                    return port <= 65535 && port >= 1 && NetworkUtil.isAssignableAddress(address, false) ? new IPPortPair(address, port, false) : null;
+                    boolean addressValid = (allowLoopback && NetworkUtil.isIP(address, false)) || NetworkUtil.isAssignableAddress(address, false);
+                    return port <= 65535 && port >= 1 && addressValid ? new IPPortPair(address, port, false) : null;
                 } else {
                     return NetworkUtil.isAssignableAddress(input, false) ? new IPPortPair(input, -1, false) : null;
                 }

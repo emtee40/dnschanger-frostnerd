@@ -33,7 +33,7 @@ public class IPPortPair extends Entity implements Serializable{
     }
 
     public static IPPortPair wrap(String s){
-        return Util.validateInput(s, s.contains("[") || s.matches("[a-fA-F0-9:]+"), true);
+        return Util.validateInput(s, s.contains("[") || s.matches("[a-fA-F0-9:]+"), true, true);
     }
 
     public static IPPortPair wrap(String s, int defPort){

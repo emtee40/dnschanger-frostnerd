@@ -143,7 +143,7 @@ public class ConfigureActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                IPPortPair pair = Util.validateInput(s.toString(), settingV6, false);
+                IPPortPair pair = Util.validateInput(s.toString(), settingV6, false, PreferencesAccessor.isLoopbackAllowed(ConfigureActivity.this));
                 if(pair == null || (pair.getPort() != -1 && !customPorts)){
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 }else{
@@ -167,7 +167,7 @@ public class ConfigureActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                IPPortPair pair = Util.validateInput(s.toString(), settingV6, true);
+                IPPortPair pair = Util.validateInput(s.toString(), settingV6, true, PreferencesAccessor.isLoopbackAllowed(ConfigureActivity.this));
                 if(pair == null || (pair.getPort() != -1 && !customPorts)){
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 }else{

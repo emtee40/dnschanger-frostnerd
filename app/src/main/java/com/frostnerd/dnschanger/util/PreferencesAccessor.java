@@ -8,6 +8,7 @@ import com.frostnerd.utils.database.orm.parser.ParsedEntity;
 import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
 import com.frostnerd.utils.preferences.Preferences;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
 /**
@@ -55,6 +56,11 @@ public class PreferencesAccessor {
 
     public static boolean isAdvancedModeEnabled(Context context){
         return Preferences.getBoolean(context, "advanced_settings", false);
+    }
+
+    public static boolean isLoopbackAllowed(Context context){
+        return isAdvancedModeEnabled(context) &&
+                Preferences.getBoolean(context, "loopback_allowed", false);
     }
 
     public static boolean isRunningInAdvancedMode(Context context){

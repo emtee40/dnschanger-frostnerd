@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.tasker.ConfigureActivity;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
@@ -72,7 +73,7 @@ public class DNSCreationDialog extends AlertDialog {
         ed_name.setText(entry.getName());
     }
 
-    public DNSCreationDialog(@NonNull Context context, @NonNull final OnCreationFinishedListener listener) {
+    public DNSCreationDialog(@NonNull final Context context, @NonNull final OnCreationFinishedListener listener) {
         super(context, ThemeHandler.getDialogTheme(context));
         this.mode = Mode.CREATION;
         dns1 = PreferencesAccessor.Type.DNS1.getPair(context);
@@ -154,7 +155,7 @@ public class DNSCreationDialog extends AlertDialog {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                IPPortPair pair = Util.validateInput(s.toString(), settingV6, false);
+                IPPortPair pair = Util.validateInput(s.toString(), settingV6, false, PreferencesAccessor.isLoopbackAllowed(context));
                 if (pair == null || (pair.getPort() != -1 && pair.getPort() != 53 && !customPorts)) {
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
@@ -178,7 +179,7 @@ public class DNSCreationDialog extends AlertDialog {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                IPPortPair pair = Util.validateInput(s.toString(), settingV6, true);
+                IPPortPair pair = Util.validateInput(s.toString(), settingV6, true, PreferencesAccessor.isLoopbackAllowed(context));
                 if (pair == null || (pair.getPort() != -1 && pair.getPort() != 53 && !customPorts)) {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
