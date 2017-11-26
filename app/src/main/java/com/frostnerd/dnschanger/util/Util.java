@@ -91,7 +91,8 @@ public final class Util {
                     boolean addressValid = (allowLoopback && NetworkUtil.isIP(address, true)) || NetworkUtil.isAssignableAddress(address, true);
                     return port <= 65535 && port >= 1 && addressValid ? new IPPortPair(address, port, true) : null;
                 } else {
-                    return NetworkUtil.isAssignableAddress(input, true) ? new IPPortPair(input, -1, true) : null;
+                    boolean addressValid = (allowLoopback && NetworkUtil.isIP(input, true)) || NetworkUtil.isAssignableAddress(input, true);
+                    return addressValid ? new IPPortPair(input, -1, true) : null;
                 }
             } else {
                 return null;
@@ -104,7 +105,8 @@ public final class Util {
                     boolean addressValid = (allowLoopback && NetworkUtil.isIP(address, false)) || NetworkUtil.isAssignableAddress(address, false);
                     return port <= 65535 && port >= 1 && addressValid ? new IPPortPair(address, port, false) : null;
                 } else {
-                    return NetworkUtil.isAssignableAddress(input, false) ? new IPPortPair(input, -1, false) : null;
+                    boolean addressValid = (allowLoopback && NetworkUtil.isIP(input, false)) || NetworkUtil.isAssignableAddress(input, false);
+                    return addressValid ? new IPPortPair(input, -1, false) : null;
                 }
             } else {
                 return null;
