@@ -305,4 +305,6 @@
     <string name="dont_show_again">Don\'t show again</string>
     <string name="yesterday">Yesterday</string>
     <string name="time">Time</string>
+    <string name="summary_loopback_allowed">Allows you to input the loopback address in all fields (::1 and 127.0.0.1)</string>
+    <string name="title_loopback_allowed">Allow loopback address</string>
 </resources>
