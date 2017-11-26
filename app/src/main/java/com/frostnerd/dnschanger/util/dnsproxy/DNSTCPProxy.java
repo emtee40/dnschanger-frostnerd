@@ -190,9 +190,12 @@ public class DNSTCPProxy extends DNSProxy{
         }
         InetAddress destination = packet.getHeader().getDstAddr();
         if(destination == null || !upstreamServers.containsKey(destination.getHostAddress()))return;
+        int port = upstreamServers.get(destination.getHostAddress());
+        if(destination.getHostAddress().equals(IPV4_LOOPBACK_REPLACEMENT))destination = LOOPBACK_IPV4;
+        else if(destination.getHostAddress().equals(IPV6_LOOPBACK_REPLACEMENT))destination = LOOPBACK_IPV6;
         UdpPacket udpPacket = (UdpPacket)packet.getPayload();
         if(udpPacket.getPayload() == null){
-            DatagramPacket outPacket = new DatagramPacket(new byte[0], 0, 0, destination, upstreamServers.get(destination.getHostAddress()));
+            DatagramPacket outPacket = new DatagramPacket(new byte[0], 0, 0, destination, port);
             sendPacketToUpstreamDNSServer(outPacket, null);
         }else{
             byte[] payloadData = udpPacket.getPayload().getRawData();
@@ -211,7 +214,7 @@ public class DNSTCPProxy extends DNSProxy{
                 }
                 if(builder != null)handleUpstreamDNSResponse(packet, builder.build().toArray());
             }else{
-                DatagramPacket outPacket = new DatagramPacket(payloadData, 0, payloadData.length, destination, upstreamServers.get(destination.getHostAddress()));
+                DatagramPacket outPacket = new DatagramPacket(payloadData, 0, payloadData.length, destination, port);
                 sendPacketToUpstreamDNSServer(outPacket, packet);
             }
         }

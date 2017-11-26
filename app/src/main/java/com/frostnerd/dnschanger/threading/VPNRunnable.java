@@ -183,6 +183,8 @@ public class VPNRunnable implements Runnable {
 
     private void addDNSServer(String server, boolean addRoute, boolean ipv6){
         if(server != null && !server.equals("")){
+            if(server.equals("127.0.0.1"))server = DNSProxy.IPV4_LOOPBACK_REPLACEMENT;
+            else if(server.equals("::1"))server = DNSProxy.IPV6_LOOPBACK_REPLACEMENT;
             builder.addDnsServer(server);
             if(addRoute)builder.addRoute(server, ipv6 ? 128 : 32);
         }

@@ -10,6 +10,10 @@ import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Set;
 
 /**
@@ -22,6 +26,17 @@ import java.util.Set;
  * development@frostnerd.com
  */
 public abstract class DNSProxy {
+    public static final String IPV4_LOOPBACK_REPLACEMENT = "1.1.1.1",
+    IPV6_LOOPBACK_REPLACEMENT = "fdce:b45b:8dd7:6e47:1:2:3:4";
+    static InetAddress LOOPBACK_IPV4, LOOPBACK_IPV6;
+    static{
+        try {
+            LOOPBACK_IPV4 = Inet4Address.getByName("127.0.0.1");
+            LOOPBACK_IPV6 = Inet6Address.getByName("::1");
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
 
     public abstract void run() throws InterruptedException, IOException, ErrnoException;
 
