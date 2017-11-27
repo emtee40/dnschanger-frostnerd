@@ -93,8 +93,7 @@ public class DNSCreationDialog extends AlertDialog {
         met_dns2 = view.findViewById(R.id.met_dns2);
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
-        ed_dns1.setText(settingV6 ? dns1V6.toString(customPorts) : dns1.toString(customPorts));
-        ed_dns2.setText(settingV6 ? dns2V6.toString(customPorts) : dns2.toString(customPorts));
+        setEditTextStates();
         setTitle(R.string.new_entry);
         setButton(BUTTON_NEGATIVE, context.getString(R.string.cancel), new OnClickListener() {
             @Override
@@ -127,22 +126,8 @@ public class DNSCreationDialog extends AlertDialog {
                     @Override
                     public void onClick(View v) {
                         settingV6 = !settingV6;
+                        setEditTextStates();
                         ((Button) v).setText(settingV6 ? "V4" : "V6");
-                        if(settingV6){
-                            InputFilter filter = new InputCharacterFilter(customPorts ?
-                                    Pattern.compile("[0-9:a-f\\[\\]]") : Pattern.compile("[0-9:a-f]"));
-                            ed_dns1.setInputType(InputType.TYPE_CLASS_TEXT);
-                            ed_dns2.setInputType(InputType.TYPE_CLASS_TEXT);
-                            ed_dns2.setFilters(new InputFilter[]{filter});
-                            ed_dns1.setFilters(new InputFilter[]{filter});
-                        }else{
-                            InputFilter filter = new InputCharacterFilter(customPorts ?
-                                    Pattern.compile("[0-9.:]") : Pattern.compile("[0-9.]"));
-                            ed_dns2.setFilters(new InputFilter[]{filter});
-                            ed_dns1.setFilters(new InputFilter[]{filter});
-                        }
-                        ed_dns1.setText(settingV6 ? dns1V6.toString(customPorts) : dns1.toString(customPorts));
-                        ed_dns2.setText(settingV6 ? dns2V6.toString(customPorts) : dns2.toString(customPorts));
                     }
                 });
             }
@@ -207,6 +192,26 @@ public class DNSCreationDialog extends AlertDialog {
                 met_dns1.getIndicatorState() == MaterialEditText.IndicatorState.UNDEFINED &&
                 met_dns2.getIndicatorState() == MaterialEditText.IndicatorState.UNDEFINED &&
                 met_name.getIndicatorState() == MaterialEditText.IndicatorState.CORRECT;
+    }
+
+    private void setEditTextStates(){
+        if(settingV6 || customPorts){
+            ed_dns1.setInputType(InputType.TYPE_CLASS_TEXT);
+            ed_dns2.setInputType(InputType.TYPE_CLASS_TEXT);
+        }
+        if(settingV6){
+            InputFilter filter = new InputCharacterFilter(customPorts ?
+                    Pattern.compile("[0-9:a-f\\[\\]]") : Pattern.compile("[0-9:a-f]"));
+            ed_dns2.setFilters(new InputFilter[]{filter});
+            ed_dns1.setFilters(new InputFilter[]{filter});
+        }else{
+            InputFilter filter = new InputCharacterFilter(customPorts ?
+                    Pattern.compile("[0-9.:]") : Pattern.compile("[0-9.]"));
+            ed_dns2.setFilters(new InputFilter[]{filter});
+            ed_dns1.setFilters(new InputFilter[]{filter});
+        }
+        ed_dns1.setText(settingV6 ? dns1V6.toString(customPorts) : dns1.toString(customPorts));
+        ed_dns2.setText(settingV6 ? dns2V6.toString(customPorts) : dns2.toString(customPorts));
     }
 
     public interface OnCreationFinishedListener {
