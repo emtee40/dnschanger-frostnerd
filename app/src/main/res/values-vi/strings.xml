@@ -7,7 +7,7 @@
     <string name="default_dns">Địa chỉ DNS mặc định</string>
     <string name="default_dns_title">Nhà cung cấp DNS công cộng</string>
     <string name="info_text_dns">DNS là viết tắt của hệ thống tên miền.\n\nHệ thống tên miền được sử dụng để giải quyết tên miền (google.com, yahoo.com, example.com…) cho địa chỉ IP (192.168.178.1 là ví dụ) để giao tiếp qua Internet.\n\nĐây là một trong những hệ thống quan trọng nhất được sử dụng trong các mạng dựa trên IP.</string>
-    <string name="vpn_explain">Ứng dụng này hoạt động không cần điện thoại root. \n\nĐể làm điều này có thể, tất cả lưu lượng truy cập được chuyển hướng sử dụng một VPN. VPN này chuyển hướng lưu lượng truy cập của bạn chỉ ở nội bộ, dữ liệu không bao giờ rời khỏi điện thoại của bạn bằng cách sử dụng kết nối VPN này.\n\nBạn\sẽ được yêu cầu cho phép kết nối VPN trong cửa sổ tiếp theo, mà không có sự cho phép từ bạn các máy chủ DNS được thiết lập đã khôn\'làm việc.\n\n\nMã nguồn có thể được tìm thấy dưới https://git.frostnerd.com/PublicAndroidApps/Trình thay đổi DNS.</string>
+    <string name="vpn_explain">Ứng dụng này hoạt động không cần điện thoại root. \n\nĐể làm điều này có thể, tất cả lưu lượng truy cập được chuyển hướng sử dụng một VPN. VPN này chuyển hướng lưu lượng truy cập của bạn chỉ ở nội bộ, dữ liệu không bao giờ rời khỏi điện thoại của bạn bằng cách sử dụng kết nối VPN này.\n\nBạn sẽ được yêu cầu cho phép kết nối VPN trong cửa sổ tiếp theo, mà không có sự cho phép từ bạn các máy chủ DNS được thiết lập đã khôn\'làm việc.\n\n\nMã nguồn có thể được tìm thấy dưới https://git.frostnerd.com/PublicAndroidApps/DnsChanger.</string>
     <string name="information">Thông tin</string>
     <string name="settings">Cài đặt</string>
     <string name="title_notification">Thông báo</string>
@@ -20,7 +20,7 @@
     <string name="action_resume">Tiếp tục</string>
     <string name="action_pause">Tạm dừng</string>
     <string name="action_stop">Dừng</string>
-    <string name="notification_paused">Thay đổi DNS đã tạ dừng</string>
+    <string name="notification_paused">Thay đổi DNS đã tạm dừng</string>
     <string name="notification_running">Thay đổi DNS đang hoạt động</string>
     <string name="active">Hoạt động</string>
     <string name="paused">Đã tạm dừng</string>
@@ -39,7 +39,7 @@
     <string name="check_validity">Vui lòng kiểm tra tính hợp lệ đã nhập vào của bạn</string>
     <string name="press_back_again">Nhấn phím quay lại lần nữa rời khỏi (hủy thay đổi!)</string>
     <string name="tasker_automation_conflict_text">Ứng dụng này được thiết lập để chạy / dừng VPN khi loại mạng của bạn thay đổi (Hoặc là Wifi hoặc 3G).\nĐiều này có thể xung đột với phần bổ trợ tác vụ tự động này do hành động đó có thể bị ghi đè bởi chính ứng dụng (Chỉ có một VPN có thể chạy ở bất kỳ thời điểm nào).\n\nBạn có muốn vô hiệu các cài đặt xung đột này?</string>
-    <string name="shortcut_conflict_text">Ứng dụng này được thiết lập để Chạy / dừng VPN khi loại mạng của bạn thay đổi (Hoặc là Wifi hoặc 3G).\nĐiều này có thể xung đột với bất kỳ cài đặt nào khi bắt đầu từ lối tắt vì hành động đó có thể bị ghi đè bởi chính ứng dụng (Chỉ có một VPN có thể chạy bất kỳ lúc nào).\n\nBạn có muốn vô hiệu các cài đặt xung đột này?</string>
+    <string name="shortcut_conflict_text">Ứng dụng này được thiết lập để chạy / dừng VPN khi loại mạng của bạn thay đổi (Hoặc là Wifi hoặc 3G).\nĐiều này có thể xung đột với bất kỳ cài đặt nào khi bắt đầu từ lối tắt vì hành động đó có thể bị ghi đè bởi chính ứng dụng (Chỉ có một VPN có thể chạy bất kỳ lúc nào).\n\nBạn có muốn vô hiệu các cài đặt xung đột này?</string>
     <string name="warning">Cảnh báo</string>
     <string name="yes">Có</string>
     <string name="no">Không</string>
@@ -56,7 +56,7 @@
     <string name="title_general">Tổng quát</string>
     <string name="summary_info">Hiển thị thông tin chung về ứng dụng này</string>
     <string name="title_info">Thông tin</string>
-    <string name="summary_automation_warn">Cảnh báo: Sử dụng bất kỳ cách nào trong số này có thể can thiệp vào tiểu sử của Tác vụ tự động đang hoạt động sử dụng ứng dụng này!</string>
+    <string name="summary_automation_warn">Cảnh báo: Sử dụng bất kỳ cách nào trong số này có thể can thiệp vào lịch sử của Tác vụ tự động đang hoạt động sử dụng ứng dụng này!</string>
     <string name="title_pin">Mã Pin</string>
     <string name="summary_pin">Kích hoạt tính năng bảo vệ bằng mã Pin</string>
     <string name="summary_pin_value">Nhấn vào đây để thay đổi mã PIN</string>
@@ -76,15 +76,15 @@
     <string name="summary_pin_app">Yêu cầu mã Pin khi khởi động ứng dụng</string>
     <string name="title_category_pin">Bảo vệ bằng mã Pin</string>
     <string name="summary_version">Phiên bản [[version]] ([[code]])\n\n© Daniel Wolf 2017\nTất cả các quyền được bảo lưu\n\nBản dịch ngôn ngữ Braxin bởi Lukinhas\nBản dịch ngôn ngữ Trung Quốc bởi Lukinhas Majida Whale\nBản dịch ngôn ngữ Việt nam bởi Pond1597</string>
-    <string name="usage_stats_info_text">Để tự động tạm dừng thay đổi DNS khi một ứng dụng nhất định chạy dưới nền, ứng dụng này cần truy cập vào dữ liệu sử dụng. \n\nTrong cửa sổ kế tiếp, hãy cấp quyền truy cập cho trình thay đổi DNS vào dữ liệu này nếu không bạn sẽ không thể sử dụng cài đặt này.\n\n\nKhông có dữ liệu ngoại trừ cho các ứng dụng đang chạy được yêu cầu. Không có dữ liệu được lưu lại hoặc được truyền đi.\nMã nguồn được công bố công khai tại https://git.frostnerd.com/PublicAndroidApps/Trình thay đổi DNS nếu bạn muốn tự mình làm cho chắc chắn</string>
+    <string name="usage_stats_info_text">Để tự động tạm dừng thay đổi DNS khi một ứng dụng nhất định chạy dưới nền, ứng dụng này cần truy cập vào dữ liệu sử dụng. \n\nTrong cửa sổ kế tiếp, hãy cấp quyền truy cập cho trình thay đổi DNS vào dữ liệu này nếu không bạn sẽ không thể sử dụng cài đặt này.\n\n\nKhông có dữ liệu ngoại trừ cho các ứng dụng đang chạy được yêu cầu. Không có dữ liệu được lưu lại hoặc được truyền đi.\nMã nguồn được công bố công khai tại  https://git.frostnerd.com/PublicAndroidApps/DNSchanger nếu bạn muốn tự mình làm cho chắc chắn</string>
     <string name="title_remove_usage_data">Xóa quyền truy cập vào dữ liệu sử dụng</string>
     <string name="summary_remove_usage_data">Quyền truy cập vào dữ liệu sử dụng đã được cấp. Bấm vào đây để hủy bỏ sự cho phép đó.</string>
     <string name="autopause_appselect_info_text">Mỗi ứng dụng được đánh dấu sẽ tạm dừng thay đổi DNS một cách tự động khi đang ở phía trước. Điều này có thể hữu ích chẳng hạn như trong các ứng dụng lưu trữ không thể được tải xuống khi chạy với DNS đã được thay đổi.</string>
     <string-array name="tasker_configure_actions">
-        <item>Chạy Trình Thay Đổi DNS</item>
-        <item>Dừng Trình Thay Đổi DNS</item>
-        <item>Tạm dừng Trình Thay Đổi DNS</item>
-        <item>Chạy tiếp Trình Thay Đổi DNS</item>
+        <item>Chạy Trình thay đổi  DNS</item>
+        <item>Dừng Trình thay đổi  DNS</item>
+        <item>Tạm dừng Trình thay đổi  DNS</item>
+        <item>Chạy tiếp Trình thay đổi  DNS</item>
     </string-array>
     <string name="error">Lỗi</string>
     <string name="vpn_error_explain">Ứng dụng đã bị sự cố ngột. Điều này có thể ngụ ý rằng cách ứng dụng này hoạt động không được hỗ trợ bởi điện thoại, bản ROM của bạn/ROM hoặc xảy ra một lỗi chung (mà rất có thể chỉ ra rằng tôi đã làm điều gì sai).\n\nDù bằng cách nào, gửi báo cáo sự cố sẽ giúp tôi rất nhiều và có thể giúp ích cho việc sửa chữa.\nBạn có muốn gửi nó cho tôi?</string>
@@ -124,10 +124,10 @@
     <string name="title_send_debug">Gửi bản ghi gỡ lỗi</string>
     <string name="title_debug_category">Giải quyết sự cố</string>
     <string name="shortcuts">Lối tắt</string>
-    <string name="dialog_question_export_shortcuts">Xuất các lối  phím tắt là tốt?\n\n(Xuất tất cả các lối tắt được tạo ra từ khi cài đặt sử dụng ứng dụng này, ngay cả những ứng dụng đã bị xóa)</string>
+    <string name="dialog_question_export_shortcuts">Xuất các lối tắt là tốt?\n\n(Xuất tất cả các lối tắt được tạo ra từ khi cài đặt sử dụng ứng dụng này, ngay cả những ứng dụng đã bị xóa)</string>
     <string name="widget_not_running">Trình thay đổi DNS đã không được khởi chạy</string>
     <string name="title_shortcut_click_again_disable">Nhấn lại phím tắt để dừng</string>
-    <string name="summary_shortcut_click_again_disable">Dừng Thay đổi DNS khi nhấn lại các phím tắt đã được chạy</string>
+    <string name="summary_shortcut_click_again_disable">Dừng Thay đổi DNS khi nhấn lại các lối tắt đã được chạy</string>
     <string name="summary_notification_on_stop">Hiển thị thông báo với lý do tại sao Thay đổi DNS đã bị tự động dừng lại</string>
     <string name="title_notification_on_stop">Thông báo khi ngừng</string>
     <string name="title_create_shortcut">Tạo một lối tắt</string>
@@ -218,7 +218,7 @@
     <string name="query_title_ttl">TTL</string>
     <string name="query_title_dclass">Lớp D</string>
     <string name="query_title_type">Loại</string>
-    <string name="query_title_answer">Trả lời</string>
+    <string name="query_title_answer">Hồi đáp</string>
     <string name="query_destination_info">Truy vấn sẽ được gửi đến [x]</string>
     <string name="query_error_occured">Đã xảy ra lỗi: [error]</string>
     <string name="question_enable_ipv6">Bạn có muốn kích hoạt IPv6?</string>
@@ -283,7 +283,7 @@
     <string name="rule_unknown_ignoring">Không rõ, đang bỏ qua</string>
     <string name="file_adblock">Tập tin chống quảng cáo (Định dạng: ||HOST^)</string>
     <string name="fail_fast">Không nhanh</string>
-    <string name="disable_failfast_info">Vô hiệu hoá không nhanh nếu loại không thể được phát hiện. Vì đây mất nhiều thời gian hãy thử cố gắng xác định kiểu cho mình.</string>
+    <string name="disable_failfast_info">Vô hiệu hoá không nhanh nếu loại không thể được phát hiện. Vì rất mất nhiều thời gian hãy thử cố gắng tự xác định loại cho mình.</string>
     <string name="loading">Đang tải</string>
     <string name="wait_importing_rules">Đang phát hiện các loại tệp, vui lòng đợi..</string>
     <string name="title_query_logging">Truy vấn nhật ký</string>
