@@ -190,7 +190,7 @@
     <string name="nav_title_tiles">瓷贴</string>
     <string name="nav_title_pin_protection">PIN码保护</string>
     <string name="nav_title_more">更多</string>
-    <string name="about_text">这个应用是开源的。源代码可以在 git.frostnerd.com 中找到。\n图标源自 Google (Material icon pack - https://material.io/icons).\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2017\n保留所有权利\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger\n\nBrazilian translation by Lukinhas\n\nChinese Simplified translation by Majida Whale</string>
+    <string name="about_text">这个应用是开源的。源代码可以在 git.frostnerd.com 中找到。\n图标源自 Google (Material icon pack - https://material.io/icons).\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2017\n保留所有权利\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger\n\nBrazilian translation by Lukinhas\n\nChinese Simplified translation by Majida Whale\n\nVietnamese translation by Phi</string>
     <string name="close">关闭</string>
     <string name="info_text_how_does_it_work">Android 允许你在 WiFi 设置中配置 DNS 服务器 - 但是在移动连接中则不可以 (3G, 4G…)。然而，需要你使用静态 IP 地址，不允许轻松切换并不能使用 IPv6，与这个应用相比时的其他缺点之中。\n\n这个应用采用的是 Android 的 VPN 结构以允许设备动态地设置 DNS 服务器。要达到这个，需要创建一个将同台设备用作为末端的局域 VPN - 这意味着 VPN 连接既不能连接到互联网也不能被外部检测到。\n由于这个虚拟 VPN 可以动态地开始/停止，允许一系列功能及自动化。 这个 VPN 不能点击且自身读取不到数据。这只是个更改 DNS 服务器的中间人。\n\n如果你对这个技术方面的内容感兴趣，可以访问我的git: git.frostnerd.com.</string>
     <string name="create_one">创建一个</string>

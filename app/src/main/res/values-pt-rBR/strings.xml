@@ -188,7 +188,7 @@
     <string name="nav_title_tiles">Azulejos</string>
     <string name="nav_title_pin_protection">Proteção de senha</string>
     <string name="nav_title_more">E mais</string>
-    <string name="about_text">Este aplicativo é de código aberto. O código-fonte pode ser encontrado em git.frostnerd.com\nÍcones do google são usados (Material icon pack - https://material.io/icons).\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2017\nAll rights reserved.\n\nTradução brasileira por Lukinhas</string>
+    <string name="about_text">Este aplicativo é de código aberto. O código-fonte pode ser encontrado em git.frostnerd.com\nÍcones do google são usados (Material icon pack - https://material.io/icons).\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2017\nAll rights reserved.\n\nTradução brasileira por Lukinhas\n\nChinese Simplified translation by Majida Whale\n\nVietnamese translation by Phi</string>
     <string name="close">Fecha</string>
     <string name="info_text_how_does_it_work">Você pode configurar o comportamento nas configurações.</string>
     <string name="create_one">Criar</string>
