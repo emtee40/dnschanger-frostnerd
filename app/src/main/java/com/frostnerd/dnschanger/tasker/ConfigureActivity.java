@@ -136,13 +136,15 @@ public class ConfigureActivity extends AppCompatActivity {
         ed_dns1.setText(settingV6 ? dns1V6.formatForTextfield(customPorts) : dns1.formatForTextfield(customPorts));
         ed_dns2.setText(settingV6 ? dns2V6.formatForTextfield(customPorts) : dns2.formatForTextfield(customPorts));
         ed_dns1.addTextChangedListener(new TextWatcher() {
+            private String before;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                before = s.toString();
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(this.before.equalsIgnoreCase(s.toString()))return;
                 IPPortPair pair = Util.validateInput(s.toString(), settingV6, false, PreferencesAccessor.isLoopbackAllowed(ConfigureActivity.this));
                 if(pair == null || (pair.getPort() != -1 && !customPorts)){
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
@@ -160,13 +162,15 @@ public class ConfigureActivity extends AppCompatActivity {
             }
         });
         ed_dns2.addTextChangedListener(new TextWatcher() {
+            private String before;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                before = s.toString();
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(this.before.equalsIgnoreCase(s.toString()))return;
                 IPPortPair pair = Util.validateInput(s.toString(), settingV6, true, PreferencesAccessor.isLoopbackAllowed(ConfigureActivity.this));
                 if(pair == null || (pair.getPort() != -1 && !customPorts)){
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);

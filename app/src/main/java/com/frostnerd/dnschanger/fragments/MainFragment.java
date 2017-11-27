@@ -177,13 +177,15 @@ public class MainFragment extends Fragment {
             }
         });
         dns1.addTextChangedListener(new TextWatcher() {
+            private String before;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                before = s.toString();
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(this.before.equalsIgnoreCase(s.toString()))return;
                 if (vpnRunning && doStopVPN && !wasStartedWithTasker) stopVpn();
                 IPPortPair pair = Util.validateInput(s.toString(), settingV6, false, PreferencesAccessor.isLoopbackAllowed(getContext()));
                 if (pair == null || (pair.getPort() != -1 && !advancedMode)) {
@@ -203,13 +205,15 @@ public class MainFragment extends Fragment {
             }
         });
         dns2.addTextChangedListener(new TextWatcher() {
+            private String before;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                before = s.toString();
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(this.before.equalsIgnoreCase(s.toString()))return;
                 if (vpnRunning && doStopVPN && !wasStartedWithTasker) stopVpn();
                 IPPortPair pair = Util.validateInput(s.toString(), settingV6, true, PreferencesAccessor.isLoopbackAllowed(getContext()));
                 if (pair == null || (pair.getPort() != -1 && !advancedMode)) {
