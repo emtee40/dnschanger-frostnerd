@@ -105,10 +105,12 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
     protected void onDestroy() {
         super.onDestroy();
         appList.setAdapter(null);
-        listAdapter.update = false;
-        listAdapter.apps.clear();
-        listAdapter.searchedApps.clear();
-        listAdapter = null;
+        if(listAdapter != null){
+            listAdapter.update = false;
+            listAdapter.apps.clear();
+            listAdapter.searchedApps.clear();
+            listAdapter = null;
+        }
     }
 
     @Override
