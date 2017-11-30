@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
@@ -95,6 +96,7 @@ public class CurrentNetworksFragment extends Fragment {
                                     }
                                     if((v4Index == 2 || !ipv4Enabled) && (v6Index == 2 || !ipv6Enabled))break;
                                 }
+                                Toast.makeText(getContext(), R.string.dns_configuration_taken, Toast.LENGTH_LONG).show();
                             }
                         }).setNeutralButton(R.string.close, null).show();
             }
