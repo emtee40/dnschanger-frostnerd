@@ -307,4 +307,9 @@
     <string name="time">Time</string>
     <string name="summary_loopback_allowed">Allows you to input the loopback address in all fields (::1 and 127.0.0.1)</string>
     <string name="title_loopback_allowed">Allow loopback address</string>
+    <string name="nav_title_current_networks">Current networks</string>
+    <string name="dialog_title_dns_configuration">DNS configuration</string>
+    <string name="text_dns_configuration">The network [name] has the following DNS servers:\n\n[servers]</string>
+    <string name="use_these_servers">Use these servers</string>
+    <string name="dns_configuration_taken">DNS configuration applied.</string>
 </resources>

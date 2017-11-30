@@ -33,6 +33,7 @@ import android.widget.TextView;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.fragments.CurrentNetworksFragment;
 import com.frostnerd.dnschanger.fragments.QueryLogFragment;
 import com.frostnerd.dnschanger.fragments.RulesFragment;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
@@ -258,6 +259,15 @@ public class MainActivity extends NavigationDrawerActivity {
                 item.setInvalidateActivityMenu(true);
             }
         });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            itemCreator.createItemAndContinue(R.string.nav_title_current_networks, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_network_check)), new DrawerItem.FragmentCreator() {
+                @NonNull
+                @Override
+                public Fragment getFragment(@Nullable Bundle arguments) {
+                    return new CurrentNetworksFragment();
+                }
+            });
+        }
         if(PreferencesAccessor.isAdvancedModeEnabled(this)){
             itemCreator.createItemAndContinue(R.string.nav_title_advanced);
             itemCreator.createItemAndContinue(R.string.title_advanced_settings, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_settings)), new DrawerItem.ClickListener() {

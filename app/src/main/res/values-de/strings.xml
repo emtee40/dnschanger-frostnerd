@@ -296,4 +296,9 @@
     <string name="summary_tcp_timeout">Setzt die Zeit in Millisekunden, nach welcher die App einen Verbindungsversuch zu dem Server abbricht</string>
     <string name="nav_title_query_log">Anfragenhistorie</string>
     <string name="dont_show_again">Nicht nochmal zeigen</string>
+    <string name="dns_configuration_taken">DNS Einstellung übernommen.</string>
+    <string name="use_these_servers">Nutze diese Server</string>
+    <string name="dialog_title_dns_configuration">DNS Konfiguration</string>
+    <string name="nav_title_current_networks">Aktuelle Netzwerke</string>
+    <string name="text_dns_configuration">Das Netzwerk [name] hat die folgenden DNS Server:\n\n[servers]</string>
 </resources>
