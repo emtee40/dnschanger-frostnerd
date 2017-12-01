@@ -220,7 +220,8 @@ public class DNSVpnService extends VpnService {
                 stopService();
             }else if (IntentUtil.checkExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(),intent)) {
                 LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Starting VPN");
-                createAndRunThread(!IntentUtil.checkExtra(VPNServiceArgument.FLAG_DONT_START_IF_RUNNING.getArgument(), intent));
+                createAndRunThread(!IntentUtil.checkExtra(VPNServiceArgument.FLAG_DONT_START_IF_RUNNING.getArgument(), intent),
+                        !IntentUtil.checkExtra(VPNServiceArgument.FLAG_DONT_START_IF_NOT_RUNNING.getArgument(), intent));
                 LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Creating Thread");
             }else if (IntentUtil.checkExtra(VPNServiceArgument.COMMAND_STOP_VPN.getArgument(),intent)){
                 LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Stopping VPN");
@@ -236,14 +237,14 @@ public class DNSVpnService extends VpnService {
         return START_REDELIVER_INTENT;
     }
 
-    private void createAndRunThread(boolean runIfAlreadyRunning){
-        if(vpnRunnable == null || !vpnRunnable.isThreadRunning()){
+    private void createAndRunThread(boolean runIfAlreadyRunning, boolean runIfNotRunning){
+        if(runIfNotRunning && (vpnRunnable == null || !vpnRunnable.isThreadRunning())){
             synchronized (DNSVpnService.this){
                 vpnRunnable = new VPNRunnable(this, upstreamServers, excludedApps, excludedWhitelisted);
                 vpnThread = new Thread(vpnRunnable, "DNSChanger");
                 vpnThread.start();
             }
-        }else if(runIfAlreadyRunning){
+        }else if(runIfAlreadyRunning && (vpnRunnable != null && vpnRunnable.isThreadRunning())){
             vpnRunnable.addAfterThreadStop(new Runnable() {
                 @Override
                 public void run() {
@@ -364,6 +365,13 @@ public class DNSVpnService extends VpnService {
                 putExtra(VPNServiceArgument.ARGUMENT_UPSTREAM_SERVERS.getArgument(), upstreamServers).
                 putExtra(VPNServiceArgument.FLAG_STARTED_WITH_TASKER.getArgument(), startedWithTasker).
                 putExtra(VPNServiceArgument.ARGUMENT_CALLER_TRACE.getArgument(), LogFactory.stacktraceToString(new Throwable(),true).replace("\n", " <<->> ")).setAction(StringUtil.randomString(40));
+    }
+
+    public static Intent getUpdateServersIntent(Context context, boolean restartVPN, boolean startIfNotRunning){
+        Intent intent = new Intent(context, DNSVpnService.class).putExtra("supercooldummy", "data");
+        if(restartVPN)intent.putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true);
+        if(!startIfNotRunning)intent.putExtra(VPNServiceArgument.FLAG_DONT_START_IF_NOT_RUNNING.getArgument(), true);
+        return intent;
     }
 
     public static Intent getBinderIntent(Context context){

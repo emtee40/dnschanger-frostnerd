@@ -22,8 +22,10 @@ import android.widget.Toast;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.ThemeHandler;
+import com.frostnerd.dnschanger.util.Util;
 
 import java.net.Inet4Address;
 import java.net.Inet6Address;
@@ -97,6 +99,8 @@ public class CurrentNetworksFragment extends Fragment {
                                     if((v4Index == 2 || !ipv4Enabled) && (v6Index == 2 || !ipv6Enabled))break;
                                 }
                                 Toast.makeText(getContext(), R.string.dns_configuration_taken, Toast.LENGTH_LONG).show();
+                                if(Util.isServiceRunning(getContext()))
+                                    getContext().startService(DNSVpnService.getUpdateServersIntent(getContext(), true, false));
                             }
                         }).setNeutralButton(R.string.close, null).show();
             }
