@@ -312,4 +312,7 @@
     <string name="text_dns_configuration">The network [name] has the following DNS servers:\n\n[servers]</string>
     <string name="use_these_servers">Use these servers</string>
     <string name="dns_configuration_taken">DNS configuration applied.</string>
+    <string name="take_dns_configuration_missing_type">Warning: [type] is missing in the configuration, but is enabled. Do you want to disable it?</string>
+    <string name="ignore">Ignore</string>
+    <string name="disable">Disable</string>
 </resources>

@@ -30,6 +30,14 @@ public class PreferencesAccessor {
         return Preferences.getBoolean(context, "setting_ipv4_enabled", true);
     }
 
+    public static void setIPv4Enabled(Context context, boolean enabled ){
+        Preferences.put(context, "setting_ipv4_enabled", enabled);
+    }
+
+    public static void setIPv6Enabled(Context context, boolean enabled ){
+        Preferences.put(context, "setting_ipv6_enabled", enabled);
+    }
+
     public static boolean isEverythingDisabled(Context context){
         return Preferences.getBoolean(context, "everything_disabled", false);
     }
