@@ -17,6 +17,8 @@ public class IPPortPair extends Entity implements Serializable{
     private int port;
     @Named(name = "Ipv6")
     private boolean ipv6;
+    public static final IPPortPair EMPTY = new IPPortPair("", -1, false);
+
 
     @PrimaryKey
     @AutoIncrement

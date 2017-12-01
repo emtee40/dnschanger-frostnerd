@@ -98,6 +98,10 @@ public class CurrentNetworksFragment extends Fragment {
                                     }
                                     if((v4Index == 2 || !ipv4Enabled) && (v6Index == 2 || !ipv6Enabled))break;
                                 }
+                                if(ipv6Enabled && v6Index <= 1)
+                                    PreferencesAccessor.Type.DNS2_V6.saveDNSPair(getContext(), IPPortPair.EMPTY);
+                                else if(ipv4Enabled && v4Index <= 1)
+                                    PreferencesAccessor.Type.DNS2.saveDNSPair(getContext(), IPPortPair.EMPTY);
                                 Toast.makeText(getContext(), R.string.dns_configuration_taken, Toast.LENGTH_LONG).show();
                                 if(Util.isServiceRunning(getContext()))
                                     getContext().startService(DNSVpnService.getUpdateServersIntent(getContext(), true, false));
