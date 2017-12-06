@@ -84,12 +84,14 @@ public class RuleImportService extends Service {
     private void startImport() throws IOException {
         String line;
         RuleImportProgressDialog.TemporaryDNSRule rule;
-        ContentValues values = new ContentValues(3);
+        ContentValues values = new ContentValues(4);
         int i = 0, currentCount, rowID;
         String ruleTableName = Util.getDBHelper(this, false).getTableName(DNSRule.class),
                 columnHost = Util.getDBHelper(this, false).findColumn(DNSRule.class, "host").getColumnName(),
                 columnTarget = Util.getDBHelper(this, false).findColumn(DNSRule.class, "target").getColumnName(),
-                columnIPv6 = Util.getDBHelper(this, false).findColumn(DNSRule.class, "ipv6").getColumnName();
+                columnIPv6 = Util.getDBHelper(this, false).findColumn(DNSRule.class, "ipv6").getColumnName(),
+        columnWildcard = Util.getDBHelper(this, false).findColumn(DNSRule.class, "wildcard").getColumnName();
+        values.put(columnWildcard, "0");
         while(shouldContinue && configurations.size() != 0){
             Configuration configuration = configurations.removeFirst();
             determineNotificationUpdateCount(configuration.lineCount);
@@ -127,7 +129,6 @@ public class RuleImportService extends Service {
                             distinctEntries++;
                             currentCount++;
                         }
-                        values.clear();
                     }
                     updateNotification(i, configuration.lineCount);
                 }
