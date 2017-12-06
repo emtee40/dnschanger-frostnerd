@@ -47,18 +47,14 @@ import java.util.List;
 public class CurrentNetworksFragment extends Fragment {
     private List<DNSProperties> dnsProperties = new ArrayList<>();
 
-    //Done in the constructor because the fragment is created asynchronous and thus no loading indicator has to be shown
-    public CurrentNetworksFragment(){
-        ConnectivityManager mgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        for(Network ntw: mgr.getAllNetworks()){
-            dnsProperties.add(new DNSProperties(mgr.getLinkProperties(ntw)));
-        }
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View content = inflater.inflate(R.layout.fragment_current_networks, container, false);
+        ConnectivityManager mgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        for(Network ntw: mgr.getAllNetworks()){
+            dnsProperties.add(new DNSProperties(mgr.getLinkProperties(ntw)));
+        }
         final ListView list = content.findViewById(R.id.list);
         final ArrayAdapter<DNSProperties> adapter = new ArrayAdapter<DNSProperties>(getContext(), android.R.layout.simple_list_item_1, dnsProperties);
         list.setAdapter(adapter);
