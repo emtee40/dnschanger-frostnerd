@@ -131,7 +131,7 @@ public class CurrentNetworksFragment extends Fragment {
             }
             if(properties.ipv6Servers.size() >= 2){
                 PreferencesAccessor.Type.DNS2_V6.saveDNSPair(getContext(), properties.ipv6Servers.get(1));
-            }
+            }else PreferencesAccessor.Type.DNS2_V6.saveDNSPair(getContext(), IPPortPair.EMPTY);
         }else if(ipv6Enabled) PreferencesAccessor.Type.DNS2_V6.saveDNSPair(getContext(), IPPortPair.EMPTY);
 
         if(ipv4Enabled && properties.ipv4Servers.size() != 0){
@@ -140,7 +140,7 @@ public class CurrentNetworksFragment extends Fragment {
             }
             if(properties.ipv4Servers.size() >= 2){
                 PreferencesAccessor.Type.DNS2.saveDNSPair(getContext(), properties.ipv4Servers.get(1));
-            }
+            }else PreferencesAccessor.Type.DNS2.saveDNSPair(getContext(), IPPortPair.EMPTY);
         }else if(ipv4Enabled) PreferencesAccessor.Type.DNS2.saveDNSPair(getContext(), IPPortPair.EMPTY);
         if(Util.isServiceRunning(getContext()))
             getContext().startService(DNSVpnService.getUpdateServersIntent(getContext(), true, false));
