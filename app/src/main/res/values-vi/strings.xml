@@ -158,11 +158,6 @@
         <item>Xanh da trời</item>
         <item>Màu tối</item>
     </string-array>
-    <string-array name="themeValues" translatable="false">
-        <item>2</item>
-        <item>1</item>
-        <item>3</item>
-    </string-array>
     <string name="remove">Gỡ bỏ</string>
     <string name="whitelist">Danh sách cho phép</string>
     <string name="select_all">Chọn tất cả</string>
@@ -177,9 +172,6 @@
     <string name="summary_enable_ipv4">Bật IPv4. Điều này cho phép cung cấp địa chỉ ipv4 để sử dụng như các máy chủ dns</string>
     <string name="title_enable_ipv4">Bật IPv4</string>
     <string name="warning_disabling_v4">Hầu hết các phiên bản Android không thể truy cập Internet nữa khi trình thay đổi DNS đang chạy và không có địa chỉ IPv4 nào được cung cấp. Tuy nhiên bạn sẽ phải thử cho thiết bị của bạn.</string>
-    <string-array name="default_blacklist" translatable="false">
-        <item>bbc.iplayer.android</item>
-    </string-array>
     <string name="x_apps_selected">[[x]] ứng dụng đã chọn</string>
     <string name="tile_pause_resume">Tạm dừng / Tiếp tục</string>
     <string name="tile_start_stop">Chạy / Dừng</string>
