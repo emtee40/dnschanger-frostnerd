@@ -295,4 +295,16 @@
     <string name="summary_tcp_timeout">Define o tempo em milissegundos após o qual o aplicativo pára de tentar alcançar o servidor DNS a montante</string>
     <string name="nav_title_query_log">histórico de pedidos</string>
     <string name="dont_show_again">Não mostre novamente</string>
+    <string name="yesterday">"Ontem "</string>
+    <string name="time">"Tempo "</string>
+    <string name="summary_loopback_allowed">Permite que você insira o endereço de loopback em todos os campos (:: 1 e 127.0.0.1)</string>
+    <string name="title_loopback_allowed">Permitir o endereço de loopback</string>
+    <string name="nav_title_current_networks">Redes atuais</string>
+    <string name="dialog_title_dns_configuration">Configuração de DNS</string>
+    <string name="text_dns_configuration">A rede [nome] possui os seguintes servidores DNS:  [servidores]</string>
+    <string name="use_these_servers">Use esses servidores</string>
+    <string name="dns_configuration_taken">Configuração de DNS aplicada.</string>
+    <string name="ignore">Ignorar</string>
+    <string name="disable">Desativar</string>
+    <string name="take_dns_configuration_missing_type">Aviso: [type] está faltando na configuração, mas está habilitado. Deseja desativá-lo?</string>
 </resources>

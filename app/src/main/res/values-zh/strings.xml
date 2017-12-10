@@ -298,4 +298,16 @@
     <string name="summary_tcp_timeout">设置应用程序停止尝试到达上游DNS服务器的时间（以毫秒为单位）</string>
     <string name="nav_title_query_log">请求历史</string>
     <string name="dont_show_again">不要再显示</string>
+    <string name="disable">禁用</string>
+    <string name="yesterday">昨天</string>
+    <string name="time">"时间 "</string>
+    <string name="ignore">"忽视 "</string>
+    <string name="use_these_servers">使用这些服务器</string>
+    <string name="dns_configuration_taken">应用DNS配置。</string>
+    <string name="take_dns_configuration_missing_type">警告：配置中缺少[type]，但已启用。 你想禁用它吗？</string>
+    <string name="text_dns_configuration">网络[name]有以下DNS服务器：\n\n[servers]</string>
+    <string name="dialog_title_dns_configuration">DNS配置</string>
+    <string name="nav_title_current_networks">目前的网络</string>
+    <string name="title_loopback_allowed">允许回送地址</string>
+    <string name="summary_loopback_allowed">允许您在所有字段（:: 1和127.0.0.1）中输入回送地址</string>
 </resources>

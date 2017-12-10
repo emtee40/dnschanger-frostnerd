@@ -304,4 +304,12 @@
     <string name="time">Giờ</string>
     <string name="summary_loopback_allowed">Cho phép bạn nhập địa chỉ lặp trở lại trong tất cả các ô trường(::1 và 127.0.0.1)</string>
     <string name="title_loopback_allowed">Cho phép địa chỉ lặp trở lại</string>
+    <string name="nav_title_current_networks">Mạng hiện tại</string>
+    <string name="dialog_title_dns_configuration">Cấu hình DNS</string>
+    <string name="text_dns_configuration">[name] mạng có các máy chủ DNS sau:\n\n[máy chủ]</string>
+    <string name="use_these_servers">Sử dụng các máy chủ này</string>
+    <string name="dns_configuration_taken">Đã áp dụng cấu hình DNS.</string>
+    <string name="ignore">Bỏ qua</string>
+    <string name="disable">Vô hiệu hóa</string>
+    <string name="take_dns_configuration_missing_type">Cảnh báo: [type] bị thiếu trong cấu hình, nhưng đã được bật. Bạn có muốn vô hiệu hóa nó?</string>
 </resources>
