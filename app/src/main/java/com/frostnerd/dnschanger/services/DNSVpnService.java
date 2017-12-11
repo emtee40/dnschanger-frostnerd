@@ -233,7 +233,7 @@ public class DNSVpnService extends VpnService {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             Preferences.put(this, "setting_show_notification", true);
         }
-        updateNotification();
+        if(upstreamServers != null)updateNotification();
         return START_REDELIVER_INTENT;
     }
 
