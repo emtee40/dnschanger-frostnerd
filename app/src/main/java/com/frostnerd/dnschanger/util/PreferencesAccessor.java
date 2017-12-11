@@ -75,7 +75,7 @@ public class PreferencesAccessor {
         return areCustomPortsEnabled(context) ||
                 areRulesEnabled(context) ||
                 isQueryLoggingEnabled(context) ||
-                sendDNSOverTCP(context);
+                sendDNSOverTCP(context) || isLoopbackAllowed(context);
     }
 
     public static boolean areCustomPortsEnabled(Context context){
