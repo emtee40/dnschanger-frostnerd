@@ -40,7 +40,6 @@ public class NetworkCheckHandle {
     private Context context;
     private final String LOG_TAG;
     private boolean running = true;
-    private ReentrantLock contextLock = new ReentrantLock();
 
     public NetworkCheckHandle(Context context, String logTag){
         if(context == null)throw new IllegalStateException("Context passed to NetworkCheckHandle is null.");
@@ -52,17 +51,20 @@ public class NetworkCheckHandle {
             connectivityManager.registerNetworkCallback(builder.build(), networkCallback = new ConnectivityManager.NetworkCallback(){
                 @Override
                 public void onAvailable(Network network) {
-                    if(running){
-                        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-                        handleConnectivityChange(activeNetwork);
-                    }
+                    handleChange();
                 }
 
                 @Override
                 public void onLost(Network network) {
+                    handleChange();
+                }
+
+                private void handleChange(){
                     if(running){
                         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-                        handleConnectivityChange(activeNetwork);
+                        try {
+                            handleConnectivityChange(activeNetwork);
+                        } catch (ReallyWeiredExceptionOnlyAFewPeopleHave ignored) {}//Look below.
                     }
                 }
             });
@@ -70,67 +72,66 @@ public class NetworkCheckHandle {
             context.registerReceiver(connectivityChange = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    handleConnectivityChange(!intent.hasExtra("noConnectivity"), intent.getIntExtra("networkType", -1));
+                    try {
+                        handleConnectivityChange(!intent.hasExtra("noConnectivity"), intent.getIntExtra("networkType", -1));
+                    } catch (ReallyWeiredExceptionOnlyAFewPeopleHave ex) {}//Look below.
                 }
             }, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
-        handleInitialState();
+        try {
+            handleInitialState();
+        } catch (ReallyWeiredExceptionOnlyAFewPeopleHave ignored) {}//Look below
     }
 
-    private void handleInitialState(){
-        contextLock.lock();
+    private void handleInitialState() throws ReallyWeiredExceptionOnlyAFewPeopleHave {
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
         if (activeNetwork == null) {
-            LogFactory.writeMessage(context, LOG_TAG, "No active network.");
+            LogFactory.writeMessage(accessContext(), LOG_TAG, "No active network.");
         }else{
-            LogFactory.writeMessage(context, LOG_TAG, "[OnCreate] Thread running: " + Util.isServiceThreadRunning());
+            LogFactory.writeMessage(accessContext(), LOG_TAG, "[OnCreate] Thread running: " + Util.isServiceThreadRunning());
             if (!Util.isServiceThreadRunning()) {
-                if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI && Preferences.getBoolean(context, "setting_auto_wifi", false)) {
-                    LogFactory.writeMessage(context, LOG_TAG, "[OnCreate] Connected to WIFI and setting_auto_wifi is true. Starting Service..");
+                if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI && Preferences.getBoolean(accessContext(), "setting_auto_wifi", false)) {
+                    LogFactory.writeMessage(accessContext(), LOG_TAG, "[OnCreate] Connected to WIFI and setting_auto_wifi is true. Starting Service..");
                     startService();
-                } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE && Preferences.getBoolean(context, "setting_auto_mobile", false)) {
-                    LogFactory.writeMessage(context, LOG_TAG, "[OnCreate] Connected to MOBILE and setting_auto_mobile is true. Starting Service..");
+                } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE && Preferences.getBoolean(accessContext(), "setting_auto_mobile", false)) {
+                    LogFactory.writeMessage(accessContext(), LOG_TAG, "[OnCreate] Connected to MOBILE and setting_auto_mobile is true. Starting Service..");
                     startService();
                 }
             }
         }
-        contextLock.unlock();
     }
 
     public void stop(){
+        if(!running)return;
         running = false;
         if(networkCallback != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)connectivityManager.unregisterNetworkCallback(networkCallback);
         else if(connectivityChange != null)context.unregisterReceiver(connectivityChange);
         connectivityManager = null;networkCallback = null;
-        contextLock.lock();
         context = null;
-        contextLock.unlock();
     }
 
-    private void startService() {
+    private void startService() throws ReallyWeiredExceptionOnlyAFewPeopleHave {
         if(!running)return;
-        contextLock.lock();
-        LogFactory.writeMessage(context, LOG_TAG, "Trying to start DNSVPNService");
-        Intent i = VpnService.prepare(context);
-        LogFactory.writeMessage(context, LOG_TAG, "VPNService Prepare Intent", i);
+        LogFactory.writeMessage(accessContext(), LOG_TAG, "Trying to start DNSVPNService");
+        Intent i = VpnService.prepare(accessContext());
+        LogFactory.writeMessage(accessContext(), LOG_TAG, "VPNService Prepare Intent", i);
         if (i == null) {
-            LogFactory.writeMessage(context, LOG_TAG, "VPNService is already prepared. Starting DNSVPNService",
-                    i = DNSVpnService.getStartVPNIntent(context).putExtra(VPNServiceArgument.FLAG_DONT_START_IF_RUNNING.getArgument(), true).
+            LogFactory.writeMessage(accessContext(), LOG_TAG, "VPNService is already prepared. Starting DNSVPNService",
+                    i = DNSVpnService.getStartVPNIntent(accessContext()).putExtra(VPNServiceArgument.FLAG_DONT_START_IF_RUNNING.getArgument(), true).
                             putExtra(VPNServiceArgument.FLAG_FIXED_DNS.getArgument(),false));
-            Util.startService(context, i);
+            Util.startService(accessContext(), i);
         } else {
-            LogFactory.writeMessage(context, LOG_TAG, "VPNService is NOT prepared. Starting BackgroundVpnConfigureActivity");
-            BackgroundVpnConfigureActivity.startBackgroundConfigure(context, true);
+            LogFactory.writeMessage(accessContext(), LOG_TAG, "VPNService is NOT prepared. Starting BackgroundVpnConfigureActivity");
+            BackgroundVpnConfigureActivity.startBackgroundConfigure(accessContext(), true);
         }
-        contextLock.unlock();
     }
 
-    private void handleConnectivityChange(NetworkInfo networkInfo){
+    private void handleConnectivityChange(NetworkInfo networkInfo) throws ReallyWeiredExceptionOnlyAFewPeopleHave {
         if(networkInfo != null)handleConnectivityChange(networkInfo.isConnected(), networkInfo.getType());
         else handleConnectivityChange(false, ConnectionType.OTHER);
     }
 
-    private void handleConnectivityChange(boolean connected, int type){
+    private void handleConnectivityChange(boolean connected, int type) throws ReallyWeiredExceptionOnlyAFewPeopleHave {
         ConnectionType cType;
         if(type == ConnectivityManager.TYPE_WIFI)cType = ConnectionType.WIFI;
         else if(type == ConnectivityManager.TYPE_MOBILE || type == ConnectivityManager.TYPE_MOBILE_DUN)cType = ConnectionType.MOBILE;
@@ -139,53 +140,65 @@ public class NetworkCheckHandle {
         handleConnectivityChange(connected, cType);
     }
 
-    private void handleConnectivityChange(boolean connected, ConnectionType connectionType){
-        if(!running || PreferencesAccessor.isEverythingDisabled(context))return;
-        contextLock.lock();
-        boolean serviceRunning = Util.isServiceRunning(context),
+    private void handleConnectivityChange(boolean connected, ConnectionType connectionType) throws ReallyWeiredExceptionOnlyAFewPeopleHave {
+        if(!running || PreferencesAccessor.isEverythingDisabled(accessContext()))return;
+        boolean serviceRunning = Util.isServiceRunning(accessContext()),
                 serviceThreadRunning = Util.isServiceThreadRunning(),
-                autoWifi = Preferences.getBoolean(context, "setting_auto_wifi", false),
-                autoMobile = Preferences.getBoolean(context, "setting_auto_mobile", false),
-                disableNetChange = Preferences.getBoolean(context, "setting_disable_netchange", false);
-        LogFactory.writeMessage(context, LOG_TAG, "Connectivity changed. Connected: " + connected + ", type: " + connectionType);
-        LogFactory.writeMessage(context, LOG_TAG, "Service running: " + serviceRunning + "; Thread running: " + serviceThreadRunning);
-        Util.updateTiles(context);
-        WidgetUtil.updateAllWidgets(context, BasicWidget.class);
+                autoWifi = Preferences.getBoolean(accessContext(), "setting_auto_wifi", false),
+                autoMobile = Preferences.getBoolean(accessContext(), "setting_auto_mobile", false),
+                disableNetChange = Preferences.getBoolean(accessContext(), "setting_disable_netchange", false);
+        LogFactory.writeMessage(accessContext(), LOG_TAG, "Connectivity changed. Connected: " + connected + ", type: " + connectionType);
+        LogFactory.writeMessage(accessContext(), LOG_TAG, "Service running: " + serviceRunning + "; Thread running: " + serviceThreadRunning);
+        Util.updateTiles(accessContext());
+        WidgetUtil.updateAllWidgets(accessContext(), BasicWidget.class);
         Intent i;
         if(connectionType == ConnectionType.VPN)return;
         if (!connected && disableNetChange && serviceRunning) {
-            LogFactory.writeMessage(context, LOG_TAG,
+            LogFactory.writeMessage(accessContext(), LOG_TAG,
                     "Destroying DNSVPNService, as device is not connected and setting_disable_netchange is true",
-                    i = DNSVpnService.getDestroyIntent(context, context.getString(R.string.reason_stop_network_change)));
-            context.startService(i);
-            contextLock.unlock();
+                    i = DNSVpnService.getDestroyIntent(accessContext(), accessContext().getString(R.string.reason_stop_network_change)));
+            accessContext().startService(i);
             return;
         }
         //if (!connected || type == ConnectivityManager.TYPE_BLUETOOTH || type == ConnectivityManager.TYPE_DUMMY || type == ConnectivityManager.TYPE_VPN)
         if(!connected || (connectionType != ConnectionType.WIFI && connectionType != ConnectionType.MOBILE)) {
-            contextLock.unlock();
             return;
         }
         if (!serviceThreadRunning) {
             if (connectionType == ConnectionType.WIFI && autoWifi) {
-                LogFactory.writeMessage(context, LOG_TAG, "Connected to WIFI and setting_auto_wifi is true. Starting Service..");
+                LogFactory.writeMessage(accessContext(), LOG_TAG, "Connected to WIFI and setting_auto_wifi is true. Starting Service..");
                 startService();
             } else if (connectionType == ConnectionType.MOBILE && autoMobile) {
-                LogFactory.writeMessage(context, LOG_TAG, "Connected to MOBILE and setting_auto_mobile is true. Starting Service..");
+                LogFactory.writeMessage(accessContext(), LOG_TAG, "Connected to MOBILE and setting_auto_mobile is true. Starting Service..");
                 startService();
             }
         }else {
             if (!(connectionType == ConnectionType.WIFI && autoWifi) && !(connectionType == ConnectionType.MOBILE && autoMobile) && Preferences.getBoolean(context, "setting_disable_netchange", false) && serviceRunning) {
-                LogFactory.writeMessage(context, LOG_TAG,
+                LogFactory.writeMessage(accessContext(), LOG_TAG,
                         "Not on WIFI or MOBILE and setting_disable_netchange is true. Destroying DNSVPNService.",
-                        i =DNSVpnService.getDestroyIntent(context, context.getString(R.string.reason_stop_network_change)));
-                context.startService(i);
+                        i =DNSVpnService.getDestroyIntent(accessContext(), accessContext().getString(R.string.reason_stop_network_change)));
+                accessContext().startService(i);
             }
         }
-        contextLock.unlock();
     }
 
     private enum ConnectionType{
         MOBILE,WIFI,VPN,OTHER
+    }
+
+    /*
+      Here's the catch for this messy code: I keep getting crash reports (NPE) indicating that the context is null.
+      However this shouldn't be possible because the variable running is set to false and every receiver is unregistered.
+      So this method is used for accessing the context, the exception is thrown all up to the highest layer where it is gracefully ignored.
+     */
+    private Context accessContext() throws ReallyWeiredExceptionOnlyAFewPeopleHave{
+        if(context == null)throw new ReallyWeiredExceptionOnlyAFewPeopleHave();
+        return context;
+    }
+    
+    private class ReallyWeiredExceptionOnlyAFewPeopleHave extends Exception{
+        public ReallyWeiredExceptionOnlyAFewPeopleHave(){
+            super("It's strange, isn't it?");
+        }
     }
 }
