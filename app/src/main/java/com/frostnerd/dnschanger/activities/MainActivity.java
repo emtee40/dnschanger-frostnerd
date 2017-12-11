@@ -1,11 +1,13 @@
 package com.frostnerd.dnschanger.activities;
 
+import android.Manifest;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -14,6 +16,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.util.ArraySet;
@@ -31,6 +34,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.dialogs.ExportSettingsDialog;
 import com.frostnerd.dnschanger.fragments.CurrentNetworksFragment;
 import com.frostnerd.dnschanger.fragments.QueryLogFragment;
 import com.frostnerd.dnschanger.fragments.RulesFragment;
@@ -46,14 +50,17 @@ import com.frostnerd.dnschanger.fragments.MainFragment;
 import com.frostnerd.dnschanger.fragments.SettingsFragment;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.tasker.ConfigureActivity;
+import com.frostnerd.utils.design.dialogs.FileChooserDialog;
 import com.frostnerd.utils.design.material.navigationdrawer.DrawerItem;
 import com.frostnerd.utils.design.material.navigationdrawer.DrawerItemCreator;
 import com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity;
 import com.frostnerd.utils.design.material.navigationdrawer.StyleOptions;
 import com.frostnerd.utils.general.DesignUtil;
 import com.frostnerd.utils.general.Utils;
+import com.frostnerd.utils.permissions.PermissionsUtil;
 import com.frostnerd.utils.preferences.Preferences;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -69,6 +76,7 @@ import java.util.Random;
  */
 public class MainActivity extends NavigationDrawerActivity {
     private static final String LOG_TAG = "[MainActivity]";
+    private static final int REQUEST_PERMISSION_IMPORT_SETTINGS = 131, REQUEST_PERMISSION_EXPORT_SETTINGS = 130;
     private AlertDialog dialog1;
     private DefaultDNSDialog defaultDnsDialog;
     private MainFragment mainFragment;
@@ -448,6 +456,11 @@ public class MainActivity extends NavigationDrawerActivity {
         itemCreator.createItemAndContinue(R.string.title_import_settings, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_action_import)), new DrawerItem.ClickListener() {
             @Override
             public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
+                if(!PermissionsUtil.canReadExternalStorage(MainActivity.this)){
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION_IMPORT_SETTINGS);
+                }else{
+                    importSettings();
+                }
                 return false;
             }
 
@@ -459,6 +472,13 @@ public class MainActivity extends NavigationDrawerActivity {
         itemCreator.createItemAndContinue(R.string.title_export_settings,setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_action_export)), new DrawerItem.ClickListener() {
             @Override
             public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
+                System.out.println("CLICKED");
+                if(!PermissionsUtil.canWriteExternalStorage(MainActivity.this)){
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_EXPORT_SETTINGS);
+                }else{
+                    System.out.println("SHOWING DIALOG");
+                    new ExportSettingsDialog(MainActivity.this).show();
+                }
                 return false;
             }
 
@@ -588,6 +608,38 @@ public class MainActivity extends NavigationDrawerActivity {
             }
         });
         return itemCreator.getDrawerItems();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        System.out.println("PERMISSION RESULT; " + (requestCode == REQUEST_PERMISSION_EXPORT_SETTINGS) + "   " + grantResults[0]);
+        if(requestCode == REQUEST_PERMISSION_EXPORT_SETTINGS && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            new ExportSettingsDialog(this).show();
+        }else if(requestCode == REQUEST_PERMISSION_IMPORT_SETTINGS && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            importSettings();
+        }
+    }
+
+    private void importSettings(){
+        LogFactory.writeMessage(this, new String[]{LOG_TAG, "[IMPORTSETTINGS]"}, "Importing Setting. Showing chooser dialog.");
+        new FileChooserDialog(this, false, FileChooserDialog.SelectionMode.FILE).setFileListener(new FileChooserDialog.FileSelectedListener() {
+            @Override
+            public void fileSelected(File file, FileChooserDialog.SelectionMode selectionMode) {
+                LogFactory.writeMessage(MainActivity.this, new String[]{LOG_TAG,"[IMPORTSETTINGS]"}, "User choose File " + file);
+                LogFactory.writeMessage(MainActivity.this, new String[]{LOG_TAG, "[IMPORTSETTINGS]"}, "Finishing Activity");
+                finish();
+                LogFactory.writeMessage(MainActivity.this, new String[]{LOG_TAG, "[IMPORTSETTINGS]"}, "Starting import (Opening SettingsImportActivity");
+                SettingsImportActivity.importFromFile(MainActivity.this, file);
+            }
+
+            @Override
+            public void multipleFilesSelected(File... files) {
+
+            }
+        }).showDialog();
+        LogFactory.writeMessage(this, new String[]{LOG_TAG, "[IMPORTSETTINGS]"}, "Dialog is now showing");
+
     }
 
     private void openSettingsAndScrollToKey(String key){

@@ -12,6 +12,7 @@
         android:name="android.permission.USE_FINGERPRINT"
         android:required="false" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <permission
         android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
@@ -217,7 +218,7 @@
         <activity
             android:name=".activities.SettingsImportActivity"
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert">
-            <!--<intent-filter android:priority="50">
+            <intent-filter android:priority="50">
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.SEND" />
                 <action android:name="android.intent.action.SENDTO" />
@@ -240,7 +241,7 @@
                 <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.settings" />
                 <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.settings" />
                 <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.settings" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
 
         <receiver
@@ -264,6 +265,16 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/debug_file_paths" />
+        </provider>
+
+        <provider
+            android:name=".util.GenericFileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/generic_provider_paths"/>
         </provider>
 
         <!--<receiver android:name=".widgets.BasicWidget">
