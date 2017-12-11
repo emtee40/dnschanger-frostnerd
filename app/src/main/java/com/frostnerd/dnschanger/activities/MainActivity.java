@@ -444,6 +444,29 @@ public class MainActivity extends NavigationDrawerActivity {
                 return false;
             }
         });
+        itemCreator.createItemAndContinue(R.string.nav_title_importexport);
+        itemCreator.createItemAndContinue(R.string.title_import_settings, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_action_import)), new DrawerItem.ClickListener() {
+            @Override
+            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
+                return false;
+            }
+
+            @Override
+            public boolean onLongClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+                return false;
+            }
+        });
+        itemCreator.createItemAndContinue(R.string.title_export_settings,setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_action_export)), new DrawerItem.ClickListener() {
+            @Override
+            public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
+                return false;
+            }
+
+            @Override
+            public boolean onLongClick(DrawerItem item, NavigationDrawerActivity drawerActivity) {
+                return false;
+            }
+        });
         itemCreator.createItemAndContinue(R.string.app_name);
         itemCreator.createItemAndContinue(R.string.rate, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_star)), new DrawerItem.ClickListener() {
             @Override

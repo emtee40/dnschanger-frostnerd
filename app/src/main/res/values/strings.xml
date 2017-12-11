@@ -315,4 +315,5 @@
     <string name="take_dns_configuration_missing_type">Warning: [type] is missing in the configuration, but is enabled. Do you want to disable it?</string>
     <string name="ignore">Ignore</string>
     <string name="disable">Disable</string>
+    <string name="nav_title_importexport">Import / Export</string>
 </resources>

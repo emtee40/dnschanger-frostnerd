@@ -304,4 +304,5 @@
     <string name="ignore">Bỏ qua</string>
     <string name="disable">Vô hiệu hóa</string>
     <string name="take_dns_configuration_missing_type">Cảnh báo: [type] bị thiếu trong cấu hình, nhưng đã được bật. Bạn có muốn vô hiệu hóa nó?</string>
+    <string name="nav_title_importexport">Nhập khẩu / Xuất khẩu</string>
 </resources>

@@ -308,4 +308,5 @@
     <string name="title_loopback_allowed">Erlaube die Loopback adresse</string>
     <string name="take_dns_configuration_missing_type">Achtung: [type] fehlt in der Konfiguration, aber ist aktiviert. Möchtest du diese deaktivieren?</string>
     <string name="summary_loopback_allowed">Erlaubt es dir, die Loopbackadresse (::1 und 127.0.0.1) zu benutzen</string>
+    <string name="nav_title_importexport">Import / Export</string>
 </resources>
