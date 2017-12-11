@@ -7,6 +7,7 @@
         <item name="colorAccent">#B2EBF2</item>
         <item name="android:windowBackground">@drawable/background_default</item>
         <item name="android:colorBackground">@color/defaultBackgroundColor</item>
+        <item name="navDrawableColor">#FFF</item>
 
         <item name="android:textColor">#EEEEEE</item>
         <item name="android:textColorPrimary">#EEEEEE</item>
@@ -31,6 +32,7 @@
         <item name="colorAccent">#607D8B</item>
         <item name="android:windowBackground">@drawable/background_dark</item>
         <item name="android:colorBackground">@color/darkBackgroundColor</item>
+        <item name="navDrawableColor">#BDBDBD</item>
 
         <item name="android:textColor">#BDBDBD</item>
         <item name="android:textColorSecondary">#E0E0E0</item>
@@ -54,6 +56,7 @@
         <item name="colorAccent">#E0E0E0</item>
         <item name="android:windowBackground">@drawable/background_mono</item>
         <item name="android:colorBackground">@color/monoBackgroundColor</item>
+        <item name="navDrawableColor">#E0E0E0</item>
 
         <item name="android:textColor">#E0E0E0</item>
         <item name="android:textColorSecondary">#BDBDBD</item>

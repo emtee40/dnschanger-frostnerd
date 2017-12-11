@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.LightingColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -16,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.util.ArraySet;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
@@ -30,8 +30,6 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.frostnerd.dnschanger.database.DatabaseHelper;
-import com.frostnerd.dnschanger.database.entities.DNSQuery;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.fragments.CurrentNetworksFragment;
 import com.frostnerd.dnschanger.fragments.QueryLogFragment;
@@ -56,9 +54,7 @@ import com.frostnerd.utils.general.DesignUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.preferences.Preferences;
 
-import java.time.chrono.HijrahEra;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -79,7 +75,7 @@ public class MainActivity extends NavigationDrawerActivity {
     private SettingsFragment settingsFragment;
     private DrawerItem defaultDrawerItem, settingsDrawerItem;
     @ColorInt private int backgroundColor;
-    @ColorInt private int textColor;
+    @ColorInt private int textColor, navDrawableColor;
     private boolean startedActivity = false;
     private final BroadcastReceiver shortcutReceiver = new BroadcastReceiver() {
         @Override
@@ -111,6 +107,7 @@ public class MainActivity extends NavigationDrawerActivity {
         setTheme(ThemeHandler.getAppTheme(this));
         backgroundColor = ThemeHandler.resolveThemeAttribute(getTheme(), android.R.attr.colorBackground);
         textColor = ThemeHandler.resolveThemeAttribute(getTheme(), android.R.attr.textColor);
+        navDrawableColor = ThemeHandler.resolveThemeAttribute(getTheme(), R.attr.navDrawableColor);
         super.onCreate(savedInstanceState);
         currentContext = this;
         new Thread(new Runnable() {
@@ -497,7 +494,7 @@ public class MainActivity extends NavigationDrawerActivity {
                 return false;
             }
         });
-        itemCreator.createItemAndContinue(R.string.nav_title_libraries, R.drawable.ic_library_books, new DrawerItem.ClickListener() {
+        itemCreator.createItemAndContinue(R.string.nav_title_libraries, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_library_books)), new DrawerItem.ClickListener() {
             @Override
             public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
                 String licenseText = getString(R.string.dialog_libraries_text) + "\n\n- - - - - - - - - - - -\ndnsjava by Brian Wellington - http://www.xbill.org/dnsjava/\n\n" + getString(R.string.license_bsd_2).replace("[yearrange]", "1998-2011").replace("[author]", "Brian Wellington");
@@ -580,8 +577,7 @@ public class MainActivity extends NavigationDrawerActivity {
     }
 
     private Drawable setDrawableColor(Drawable drawable){
-        drawable = drawable.mutate();
-        drawable.setColorFilter(new LightingColorFilter(textColor, textColor));
+        DrawableCompat.setTint(drawable.mutate(), navDrawableColor);
         return drawable;
     }
 
