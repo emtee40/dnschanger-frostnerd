@@ -90,6 +90,7 @@
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
+                    android:tint="#FFF"
                     android:background="?attr/inputElementColor"
                     android:src="@drawable/ic_action_import" />
 
