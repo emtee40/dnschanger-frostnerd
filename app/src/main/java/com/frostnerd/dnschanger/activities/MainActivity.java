@@ -477,7 +477,7 @@ public class MainActivity extends NavigationDrawerActivity {
                     ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_EXPORT_SETTINGS);
                 }else{
                     System.out.println("SHOWING DIALOG");
-                    new ExportSettingsDialog(MainActivity.this).show();
+                    new ExportSettingsDialog(MainActivity.this);
                 }
                 return false;
             }
@@ -615,7 +615,7 @@ public class MainActivity extends NavigationDrawerActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         System.out.println("PERMISSION RESULT; " + (requestCode == REQUEST_PERMISSION_EXPORT_SETTINGS) + "   " + grantResults[0]);
         if(requestCode == REQUEST_PERMISSION_EXPORT_SETTINGS && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            new ExportSettingsDialog(this).show();
+            new ExportSettingsDialog(this);
         }else if(requestCode == REQUEST_PERMISSION_IMPORT_SETTINGS && grantResults[0] == PackageManager.PERMISSION_GRANTED){
             importSettings();
         }

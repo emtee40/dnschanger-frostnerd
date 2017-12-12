@@ -39,7 +39,6 @@ public class ExportSettingsDialog extends AlertDialog {
         LogFactory.writeMessage(context, LOG_TAG, "Export directory dialog is now being shown");
         if(Util.getDBHelper(context).getCount(Shortcut.class) == 0){
             LogFactory.writeMessage(context, LOG_TAG, "User has no shortcuts. Not asking whether to export them.");
-            cancel();
             dismiss();
             progressExport(context, false);
         }else{
@@ -66,6 +65,7 @@ public class ExportSettingsDialog extends AlertDialog {
                     cancel();
                 }
             });
+            show();
             LogFactory.writeMessage(context, LOG_TAG, "Dialog is now being shown");
         }
     }
