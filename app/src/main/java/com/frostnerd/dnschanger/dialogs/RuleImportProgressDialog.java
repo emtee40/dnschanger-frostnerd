@@ -103,10 +103,10 @@ public class RuleImportProgressDialog extends AlertDialog {
             String line;
             int lines = 0, fileLines = failFast ? 0 : getFileLines(f), validLinesBuffer;
             FileType won = null, focus = null;
-            List<String> lineBuffer = !failFast && fileLines >= 10000 ? new ArrayList<String>(1000) : null;
+            List<String> lineBuffer = null;
             while((line = reader.readLine()) != null && ((failFast && lines++ <= 300) || (!failFast && lines++ <= fileLines))){
                 if(lines % 10000 == 0){ //We are in non-fail fast, try to focus on the best type yet
-                    if(lineBuffer.size() != 0){ //We had a focus before which wasn't successful in finding the Type
+                    if(lineBuffer != null && lineBuffer.size() != 0){ //We had a focus before which wasn't successful in finding the Type
                         HashMap<FileType, Integer> validLinesTemp = new HashMap<>(validLines);
                         validLinesTemp.remove(focus); //Remove the current focus from the temporary map (Otherwise it would increase its line count twice)
                         for(FileType type: validLinesTemp.keySet()){ //Update the other types
@@ -119,13 +119,16 @@ public class RuleImportProgressDialog extends AlertDialog {
                             }
                         }
                         validLines.putAll(validLinesTemp); //Add the result from the other types
-                        lineBuffer.clear();
                     }
                     Map.Entry<FileType, Integer> max = null;
                     for(Map.Entry<FileType, Integer> entry: validLines.entrySet()){ //Determine the type which had the most matches this far
                         if(max == null || entry.getValue().compareTo(max.getValue()) > 0)max = entry;
                     }
                     focus = max.getKey();
+                    if(lineBuffer == null && lines+10000 <= fileLines)lineBuffer = new ArrayList<>(10001); //Create the linbuffer if there are 10000 lines left and it hasn't been created yet
+                    else if(lineBuffer != null)lineBuffer.clear(); //There are more than 10000 lines left, clear the cache
+
+                    if(lines+10000 <= fileLines)lineBuffer = null; //If there are less than 10000 lines left we do not need to cache them anymore
                 }else if(focus != null){ //Use the determined focus
                     if(focus.validateLine(line)){
                         validLines.put(focus, validLinesBuffer=(validLines.get(focus)+1));
@@ -134,7 +137,8 @@ public class RuleImportProgressDialog extends AlertDialog {
                             break;
                         }
                     }
-                    lineBuffer.add(line); //Safe the lines for the other types (will be queried if focus has no result)
+                    // LineBuffer might be null because there is no sense in buffering anymore
+                    if(lineBuffer != null)lineBuffer.add(line); //Safe the lines for the other types (will be queried if focus has no result)
                 }else{ //Either we are in fail-fast or the focus isn't net
                     for(FileType type: validLines.keySet()){
                         if(type.validateLine(line)){
@@ -147,6 +151,7 @@ public class RuleImportProgressDialog extends AlertDialog {
                     }
                 }
             }
+            if(lineBuffer != null)lineBuffer.clear();
             reader.close();
             if(won == null){
                 Map.Entry<FileType, Integer> max = null;
