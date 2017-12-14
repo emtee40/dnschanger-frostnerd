@@ -40,8 +40,9 @@ public class RuleImportService extends Service {
             PARAM_LINE_COUNT = "lineCount",
             PARAM_DATABASE_CONFLICT_HANDLING = "conflictHandling";
     private static final int NOTIFICATION_ID = 655;
+    private int NOTIFICATION_ID_FINISHED = NOTIFICATION_ID+1;
     private NotificationManager notificationManager;
-    private NotificationCompat.Builder notificationBuilder;
+    private NotificationCompat.Builder notificationBuilder, notificationBuilderFinished;
     private int lastNotificationUpdate = -1;
     private int notificationUpdateCount;
     private Deque<Configuration> configurations;
@@ -137,6 +138,14 @@ public class RuleImportService extends Service {
                         Util.getDBHelper(this, false).getLastRow(DNSRule.class)));
                 reader.close();
             }
+            String text;
+            notificationBuilderFinished.setContentText(text = getString(R.string.rules_import_finished).
+                    replace("[x]", configuration.lineCount + "").
+                    replace("[y]", validLines + "").
+                    replace("[z]", distinctEntries + ""));
+            notificationBuilderFinished.setContentTitle(getString(R.string.done));
+            notificationBuilderFinished.setStyle(new NotificationCompat.BigTextStyle().bigText(text));
+            notificationManager.notify(NOTIFICATION_ID_FINISHED++, notificationBuilderFinished.build());
             if (shouldContinue) database.setTransactionSuccessful();
             database.endTransaction();
         }
@@ -199,6 +208,15 @@ public class RuleImportService extends Service {
         notificationBuilder.setUsesChronometer(true);
         notificationBuilder.setColorized(false);
         notificationBuilder.setSound(null);
+
+        notificationBuilderFinished = new NotificationCompat.Builder(this, Util.createNotificationChannel(this, false));
+        notificationBuilderFinished.setSmallIcon(R.drawable.ic_action_import);
+        notificationBuilderFinished.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0));
+        notificationBuilderFinished.setAutoCancel(true);
+        notificationBuilderFinished.setOngoing(false);
+        notificationBuilderFinished.setUsesChronometer(false);
+        notificationBuilderFinished.setColorized(false);
+        notificationBuilderFinished.setSound(null);
     }
 
     private void determineNotificationUpdateCount(int combinedLineCount){
