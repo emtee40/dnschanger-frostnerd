@@ -103,7 +103,7 @@ public class RuleImportProgressDialog extends AlertDialog {
             String line;
             int lines = 0, fileLines = failFast ? 0 : getFileLines(f), validLinesBuffer;
             FileType won = null, focus = null;
-            List<String> lineBuffer = failFast ? new ArrayList<String>(1000) : null;
+            List<String> lineBuffer = !failFast && fileLines >= 10000 ? new ArrayList<String>(1000) : null;
             while((line = reader.readLine()) != null && ((failFast && lines++ <= 300) || (!failFast && lines++ <= fileLines))){
                 if(lines % 10000 == 0){ //We are in non-fail fast, try to focus on the best type yet
                     if(lineBuffer.size() != 0){ //We had a focus before which wasn't successful in finding the Type
