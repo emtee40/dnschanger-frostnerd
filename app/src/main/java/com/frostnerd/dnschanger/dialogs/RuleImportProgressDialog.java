@@ -127,7 +127,7 @@ public class RuleImportProgressDialog extends AlertDialog {
     public enum FileType implements LineParser, Serializable {
         DNSMASQ {
             @Override
-            public TemporaryDNSRule parseLine(String line) {
+            public synchronized TemporaryDNSRule parseLine(String line) {
                 if(DNSMASQ_MATCHER.reset(line).find()){
                     String host = DNSMASQ_MATCHER.group(1);
                     String target = DNSMASQ_MATCHER.group(2);
@@ -142,7 +142,7 @@ public class RuleImportProgressDialog extends AlertDialog {
             }
         }, HOST {
             @Override
-            public TemporaryDNSRule parseLine(String line) {
+            public synchronized TemporaryDNSRule parseLine(String line) {
                 if(HOSTS_MATCHER.reset(line).find()){
                     String host = HOSTS_MATCHER.group(1), target;
                     boolean ipv6 = false;
@@ -160,7 +160,7 @@ public class RuleImportProgressDialog extends AlertDialog {
             }
         }, ADBLOCK_FILE{
             @Override
-            public TemporaryDNSRule parseLine(String line) {
+            public synchronized TemporaryDNSRule parseLine(String line) {
                 if(ADBLOCK_MATCHER.reset(line).find()){
                     String host = ADBLOCK_MATCHER.group(1);
                     return new TemporaryDNSRule(host);
@@ -169,7 +169,7 @@ public class RuleImportProgressDialog extends AlertDialog {
             }
         }, DOMAIN_LIST {
             @Override
-            public TemporaryDNSRule parseLine(String line) {
+            public synchronized TemporaryDNSRule parseLine(String line) {
                 if(DOMAINS_MATCHER.reset(line).find()){
                     String host = DOMAINS_MATCHER.group(1);
                     return new TemporaryDNSRule(host);
