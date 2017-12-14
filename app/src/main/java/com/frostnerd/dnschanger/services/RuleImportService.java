@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.PinActivity;
@@ -38,7 +39,8 @@ import java.util.Deque;
 public class RuleImportService extends Service {
     public static final String PARAM_FILE_LIST = "filelist",
             PARAM_LINE_COUNT = "lineCount",
-            PARAM_DATABASE_CONFLICT_HANDLING = "conflictHandling";
+            PARAM_DATABASE_CONFLICT_HANDLING = "conflictHandling",
+            BROADCAST_EVENT_DATABASE_UPDATED = "com.frostnerd.dnschanger.RULE_DATABASE_UPDATE";
     private static final int NOTIFICATION_ID = 655;
     private int NOTIFICATION_ID_FINISHED = NOTIFICATION_ID+1;
     private NotificationManager notificationManager;
@@ -148,6 +150,7 @@ public class RuleImportService extends Service {
             notificationManager.notify(NOTIFICATION_ID_FINISHED++, notificationBuilderFinished.build());
             if (shouldContinue) database.setTransactionSuccessful();
             database.endTransaction();
+            LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(BROADCAST_EVENT_DATABASE_UPDATED));
         }
         stopSelf();
     }
