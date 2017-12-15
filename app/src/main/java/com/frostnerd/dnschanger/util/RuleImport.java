@@ -1,15 +1,9 @@
-package com.frostnerd.dnschanger.dialogs;
+package com.frostnerd.dnschanger.util;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
-import android.view.View;
-import android.widget.TextView;
 
-import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.services.RuleImportService;
-import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.networking.NetworkUtil;
 
 import java.io.BufferedReader;
@@ -35,51 +29,25 @@ import java.util.regex.Pattern;
  * <p>
  * development@frostnerd.com
  */
-public class RuleImportProgressDialog extends AlertDialog {
+public class RuleImport {
     private static final Pattern DNSMASQ_PATTERN = Pattern.compile("^address=/([^/]+)/(?:([0-9.]+)|([0-9a-fA-F:]+))");
     private static final Matcher DNSMASQ_MATCHER = DNSMASQ_PATTERN.matcher(""),
-    DNSMASQ_VALIDATION_MATCHER = DNSMASQ_PATTERN.matcher("");
+            DNSMASQ_VALIDATION_MATCHER = DNSMASQ_PATTERN.matcher("");
     private static final Pattern HOSTS_PATTERN = Pattern.compile("^(?:([^#\\s]+)\\s+(((?:[0-9.[^#\\s]])+$)|(?:[0-9a-fA-F:[^#\\s]]+)))|(?:^(?:([0-9.]+)|([0-9a-fA-F:]+))\\s+([^#\\s]+))");
     private static final Matcher HOSTS_MATCHER = HOSTS_PATTERN.matcher(""),
-    HOSTS_VALIDATION_MATCHER = HOSTS_PATTERN.matcher("");
+            HOSTS_VALIDATION_MATCHER = HOSTS_PATTERN.matcher("");
     private static final Pattern DOMAINS_PATTERN = Pattern.compile("^([A-Za-z0-9][A-Za-z0-9\\-.]+)");
     private static final Matcher DOMAINS_MATCHER = DOMAINS_PATTERN.matcher(""),
-    DOMAINS_VALIDATION_MATCHER = DOMAINS_PATTERN.matcher("");
+            DOMAINS_VALIDATION_MATCHER = DOMAINS_PATTERN.matcher("");
     private static final Pattern ADBLOCK_PATTERN = Pattern.compile("^\\|\\|([A-Za-z0-9][A-Za-z0-9\\-.]+)\\^");
     private static final Matcher ADBLOCK_MATCHER = ADBLOCK_PATTERN.matcher(""),
-    ADBLOCK_VALIDATION_MATCHER = ADBLOCK_PATTERN.matcher("");
-    private int linesCombined;
+            ADBLOCK_VALIDATION_MATCHER = ADBLOCK_PATTERN.matcher("");
 
-    public RuleImportProgressDialog(@NonNull Activity context, List<ImportableFile> files, int databaseConflictHandling) {
-        super(context, ThemeHandler.getDialogTheme(context));
+    public static void startImport(@NonNull Activity context, List<ImportableFile> files, int databaseConflictHandling){
+        int linesCombined = 0;
         for(ImportableFile file: files)linesCombined += file.getLines();
-        setTitle(getContext().getString(R.string.importing_x_rules).replace("[x]", "" + linesCombined));
-        setCancelable(false);
-        setCanceledOnTouchOutside(false);
-        setButton(BUTTON_NEUTRAL, context.getString(R.string.cancel), new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //asyncImport.cancel(false);
-                //asyncImport = null;
-                dialog.dismiss();
-            }
-        });
-        setOnDismissListener(new OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                //if(asyncImport != null)asyncImport.cancel(false);
-                //asyncImport = null;
-            }
-        });
-        View content;
-        setView(content = getLayoutInflater().inflate(R.layout.dialog_rule_import_progress, null, false));
         context.startService(RuleImportService.createIntent(context, linesCombined, databaseConflictHandling,
                 files.toArray(new ImportableFile[files.size()])));
-    }
-
-    @Override
-    public void dismiss() {
-        super.dismiss();
     }
 
     public static int getFileLines(File f) {

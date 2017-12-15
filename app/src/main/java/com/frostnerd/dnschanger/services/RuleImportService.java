@@ -16,7 +16,7 @@ import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.database.entities.DNSRule;
 import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
-import com.frostnerd.dnschanger.dialogs.RuleImportProgressDialog;
+import com.frostnerd.dnschanger.util.RuleImport;
 import com.frostnerd.dnschanger.util.Util;
 
 import java.io.BufferedReader;
@@ -50,7 +50,7 @@ public class RuleImportService extends Service {
     private Deque<Configuration> configurations;
     private boolean shouldContinue = true;
 
-    public static Intent createIntent(Context context, int lineCount, int databaseConflictHandling, RuleImportProgressDialog.ImportableFile... importableFiles){
+    public static Intent createIntent(Context context, int lineCount, int databaseConflictHandling, RuleImport.ImportableFile... importableFiles){
         Intent intent = new Intent(context, RuleImportService.class);
         intent.putExtra(PARAM_LINE_COUNT, lineCount);
         intent.putExtra(PARAM_DATABASE_CONFLICT_HANDLING, databaseConflictHandling);
@@ -86,7 +86,7 @@ public class RuleImportService extends Service {
 
     private void startImport() throws IOException {
         String line;
-        RuleImportProgressDialog.TemporaryDNSRule rule;
+        RuleImport.TemporaryDNSRule rule;
         ContentValues values = new ContentValues(4);
         int i = 0, currentCount, rowID;
         String ruleTableName = Util.getDBHelper(this, false).getTableName(DNSRule.class),
@@ -102,11 +102,11 @@ public class RuleImportService extends Service {
             int validLines = 0, distinctEntries = 0;
             SQLiteDatabase database = Util.getDBHelper(this, false).getWritableDatabase();
             database.beginTransaction();
-            for(RuleImportProgressDialog.ImportableFile file: configuration.fileList.files){
+            for(RuleImport.ImportableFile file: configuration.fileList.files){
                 if(!shouldContinue)break;
                 currentCount = 0;
                 BufferedReader reader = new BufferedReader(new FileReader(file.getFile()));
-                RuleImportProgressDialog.LineParser parser = file.getFileType();
+                RuleImport.LineParser parser = file.getFileType();
                 updateNotification(file.getFile());
                 rowID = Util.getDBHelper(this, false).getHighestRowID(DNSRule.class);
                 while (shouldContinue && (line = reader.readLine()) != null) {
@@ -241,13 +241,13 @@ public class RuleImportService extends Service {
     }
 
     public static final class FileList implements Serializable {
-        private RuleImportProgressDialog.ImportableFile[] files;
+        private RuleImport.ImportableFile[] files;
 
-        private FileList(RuleImportProgressDialog.ImportableFile[] files) {
+        private FileList(RuleImport.ImportableFile[] files) {
             this.files = files;
         }
 
-        public static FileList of(RuleImportProgressDialog.ImportableFile... files) {
+        public static FileList of(RuleImport.ImportableFile... files) {
             return new FileList(files);
         }
     }
