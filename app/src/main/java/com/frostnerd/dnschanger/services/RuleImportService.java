@@ -41,6 +41,8 @@ public class RuleImportService extends Service {
             PARAM_LINE_COUNT = "lineCount",
             PARAM_DATABASE_CONFLICT_HANDLING = "conflictHandling",
             BROADCAST_EVENT_DATABASE_UPDATED = "com.frostnerd.dnschanger.RULE_DATABASE_UPDATE";
+    private static final String NOTIFICATION_ACTION_STOP_CURRENT = "stopme",
+            NOTIFICATION_ACTION_STOP_ALL = "killme";
     private static final int NOTIFICATION_ID = 655;
     private int NOTIFICATION_ID_FINISHED = NOTIFICATION_ID+1;
     private NotificationManager notificationManager;
@@ -48,7 +50,7 @@ public class RuleImportService extends Service {
     private int lastNotificationUpdate = -1;
     private int notificationUpdateCount;
     private Deque<Configuration> configurations;
-    private boolean shouldContinue = true;
+    private boolean shouldContinue = true, continueCurrent = true;
 
     public static Intent createIntent(Context context, int lineCount, int databaseConflictHandling, RuleImport.ImportableFile... importableFiles){
         Intent intent = new Intent(context, RuleImportService.class);
@@ -79,8 +81,15 @@ public class RuleImportService extends Service {
             }.start();
             return START_STICKY;
         }else {
-            stopSelf();
-            return START_NOT_STICKY;
+            if(intent != null && intent.hasExtra(NOTIFICATION_ACTION_STOP_CURRENT)){
+                continueCurrent = false;
+                return START_STICKY;
+            }else{
+                shouldContinue = false;
+                stopSelf();
+                return START_NOT_STICKY;
+            }
+
         }
     }
 
@@ -102,14 +111,15 @@ public class RuleImportService extends Service {
             int validLines = 0, distinctEntries = 0;
             SQLiteDatabase database = Util.getDBHelper(this, false).getWritableDatabase();
             database.beginTransaction();
+            continueCurrent = true;
             for(RuleImport.ImportableFile file: configuration.fileList.files){
-                if(!shouldContinue)break;
+                if(!shouldContinue || !continueCurrent)break;
                 currentCount = 0;
                 BufferedReader reader = new BufferedReader(new FileReader(file.getFile()));
                 RuleImport.LineParser parser = file.getFileType();
                 updateNotification(file.getFile());
                 rowID = Util.getDBHelper(this, false).getHighestRowID(DNSRule.class);
-                while (shouldContinue && (line = reader.readLine()) != null) {
+                while (continueCurrent && shouldContinue && (line = reader.readLine()) != null) {
                     i++;
                     rule = parser.parseLine(line.trim());
                     if (rule != null) {
@@ -135,22 +145,24 @@ public class RuleImportService extends Service {
                     }
                     updateNotification(i, configuration.lineCount);
                 }
-                if(shouldContinue && currentCount != 0) Util.getDBHelper(this, false).insert(new DNSRuleImport(file.getFile().getName(), System.currentTimeMillis(),
+                if(continueCurrent && shouldContinue && currentCount != 0) Util.getDBHelper(this, false).insert(new DNSRuleImport(file.getFile().getName(), System.currentTimeMillis(),
                         Util.getDBHelper(this, false).getByRowID(DNSRule.class, rowID),
                         Util.getDBHelper(this, false).getLastRow(DNSRule.class)));
                 reader.close();
             }
-            String text;
-            notificationBuilderFinished.setContentText(text = getString(R.string.rules_import_finished).
-                    replace("[x]", configuration.lineCount + "").
-                    replace("[y]", validLines + "").
-                    replace("[z]", distinctEntries + ""));
-            notificationBuilderFinished.setContentTitle(getString(R.string.done));
-            notificationBuilderFinished.setStyle(new NotificationCompat.BigTextStyle().bigText(text));
-            notificationManager.notify(NOTIFICATION_ID_FINISHED++, notificationBuilderFinished.build());
-            if (shouldContinue) database.setTransactionSuccessful();
-            database.endTransaction();
-            LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(BROADCAST_EVENT_DATABASE_UPDATED));
+            if(continueCurrent && shouldContinue){
+                String text;
+                notificationBuilderFinished.setContentText(text = getString(R.string.rules_import_finished).
+                        replace("[x]", configuration.lineCount + "").
+                        replace("[y]", validLines + "").
+                        replace("[z]", distinctEntries + ""));
+                notificationBuilderFinished.setContentTitle(getString(R.string.done));
+                notificationBuilderFinished.setStyle(new NotificationCompat.BigTextStyle().bigText(text));
+                notificationManager.notify(NOTIFICATION_ID_FINISHED++, notificationBuilderFinished.build());
+                database.setTransactionSuccessful();
+                database.endTransaction();
+                LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(BROADCAST_EVENT_DATABASE_UPDATED));
+            }
         }
         stopSelf();
     }
@@ -211,6 +223,10 @@ public class RuleImportService extends Service {
         notificationBuilder.setUsesChronometer(true);
         notificationBuilder.setColorized(false);
         notificationBuilder.setSound(null);
+        notificationBuilder.addAction(new NotificationCompat.Action(R.drawable.ic_stat_stop, getString(R.string.stop),
+                PendingIntent.getService(this, 2, new Intent(this, RuleImportService.class).putExtra(NOTIFICATION_ACTION_STOP_CURRENT, "herp"), 0)));
+        notificationBuilder.addAction(new NotificationCompat.Action(R.drawable.ic_stat_stop, getString(R.string.stop_all),
+                PendingIntent.getService(this, 1, new Intent(this, RuleImportService.class).putExtra(NOTIFICATION_ACTION_STOP_ALL, "herp"),0)));
 
         notificationBuilderFinished = new NotificationCompat.Builder(this, Util.createNotificationChannel(this, false));
         notificationBuilderFinished.setSmallIcon(R.drawable.ic_action_import);
