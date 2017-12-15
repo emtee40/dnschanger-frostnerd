@@ -224,9 +224,9 @@ public class RuleImportService extends Service {
 
     private void determineNotificationUpdateCount(int combinedLineCount){
         int factor = -1;
-        if (combinedLineCount >= 750000) factor = 180;
-        else if (combinedLineCount >= 500000) factor = 120;
-        else if (combinedLineCount >= 250000) factor = 90;
+        if (combinedLineCount >= 750000) factor = 210;
+        else if (combinedLineCount >= 500000) factor = 150;
+        else if (combinedLineCount >= 250000) factor = 105;
         else if (combinedLineCount >= 100000) factor = 65;
         else if (combinedLineCount >= 50000) factor = 45;
         else if (combinedLineCount >= 10000) factor = 30;
