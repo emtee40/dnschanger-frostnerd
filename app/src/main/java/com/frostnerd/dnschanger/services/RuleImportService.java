@@ -196,20 +196,20 @@ public class RuleImportService extends Service {
 
     private void updateNotification(File file){
         notificationBuilder.setSubText(file.getName());
-        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        startForeground(NOTIFICATION_ID, notificationBuilder.build());
     }
 
     private void updateNotification(int currentLines, int lineCount){
         if(currentLines > lastNotificationUpdate){
             lastNotificationUpdate += notificationUpdateCount;
             notificationBuilder.setContentText(currentLines + "/" + lineCount);
-            notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+            startForeground(NOTIFICATION_ID, notificationBuilder.build());
         }
     }
 
     private void updateNotification(int combinedLineCount){
         notificationBuilder.setContentTitle(getString(R.string.importing_x_rules).replace("[x]", "" + combinedLineCount));
-        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        startForeground(NOTIFICATION_ID, notificationBuilder.build());
     }
 
     private void initNotification() {
