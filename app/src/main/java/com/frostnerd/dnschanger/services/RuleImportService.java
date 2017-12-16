@@ -160,9 +160,9 @@ public class RuleImportService extends Service {
                 notificationBuilderFinished.setStyle(new NotificationCompat.BigTextStyle().bigText(text));
                 notificationManager.notify(NOTIFICATION_ID_FINISHED++, notificationBuilderFinished.build());
                 database.setTransactionSuccessful();
-                database.endTransaction();
                 LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(BROADCAST_EVENT_DATABASE_UPDATED));
             }
+            database.endTransaction();
         }
         stopSelf();
     }
