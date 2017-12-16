@@ -139,7 +139,7 @@ public class RuleImport {
         DNSMASQ {
             @Override
             public TemporaryDNSRule parseLine(String line) {
-                if(DNSMASQ_MATCHER.reset(line).matches()){
+                if(DNSMASQ_MATCHER.reset(line).find()){
                     String host = DNSMASQ_MATCHER.group(1);
                     String target = DNSMASQ_MATCHER.group(2);
                     if(target != null && NetworkUtil.isIP(target, false)){
@@ -154,7 +154,7 @@ public class RuleImport {
 
             @Override
             public boolean validateLine(String line) {
-                if(DNSMASQ_VALIDATION_MATCHER.reset(line).matches()){
+                if(DNSMASQ_VALIDATION_MATCHER.reset(line).find()){
                     String target = DNSMASQ_VALIDATION_MATCHER.group(2);
                     if(target != null && NetworkUtil.isIP(target, false)){
                         return true;
@@ -167,7 +167,7 @@ public class RuleImport {
         }, HOST {
             @Override
             public TemporaryDNSRule parseLine(String line) {
-                if(HOSTS_MATCHER.reset(line).matches()){
+                if(HOSTS_MATCHER.reset(line).find()){
                     String host = HOSTS_MATCHER.group(1), target;
                     boolean ipv6 = false;
                     if(NetworkUtil.isIPv4(host) || (ipv6 = NetworkUtil.isIP(host, true))){
@@ -185,7 +185,7 @@ public class RuleImport {
 
             @Override
             public boolean validateLine(String line) {
-                if(HOSTS_VALIDATION_MATCHER.reset(line).matches()){
+                if(HOSTS_VALIDATION_MATCHER.reset(line).find()){
                     String host = HOSTS_VALIDATION_MATCHER.group(1), target;
                     boolean ipv6 = false;
                     if(NetworkUtil.isIPv4(host) || (ipv6 = NetworkUtil.isIP(host, true))){
@@ -201,7 +201,7 @@ public class RuleImport {
         }, ADBLOCK_FILE{
             @Override
             public TemporaryDNSRule parseLine(String line) {
-                if(ADBLOCK_MATCHER.reset(line).matches()){
+                if(ADBLOCK_MATCHER.reset(line).find()){
                     String host = ADBLOCK_MATCHER.group(1);
                     return new TemporaryDNSRule(host);
                 }
@@ -210,12 +210,12 @@ public class RuleImport {
 
             @Override
             public boolean validateLine(String line) {
-                return ADBLOCK_VALIDATION_MATCHER.reset(line).matches();
+                return ADBLOCK_VALIDATION_MATCHER.reset(line).find();
             }
         }, DOMAIN_LIST {
             @Override
             public TemporaryDNSRule parseLine(String line) {
-                if(DOMAINS_MATCHER.reset(line).matches()){
+                if(DOMAINS_MATCHER.reset(line).find()){
                     String host = DOMAINS_MATCHER.group(1);
                     return new TemporaryDNSRule(host);
                 }
@@ -224,7 +224,7 @@ public class RuleImport {
 
             @Override
             public boolean validateLine(String line) {
-                return DOMAINS_VALIDATION_MATCHER.reset(line).matches();
+                return DOMAINS_VALIDATION_MATCHER.reset(line).find();
             }
         }
 
