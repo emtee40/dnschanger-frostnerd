@@ -181,8 +181,8 @@ public class RuleImportService extends Service {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        //super.onTaskRemoved(rootIntent);
-        //cleanup();
+        super.onTaskRemoved(rootIntent);
+        cleanup();
     }
 
     private void cleanup() {
