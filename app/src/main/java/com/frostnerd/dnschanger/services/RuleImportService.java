@@ -51,6 +51,7 @@ public class RuleImportService extends Service {
     private int notificationUpdateCount;
     private Deque<Configuration> configurations;
     private boolean shouldContinue = true, continueCurrent = true;
+    private SQLiteDatabase currentDatabaseInstance;
 
     public static Intent createIntent(Context context, int lineCount, int databaseConflictHandling, RuleImport.ImportableFile... importableFiles){
         Intent intent = new Intent(context, RuleImportService.class);
@@ -109,8 +110,8 @@ public class RuleImportService extends Service {
             determineNotificationUpdateCount(configuration.lineCount);
             updateNotification(configuration.lineCount);
             int validLines = 0, distinctEntries = 0;
-            SQLiteDatabase database = Util.getDBHelper(this, false).getWritableDatabase();
-            database.beginTransaction();
+            currentDatabaseInstance = Util.getDBHelper(this, false).getWritableDatabase();
+            currentDatabaseInstance.beginTransaction();
             continueCurrent = true;
             for(RuleImport.ImportableFile file: configuration.fileList.files){
                 if(!shouldContinue || !continueCurrent)break;
@@ -128,7 +129,7 @@ public class RuleImportService extends Service {
                         if(rule.isBoth()){
                             values.put(columnTarget, "127.0.0.1");
                             values.put(columnIPv6, false);
-                            if(database.insertWithOnConflict(ruleTableName, null, values, configuration.databaseConflictHandling) != -1){
+                            if(currentDatabaseInstance.insertWithOnConflict(ruleTableName, null, values, configuration.databaseConflictHandling) != -1){
                                 distinctEntries++;
                                 currentCount++;
                             }
@@ -138,7 +139,7 @@ public class RuleImportService extends Service {
                             values.put(columnTarget, rule.getTarget());
                             values.put(columnIPv6, rule.isIpv6());
                         }
-                        if(database.insertWithOnConflict(ruleTableName, null, values, configuration.databaseConflictHandling) != -1){
+                        if(currentDatabaseInstance.insertWithOnConflict(ruleTableName, null, values, configuration.databaseConflictHandling) != -1){
                             distinctEntries++;
                             currentCount++;
                         }
@@ -159,10 +160,11 @@ public class RuleImportService extends Service {
                 notificationBuilderFinished.setContentTitle(getString(R.string.done));
                 notificationBuilderFinished.setStyle(new NotificationCompat.BigTextStyle().bigText(text));
                 notificationManager.notify(NOTIFICATION_ID_FINISHED++, notificationBuilderFinished.build());
-                database.setTransactionSuccessful();
+                currentDatabaseInstance.setTransactionSuccessful();
                 LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(BROADCAST_EVENT_DATABASE_UPDATED));
             }
-            database.endTransaction();
+            currentDatabaseInstance.endTransaction();
+            currentDatabaseInstance = null;
         }
         stopSelf();
     }
@@ -192,6 +194,8 @@ public class RuleImportService extends Service {
         notificationManager = null;
         notificationBuilder = null;
         configurations.clear();
+        if(currentDatabaseInstance != null)currentDatabaseInstance.endTransaction();
+        currentDatabaseInstance = null;
     }
 
     private void updateNotification(File file){
