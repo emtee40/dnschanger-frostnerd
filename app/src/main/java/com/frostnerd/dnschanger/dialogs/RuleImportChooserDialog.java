@@ -20,6 +20,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.util.RuleImport;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.design.dialogs.FileChooserDialog;
 import com.frostnerd.utils.design.dialogs.LoadingDialog;
@@ -38,11 +39,11 @@ import java.util.List;
  * development@frostnerd.com
  */
 class RuleImportChooserDialog extends AlertDialog {
-    private final List<RuleImportProgressDialog.ImportableFile> files = new ArrayList<>();
+    private final List<RuleImport.ImportableFile> files = new ArrayList<>();
     private final TextView fileLabel;
     private final TextView failFastInfo;
-    private RuleImportProgressDialog.FileType type = RuleImportProgressDialog.FileType.DNSMASQ;
-    private RuleImportProgressDialog importProgressDialog;
+    private RuleImport.FileType type = RuleImport.FileType.DNSMASQ;
+    private RuleImport importProgressDialog;
     private final CheckBox tryDetectType;
     private final CheckBox failFast;
     private final RadioButton dnsmasq;
@@ -80,13 +81,13 @@ class RuleImportChooserDialog extends AlertDialog {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 if (checkedId == R.id.radio_dnsmasq)
-                    type = RuleImportProgressDialog.FileType.DNSMASQ;
+                    type = RuleImport.FileType.DNSMASQ;
                 else if (checkedId == R.id.radio_hosts)
-                    type = RuleImportProgressDialog.FileType.HOST;
+                    type = RuleImport.FileType.HOST;
                 else if (checkedId == R.id.radio_justdomains)
-                    type = RuleImportProgressDialog.FileType.DOMAIN_LIST;
+                    type = RuleImport.FileType.DOMAIN_LIST;
                 else if (checkedId == R.id.radio_adblock)
-                    type = RuleImportProgressDialog.FileType.ADBLOCK_FILE;
+                    type = RuleImport.FileType.ADBLOCK_FILE;
             }
         });
         setButton(BUTTON_NEUTRAL, context.getString(R.string.cancel), new OnClickListener() {
@@ -98,25 +99,18 @@ class RuleImportChooserDialog extends AlertDialog {
         setButton(BUTTON_POSITIVE, getContext().getString(R.string.done), new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                List<RuleImportProgressDialog.ImportableFile> importableFiles = new ArrayList<>();
-                for (RuleImportProgressDialog.ImportableFile file : files) {
+                List<RuleImport.ImportableFile> importableFiles = new ArrayList<>();
+                for (RuleImport.ImportableFile file : files) {
                     if (file.getFileType() != null) importableFiles.add(file);
                 }
                 dialog.dismiss();
-                importProgressDialog = new RuleImportProgressDialog(context, importableFiles, SQLiteDatabase.CONFLICT_IGNORE);
-                importProgressDialog.show();
+                RuleImport.startImport(context, importableFiles, SQLiteDatabase.CONFLICT_IGNORE);
             }
         });
         setOnShowListener(new OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
                 getButton(BUTTON_POSITIVE).setVisibility(View.INVISIBLE);
-            }
-        });
-        setOnDismissListener(new OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                if(importProgressDialog != null)importProgressDialog.dismiss();
             }
         });
     }
@@ -161,7 +155,7 @@ class RuleImportChooserDialog extends AlertDialog {
                             @Override
                             public void run() {
                                 int lines;
-                                RuleImportProgressDialog.FileType type;
+                                RuleImport.FileType type;
                                 Handler handler = new Handler(Looper.getMainLooper());
                                 for (final File f : selectedFiles) {
                                     if(!dialog.isShowing())break;
@@ -171,9 +165,9 @@ class RuleImportChooserDialog extends AlertDialog {
                                             dialog.appendToMessage("\n\n" + f.getName());
                                         }
                                     });
-                                    if ((lines = RuleImportProgressDialog.getFileLines(f)) == 0) continue;
-                                    type = RuleImportProgressDialog.tryFindFileType(f, failFast.isChecked());
-                                    files.add(new RuleImportProgressDialog.ImportableFile(f, type, lines));
+                                    if ((lines = RuleImport.getFileLines(f)) == 0) continue;
+                                    type = RuleImport.tryFindFileType(f, failFast.isChecked());
+                                    files.add(new RuleImport.ImportableFile(f, type, lines));
                                 }
                                 dialog.cancel();
                             }
@@ -183,7 +177,7 @@ class RuleImportChooserDialog extends AlertDialog {
 
                 private void detectSingleFileType(final File file){
                     final int lines;
-                    if ((lines = RuleImportProgressDialog.getFileLines(file)) == 0) {
+                    if ((lines = RuleImport.getFileLines(file)) == 0) {
                         getButton(BUTTON_POSITIVE).setVisibility(View.INVISIBLE);
                         return;
                     }
@@ -213,7 +207,7 @@ class RuleImportChooserDialog extends AlertDialog {
                                     adblock.setChecked(true);
                                     break;
                             }
-                            files.add(new RuleImportProgressDialog.ImportableFile(file, type, lines));
+                            files.add(new RuleImport.ImportableFile(file, type, lines));
                             setLabelText();
                         }
                     });
@@ -221,7 +215,7 @@ class RuleImportChooserDialog extends AlertDialog {
                     new Thread(){
                         @Override
                         public void run() {
-                            type = RuleImportProgressDialog.tryFindFileType(file, failFast.isChecked());
+                            type = RuleImport.tryFindFileType(file, failFast.isChecked());
                             dialog.cancel();
                         }
                     }.start();
@@ -229,7 +223,7 @@ class RuleImportChooserDialog extends AlertDialog {
 
                 private void setLabelText() {
                     StringBuilder builder = new StringBuilder();
-                    for (RuleImportProgressDialog.ImportableFile importableFile : files) {
+                    for (RuleImport.ImportableFile importableFile : files) {
                         builder.append(importableFile.getFile().getName()).append(" [").
                                 append(importableFile.getFileType() == null ? getContext().getString(R.string.rule_unknown_ignoring) : importableFile.getFileType()).
                                 append(", ").append(getContext().getString(R.string.x_lines).replace("[x]", "" + importableFile.getLines())).

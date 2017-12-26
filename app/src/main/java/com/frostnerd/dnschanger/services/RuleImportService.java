@@ -10,12 +10,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 
+import com.frostnerd.dnschanger.DNSChanger;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.database.entities.DNSRule;
 import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
-import com.frostnerd.dnschanger.dialogs.RuleImportProgressDialog;
+import com.frostnerd.dnschanger.util.RuleImport;
 import com.frostnerd.dnschanger.util.Util;
 
 import java.io.BufferedReader;
@@ -38,16 +40,21 @@ import java.util.Deque;
 public class RuleImportService extends Service {
     public static final String PARAM_FILE_LIST = "filelist",
             PARAM_LINE_COUNT = "lineCount",
-            PARAM_DATABASE_CONFLICT_HANDLING = "conflictHandling";
+            PARAM_DATABASE_CONFLICT_HANDLING = "conflictHandling",
+            BROADCAST_EVENT_DATABASE_UPDATED = "com.frostnerd.dnschanger.RULE_DATABASE_UPDATE";
+    private static final String NOTIFICATION_ACTION_STOP_CURRENT = "stopme",
+            NOTIFICATION_ACTION_STOP_ALL = "killme";
     private static final int NOTIFICATION_ID = 655;
+    private int NOTIFICATION_ID_FINISHED = NOTIFICATION_ID+1;
     private NotificationManager notificationManager;
-    private NotificationCompat.Builder notificationBuilder;
+    private NotificationCompat.Builder notificationBuilder, notificationBuilderFinished;
     private int lastNotificationUpdate = -1;
     private int notificationUpdateCount;
     private Deque<Configuration> configurations;
-    private boolean shouldContinue = true;
+    private boolean shouldContinue = true, continueCurrent = true;
+    private SQLiteDatabase currentDatabaseInstance;
 
-    public static Intent createIntent(Context context, int lineCount, int databaseConflictHandling, RuleImportProgressDialog.ImportableFile... importableFiles){
+    public static Intent createIntent(Context context, int lineCount, int databaseConflictHandling, RuleImport.ImportableFile... importableFiles){
         Intent intent = new Intent(context, RuleImportService.class);
         intent.putExtra(PARAM_LINE_COUNT, lineCount);
         intent.putExtra(PARAM_DATABASE_CONFLICT_HANDLING, databaseConflictHandling);
@@ -76,14 +83,27 @@ public class RuleImportService extends Service {
             }.start();
             return START_STICKY;
         }else {
-            stopSelf();
-            return START_NOT_STICKY;
+            if(intent != null && intent.hasExtra(NOTIFICATION_ACTION_STOP_CURRENT)){
+                continueCurrent = false;
+                return START_STICKY;
+            }else{
+                shouldContinue = false;
+                stopSelf();
+                return START_NOT_STICKY;
+            }
+
         }
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Thread.setDefaultUncaughtExceptionHandler(((DNSChanger)getApplication()).getExceptionHandler());
     }
 
     private void startImport() throws IOException {
         String line;
-        RuleImportProgressDialog.TemporaryDNSRule rule;
+        RuleImport.TemporaryDNSRule rule;
         ContentValues values = new ContentValues(4);
         int i = 0, currentCount, rowID;
         String ruleTableName = Util.getDBHelper(this, false).getTableName(DNSRule.class),
@@ -97,16 +117,17 @@ public class RuleImportService extends Service {
             determineNotificationUpdateCount(configuration.lineCount);
             updateNotification(configuration.lineCount);
             int validLines = 0, distinctEntries = 0;
-            SQLiteDatabase database = Util.getDBHelper(this, false).getWritableDatabase();
-            database.beginTransaction();
-            for(RuleImportProgressDialog.ImportableFile file: configuration.fileList.files){
-                if(!shouldContinue)break;
+            currentDatabaseInstance = Util.getDBHelper(this, false).getWritableDatabase();
+            currentDatabaseInstance.beginTransaction();
+            continueCurrent = true;
+            for(RuleImport.ImportableFile file: configuration.fileList.files){
+                if(!shouldContinue || !continueCurrent)break;
                 currentCount = 0;
                 BufferedReader reader = new BufferedReader(new FileReader(file.getFile()));
-                RuleImportProgressDialog.LineParser parser = file.getFileType();
+                RuleImport.LineParser parser = file.getFileType();
                 updateNotification(file.getFile());
                 rowID = Util.getDBHelper(this, false).getHighestRowID(DNSRule.class);
-                while (shouldContinue && (line = reader.readLine()) != null) {
+                while (continueCurrent && shouldContinue && (line = reader.readLine()) != null) {
                     i++;
                     rule = parser.parseLine(line.trim());
                     if (rule != null) {
@@ -115,7 +136,7 @@ public class RuleImportService extends Service {
                         if(rule.isBoth()){
                             values.put(columnTarget, "127.0.0.1");
                             values.put(columnIPv6, false);
-                            if(database.insertWithOnConflict(ruleTableName, null, values, configuration.databaseConflictHandling) != -1){
+                            if(currentDatabaseInstance.insertWithOnConflict(ruleTableName, null, values, configuration.databaseConflictHandling) != -1){
                                 distinctEntries++;
                                 currentCount++;
                             }
@@ -125,20 +146,32 @@ public class RuleImportService extends Service {
                             values.put(columnTarget, rule.getTarget());
                             values.put(columnIPv6, rule.isIpv6());
                         }
-                        if(database.insertWithOnConflict(ruleTableName, null, values, configuration.databaseConflictHandling) != -1){
+                        if(currentDatabaseInstance.insertWithOnConflict(ruleTableName, null, values, configuration.databaseConflictHandling) != -1){
                             distinctEntries++;
                             currentCount++;
                         }
                     }
                     updateNotification(i, configuration.lineCount);
                 }
-                if(shouldContinue && currentCount != 0) Util.getDBHelper(this, false).insert(new DNSRuleImport(file.getFile().getName(), System.currentTimeMillis(),
+                if(continueCurrent && shouldContinue && currentCount != 0) Util.getDBHelper(this, false).insert(new DNSRuleImport(file.getFile().getName(), System.currentTimeMillis(),
                         Util.getDBHelper(this, false).getByRowID(DNSRule.class, rowID),
                         Util.getDBHelper(this, false).getLastRow(DNSRule.class)));
                 reader.close();
             }
-            if (shouldContinue) database.setTransactionSuccessful();
-            database.endTransaction();
+            if(continueCurrent && shouldContinue){
+                String text;
+                notificationBuilderFinished.setContentText(text = getString(R.string.rules_import_finished).
+                        replace("[x]", configuration.lineCount + "").
+                        replace("[y]", validLines + "").
+                        replace("[z]", distinctEntries + ""));
+                notificationBuilderFinished.setContentTitle(getString(R.string.done));
+                notificationBuilderFinished.setStyle(new NotificationCompat.BigTextStyle().bigText(text));
+                notificationManager.notify(NOTIFICATION_ID_FINISHED++, notificationBuilderFinished.build());
+                currentDatabaseInstance.setTransactionSuccessful();
+                LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(BROADCAST_EVENT_DATABASE_UPDATED));
+            }
+            currentDatabaseInstance.endTransaction();
+            currentDatabaseInstance = null;
         }
         stopSelf();
     }
@@ -157,8 +190,8 @@ public class RuleImportService extends Service {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        //super.onTaskRemoved(rootIntent);
-        //cleanup();
+        super.onTaskRemoved(rootIntent);
+        cleanup();
     }
 
     private void cleanup() {
@@ -168,24 +201,26 @@ public class RuleImportService extends Service {
         notificationManager = null;
         notificationBuilder = null;
         configurations.clear();
+        if(currentDatabaseInstance != null)currentDatabaseInstance.endTransaction();
+        currentDatabaseInstance = null;
     }
 
     private void updateNotification(File file){
         notificationBuilder.setSubText(file.getName());
-        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        startForeground(NOTIFICATION_ID, notificationBuilder.build());
     }
 
     private void updateNotification(int currentLines, int lineCount){
         if(currentLines > lastNotificationUpdate){
             lastNotificationUpdate += notificationUpdateCount;
             notificationBuilder.setContentText(currentLines + "/" + lineCount);
-            notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+            startForeground(NOTIFICATION_ID, notificationBuilder.build());
         }
     }
 
     private void updateNotification(int combinedLineCount){
         notificationBuilder.setContentTitle(getString(R.string.importing_x_rules).replace("[x]", "" + combinedLineCount));
-        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        startForeground(NOTIFICATION_ID, notificationBuilder.build());
     }
 
     private void initNotification() {
@@ -199,13 +234,26 @@ public class RuleImportService extends Service {
         notificationBuilder.setUsesChronometer(true);
         notificationBuilder.setColorized(false);
         notificationBuilder.setSound(null);
+        notificationBuilder.addAction(new NotificationCompat.Action(R.drawable.ic_stat_stop, getString(R.string.stop),
+                PendingIntent.getService(this, 2, new Intent(this, RuleImportService.class).putExtra(NOTIFICATION_ACTION_STOP_CURRENT, "herp"), 0)));
+        notificationBuilder.addAction(new NotificationCompat.Action(R.drawable.ic_stat_stop, getString(R.string.stop_all),
+                PendingIntent.getService(this, 1, new Intent(this, RuleImportService.class).putExtra(NOTIFICATION_ACTION_STOP_ALL, "herp"),0)));
+
+        notificationBuilderFinished = new NotificationCompat.Builder(this, Util.createNotificationChannel(this, false));
+        notificationBuilderFinished.setSmallIcon(R.drawable.ic_action_import);
+        notificationBuilderFinished.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0));
+        notificationBuilderFinished.setAutoCancel(true);
+        notificationBuilderFinished.setOngoing(false);
+        notificationBuilderFinished.setUsesChronometer(false);
+        notificationBuilderFinished.setColorized(false);
+        notificationBuilderFinished.setSound(null);
     }
 
     private void determineNotificationUpdateCount(int combinedLineCount){
         int factor = -1;
-        if (combinedLineCount >= 750000) factor = 180;
-        else if (combinedLineCount >= 500000) factor = 120;
-        else if (combinedLineCount >= 250000) factor = 90;
+        if (combinedLineCount >= 750000) factor = 210;
+        else if (combinedLineCount >= 500000) factor = 150;
+        else if (combinedLineCount >= 250000) factor = 105;
         else if (combinedLineCount >= 100000) factor = 65;
         else if (combinedLineCount >= 50000) factor = 45;
         else if (combinedLineCount >= 10000) factor = 30;
@@ -220,13 +268,13 @@ public class RuleImportService extends Service {
     }
 
     public static final class FileList implements Serializable {
-        private RuleImportProgressDialog.ImportableFile[] files;
+        private RuleImport.ImportableFile[] files;
 
-        private FileList(RuleImportProgressDialog.ImportableFile[] files) {
+        private FileList(RuleImport.ImportableFile[] files) {
             this.files = files;
         }
 
-        public static FileList of(RuleImportProgressDialog.ImportableFile... files) {
+        public static FileList of(RuleImport.ImportableFile... files) {
             return new FileList(files);
         }
     }

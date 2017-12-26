@@ -1,8 +1,11 @@
 package com.frostnerd.dnschanger.fragments;
 
 import android.app.SearchManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v7.app.AlertDialog;
@@ -34,6 +38,7 @@ import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.adapters.RuleAdapter;
 import com.frostnerd.dnschanger.dialogs.NewRuleDialog;
+import com.frostnerd.dnschanger.services.RuleImportService;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.design.MaterialEditText;
@@ -57,6 +62,12 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
     private boolean fabExpanded = false, wildcardShown = false;
     private View sqlWrap, newWrap, filterWrap;
     private NewRuleDialog newRuleDialog;
+    private BroadcastReceiver databaseUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ruleAdapter.reloadData();
+        }
+    };
 
     @Nullable
     @Override
@@ -259,11 +270,13 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
 
     @Override
     public void onPause() {
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(databaseUpdateReceiver);
         super.onPause();
     }
 
     @Override
     public void onResume() {
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(databaseUpdateReceiver, new IntentFilter(RuleImportService.BROADCAST_EVENT_DATABASE_UPDATED));
         super.onResume();
     }
 
