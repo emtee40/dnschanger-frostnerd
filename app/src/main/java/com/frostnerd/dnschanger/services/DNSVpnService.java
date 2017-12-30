@@ -263,15 +263,20 @@ public class DNSVpnService extends VpnService {
         LogFactory.writeMessage(this, LOG_TAG, "Trying to stop thread.");
         if (vpnThread != null) {
             LogFactory.writeMessage(this, LOG_TAG, "VPNThread already running. Interrupting");
-            vpnRunnable.addAfterThreadStop(new Runnable() {
-                @Override
-                public void run() {
-                    vpnRunnable.destroy();
-                    vpnThread = null;
-                    vpnRunnable = null;
-                }
-            });
-            vpnRunnable.stop(vpnThread);
+            if(vpnRunnable != null){
+                vpnRunnable.addAfterThreadStop(new Runnable() {
+                    @Override
+                    public void run() {
+                        vpnRunnable.destroy();
+                        vpnThread = null;
+                        vpnRunnable = null;
+                    }
+                });
+                vpnRunnable.stop(vpnThread);
+            }else{
+                vpnRunnable = null;
+                vpnThread = null;
+            }
         }else{
             LogFactory.writeMessage(this, LOG_TAG, "VPNThread not running. No need to interrupt.");
         }
