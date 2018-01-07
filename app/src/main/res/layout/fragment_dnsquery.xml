@@ -80,7 +80,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/start_button_wrap"
+        android:layout_below="@id/query_tcp"
         android:layout_marginTop="15dp"
         android:scrollbars="vertical">
 
