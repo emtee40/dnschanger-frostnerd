@@ -311,4 +311,5 @@
     <string name="title_loopback_allowed">允许回送地址</string>
     <string name="summary_loopback_allowed">允许您在所有字段（:: 1和127.0.0.1）中输入回送地址</string>
     <string name="nav_title_importexport">进口 / 出口</string>
+    <string name="tcp">TCP</string>
 </resources>

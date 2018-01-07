@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -51,6 +52,7 @@ public class DnsQueryFragment extends Fragment {
     private RecyclerView resultList;
     private ProgressBar progress;
     private TextView infoText;
+    private CheckBox tcp;
     private boolean showingError;
 
     @Nullable
@@ -63,7 +65,6 @@ public class DnsQueryFragment extends Fragment {
         resultList = contentView.findViewById(R.id.result_list);
         progress = contentView.findViewById(R.id.progress);
         infoText = contentView.findViewById(R.id.query_destination_info_text);
-
         edQuery.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -91,14 +92,15 @@ public class DnsQueryFragment extends Fragment {
                 runQuery(edQuery.getText().toString() + ".");
             }
         });
+        tcp = contentView.findViewById(R.id.query_tcp);
+        tcp.setChecked(PreferencesAccessor.sendDNSOverTCP(getContext()));
         resultList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         infoText.setText(getString(R.string.query_destination_info).replace("[x]", getDefaultDNSServer().toString(PreferencesAccessor.areCustomPortsEnabled(getContext()))));
         return contentView;
     }
     
     private IPPortPair getDefaultDNSServer(){
-        IPPortPair server = PreferencesAccessor.isIPv4Enabled(getContext()) ? PreferencesAccessor.Type.DNS1.getPair(getContext()) : PreferencesAccessor.Type.DNS1_V6.getPair(getContext());
-        return server;
+        return PreferencesAccessor.isIPv4Enabled(getContext()) ? PreferencesAccessor.Type.DNS1.getPair(getContext()) : PreferencesAccessor.Type.DNS1_V6.getPair(getContext());
     }
 
     private void runQuery(String queryText){
@@ -111,7 +113,7 @@ public class DnsQueryFragment extends Fragment {
                     IPPortPair server = getDefaultDNSServer();
                     Resolver resolver = new SimpleResolver(server.getAddress());
                     resolver.setPort(server.getPort());
-                    resolver.setTCP(true);
+                    resolver.setTCP(tcp.isChecked());
                     Name name = Name.fromString(adjustedQuery);
                     Record record = Record.newRecord(name, Type.ANY, DClass.IN);
                     Message query = Message.newQuery(record);
