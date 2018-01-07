@@ -442,7 +442,7 @@ public class MainFragment extends Fragment {
         List<IPPortPair> servers = PreferencesAccessor.getAllDNSPairs(getContext(), true);
         callback.setServers(servers.size());
         for(final IPPortPair pair: servers){
-            DNSQueryUtil.runAsyncDNSQuery(pair.getAddress(), "google.de", false, Type.A, DClass.ANY, new Util.DNSQueryResultListener() {
+            DNSQueryUtil.runAsyncDNSQuery(pair, "google.de", false, Type.A, DClass.ANY, new Util.DNSQueryResultListener() {
                 @Override
                 public void onSuccess(Message response) {
                     callback.checkProgress(pair.getAddress(), true);
