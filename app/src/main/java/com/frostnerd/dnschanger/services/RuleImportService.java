@@ -188,12 +188,6 @@ public class RuleImportService extends Service {
         return null;
     }
 
-    @Override
-    public void onTaskRemoved(Intent rootIntent) {
-        super.onTaskRemoved(rootIntent);
-        cleanup();
-    }
-
     private void cleanup() {
         if (notificationManager == null) return;
         shouldContinue = false;
