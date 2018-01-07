@@ -306,4 +306,6 @@
     <string name="take_dns_configuration_missing_type">Cảnh báo: [type] bị thiếu trong cấu hình, nhưng đã được bật. Bạn có muốn vô hiệu hóa nó?</string>
     <string name="nav_title_importexport">Nhập khẩu / Xuất khẩu</string>
     <string name="tcp">TCP</string>
+    <string name="info_importing_rules_app_unusable">The App is now importing the rules. During that time you won\'t be able to use the app as the internal database is locked for the duration.</string>
+    <string name="background">Lý lịch</string>
 </resources>

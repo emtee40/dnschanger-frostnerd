@@ -311,4 +311,6 @@
     <string name="nav_title_importexport">Import / Export</string>
     <string name="stop_all">Alle stoppen</string>
     <string name="tcp">TCP</string>
+    <string name="info_importing_rules_app_unusable">Die App importiert nun die Regeln. Währenddessen ist die App nicht nutzbar, da die interne Datenbank gesperrt wird.</string>
+    <string name="background">Hintergrund</string>
 </resources>

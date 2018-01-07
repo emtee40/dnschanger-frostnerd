@@ -2,8 +2,11 @@ package com.frostnerd.dnschanger.util;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 
+import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.services.RuleImportService;
+import com.frostnerd.utils.design.dialogs.LoadingDialog;
 import com.frostnerd.utils.networking.NetworkUtil;
 
 import java.io.BufferedReader;
@@ -43,11 +46,12 @@ public class RuleImport {
     private static final Matcher ADBLOCK_MATCHER = ADBLOCK_PATTERN.matcher(""),
             ADBLOCK_VALIDATION_MATCHER = ADBLOCK_PATTERN.matcher("");
 
-    public static void startImport(@NonNull Activity context, List<ImportableFile> files, int databaseConflictHandling){
+    public static <T extends Activity &ImportStartedListener> void startImport(@NonNull T context, List<ImportableFile> files, int databaseConflictHandling){
         int linesCombined = 0;
         for(ImportableFile file: files)linesCombined += file.getLines();
         context.startService(RuleImportService.createIntent(context, linesCombined, databaseConflictHandling,
                 files.toArray(new ImportableFile[files.size()])));
+        context.importStarted(linesCombined);
     }
 
     public static int getFileLines(File f) {
@@ -290,5 +294,9 @@ public class RuleImport {
         public int getLines() {
             return lines;
         }
+    }
+
+    public interface ImportStartedListener{
+        public void importStarted(int combinedLines);
     }
 }

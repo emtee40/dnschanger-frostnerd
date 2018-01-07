@@ -7,6 +7,7 @@ import android.os.Vibrator;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,6 +20,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.util.RuleImport;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.design.MaterialEditText;
@@ -50,7 +52,7 @@ public class NewRuleDialog extends AlertDialog{
     private boolean editingMode = false;
     private RuleImportChooserDialog ruleImportChooserDialog;
 
-    public NewRuleDialog(@NonNull Activity context, final CreationListener listener, @NonNull final String host, @NonNull String target, final boolean wildcard, final boolean ipv6){
+    public <T extends Activity &RuleImport.ImportStartedListener> NewRuleDialog(@NonNull T context, final CreationListener listener, @NonNull final String host, @NonNull String target, final boolean wildcard, final boolean ipv6){
         this(context, listener);
         if(ipv6)v6Text = target;
         else v4Text = target;
@@ -79,7 +81,7 @@ public class NewRuleDialog extends AlertDialog{
         });
     }
 
-    public NewRuleDialog(@NonNull final Activity context, final CreationListener listener) {
+    public <T extends Activity&RuleImport.ImportStartedListener> NewRuleDialog(@NonNull final T context, final CreationListener listener) {
         super(context, ThemeHandler.getDialogTheme(context));
         View content;
         setView(content = getLayoutInflater().inflate(R.layout.dialog_new_rule, null, false));

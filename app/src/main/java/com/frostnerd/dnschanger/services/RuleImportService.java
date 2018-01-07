@@ -44,6 +44,7 @@ public class RuleImportService extends Service {
             BROADCAST_EVENT_DATABASE_UPDATED = "com.frostnerd.dnschanger.RULE_DATABASE_UPDATE";
     private static final String NOTIFICATION_ACTION_STOP_CURRENT = "stopme",
             NOTIFICATION_ACTION_STOP_ALL = "killme";
+    public static final String BROADCAST_IMPORT_FINISHED = "com.frostnerd.dnschanger.IMPORT_FINISHED";
     private static final int NOTIFICATION_ID = 655;
     private int NOTIFICATION_ID_FINISHED = NOTIFICATION_ID+1;
     private NotificationManager notificationManager;
@@ -197,6 +198,7 @@ public class RuleImportService extends Service {
         configurations.clear();
         if(currentDatabaseInstance != null)currentDatabaseInstance.endTransaction();
         currentDatabaseInstance = null;
+        sendBroadcast(new Intent(BROADCAST_IMPORT_FINISHED));
     }
 
     private void updateNotification(File file){

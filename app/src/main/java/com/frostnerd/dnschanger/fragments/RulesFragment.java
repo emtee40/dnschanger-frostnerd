@@ -39,9 +39,11 @@ import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.adapters.RuleAdapter;
 import com.frostnerd.dnschanger.dialogs.NewRuleDialog;
 import com.frostnerd.dnschanger.services.RuleImportService;
+import com.frostnerd.dnschanger.util.RuleImport;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.design.MaterialEditText;
+import com.frostnerd.utils.design.dialogs.LoadingDialog;
 import com.frostnerd.utils.general.DesignUtil;
 import com.frostnerd.utils.networking.NetworkUtil;
 

@@ -98,7 +98,7 @@ public class DnsQueryFragment extends Fragment {
         infoText.setText(getString(R.string.query_destination_info).replace("[x]", getDefaultDNSServer().toString(PreferencesAccessor.areCustomPortsEnabled(getContext()))));
         return contentView;
     }
-    
+
     private IPPortPair getDefaultDNSServer(){
         return PreferencesAccessor.isIPv4Enabled(getContext()) ? PreferencesAccessor.Type.DNS1.getPair(getContext()) : PreferencesAccessor.Type.DNS1_V6.getPair(getContext());
     }
@@ -135,11 +135,11 @@ public class DnsQueryFragment extends Fragment {
                 } catch (final IOException e) {
                     if(getContext() != null && isAdded())
                         Util.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            handleException(e);
-                        }
-                    });
+                            @Override
+                            public void run() {
+                                handleException(e);
+                            }
+                        });
                 }
             }
         }.start();

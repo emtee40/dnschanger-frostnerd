@@ -38,7 +38,9 @@ import com.frostnerd.dnschanger.dialogs.ExportSettingsDialog;
 import com.frostnerd.dnschanger.fragments.CurrentNetworksFragment;
 import com.frostnerd.dnschanger.fragments.QueryLogFragment;
 import com.frostnerd.dnschanger.fragments.RulesFragment;
+import com.frostnerd.dnschanger.services.RuleImportService;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.RuleImport;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.BuildConfig;
@@ -51,6 +53,7 @@ import com.frostnerd.dnschanger.fragments.SettingsFragment;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.tasker.ConfigureActivity;
 import com.frostnerd.utils.design.dialogs.FileChooserDialog;
+import com.frostnerd.utils.design.dialogs.LoadingDialog;
 import com.frostnerd.utils.design.material.navigationdrawer.DrawerItem;
 import com.frostnerd.utils.design.material.navigationdrawer.DrawerItemCreator;
 import com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity;
@@ -74,7 +77,7 @@ import java.util.Random;
  * <p>
  * development@frostnerd.com
  */
-public class MainActivity extends NavigationDrawerActivity {
+public class MainActivity extends NavigationDrawerActivity implements RuleImport.ImportStartedListener {
     private static final String LOG_TAG = "[MainActivity]";
     private static final int REQUEST_PERMISSION_IMPORT_SETTINGS = 131, REQUEST_PERMISSION_EXPORT_SETTINGS = 130;
     private AlertDialog dialog1;
@@ -100,6 +103,7 @@ public class MainActivity extends NavigationDrawerActivity {
         }
     };
     public static MainActivity currentContext;
+    private BroadcastReceiver importFinishedReceiver;
 
     @Override
     protected void onResume() {
@@ -204,6 +208,7 @@ public class MainActivity extends NavigationDrawerActivity {
     protected void onDestroy() {
         if(dialog1 != null && dialog1.isShowing())dialog1.cancel();
         if(defaultDnsDialog != null && defaultDnsDialog.isShowing())defaultDnsDialog.cancel();
+        if(importFinishedReceiver != null)unregisterReceiver(importFinishedReceiver);
         unregisterReceiver(shortcutReceiver);
         super.onDestroy();
         currentContext = null;
@@ -734,5 +739,24 @@ public class MainActivity extends NavigationDrawerActivity {
             startedActivity = true;
         }
         super.startActivityForResult(intent, requestCode);
+    }
+
+
+    @Override
+    public void importStarted(int combinedLines) {
+        final LoadingDialog loadingDialog = new LoadingDialog(this, ThemeHandler.getDialogTheme(this),
+                getString(R.string.importing_x_rules).replace("[x]", combinedLines + ""),
+                getString(R.string.info_importing_rules_app_unusable));
+        loadingDialog.setCancelable(false);
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.show();
+        registerReceiver(importFinishedReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                loadingDialog.dismiss();
+                unregisterReceiver(this);
+                importFinishedReceiver = null;
+            }
+        }, new IntentFilter(RuleImportService.BROADCAST_IMPORT_FINISHED));
     }
 }

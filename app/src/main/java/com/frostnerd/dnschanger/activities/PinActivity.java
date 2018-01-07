@@ -2,8 +2,13 @@ package com.frostnerd.dnschanger.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.KeyguardManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.hardware.fingerprint.FingerprintManager;
@@ -18,6 +23,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.frostnerd.dnschanger.services.RuleImportService;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.ThemeHandler;
@@ -26,8 +32,11 @@ import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.utils.design.MaterialEditText;
+import com.frostnerd.utils.design.dialogs.LoadingDialog;
 import com.frostnerd.utils.general.DesignUtil;
+import com.frostnerd.utils.general.IntentUtil;
 import com.frostnerd.utils.general.StringUtil;
+import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.general.VariableChecker;
 
 /**
@@ -47,6 +56,7 @@ public class PinActivity extends Activity {
     private static final String LOG_TAG = "[PinActivity]";
     private ImageView fingerprintImage;
     private Handler handler;
+    private BroadcastReceiver importFinishedReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,6 +65,30 @@ public class PinActivity extends Activity {
         LogFactory.writeMessage(this, LOG_TAG, "Created Activity", getIntent());
         final boolean main = getIntent() != null && !getIntent().hasExtra("redirectToService");
         LogFactory.writeMessage(this, LOG_TAG, "Returning to main after pin: " + main);
+        if(Utils.isServiceRunning(this, RuleImportService.class)){
+            final LoadingDialog loadingDialog = new LoadingDialog(this, ThemeHandler.getDialogTheme(this),
+                    getString(R.string.loading),
+                    getString(R.string.info_importing_rules_app_unusable));
+            loadingDialog.setCancelable(false);
+            loadingDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.background), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+            loadingDialog.setCanceledOnTouchOutside(false);
+            loadingDialog.show();
+            registerReceiver(importFinishedReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    loadingDialog.dismiss();
+                    unregisterReceiver(this);
+                    importFinishedReceiver = null;
+                    continueToFollowing(main);
+                }
+            }, new IntentFilter(RuleImportService.BROADCAST_IMPORT_FINISHED));
+            return;
+        }
         if (!PreferencesAccessor.isPinProtectionEnabled(this)) {
             LogFactory.writeMessage(this, LOG_TAG, "Pin is disabled");
             continueToFollowing(main);
@@ -168,6 +202,7 @@ public class PinActivity extends Activity {
     @Override
     protected void onDestroy() {
         LogFactory.writeMessage(this, LOG_TAG, "Destroying activity");
+        if(importFinishedReceiver != null)unregisterReceiver(importFinishedReceiver);
         super.onDestroy();
     }
 }

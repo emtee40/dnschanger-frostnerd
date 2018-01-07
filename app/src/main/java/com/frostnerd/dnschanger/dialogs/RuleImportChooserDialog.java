@@ -11,6 +11,7 @@ import android.os.Looper;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.CheckBox;
@@ -51,7 +52,7 @@ class RuleImportChooserDialog extends AlertDialog {
     private final RadioButton domains;
     private final RadioButton adblock;
 
-    RuleImportChooserDialog(@NonNull final Activity context) {
+    <T extends Activity &RuleImport.ImportStartedListener> RuleImportChooserDialog(@NonNull final T context) {
         super(context, ThemeHandler.getDialogTheme(context));
         setTitle(R.string.import_rules);
         View content;
@@ -115,7 +116,7 @@ class RuleImportChooserDialog extends AlertDialog {
         });
     }
 
-    private void handlePermissionOrShowFileDialog(Activity activity) {
+    private <T extends Activity &RuleImport.ImportStartedListener> void handlePermissionOrShowFileDialog(T context) {
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             FileChooserDialog dialog = new FileChooserDialog(getContext(), false, FileChooserDialog.SelectionMode.FILE, ThemeHandler.getDialogTheme(getContext()));
             dialog.setFileListener(new FileChooserDialog.FileSelectedListener() {
@@ -239,7 +240,7 @@ class RuleImportChooserDialog extends AlertDialog {
             dialog.showDialog();
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 999);
+                ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 999);
             }
         }
     }
