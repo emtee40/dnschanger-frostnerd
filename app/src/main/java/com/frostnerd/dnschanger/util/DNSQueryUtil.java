@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
+
 import org.xbill.DNS.DClass;
 import org.xbill.DNS.Message;
 import org.xbill.DNS.Name;
@@ -26,8 +28,8 @@ import java.io.IOException;
 public class DNSQueryUtil {
 
     public static void startDNSServerConnectivityCheck(@NonNull final Context context, @NonNull final Util.ConnectivityCheckCallback callback){
-        runAsyncDNSQuery(PreferencesAccessor.isIPv4Enabled(context) ? PreferencesAccessor.Type.DNS1.getPair(context).getAddress() :
-                PreferencesAccessor.Type.DNS1_V6.getPair(context).getAddress(), "frostnerd.com", false, Type.A, DClass.ANY, new Util.DNSQueryResultListener() {
+        runAsyncDNSQuery(PreferencesAccessor.isIPv4Enabled(context) ? PreferencesAccessor.Type.DNS1.getPair(context) :
+                PreferencesAccessor.Type.DNS1_V6.getPair(context), "frostnerd.com", false, Type.A, DClass.ANY, new Util.DNSQueryResultListener() {
             @Override
             public void onSuccess(Message response) {
                 callback.onCheckDone(true);
@@ -40,8 +42,8 @@ public class DNSQueryUtil {
         }, 2);
     }
 
-    public static void startDNSServerConnectivityCheck(@NonNull final Context context, @NonNull final String dnsAddress, @NonNull final Util.ConnectivityCheckCallback callback){
-        runAsyncDNSQuery(dnsAddress, "frostnerd.com", false, Type.A, DClass.ANY, new Util.DNSQueryResultListener() {
+    public static void startDNSServerConnectivityCheck(@NonNull final Context context, @NonNull final IPPortPair server, @NonNull final Util.ConnectivityCheckCallback callback){
+        runAsyncDNSQuery(server, "frostnerd.com", false, Type.A, DClass.ANY, new Util.DNSQueryResultListener() {
             @Override
             public void onSuccess(Message response) {
                 callback.onCheckDone(true);
@@ -54,13 +56,14 @@ public class DNSQueryUtil {
         }, 2);
     }
 
-    public static void runAsyncDNSQuery(final String server, final String query, final boolean tcp, final int type,
+    public static void runAsyncDNSQuery(final IPPortPair server, final String query, final boolean tcp, final int type,
                                         final int dClass, final Util.DNSQueryResultListener resultListener, final int timeout){
         new Thread(){
             @Override
             public void run() {
                 try {
-                    Resolver resolver = new SimpleResolver(server);
+                    Resolver resolver = new SimpleResolver(server.getAddress());
+                    resolver.setPort(server.getPort());
                     resolver.setTCP(tcp);
                     resolver.setTimeout(timeout);
                     Name name = Name.fromString(query.endsWith(".") ? query : query + ".");
@@ -76,10 +79,11 @@ public class DNSQueryUtil {
         }.start();
     }
 
-    public static Message runSyncDNSQuery(final String server, final String query, final boolean tcp, final int type,
+    public static Message runSyncDNSQuery(final IPPortPair server, final String query, final boolean tcp, final int type,
                                           final int dClass, Util.DNSQueryResultListener dnsQueryResultListener, final int timeout){
         try {
-            Resolver resolver = new SimpleResolver(server);
+            Resolver resolver = new SimpleResolver(server.getAddress());
+            resolver.setPort(server.getPort());
             resolver.setTCP(tcp);
             resolver.setTimeout(timeout);
             Name name = Name.fromString(query.endsWith(".") ? query : query + ".");

@@ -2,6 +2,7 @@ package com.frostnerd.dnschanger.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.adapters.QueryResultAdapter;
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.design.MaterialEditText;
@@ -49,11 +52,12 @@ public class DnsQueryFragment extends Fragment {
     private RecyclerView resultList;
     private ProgressBar progress;
     private TextView infoText;
+    private CheckBox tcp;
     private boolean showingError;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View contentView = inflater.inflate(R.layout.fragment_dnsquery, container, false);
         metQuery = contentView.findViewById(R.id.met_query);
         edQuery = contentView.findViewById(R.id.query);
@@ -61,7 +65,6 @@ public class DnsQueryFragment extends Fragment {
         resultList = contentView.findViewById(R.id.result_list);
         progress = contentView.findViewById(R.id.progress);
         infoText = contentView.findViewById(R.id.query_destination_info_text);
-
         edQuery.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -89,13 +92,15 @@ public class DnsQueryFragment extends Fragment {
                 runQuery(edQuery.getText().toString() + ".");
             }
         });
+        tcp = contentView.findViewById(R.id.query_tcp);
+        tcp.setChecked(PreferencesAccessor.sendDNSOverTCP(getContext()));
         resultList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        infoText.setText(getString(R.string.query_destination_info).replace("[x]", getDefaultDNSServer()));
+        infoText.setText(getString(R.string.query_destination_info).replace("[x]", getDefaultDNSServer().toString(PreferencesAccessor.areCustomPortsEnabled(getContext()))));
         return contentView;
     }
-    
-    private String getDefaultDNSServer(){
-        return PreferencesAccessor.Type.DNS1.getPair(getContext()).getAddress();
+
+    private IPPortPair getDefaultDNSServer(){
+        return PreferencesAccessor.isIPv4Enabled(getContext()) ? PreferencesAccessor.Type.DNS1.getPair(getContext()) : PreferencesAccessor.Type.DNS1_V6.getPair(getContext());
     }
 
     private void runQuery(String queryText){
@@ -105,8 +110,10 @@ public class DnsQueryFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    Resolver resolver = new SimpleResolver(getDefaultDNSServer());
-                    resolver.setTCP(true);
+                    IPPortPair server = getDefaultDNSServer();
+                    Resolver resolver = new SimpleResolver(server.getAddress());
+                    resolver.setPort(server.getPort());
+                    resolver.setTCP(tcp.isChecked());
                     Name name = Name.fromString(adjustedQuery);
                     Record record = Record.newRecord(name, Type.ANY, DClass.IN);
                     Message query = Message.newQuery(record);
@@ -128,11 +135,11 @@ public class DnsQueryFragment extends Fragment {
                 } catch (final IOException e) {
                     if(getContext() != null && isAdded())
                         Util.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            handleException(e);
-                        }
-                    });
+                            @Override
+                            public void run() {
+                                handleException(e);
+                            }
+                        });
                 }
             }
         }.start();
@@ -152,7 +159,7 @@ public class DnsQueryFragment extends Fragment {
 
     private void resetElements(){
         if(showingError){
-            infoText.setText(getString(R.string.query_destination_info).replace("[x]", getDefaultDNSServer()));
+            infoText.setText(getString(R.string.query_destination_info).replace("[x]", getDefaultDNSServer().toString(PreferencesAccessor.areCustomPortsEnabled(getContext()))));
             showingError = false;
         }
     }

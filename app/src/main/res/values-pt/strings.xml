@@ -308,4 +308,7 @@
     <string name="disable">Desativar</string>
     <string name="take_dns_configuration_missing_type">Aviso: [type] está faltando na configuração, mas está habilitado. Deseja desativá-lo?</string>
     <string name="nav_title_importexport">Importar / Exportar</string>
+    <string name="tcp">TCP</string>
+    <string name="info_importing_rules_app_unusable">The App is now importing the rules. During that time you won\'t be able to use the app as the internal database is locked for the duration.</string>
+    <string name="background">fundo</string>
 </resources>

@@ -11,6 +11,7 @@ import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSRule;
 import com.frostnerd.dnschanger.dialogs.NewRuleDialog;
+import com.frostnerd.dnschanger.util.RuleImport;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.adapters.DatabaseAdapter;
 import com.frostnerd.utils.database.orm.parser.Column;
@@ -32,7 +33,7 @@ public class RuleAdapter extends DatabaseAdapter<DNSRule>{
     private static Column<DNSRule> targetColumn;
     private static Column<DNSRule> wildcardColumn;
 
-    public RuleAdapter(final Activity context, DatabaseHelper databaseHelper, final TextView rowCount, ProgressBar updateProgress){
+    public <T extends Activity &RuleImport.ImportStartedListener> RuleAdapter(final T context, DatabaseHelper databaseHelper, final TextView rowCount, ProgressBar updateProgress){
         super(context, databaseHelper, R.layout.row_rule, 10000);
         setOnRowLoaded(new OnRowLoaded<DNSRule>() {
             @Override

@@ -311,4 +311,7 @@
     <string name="title_loopback_allowed">允许回送地址</string>
     <string name="summary_loopback_allowed">允许您在所有字段（:: 1和127.0.0.1）中输入回送地址</string>
     <string name="nav_title_importexport">进口 / 出口</string>
+    <string name="tcp">TCP</string>
+    <string name="info_importing_rules_app_unusable">该应用程序现在正在导入规则。 在此期间，您将无法使用应用程序，因为内部数据库在此期间被锁定。</string>
+    <string name="background">背景</string>
 </resources>

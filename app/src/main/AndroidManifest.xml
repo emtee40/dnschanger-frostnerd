@@ -76,7 +76,8 @@
 
         <service
             android:name=".services.DNSVpnService"
-            android:permission="android.permission.BIND_VPN_SERVICE">
+            android:permission="android.permission.BIND_VPN_SERVICE"
+            android:stopWithTask="false">
             <intent-filter>
                 <action android:name="android.net.VpnService" />
             </intent-filter>
@@ -274,7 +275,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/generic_provider_paths"/>
+                android:resource="@xml/generic_provider_paths" />
         </provider>
 
         <!--<receiver android:name=".widgets.BasicWidget">
@@ -286,7 +287,9 @@
                 android:resource="@xml/basic_widget" />
         </receiver>-->
 
-        <service android:name=".services.RuleImportService" />
+        <service
+            android:name=".services.RuleImportService"
+            android:stopWithTask="false" />
     </application>
 
 </manifest>
