@@ -376,7 +376,7 @@ public class MainFragment extends Fragment {
             dialog.show();
             checkDNSReachability(new DNSReachabilityCallback() {
                 @Override
-                public void checkFinished(List<String> unreachable, List<String> reachable) {
+                public void checkFinished(List<IPPortPair> unreachable, List<IPPortPair> reachable) {
                     dialog.dismiss();
                     if(unreachable.size() == 0){
                         ((MainActivity)getContext()).runOnUiThread(new Runnable() {
@@ -390,7 +390,8 @@ public class MainFragment extends Fragment {
                         StringBuilder builder = new StringBuilder();
                         _text = _text.replace("[x]", unreachable.size() + reachable.size() + "");
                         _text = _text.replace("[y]", unreachable.size() + "");
-                        for(String s: unreachable)builder.append("- ").append(s).append("\n");
+                        boolean customPorts = PreferencesAccessor.areCustomPortsEnabled(getContext());
+                        for(IPPortPair p: unreachable)builder.append("- ").append(p.formatForTextfield(customPorts)).append("\n");
                         _text = _text.replace("[servers]", builder.toString());
                         final String text = _text;
                         ((MainActivity)getContext()).runOnUiThread(new Runnable() {
@@ -445,12 +446,12 @@ public class MainFragment extends Fragment {
             DNSQueryUtil.runAsyncDNSQuery(pair, "frostnerd.com.", PreferencesAccessor.sendDNSOverTCP(getContext()), Type.A, DClass.IN, new Util.DNSQueryResultListener() {
                 @Override
                 public void onSuccess(Message response) {
-                    callback.checkProgress(pair.getAddress(), true);
+                    callback.checkProgress(pair, true);
                 }
 
                 @Override
                 public void onError(@Nullable Exception e) {
-                    callback.checkProgress(pair.getAddress(), false);
+                    callback.checkProgress(pair, false);
                 }
             }, 1);
         }
@@ -482,13 +483,13 @@ public class MainFragment extends Fragment {
     }
 
     private abstract class DNSReachabilityCallback{
-        private final List<String> unreachable = new ArrayList<>();
-        private final List<String> reachable = new ArrayList<>();
+        private final List<IPPortPair> unreachable = new ArrayList<>();
+        private final List<IPPortPair> reachable = new ArrayList<>();
         private int servers;
 
-        public abstract void checkFinished(List<String> unreachable, List<String> reachable);
+        public abstract void checkFinished(List<IPPortPair> unreachable, List<IPPortPair> reachable);
 
-        public final void checkProgress(String server, boolean reachable){
+        public final void checkProgress(IPPortPair server, boolean reachable){
             if(!reachable)unreachable.add(server);
             else this.reachable.add(server);
             if(this.unreachable.size() + this.reachable.size() >= servers)checkFinished(unreachable, this.reachable);
