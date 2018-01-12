@@ -34,6 +34,12 @@ public class IPPortPair extends Entity implements Serializable{
         this.ipv6 = IPv6;
     }
 
+    public IPPortPair(IPPortPair pair){
+        this.ip = pair.getAddress();
+        this.port = pair.getPort();
+        this.ipv6 = pair.isIpv6();
+    }
+
     public static IPPortPair wrap(String s){
         return Util.validateInput(s, s.contains("[") || s.matches("[a-fA-F0-9:]+"), true, true);
     }
