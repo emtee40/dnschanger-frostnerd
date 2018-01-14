@@ -158,6 +158,7 @@ public class VPNRunnable implements Runnable {
 
     private void configure(String address, boolean advanced){
         boolean ipv6Enabled = PreferencesAccessor.isIPv6Enabled(service), ipv4Enabled = PreferencesAccessor.isIPv4Enabled(service);
+        if(!ipv4Enabled && !ipv6Enabled)ipv4Enabled = true;
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Creating Tunnel interface");
         builder = service.createBuilder();
         builder.setSession("dnsChanger_frostnerd");
