@@ -192,7 +192,7 @@ public class RuleImportService extends Service {
     private void cleanup() {
         if (notificationManager == null) return;
         shouldContinue = false;
-        notificationManager.cancel(NOTIFICATION_ID);
+        stopForeground(true);
         notificationManager = null;
         notificationBuilder = null;
         configurations.clear();
