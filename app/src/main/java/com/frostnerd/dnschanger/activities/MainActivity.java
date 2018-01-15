@@ -224,6 +224,10 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
                 if(currentFragment() instanceof MainFragment){
                     handled = true;
                     ((MainFragment)currentFragment()).toggleVPN();
+                }break;
+            case KeyEvent.KEYCODE_DPAD_DOWN:case KeyEvent.KEYCODE_PAGE_DOWN:case KeyEvent.KEYCODE_DPAD_UP:case KeyEvent.KEYCODE_PAGE_UP:
+                if(currentFragment() instanceof MainFragment){
+                    if(((MainFragment)currentFragment()).toggleCurrentInputFocus())handled = true;
                 }
         }
         return handled || super.onKeyDown(keyCode, event);

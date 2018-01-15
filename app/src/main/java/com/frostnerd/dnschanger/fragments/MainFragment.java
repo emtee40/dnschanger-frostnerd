@@ -445,6 +445,15 @@ public class MainFragment extends Fragment {
         }else startVpn();
     }
 
+    public boolean toggleCurrentInputFocus(){
+        if(dns1.hasFocus()){
+            dns2.requestFocus();
+        }else if(dns2.hasFocus()){
+            dns1.requestFocus();
+        }else return false;
+        return true;
+    }
+
     private void checkDNSReachability(final DNSReachabilityCallback callback){
         List<IPPortPair> servers = PreferencesAccessor.getAllDNSPairs(getContext(), true);
         callback.setServers(servers.size());
