@@ -26,6 +26,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -212,6 +213,20 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
         unregisterReceiver(shortcutReceiver);
         super.onDestroy();
         currentContext = null;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        boolean handled = false;
+        switch(keyCode){
+            case KeyEvent.KEYCODE_MEDIA_PLAY:
+            case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+                if(currentFragment() instanceof MainFragment){
+                    handled = true;
+                    ((MainFragment)currentFragment()).toggleVPN();
+                }
+        }
+        return handled || super.onKeyDown(keyCode, event);
     }
 
     @NonNull

@@ -439,6 +439,12 @@ public class MainFragment extends Fragment {
         setIndicatorState(false);
     }
 
+    public void toggleVPN(){
+        if (vpnRunning){
+            stopVpn();
+        }else startVpn();
+    }
+
     private void checkDNSReachability(final DNSReachabilityCallback callback){
         List<IPPortPair> servers = PreferencesAccessor.getAllDNSPairs(getContext(), true);
         callback.setServers(servers.size());
