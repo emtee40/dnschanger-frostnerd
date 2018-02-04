@@ -1,5 +1,6 @@
 package com.frostnerd.dnschanger.database.entities;
 
+import com.frostnerd.utils.database.DatabaseHelper;
 import com.frostnerd.utils.database.orm.Entity;
 import com.frostnerd.utils.database.orm.annotations.ForeignKey;
 import com.frostnerd.utils.database.orm.annotations.Named;
@@ -23,16 +24,16 @@ public class DNSRuleImport extends Entity{
     private long time;
     @ForeignKey(referencedEntity = DNSRule.class, referencedField = "rowid")
     @Named(name = "FirstInsert")
-    private DNSRule firstInsert;
+    private long firstInsert;
     @ForeignKey(referencedEntity = DNSRule.class, referencedField = "rowid")
     @Named(name = "LastInsert")
-    private DNSRule lastInsert;
+    private long lastInsert;
 
-    public DNSRuleImport(String filename, long time, DNSRule firstInsert, DNSRule lastInsert) {
+    public DNSRuleImport(String filename, long time, long firstInsertRowID, long lastInsertRowID) {
         this.filename = filename;
         this.time = time;
-        this.firstInsert = firstInsert;
-        this.lastInsert = lastInsert;
+        this.firstInsert = firstInsertRowID;
+        this.lastInsert = lastInsertRowID;
     }
 
     public DNSRuleImport(){
@@ -47,11 +48,21 @@ public class DNSRuleImport extends Entity{
         return time;
     }
 
-    public DNSRule getFirstInsert() {
-        return firstInsert;
+    public DNSRule getFirstInsert(DatabaseHelper databaseHelper) {
+        return databaseHelper.getByRowID(DNSRule.class, firstInsert);
     }
 
-    public DNSRule getLastInsert() {
-        return lastInsert;
+    public DNSRule getLastInsert(DatabaseHelper databaseHelper) {
+        return databaseHelper.getByRowID(DNSRule.class, firstInsert);
+    }
+
+    @Override
+    public String toString() {
+        return "DNSRuleImport{" +
+                "filename='" + filename + '\'' +
+                ", time=" + time +
+                ", firstInsert=" + firstInsert +
+                ", lastInsert=" + lastInsert +
+                '}';
     }
 }

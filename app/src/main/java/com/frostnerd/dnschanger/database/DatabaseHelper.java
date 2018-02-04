@@ -11,6 +11,7 @@ import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.database.entities.Shortcut;
 import com.frostnerd.utils.database.orm.Entity;
+import com.frostnerd.utils.database.orm.parser.ParsedEntity;
 import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
 
 import java.util.ArrayList;
@@ -41,13 +42,14 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
         super(context, DATABASE_NAME, DATABASE_VERSION, entities);
         this.context = context;
         getSuperWriteableDatabase();
+        for(Class<? extends Entity> clazz: entities){
+            System.out.println(ParsedEntity.wrapEntity(clazz).getTableCreationStatements());
+        }
     }
 
     @Override
     public void onAfterCreate(SQLiteDatabase db) {
-        for(DNSEntry entry: DNSEntry.defaultDNSEntries.keySet()){
-            insert(entry);
-        }
+        getSQLHandler(DNSEntry.class).insert(this, DNSEntry.defaultDNSEntries.keySet());
     }
 
     @Override

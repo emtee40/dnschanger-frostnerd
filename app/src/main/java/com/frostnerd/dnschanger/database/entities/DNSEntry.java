@@ -4,10 +4,10 @@ import android.support.annotation.NonNull;
 
 import com.frostnerd.dnschanger.database.serializers.IPPortSerializer;
 import com.frostnerd.utils.database.orm.Entity;
-import com.frostnerd.utils.database.orm.annotations.AutoIncrement;
 import com.frostnerd.utils.database.orm.annotations.Named;
 import com.frostnerd.utils.database.orm.annotations.NotNull;
 import com.frostnerd.utils.database.orm.annotations.PrimaryKey;
+import com.frostnerd.utils.database.orm.annotations.RowID;
 import com.frostnerd.utils.database.orm.annotations.Serialized;
 import com.frostnerd.utils.database.orm.annotations.Table;
 import com.frostnerd.utils.database.orm.annotations.Unique;
@@ -49,10 +49,9 @@ public class DNSEntry extends Entity implements Comparable<DNSEntry>{
     @Named(name = "customentry")
     private boolean customEntry;
 
-    @PrimaryKey
-    @AutoIncrement
     @Named(name = "id")
-    private int ID;
+    @RowID
+    private long ID;
 
     public static final TreeMap<DNSEntry, Integer> defaultDNSEntries = new TreeMap<>(new Comparator<DNSEntry>() {
         @Override
@@ -147,7 +146,7 @@ public class DNSEntry extends Entity implements Comparable<DNSEntry>{
         return shortName;
     }
 
-    public int getID() {
+    public long getID() {
         return ID;
     }
 

@@ -1,7 +1,7 @@
 package com.frostnerd.dnschanger.database.entities;
 
 import com.frostnerd.utils.database.orm.Entity;
-import com.frostnerd.utils.database.orm.annotations.DatabaseDefault;
+import com.frostnerd.utils.database.orm.annotations.Default;
 import com.frostnerd.utils.database.orm.annotations.Named;
 import com.frostnerd.utils.database.orm.annotations.NotNull;
 import com.frostnerd.utils.database.orm.annotations.PrimaryKey;
@@ -27,10 +27,10 @@ public class DNSRule extends Entity{
     private String target;
     @PrimaryKey
     @Named(name = "Ipv6")
-    @DatabaseDefault(defaultValue = "0")
+    @Default(defaultValue = "0")
     private boolean ipv6 = false;
     @Named(name = "Wildcard")
-    @DatabaseDefault(defaultValue = "0")
+    @Default(defaultValue = "0")
     private boolean wildcard = false;
     @RowID
     private long rowid;

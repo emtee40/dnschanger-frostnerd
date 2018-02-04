@@ -106,7 +106,8 @@ public class RuleImportService extends Service {
         String line;
         RuleImport.TemporaryDNSRule rule;
         ContentValues values = new ContentValues(4);
-        int i = 0, currentCount, rowID;
+        int i = 0, currentCount;
+        long rowID, lastRowID;
         String ruleTableName = Util.getDBHelper(this, false).getTableName(DNSRule.class),
                 columnHost = Util.getDBHelper(this, false).findColumn(DNSRule.class, "host").getColumnName(),
                 columnTarget = Util.getDBHelper(this, false).findColumn(DNSRule.class, "target").getColumnName(),
@@ -128,6 +129,7 @@ public class RuleImportService extends Service {
                 RuleImport.LineParser parser = file.getFileType();
                 updateNotification(file.getFile());
                 rowID = Util.getDBHelper(this, false).getHighestRowID(DNSRule.class);
+                lastRowID = rowID;
                 while (continueCurrent && shouldContinue && (line = reader.readLine()) != null) {
                     i++;
                     rule = parser.parseLine(line.trim());
@@ -147,16 +149,18 @@ public class RuleImportService extends Service {
                             values.put(columnTarget, rule.getTarget());
                             values.put(columnIPv6, rule.isIpv6());
                         }
-                        if(currentDatabaseInstance.insertWithOnConflict(ruleTableName, null, values, configuration.databaseConflictHandling) != -1){
+                        if((lastRowID = currentDatabaseInstance.insertWithOnConflict(ruleTableName, null, values, configuration.databaseConflictHandling)) != -1){
                             distinctEntries++;
                             currentCount++;
                         }
                     }
                     updateNotification(i, configuration.lineCount);
                 }
-                if(continueCurrent && shouldContinue && currentCount != 0) Util.getDBHelper(this, false).insert(new DNSRuleImport(file.getFile().getName(), System.currentTimeMillis(),
-                        Util.getDBHelper(this, false).getByRowID(DNSRule.class, rowID),
-                        Util.getDBHelper(this, false).getLastRow(DNSRule.class)));
+                if(continueCurrent && shouldContinue && currentCount != 0){
+                    Util.getDBHelper(this, false).insert(new DNSRuleImport(file.getFile().getName(), System.currentTimeMillis(),
+                            rowID,
+                            lastRowID));
+                }
                 reader.close();
             }
             if(continueCurrent && shouldContinue){

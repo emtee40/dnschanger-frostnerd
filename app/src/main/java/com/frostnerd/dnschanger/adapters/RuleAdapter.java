@@ -14,7 +14,7 @@ import com.frostnerd.dnschanger.dialogs.NewRuleDialog;
 import com.frostnerd.dnschanger.util.RuleImport;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.adapters.DatabaseAdapter;
-import com.frostnerd.utils.database.orm.parser.Column;
+import com.frostnerd.utils.database.orm.parser.columns.Column;
 import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
 
 

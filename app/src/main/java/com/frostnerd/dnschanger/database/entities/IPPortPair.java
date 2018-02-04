@@ -2,9 +2,8 @@ package com.frostnerd.dnschanger.database.entities;
 
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.database.orm.Entity;
-import com.frostnerd.utils.database.orm.annotations.AutoIncrement;
 import com.frostnerd.utils.database.orm.annotations.Named;
-import com.frostnerd.utils.database.orm.annotations.PrimaryKey;
+import com.frostnerd.utils.database.orm.annotations.RowID;
 import com.frostnerd.utils.database.orm.annotations.Table;
 
 import java.io.Serializable;
@@ -19,10 +18,8 @@ public class IPPortPair extends Entity implements Serializable{
     private boolean ipv6;
     public static final IPPortPair EMPTY = new IPPortPair("", -1, false);
 
-
-    @PrimaryKey
-    @AutoIncrement
-    private int id;
+    @RowID
+    private long id;
 
     public IPPortPair(){
 
