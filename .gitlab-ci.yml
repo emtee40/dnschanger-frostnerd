@@ -1,7 +1,7 @@
 image: openjdk:8-jdk
 variables:
-  ANDROID_COMPILE_SDK: "26"
-  ANDROID_BUILD_TOOLS: "26.0.1"
+  ANDROID_COMPILE_SDK: "27"
+  ANDROID_BUILD_TOOLS: "27.0.3"
   ANDROID_SDK_TOOLS: "26.0.2"
   AVD_NAME: test
   DEV_DEPLOY_DIR: /var/www/frostnerd/download/appbuilds/dnschanger/ci/dev
