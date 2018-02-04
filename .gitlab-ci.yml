@@ -53,7 +53,7 @@ build_release:
 unitTests:
   stage: test
   script:
-    - ./gradlew test
+    - ./gradlew test --stacktrace
   except:
     - /^no_ci.*$/
     - /^no_tests.*$/
