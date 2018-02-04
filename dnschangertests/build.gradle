@@ -34,7 +34,7 @@ dependencies {
     compile project(path: ':AndroidUtils:library')
     testCompile 'junit:junit:4.12'
     compile 'dnsjava:dnsjava:2.1.8'
-    compile 'org.pcap4j:pcap4j-core:1.7.1'
-    compile 'org.pcap4j:pcap4j-packetfactory-static:1.7.1'
+    compile 'org.pcap4j:pcap4j-core:1.7.3'
+    compile 'org.pcap4j:pcap4j-packetfactory-static:1.7.3'
     compile 'de.measite.minidns:minidns-core:0.2.2'
 }
