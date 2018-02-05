@@ -99,7 +99,8 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
         int version;
         for(DNSEntry entry: DNSEntry.defaultDNSEntries.keySet()){
             version = DNSEntry.defaultDNSEntries.get(entry);
-            if(version > oldVersion && version <= newVersion)insert(entry);
+            if(getCount(DNSEntry.class, WhereCondition.equal("name", entry.getName())) == 0)
+                if(version > oldVersion && version <= newVersion)insert(entry);
         }
     }
 
