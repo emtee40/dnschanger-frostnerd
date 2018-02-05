@@ -26,10 +26,10 @@ import java.util.Set;
  * development@frostnerd.com
  */
 public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper {
-    private static final String DATABASE_NAME = "data";
-    private static final int DATABASE_VERSION = 2;
+    public static final String DATABASE_NAME = "data";
+    public static final int DATABASE_VERSION = 2;
     private Context context;
-    private static final Set<Class<? extends Entity>> entities = new HashSet<Class<? extends Entity>>(){{
+    public static final Set<Class<? extends Entity>> entities = new HashSet<Class<? extends Entity>>(){{
         add(DNSEntry.class);
         add(DNSQuery.class);
         add(DNSRule.class);
