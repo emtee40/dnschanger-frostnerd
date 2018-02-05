@@ -53,12 +53,17 @@ build_release:
 unitTests:
   stage: test
   script:
-    - ./gradlew test --stacktrace --info
+    - ./gradlew test --stacktrace
+    - zip -r tests.zip AndroidUtils/library/build/reports/tests/
   except:
     - /^no_ci.*$/
     - /^no_tests.*$/
     - /^no_build_no_tests.*$/
     - /^no_tests_no_deploy.*$/
+  artifacts:
+    when: always
+    paths:
+      - tests.zip
     
 upload:
   stage: webdeploy
