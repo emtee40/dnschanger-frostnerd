@@ -1,6 +1,7 @@
 package com.frostnerd.dnschanger.database.entities;
 
 import com.frostnerd.utils.database.orm.Entity;
+import com.frostnerd.utils.database.orm.MultitonEntity;
 import com.frostnerd.utils.database.orm.annotations.Named;
 import com.frostnerd.utils.database.orm.annotations.PrimaryKey;
 import com.frostnerd.utils.database.orm.annotations.Table;
@@ -15,7 +16,7 @@ import com.frostnerd.utils.database.orm.annotations.Table;
  * development@frostnerd.com
  */
 @Table(name = "DNSQuery")
-public class DNSQuery extends Entity {
+public class DNSQuery extends MultitonEntity {
     @PrimaryKey
     @Named(name = "Host")
     private String host;

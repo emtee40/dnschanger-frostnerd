@@ -1,6 +1,7 @@
 package com.frostnerd.dnschanger.database.entities;
 
 import com.frostnerd.utils.database.orm.Entity;
+import com.frostnerd.utils.database.orm.MultitonEntity;
 import com.frostnerd.utils.database.orm.annotations.Named;
 import com.frostnerd.utils.database.orm.annotations.NotNull;
 import com.frostnerd.utils.database.orm.annotations.Table;
@@ -8,7 +9,7 @@ import com.frostnerd.utils.database.orm.annotations.Table;
 import java.io.Serializable;
 
 @Table(name = "Shortcut")
-public class Shortcut extends Entity implements Serializable {
+public class Shortcut extends MultitonEntity implements Serializable {
     @NotNull
     @Named(name = "Dns1")
     private IPPortPair dns1;

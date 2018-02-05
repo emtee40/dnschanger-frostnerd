@@ -2,6 +2,7 @@ package com.frostnerd.dnschanger.database.entities;
 
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.database.orm.Entity;
+import com.frostnerd.utils.database.orm.MultitonEntity;
 import com.frostnerd.utils.database.orm.annotations.Named;
 import com.frostnerd.utils.database.orm.annotations.RowID;
 import com.frostnerd.utils.database.orm.annotations.Table;
@@ -9,7 +10,7 @@ import com.frostnerd.utils.database.orm.annotations.Table;
 import java.io.Serializable;
 
 @Table(name = "IPPortPair")
-public class IPPortPair extends Entity implements Serializable{
+public class IPPortPair extends MultitonEntity implements Serializable{
     @Named(name = "IP")
     private String ip;
     @Named(name = "Port")

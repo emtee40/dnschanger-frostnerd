@@ -2,6 +2,7 @@ package com.frostnerd.dnschanger.database.entities;
 
 import com.frostnerd.utils.database.DatabaseHelper;
 import com.frostnerd.utils.database.orm.Entity;
+import com.frostnerd.utils.database.orm.MultitonEntity;
 import com.frostnerd.utils.database.orm.annotations.ForeignKey;
 import com.frostnerd.utils.database.orm.annotations.Named;
 import com.frostnerd.utils.database.orm.annotations.Table;
@@ -17,7 +18,7 @@ import com.frostnerd.utils.database.orm.annotations.Table;
  * development@frostnerd.com
  */
 @Table(name = "DNSRuleImport")
-public class DNSRuleImport extends Entity{
+public class DNSRuleImport extends MultitonEntity {
     @Named(name = "Filename")
     private String filename;
     @Named(name = "Time")

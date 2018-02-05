@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.frostnerd.dnschanger.database.serializers.IPPortSerializer;
 import com.frostnerd.utils.database.orm.Entity;
+import com.frostnerd.utils.database.orm.MultitonEntity;
 import com.frostnerd.utils.database.orm.annotations.Named;
 import com.frostnerd.utils.database.orm.annotations.NotNull;
 import com.frostnerd.utils.database.orm.annotations.PrimaryKey;
@@ -16,7 +17,7 @@ import java.util.Comparator;
 import java.util.TreeMap;
 
 @Table(name = "DNSEntry")
-public class DNSEntry extends Entity implements Comparable<DNSEntry>{
+public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
     @Serialized(using = IPPortSerializer.class)
     @Named(name = "dns1")
     @NotNull
