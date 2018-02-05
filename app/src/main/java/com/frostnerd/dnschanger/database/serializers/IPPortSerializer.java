@@ -15,6 +15,7 @@ import com.frostnerd.utils.database.orm.Serializer;
 public class IPPortSerializer extends Serializer<IPPortPair> {
     @Override
     public String serialize(IPPortPair ipPortPair) {
+        if(ipPortPair == null)return "";
         return ipPortPair.toString();
     }
 
