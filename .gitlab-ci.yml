@@ -53,8 +53,8 @@ build_release:
 unitTests:
   stage: test
   script:
-    - ./gradlew test --stacktrace || (zip -r tests.zip AndroidUtils/library/build/reports/tests/ && exit 1)
-    - zip -r tests.zip AndroidUtils/library/build/reports/tests/
+    - ./gradlew test --stacktrace || (zip -r tests.zip AndroidUtils/library/build/reports/tests/ app/build/reports/tests && exit 1)
+    - zip -r tests.zip AndroidUtils/library/build/reports/tests/ app/build/reports/tests
   except:
     - /^no_ci.*$/
     - /^no_tests.*$/
