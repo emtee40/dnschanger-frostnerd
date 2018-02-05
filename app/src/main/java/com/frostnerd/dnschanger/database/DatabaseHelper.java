@@ -42,9 +42,6 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
         super(context, DATABASE_NAME, DATABASE_VERSION, entities);
         this.context = context;
         getSuperWriteableDatabase();
-        for(Class<? extends Entity> clazz: entities){
-            System.out.println(ParsedEntity.wrapEntity(clazz).getTableCreationStatements());
-        }
     }
 
     @Override
