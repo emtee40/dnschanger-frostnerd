@@ -41,7 +41,6 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, DATABASE_VERSION, entities);
         this.context = context;
-        getSuperWriteableDatabase();
     }
 
     @Override
