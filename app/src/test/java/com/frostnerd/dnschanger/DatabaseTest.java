@@ -9,6 +9,7 @@ import com.frostnerd.dnschanger.database.entities.DNSRule;
 import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.database.entities.Shortcut;
+import com.frostnerd.utils.database.orm.Debug;
 import com.frostnerd.utils.database.orm.parser.ParsedEntity;
 import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
 
@@ -19,6 +20,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
@@ -78,7 +80,8 @@ public class DatabaseTest {
         }
         DNSRule rule = new DNSRule("frostnerd.com", "127.0.0.1", false, false);
         helper.insert(rule);
-        assertNotNull("Inserted DNSRule should be in the database", helper.select(DNSEntry.class, WhereCondition.buildBasedOnPrimaryKeys(rule)));
+        assertNotNull("Inserted DNSRule should be in the database",
+                helper.select(DNSRule.class, WhereCondition.buildBasedOnPrimaryKeys(rule)));
         helper.createDNSRule("blockeddomain.com", "0.0.0.0", false, false);
         assertTrue("The host of the DNSRule inserted last should be 'blockeddomain.com'", helper.getLastRow(DNSRule.class).getHost().equals("blockeddomain.com"));
     }
@@ -97,12 +100,13 @@ public class DatabaseTest {
 
     @Test
     public void testInsertShortcut(){
-        Shortcut shortcut = new Shortcut("NewShortcut", new IPPortPair("8.8.8.8", 53, false),
-               null, new IPPortPair("::1", 53, true), IPPortPair.EMPTY);
+        List<IPPortPair> pairs = Arrays.asList(new IPPortPair[]{new IPPortPair("8.8.8.8", 53, false), null,
+                new IPPortPair("::1", 53, true), IPPortPair.EMPTY});
+        helper.getSQLHandler(IPPortPair.class).insert(helper, pairs);
+        Shortcut shortcut = new Shortcut("NewShortcut", pairs.get(0), pairs.get(1), pairs.get(2), pairs.get(3));
         helper.insert(shortcut);
         assertNotNull("Inserted Shortcut should be in the database", helper.select(DNSEntry.class, WhereCondition.buildBasedOnPrimaryKeys(shortcut)));
-        helper.createShortcut("NewShortcut2", new IPPortPair("8.8.8.8", 53, false),
-                null, new IPPortPair("::1", 53, true), IPPortPair.EMPTY);
+        helper.createShortcut("NewShortcut2", pairs.get(0), pairs.get(1), pairs.get(2), pairs.get(3));
         assertTrue("The name of the Shortcut inserted last should be 'NewShortcut2'", helper.getLastRow(Shortcut.class).getName().equals("NewShortcut2"));
     }
 
@@ -113,7 +117,9 @@ public class DatabaseTest {
             inserted.add(new DNSRule(i + ".frostnerd.com", "192.168.178." + i, false, false));
             helper.insert(inserted.get(inserted.size()-1));
         }
-        DNSRuleImport dnsRuleImport = new DNSRuleImport("MyFile.txt", System.currentTimeMillis(), inserted.get(0).getRowid(), inserted.get(inserted.size() -1).getRowid());
+        DNSRuleImport dnsRuleImport = new DNSRuleImport("MyFile.txt", System.currentTimeMillis(),
+                inserted.get(0).getRowid(),
+                inserted.get(inserted.size() -1).getRowid());
         helper.insert(dnsRuleImport);
         assertNotNull("Inserted DNSRule should be in the database", helper.select(DNSEntry.class, WhereCondition.buildBasedOnPrimaryKeys(dnsRuleImport)));
     }
@@ -122,6 +128,7 @@ public class DatabaseTest {
     public void testInsertDNSQuery(){
         DNSQuery query = new DNSQuery("8.8.8.8", false, System.currentTimeMillis());
         helper.insert(query);
-        assertNotNull("Inserted DNSRule should be in the database", helper.select(DNSEntry.class, WhereCondition.buildBasedOnPrimaryKeys(query)));
+        assertNotNull("Inserted DNSRule should be in the database",
+                helper.select(DNSQuery.class, WhereCondition.buildBasedOnPrimaryKeys(query)));
     }
 }
