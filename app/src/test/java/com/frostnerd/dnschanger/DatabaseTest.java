@@ -9,7 +9,6 @@ import com.frostnerd.dnschanger.database.entities.DNSRule;
 import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.database.entities.Shortcut;
-import com.frostnerd.utils.database.orm.Debug;
 import com.frostnerd.utils.database.orm.parser.ParsedEntity;
 import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
 
@@ -64,7 +63,8 @@ public class DatabaseTest {
     public void testInsertIPPortPair(){
         IPPortPair pair = new IPPortPair("8.8.8.8", 53, false);
         helper.insert(pair);
-        assertNotNull("Inserted IPPortPair should be in the database", helper.select(DNSEntry.class, WhereCondition.buildBasedOnPrimaryKeys(pair)));
+        assertNotNull("Inserted IPPortPair should be in the database",
+                helper.select(IPPortPair.class, WhereCondition.buildBasedOnPrimaryKeys(pair)));
     }
 
     @Test
@@ -105,7 +105,7 @@ public class DatabaseTest {
         helper.getSQLHandler(IPPortPair.class).insert(helper, pairs);
         Shortcut shortcut = new Shortcut("NewShortcut", pairs.get(0), pairs.get(1), pairs.get(2), pairs.get(3));
         helper.insert(shortcut);
-        assertNotNull("Inserted Shortcut should be in the database", helper.select(DNSEntry.class, WhereCondition.buildBasedOnPrimaryKeys(shortcut)));
+        assertNotNull("Inserted Shortcut should be in the database", helper.select(Shortcut.class, WhereCondition.buildBasedOnPrimaryKeys(shortcut)));
         helper.createShortcut("NewShortcut2", pairs.get(0), pairs.get(1), pairs.get(2), pairs.get(3));
         assertTrue("The name of the Shortcut inserted last should be 'NewShortcut2'", helper.getLastRow(Shortcut.class).getName().equals("NewShortcut2"));
     }
@@ -121,7 +121,7 @@ public class DatabaseTest {
                 inserted.get(0).getRowid(),
                 inserted.get(inserted.size() -1).getRowid());
         helper.insert(dnsRuleImport);
-        assertNotNull("Inserted DNSRule should be in the database", helper.select(DNSEntry.class, WhereCondition.buildBasedOnPrimaryKeys(dnsRuleImport)));
+        assertNotNull("Inserted DNSRuleImport should be in the database", helper.select(DNSRuleImport.class, WhereCondition.buildBasedOnPrimaryKeys(dnsRuleImport)));
     }
 
     @Test
