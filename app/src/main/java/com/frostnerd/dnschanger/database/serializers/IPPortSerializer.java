@@ -14,13 +14,17 @@ import com.frostnerd.utils.database.orm.Serializer;
  */
 public class IPPortSerializer extends Serializer<IPPortPair> {
     @Override
-    public String serialize(IPPortPair ipPortPair) {
-        if(ipPortPair == null)return "";
+    protected String serializeValue(IPPortPair ipPortPair) {
         return ipPortPair.toString();
     }
 
     @Override
     public IPPortPair deserialize(String text) {
         return IPPortPair.wrap(text);
+    }
+
+    @Override
+    public String serializeNull() {
+        return "";
     }
 }
