@@ -9,11 +9,18 @@ import com.frostnerd.dnschanger.database.entities.DNSRule;
 import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.database.entities.Shortcut;
+import com.frostnerd.utils.database.orm.Debug;
 import com.frostnerd.utils.database.orm.parser.ParsedEntity;
 import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
+import com.frostnerd.utils.general.DetailedTimingLogger;
 
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
@@ -37,11 +44,29 @@ import static org.junit.Assert.assertTrue;
 @RunWith(RobolectricTestRunner.class)
 @LargeTest
 public class DatabaseTest {
+    @Rule
+    public TestName testName = new TestName();
+    private static final DetailedTimingLogger timingLogger = new DetailedTimingLogger("com.frostnerd.dnschanger", "DatabaseTest", false);
     private DatabaseHelper helper;
 
+    @BeforeClass
+    public static void setupClass() {
+        timingLogger.reset();
+        timingLogger.addSplit("Class setup");
+    }
+
     @Before
-    public void setup(){
+    public void setup() {
+        timingLogger.addSplit("Started Test setup for test " + testName.getMethodName());
+        timingLogger.disableGlobally();
         helper = new DatabaseHelper(RuntimeEnvironment.application);
+        helper.getWritableDatabase();
+        /*
+            Any test specific setup here
+        */
+        timingLogger.enableGlobally();
+        timingLogger.addSplit("Starting test " + testName.getMethodName(), 1);
+        timingLogger.disableGlobally();
     }
 
     @Test
@@ -92,6 +117,7 @@ public class DatabaseTest {
         assertTrue("The host of the DNSRule inserted last should be 'blockeddomain.com'", helper.getLastRow(DNSRule.class).getHost().equals("blockeddomain.com"));
         assertTrue("The target of the DNSRule inserted last should be '0.0.0.0'", helper.getLastRow(DNSRule.class).getTarget().equals("0.0.0.0"));
         helper.editDNSRule("blockeddomain.com", false, "192.168.178.1");
+        Debug.printTable(ParsedEntity.wrapEntity(DNSRule.class).getTableName(), helper);
         assertTrue("The host of the DNSRule inserted last should be 'blockeddomain.com'", helper.getLastRow(DNSRule.class).getHost().equals("blockeddomain.com"));
         assertTrue("The target of the DNSRule inserted last should be '192.168.178.1'", helper.getLastRow(DNSRule.class).getTarget().equals("192.168.178.1"));
         helper.deleteDNSRule("blockeddomain.com", false);
@@ -130,5 +156,24 @@ public class DatabaseTest {
         helper.insert(query);
         assertNotNull("Inserted DNSRule should be in the database",
                 helper.select(DNSQuery.class, WhereCondition.buildBasedOnPrimaryKeys(query)));
+    }
+
+    @After
+    public void cleanup() {
+        timingLogger.enableGlobally();
+        timingLogger.addSplit("Finished Test " + testName.getMethodName(), 1);
+        timingLogger.disableGlobally();
+        /*
+            Any test specific teardown here
+         */
+        helper.close();
+        timingLogger.enableGlobally();
+        timingLogger.addSplit("Finished cleanup for test " + testName.getMethodName());
+    }
+
+    @AfterClass
+    public static void classCleanup() {
+        timingLogger.enableGlobally();
+        timingLogger.dumpToLog(10);
     }
 }
