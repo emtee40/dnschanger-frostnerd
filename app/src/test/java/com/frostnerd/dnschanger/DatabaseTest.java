@@ -9,7 +9,6 @@ import com.frostnerd.dnschanger.database.entities.DNSRule;
 import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.database.entities.Shortcut;
-import com.frostnerd.utils.database.orm.Debug;
 import com.frostnerd.utils.database.orm.parser.ParsedEntity;
 import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
 import com.frostnerd.utils.general.DetailedTimingLogger;
@@ -117,7 +116,6 @@ public class DatabaseTest {
         assertTrue("The host of the DNSRule inserted last should be 'blockeddomain.com'", helper.getLastRow(DNSRule.class).getHost().equals("blockeddomain.com"));
         assertTrue("The target of the DNSRule inserted last should be '0.0.0.0'", helper.getLastRow(DNSRule.class).getTarget().equals("0.0.0.0"));
         helper.editDNSRule("blockeddomain.com", false, "192.168.178.1");
-        Debug.printTable(ParsedEntity.wrapEntity(DNSRule.class).getTableName(), helper);
         assertTrue("The host of the DNSRule inserted last should be 'blockeddomain.com'", helper.getLastRow(DNSRule.class).getHost().equals("blockeddomain.com"));
         assertTrue("The target of the DNSRule inserted last should be '192.168.178.1'", helper.getLastRow(DNSRule.class).getTarget().equals("192.168.178.1"));
         helper.deleteDNSRule("blockeddomain.com", false);
