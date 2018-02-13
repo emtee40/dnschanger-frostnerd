@@ -78,7 +78,7 @@ public class DatabaseTest {
     @Test
     public void testInsertDNSEntry(){
         DNSEntry entry = new DNSEntry("MyCoolName", "Short", new IPPortPair("8.8.8.8", 53, false),
-                new IPPortPair("8.8.4.4", 53, false), IPPortPair.EMPTY, null, "A new description", true);
+                new IPPortPair("8.8.4.4", 53, false), IPPortPair.getEmptyPair(), null, "A new description", true);
         helper.insert(entry);
         assertNotNull("Inserted DNSEntry should be in the database", helper.select(DNSEntry.class, WhereCondition.buildBasedOnPrimaryKeys(entry)));
     }
@@ -124,8 +124,8 @@ public class DatabaseTest {
 
     @Test
     public void testInsertShortcut(){
-        List<IPPortPair> pairs = Arrays.asList(new IPPortPair[]{new IPPortPair("8.8.8.8", 53, false), null,
-                new IPPortPair("::1", 53, true), IPPortPair.EMPTY});
+        List<IPPortPair> pairs = Arrays.asList(new IPPortPair("8.8.8.8", 53, false), null,
+                new IPPortPair("::1", 53, true), IPPortPair.getEmptyPair());
         helper.getSQLHandler(IPPortPair.class).insert(helper, pairs);
         Shortcut shortcut = new Shortcut("NewShortcut", pairs.get(0), pairs.get(1), pairs.get(2), pairs.get(3));
         helper.insert(shortcut);
