@@ -1,13 +1,16 @@
 package com.frostnerd.dnschanger.database.entities;
 
 import com.frostnerd.dnschanger.util.Util;
-import com.frostnerd.utils.database.orm.Entity;
 import com.frostnerd.utils.database.orm.MultitonEntity;
+import com.frostnerd.utils.database.orm.annotations.Ignore;
 import com.frostnerd.utils.database.orm.annotations.Named;
 import com.frostnerd.utils.database.orm.annotations.RowID;
 import com.frostnerd.utils.database.orm.annotations.Table;
 
 import java.io.Serializable;
+
+import lombok.AccessLevel;
+import lombok.Getter;
 
 @Table(name = "IPPortPair")
 public class IPPortPair extends MultitonEntity implements Serializable{
@@ -17,7 +20,10 @@ public class IPPortPair extends MultitonEntity implements Serializable{
     private int port;
     @Named(name = "Ipv6")
     private boolean ipv6;
-    public static final IPPortPair EMPTY = new IPPortPair("", -1, false);
+    @Ignore
+    @Getter(lazy = true, value = AccessLevel.PUBLIC) private static final IPPortPair emptyPair = createEmptyPair();
+    @Ignore
+    @Getter(lazy=true, value = AccessLevel.PRIVATE) private final String formattedWithPort = createFormattedText();
 
     @RowID
     private long id;
@@ -33,9 +39,7 @@ public class IPPortPair extends MultitonEntity implements Serializable{
     }
 
     public IPPortPair(IPPortPair pair){
-        this.ip = pair.getAddress();
-        this.port = pair.getPort();
-        this.ipv6 = pair.isIpv6();
+        this(pair.ip, pair.port, pair.ipv6);
     }
 
     public static IPPortPair wrap(String s){
@@ -77,17 +81,25 @@ public class IPPortPair extends MultitonEntity implements Serializable{
 
     public String toString(boolean port){
         if(isEmpty())return "";
-        if(port)return ipv6 ? "[" + getAddress() + "]:" + getPort() : getAddress() + ":" + getPort();
+        if(port)return getFormattedWithPort();
         else return getAddress();
     }
 
     public String formatForTextfield(boolean customPorts){
         if(ip.equals(""))return "";
+        return customPorts ? getFormattedWithPort() : ip;
+    }
+
+    private String createFormattedText(){
         if(ipv6){
-            return customPorts ? "[" + ip + "]:" + port : ip;
+           return "[" + ip + "]:" + port;
         }else{
-            return customPorts ? ip + ":" + port : ip;
+           return ip + ":" + port;
         }
+    }
+
+    private static IPPortPair createEmptyPair(){
+        return new IPPortPair("", -1, false);
     }
 
     public boolean isEmpty(){
