@@ -87,8 +87,15 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
     public void onStop() {
         if(newRuleDialog != null){
             newRuleDialog.dismiss();
+            newRuleDialog = null;
         }
         super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        ruleAdapter.cleanup();
+        super.onDestroy();
     }
 
     @Override
