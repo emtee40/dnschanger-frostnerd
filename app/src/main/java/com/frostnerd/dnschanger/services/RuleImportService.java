@@ -157,7 +157,7 @@ public class RuleImportService extends Service {
                     updateNotification(i, configuration.lineCount);
                 }
                 if(continueCurrent && shouldContinue && currentCount != 0){
-                    Util.getDBHelper(this, false).insert(new DNSRuleImport(file.getFile().getName(), System.currentTimeMillis(),
+                    Util.getDBHelper(this, false).insert(currentDatabaseInstance, new DNSRuleImport(file.getFile().getName(), System.currentTimeMillis(),
                             rowID,
                             lastRowID));
                 }
