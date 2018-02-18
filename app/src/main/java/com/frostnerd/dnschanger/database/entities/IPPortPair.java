@@ -22,9 +22,6 @@ public class IPPortPair extends MultitonEntity implements Serializable{
     private boolean ipv6;
     @Ignore
     @Getter(lazy = true, value = AccessLevel.PUBLIC) private static final IPPortPair emptyPair = createEmptyPair();
-    @Ignore
-    @Getter(lazy=true, value = AccessLevel.PRIVATE) private final String formattedWithPort = createFormattedText();
-
     @RowID
     private long id;
 
@@ -43,7 +40,7 @@ public class IPPortPair extends MultitonEntity implements Serializable{
     }
 
     public static IPPortPair wrap(String s){
-        return Util.validateInput(s, s.contains("[") || s.matches("[a-fA-F0-9:]+"), true, true);
+        return wrap(s.replace("-1", "53"), 53);
     }
 
     public static IPPortPair wrap(String s, int defPort){
@@ -90,7 +87,8 @@ public class IPPortPair extends MultitonEntity implements Serializable{
         return customPorts ? getFormattedWithPort() : ip;
     }
 
-    private String createFormattedText(){
+    private String getFormattedWithPort(){
+        if(port == -1)return ip;
         if(ipv6){
            return "[" + ip + "]:" + port;
         }else{
