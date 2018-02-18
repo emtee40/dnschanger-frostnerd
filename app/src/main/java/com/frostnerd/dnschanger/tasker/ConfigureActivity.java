@@ -297,9 +297,9 @@ public class ConfigureActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.menu_switch_ip_version){
             settingV6 = !settingV6;
             invalidateOptionsMenu();
+            setInputType();
             ed_dns1.setText(settingV6 ? dns1V6.formatForTextfield(customPorts) : dns1.formatForTextfield(customPorts));
             ed_dns2.setText(settingV6 ? dns2V6.formatForTextfield(customPorts) : dns2.formatForTextfield(customPorts));
-            setInputType();
             getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
         }else if(item.getItemId() == android.R.id.home){
             lastBackPress = System.currentTimeMillis();
