@@ -57,18 +57,22 @@ public class FireReceiver extends BroadcastReceiver {
 
                 String dns1 = bundle.getString(Helper.BUNDLE_EXTRA_DNS1), dns2 = bundle.getString(Helper.BUNDLE_EXTRA_DNS2),
                         dns1v6 = bundle.getString(Helper.BUNDLE_EXTRA_DNS1V6), dns2v6 = bundle.getString(Helper.BUNDLE_EXTRA_DNS2V6);
+                LogFactory.writeMessage(context, LOG_TAG, "DNS 1: " + dns1 + "; DNS 2: " + dns2 +
+                "; DNSV6 1: " + dns1v6 + "; DNSV6 2: " + dns2v6);
                 if (bundle.containsKey(Helper.BUNDLE_EXTRA_V2)) {
+                    LogFactory.writeMessage(context, LOG_TAG, "The bundle is Version 2");
                     if (!TextUtils.isEmpty(dns1)) servers.add(IPPortPair.wrap(dns1));
                     if (!TextUtils.isEmpty(dns2)) servers.add(IPPortPair.wrap(dns2));
                     if (!TextUtils.isEmpty(dns1v6)) servers.add(IPPortPair.wrap(dns1v6));
                     if (!TextUtils.isEmpty(dns2v6)) servers.add(IPPortPair.wrap(dns2v6));
                 } else {
+                    LogFactory.writeMessage(context, LOG_TAG, "The bundle is Version 1");
                     if (!TextUtils.isEmpty(dns1)) servers.add(new IPPortPair(dns1, 53, false));
                     if (!TextUtils.isEmpty(dns2)) servers.add(new IPPortPair(dns2, 53, false));
                     if (!TextUtils.isEmpty(dns1v6)) servers.add(new IPPortPair(dns1v6, 53, false));
                     if (!TextUtils.isEmpty(dns2v6)) servers.add(new IPPortPair(dns2v6, 53, false));
                 }
-                LogFactory.writeMessage(context, LOG_TAG, servers.toString());
+                LogFactory.writeMessage(context, LOG_TAG, "Servers: " + servers.toString());
                 LogFactory.writeMessage(context, LOG_TAG, "Starting BackgroundVpnConfigureActivity");
                 BackgroundVpnConfigureActivity.startWithFixedDNS(context, servers, true);
             }
