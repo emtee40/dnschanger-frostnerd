@@ -496,11 +496,9 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
         itemCreator.createItemAndContinue(R.string.title_export_settings,setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_action_export)), new DrawerItem.ClickListener() {
             @Override
             public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
-                System.out.println("CLICKED");
                 if(!PermissionsUtil.canWriteExternalStorage(MainActivity.this)){
                     ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_EXPORT_SETTINGS);
                 }else{
-                    System.out.println("SHOWING DIALOG");
                     new ExportSettingsDialog(MainActivity.this);
                 }
                 return false;
