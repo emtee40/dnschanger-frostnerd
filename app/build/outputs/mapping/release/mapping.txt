@@ -105,12 +105,12 @@ android.arch.lifecycle.Lifecycle$Event -> android.a.b.g$a:
     114:114:void <init>(java.lang.String,int) -> <init>
     113:142:void <clinit>() -> <clinit>
 android.arch.lifecycle.Lifecycle$State -> android.a.b.g$b:
-    android.arch.lifecycle.Lifecycle$State DESTROYED -> a
-    android.arch.lifecycle.Lifecycle$State INITIALIZED -> b
-    android.arch.lifecycle.Lifecycle$State CREATED -> c
-    android.arch.lifecycle.Lifecycle$State STARTED -> d
-    android.arch.lifecycle.Lifecycle$State RESUMED -> e
-    android.arch.lifecycle.Lifecycle$State[] $VALUES -> f
+    android.arch.lifecycle.Lifecycle$State DESTROYED -> DESTROYED
+    android.arch.lifecycle.Lifecycle$State INITIALIZED -> INITIALIZED
+    android.arch.lifecycle.Lifecycle$State CREATED -> CREATED
+    android.arch.lifecycle.Lifecycle$State STARTED -> STARTED
+    android.arch.lifecycle.Lifecycle$State RESUMED -> RESUMED
+    android.arch.lifecycle.Lifecycle$State[] $VALUES -> $VALUES
     149:149:android.arch.lifecycle.Lifecycle$State[] values() -> values
     149:149:android.arch.lifecycle.Lifecycle$State valueOf(java.lang.String) -> valueOf
     150:150:void <init>(java.lang.String,int) -> <init>
@@ -19790,11 +19790,11 @@ com.frostnerd.dnschanger.LogFactory$1 -> com.frostnerd.dnschanger.a$1:
     56:56:void <init>() -> <init>
     59:59:boolean accept(java.io.File) -> accept
 com.frostnerd.dnschanger.LogFactory$Tag -> com.frostnerd.dnschanger.a$a:
-    com.frostnerd.dnschanger.LogFactory$Tag INFO -> a
-    com.frostnerd.dnschanger.LogFactory$Tag ERROR -> b
-    com.frostnerd.dnschanger.LogFactory$Tag MESSAGE -> c
-    com.frostnerd.dnschanger.LogFactory$Tag NO_TAG -> d
-    com.frostnerd.dnschanger.LogFactory$Tag[] $VALUES -> e
+    com.frostnerd.dnschanger.LogFactory$Tag INFO -> INFO
+    com.frostnerd.dnschanger.LogFactory$Tag ERROR -> ERROR
+    com.frostnerd.dnschanger.LogFactory$Tag MESSAGE -> MESSAGE
+    com.frostnerd.dnschanger.LogFactory$Tag NO_TAG -> NO_TAG
+    com.frostnerd.dnschanger.LogFactory$Tag[] $VALUES -> $VALUES
     362:362:com.frostnerd.dnschanger.LogFactory$Tag[] values() -> values
     362:362:com.frostnerd.dnschanger.LogFactory$Tag valueOf(java.lang.String) -> valueOf
     362:362:void <init>(java.lang.String,int) -> <init>
@@ -20357,8 +20357,8 @@ com.frostnerd.dnschanger.adapters.QueryLogAdapter$2$1 -> com.frostnerd.dnschange
     60:60:void <init>(com.frostnerd.dnschanger.adapters.QueryLogAdapter$2) -> <init>
     63:64:void run() -> run
 com.frostnerd.dnschanger.adapters.QueryLogAdapter$ArgumentBasedFilter -> com.frostnerd.dnschanger.a.a$a:
-    com.frostnerd.dnschanger.adapters.QueryLogAdapter$ArgumentBasedFilter HOST_SEARCH -> a
-    com.frostnerd.dnschanger.adapters.QueryLogAdapter$ArgumentBasedFilter[] $VALUES -> b
+    com.frostnerd.dnschanger.adapters.QueryLogAdapter$ArgumentBasedFilter HOST_SEARCH -> HOST_SEARCH
+    com.frostnerd.dnschanger.adapters.QueryLogAdapter$ArgumentBasedFilter[] $VALUES -> $VALUES
     109:109:com.frostnerd.dnschanger.adapters.QueryLogAdapter$ArgumentBasedFilter[] values() -> values
     109:109:com.frostnerd.dnschanger.adapters.QueryLogAdapter$ArgumentBasedFilter valueOf(java.lang.String) -> valueOf
     109:109:void <init>(java.lang.String,int) -> <init>
@@ -20428,9 +20428,9 @@ com.frostnerd.dnschanger.adapters.RuleAdapter$2 -> com.frostnerd.dnschanger.a.c$
     62:62:void <init>(com.frostnerd.dnschanger.adapters.RuleAdapter,android.widget.TextView,android.app.Activity) -> <init>
     65:66:void run() -> run
 com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentBasedFilter -> com.frostnerd.dnschanger.a.c$a:
-    com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentBasedFilter TARGET -> a
-    com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentBasedFilter HOST_SEARCH -> b
-    com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentBasedFilter[] $VALUES -> c
+    com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentBasedFilter TARGET -> TARGET
+    com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentBasedFilter HOST_SEARCH -> HOST_SEARCH
+    com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentBasedFilter[] $VALUES -> $VALUES
     162:162:com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentBasedFilter[] values() -> values
     162:162:com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentBasedFilter valueOf(java.lang.String) -> valueOf
     162:162:void <init>(java.lang.String,int) -> <init>
@@ -20447,12 +20447,12 @@ com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentBasedFilter$2 -> com.frost
     186:186:boolean isResourceIntensive() -> a
     191:191:com.frostnerd.utils.adapters.DatabaseAdapter$Filter[] exclusiveWith() -> b
 com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentLessFilter -> com.frostnerd.dnschanger.a.c$b:
-    com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentLessFilter SHOW_IPV6 -> a
-    com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentLessFilter HIDE_LOCAL -> b
-    com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentLessFilter SHOW_WILDCARD -> c
-    com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentLessFilter SHOW_IPV4 -> d
-    com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentLessFilter SHOW_NORMAL -> e
-    com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentLessFilter[] $VALUES -> f
+    com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentLessFilter SHOW_IPV6 -> SHOW_IPV6
+    com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentLessFilter HIDE_LOCAL -> HIDE_LOCAL
+    com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentLessFilter SHOW_WILDCARD -> SHOW_WILDCARD
+    com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentLessFilter SHOW_IPV4 -> SHOW_IPV4
+    com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentLessFilter SHOW_NORMAL -> SHOW_NORMAL
+    com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentLessFilter[] $VALUES -> $VALUES
     82:82:com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentLessFilter[] values() -> values
     82:82:com.frostnerd.dnschanger.adapters.RuleAdapter$ArgumentLessFilter valueOf(java.lang.String) -> valueOf
     82:82:void <init>(java.lang.String,int) -> <init>
@@ -20706,9 +20706,9 @@ com.frostnerd.dnschanger.dialogs.DNSCreationDialog$6 -> com.frostnerd.dnschanger
     170:180:void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
     185:185:void afterTextChanged(android.text.Editable) -> afterTextChanged
 com.frostnerd.dnschanger.dialogs.DNSCreationDialog$Mode -> com.frostnerd.dnschanger.b.a$a:
-    com.frostnerd.dnschanger.dialogs.DNSCreationDialog$Mode CREATION -> a
-    com.frostnerd.dnschanger.dialogs.DNSCreationDialog$Mode EDITING -> b
-    com.frostnerd.dnschanger.dialogs.DNSCreationDialog$Mode[] $VALUES -> c
+    com.frostnerd.dnschanger.dialogs.DNSCreationDialog$Mode CREATION -> CREATION
+    com.frostnerd.dnschanger.dialogs.DNSCreationDialog$Mode EDITING -> EDITING
+    com.frostnerd.dnschanger.dialogs.DNSCreationDialog$Mode[] $VALUES -> $VALUES
     225:225:com.frostnerd.dnschanger.dialogs.DNSCreationDialog$Mode[] values() -> values
     225:225:com.frostnerd.dnschanger.dialogs.DNSCreationDialog$Mode valueOf(java.lang.String) -> valueOf
     225:225:void <init>(java.lang.String,int) -> <init>
@@ -21674,11 +21674,11 @@ com.frostnerd.dnschanger.services.jobs.NetworkCheckHandle$2 -> com.frostnerd.dns
     72:72:void <init>(com.frostnerd.dnschanger.services.jobs.NetworkCheckHandle) -> <init>
     76:78:void onReceive(android.content.Context,android.content.Intent) -> onReceive
 com.frostnerd.dnschanger.services.jobs.NetworkCheckHandle$ConnectionType -> com.frostnerd.dnschanger.services.jobs.a$a:
-    com.frostnerd.dnschanger.services.jobs.NetworkCheckHandle$ConnectionType MOBILE -> a
-    com.frostnerd.dnschanger.services.jobs.NetworkCheckHandle$ConnectionType WIFI -> b
-    com.frostnerd.dnschanger.services.jobs.NetworkCheckHandle$ConnectionType VPN -> c
-    com.frostnerd.dnschanger.services.jobs.NetworkCheckHandle$ConnectionType OTHER -> d
-    com.frostnerd.dnschanger.services.jobs.NetworkCheckHandle$ConnectionType[] $VALUES -> e
+    com.frostnerd.dnschanger.services.jobs.NetworkCheckHandle$ConnectionType MOBILE -> MOBILE
+    com.frostnerd.dnschanger.services.jobs.NetworkCheckHandle$ConnectionType WIFI -> WIFI
+    com.frostnerd.dnschanger.services.jobs.NetworkCheckHandle$ConnectionType VPN -> VPN
+    com.frostnerd.dnschanger.services.jobs.NetworkCheckHandle$ConnectionType OTHER -> OTHER
+    com.frostnerd.dnschanger.services.jobs.NetworkCheckHandle$ConnectionType[] $VALUES -> $VALUES
     185:185:com.frostnerd.dnschanger.services.jobs.NetworkCheckHandle$ConnectionType[] values() -> values
     185:185:com.frostnerd.dnschanger.services.jobs.NetworkCheckHandle$ConnectionType valueOf(java.lang.String) -> valueOf
     185:185:void <init>(java.lang.String,int) -> <init>
@@ -21777,12 +21777,12 @@ com.frostnerd.dnschanger.tasker.ConfigureActivity$9 -> com.frostnerd.dnschanger.
     264:264:void <init>(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> <init>
     267:278:void onProviderSelected(java.lang.String,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair) -> a
 com.frostnerd.dnschanger.tasker.ConfigureActivity$Action -> com.frostnerd.dnschanger.tasker.ConfigureActivity$a:
-    com.frostnerd.dnschanger.tasker.ConfigureActivity$Action PAUSE -> a
-    com.frostnerd.dnschanger.tasker.ConfigureActivity$Action START -> b
-    com.frostnerd.dnschanger.tasker.ConfigureActivity$Action STOP -> c
-    com.frostnerd.dnschanger.tasker.ConfigureActivity$Action RESUME -> d
-    int positionInList -> e
-    com.frostnerd.dnschanger.tasker.ConfigureActivity$Action[] $VALUES -> f
+    com.frostnerd.dnschanger.tasker.ConfigureActivity$Action PAUSE -> PAUSE
+    com.frostnerd.dnschanger.tasker.ConfigureActivity$Action START -> START
+    com.frostnerd.dnschanger.tasker.ConfigureActivity$Action STOP -> STOP
+    com.frostnerd.dnschanger.tasker.ConfigureActivity$Action RESUME -> RESUME
+    int positionInList -> positionInList
+    com.frostnerd.dnschanger.tasker.ConfigureActivity$Action[] $VALUES -> $VALUES
     64:64:com.frostnerd.dnschanger.tasker.ConfigureActivity$Action[] values() -> values
     64:64:com.frostnerd.dnschanger.tasker.ConfigureActivity$Action valueOf(java.lang.String) -> valueOf
     68:70:void <init>(java.lang.String,int,int) -> <init>
@@ -21890,12 +21890,12 @@ com.frostnerd.dnschanger.util.PreferencesAccessor$1 -> com.frostnerd.dnschanger.
     138:149:void <init>(android.content.Context,boolean) -> <init>
     151:157:void addIfNotEmpty(java.lang.String,int) -> a
 com.frostnerd.dnschanger.util.PreferencesAccessor$PinProtectable -> com.frostnerd.dnschanger.util.b$a:
-    com.frostnerd.dnschanger.util.PreferencesAccessor$PinProtectable APP -> a
-    com.frostnerd.dnschanger.util.PreferencesAccessor$PinProtectable APP_SHORTCUT -> b
-    com.frostnerd.dnschanger.util.PreferencesAccessor$PinProtectable TILE -> c
-    com.frostnerd.dnschanger.util.PreferencesAccessor$PinProtectable NOTIFICATION -> d
-    java.lang.String settingsKey -> e
-    com.frostnerd.dnschanger.util.PreferencesAccessor$PinProtectable[] $VALUES -> f
+    com.frostnerd.dnschanger.util.PreferencesAccessor$PinProtectable APP -> APP
+    com.frostnerd.dnschanger.util.PreferencesAccessor$PinProtectable APP_SHORTCUT -> APP_SHORTCUT
+    com.frostnerd.dnschanger.util.PreferencesAccessor$PinProtectable TILE -> TILE
+    com.frostnerd.dnschanger.util.PreferencesAccessor$PinProtectable NOTIFICATION -> NOTIFICATION
+    java.lang.String settingsKey -> settingsKey
+    com.frostnerd.dnschanger.util.PreferencesAccessor$PinProtectable[] $VALUES -> $VALUES
     231:231:com.frostnerd.dnschanger.util.PreferencesAccessor$PinProtectable[] values() -> values
     231:231:com.frostnerd.dnschanger.util.PreferencesAccessor$PinProtectable valueOf(java.lang.String) -> valueOf
     235:237:void <init>(java.lang.String,int,java.lang.String) -> <init>
@@ -21903,14 +21903,14 @@ com.frostnerd.dnschanger.util.PreferencesAccessor$PinProtectable -> com.frostner
     231:231:boolean access$000(com.frostnerd.dnschanger.util.PreferencesAccessor$PinProtectable,android.content.Context) -> a
     231:232:void <clinit>() -> <clinit>
 com.frostnerd.dnschanger.util.PreferencesAccessor$Type -> com.frostnerd.dnschanger.util.b$b:
-    com.frostnerd.dnschanger.util.PreferencesAccessor$Type DNS1 -> a
-    com.frostnerd.dnschanger.util.PreferencesAccessor$Type DNS2 -> b
-    com.frostnerd.dnschanger.util.PreferencesAccessor$Type DNS1_V6 -> c
-    com.frostnerd.dnschanger.util.PreferencesAccessor$Type DNS2_V6 -> d
-    java.lang.String dnsKey -> e
-    java.lang.String portKey -> f
-    java.lang.String defaultAddress -> g
-    com.frostnerd.dnschanger.util.PreferencesAccessor$Type[] $VALUES -> h
+    com.frostnerd.dnschanger.util.PreferencesAccessor$Type DNS1 -> DNS1
+    com.frostnerd.dnschanger.util.PreferencesAccessor$Type DNS2 -> DNS2
+    com.frostnerd.dnschanger.util.PreferencesAccessor$Type DNS1_V6 -> DNS1_V6
+    com.frostnerd.dnschanger.util.PreferencesAccessor$Type DNS2_V6 -> DNS2_V6
+    java.lang.String dnsKey -> dnsKey
+    java.lang.String portKey -> portKey
+    java.lang.String defaultAddress -> defaultAddress
+    com.frostnerd.dnschanger.util.PreferencesAccessor$Type[] $VALUES -> $VALUES
     169:169:com.frostnerd.dnschanger.util.PreferencesAccessor$Type[] values() -> values
     169:169:com.frostnerd.dnschanger.util.PreferencesAccessor$Type valueOf(java.lang.String) -> valueOf
     176:180:void <init>(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String) -> <init>
@@ -21949,11 +21949,11 @@ com.frostnerd.dnschanger.util.RuleImport -> com.frostnerd.dnschanger.util.c:
     36:47:void <clinit>() -> <clinit>
 com.frostnerd.dnschanger.util.RuleImport$1 -> com.frostnerd.dnschanger.util.c$1:
 com.frostnerd.dnschanger.util.RuleImport$FileType -> com.frostnerd.dnschanger.util.c$a:
-    com.frostnerd.dnschanger.util.RuleImport$FileType DNSMASQ -> a
-    com.frostnerd.dnschanger.util.RuleImport$FileType HOST -> b
-    com.frostnerd.dnschanger.util.RuleImport$FileType ADBLOCK_FILE -> c
-    com.frostnerd.dnschanger.util.RuleImport$FileType DOMAIN_LIST -> d
-    com.frostnerd.dnschanger.util.RuleImport$FileType[] $VALUES -> e
+    com.frostnerd.dnschanger.util.RuleImport$FileType DNSMASQ -> DNSMASQ
+    com.frostnerd.dnschanger.util.RuleImport$FileType HOST -> HOST
+    com.frostnerd.dnschanger.util.RuleImport$FileType ADBLOCK_FILE -> ADBLOCK_FILE
+    com.frostnerd.dnschanger.util.RuleImport$FileType DOMAIN_LIST -> DOMAIN_LIST
+    com.frostnerd.dnschanger.util.RuleImport$FileType[] $VALUES -> $VALUES
     142:142:com.frostnerd.dnschanger.util.RuleImport$FileType[] values() -> values
     142:142:com.frostnerd.dnschanger.util.RuleImport$FileType valueOf(java.lang.String) -> valueOf
     142:142:void <init>(java.lang.String,int) -> <init>
@@ -22032,21 +22032,21 @@ com.frostnerd.dnschanger.util.Util$DNSQueryResultListener -> com.frostnerd.dnsch
     void onSuccess(org.xbill.DNS.Message) -> a
     void onError(java.lang.Exception) -> a
 com.frostnerd.dnschanger.util.VPNServiceArgument -> com.frostnerd.dnschanger.util.f:
-    com.frostnerd.dnschanger.util.VPNServiceArgument COMMAND_START_VPN -> a
-    com.frostnerd.dnschanger.util.VPNServiceArgument COMMAND_STOP_VPN -> b
-    com.frostnerd.dnschanger.util.VPNServiceArgument COMMAND_STOP_SERVICE -> c
-    com.frostnerd.dnschanger.util.VPNServiceArgument COMMAND_RESTART_VPN -> d
-    com.frostnerd.dnschanger.util.VPNServiceArgument FLAG_FIXED_DNS -> e
-    com.frostnerd.dnschanger.util.VPNServiceArgument FLAG_STARTED_WITH_TASKER -> f
-    com.frostnerd.dnschanger.util.VPNServiceArgument FLAG_GET_BINDER -> g
-    com.frostnerd.dnschanger.util.VPNServiceArgument ARGUMENT_UPSTREAM_SERVERS -> h
-    com.frostnerd.dnschanger.util.VPNServiceArgument ARGUMENT_STOP_REASON -> i
-    com.frostnerd.dnschanger.util.VPNServiceArgument ARGUMENT_CALLER_TRACE -> j
-    com.frostnerd.dnschanger.util.VPNServiceArgument FLAG_DONT_START_IF_RUNNING -> k
-    com.frostnerd.dnschanger.util.VPNServiceArgument FLAG_DONT_UPDATE_DNS -> l
-    com.frostnerd.dnschanger.util.VPNServiceArgument FLAG_DONT_START_IF_NOT_RUNNING -> m
-    java.lang.String argument -> n
-    com.frostnerd.dnschanger.util.VPNServiceArgument[] $VALUES -> o
+    com.frostnerd.dnschanger.util.VPNServiceArgument COMMAND_START_VPN -> COMMAND_START_VPN
+    com.frostnerd.dnschanger.util.VPNServiceArgument COMMAND_STOP_VPN -> COMMAND_STOP_VPN
+    com.frostnerd.dnschanger.util.VPNServiceArgument COMMAND_STOP_SERVICE -> COMMAND_STOP_SERVICE
+    com.frostnerd.dnschanger.util.VPNServiceArgument COMMAND_RESTART_VPN -> COMMAND_RESTART_VPN
+    com.frostnerd.dnschanger.util.VPNServiceArgument FLAG_FIXED_DNS -> FLAG_FIXED_DNS
+    com.frostnerd.dnschanger.util.VPNServiceArgument FLAG_STARTED_WITH_TASKER -> FLAG_STARTED_WITH_TASKER
+    com.frostnerd.dnschanger.util.VPNServiceArgument FLAG_GET_BINDER -> FLAG_GET_BINDER
+    com.frostnerd.dnschanger.util.VPNServiceArgument ARGUMENT_UPSTREAM_SERVERS -> ARGUMENT_UPSTREAM_SERVERS
+    com.frostnerd.dnschanger.util.VPNServiceArgument ARGUMENT_STOP_REASON -> ARGUMENT_STOP_REASON
+    com.frostnerd.dnschanger.util.VPNServiceArgument ARGUMENT_CALLER_TRACE -> ARGUMENT_CALLER_TRACE
+    com.frostnerd.dnschanger.util.VPNServiceArgument FLAG_DONT_START_IF_RUNNING -> FLAG_DONT_START_IF_RUNNING
+    com.frostnerd.dnschanger.util.VPNServiceArgument FLAG_DONT_UPDATE_DNS -> FLAG_DONT_UPDATE_DNS
+    com.frostnerd.dnschanger.util.VPNServiceArgument FLAG_DONT_START_IF_NOT_RUNNING -> FLAG_DONT_START_IF_NOT_RUNNING
+    java.lang.String argument -> argument
+    com.frostnerd.dnschanger.util.VPNServiceArgument[] $VALUES -> $VALUES
     12:12:com.frostnerd.dnschanger.util.VPNServiceArgument[] values() -> values
     12:12:com.frostnerd.dnschanger.util.VPNServiceArgument valueOf(java.lang.String) -> valueOf
     21:23:void <init>(java.lang.String,int,java.lang.String) -> <init>
@@ -24011,10 +24011,10 @@ com.frostnerd.utils.database.orm.annotations.Default -> com.frostnerd.utils.data
     java.lang.String defaultValue() -> a
     com.frostnerd.utils.database.orm.annotations.Default$Direction direction() -> b
 com.frostnerd.utils.database.orm.annotations.Default$Direction -> com.frostnerd.utils.database.orm.a.b$a:
-    com.frostnerd.utils.database.orm.annotations.Default$Direction FROM_DATABASE -> a
-    com.frostnerd.utils.database.orm.annotations.Default$Direction TO_DATABASE -> b
-    com.frostnerd.utils.database.orm.annotations.Default$Direction BOTH -> c
-    com.frostnerd.utils.database.orm.annotations.Default$Direction[] $VALUES -> d
+    com.frostnerd.utils.database.orm.annotations.Default$Direction FROM_DATABASE -> FROM_DATABASE
+    com.frostnerd.utils.database.orm.annotations.Default$Direction TO_DATABASE -> TO_DATABASE
+    com.frostnerd.utils.database.orm.annotations.Default$Direction BOTH -> BOTH
+    com.frostnerd.utils.database.orm.annotations.Default$Direction[] $VALUES -> $VALUES
     26:26:com.frostnerd.utils.database.orm.annotations.Default$Direction[] values() -> values
     26:26:com.frostnerd.utils.database.orm.annotations.Default$Direction valueOf(java.lang.String) -> valueOf
     26:26:void <init>(java.lang.String,int) -> <init>
@@ -24024,11 +24024,11 @@ com.frostnerd.utils.database.orm.annotations.ForeignKey -> com.frostnerd.utils.d
     java.lang.String referencedField() -> b
     com.frostnerd.utils.database.orm.annotations.ForeignKey$StrategyOnMultiple strategyOnMultiple() -> c
 com.frostnerd.utils.database.orm.annotations.ForeignKey$StrategyOnMultiple -> com.frostnerd.utils.database.orm.a.c$a:
-    com.frostnerd.utils.database.orm.annotations.ForeignKey$StrategyOnMultiple FIRST -> a
-    com.frostnerd.utils.database.orm.annotations.ForeignKey$StrategyOnMultiple RANDOM -> b
-    com.frostnerd.utils.database.orm.annotations.ForeignKey$StrategyOnMultiple LAST -> c
-    com.frostnerd.utils.database.orm.annotations.ForeignKey$StrategyOnMultiple EXCEPTION -> d
-    com.frostnerd.utils.database.orm.annotations.ForeignKey$StrategyOnMultiple[] $VALUES -> e
+    com.frostnerd.utils.database.orm.annotations.ForeignKey$StrategyOnMultiple FIRST -> FIRST
+    com.frostnerd.utils.database.orm.annotations.ForeignKey$StrategyOnMultiple RANDOM -> RANDOM
+    com.frostnerd.utils.database.orm.annotations.ForeignKey$StrategyOnMultiple LAST -> LAST
+    com.frostnerd.utils.database.orm.annotations.ForeignKey$StrategyOnMultiple EXCEPTION -> EXCEPTION
+    com.frostnerd.utils.database.orm.annotations.ForeignKey$StrategyOnMultiple[] $VALUES -> $VALUES
     30:30:com.frostnerd.utils.database.orm.annotations.ForeignKey$StrategyOnMultiple[] values() -> values
     30:30:com.frostnerd.utils.database.orm.annotations.ForeignKey$StrategyOnMultiple valueOf(java.lang.String) -> valueOf
     30:30:void <init>(java.lang.String,int) -> <init>
@@ -24049,9 +24049,9 @@ com.frostnerd.utils.database.orm.annotations.Serialized -> com.frostnerd.utils.d
     java.lang.Class using() -> a
     com.frostnerd.utils.database.orm.annotations.Serialized$Scope scope() -> b
 com.frostnerd.utils.database.orm.annotations.Serialized$Scope -> com.frostnerd.utils.database.orm.a.k$a:
-    com.frostnerd.utils.database.orm.annotations.Serialized$Scope INNER -> a
-    com.frostnerd.utils.database.orm.annotations.Serialized$Scope OUTER -> b
-    com.frostnerd.utils.database.orm.annotations.Serialized$Scope[] $VALUES -> c
+    com.frostnerd.utils.database.orm.annotations.Serialized$Scope INNER -> INNER
+    com.frostnerd.utils.database.orm.annotations.Serialized$Scope OUTER -> OUTER
+    com.frostnerd.utils.database.orm.annotations.Serialized$Scope[] $VALUES -> $VALUES
     25:25:com.frostnerd.utils.database.orm.annotations.Serialized$Scope[] values() -> values
     25:25:com.frostnerd.utils.database.orm.annotations.Serialized$Scope valueOf(java.lang.String) -> valueOf
     25:25:void <init>(java.lang.String,int) -> <init>
@@ -24416,14 +24416,14 @@ com.frostnerd.utils.database.orm.parser.columns.SimpleColumn -> com.frostnerd.ut
     269:272:void createColumnStructure(com.frostnerd.utils.database.orm.parser.statementbuilder.CreateTableBuilder) -> a
     277:277:void entityParsingFinished() -> a
 com.frostnerd.utils.database.orm.parser.columns.SimpleColumn$Type -> com.frostnerd.utils.database.orm.c.a.k$a:
-    com.frostnerd.utils.database.orm.parser.columns.SimpleColumn$Type INTEGER -> a
-    com.frostnerd.utils.database.orm.parser.columns.SimpleColumn$Type TEXT -> b
-    com.frostnerd.utils.database.orm.parser.columns.SimpleColumn$Type BLOB -> c
-    com.frostnerd.utils.database.orm.parser.columns.SimpleColumn$Type REAL -> d
-    com.frostnerd.utils.database.orm.parser.columns.SimpleColumn$Type NUMERIC -> e
-    com.frostnerd.utils.database.orm.parser.columns.SimpleColumn$Type SERIALIZED -> f
-    com.frostnerd.utils.database.orm.parser.columns.SimpleColumn$Type ENTITY -> g
-    com.frostnerd.utils.database.orm.parser.columns.SimpleColumn$Type[] $VALUES -> h
+    com.frostnerd.utils.database.orm.parser.columns.SimpleColumn$Type INTEGER -> INTEGER
+    com.frostnerd.utils.database.orm.parser.columns.SimpleColumn$Type TEXT -> TEXT
+    com.frostnerd.utils.database.orm.parser.columns.SimpleColumn$Type BLOB -> BLOB
+    com.frostnerd.utils.database.orm.parser.columns.SimpleColumn$Type REAL -> REAL
+    com.frostnerd.utils.database.orm.parser.columns.SimpleColumn$Type NUMERIC -> NUMERIC
+    com.frostnerd.utils.database.orm.parser.columns.SimpleColumn$Type SERIALIZED -> SERIALIZED
+    com.frostnerd.utils.database.orm.parser.columns.SimpleColumn$Type ENTITY -> ENTITY
+    com.frostnerd.utils.database.orm.parser.columns.SimpleColumn$Type[] $VALUES -> $VALUES
     279:279:com.frostnerd.utils.database.orm.parser.columns.SimpleColumn$Type[] values() -> values
     279:279:com.frostnerd.utils.database.orm.parser.columns.SimpleColumn$Type valueOf(java.lang.String) -> valueOf
     279:279:void <init>(java.lang.String,int) -> <init>
@@ -24507,12 +24507,12 @@ com.frostnerd.utils.database.orm.parser.constraints.ColumnConstraint -> com.fros
     12:12:void <init>() -> <init>
     16:16:java.lang.String toString() -> toString
 com.frostnerd.utils.database.orm.parser.constraints.ConflictBehavior -> com.frostnerd.utils.database.orm.c.b.b:
-    com.frostnerd.utils.database.orm.parser.constraints.ConflictBehavior ROLLBACK -> a
-    com.frostnerd.utils.database.orm.parser.constraints.ConflictBehavior ABORT -> b
-    com.frostnerd.utils.database.orm.parser.constraints.ConflictBehavior FAIL -> c
-    com.frostnerd.utils.database.orm.parser.constraints.ConflictBehavior IGNORE -> d
-    com.frostnerd.utils.database.orm.parser.constraints.ConflictBehavior REPLACE -> e
-    com.frostnerd.utils.database.orm.parser.constraints.ConflictBehavior[] $VALUES -> f
+    com.frostnerd.utils.database.orm.parser.constraints.ConflictBehavior ROLLBACK -> ROLLBACK
+    com.frostnerd.utils.database.orm.parser.constraints.ConflictBehavior ABORT -> ABORT
+    com.frostnerd.utils.database.orm.parser.constraints.ConflictBehavior FAIL -> FAIL
+    com.frostnerd.utils.database.orm.parser.constraints.ConflictBehavior IGNORE -> IGNORE
+    com.frostnerd.utils.database.orm.parser.constraints.ConflictBehavior REPLACE -> REPLACE
+    com.frostnerd.utils.database.orm.parser.constraints.ConflictBehavior[] $VALUES -> $VALUES
     12:12:com.frostnerd.utils.database.orm.parser.constraints.ConflictBehavior[] values() -> values
     12:12:com.frostnerd.utils.database.orm.parser.constraints.ConflictBehavior valueOf(java.lang.String) -> valueOf
     12:12:void <init>(java.lang.String,int) -> <init>
@@ -24713,17 +24713,17 @@ com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition ->
     179:179:com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition equal(java.lang.String,java.lang.String) -> a
     216:216:java.lang.String toString() -> toString
 com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition$Type -> com.frostnerd.utils.database.orm.d.b.f$a:
-    com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition$Type LIKE -> a
-    com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition$Type EQUAL -> b
-    com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition$Type GREATER -> c
-    com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition$Type LESS -> d
-    com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition$Type NOT_NULL -> e
-    com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition$Type IN -> f
-    com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition$Type BETWEEN -> g
-    com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition$Type REGEX -> h
-    boolean comparison -> i
-    boolean multiValue -> j
-    com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition$Type[] $VALUES -> k
+    com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition$Type LIKE -> LIKE
+    com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition$Type EQUAL -> EQUAL
+    com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition$Type GREATER -> GREATER
+    com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition$Type LESS -> LESS
+    com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition$Type NOT_NULL -> NOT_NULL
+    com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition$Type IN -> IN
+    com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition$Type BETWEEN -> BETWEEN
+    com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition$Type REGEX -> REGEX
+    boolean comparison -> comparison
+    boolean multiValue -> multiValue
+    com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition$Type[] $VALUES -> $VALUES
     225:225:com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition$Type[] values() -> values
     225:225:com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition$Type valueOf(java.lang.String) -> valueOf
     230:233:void <init>(java.lang.String,int,boolean,boolean) -> <init>
@@ -24799,11 +24799,11 @@ com.frostnerd.utils.design.MaterialEditText$5 -> com.frostnerd.utils.design.Mate
     383:383:void <init>(com.frostnerd.utils.design.MaterialEditText) -> <init>
     386:386:void onFocusChange(android.view.View,boolean) -> onFocusChange
 com.frostnerd.utils.design.MaterialEditText$IndicatorState -> com.frostnerd.utils.design.MaterialEditText$a:
-    com.frostnerd.utils.design.MaterialEditText$IndicatorState INCORRECT -> a
-    com.frostnerd.utils.design.MaterialEditText$IndicatorState CORRECT -> b
-    com.frostnerd.utils.design.MaterialEditText$IndicatorState UNDEFINED -> c
-    int id -> d
-    com.frostnerd.utils.design.MaterialEditText$IndicatorState[] $VALUES -> e
+    com.frostnerd.utils.design.MaterialEditText$IndicatorState INCORRECT -> INCORRECT
+    com.frostnerd.utils.design.MaterialEditText$IndicatorState CORRECT -> CORRECT
+    com.frostnerd.utils.design.MaterialEditText$IndicatorState UNDEFINED -> UNDEFINED
+    int id -> id
+    com.frostnerd.utils.design.MaterialEditText$IndicatorState[] $VALUES -> $VALUES
     559:559:com.frostnerd.utils.design.MaterialEditText$IndicatorState[] values() -> values
     559:559:com.frostnerd.utils.design.MaterialEditText$IndicatorState valueOf(java.lang.String) -> valueOf
     564:566:void <init>(java.lang.String,int,int) -> <init>
@@ -24811,20 +24811,20 @@ com.frostnerd.utils.design.MaterialEditText$IndicatorState -> com.frostnerd.util
     573:574:com.frostnerd.utils.design.MaterialEditText$IndicatorState fromID(int) -> a
     559:560:void <clinit>() -> <clinit>
 com.frostnerd.utils.design.MaterialEditText$Position -> com.frostnerd.utils.design.MaterialEditText$b:
-    com.frostnerd.utils.design.MaterialEditText$Position TOP -> a
-    com.frostnerd.utils.design.MaterialEditText$Position BOTTOM -> b
-    int posID -> c
-    com.frostnerd.utils.design.MaterialEditText$Position[] $VALUES -> d
+    com.frostnerd.utils.design.MaterialEditText$Position TOP -> TOP
+    com.frostnerd.utils.design.MaterialEditText$Position BOTTOM -> BOTTOM
+    int posID -> posID
+    com.frostnerd.utils.design.MaterialEditText$Position[] $VALUES -> $VALUES
     540:540:com.frostnerd.utils.design.MaterialEditText$Position[] values() -> values
     540:540:com.frostnerd.utils.design.MaterialEditText$Position valueOf(java.lang.String) -> valueOf
     545:547:void <init>(java.lang.String,int,int) -> <init>
     540:541:void <clinit>() -> <clinit>
 com.frostnerd.utils.design.MaterialEditText$RevealType -> com.frostnerd.utils.design.MaterialEditText$c:
-    com.frostnerd.utils.design.MaterialEditText$RevealType ON_CLICK -> a
-    com.frostnerd.utils.design.MaterialEditText$RevealType INSTANT -> b
-    com.frostnerd.utils.design.MaterialEditText$RevealType HIDE_FOCUSLOSS -> c
-    int typeID -> d
-    com.frostnerd.utils.design.MaterialEditText$RevealType[] $VALUES -> e
+    com.frostnerd.utils.design.MaterialEditText$RevealType ON_CLICK -> ON_CLICK
+    com.frostnerd.utils.design.MaterialEditText$RevealType INSTANT -> INSTANT
+    com.frostnerd.utils.design.MaterialEditText$RevealType HIDE_FOCUSLOSS -> HIDE_FOCUSLOSS
+    int typeID -> typeID
+    com.frostnerd.utils.design.MaterialEditText$RevealType[] $VALUES -> $VALUES
     521:521:com.frostnerd.utils.design.MaterialEditText$RevealType[] values() -> values
     521:521:com.frostnerd.utils.design.MaterialEditText$RevealType valueOf(java.lang.String) -> valueOf
     526:528:void <init>(java.lang.String,int,int) -> <init>
@@ -24948,10 +24948,10 @@ com.frostnerd.utils.design.dialogs.FileChooserDialog$FileSelectedListener -> com
     void fileSelected(java.io.File,com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode) -> a
     void multipleFilesSelected(java.io.File[]) -> a
 com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode -> com.frostnerd.utils.design.a.a$b:
-    com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode FILE -> a
-    com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode DIR -> b
-    com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode BOTH -> c
-    com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode[] $VALUES -> d
+    com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode FILE -> FILE
+    com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode DIR -> DIR
+    com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode BOTH -> BOTH
+    com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode[] $VALUES -> $VALUES
     324:324:com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode[] values() -> values
     324:324:com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode valueOf(java.lang.String) -> valueOf
     324:324:void <init>(java.lang.String,int) -> <init>
@@ -25318,16 +25318,16 @@ com.frostnerd.utils.preferences.Preferences -> com.frostnerd.utils.f.b:
     307:313:java.util.Set setFromString(java.lang.String) -> a
     27:28:void <clinit>() -> <clinit>
 com.frostnerd.utils.preferences.Preferences$PreferenceType -> com.frostnerd.utils.f.b$a:
-    com.frostnerd.utils.preferences.Preferences$PreferenceType NULL -> a
-    com.frostnerd.utils.preferences.Preferences$PreferenceType STRING -> b
-    com.frostnerd.utils.preferences.Preferences$PreferenceType INTEGER -> c
-    com.frostnerd.utils.preferences.Preferences$PreferenceType LONG -> d
-    com.frostnerd.utils.preferences.Preferences$PreferenceType FLOAT -> e
-    com.frostnerd.utils.preferences.Preferences$PreferenceType SET -> f
-    com.frostnerd.utils.preferences.Preferences$PreferenceType BOOLEAN -> g
-    com.frostnerd.utils.preferences.Preferences$PreferenceType UNKNOWN -> h
-    int ID -> i
-    com.frostnerd.utils.preferences.Preferences$PreferenceType[] $VALUES -> j
+    com.frostnerd.utils.preferences.Preferences$PreferenceType NULL -> NULL
+    com.frostnerd.utils.preferences.Preferences$PreferenceType STRING -> STRING
+    com.frostnerd.utils.preferences.Preferences$PreferenceType INTEGER -> INTEGER
+    com.frostnerd.utils.preferences.Preferences$PreferenceType LONG -> LONG
+    com.frostnerd.utils.preferences.Preferences$PreferenceType FLOAT -> FLOAT
+    com.frostnerd.utils.preferences.Preferences$PreferenceType SET -> SET
+    com.frostnerd.utils.preferences.Preferences$PreferenceType BOOLEAN -> BOOLEAN
+    com.frostnerd.utils.preferences.Preferences$PreferenceType UNKNOWN -> UNKNOWN
+    int ID -> ID
+    com.frostnerd.utils.preferences.Preferences$PreferenceType[] $VALUES -> $VALUES
     316:316:com.frostnerd.utils.preferences.Preferences$PreferenceType[] values() -> values
     316:316:com.frostnerd.utils.preferences.Preferences$PreferenceType valueOf(java.lang.String) -> valueOf
     320:322:void <init>(java.lang.String,int,int) -> <init>
@@ -25470,15 +25470,15 @@ de.measite.minidns.DNSMessage$Builder -> a.a.a.a$a:
     832:832:de.measite.minidns.EDNS$Builder access$1500(de.measite.minidns.DNSMessage$Builder) -> p
     832:832:void <init>(de.measite.minidns.DNSMessage,de.measite.minidns.DNSMessage$1) -> <init>
 de.measite.minidns.DNSMessage$OPCODE -> a.a.a.a$b:
-    de.measite.minidns.DNSMessage$OPCODE QUERY -> a
-    de.measite.minidns.DNSMessage$OPCODE INVERSE_QUERY -> b
-    de.measite.minidns.DNSMessage$OPCODE STATUS -> c
-    de.measite.minidns.DNSMessage$OPCODE UNASSIGNED3 -> d
-    de.measite.minidns.DNSMessage$OPCODE NOTIFY -> e
-    de.measite.minidns.DNSMessage$OPCODE UPDATE -> f
-    de.measite.minidns.DNSMessage$OPCODE[] INVERSE_LUT -> g
-    byte value -> h
-    de.measite.minidns.DNSMessage$OPCODE[] $VALUES -> i
+    de.measite.minidns.DNSMessage$OPCODE QUERY -> QUERY
+    de.measite.minidns.DNSMessage$OPCODE INVERSE_QUERY -> INVERSE_QUERY
+    de.measite.minidns.DNSMessage$OPCODE STATUS -> STATUS
+    de.measite.minidns.DNSMessage$OPCODE UNASSIGNED3 -> UNASSIGNED3
+    de.measite.minidns.DNSMessage$OPCODE NOTIFY -> NOTIFY
+    de.measite.minidns.DNSMessage$OPCODE UPDATE -> UPDATE
+    de.measite.minidns.DNSMessage$OPCODE[] INVERSE_LUT -> INVERSE_LUT
+    byte value -> value
+    de.measite.minidns.DNSMessage$OPCODE[] $VALUES -> $VALUES
     137:137:de.measite.minidns.DNSMessage$OPCODE[] values() -> values
     137:137:de.measite.minidns.DNSMessage$OPCODE valueOf(java.lang.String) -> valueOf
     169:171:void <init>(java.lang.String,int) -> <init>
@@ -25486,28 +25486,28 @@ de.measite.minidns.DNSMessage$OPCODE -> a.a.a.a$b:
     191:197:de.measite.minidns.DNSMessage$OPCODE getOpcode(int) -> a
     137:158:void <clinit>() -> <clinit>
 de.measite.minidns.DNSMessage$RESPONSE_CODE -> a.a.a.a$c:
-    de.measite.minidns.DNSMessage$RESPONSE_CODE NO_ERROR -> a
-    de.measite.minidns.DNSMessage$RESPONSE_CODE FORMAT_ERR -> b
-    de.measite.minidns.DNSMessage$RESPONSE_CODE SERVER_FAIL -> c
-    de.measite.minidns.DNSMessage$RESPONSE_CODE NX_DOMAIN -> d
-    de.measite.minidns.DNSMessage$RESPONSE_CODE NO_IMP -> e
-    de.measite.minidns.DNSMessage$RESPONSE_CODE REFUSED -> f
-    de.measite.minidns.DNSMessage$RESPONSE_CODE YXDOMAIN -> g
-    de.measite.minidns.DNSMessage$RESPONSE_CODE YXRRSET -> h
-    de.measite.minidns.DNSMessage$RESPONSE_CODE NXRRSET -> i
-    de.measite.minidns.DNSMessage$RESPONSE_CODE NOT_AUTH -> j
-    de.measite.minidns.DNSMessage$RESPONSE_CODE NOT_ZONE -> k
-    de.measite.minidns.DNSMessage$RESPONSE_CODE BADVERS_BADSIG -> l
-    de.measite.minidns.DNSMessage$RESPONSE_CODE BADKEY -> m
-    de.measite.minidns.DNSMessage$RESPONSE_CODE BADTIME -> n
-    de.measite.minidns.DNSMessage$RESPONSE_CODE BADMODE -> o
-    de.measite.minidns.DNSMessage$RESPONSE_CODE BADNAME -> p
-    de.measite.minidns.DNSMessage$RESPONSE_CODE BADALG -> q
-    de.measite.minidns.DNSMessage$RESPONSE_CODE BADTRUNC -> r
-    de.measite.minidns.DNSMessage$RESPONSE_CODE BADCOOKIE -> s
-    java.util.Map INVERSE_LUT -> t
-    byte value -> u
-    de.measite.minidns.DNSMessage$RESPONSE_CODE[] $VALUES -> v
+    de.measite.minidns.DNSMessage$RESPONSE_CODE NO_ERROR -> NO_ERROR
+    de.measite.minidns.DNSMessage$RESPONSE_CODE FORMAT_ERR -> FORMAT_ERR
+    de.measite.minidns.DNSMessage$RESPONSE_CODE SERVER_FAIL -> SERVER_FAIL
+    de.measite.minidns.DNSMessage$RESPONSE_CODE NX_DOMAIN -> NX_DOMAIN
+    de.measite.minidns.DNSMessage$RESPONSE_CODE NO_IMP -> NO_IMP
+    de.measite.minidns.DNSMessage$RESPONSE_CODE REFUSED -> REFUSED
+    de.measite.minidns.DNSMessage$RESPONSE_CODE YXDOMAIN -> YXDOMAIN
+    de.measite.minidns.DNSMessage$RESPONSE_CODE YXRRSET -> YXRRSET
+    de.measite.minidns.DNSMessage$RESPONSE_CODE NXRRSET -> NXRRSET
+    de.measite.minidns.DNSMessage$RESPONSE_CODE NOT_AUTH -> NOT_AUTH
+    de.measite.minidns.DNSMessage$RESPONSE_CODE NOT_ZONE -> NOT_ZONE
+    de.measite.minidns.DNSMessage$RESPONSE_CODE BADVERS_BADSIG -> BADVERS_BADSIG
+    de.measite.minidns.DNSMessage$RESPONSE_CODE BADKEY -> BADKEY
+    de.measite.minidns.DNSMessage$RESPONSE_CODE BADTIME -> BADTIME
+    de.measite.minidns.DNSMessage$RESPONSE_CODE BADMODE -> BADMODE
+    de.measite.minidns.DNSMessage$RESPONSE_CODE BADNAME -> BADNAME
+    de.measite.minidns.DNSMessage$RESPONSE_CODE BADALG -> BADALG
+    de.measite.minidns.DNSMessage$RESPONSE_CODE BADTRUNC -> BADTRUNC
+    de.measite.minidns.DNSMessage$RESPONSE_CODE BADCOOKIE -> BADCOOKIE
+    java.util.Map INVERSE_LUT -> INVERSE_LUT
+    byte value -> value
+    de.measite.minidns.DNSMessage$RESPONSE_CODE[] $VALUES -> $VALUES
     58:58:de.measite.minidns.DNSMessage$RESPONSE_CODE[] values() -> values
     58:58:de.measite.minidns.DNSMessage$RESPONSE_CODE valueOf(java.lang.String) -> valueOf
     101:103:void <init>(java.lang.String,int,int) -> <init>
@@ -25550,36 +25550,36 @@ de.measite.minidns.DNSSECConstants -> a.a.a.c:
     16:16:java.util.Map access$100() -> b
     23:67:void <clinit>() -> <clinit>
 de.measite.minidns.DNSSECConstants$DigestAlgorithm -> a.a.a.c$a:
-    de.measite.minidns.DNSSECConstants$DigestAlgorithm SHA1 -> a
-    de.measite.minidns.DNSSECConstants$DigestAlgorithm SHA256 -> b
-    de.measite.minidns.DNSSECConstants$DigestAlgorithm GOST -> c
-    de.measite.minidns.DNSSECConstants$DigestAlgorithm SHA384 -> d
-    byte value -> e
-    java.lang.String description -> f
-    de.measite.minidns.DNSSECConstants$DigestAlgorithm[] $VALUES -> g
+    de.measite.minidns.DNSSECConstants$DigestAlgorithm SHA1 -> SHA1
+    de.measite.minidns.DNSSECConstants$DigestAlgorithm SHA256 -> SHA256
+    de.measite.minidns.DNSSECConstants$DigestAlgorithm GOST -> GOST
+    de.measite.minidns.DNSSECConstants$DigestAlgorithm SHA384 -> SHA384
+    byte value -> value
+    java.lang.String description -> description
+    de.measite.minidns.DNSSECConstants$DigestAlgorithm[] $VALUES -> $VALUES
     76:76:de.measite.minidns.DNSSECConstants$DigestAlgorithm[] values() -> values
     76:76:de.measite.minidns.DNSSECConstants$DigestAlgorithm valueOf(java.lang.String) -> valueOf
     83:90:void <init>(java.lang.String,int,int,java.lang.String) -> <init>
     96:96:de.measite.minidns.DNSSECConstants$DigestAlgorithm forByte(byte) -> a
     76:80:void <clinit>() -> <clinit>
 de.measite.minidns.DNSSECConstants$SignatureAlgorithm -> a.a.a.c$b:
-    de.measite.minidns.DNSSECConstants$SignatureAlgorithm RSAMD5 -> a
-    de.measite.minidns.DNSSECConstants$SignatureAlgorithm DH -> b
-    de.measite.minidns.DNSSECConstants$SignatureAlgorithm DSA -> c
-    de.measite.minidns.DNSSECConstants$SignatureAlgorithm RSASHA1 -> d
-    de.measite.minidns.DNSSECConstants$SignatureAlgorithm DSA_NSEC3_SHA1 -> e
-    de.measite.minidns.DNSSECConstants$SignatureAlgorithm RSASHA1_NSEC3_SHA1 -> f
-    de.measite.minidns.DNSSECConstants$SignatureAlgorithm RSASHA256 -> g
-    de.measite.minidns.DNSSECConstants$SignatureAlgorithm RSASHA512 -> h
-    de.measite.minidns.DNSSECConstants$SignatureAlgorithm ECC_GOST -> i
-    de.measite.minidns.DNSSECConstants$SignatureAlgorithm ECDSAP256SHA256 -> j
-    de.measite.minidns.DNSSECConstants$SignatureAlgorithm ECDSAP384SHA384 -> k
-    de.measite.minidns.DNSSECConstants$SignatureAlgorithm INDIRECT -> l
-    de.measite.minidns.DNSSECConstants$SignatureAlgorithm PRIVATEDNS -> m
-    de.measite.minidns.DNSSECConstants$SignatureAlgorithm PRIVATEOID -> n
-    byte number -> o
-    java.lang.String description -> p
-    de.measite.minidns.DNSSECConstants$SignatureAlgorithm[] $VALUES -> q
+    de.measite.minidns.DNSSECConstants$SignatureAlgorithm RSAMD5 -> RSAMD5
+    de.measite.minidns.DNSSECConstants$SignatureAlgorithm DH -> DH
+    de.measite.minidns.DNSSECConstants$SignatureAlgorithm DSA -> DSA
+    de.measite.minidns.DNSSECConstants$SignatureAlgorithm RSASHA1 -> RSASHA1
+    de.measite.minidns.DNSSECConstants$SignatureAlgorithm DSA_NSEC3_SHA1 -> DSA_NSEC3_SHA1
+    de.measite.minidns.DNSSECConstants$SignatureAlgorithm RSASHA1_NSEC3_SHA1 -> RSASHA1_NSEC3_SHA1
+    de.measite.minidns.DNSSECConstants$SignatureAlgorithm RSASHA256 -> RSASHA256
+    de.measite.minidns.DNSSECConstants$SignatureAlgorithm RSASHA512 -> RSASHA512
+    de.measite.minidns.DNSSECConstants$SignatureAlgorithm ECC_GOST -> ECC_GOST
+    de.measite.minidns.DNSSECConstants$SignatureAlgorithm ECDSAP256SHA256 -> ECDSAP256SHA256
+    de.measite.minidns.DNSSECConstants$SignatureAlgorithm ECDSAP384SHA384 -> ECDSAP384SHA384
+    de.measite.minidns.DNSSECConstants$SignatureAlgorithm INDIRECT -> INDIRECT
+    de.measite.minidns.DNSSECConstants$SignatureAlgorithm PRIVATEDNS -> PRIVATEDNS
+    de.measite.minidns.DNSSECConstants$SignatureAlgorithm PRIVATEOID -> PRIVATEOID
+    byte number -> number
+    java.lang.String description -> description
+    de.measite.minidns.DNSSECConstants$SignatureAlgorithm[] $VALUES -> $VALUES
     32:32:de.measite.minidns.DNSSECConstants$SignatureAlgorithm[] values() -> values
     32:32:de.measite.minidns.DNSSECConstants$SignatureAlgorithm valueOf(java.lang.String) -> valueOf
     50:57:void <init>(java.lang.String,int,int,java.lang.String) -> <init>
@@ -25615,12 +25615,12 @@ de.measite.minidns.EDNS$Builder -> a.a.a.d$a:
     196:196:boolean access$300(de.measite.minidns.EDNS$Builder) -> d
     196:196:java.util.List access$400(de.measite.minidns.EDNS$Builder) -> e
 de.measite.minidns.EDNS$OptionCode -> a.a.a.d$b:
-    de.measite.minidns.EDNS$OptionCode UNKNOWN -> a
-    de.measite.minidns.EDNS$OptionCode NSID -> b
-    java.util.Map INVERSE_LUT -> e
-    int asInt -> c
-    java.lang.Class clazz -> d
-    de.measite.minidns.EDNS$OptionCode[] $VALUES -> f
+    de.measite.minidns.EDNS$OptionCode UNKNOWN -> UNKNOWN
+    de.measite.minidns.EDNS$OptionCode NSID -> NSID
+    java.util.Map INVERSE_LUT -> INVERSE_LUT
+    int asInt -> asInt
+    java.lang.Class clazz -> clazz
+    de.measite.minidns.EDNS$OptionCode[] $VALUES -> $VALUES
     45:45:de.measite.minidns.EDNS$OptionCode[] values() -> values
     45:45:de.measite.minidns.EDNS$OptionCode valueOf(java.lang.String) -> valueOf
     61:64:void <init>(java.lang.String,int,int,java.lang.Class) -> <init>
@@ -25673,14 +25673,14 @@ de.measite.minidns.Record$1 -> a.a.a.g$1:
     int[] $SwitchMap$de$measite$minidns$Record$TYPE -> a
     346:346:void <clinit>() -> <clinit>
 de.measite.minidns.Record$CLASS -> a.a.a.g$a:
-    de.measite.minidns.Record$CLASS IN -> a
-    de.measite.minidns.Record$CLASS CH -> b
-    de.measite.minidns.Record$CLASS HS -> c
-    de.measite.minidns.Record$CLASS NONE -> d
-    de.measite.minidns.Record$CLASS ANY -> e
-    java.util.HashMap INVERSE_LUT -> f
-    int value -> g
-    de.measite.minidns.Record$CLASS[] $VALUES -> h
+    de.measite.minidns.Record$CLASS IN -> IN
+    de.measite.minidns.Record$CLASS CH -> CH
+    de.measite.minidns.Record$CLASS HS -> HS
+    de.measite.minidns.Record$CLASS NONE -> NONE
+    de.measite.minidns.Record$CLASS ANY -> ANY
+    java.util.HashMap INVERSE_LUT -> INVERSE_LUT
+    int value -> value
+    de.measite.minidns.Record$CLASS[] $VALUES -> $VALUES
     235:235:de.measite.minidns.Record$CLASS[] values() -> values
     235:235:de.measite.minidns.Record$CLASS valueOf(java.lang.String) -> valueOf
     265:267:void <init>(java.lang.String,int,int) -> <init>
@@ -25688,94 +25688,94 @@ de.measite.minidns.Record$CLASS -> a.a.a.g$a:
     283:283:de.measite.minidns.Record$CLASS getClass(int) -> a
     235:254:void <clinit>() -> <clinit>
 de.measite.minidns.Record$TYPE -> a.a.a.g$b:
-    de.measite.minidns.Record$TYPE UNKNOWN -> a
-    de.measite.minidns.Record$TYPE A -> b
-    de.measite.minidns.Record$TYPE NS -> c
-    de.measite.minidns.Record$TYPE MD -> d
-    de.measite.minidns.Record$TYPE MF -> e
-    de.measite.minidns.Record$TYPE CNAME -> f
-    de.measite.minidns.Record$TYPE SOA -> g
-    de.measite.minidns.Record$TYPE MB -> h
-    de.measite.minidns.Record$TYPE MG -> i
-    de.measite.minidns.Record$TYPE MR -> j
-    de.measite.minidns.Record$TYPE NULL -> k
-    de.measite.minidns.Record$TYPE WKS -> l
-    de.measite.minidns.Record$TYPE PTR -> m
-    de.measite.minidns.Record$TYPE HINFO -> n
-    de.measite.minidns.Record$TYPE MINFO -> o
-    de.measite.minidns.Record$TYPE MX -> p
-    de.measite.minidns.Record$TYPE TXT -> q
-    de.measite.minidns.Record$TYPE RP -> r
-    de.measite.minidns.Record$TYPE AFSDB -> s
-    de.measite.minidns.Record$TYPE X25 -> t
-    de.measite.minidns.Record$TYPE ISDN -> u
-    de.measite.minidns.Record$TYPE RT -> v
-    de.measite.minidns.Record$TYPE NSAP -> w
-    de.measite.minidns.Record$TYPE NSAP_PTR -> x
-    de.measite.minidns.Record$TYPE SIG -> y
-    de.measite.minidns.Record$TYPE KEY -> z
-    de.measite.minidns.Record$TYPE PX -> A
-    de.measite.minidns.Record$TYPE GPOS -> B
-    de.measite.minidns.Record$TYPE AAAA -> C
-    de.measite.minidns.Record$TYPE LOC -> D
-    de.measite.minidns.Record$TYPE NXT -> E
-    de.measite.minidns.Record$TYPE EID -> F
-    de.measite.minidns.Record$TYPE NIMLOC -> G
-    de.measite.minidns.Record$TYPE SRV -> H
-    de.measite.minidns.Record$TYPE ATMA -> I
-    de.measite.minidns.Record$TYPE NAPTR -> J
-    de.measite.minidns.Record$TYPE KX -> K
-    de.measite.minidns.Record$TYPE CERT -> L
-    de.measite.minidns.Record$TYPE A6 -> M
-    de.measite.minidns.Record$TYPE DNAME -> N
-    de.measite.minidns.Record$TYPE SINK -> O
-    de.measite.minidns.Record$TYPE OPT -> P
-    de.measite.minidns.Record$TYPE APL -> Q
-    de.measite.minidns.Record$TYPE DS -> R
-    de.measite.minidns.Record$TYPE SSHFP -> S
-    de.measite.minidns.Record$TYPE IPSECKEY -> T
-    de.measite.minidns.Record$TYPE RRSIG -> U
-    de.measite.minidns.Record$TYPE NSEC -> V
-    de.measite.minidns.Record$TYPE DNSKEY -> W
-    de.measite.minidns.Record$TYPE DHCID -> X
-    de.measite.minidns.Record$TYPE NSEC3 -> Y
-    de.measite.minidns.Record$TYPE NSEC3PARAM -> Z
-    de.measite.minidns.Record$TYPE TLSA -> aa
-    de.measite.minidns.Record$TYPE HIP -> ab
-    de.measite.minidns.Record$TYPE NINFO -> ac
-    de.measite.minidns.Record$TYPE RKEY -> ad
-    de.measite.minidns.Record$TYPE TALINK -> ae
-    de.measite.minidns.Record$TYPE CDS -> af
-    de.measite.minidns.Record$TYPE CDNSKEY -> ag
-    de.measite.minidns.Record$TYPE OPENPGPKEY -> ah
-    de.measite.minidns.Record$TYPE CSYNC -> ai
-    de.measite.minidns.Record$TYPE SPF -> aj
-    de.measite.minidns.Record$TYPE UINFO -> ak
-    de.measite.minidns.Record$TYPE UID -> al
-    de.measite.minidns.Record$TYPE GID -> am
-    de.measite.minidns.Record$TYPE UNSPEC -> an
-    de.measite.minidns.Record$TYPE NID -> ao
-    de.measite.minidns.Record$TYPE L32 -> ap
-    de.measite.minidns.Record$TYPE L64 -> aq
-    de.measite.minidns.Record$TYPE LP -> ar
-    de.measite.minidns.Record$TYPE EUI48 -> as
-    de.measite.minidns.Record$TYPE EUI64 -> at
-    de.measite.minidns.Record$TYPE TKEY -> au
-    de.measite.minidns.Record$TYPE TSIG -> av
-    de.measite.minidns.Record$TYPE IXFR -> aw
-    de.measite.minidns.Record$TYPE AXFR -> ax
-    de.measite.minidns.Record$TYPE MAILB -> ay
-    de.measite.minidns.Record$TYPE MAILA -> az
-    de.measite.minidns.Record$TYPE ANY -> aA
-    de.measite.minidns.Record$TYPE URI -> aB
-    de.measite.minidns.Record$TYPE CAA -> aC
-    de.measite.minidns.Record$TYPE TA -> aD
-    de.measite.minidns.Record$TYPE DLV -> aE
-    int value -> aF
-    java.lang.Class dataClass -> aG
-    java.util.Map INVERSE_LUT -> aH
-    java.util.Map DATA_LUT -> aI
-    de.measite.minidns.Record$TYPE[] $VALUES -> aJ
+    de.measite.minidns.Record$TYPE UNKNOWN -> UNKNOWN
+    de.measite.minidns.Record$TYPE A -> A
+    de.measite.minidns.Record$TYPE NS -> NS
+    de.measite.minidns.Record$TYPE MD -> MD
+    de.measite.minidns.Record$TYPE MF -> MF
+    de.measite.minidns.Record$TYPE CNAME -> CNAME
+    de.measite.minidns.Record$TYPE SOA -> SOA
+    de.measite.minidns.Record$TYPE MB -> MB
+    de.measite.minidns.Record$TYPE MG -> MG
+    de.measite.minidns.Record$TYPE MR -> MR
+    de.measite.minidns.Record$TYPE NULL -> NULL
+    de.measite.minidns.Record$TYPE WKS -> WKS
+    de.measite.minidns.Record$TYPE PTR -> PTR
+    de.measite.minidns.Record$TYPE HINFO -> HINFO
+    de.measite.minidns.Record$TYPE MINFO -> MINFO
+    de.measite.minidns.Record$TYPE MX -> MX
+    de.measite.minidns.Record$TYPE TXT -> TXT
+    de.measite.minidns.Record$TYPE RP -> RP
+    de.measite.minidns.Record$TYPE AFSDB -> AFSDB
+    de.measite.minidns.Record$TYPE X25 -> X25
+    de.measite.minidns.Record$TYPE ISDN -> ISDN
+    de.measite.minidns.Record$TYPE RT -> RT
+    de.measite.minidns.Record$TYPE NSAP -> NSAP
+    de.measite.minidns.Record$TYPE NSAP_PTR -> NSAP_PTR
+    de.measite.minidns.Record$TYPE SIG -> SIG
+    de.measite.minidns.Record$TYPE KEY -> KEY
+    de.measite.minidns.Record$TYPE PX -> PX
+    de.measite.minidns.Record$TYPE GPOS -> GPOS
+    de.measite.minidns.Record$TYPE AAAA -> AAAA
+    de.measite.minidns.Record$TYPE LOC -> LOC
+    de.measite.minidns.Record$TYPE NXT -> NXT
+    de.measite.minidns.Record$TYPE EID -> EID
+    de.measite.minidns.Record$TYPE NIMLOC -> NIMLOC
+    de.measite.minidns.Record$TYPE SRV -> SRV
+    de.measite.minidns.Record$TYPE ATMA -> ATMA
+    de.measite.minidns.Record$TYPE NAPTR -> NAPTR
+    de.measite.minidns.Record$TYPE KX -> KX
+    de.measite.minidns.Record$TYPE CERT -> CERT
+    de.measite.minidns.Record$TYPE A6 -> A6
+    de.measite.minidns.Record$TYPE DNAME -> DNAME
+    de.measite.minidns.Record$TYPE SINK -> SINK
+    de.measite.minidns.Record$TYPE OPT -> OPT
+    de.measite.minidns.Record$TYPE APL -> APL
+    de.measite.minidns.Record$TYPE DS -> DS
+    de.measite.minidns.Record$TYPE SSHFP -> SSHFP
+    de.measite.minidns.Record$TYPE IPSECKEY -> IPSECKEY
+    de.measite.minidns.Record$TYPE RRSIG -> RRSIG
+    de.measite.minidns.Record$TYPE NSEC -> NSEC
+    de.measite.minidns.Record$TYPE DNSKEY -> DNSKEY
+    de.measite.minidns.Record$TYPE DHCID -> DHCID
+    de.measite.minidns.Record$TYPE NSEC3 -> NSEC3
+    de.measite.minidns.Record$TYPE NSEC3PARAM -> NSEC3PARAM
+    de.measite.minidns.Record$TYPE TLSA -> TLSA
+    de.measite.minidns.Record$TYPE HIP -> HIP
+    de.measite.minidns.Record$TYPE NINFO -> NINFO
+    de.measite.minidns.Record$TYPE RKEY -> RKEY
+    de.measite.minidns.Record$TYPE TALINK -> TALINK
+    de.measite.minidns.Record$TYPE CDS -> CDS
+    de.measite.minidns.Record$TYPE CDNSKEY -> CDNSKEY
+    de.measite.minidns.Record$TYPE OPENPGPKEY -> OPENPGPKEY
+    de.measite.minidns.Record$TYPE CSYNC -> CSYNC
+    de.measite.minidns.Record$TYPE SPF -> SPF
+    de.measite.minidns.Record$TYPE UINFO -> UINFO
+    de.measite.minidns.Record$TYPE UID -> UID
+    de.measite.minidns.Record$TYPE GID -> GID
+    de.measite.minidns.Record$TYPE UNSPEC -> UNSPEC
+    de.measite.minidns.Record$TYPE NID -> NID
+    de.measite.minidns.Record$TYPE L32 -> L32
+    de.measite.minidns.Record$TYPE L64 -> L64
+    de.measite.minidns.Record$TYPE LP -> LP
+    de.measite.minidns.Record$TYPE EUI48 -> EUI48
+    de.measite.minidns.Record$TYPE EUI64 -> EUI64
+    de.measite.minidns.Record$TYPE TKEY -> TKEY
+    de.measite.minidns.Record$TYPE TSIG -> TSIG
+    de.measite.minidns.Record$TYPE IXFR -> IXFR
+    de.measite.minidns.Record$TYPE AXFR -> AXFR
+    de.measite.minidns.Record$TYPE MAILB -> MAILB
+    de.measite.minidns.Record$TYPE MAILA -> MAILA
+    de.measite.minidns.Record$TYPE ANY -> ANY
+    de.measite.minidns.Record$TYPE URI -> URI
+    de.measite.minidns.Record$TYPE CAA -> CAA
+    de.measite.minidns.Record$TYPE TA -> TA
+    de.measite.minidns.Record$TYPE DLV -> DLV
+    int value -> value
+    java.lang.Class dataClass -> dataClass
+    java.util.Map INVERSE_LUT -> INVERSE_LUT
+    java.util.Map DATA_LUT -> DATA_LUT
+    de.measite.minidns.Record$TYPE[] $VALUES -> $VALUES
     57:57:de.measite.minidns.Record$TYPE[] values() -> values
     57:57:de.measite.minidns.Record$TYPE valueOf(java.lang.String) -> valueOf
     173:174:void <init>(java.lang.String,int,int) -> <init>
@@ -25926,11 +25926,11 @@ de.measite.minidns.record.NSEC3 -> a.a.a.c.l:
     26:26:java.util.Map access$000() -> b
     26:34:void <clinit>() -> <clinit>
 de.measite.minidns.record.NSEC3$HashAlgorithm -> a.a.a.c.l$a:
-    de.measite.minidns.record.NSEC3$HashAlgorithm RESERVED -> a
-    de.measite.minidns.record.NSEC3$HashAlgorithm SHA1 -> b
-    byte value -> c
-    java.lang.String description -> d
-    de.measite.minidns.record.NSEC3$HashAlgorithm[] $VALUES -> e
+    de.measite.minidns.record.NSEC3$HashAlgorithm RESERVED -> RESERVED
+    de.measite.minidns.record.NSEC3$HashAlgorithm SHA1 -> SHA1
+    byte value -> value
+    java.lang.String description -> description
+    de.measite.minidns.record.NSEC3$HashAlgorithm[] $VALUES -> $VALUES
     43:43:de.measite.minidns.record.NSEC3$HashAlgorithm[] values() -> values
     43:43:de.measite.minidns.record.NSEC3$HashAlgorithm valueOf(java.lang.String) -> valueOf
     48:55:void <init>(java.lang.String,int,int,java.lang.String) -> <init>
@@ -26904,12 +26904,12 @@ org.pcap4j.packet.Dot11FrameControl -> org.a.b.ak:
     285:297:int hashCode() -> hashCode
     302:329:boolean equals(java.lang.Object) -> equals
 org.pcap4j.packet.Dot11FrameControl$ProtocolVersion -> org.a.b.ak$a:
-    org.pcap4j.packet.Dot11FrameControl$ProtocolVersion V0 -> a
-    org.pcap4j.packet.Dot11FrameControl$ProtocolVersion V1 -> b
-    org.pcap4j.packet.Dot11FrameControl$ProtocolVersion V2 -> c
-    org.pcap4j.packet.Dot11FrameControl$ProtocolVersion V3 -> d
-    int value -> e
-    org.pcap4j.packet.Dot11FrameControl$ProtocolVersion[] $VALUES -> f
+    org.pcap4j.packet.Dot11FrameControl$ProtocolVersion V0 -> V0
+    org.pcap4j.packet.Dot11FrameControl$ProtocolVersion V1 -> V1
+    org.pcap4j.packet.Dot11FrameControl$ProtocolVersion V2 -> V2
+    org.pcap4j.packet.Dot11FrameControl$ProtocolVersion V3 -> V3
+    int value -> value
+    org.pcap4j.packet.Dot11FrameControl$ProtocolVersion[] $VALUES -> $VALUES
     474:474:org.pcap4j.packet.Dot11FrameControl$ProtocolVersion[] values() -> values
     474:474:org.pcap4j.packet.Dot11FrameControl$ProtocolVersion valueOf(java.lang.String) -> valueOf
     498:500:void <init>(java.lang.String,int,int) -> <init>
@@ -27030,13 +27030,13 @@ org.pcap4j.packet.Dot11HTCapabilitiesElement -> org.a.b.al:
     2181:2181:java.lang.String toString() -> toString
     2189:2543:java.lang.String toString(java.lang.String) -> a
 org.pcap4j.packet.Dot11HTCapabilitiesElement$AMpduLength -> org.a.b.al$a:
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$AMpduLength MAX_8191 -> a
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$AMpduLength MAX_16383 -> b
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$AMpduLength MAX_32767 -> c
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$AMpduLength MAX_65535 -> d
-    int value -> e
-    java.lang.String name -> f
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$AMpduLength[] $VALUES -> g
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$AMpduLength MAX_8191 -> MAX_8191
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$AMpduLength MAX_16383 -> MAX_16383
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$AMpduLength MAX_32767 -> MAX_32767
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$AMpduLength MAX_65535 -> MAX_65535
+    int value -> value
+    java.lang.String name -> name
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$AMpduLength[] $VALUES -> $VALUES
     2762:2762:org.pcap4j.packet.Dot11HTCapabilitiesElement$AMpduLength[] values() -> values
     2762:2762:org.pcap4j.packet.Dot11HTCapabilitiesElement$AMpduLength valueOf(java.lang.String) -> valueOf
     2787:2790:void <init>(java.lang.String,int,int,java.lang.String) -> <init>
@@ -27045,11 +27045,11 @@ org.pcap4j.packet.Dot11HTCapabilitiesElement$AMpduLength -> org.a.b.al$a:
     2762:2762:int access$10800(org.pcap4j.packet.Dot11HTCapabilitiesElement$AMpduLength) -> a
     2762:2782:void <clinit>() -> <clinit>
 org.pcap4j.packet.Dot11HTCapabilitiesElement$AMsduLength -> org.a.b.al$b:
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$AMsduLength MAX_3839 -> a
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$AMsduLength MAX_7935 -> b
-    int value -> c
-    java.lang.String name -> d
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$AMsduLength[] $VALUES -> e
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$AMsduLength MAX_3839 -> MAX_3839
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$AMsduLength MAX_7935 -> MAX_7935
+    int value -> value
+    java.lang.String name -> name
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$AMsduLength[] $VALUES -> $VALUES
     2696:2696:org.pcap4j.packet.Dot11HTCapabilitiesElement$AMsduLength[] values() -> values
     2696:2696:org.pcap4j.packet.Dot11HTCapabilitiesElement$AMsduLength valueOf(java.lang.String) -> valueOf
     2711:2714:void <init>(java.lang.String,int,int,java.lang.String) -> <init>
@@ -27058,13 +27058,13 @@ org.pcap4j.packet.Dot11HTCapabilitiesElement$AMsduLength -> org.a.b.al$b:
     2696:2696:int access$10700(org.pcap4j.packet.Dot11HTCapabilitiesElement$AMsduLength) -> a
     2696:2706:void <clinit>() -> <clinit>
 org.pcap4j.packet.Dot11HTCapabilitiesElement$BeamformingFeedbackCapability -> org.a.b.al$c:
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$BeamformingFeedbackCapability NOT_SUPPORTED -> a
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$BeamformingFeedbackCapability DELAYED -> b
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$BeamformingFeedbackCapability IMMEDIATE -> c
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$BeamformingFeedbackCapability DELAYED_AND_IMMEDIATE -> d
-    int value -> e
-    java.lang.String name -> f
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$BeamformingFeedbackCapability[] $VALUES -> g
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$BeamformingFeedbackCapability NOT_SUPPORTED -> NOT_SUPPORTED
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$BeamformingFeedbackCapability DELAYED -> DELAYED
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$BeamformingFeedbackCapability IMMEDIATE -> IMMEDIATE
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$BeamformingFeedbackCapability DELAYED_AND_IMMEDIATE -> DELAYED_AND_IMMEDIATE
+    int value -> value
+    java.lang.String name -> name
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$BeamformingFeedbackCapability[] $VALUES -> $VALUES
     3241:3241:org.pcap4j.packet.Dot11HTCapabilitiesElement$BeamformingFeedbackCapability[] values() -> values
     3241:3241:org.pcap4j.packet.Dot11HTCapabilitiesElement$BeamformingFeedbackCapability valueOf(java.lang.String) -> valueOf
     3266:3269:void <init>(java.lang.String,int,int,java.lang.String) -> <init>
@@ -27073,13 +27073,13 @@ org.pcap4j.packet.Dot11HTCapabilitiesElement$BeamformingFeedbackCapability -> or
     3241:3241:int access$11400(org.pcap4j.packet.Dot11HTCapabilitiesElement$BeamformingFeedbackCapability) -> a
     3241:3261:void <clinit>() -> <clinit>
 org.pcap4j.packet.Dot11HTCapabilitiesElement$Calibration -> org.a.b.al$d:
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$Calibration NOT_SUPPORTED -> a
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$Calibration RESPOND -> b
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$Calibration RESERVED -> c
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$Calibration INITIATE_AND_RESPOND -> d
-    int value -> e
-    java.lang.String name -> f
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$Calibration[] $VALUES -> g
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$Calibration NOT_SUPPORTED -> NOT_SUPPORTED
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$Calibration RESPOND -> RESPOND
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$Calibration RESERVED -> RESERVED
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$Calibration INITIATE_AND_RESPOND -> INITIATE_AND_RESPOND
+    int value -> value
+    java.lang.String name -> name
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$Calibration[] $VALUES -> $VALUES
     3162:3162:org.pcap4j.packet.Dot11HTCapabilitiesElement$Calibration[] values() -> values
     3162:3162:org.pcap4j.packet.Dot11HTCapabilitiesElement$Calibration valueOf(java.lang.String) -> valueOf
     3187:3190:void <init>(java.lang.String,int,int,java.lang.String) -> <init>
@@ -27088,13 +27088,13 @@ org.pcap4j.packet.Dot11HTCapabilitiesElement$Calibration -> org.a.b.al$d:
     3162:3162:int access$11300(org.pcap4j.packet.Dot11HTCapabilitiesElement$Calibration) -> a
     3162:3182:void <clinit>() -> <clinit>
 org.pcap4j.packet.Dot11HTCapabilitiesElement$ChannelEstimationCapability -> org.a.b.al$e:
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$ChannelEstimationCapability ONE_SPACE_TIME_STREAM -> a
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$ChannelEstimationCapability TWO_SPACE_TIME_STREAMS -> b
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$ChannelEstimationCapability THREE_SPACE_TIME_STREAMS -> c
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$ChannelEstimationCapability FOUR_SPACE_TIME_STREAMS -> d
-    int value -> e
-    java.lang.String name -> f
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$ChannelEstimationCapability[] $VALUES -> g
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$ChannelEstimationCapability ONE_SPACE_TIME_STREAM -> ONE_SPACE_TIME_STREAM
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$ChannelEstimationCapability TWO_SPACE_TIME_STREAMS -> TWO_SPACE_TIME_STREAMS
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$ChannelEstimationCapability THREE_SPACE_TIME_STREAMS -> THREE_SPACE_TIME_STREAMS
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$ChannelEstimationCapability FOUR_SPACE_TIME_STREAMS -> FOUR_SPACE_TIME_STREAMS
+    int value -> value
+    java.lang.String name -> name
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$ChannelEstimationCapability[] $VALUES -> $VALUES
     3548:3548:org.pcap4j.packet.Dot11HTCapabilitiesElement$ChannelEstimationCapability[] values() -> values
     3548:3548:org.pcap4j.packet.Dot11HTCapabilitiesElement$ChannelEstimationCapability valueOf(java.lang.String) -> valueOf
     3573:3576:void <init>(java.lang.String,int,int,java.lang.String) -> <init>
@@ -27103,13 +27103,13 @@ org.pcap4j.packet.Dot11HTCapabilitiesElement$ChannelEstimationCapability -> org.
     3548:3548:int access$11800(org.pcap4j.packet.Dot11HTCapabilitiesElement$ChannelEstimationCapability) -> a
     3548:3568:void <clinit>() -> <clinit>
 org.pcap4j.packet.Dot11HTCapabilitiesElement$CsiNumRows -> org.a.b.al$f:
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$CsiNumRows SINGLE -> a
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$CsiNumRows TWO -> b
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$CsiNumRows THREE -> c
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$CsiNumRows FOUR -> d
-    int value -> e
-    java.lang.String name -> f
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$CsiNumRows[] $VALUES -> g
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$CsiNumRows SINGLE -> SINGLE
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$CsiNumRows TWO -> TWO
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$CsiNumRows THREE -> THREE
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$CsiNumRows FOUR -> FOUR
+    int value -> value
+    java.lang.String name -> name
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$CsiNumRows[] $VALUES -> $VALUES
     3472:3472:org.pcap4j.packet.Dot11HTCapabilitiesElement$CsiNumRows[] values() -> values
     3472:3472:org.pcap4j.packet.Dot11HTCapabilitiesElement$CsiNumRows valueOf(java.lang.String) -> valueOf
     3497:3500:void <init>(java.lang.String,int,int,java.lang.String) -> <init>
@@ -27118,13 +27118,13 @@ org.pcap4j.packet.Dot11HTCapabilitiesElement$CsiNumRows -> org.a.b.al$f:
     3472:3472:int access$11700(org.pcap4j.packet.Dot11HTCapabilitiesElement$CsiNumRows) -> a
     3472:3492:void <clinit>() -> <clinit>
 org.pcap4j.packet.Dot11HTCapabilitiesElement$Grouping -> org.a.b.al$g:
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$Grouping NO_GROUPING -> a
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$Grouping GROUPS_OF_1_2 -> b
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$Grouping GROUPS_OF_1_4 -> c
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$Grouping GROUPS_OF_1_2_4 -> d
-    int value -> e
-    java.lang.String name -> f
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$Grouping[] $VALUES -> g
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$Grouping NO_GROUPING -> NO_GROUPING
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$Grouping GROUPS_OF_1_2 -> GROUPS_OF_1_2
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$Grouping GROUPS_OF_1_4 -> GROUPS_OF_1_4
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$Grouping GROUPS_OF_1_2_4 -> GROUPS_OF_1_2_4
+    int value -> value
+    java.lang.String name -> name
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$Grouping[] $VALUES -> $VALUES
     3317:3317:org.pcap4j.packet.Dot11HTCapabilitiesElement$Grouping[] values() -> values
     3317:3317:org.pcap4j.packet.Dot11HTCapabilitiesElement$Grouping valueOf(java.lang.String) -> valueOf
     3342:3345:void <init>(java.lang.String,int,int,java.lang.String) -> <init>
@@ -27133,13 +27133,13 @@ org.pcap4j.packet.Dot11HTCapabilitiesElement$Grouping -> org.a.b.al$g:
     3317:3317:int access$11500(org.pcap4j.packet.Dot11HTCapabilitiesElement$Grouping) -> a
     3317:3337:void <clinit>() -> <clinit>
 org.pcap4j.packet.Dot11HTCapabilitiesElement$McsFeedbackCapability -> org.a.b.al$h:
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$McsFeedbackCapability NO_FEEDBACK -> a
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$McsFeedbackCapability RESERVED -> b
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$McsFeedbackCapability ONLY_UNSOLICITED -> c
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$McsFeedbackCapability UNSOLICITED_AND_SOLICITED -> d
-    int value -> e
-    java.lang.String name -> f
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$McsFeedbackCapability[] $VALUES -> g
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$McsFeedbackCapability NO_FEEDBACK -> NO_FEEDBACK
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$McsFeedbackCapability RESERVED -> RESERVED
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$McsFeedbackCapability ONLY_UNSOLICITED -> ONLY_UNSOLICITED
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$McsFeedbackCapability UNSOLICITED_AND_SOLICITED -> UNSOLICITED_AND_SOLICITED
+    int value -> value
+    java.lang.String name -> name
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$McsFeedbackCapability[] $VALUES -> $VALUES
     3086:3086:org.pcap4j.packet.Dot11HTCapabilitiesElement$McsFeedbackCapability[] values() -> values
     3086:3086:org.pcap4j.packet.Dot11HTCapabilitiesElement$McsFeedbackCapability valueOf(java.lang.String) -> valueOf
     3111:3114:void <init>(java.lang.String,int,int,java.lang.String) -> <init>
@@ -27148,17 +27148,17 @@ org.pcap4j.packet.Dot11HTCapabilitiesElement$McsFeedbackCapability -> org.a.b.al
     3086:3086:int access$11200(org.pcap4j.packet.Dot11HTCapabilitiesElement$McsFeedbackCapability) -> a
     3086:3106:void <clinit>() -> <clinit>
 org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing -> org.a.b.al$i:
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing NO_RESTRICTION -> a
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing ONE_FOURTH_US -> b
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing HALF_US -> c
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing ONE_US -> d
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing TWO_US -> e
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing FOUR_US -> f
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing EIGHT_US -> g
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing SIXTEEN_US -> h
-    int value -> i
-    java.lang.String name -> j
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing[] $VALUES -> k
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing NO_RESTRICTION -> NO_RESTRICTION
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing ONE_FOURTH_US -> ONE_FOURTH_US
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing HALF_US -> HALF_US
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing ONE_US -> ONE_US
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing TWO_US -> TWO_US
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing FOUR_US -> FOUR_US
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing EIGHT_US -> EIGHT_US
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing SIXTEEN_US -> SIXTEEN_US
+    int value -> value
+    java.lang.String name -> name
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing[] $VALUES -> $VALUES
     2838:2838:org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing[] values() -> values
     2838:2838:org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing valueOf(java.lang.String) -> valueOf
     2883:2886:void <init>(java.lang.String,int,int,java.lang.String) -> <init>
@@ -27167,13 +27167,13 @@ org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing -> org.a.b.al$i:
     2838:2838:int access$10900(org.pcap4j.packet.Dot11HTCapabilitiesElement$MpduStartSpacing) -> a
     2838:2878:void <clinit>() -> <clinit>
 org.pcap4j.packet.Dot11HTCapabilitiesElement$NumBeamformerAntennas -> org.a.b.al$j:
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$NumBeamformerAntennas SINGLE -> a
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$NumBeamformerAntennas TWO -> b
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$NumBeamformerAntennas THREE -> c
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$NumBeamformerAntennas FOUR -> d
-    int value -> e
-    java.lang.String name -> f
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$NumBeamformerAntennas[] $VALUES -> g
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$NumBeamformerAntennas SINGLE -> SINGLE
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$NumBeamformerAntennas TWO -> TWO
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$NumBeamformerAntennas THREE -> THREE
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$NumBeamformerAntennas FOUR -> FOUR
+    int value -> value
+    java.lang.String name -> name
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$NumBeamformerAntennas[] $VALUES -> $VALUES
     3396:3396:org.pcap4j.packet.Dot11HTCapabilitiesElement$NumBeamformerAntennas[] values() -> values
     3396:3396:org.pcap4j.packet.Dot11HTCapabilitiesElement$NumBeamformerAntennas valueOf(java.lang.String) -> valueOf
     3421:3424:void <init>(java.lang.String,int,int,java.lang.String) -> <init>
@@ -27182,13 +27182,13 @@ org.pcap4j.packet.Dot11HTCapabilitiesElement$NumBeamformerAntennas -> org.a.b.al
     3396:3396:int access$11600(org.pcap4j.packet.Dot11HTCapabilitiesElement$NumBeamformerAntennas) -> a
     3396:3416:void <clinit>() -> <clinit>
 org.pcap4j.packet.Dot11HTCapabilitiesElement$NumSpatialStreams -> org.a.b.al$k:
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$NumSpatialStreams ONE -> a
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$NumSpatialStreams TWO -> b
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$NumSpatialStreams THREE -> c
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$NumSpatialStreams FOUR -> d
-    int value -> e
-    java.lang.String name -> f
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$NumSpatialStreams[] $VALUES -> g
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$NumSpatialStreams ONE -> ONE
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$NumSpatialStreams TWO -> TWO
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$NumSpatialStreams THREE -> THREE
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$NumSpatialStreams FOUR -> FOUR
+    int value -> value
+    java.lang.String name -> name
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$NumSpatialStreams[] $VALUES -> $VALUES
     2934:2934:org.pcap4j.packet.Dot11HTCapabilitiesElement$NumSpatialStreams[] values() -> values
     2934:2934:org.pcap4j.packet.Dot11HTCapabilitiesElement$NumSpatialStreams valueOf(java.lang.String) -> valueOf
     2959:2962:void <init>(java.lang.String,int,int,java.lang.String) -> <init>
@@ -27197,13 +27197,13 @@ org.pcap4j.packet.Dot11HTCapabilitiesElement$NumSpatialStreams -> org.a.b.al$k:
     2934:2934:int access$11000(org.pcap4j.packet.Dot11HTCapabilitiesElement$NumSpatialStreams) -> a
     2934:2954:void <clinit>() -> <clinit>
 org.pcap4j.packet.Dot11HTCapabilitiesElement$PcoTransitionTime -> org.a.b.al$l:
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$PcoTransitionTime NO_TRANSITION -> a
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$PcoTransitionTime PTT_400_US -> b
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$PcoTransitionTime PTT_1_5_MS -> c
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$PcoTransitionTime PTT_5_MS -> d
-    int value -> e
-    java.lang.String name -> f
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$PcoTransitionTime[] $VALUES -> g
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$PcoTransitionTime NO_TRANSITION -> NO_TRANSITION
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$PcoTransitionTime PTT_400_US -> PTT_400_US
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$PcoTransitionTime PTT_1_5_MS -> PTT_1_5_MS
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$PcoTransitionTime PTT_5_MS -> PTT_5_MS
+    int value -> value
+    java.lang.String name -> name
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$PcoTransitionTime[] $VALUES -> $VALUES
     3010:3010:org.pcap4j.packet.Dot11HTCapabilitiesElement$PcoTransitionTime[] values() -> values
     3010:3010:org.pcap4j.packet.Dot11HTCapabilitiesElement$PcoTransitionTime valueOf(java.lang.String) -> valueOf
     3035:3038:void <init>(java.lang.String,int,int,java.lang.String) -> <init>
@@ -27212,12 +27212,12 @@ org.pcap4j.packet.Dot11HTCapabilitiesElement$PcoTransitionTime -> org.a.b.al$l:
     3010:3010:int access$11100(org.pcap4j.packet.Dot11HTCapabilitiesElement$PcoTransitionTime) -> a
     3010:3030:void <clinit>() -> <clinit>
 org.pcap4j.packet.Dot11HTCapabilitiesElement$SmPowerSaveMode -> org.a.b.al$m:
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$SmPowerSaveMode STATIC -> a
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$SmPowerSaveMode DYNAMIC -> b
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$SmPowerSaveMode RESERVED -> c
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$SmPowerSaveMode DISABLED -> d
-    int value -> e
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$SmPowerSaveMode[] $VALUES -> f
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$SmPowerSaveMode STATIC -> STATIC
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$SmPowerSaveMode DYNAMIC -> DYNAMIC
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$SmPowerSaveMode RESERVED -> RESERVED
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$SmPowerSaveMode DISABLED -> DISABLED
+    int value -> value
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$SmPowerSaveMode[] $VALUES -> $VALUES
     2553:2553:org.pcap4j.packet.Dot11HTCapabilitiesElement$SmPowerSaveMode[] values() -> values
     2553:2553:org.pcap4j.packet.Dot11HTCapabilitiesElement$SmPowerSaveMode valueOf(java.lang.String) -> valueOf
     2577:2579:void <init>(java.lang.String,int,int) -> <init>
@@ -27226,13 +27226,13 @@ org.pcap4j.packet.Dot11HTCapabilitiesElement$SmPowerSaveMode -> org.a.b.al$m:
     2553:2553:int access$10500(org.pcap4j.packet.Dot11HTCapabilitiesElement$SmPowerSaveMode) -> a
     2553:2573:void <clinit>() -> <clinit>
 org.pcap4j.packet.Dot11HTCapabilitiesElement$StbcSupport -> org.a.b.al$n:
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$StbcSupport NO_SUPPORT -> a
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$StbcSupport ONE_SPATIAL_STREAM -> b
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$StbcSupport ONE_AND_TWO_SPATIAL_STREAMS -> c
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$StbcSupport ONE_TWO_AND_THREE_SPATIAL_STREAMS -> d
-    int value -> e
-    java.lang.String name -> f
-    org.pcap4j.packet.Dot11HTCapabilitiesElement$StbcSupport[] $VALUES -> g
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$StbcSupport NO_SUPPORT -> NO_SUPPORT
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$StbcSupport ONE_SPATIAL_STREAM -> ONE_SPATIAL_STREAM
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$StbcSupport ONE_AND_TWO_SPATIAL_STREAMS -> ONE_AND_TWO_SPATIAL_STREAMS
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$StbcSupport ONE_TWO_AND_THREE_SPATIAL_STREAMS -> ONE_TWO_AND_THREE_SPATIAL_STREAMS
+    int value -> value
+    java.lang.String name -> name
+    org.pcap4j.packet.Dot11HTCapabilitiesElement$StbcSupport[] $VALUES -> $VALUES
     2620:2620:org.pcap4j.packet.Dot11HTCapabilitiesElement$StbcSupport[] values() -> values
     2620:2620:org.pcap4j.packet.Dot11HTCapabilitiesElement$StbcSupport valueOf(java.lang.String) -> valueOf
     2645:2648:void <init>(java.lang.String,int,int,java.lang.String) -> <init>
@@ -27264,13 +27264,13 @@ org.pcap4j.packet.Dot11HtControl -> org.a.b.am:
     364:380:int hashCode() -> hashCode
     385:437:boolean equals(java.lang.Object) -> equals
 org.pcap4j.packet.Dot11HtControl$CalibrationPosition -> org.a.b.am$a:
-    org.pcap4j.packet.Dot11HtControl$CalibrationPosition NOT_CALIBRATION -> a
-    org.pcap4j.packet.Dot11HtControl$CalibrationPosition CALIBRATION_START -> b
-    org.pcap4j.packet.Dot11HtControl$CalibrationPosition SOUNDING_RESPONSE -> c
-    org.pcap4j.packet.Dot11HtControl$CalibrationPosition SOUNDING_COMPLETE -> d
-    int value -> e
-    java.lang.String name -> f
-    org.pcap4j.packet.Dot11HtControl$CalibrationPosition[] $VALUES -> g
+    org.pcap4j.packet.Dot11HtControl$CalibrationPosition NOT_CALIBRATION -> NOT_CALIBRATION
+    org.pcap4j.packet.Dot11HtControl$CalibrationPosition CALIBRATION_START -> CALIBRATION_START
+    org.pcap4j.packet.Dot11HtControl$CalibrationPosition SOUNDING_RESPONSE -> SOUNDING_RESPONSE
+    org.pcap4j.packet.Dot11HtControl$CalibrationPosition SOUNDING_COMPLETE -> SOUNDING_COMPLETE
+    int value -> value
+    java.lang.String name -> name
+    org.pcap4j.packet.Dot11HtControl$CalibrationPosition[] $VALUES -> $VALUES
     447:447:org.pcap4j.packet.Dot11HtControl$CalibrationPosition[] values() -> values
     447:447:org.pcap4j.packet.Dot11HtControl$CalibrationPosition valueOf(java.lang.String) -> valueOf
     472:475:void <init>(java.lang.String,int,int,java.lang.String) -> <init>
@@ -27279,13 +27279,13 @@ org.pcap4j.packet.Dot11HtControl$CalibrationPosition -> org.a.b.am$a:
     447:447:int access$1600(org.pcap4j.packet.Dot11HtControl$CalibrationPosition) -> a
     447:467:void <clinit>() -> <clinit>
 org.pcap4j.packet.Dot11HtControl$CsiOrSteering -> org.a.b.am$b:
-    org.pcap4j.packet.Dot11HtControl$CsiOrSteering NO_FEEDBACK_REQUIRED -> a
-    org.pcap4j.packet.Dot11HtControl$CsiOrSteering CSI -> b
-    org.pcap4j.packet.Dot11HtControl$CsiOrSteering NONCOMPRESSED_BEAMFORMING -> c
-    org.pcap4j.packet.Dot11HtControl$CsiOrSteering COMPRESSED_BEAMFORMING -> d
-    int value -> e
-    java.lang.String name -> f
-    org.pcap4j.packet.Dot11HtControl$CsiOrSteering[] $VALUES -> g
+    org.pcap4j.packet.Dot11HtControl$CsiOrSteering NO_FEEDBACK_REQUIRED -> NO_FEEDBACK_REQUIRED
+    org.pcap4j.packet.Dot11HtControl$CsiOrSteering CSI -> CSI
+    org.pcap4j.packet.Dot11HtControl$CsiOrSteering NONCOMPRESSED_BEAMFORMING -> NONCOMPRESSED_BEAMFORMING
+    org.pcap4j.packet.Dot11HtControl$CsiOrSteering COMPRESSED_BEAMFORMING -> COMPRESSED_BEAMFORMING
+    int value -> value
+    java.lang.String name -> name
+    org.pcap4j.packet.Dot11HtControl$CsiOrSteering[] $VALUES -> $VALUES
     523:523:org.pcap4j.packet.Dot11HtControl$CsiOrSteering[] values() -> values
     523:523:org.pcap4j.packet.Dot11HtControl$CsiOrSteering valueOf(java.lang.String) -> valueOf
     548:551:void <init>(java.lang.String,int,int,java.lang.String) -> <init>
@@ -27333,17 +27333,17 @@ org.pcap4j.packet.Dot11LinkAdaptationControl -> org.a.b.ap:
     289:297:int hashCode() -> hashCode
     302:325:boolean equals(java.lang.Object) -> equals
 org.pcap4j.packet.Dot11LinkAdaptationControl$AselCommand -> org.a.b.ap$a:
-    org.pcap4j.packet.Dot11LinkAdaptationControl$AselCommand TXASSI -> a
-    org.pcap4j.packet.Dot11LinkAdaptationControl$AselCommand TXASSR -> b
-    org.pcap4j.packet.Dot11LinkAdaptationControl$AselCommand RXASSI -> c
-    org.pcap4j.packet.Dot11LinkAdaptationControl$AselCommand RXASSR -> d
-    org.pcap4j.packet.Dot11LinkAdaptationControl$AselCommand SOUNDING_LABEL -> e
-    org.pcap4j.packet.Dot11LinkAdaptationControl$AselCommand NO_FEEDBACK -> f
-    org.pcap4j.packet.Dot11LinkAdaptationControl$AselCommand TXASSI_CSI -> g
-    org.pcap4j.packet.Dot11LinkAdaptationControl$AselCommand SEVEN -> h
-    int value -> i
-    java.lang.String name -> j
-    org.pcap4j.packet.Dot11LinkAdaptationControl$AselCommand[] $VALUES -> k
+    org.pcap4j.packet.Dot11LinkAdaptationControl$AselCommand TXASSI -> TXASSI
+    org.pcap4j.packet.Dot11LinkAdaptationControl$AselCommand TXASSR -> TXASSR
+    org.pcap4j.packet.Dot11LinkAdaptationControl$AselCommand RXASSI -> RXASSI
+    org.pcap4j.packet.Dot11LinkAdaptationControl$AselCommand RXASSR -> RXASSR
+    org.pcap4j.packet.Dot11LinkAdaptationControl$AselCommand SOUNDING_LABEL -> SOUNDING_LABEL
+    org.pcap4j.packet.Dot11LinkAdaptationControl$AselCommand NO_FEEDBACK -> NO_FEEDBACK
+    org.pcap4j.packet.Dot11LinkAdaptationControl$AselCommand TXASSI_CSI -> TXASSI_CSI
+    org.pcap4j.packet.Dot11LinkAdaptationControl$AselCommand SEVEN -> SEVEN
+    int value -> value
+    java.lang.String name -> name
+    org.pcap4j.packet.Dot11LinkAdaptationControl$AselCommand[] $VALUES -> $VALUES
     547:547:org.pcap4j.packet.Dot11LinkAdaptationControl$AselCommand[] values() -> values
     547:547:org.pcap4j.packet.Dot11LinkAdaptationControl$AselCommand valueOf(java.lang.String) -> valueOf
     593:596:void <init>(java.lang.String,int,int,java.lang.String) -> <init>
@@ -27859,10 +27859,10 @@ org.pcap4j.packet.GtpV1Packet$GtpV1Header -> org.a.b.bg$b:
     348:348:int access$1700(org.pcap4j.packet.GtpV1Packet$GtpV1Header) -> k
     348:348:boolean access$1800(org.pcap4j.packet.GtpV1Packet$GtpV1Header) -> l
 org.pcap4j.packet.GtpV1Packet$ProtocolType -> org.a.b.bg$c:
-    org.pcap4j.packet.GtpV1Packet$ProtocolType GTP_PRIME -> a
-    org.pcap4j.packet.GtpV1Packet$ProtocolType GTP -> b
-    boolean value -> c
-    org.pcap4j.packet.GtpV1Packet$ProtocolType[] $VALUES -> d
+    org.pcap4j.packet.GtpV1Packet$ProtocolType GTP_PRIME -> GTP_PRIME
+    org.pcap4j.packet.GtpV1Packet$ProtocolType GTP -> GTP
+    boolean value -> value
+    org.pcap4j.packet.GtpV1Packet$ProtocolType[] $VALUES -> $VALUES
     777:777:org.pcap4j.packet.GtpV1Packet$ProtocolType[] values() -> values
     777:777:org.pcap4j.packet.GtpV1Packet$ProtocolType valueOf(java.lang.String) -> valueOf
     791:793:void <init>(java.lang.String,int,boolean) -> <init>
@@ -27871,16 +27871,16 @@ org.pcap4j.packet.GtpV1Packet$ProtocolType -> org.a.b.bg$c:
     817:817:java.lang.String toString() -> toString
     777:787:void <clinit>() -> <clinit>
 org.pcap4j.packet.GtpVersion -> org.a.b.bh:
-    org.pcap4j.packet.GtpVersion V0 -> a
-    org.pcap4j.packet.GtpVersion V1 -> b
-    org.pcap4j.packet.GtpVersion V2 -> c
-    org.pcap4j.packet.GtpVersion V3 -> d
-    org.pcap4j.packet.GtpVersion V4 -> e
-    org.pcap4j.packet.GtpVersion V5 -> f
-    org.pcap4j.packet.GtpVersion V6 -> g
-    org.pcap4j.packet.GtpVersion V7 -> h
-    int value -> i
-    org.pcap4j.packet.GtpVersion[] $VALUES -> j
+    org.pcap4j.packet.GtpVersion V0 -> V0
+    org.pcap4j.packet.GtpVersion V1 -> V1
+    org.pcap4j.packet.GtpVersion V2 -> V2
+    org.pcap4j.packet.GtpVersion V3 -> V3
+    org.pcap4j.packet.GtpVersion V4 -> V4
+    org.pcap4j.packet.GtpVersion V5 -> V5
+    org.pcap4j.packet.GtpVersion V6 -> V6
+    org.pcap4j.packet.GtpVersion V7 -> V7
+    int value -> value
+    org.pcap4j.packet.GtpVersion[] $VALUES -> $VALUES
     14:14:org.pcap4j.packet.GtpVersion[] values() -> values
     14:14:org.pcap4j.packet.GtpVersion valueOf(java.lang.String) -> valueOf
     58:60:void <init>(java.lang.String,int,int) -> <init>
@@ -30304,13 +30304,13 @@ org.pcap4j.packet.RadiotapDataMcs -> org.a.b.ez:
     377:394:int hashCode() -> hashCode
     399:436:boolean equals(java.lang.Object) -> equals
 org.pcap4j.packet.RadiotapDataMcs$Bandwidth -> org.a.b.ez$a:
-    org.pcap4j.packet.RadiotapDataMcs$Bandwidth BW_20 -> a
-    org.pcap4j.packet.RadiotapDataMcs$Bandwidth BW_40 -> b
-    org.pcap4j.packet.RadiotapDataMcs$Bandwidth BW_20L -> c
-    org.pcap4j.packet.RadiotapDataMcs$Bandwidth BW_20U -> d
-    int value -> e
-    java.lang.String name -> f
-    org.pcap4j.packet.RadiotapDataMcs$Bandwidth[] $VALUES -> g
+    org.pcap4j.packet.RadiotapDataMcs$Bandwidth BW_20 -> BW_20
+    org.pcap4j.packet.RadiotapDataMcs$Bandwidth BW_40 -> BW_40
+    org.pcap4j.packet.RadiotapDataMcs$Bandwidth BW_20L -> BW_20L
+    org.pcap4j.packet.RadiotapDataMcs$Bandwidth BW_20U -> BW_20U
+    int value -> value
+    java.lang.String name -> name
+    org.pcap4j.packet.RadiotapDataMcs$Bandwidth[] $VALUES -> $VALUES
     632:632:org.pcap4j.packet.RadiotapDataMcs$Bandwidth[] values() -> values
     632:632:org.pcap4j.packet.RadiotapDataMcs$Bandwidth valueOf(java.lang.String) -> valueOf
     657:660:void <init>(java.lang.String,int,int,java.lang.String) -> <init>
@@ -30318,10 +30318,10 @@ org.pcap4j.packet.RadiotapDataMcs$Bandwidth -> org.a.b.ez$a:
     632:632:int access$1500(org.pcap4j.packet.RadiotapDataMcs$Bandwidth) -> a
     632:652:void <clinit>() -> <clinit>
 org.pcap4j.packet.RadiotapDataMcs$HtFormat -> org.a.b.ez$b:
-    org.pcap4j.packet.RadiotapDataMcs$HtFormat MIXED -> a
-    org.pcap4j.packet.RadiotapDataMcs$HtFormat GREENFIELD -> b
-    int value -> c
-    org.pcap4j.packet.RadiotapDataMcs$HtFormat[] $VALUES -> d
+    org.pcap4j.packet.RadiotapDataMcs$HtFormat MIXED -> MIXED
+    org.pcap4j.packet.RadiotapDataMcs$HtFormat GREENFIELD -> GREENFIELD
+    int value -> value
+    org.pcap4j.packet.RadiotapDataMcs$HtFormat[] $VALUES -> $VALUES
     693:693:org.pcap4j.packet.RadiotapDataMcs$HtFormat[] values() -> values
     693:693:org.pcap4j.packet.RadiotapDataMcs$HtFormat valueOf(java.lang.String) -> valueOf
     707:709:void <init>(java.lang.String,int,int) -> <init>
@@ -30436,10 +30436,10 @@ org.pcap4j.packet.RadiotapDataVht -> org.a.b.ff:
     643:676:int hashCode() -> hashCode
     681:750:boolean equals(java.lang.Object) -> equals
 org.pcap4j.packet.RadiotapFecType -> org.a.b.fg:
-    org.pcap4j.packet.RadiotapFecType BCC -> a
-    org.pcap4j.packet.RadiotapFecType LDPC -> b
-    int value -> c
-    org.pcap4j.packet.RadiotapFecType[] $VALUES -> d
+    org.pcap4j.packet.RadiotapFecType BCC -> BCC
+    org.pcap4j.packet.RadiotapFecType LDPC -> LDPC
+    int value -> value
+    org.pcap4j.packet.RadiotapFecType[] $VALUES -> $VALUES
     14:14:org.pcap4j.packet.RadiotapFecType[] values() -> values
     14:14:org.pcap4j.packet.RadiotapFecType valueOf(java.lang.String) -> valueOf
     28:30:void <init>(java.lang.String,int,int) -> <init>
@@ -32332,12 +32332,12 @@ org.pcap4j.packet.namednumber.Dot11FrameType -> org.a.b.b.k:
     20:20:int compareTo(java.lang.Object) -> compareTo
     30:297:void <clinit>() -> <clinit>
 org.pcap4j.packet.namednumber.Dot11FrameType$Type -> org.a.b.b.k$a:
-    org.pcap4j.packet.namednumber.Dot11FrameType$Type MANAGEMENT -> a
-    org.pcap4j.packet.namednumber.Dot11FrameType$Type CONTROL -> b
-    org.pcap4j.packet.namednumber.Dot11FrameType$Type DATA -> c
-    org.pcap4j.packet.namednumber.Dot11FrameType$Type RESERVED -> d
-    int value -> e
-    org.pcap4j.packet.namednumber.Dot11FrameType$Type[] $VALUES -> f
+    org.pcap4j.packet.namednumber.Dot11FrameType$Type MANAGEMENT -> MANAGEMENT
+    org.pcap4j.packet.namednumber.Dot11FrameType$Type CONTROL -> CONTROL
+    org.pcap4j.packet.namednumber.Dot11FrameType$Type DATA -> DATA
+    org.pcap4j.packet.namednumber.Dot11FrameType$Type RESERVED -> RESERVED
+    int value -> value
+    org.pcap4j.packet.namednumber.Dot11FrameType$Type[] $VALUES -> $VALUES
     382:382:org.pcap4j.packet.namednumber.Dot11FrameType$Type[] values() -> values
     382:382:org.pcap4j.packet.namednumber.Dot11FrameType$Type valueOf(java.lang.String) -> valueOf
     406:408:void <init>(java.lang.String,int,int) -> <init>
@@ -33035,12 +33035,12 @@ org.pcap4j.packet.namednumber.IpV4OptionType -> org.a.b.b.y:
     20:20:int compareTo(java.lang.Object) -> compareTo
     30:207:void <clinit>() -> <clinit>
 org.pcap4j.packet.namednumber.IpV4OptionType$IpV4OptionClass -> org.a.b.b.y$a:
-    org.pcap4j.packet.namednumber.IpV4OptionType$IpV4OptionClass CONTROL -> a
-    org.pcap4j.packet.namednumber.IpV4OptionType$IpV4OptionClass RESERVED_FOR_FUTURE_USE1 -> b
-    org.pcap4j.packet.namednumber.IpV4OptionType$IpV4OptionClass DEBUGGING_AND_MEASUREMENT -> c
-    org.pcap4j.packet.namednumber.IpV4OptionType$IpV4OptionClass RESERVED_FOR_FUTURE_USE3 -> d
-    byte value -> e
-    org.pcap4j.packet.namednumber.IpV4OptionType$IpV4OptionClass[] $VALUES -> f
+    org.pcap4j.packet.namednumber.IpV4OptionType$IpV4OptionClass CONTROL -> CONTROL
+    org.pcap4j.packet.namednumber.IpV4OptionType$IpV4OptionClass RESERVED_FOR_FUTURE_USE1 -> RESERVED_FOR_FUTURE_USE1
+    org.pcap4j.packet.namednumber.IpV4OptionType$IpV4OptionClass DEBUGGING_AND_MEASUREMENT -> DEBUGGING_AND_MEASUREMENT
+    org.pcap4j.packet.namednumber.IpV4OptionType$IpV4OptionClass RESERVED_FOR_FUTURE_USE3 -> RESERVED_FOR_FUTURE_USE3
+    byte value -> value
+    org.pcap4j.packet.namednumber.IpV4OptionType$IpV4OptionClass[] $VALUES -> $VALUES
     301:301:org.pcap4j.packet.namednumber.IpV4OptionType$IpV4OptionClass[] values() -> values
     301:301:org.pcap4j.packet.namednumber.IpV4OptionType$IpV4OptionClass valueOf(java.lang.String) -> valueOf
     325:327:void <init>(java.lang.String,int,byte) -> <init>
@@ -33191,12 +33191,12 @@ org.pcap4j.packet.namednumber.IpV6OptionType -> org.a.b.b.ag:
     22:22:int compareTo(java.lang.Object) -> compareTo
     32:138:void <clinit>() -> <clinit>
 org.pcap4j.packet.namednumber.IpV6OptionType$IpV6OptionTypeAction -> org.a.b.b.ag$a:
-    org.pcap4j.packet.namednumber.IpV6OptionType$IpV6OptionTypeAction SKIP -> a
-    org.pcap4j.packet.namednumber.IpV6OptionType$IpV6OptionTypeAction DISCARD -> b
-    org.pcap4j.packet.namednumber.IpV6OptionType$IpV6OptionTypeAction DISCARD_AND_SEND_ICMP -> c
-    org.pcap4j.packet.namednumber.IpV6OptionType$IpV6OptionTypeAction DISCARD_AND_SEND_ICMP_IF_NOT_MULTICAST -> d
-    byte value -> e
-    org.pcap4j.packet.namednumber.IpV6OptionType$IpV6OptionTypeAction[] $VALUES -> f
+    org.pcap4j.packet.namednumber.IpV6OptionType$IpV6OptionTypeAction SKIP -> SKIP
+    org.pcap4j.packet.namednumber.IpV6OptionType$IpV6OptionTypeAction DISCARD -> DISCARD
+    org.pcap4j.packet.namednumber.IpV6OptionType$IpV6OptionTypeAction DISCARD_AND_SEND_ICMP -> DISCARD_AND_SEND_ICMP
+    org.pcap4j.packet.namednumber.IpV6OptionType$IpV6OptionTypeAction DISCARD_AND_SEND_ICMP_IF_NOT_MULTICAST -> DISCARD_AND_SEND_ICMP_IF_NOT_MULTICAST
+    byte value -> value
+    org.pcap4j.packet.namednumber.IpV6OptionType$IpV6OptionTypeAction[] $VALUES -> $VALUES
     229:229:org.pcap4j.packet.namednumber.IpV6OptionType$IpV6OptionTypeAction[] values() -> values
     229:229:org.pcap4j.packet.namednumber.IpV6OptionType$IpV6OptionTypeAction valueOf(java.lang.String) -> valueOf
     259:261:void <init>(java.lang.String,int,byte) -> <init>
