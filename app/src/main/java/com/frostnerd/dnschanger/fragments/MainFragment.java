@@ -146,7 +146,6 @@ public class MainFragment extends Fragment {
         dns2 = (EditText) findViewById(R.id.dns2);
         connectionImage = vertical ? null : (ImageView)findViewById(R.id.connection_status_image);
         connectionText = (TextView)findViewById(R.id.connection_status_text);
-        View wrapper = findViewById(R.id.activity_main);
         running_indicator = findViewById(R.id.running_indicator);
         startStopButton = (Button) findViewById(R.id.startStopButton);
 
