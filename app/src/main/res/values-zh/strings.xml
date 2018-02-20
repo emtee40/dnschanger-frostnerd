@@ -315,4 +315,5 @@
     <string name="info_importing_rules_app_unusable">该应用程序现在正在导入规则。 在此期间，您将无法使用应用程序，因为内部数据库在此期间被锁定。</string>
     <string name="background">背景</string>
     <string name="stop_all">全部停下来</string>
+    <string name="notification_text_running_in_advanced_mode">高级设置已启用。</string>
 </resources>

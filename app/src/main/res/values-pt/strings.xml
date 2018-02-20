@@ -312,4 +312,5 @@
     <string name="info_importing_rules_app_unusable">The App is now importing the rules. During that time you won\'t be able to use the app as the internal database is locked for the duration.</string>
     <string name="background">fundo</string>
     <string name="stop_all">Pare tudo</string>
+    <string name="notification_text_running_in_advanced_mode">Configurações avançadas habilitadas.</string>
 </resources>
