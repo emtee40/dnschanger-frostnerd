@@ -52,8 +52,11 @@ public class CurrentNetworksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View content = inflater.inflate(R.layout.fragment_current_networks, container, false);
         ConnectivityManager mgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        DNSProperties dnsProperty;
+        boolean vpnRunning = Util.isServiceThreadRunning();
         for(Network ntw: mgr.getAllNetworks()){
-            dnsProperties.add(new DNSProperties(mgr.getLinkProperties(ntw)));
+            dnsProperty = new DNSProperties(mgr.getLinkProperties(ntw));
+            if(!vpnRunning || !dnsProperty.networkName.equals("tun0"))dnsProperties.add(dnsProperty);
         }
         final ListView list = content.findViewById(R.id.list);
         final ArrayAdapter<DNSProperties> adapter = new ArrayAdapter<DNSProperties>(getContext(), android.R.layout.simple_list_item_1, dnsProperties);
