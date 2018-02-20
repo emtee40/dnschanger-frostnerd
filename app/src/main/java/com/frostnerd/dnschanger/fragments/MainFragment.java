@@ -185,7 +185,6 @@ public class MainFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(this.before.equalsIgnoreCase(s.toString()))return;
-                if (vpnRunning && doStopVPN && !wasStartedWithTasker) stopVpn();
                 IPPortPair pair = Util.validateInput(s.toString(), settingV6, false, PreferencesAccessor.isLoopbackAllowed(getContext()));
                 if (pair == null || (pair.getPort() != -1 && !advancedMode)) {
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
@@ -213,7 +212,6 @@ public class MainFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(this.before.equalsIgnoreCase(s.toString()))return;
-                if (vpnRunning && doStopVPN && !wasStartedWithTasker) stopVpn();
                 IPPortPair pair = Util.validateInput(s.toString(), settingV6, true, PreferencesAccessor.isLoopbackAllowed(getContext()));
                 if (pair == null || (pair.getPort() != -1 && !advancedMode)) {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);

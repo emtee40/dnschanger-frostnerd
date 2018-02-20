@@ -730,6 +730,8 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
                     if(ipEnabled)PreferencesAccessor.Type.DNS1_V6.saveDNSPair(MainActivity.this, dns1V6);
                     if(ipEnabled)PreferencesAccessor.Type.DNS2_V6.saveDNSPair(MainActivity.this, dns2V6);
                 }
+                if(Util.isServiceRunning(MainActivity.this))
+                    MainActivity.this.startService(DNSVpnService.getUpdateServersIntent(MainActivity.this, true, false));
             }
         });
         defaultDnsDialog.show();
