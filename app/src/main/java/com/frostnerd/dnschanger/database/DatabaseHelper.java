@@ -3,6 +3,7 @@ package com.frostnerd.dnschanger.database;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.Nullable;
 
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
@@ -10,6 +11,7 @@ import com.frostnerd.dnschanger.database.entities.DNSRule;
 import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.database.entities.Shortcut;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.database.orm.Entity;
 import com.frostnerd.utils.database.orm.parser.ParsedEntity;
 import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
@@ -146,5 +148,17 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
 
     public void createShortcut(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1v6, IPPortPair dns2v6){
         insert(new Shortcut(name, dns1, dns2, dns1v6, dns2v6));
+    }
+
+    @Nullable
+    public DNSEntry findMatchingDNSEntry(String dnsServer){
+        String address = "%" + dnsServer + "%";
+        if(address.equals("%%"))return null;
+        ParsedEntity<DNSEntry> parsedEntity = Util.getDBHelper(context).getSQLHandler(DNSEntry.class);
+        return parsedEntity.selectFirstRow(Util.getDBHelper(context)
+                , false, WhereCondition.like(parsedEntity.getTable().findColumn("dns1"), address).nextOr(),
+                WhereCondition.like(parsedEntity.getTable().findColumn("dns2"), address).nextOr(),
+                WhereCondition.like(parsedEntity.getTable().findColumn("dns1v6"), address).nextOr(),
+                WhereCondition.like(parsedEntity.getTable().findColumn("dns2v6"), address));
     }
 }

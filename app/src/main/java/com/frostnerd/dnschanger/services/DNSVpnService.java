@@ -16,6 +16,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.PinActivity;
+import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.threading.VPNRunnable;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
@@ -118,9 +119,14 @@ public class DNSVpnService extends VpnService {
                     ipv4Enabled = PreferencesAccessor.isIPv4Enabled(this),
                     customPorts = PreferencesAccessor.areCustomPortsEnabled(this);
             StringBuilder contentText = new StringBuilder();
+            DNSEntry matchingEntry;
             for(IPPortPair pair: upstreamServers){
-                if((ipv4Enabled && !pair.isIpv6()) || (ipv6Enabled && pair.isIpv6()))
-                    contentText.append(pair.formatForTextfield(customPorts)).append("\n");
+                if((ipv4Enabled && !pair.isIpv6()) || (ipv6Enabled && pair.isIpv6())){
+                    matchingEntry = Util.getDBHelper(this).findMatchingDNSEntry(pair.getAddress());
+                    contentText.append(pair.formatForTextfield(customPorts));
+                    if(matchingEntry != null) contentText.append(" (").append(matchingEntry.getShortName()).append(")");
+                    contentText.append("\n");
+                }
             }
             if(!excludedAppsText.equals("")){
                 contentText.append("\n");
