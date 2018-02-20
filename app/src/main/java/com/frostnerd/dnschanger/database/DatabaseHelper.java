@@ -55,8 +55,6 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
 
     @Override
     public void onBeforeUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        System.out.println(">>>>>>>>>>>>>>UPDATING DATABASE (" + oldVersion + " TO " + newVersion + ")");
-        for(int i = 0; i <= 10; i++) System.out.println(i + "-<-<->><<" );
         if(oldVersion <= 1){
             Cursor cursor = db.rawQuery("SELECT Name, dns1, dns2, dns1v6, dns2v6 FROM Shortcuts", null);
             List<Shortcut> shortcuts = new ArrayList<>();
