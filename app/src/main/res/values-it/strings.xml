@@ -141,7 +141,7 @@
     <string name="invalid_dns_error_text">Sembra che uno dei server DNS configurati non possa essere utilizzato sul tuo dispositivo. \nHai inserito un indirizzo IP non valido, nessun server DNS è presente all\'indirizzo IP fornito o si tratta di un errore temporaneo.\n\nTi prego di verificare la configurazione nel menù principale e verificare che, gli indirizzi inseriti, siano corretti.</string>
     <string name="title_enable_ipv6">Abilita IPv6</string>
     <string name="summary_enable_ipv6">Abilitazione IPv6. Ciò consente di fornire indirizzi ipv6 da utilizzare come servers DNS.</string>
-    <string name="default_dns_legal_warning">Tutti i providers qui mostrati, potrebbero essere identificabili in marchi registrati dai rispettivi proprietari. Si applicano le loro condizioni d'uso.\nTieni presente che i servers DNS, potrebbero registrare la tua navigazione.</string>
+    <string name="default_dns_legal_warning">Tutti i providers qui mostrati, potrebbero essere identificabili in marchi registrati dai rispettivi proprietari. Si applicano le loro condizioni d\'uso.\nTieni presente che i servers DNS, potrebbero registrare la tua navigazione.</string>
     <string name="add">Aggiungi</string>
     <string name="new_entry">Nuova voce</string>
     <string name="title_exclude_apps">Escludi apps dalla VPN</string>
@@ -162,11 +162,6 @@
         <item>Scuro</item>
     </string-array>
 
-    <string-array name="themeValues" translatable="false">
-        <item>2</item>
-        <item>1</item>
-        <item>3</item>
-    </string-array>
     <string name="remove">Rimuovi</string>
     <string name="whitelist">Autorizzate</string>
     <string name="select_all">Seleziona tutto</string>
@@ -181,9 +176,6 @@
     <string name="summary_enable_ipv4">Abilita IPv4. Ciò consente di fornire indirizzi IPv4 da utilizzare come servers DNS</string>
     <string name="title_enable_ipv4">Abilita IPv4</string>
     <string name="warning_disabling_v4">La maggior parte delle versioni di Android, non può più accedere ad Internet quando, DNS Changer, è in esecuzione e non viene fornito alcun indirizzo IPv4. Dovrai però verificarlo con il tuo dispositivo.</string>
-    <string-array name="default_blacklist" translatable="false">
-        <item>bbc.iplayer.android</item>
-    </string-array>
     <string name="x_apps_selected">[[x]] apps selezionate</string>
     <string name="tile_pause_resume">Sospendi / Riprendi</string>
     <string name="tile_start_stop">Avvia / Arresta</string>
@@ -321,4 +313,5 @@
     <string name="tcp">TCP</string>
     <string name="info_importing_rules_app_unusable">L\'app sta ora importando le regole. Fino al termine di questa fase, non sarà possibile utilizzare l\'app poiché, il database interno, rimarrà bloccato.</string>
     <string name="background">Background</string>
+    <string name="notification_text_running_in_advanced_mode">Impostazioni avanzate abilitate.</string>
 </resources>
