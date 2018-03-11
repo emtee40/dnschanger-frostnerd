@@ -26,6 +26,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Deque;
 
 /**
@@ -69,6 +71,7 @@ public class RuleImportService extends Service {
             boolean first = configurations == null;
             if(first)configurations = new ArrayDeque<>();
             final FileList list = (FileList) intent.getSerializableExtra(PARAM_FILE_LIST);
+            list.sort();
             final int conflictHandling = intent.getIntExtra(PARAM_DATABASE_CONFLICT_HANDLING, SQLiteDatabase.CONFLICT_ABORT);
             initNotification();
             configurations.add(new Configuration(list, intent.getIntExtra(PARAM_LINE_COUNT, -1), conflictHandling));
@@ -279,6 +282,15 @@ public class RuleImportService extends Service {
 
         public static FileList of(RuleImport.ImportableFile... files) {
             return new FileList(files);
+        }
+
+        void sort(){
+            Arrays.sort(files, new Comparator<RuleImport.ImportableFile>() {
+                @Override
+                public int compare(RuleImport.ImportableFile o1, RuleImport.ImportableFile o2) {
+                    return o1.getFile().getName().compareTo(o2.getFile().getName());
+                }
+            });
         }
     }
 
