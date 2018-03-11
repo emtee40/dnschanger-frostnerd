@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -31,7 +32,7 @@ import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondi
  * development@frostnerd.com
  */
 public class RuleAdapter extends DatabaseAdapter<DNSRule, RuleAdapter.ViewHolder>{
-    private Context context;
+    private LayoutInflater layoutInflater;
     private static Column<DNSRule> ipv6Column;
     private static Column<DNSRule> hostColumn;
     private static Column<DNSRule> targetColumn;
@@ -39,6 +40,7 @@ public class RuleAdapter extends DatabaseAdapter<DNSRule, RuleAdapter.ViewHolder
 
     public <T extends Activity &RuleImport.ImportStartedListener> RuleAdapter(final T context, DatabaseHelper databaseHelper, final TextView rowCount, ProgressBar updateProgress){
         super(databaseHelper, 10000);
+        this.layoutInflater = LayoutInflater.from(context);
         setOnRowLoaded(new OnRowLoaded<DNSRule, ViewHolder>() {
             @Override
             public void bindRow(ViewHolder view, final DNSRule entity) {
@@ -85,7 +87,7 @@ public class RuleAdapter extends DatabaseAdapter<DNSRule, RuleAdapter.ViewHolder
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(View.inflate(context, R.layout.row_rule, parent));
+        return new ViewHolder(layoutInflater.inflate(R.layout.row_rule, parent, false));
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{

@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -38,11 +39,11 @@ public class QueryLogAdapter extends DatabaseAdapter<DNSQuery, QueryLogAdapter.V
             yearStart = getStartOfYear().getTime();
     private final boolean landscape;
     private static Column<DNSQuery> hostColumn;
-    private Context context;
+    private LayoutInflater layoutInflater;
 
     public QueryLogAdapter(final @NonNull Context context, View progressView, final TextView rowCount) {
         super(Util.getDBHelper(context), 10000);
-        this.context = context;
+        this.layoutInflater = LayoutInflater.from(context);
         setOnRowLoaded(new OnRowLoaded<DNSQuery, ViewHolder>() {
             @Override
             public void bindRow(ViewHolder view, DNSQuery entity) {
@@ -111,7 +112,7 @@ public class QueryLogAdapter extends DatabaseAdapter<DNSQuery, QueryLogAdapter.V
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(View.inflate(context, R.layout.row_query_log, parent));
+        return new ViewHolder(layoutInflater.inflate(R.layout.row_query_log, parent, false));
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
