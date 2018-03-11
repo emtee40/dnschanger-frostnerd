@@ -1,9 +1,12 @@
 package com.frostnerd.dnschanger.adapters;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -27,20 +30,21 @@ import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondi
  * <p>
  * development@frostnerd.com
  */
-public class RuleAdapter extends DatabaseAdapter<DNSRule>{
+public class RuleAdapter extends DatabaseAdapter<DNSRule, RuleAdapter.ViewHolder>{
+    private Context context;
     private static Column<DNSRule> ipv6Column;
     private static Column<DNSRule> hostColumn;
     private static Column<DNSRule> targetColumn;
     private static Column<DNSRule> wildcardColumn;
 
     public <T extends Activity &RuleImport.ImportStartedListener> RuleAdapter(final T context, DatabaseHelper databaseHelper, final TextView rowCount, ProgressBar updateProgress){
-        super(context, databaseHelper, R.layout.row_rule, 10000);
-        setOnRowLoaded(new OnRowLoaded<DNSRule>() {
+        super(databaseHelper, 10000);
+        setOnRowLoaded(new OnRowLoaded<DNSRule, ViewHolder>() {
             @Override
-            public void bindRow(View view, final DNSRule entity) {
-                ((TextView) view.findViewById(R.id.text)).setText(entity.getHost());
-                ((TextView) view.findViewById(R.id.text3)).setText(entity.getTarget());
-                view.setOnLongClickListener(new View.OnLongClickListener() {
+            public void bindRow(ViewHolder view, final DNSRule entity) {
+                view.host.setText(entity.getHost());
+                view.target.setText(entity.getTarget());
+                view.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
                         new NewRuleDialog(context, new NewRuleDialog.CreationListener() {
@@ -77,6 +81,21 @@ public class RuleAdapter extends DatabaseAdapter<DNSRule>{
         wildcardColumn = databaseHelper.findColumn(DNSRule.class, "wildcard");
         setUpdateDataOnConfigChange(true);
         reloadData();
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new ViewHolder(View.inflate(context, R.layout.row_rule, parent));
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder{
+        TextView host, target;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            host = itemView.findViewById(R.id.text);
+            target = itemView.findViewById(R.id.text3);
+        }
     }
 
     public enum ArgumentLessFilter implements DatabaseAdapter.ArgumentLessFilter{

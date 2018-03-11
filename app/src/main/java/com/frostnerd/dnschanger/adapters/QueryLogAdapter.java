@@ -5,7 +5,9 @@ import android.content.res.Configuration;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.R;
@@ -29,28 +31,29 @@ import java.util.Date;
  * <p>
  * development@frostnerd.com
  */
-public class QueryLogAdapter extends DatabaseAdapter<DNSQuery> {
+public class QueryLogAdapter extends DatabaseAdapter<DNSQuery, QueryLogAdapter.ViewHolder> {
     private final SimpleDateFormat timeFormatter,
             formatterDate, formatterDateYear, formatterYear = new SimpleDateFormat("yyyy");
     private final long dayStart = getStartOfDay(new Date()).getTime(),
             yearStart = getStartOfYear().getTime();
     private final boolean landscape;
     private static Column<DNSQuery> hostColumn;
-
+    private Context context;
 
     public QueryLogAdapter(final @NonNull Context context, View progressView, final TextView rowCount) {
-        super(context, Util.getDBHelper(context), R.layout.row_query_log, 10000);
-        setOnRowLoaded(new OnRowLoaded<DNSQuery>() {
+        super(Util.getDBHelper(context), 10000);
+        this.context = context;
+        setOnRowLoaded(new OnRowLoaded<DNSQuery, ViewHolder>() {
             @Override
-            public void bindRow(View view, DNSQuery entity) {
+            public void bindRow(ViewHolder view, DNSQuery entity) {
                 String text;
                 if (entity.getTime() < dayStart) {
                     if (entity.getTime() < yearStart) {
                         text = landscape ? formatterDateYear.format(entity.getTime()) : formatterYear.format(entity.getTime());
                     } else text = formatterDate.format(entity.getTime());
                 } else text = timeFormatter.format(entity.getTime());
-                ((TextView) view.findViewById(R.id.time)).setText(text);
-                ((TextView) view.findViewById(R.id.host)).setText(entity.getHost());
+                view.time.setText(text);
+                view.host.setText(entity.getHost());
             }
         });
         setReloadCallback(new Runnable() {
@@ -104,6 +107,21 @@ public class QueryLogAdapter extends DatabaseAdapter<DNSQuery> {
         calendar.set(Calendar.DAY_OF_MONTH, 0);
         calendar.set(Calendar.MONTH, 0);
         return calendar.getTime();
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new ViewHolder(View.inflate(context, R.layout.row_query_log, parent));
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView host, time;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            time = itemView.findViewById(R.id.time);
+            host = itemView.findViewById(R.id.host);
+        }
     }
 
     public enum ArgumentBasedFilter implements ArgumentFilter{
