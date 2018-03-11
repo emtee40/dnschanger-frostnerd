@@ -130,6 +130,7 @@ public class RuleImportService extends Service {
                 updateNotification(file.getFile());
                 rowID = Util.getDBHelper(this, false).getHighestRowID(DNSRule.class);
                 lastRowID = rowID;
+                long currentRowID;
                 while (continueCurrent && shouldContinue && (line = reader.readLine()) != null) {
                     i++;
                     rule = parser.parseLine(line.trim());
@@ -139,9 +140,10 @@ public class RuleImportService extends Service {
                         if(rule.isBoth()){
                             values.put(columnTarget, "127.0.0.1");
                             values.put(columnIPv6, false);
-                            if(currentDatabaseInstance.insertWithOnConflict(ruleTableName, null, values, configuration.databaseConflictHandling) != -1){
+                            if((currentRowID = currentDatabaseInstance.insertWithOnConflict(ruleTableName, null, values, configuration.databaseConflictHandling)) != -1){
                                 distinctEntries++;
                                 currentCount++;
+                                lastRowID = currentRowID;
                             }
                             values.put(columnTarget, "::1");
                             values.put(columnIPv6, true);
@@ -149,14 +151,15 @@ public class RuleImportService extends Service {
                             values.put(columnTarget, rule.getTarget());
                             values.put(columnIPv6, rule.isIpv6());
                         }
-                        if((lastRowID = currentDatabaseInstance.insertWithOnConflict(ruleTableName, null, values, configuration.databaseConflictHandling)) != -1){
+                        if((currentRowID = currentDatabaseInstance.insertWithOnConflict(ruleTableName, null, values, configuration.databaseConflictHandling)) != -1){
                             distinctEntries++;
                             currentCount++;
+                            lastRowID = currentRowID;
                         }
                     }
                     updateNotification(i, configuration.lineCount);
                 }
-                if(continueCurrent && shouldContinue && currentCount != 0){
+                if(continueCurrent && shouldContinue && currentCount != 0 && rowID != lastRowID){
                     Util.getDBHelper(this, false).insert(currentDatabaseInstance, new DNSRuleImport(file.getFile().getName(), System.currentTimeMillis(),
                             rowID,
                             lastRowID));
