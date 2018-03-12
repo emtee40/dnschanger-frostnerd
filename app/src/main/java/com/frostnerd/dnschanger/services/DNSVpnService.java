@@ -137,9 +137,8 @@ public class DNSVpnService extends VpnService {
             boolean advancedMode = PreferencesAccessor.isRunningInAdvancedMode(this);
             if(!ipv6Enabled){
                 contentText.append("\n").append(getString(R.string.notification_ipv6_text));
-                if(advancedMode)contentText.append("\n");
             }
-            if(advancedMode)contentText.append(getString(R.string.notification_text_running_in_advanced_mode));
+            if(advancedMode)contentText.append("\n").append(getString(R.string.notification_text_running_in_advanced_mode));
             notificationBuilder.setStyle(new NotificationCompat.BigTextStyle().
                     bigText(contentText.toString()));
             notificationBuilder.setSubText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused));
