@@ -206,7 +206,7 @@ public class RuleImportService extends Service {
         notificationManager = null;
         notificationBuilder = null;
         configurations.clear();
-        if(currentDatabaseInstance != null)currentDatabaseInstance.endTransaction();
+        if(currentDatabaseInstance != null && currentDatabaseInstance.inTransaction())currentDatabaseInstance.endTransaction();
         currentDatabaseInstance = null;
         sendBroadcast(new Intent(BROADCAST_IMPORT_FINISHED));
     }
