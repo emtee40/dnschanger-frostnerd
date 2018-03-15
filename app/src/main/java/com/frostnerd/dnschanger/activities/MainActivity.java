@@ -730,12 +730,61 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
                     if(ipEnabled)PreferencesAccessor.Type.DNS1_V6.saveDNSPair(MainActivity.this, dns1V6);
                     if(ipEnabled)PreferencesAccessor.Type.DNS2_V6.saveDNSPair(MainActivity.this, dns2V6);
                 }
-                if(Util.isServiceRunning(MainActivity.this))
-                    MainActivity.this.startService(DNSVpnService.getUpdateServersIntent(MainActivity.this, true, false));
+                applyDNSServersInstant();
             }
         });
         defaultDnsDialog.show();
         LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
+    }
+
+    private void applyDNSServersInstant(){
+        if(Util.isServiceRunning(MainActivity.this)){
+            if(PreferencesAccessor.checkConnectivityOnStart(this)){
+                if (currentFragment() instanceof MainFragment){
+                    final LoadingDialog dialog = new LoadingDialog(this, R.string.checking_connectivity, R.string.dialog_connectivity_description);
+                    dialog.show();
+                    ((MainFragment)currentFragment()).checkDNSReachability(new MainFragment.DNSReachabilityCallback() {
+                        @Override
+                        public void checkFinished(List<IPPortPair> unreachable, List<IPPortPair> reachable) {
+                            dialog.dismiss();
+                            if(unreachable.size() == 0){
+                                MainActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        MainActivity.this.startService(DNSVpnService.getUpdateServersIntent(MainActivity.this, true, false));
+                                    }
+                                });
+                            }else{
+                                String _text = getString(R.string.no_connectivity_warning_text);
+                                StringBuilder builder = new StringBuilder();
+                                _text = _text.replace("[x]", unreachable.size() + reachable.size() + "");
+                                _text = _text.replace("[y]", unreachable.size() + "");
+                                boolean customPorts = PreferencesAccessor.areCustomPortsEnabled(MainActivity.this);
+                                for(IPPortPair p: unreachable)builder.append("- ").append(p.formatForTextfield(customPorts)).append("\n");
+                                _text = _text.replace("[servers]", builder.toString());
+                                final String text = _text;
+                                MainActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        new AlertDialog.Builder(MainActivity.this, ThemeHandler.getDialogTheme(MainActivity.this))
+                                                .setTitle(R.string.warning).setCancelable(true).setPositiveButton(R.string.start, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                MainActivity.this.startService(DNSVpnService.getUpdateServersIntent(MainActivity.this, true, false));
+                                            }
+                                        }).setNegativeButton(R.string.cancel, null).setMessage(text).show();
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }else {
+                    this.startService(DNSVpnService.getUpdateServersIntent(MainActivity.this, true, false));
+                }
+            }else{
+                this.startService(DNSVpnService.getUpdateServersIntent(MainActivity.this, true, false));
+            }
+        }
     }
 
     @Override

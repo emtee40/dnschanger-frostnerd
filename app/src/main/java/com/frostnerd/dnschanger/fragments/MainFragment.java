@@ -451,7 +451,7 @@ public class MainFragment extends Fragment {
         return true;
     }
 
-    private void checkDNSReachability(final DNSReachabilityCallback callback){
+    public void checkDNSReachability(final DNSReachabilityCallback callback){
         List<IPPortPair> servers = PreferencesAccessor.getAllDNSPairs(getContext(), true);
         callback.setServers(servers.size());
         for(final IPPortPair pair: servers){
@@ -494,7 +494,7 @@ public class MainFragment extends Fragment {
         return context == null ? MainActivity.currentContext : context;
     }
 
-    private abstract class DNSReachabilityCallback{
+    public static abstract class DNSReachabilityCallback{
         private final List<IPPortPair> unreachable = new ArrayList<>();
         private final List<IPPortPair> reachable = new ArrayList<>();
         private int servers;
