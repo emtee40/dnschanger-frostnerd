@@ -160,11 +160,19 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_done || item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == R.id.menu_done){
             setResult(RESULT_OK, new Intent().putExtra("apps", currentSelected).putExtra("whitelist", whiteList));
             finish();
-        }
-        return super.onOptionsItemSelected(item);
+        }else if(item.getItemId() == android.R.id.home) {
+            if (System.currentTimeMillis() - lastBackPress <= 1500 || !changed) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }else {
+                lastBackPress = System.currentTimeMillis();
+                Toast.makeText(this, R.string.press_back_again, Toast.LENGTH_LONG).show();
+            }
+        }else return super.onOptionsItemSelected(item);
+        return true;
     }
 
     @Override
