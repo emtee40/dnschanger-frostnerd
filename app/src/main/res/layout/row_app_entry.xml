@@ -27,6 +27,7 @@
             <ImageView
                 android:id="@+id/app_image"
                 android:layout_width="48dp"
+                android:contentDescription="App icon"
                 android:layout_height="48dp" />
 
             <TextView
@@ -42,6 +43,7 @@
                 android:layout_toRightOf="@id/app_image"
                 android:layout_toStartOf="@+id/app_selected_indicator"
                 android:gravity="center"
+                android:textColor="?android:attr/textColor"
                 android:text="" />
 
             <CheckBox
