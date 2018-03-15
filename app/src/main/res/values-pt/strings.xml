@@ -156,7 +156,7 @@
 
     <string-array name="theme">
         <item>Padrão</item>
-        <item>Mono</item>
+        <item>Azul</item>
         <item>Escuro</item>
     </string-array>
     <string name="remove">Remover</string>

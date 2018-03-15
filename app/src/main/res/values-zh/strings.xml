@@ -157,7 +157,7 @@
 
     <string-array name="theme">
         <item>默认</item>
-        <item>单色</item>
+        <item>蓝色</item>
         <item>暗色</item>
     </string-array>
 
