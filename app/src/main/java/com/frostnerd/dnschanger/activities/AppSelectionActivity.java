@@ -1,16 +1,21 @@
 package com.frostnerd.dnschanger.activities;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +34,7 @@ import android.widget.Toast;
 
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.utils.general.DesignUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +56,8 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
     private AppListAdapter listAdapter;
     private boolean changed;
     private String infoTextWhitelist, infoTextBlacklist;
-    private boolean whiteList, onlyInternet;
+    private boolean whiteList, onlyInternet, showSystemApps = true;
+    private FloatingActionButton fabSettings;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,7 +65,9 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         setTheme(ThemeHandler.getAppTheme(this));
         setContentView(R.layout.activity_app_select);
         appList = findViewById(R.id.app_list);
+        fabSettings = findViewById(R.id.fab_settings);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         onlyInternet = getIntent() != null && getIntent().getBooleanExtra("onlyInternet",false);
         currentSelected = getIntent() != null && getIntent().hasExtra("apps") ? getIntent().getStringArrayListExtra("apps") : new ArrayList<String>();
         infoTextWhitelist = getIntent() != null && getIntent().hasExtra("infoTextWhitelist") ? getIntent().getStringExtra("infoTextWhitelist") : null;
@@ -80,7 +89,43 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
                 });
             }
         }).start();
+        appList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 30) {
+                    fabSettings.hide();
+                } else if (dy < 5) fabSettings.show();
+            }
+        });
+        ColorStateList stateList = ColorStateList.valueOf(ThemeHandler.getColor(this, R.attr.inputElementColor, Color.WHITE));
+        final int textColor = ThemeHandler.getColor(this, android.R.attr.textColor, Color.BLACK);
+        fabSettings.setBackgroundTintList(stateList);
+        fabSettings.setCompatElevation(4);
+        fabSettings.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_settings), textColor));
+        fabSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSettingsDialog();
+            }
+        });
         getSupportActionBar().setSubtitle(getString(R.string.x_apps_selected).replace("[[x]]", currentSelected.size() + ""));
+    }
+
+    private void showSettingsDialog(){
+        View dialogContent = getLayoutInflater().inflate(R.layout.dialog_app_selection_settings, null, false);
+        final CheckBox showSystem = dialogContent.findViewById(R.id.show_system_apps),
+                showOnlyInternet = dialogContent.findViewById(R.id.only_show_apps_with_internet);
+        showSystem.setChecked(showSystemApps);
+        showOnlyInternet.setChecked(onlyInternet);
+        new AlertDialog.Builder(this, ThemeHandler.getDialogTheme(this))
+                .setTitle(R.string.settings).setView(dialogContent).setNeutralButton(R.string.cancel, null).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                showSystemApps = showSystem.isChecked();
+                onlyInternet = showOnlyInternet.isChecked();
+                listAdapter.reload();
+            }
+        }).show();
     }
 
     @Override
@@ -138,19 +183,27 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         private final List<AppEntry> searchedApps = new ArrayList<>();
         private final boolean apply = true;
         private boolean update = true;
+        private String currentSearch = "";
 
         AppListAdapter() {
+            reload();
+        }
+
+        void reload(){
+            apps.clear();
             List<ApplicationInfo> packages = getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
             AppEntry entry;
             for (ApplicationInfo packageInfo : packages) {
                 entry = new AppEntry(packageInfo);
-                //if (!entry.isSystemApp()) apps.add(entry);
-                if(!onlyInternet || entry.hasPermission(Manifest.permission.INTERNET))apps.add(entry);
+                if(!onlyInternet || entry.hasPermission(Manifest.permission.INTERNET)){
+                    if(showSystemApps || !entry.isSystemApp())apps.add(entry);
+                }
             }
-            searchedApps.addAll(apps);
+            filter(currentSearch);
         }
 
         public void filter(String search){
+            this.currentSearch = search;
             searchedApps.clear();
             if(search.equals("")){
                 searchedApps.addAll(apps);
@@ -159,7 +212,12 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
                     if(entry.getTitle().toLowerCase().contains(search.toLowerCase()))searchedApps.add(entry);
                 }
             }
-            notifyDataSetChanged();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    notifyDataSetChanged();
+                }
+            });
         }
 
         @Override

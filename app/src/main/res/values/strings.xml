@@ -321,4 +321,6 @@
     <string name="info_importing_rules_app_unusable">The App is now importing the rules. During that time you won\'t be able to use the app as the internal database is locked for the duration.</string>
     <string name="background">Background</string>
     <string name="notification_text_running_in_advanced_mode">Advanced settings enabled.</string>
+    <string name="show_system_apps">Show system apps</string>
+    <string name="only_show_apps_with_internet">Only show apps with the internet permission</string>
 </resources>
