@@ -345,8 +345,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 return true;
             }
         });
-        v4Enabled.setEnabled(v6Enabled.isEnabled());
-        v6Enabled.setEnabled(v4Enabled.isEnabled());
+        v4Enabled.setEnabled(v6Enabled.isChecked());
+        v6Enabled.setEnabled(v4Enabled.isChecked());
         if (Preferences.getBoolean(getContext(), "excluded_whitelist", false)) {
             findPreference("excluded_whitelist").setSummary(R.string.excluded_apps_info_text_whitelist);
         } else {
