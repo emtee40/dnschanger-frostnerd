@@ -314,4 +314,6 @@
     <string name="info_importing_rules_app_unusable">L\'app sta ora importando le regole. Fino al termine di questa fase, non sarà possibile utilizzare l\'app poiché, il database interno, rimarrà bloccato.</string>
     <string name="background">Background</string>
     <string name="notification_text_running_in_advanced_mode">Impostazioni avanzate abilitate.</string>
+    <string name="show_system_apps">Mostra app di sistema</string>
+    <string name="only_show_apps_with_internet">Mostra solo app con autorizzazione Internet</string>
 </resources>

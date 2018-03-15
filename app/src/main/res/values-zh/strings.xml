@@ -316,4 +316,6 @@
     <string name="background">背景</string>
     <string name="stop_all">全部停下来</string>
     <string name="notification_text_running_in_advanced_mode">高级设置已启用。</string>
+    <string name="show_system_apps">显示系统应用</string>
+    <string name="only_show_apps_with_internet">只显示具有互联网权限的应用程序</string>
 </resources>
