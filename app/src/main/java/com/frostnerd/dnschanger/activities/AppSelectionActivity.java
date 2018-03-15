@@ -83,7 +83,6 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        findViewById(R.id.progress).setVisibility(View.GONE);
                         appList.setAdapter(listAdapter);
                     }
                 });
@@ -123,7 +122,12 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
             public void onClick(DialogInterface dialog, int which) {
                 showSystemApps = showSystem.isChecked();
                 onlyInternet = showOnlyInternet.isChecked();
-                listAdapter.reload();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        listAdapter.reload();
+                    }
+                }).start();
             }
         }).show();
     }
@@ -198,6 +202,12 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         }
 
         void reload(){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    findViewById(R.id.progress).setVisibility(View.VISIBLE);
+                }
+            });
             apps.clear();
             List<ApplicationInfo> packages = getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
             AppEntry entry;
@@ -224,6 +234,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
                 @Override
                 public void run() {
                     notifyDataSetChanged();
+                    findViewById(R.id.progress).setVisibility(View.GONE);
                 }
             });
         }
