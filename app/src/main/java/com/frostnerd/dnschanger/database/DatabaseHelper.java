@@ -147,6 +147,10 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
 
 
     public void createShortcut(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1v6, IPPortPair dns2v6){
+        if(dns1 != null)insert(dns1);
+        if(dns2 != null)insert(dns2);
+        if(dns1v6 != null)insert(dns1v6);
+        if(dns2v6 != null)insert(dns2v6);
         insert(new Shortcut(name, dns1, dns2, dns1v6, dns2v6));
     }
 
