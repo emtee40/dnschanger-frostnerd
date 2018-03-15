@@ -28,6 +28,8 @@ import com.frostnerd.utils.design.dialogs.LoadingDialog;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -223,6 +225,12 @@ class RuleImportChooserDialog extends AlertDialog {
                 }
 
                 private void setLabelText() {
+                    Collections.sort(files, new Comparator<RuleImport.ImportableFile>() {
+                        @Override
+                        public int compare(RuleImport.ImportableFile o1, RuleImport.ImportableFile o2) {
+                            return o1.getFile().getName().toLowerCase().compareTo(o2.getFile().getName().toLowerCase());
+                        }
+                    });
                     StringBuilder builder = new StringBuilder();
                     for (RuleImport.ImportableFile importableFile : files) {
                         builder.append(importableFile.getFile().getName()).append(" [").
