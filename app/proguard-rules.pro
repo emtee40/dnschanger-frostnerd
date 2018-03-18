@@ -25,23 +25,6 @@
 -optimizations !code/allocation/variable
 -keep class android.support.v7.widget.SearchView { *; }
 -keepattributes SourceFile,LineNumberTable
-
--keep public class * extends com.frostnerd.utils.database.orm.Serializer
--keep public class * extends com.frostnerd.utils.database.orm.Entity
--keepclassmembers public class * extends com.frostnerd.utils.database.orm.Serializer {
-   public <init>(...);
-   private <fields>;
-}
-
--keepclassmembers public class * extends com.frostnerd.utils.database.orm.Entity {
-   public <init>(...);
-   private <fields>;
-}
--keepclassmembers class * extends java.lang.Enum {
-    <fields>;
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
-}
 -keep class android.support.v7.app.AppCompatViewInflater {
     *;
 }
