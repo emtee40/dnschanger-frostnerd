@@ -135,7 +135,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_autopause_appselect, menu);
-        ((SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search))).setOnQueryTextListener(this);
+        ((SearchView) menu.findItem(R.id.action_search).getActionView()).setOnQueryTextListener(this);
         return true;
     }
 
