@@ -42,3 +42,6 @@
     public static **[] values();
     public static ** valueOf(java.lang.String);
 }
+-keep class android.support.v7.app.AppCompatViewInflater {
+    *;
+}
