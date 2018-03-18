@@ -89,7 +89,9 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
             db.execSQL("DROP TABLE IF EXISTS DNSEntries");
             onCreate(db);
             for(DNSEntry entry: entries)insert(entry);
-            for(Shortcut shortcut: shortcuts)insert(shortcut);
+            for(Shortcut shortcut: shortcuts){
+                createShortcut(shortcut);
+            }
         }
     }
 
@@ -152,6 +154,14 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
         if(dns1v6 != null)insert(dns1v6);
         if(dns2v6 != null)insert(dns2v6);
         insert(new Shortcut(name, dns1, dns2, dns1v6, dns2v6));
+    }
+
+    public void createShortcut(Shortcut shortcut){
+        if(shortcut.getDns1() != null)insert(shortcut.getDns1());
+        if(shortcut.getDns2() != null)insert(shortcut.getDns2());
+        if(shortcut.getDns1v6() != null)insert(shortcut.getDns1v6());
+        if(shortcut.getDns2v6() != null)insert(shortcut.getDns2v6());
+        insert(shortcut);
     }
 
     @Nullable
