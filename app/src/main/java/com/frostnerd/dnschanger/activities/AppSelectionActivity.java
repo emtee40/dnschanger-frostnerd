@@ -32,8 +32,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.general.DesignUtil;
 
 import java.util.ArrayList;

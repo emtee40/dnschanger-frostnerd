@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.VpnService;
 
-import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.preferences.Preferences;
 
 /**

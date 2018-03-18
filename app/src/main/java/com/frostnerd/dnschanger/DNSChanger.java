@@ -2,9 +2,9 @@ package com.frostnerd.dnschanger;
 
 import android.app.Application;
 
-import com.frostnerd.dnschanger.util.Util;
-import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
+import com.frostnerd.dnschanger.util.ThemeHandler;
+import com.frostnerd.dnschanger.util.Util;
 
 /**
  * Copyright Daniel Wolf 2017

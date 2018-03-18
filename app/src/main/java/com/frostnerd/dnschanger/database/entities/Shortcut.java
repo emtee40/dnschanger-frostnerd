@@ -1,6 +1,5 @@
 package com.frostnerd.dnschanger.database.entities;
 
-import com.frostnerd.utils.database.orm.Entity;
 import com.frostnerd.utils.database.orm.MultitonEntity;
 import com.frostnerd.utils.database.orm.annotations.Named;
 import com.frostnerd.utils.database.orm.annotations.NotNull;

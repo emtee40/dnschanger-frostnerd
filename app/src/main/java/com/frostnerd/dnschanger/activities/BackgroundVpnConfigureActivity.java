@@ -9,13 +9,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
-import com.frostnerd.dnschanger.database.entities.IPPortPair;
-import com.frostnerd.dnschanger.dialogs.VPNInfoDialog;
-import com.frostnerd.dnschanger.util.Util;
-import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.dialogs.VPNInfoDialog;
 import com.frostnerd.dnschanger.services.DNSVpnService;
+import com.frostnerd.dnschanger.util.ThemeHandler;
+import com.frostnerd.dnschanger.util.Util;
 
 import java.util.ArrayList;
 

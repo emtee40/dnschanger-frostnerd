@@ -14,13 +14,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.frostnerd.dnschanger.database.entities.IPPortPair;
-import com.frostnerd.dnschanger.tasker.ConfigureActivity;
-import com.frostnerd.dnschanger.util.PreferencesAccessor;
-import com.frostnerd.dnschanger.util.Util;
-import com.frostnerd.dnschanger.database.entities.DNSEntry;
-import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.database.entities.DNSEntry;
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.ThemeHandler;
+import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.textfilers.InputCharacterFilter;
 

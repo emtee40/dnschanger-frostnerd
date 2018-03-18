@@ -6,13 +6,13 @@ import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.service.quicksettings.Tile;
 
-import com.frostnerd.dnschanger.util.PreferencesAccessor;
-import com.frostnerd.dnschanger.util.Util;
-import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.services.DNSVpnService;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.Util;
+import com.frostnerd.dnschanger.util.VPNServiceArgument;
 
 /**
  * Copyright Daniel Wolf 2017

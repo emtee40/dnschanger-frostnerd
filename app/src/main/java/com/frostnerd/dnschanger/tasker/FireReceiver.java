@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.frostnerd.dnschanger.database.entities.IPPortPair;
-import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.services.DNSVpnService;
+import com.frostnerd.dnschanger.util.Util;
 
 import java.util.ArrayList;
 

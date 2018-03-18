@@ -9,9 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.preferences.Preferences;
 
 /**

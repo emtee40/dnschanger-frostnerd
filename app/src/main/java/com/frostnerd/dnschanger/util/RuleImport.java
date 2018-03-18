@@ -2,11 +2,8 @@ package com.frostnerd.dnschanger.util;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 
-import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.services.RuleImportService;
-import com.frostnerd.utils.design.dialogs.LoadingDialog;
 import com.frostnerd.utils.networking.NetworkUtil;
 
 import java.io.BufferedReader;
@@ -297,6 +294,6 @@ public class RuleImport {
     }
 
     public interface ImportStartedListener{
-        public void importStarted(int combinedLines);
+        void importStarted(int combinedLines);
     }
 }

@@ -11,11 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
-import com.frostnerd.dnschanger.database.entities.DNSEntry;
-import com.frostnerd.dnschanger.R;
 import com.frostnerd.utils.general.DesignUtil;
 import com.frostnerd.utils.networking.NetworkUtil;
 

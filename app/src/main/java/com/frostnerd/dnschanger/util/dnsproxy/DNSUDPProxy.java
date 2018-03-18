@@ -9,10 +9,10 @@ import android.system.Os;
 import android.system.OsConstants;
 import android.system.StructPollfd;
 
-import com.frostnerd.dnschanger.database.entities.IPPortPair;
-import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.database.accessors.DNSResolver;
 import com.frostnerd.dnschanger.database.accessors.QueryLogger;
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.util.Util;
 
 import org.pcap4j.packet.IpPacket;
 import org.pcap4j.packet.IpSelector;

@@ -11,18 +11,16 @@ import android.net.NetworkRequest;
 import android.net.VpnService;
 import android.os.Build;
 
-import com.frostnerd.dnschanger.util.PreferencesAccessor;
-import com.frostnerd.dnschanger.util.Util;
-import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
 import com.frostnerd.dnschanger.services.DNSVpnService;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.Util;
+import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.widgets.BasicWidget;
 import com.frostnerd.utils.general.WidgetUtil;
 import com.frostnerd.utils.preferences.Preferences;
-
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Copyright Daniel Wolf 2017

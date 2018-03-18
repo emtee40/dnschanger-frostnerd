@@ -4,11 +4,8 @@ import android.content.Context;
 
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
-import com.frostnerd.utils.database.orm.parser.ParsedEntity;
-import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
 import com.frostnerd.utils.preferences.Preferences;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
 /**

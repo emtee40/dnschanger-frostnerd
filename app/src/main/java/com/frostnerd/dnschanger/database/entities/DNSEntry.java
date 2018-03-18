@@ -3,11 +3,9 @@ package com.frostnerd.dnschanger.database.entities;
 import android.support.annotation.NonNull;
 
 import com.frostnerd.dnschanger.database.serializers.IPPortSerializer;
-import com.frostnerd.utils.database.orm.Entity;
 import com.frostnerd.utils.database.orm.MultitonEntity;
 import com.frostnerd.utils.database.orm.annotations.Named;
 import com.frostnerd.utils.database.orm.annotations.NotNull;
-import com.frostnerd.utils.database.orm.annotations.PrimaryKey;
 import com.frostnerd.utils.database.orm.annotations.RowID;
 import com.frostnerd.utils.database.orm.annotations.Serialized;
 import com.frostnerd.utils.database.orm.annotations.Table;
