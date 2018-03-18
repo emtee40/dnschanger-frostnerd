@@ -87,7 +87,7 @@ public class SettingsImportActivity extends Activity {
                 if (ir != null) ir.close();
                 if (reader != null) reader.close();
                 if (stream != null) stream.close();
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
             Intent i;

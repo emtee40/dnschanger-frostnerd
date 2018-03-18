@@ -59,7 +59,7 @@ public class CurrentNetworksFragment extends Fragment {
             if(!vpnRunning || !dnsProperty.networkName.equals("tun0"))dnsProperties.add(dnsProperty);
         }
         final ListView list = content.findViewById(R.id.list);
-        final ArrayAdapter<DNSProperties> adapter = new ArrayAdapter<DNSProperties>(getContext(), android.R.layout.simple_list_item_1, dnsProperties);
+        final ArrayAdapter<DNSProperties> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, dnsProperties);
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

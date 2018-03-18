@@ -93,7 +93,7 @@ public class LogFactory {
         if(fileWriter != null){
             try{
                 fileWriter.close();
-            }catch(Exception e){
+            }catch(Exception ignored){
 
             }
             fileWriter = null;
@@ -108,7 +108,7 @@ public class LogFactory {
         if(fileWriter != null){
             try{
                 fileWriter.close();
-            }catch(Exception e){
+            }catch(Exception ignored){
 
             }
             fileWriter = null;
@@ -118,7 +118,7 @@ public class LogFactory {
     public synchronized static void terminate(){
         try{
             fileWriter.close();
-        }catch(Exception e){
+        }catch(Exception ignored){
 
         }
         fileWriter = null;logFile=null;logDir = null;

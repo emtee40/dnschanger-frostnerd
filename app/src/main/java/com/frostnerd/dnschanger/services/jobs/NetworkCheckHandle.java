@@ -72,7 +72,7 @@ public class NetworkCheckHandle {
                 public void onReceive(Context context, Intent intent) {
                     try {
                         handleConnectivityChange(!intent.hasExtra("noConnectivity"), intent.getIntExtra("networkType", -1));
-                    } catch (ReallyWeiredExceptionOnlyAFewPeopleHave ex) {}//Look below.
+                    } catch (ReallyWeiredExceptionOnlyAFewPeopleHave ignored) {}//Look below.
                 }
             }, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }

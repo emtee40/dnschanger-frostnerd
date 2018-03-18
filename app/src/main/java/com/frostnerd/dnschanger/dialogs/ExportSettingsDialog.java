@@ -136,7 +136,7 @@ public class ExportSettingsDialog extends AlertDialog {
                     try {
                         if(writer != null)writer.close();
                         if(fw != null)fw.close();
-                    }catch (IOException e){
+                    }catch (IOException ignored){
 
                     }
                 }
