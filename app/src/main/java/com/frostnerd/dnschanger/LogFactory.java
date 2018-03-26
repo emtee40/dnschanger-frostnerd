@@ -306,7 +306,10 @@ public class LogFactory {
     public static String describeIntent(Intent intent, boolean printExtras){
         if(intent == null)return "Intent{NullIntent}";
         StringBuilder builder = new StringBuilder();
-        builder.append("Intent{Action:").append(intent.getAction()).append("; Type:").append(intent.getType()).append("; Package:").append(intent.getPackage()).append("; Scheme:").append(intent.getScheme()).append("; Data:").append(intent.getDataString()).append(";");
+        builder.append("Intent{Action:").append(intent.getAction()).append("; Type:").append(intent.getType())
+                .append("; Package:").append(intent.getPackage()).append("; Scheme:").append(intent.getScheme())
+                .append("; Data:").append(intent.getDataString()).append("; Component: ")
+                .append(intent.getComponent() != null ? intent.getComponent().toShortString() : "Null;");
         if(intent.getExtras() != null)
             builder.append("ExtrasCount:").append(intent.getExtras().size());
         if(printExtras){
