@@ -10,6 +10,8 @@ import android.net.VpnService;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.Parcel;
+import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 
@@ -313,6 +315,7 @@ public class DNSVpnService extends VpnService {
 
     @Override
     public void onRevoke() {
+        System.out.println("[][][][]REVOKE");
         super.onRevoke();
         stopService();
     }
@@ -337,12 +340,13 @@ public class DNSVpnService extends VpnService {
 
     @Override
     public IBinder onBind(Intent intent) {
-        return (intent.getBooleanExtra(VPNServiceArgument.FLAG_GET_BINDER.getArgument(),false) && serviceRunning) ? new ServiceBinder() : null;
+        return (intent.getBooleanExtra(VPNServiceArgument.FLAG_GET_BINDER.getArgument(),false) && serviceRunning) ?
+                new ServiceBinder() : super.onBind(intent);
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
-        return true;
+        return false;
     }
 
     public Builder createBuilder(){
@@ -429,6 +433,16 @@ public class DNSVpnService extends VpnService {
     public class ServiceBinder extends Binder{
         public DNSVpnService getService(){
             return DNSVpnService.this;
+        }
+
+        @Override
+        public boolean onTransact(int code, Parcel data, Parcel reply, int flags)
+                throws RemoteException {
+            if ( code == IBinder.LAST_CALL_TRANSACTION ) {
+                onRevoke();
+                return true;
+            }
+            return super.onTransact( code, data, reply, flags );
         }
     }
 }
