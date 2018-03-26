@@ -309,7 +309,9 @@ public class LogFactory {
         builder.append("Intent{Action:").append(intent.getAction()).append("; Type:").append(intent.getType())
                 .append("; Package:").append(intent.getPackage()).append("; Scheme:").append(intent.getScheme())
                 .append("; Data:").append(intent.getDataString()).append("; Component: ")
-                .append(intent.getComponent() != null ? intent.getComponent().toShortString() : "Null;");
+                .append(intent.getComponent() != null ? intent.getComponent().toShortString() : "Null;")
+        .append("Categories: ").append(intent.getCategories()).append(";")
+        .append("Flags: ").append(intent.getFlags()).append(";");
         if(intent.getExtras() != null)
             builder.append("ExtrasCount:").append(intent.getExtras().size());
         if(printExtras){
