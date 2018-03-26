@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.service.quicksettings.TileService;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Base64;
@@ -295,14 +296,26 @@ public final class Util {
     public static void runBackgroundConnectivityCheck(Context context){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LogFactory.writeMessage(context, LOG_TAG, "Using JobScheduler");
+            if(isJobRunning(context, 0)){
+                System.out.println("ALREADY RUNNING!");
+                LogFactory.writeMessage(context, LOG_TAG, "Job is already running/scheduled, not doing anything");
+                return;
+            }
             JobScheduler scheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
-            scheduler.cancel(0);
             scheduler.schedule(new JobInfo.Builder(0, new ComponentName(context, ConnectivityJobAPI21.class)).setPersisted(true)
                     .setRequiresCharging(false).setMinimumLatency(0).setOverrideDeadline(0).build());
         } else {
             LogFactory.writeMessage(context, LOG_TAG, "Starting Service (Util below 21)");
             context.startService(new Intent(context, ConnectivityBackgroundService.class));
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private static boolean isJobRunning(Context context, int jobID){
+        JobScheduler scheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        for ( JobInfo jobInfo : scheduler.getAllPendingJobs())
+            if (jobInfo.getId() == jobID) return true;
+        return false;
     }
 
     /**
@@ -354,4 +367,4 @@ public final class Util {
         void onSuccess(Message response);
         void onError(@Nullable Exception e);
     }
-    }
+}

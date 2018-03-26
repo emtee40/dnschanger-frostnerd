@@ -37,7 +37,7 @@ public class NetworkCheckHandle {
     private ConnectivityManager connectivityManager;
     private Context context;
     private final String LOG_TAG;
-    private boolean running = true;
+    private boolean running = true, wasAnotherVPNRunning = false;
 
     public NetworkCheckHandle(Context context, String logTag){
         if(context == null)throw new IllegalStateException("Context passed to NetworkCheckHandle is null.");
@@ -150,7 +150,17 @@ public class NetworkCheckHandle {
         Util.updateTiles(accessContext());
         WidgetUtil.updateAllWidgets(accessContext(), BasicWidget.class);
         Intent i;
-        if(connectionType == ConnectionType.VPN)return;
+        if(connectionType == ConnectionType.VPN){
+            if(!Util.isServiceThreadRunning() && connected)
+                wasAnotherVPNRunning = true;
+            return;
+        }else {
+            if(connected && wasAnotherVPNRunning && Preferences.getBoolean(context, "start_service_when_available", false)){
+                wasAnotherVPNRunning = false;
+                Preferences.put(context, "start_service_when_available", false);
+                BackgroundVpnConfigureActivity.startBackgroundConfigure(context, true);
+            }
+        }
         if (!connected && disableNetChange && serviceRunning) {
             LogFactory.writeMessage(accessContext(), LOG_TAG,
                     "Destroying DNSVPNService, as device is not connected and setting_disable_netchange is true",
@@ -195,7 +205,7 @@ public class NetworkCheckHandle {
     }
     
     private class ReallyWeiredExceptionOnlyAFewPeopleHave extends Exception{
-        public ReallyWeiredExceptionOnlyAFewPeopleHave(){
+        ReallyWeiredExceptionOnlyAFewPeopleHave(){
             super("It's strange, isn't it?");
         }
     }

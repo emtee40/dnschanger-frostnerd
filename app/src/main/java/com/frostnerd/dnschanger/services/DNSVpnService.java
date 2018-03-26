@@ -71,7 +71,7 @@ public class DNSVpnService extends VpnService {
         if(stopReason != null && notificationManager != null && Preferences.getBoolean(this, "notification_on_stop", false)){
             String reasonText = getString(R.string.notification_reason_stopped).replace("[reason]", stopReason);
             notificationManager.notify(NOTIFICATION_ID+1, new NotificationCompat.Builder(this, Util.createNotificationChannel(this, false)).setAutoCancel(true)
-                    .setOngoing(false).setContentText(reasonText).setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText(reasonText))
+                    .setOngoing(false).setContentText(reasonText).setStyle(new NotificationCompat.BigTextStyle().bigText(reasonText))
                     .setSmallIcon(R.drawable.ic_stat_small_icon).setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0))
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT).build());
         }
@@ -249,6 +249,7 @@ public class DNSVpnService extends VpnService {
     }
 
     private void createAndRunThread(boolean runIfAlreadyRunning, boolean runIfNotRunning){
+        Preferences.put(this, "start_service_when_available", false);
         if(runIfNotRunning && (vpnRunnable == null || !vpnRunnable.isThreadRunning())){
             synchronized (DNSVpnService.this){
                 vpnRunnable = new VPNRunnable(this, upstreamServers, excludedApps, excludedWhitelisted);
@@ -303,6 +304,7 @@ public class DNSVpnService extends VpnService {
         LogFactory.writeMessage(this, LOG_TAG, "Created Service");
         initNotification();
         LocalBroadcastManager.getInstance(this).registerReceiver(stateRequestReceiver, new IntentFilter(Util.BROADCAST_SERVICE_STATE_REQUEST));
+        Util.runBackgroundConnectivityCheck(this);
     }
 
     @Override
@@ -315,9 +317,10 @@ public class DNSVpnService extends VpnService {
 
     @Override
     public void onRevoke() {
-        System.out.println("[][][][]REVOKE");
         super.onRevoke();
+        Preferences.put(this, "start_service_when_available", true);
         stopService();
+        Util.runBackgroundConnectivityCheck(this);
     }
 
     @Override
