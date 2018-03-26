@@ -62,7 +62,6 @@ public class DNSVpnService extends VpnService {
     private Thread vpnThread;
     private ArrayList<IPPortPair> upstreamServers;
 
-
     private synchronized void clearVars(boolean stopSelf){
         if(variablesCleared)return;
         variablesCleared = true;
@@ -310,6 +309,12 @@ public class DNSVpnService extends VpnService {
         super.onDestroy();
         Util.updateTiles(this);
         LogFactory.writeMessage(this, LOG_TAG, "Destroyed.");
+    }
+
+    @Override
+    public void onRevoke() {
+        super.onRevoke();
+        stopService();
     }
 
     @Override
