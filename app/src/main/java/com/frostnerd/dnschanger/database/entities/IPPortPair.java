@@ -66,6 +66,8 @@ public class IPPortPair extends MultitonEntity implements Serializable{
     }
 
     public void setPort(int port) {
+        if(port <= 0 || port > 0xFFFF)
+            throw new IllegalArgumentException("Invalid port: " + port, new Throwable("The invalid port " + port + " was supplied"));
         this.port = port;
     }
 
