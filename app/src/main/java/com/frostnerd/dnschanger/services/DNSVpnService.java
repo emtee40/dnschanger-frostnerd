@@ -133,7 +133,7 @@ public class DNSVpnService extends VpnService {
                 contentText.append("\n");
                 contentText.append(excludedAppsText);
             }else{
-                contentText.setLength(contentText.length()-1);
+                if(contentText.length() != 0) contentText.setLength(contentText.length()-1);
             }
             boolean advancedMode = PreferencesAccessor.isRunningInAdvancedMode(this);
             if(!ipv6Enabled){
