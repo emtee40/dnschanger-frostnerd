@@ -45,6 +45,10 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
         return instance == null ? instance = new DatabaseHelper(context) : instance;
     }
 
+    public static boolean instanceActive(){
+        return instance != null;
+    }
+
     private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, DATABASE_VERSION, entities);
     }
