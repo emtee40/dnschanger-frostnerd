@@ -46,8 +46,7 @@
             android:cursorVisible="true"
             android:background="?attr/inputElementColor"
             android:inputType="numberPassword"
-            android:textColor="#FFF"
-            android:textCursorDrawable="@null" />
+            android:textColor="#FFF" />
     </com.frostnerd.utils.design.MaterialEditText>
 
     <TextView
@@ -75,6 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:orientation="horizontal">
 
             <Button
