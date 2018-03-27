@@ -9,6 +9,7 @@ import android.system.OsConstants;
 
 import com.frostnerd.dnschanger.DNSChanger;
 import com.frostnerd.dnschanger.LogFactory;
+import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
 import com.frostnerd.dnschanger.activities.InvalidDNSDialogActivity;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.services.DNSVpnService;
@@ -88,6 +89,12 @@ public class VPNRunnable implements Runnable {
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying address '" + address + "'");
                     configure(address, PreferencesAccessor.isRunningInAdvancedMode(service));
                     tunnelInterface = builder.establish();
+                    if(tunnelInterface == null){
+                        LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface is null, service is not prepared.");
+                        LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Starting Background");
+                        BackgroundVpnConfigureActivity.startBackgroundConfigure(service, true);
+                        break;
+                    }
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface connected.");
                     LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Broadcasting current state");
                     service.broadcastCurrentState();
@@ -110,8 +117,6 @@ public class VPNRunnable implements Runnable {
                     if(addressIndex >= addresses.size())throw e;
                     else LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", "[ADDRESS-RETRY]", ID},
                             "Not throwing exception. Tries: " + addressIndex + ", addresses: " + addresses.size());
-                }finally {
-                    cleanup();
                 }
             }
         }catch(Exception e){
@@ -124,13 +129,13 @@ public class VPNRunnable implements Runnable {
             LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "VPN Thread is in finally block");
             Util.updateAppShortcuts(service);
             Util.updateTiles(service);
-            cleanup();
             service.updateNotification();
             service.broadcastCurrentState();
             synchronized (afterThreadStop){
                 for(Runnable r: afterThreadStop)r.run();
                 afterThreadStop.clear();
             }
+            cleanup();
             LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Done with finally block");
         }
     }
@@ -155,6 +160,9 @@ public class VPNRunnable implements Runnable {
         }
         builder = null;
         tunnelInterface = null;
+        service = null;
+        dnsProxy = null;
+        builder = null;
     }
 
     private void configure(String address, boolean advanced){
