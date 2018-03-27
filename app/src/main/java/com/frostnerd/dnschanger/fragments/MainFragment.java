@@ -185,11 +185,11 @@ public class MainFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(this.before.equalsIgnoreCase(s.toString()))return;
-                IPPortPair pair = Util.validateInput(s.toString(), settingV6, false, PreferencesAccessor.isLoopbackAllowed(getContext()));
-                if (pair == null || (pair.getPort() != -1 && !advancedMode)) {
+                IPPortPair pair = Util.validateInput(s.toString(), settingV6, false,
+                        PreferencesAccessor.isLoopbackAllowed(getContext()), 53);
+                if (pair == null || (pair.getPort() != 53 && !advancedMode)) {
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
-                    if (pair.getPort() == -1) pair.setPort(53);
                     met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
                     if (settingV6) PreferencesAccessor.Type.DNS1_V6.saveDNSPair(getContext(), pair);
                     else PreferencesAccessor.Type.DNS1.saveDNSPair(getContext(), pair);
@@ -212,11 +212,11 @@ public class MainFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(this.before.equalsIgnoreCase(s.toString()))return;
-                IPPortPair pair = Util.validateInput(s.toString(), settingV6, true, PreferencesAccessor.isLoopbackAllowed(getContext()));
-                if (pair == null || (pair.getPort() != -1 && !advancedMode)) {
+                IPPortPair pair = Util.validateInput(s.toString(), settingV6, true,
+                        PreferencesAccessor.isLoopbackAllowed(getContext()), 53);
+                if (pair == null || (pair.getPort() != 53 && !advancedMode)) {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
-                    if (pair.getPort() == -1) pair.setPort(53);
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
                     if (settingV6) PreferencesAccessor.Type.DNS2_V6.saveDNSPair(getContext(), pair);
                     else PreferencesAccessor.Type.DNS2.saveDNSPair(getContext(), pair);

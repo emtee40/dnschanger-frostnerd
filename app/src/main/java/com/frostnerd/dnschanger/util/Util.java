@@ -82,7 +82,7 @@ public final class Util {
             LogFactory.writeMessage(context, new String[]{LOG_TAG, LogFactory.STATIC_TAG}, "Not updating Tiles (Version is below Android N)");
     }
 
-    public static IPPortPair validateInput(String input, boolean iPv6, boolean allowEmpty, boolean allowLoopback) {
+    public static IPPortPair validateInput(String input, boolean iPv6, boolean allowEmpty, boolean allowLoopback, int defaultPort) {
         if (allowEmpty && input.equals("")) return new IPPortPair("", -1, iPv6);
         if (iPv6) {
             if (ipv6WithPort.matcher(input).matches()) {
@@ -93,7 +93,7 @@ public final class Util {
                     return port <= 65535 && port >= 1 && addressValid ? new IPPortPair(address, port, true) : null;
                 } else {
                     boolean addressValid = (allowLoopback && NetworkUtil.isIP(input, true)) || NetworkUtil.isAssignableAddress(input, true);
-                    return addressValid ? new IPPortPair(input, -1, true) : null;
+                    return addressValid ? new IPPortPair(input, defaultPort, true) : null;
                 }
             } else {
                 return null;
@@ -107,7 +107,7 @@ public final class Util {
                     return port <= 65535 && port >= 1 && addressValid ? new IPPortPair(address, port, false) : null;
                 } else {
                     boolean addressValid = (allowLoopback && NetworkUtil.isIP(input, false)) || NetworkUtil.isAssignableAddress(input, false);
-                    return addressValid ? new IPPortPair(input, -1, false) : null;
+                    return addressValid ? new IPPortPair(input, defaultPort, false) : null;
                 }
             } else {
                 return null;
@@ -124,6 +124,7 @@ public final class Util {
                     String address = input.split("]")[0].replace("[", "");
                     return NetworkUtil.isAssignableAddress(address, true) ? new IPPortPair(address,  port <= 65535 && port >= 1 ? port : defPort, true) : null;
                 } else {
+                    System.out.println("Using default port: " + defPort);
                     return NetworkUtil.isAssignableAddress(input, true) ? new IPPortPair(input, defPort, true) : null;
                 }
             } else {
