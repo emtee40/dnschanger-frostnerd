@@ -2,6 +2,7 @@ package com.frostnerd.dnschanger.util;
 
 import android.content.Context;
 
+import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.utils.preferences.Preferences;
@@ -204,7 +205,7 @@ public class PreferencesAccessor {
         }
 
         public DNSEntry findMatchingDatabaseEntry(Context context){
-            return Util.getDBHelper(context).findMatchingDNSEntry(getServerAddress(context));
+            return DatabaseHelper.getInstance(context).findMatchingDNSEntry(getServerAddress(context));
         }
 
         public void saveDNSPair(Context context, IPPortPair pair){

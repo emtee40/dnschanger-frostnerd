@@ -25,7 +25,7 @@ public class DNSResolver {
 
 
     public DNSResolver(Context context) {
-        db = Util.getDBHelper(context);
+        db = DatabaseHelper.getInstance(context);
         ParsedEntity<DNSRule> ruleEntity = db.getSQLHandler(DNSRule.class);
         Column<DNSRule> targetColumn = ruleEntity.getTable().findColumn("target");
         Column<DNSRule> hostColumn = ruleEntity.getTable().findColumn("host");

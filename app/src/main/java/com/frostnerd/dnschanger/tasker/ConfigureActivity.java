@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
@@ -383,7 +384,7 @@ public class ConfigureActivity extends AppCompatActivity {
             Util.createShortcut(this, createPortPair(), ed_name.getText().toString());
             setResult(RESULT_OK);
             LogFactory.writeMessage(this, LOG_TAG, "Shortcut added to Launcher");
-            Util.getDBHelper(this).createShortcut(ed_name.getText().toString(),
+            DatabaseHelper.getInstance(this).createShortcut(ed_name.getText().toString(),
                     ipv4Enabled ? dns1 : null,
                     !TextUtils.isEmpty(dns2.getAddress()) && ipv4Enabled ? dns2 : null,
                     ipv6Enabled ? dns1V6 : null,

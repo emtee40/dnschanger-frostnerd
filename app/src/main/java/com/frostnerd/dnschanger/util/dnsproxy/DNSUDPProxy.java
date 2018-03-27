@@ -9,6 +9,7 @@ import android.system.Os;
 import android.system.OsConstants;
 import android.system.StructPollfd;
 
+import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.accessors.DNSResolver;
 import com.frostnerd.dnschanger.database.accessors.QueryLogger;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
@@ -114,7 +115,7 @@ public class DNSUDPProxy extends DNSProxy{
         }
         this.resolveLocalRules = resolveLocalRules;
         this.queryLogging = queryLogging;
-        if(queryLogging)queryLogger = new QueryLogger(Util.getDBHelper(context));
+        if(queryLogging)queryLogger = new QueryLogger(DatabaseHelper.getInstance(context));
     }
 
     @Override

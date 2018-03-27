@@ -52,9 +52,9 @@ public class RuleAdapter extends DatabaseAdapter<DNSRule, RuleAdapter.ViewHolder
                             @Override
                             public void creationFinished(@NonNull String host, @Nullable String target, @Nullable String targetV6, boolean ipv6, boolean wildcard, boolean editingMode) {
                                 if (target != null)
-                                    Util.getDBHelper(context).editDNSRule(host, ipv6, target);
+                                    DatabaseHelper.getInstance(context).editDNSRule(host, ipv6, target);
                                 else {
-                                    Util.getDBHelper(context).deleteDNSRule(host, ipv6);
+                                    DatabaseHelper.getInstance(context).deleteDNSRule(host, ipv6);
                                 }
                                 reloadData();
                             }

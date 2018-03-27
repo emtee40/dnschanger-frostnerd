@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.adapters.DatabaseAdapter;
@@ -42,7 +43,7 @@ public class QueryLogAdapter extends DatabaseAdapter<DNSQuery, QueryLogAdapter.V
     private LayoutInflater layoutInflater;
 
     public QueryLogAdapter(final @NonNull Context context, View progressView, final TextView rowCount) {
-        super(Util.getDBHelper(context), 10000);
+        super(DatabaseHelper.getInstance(context), 10000);
         this.layoutInflater = LayoutInflater.from(context);
         setOnRowLoaded(new OnRowLoaded<DNSQuery, ViewHolder>() {
             @Override
@@ -79,8 +80,8 @@ public class QueryLogAdapter extends DatabaseAdapter<DNSQuery, QueryLogAdapter.V
             formatterDate = new SimpleDateFormat("dd.MM");
             formatterDateYear = new SimpleDateFormat("dd.MM.yy");
         }
-        setOrderOption(new OrderOption(Util.getDBHelper(context).findColumn(DNSQuery.class, "time")).desc());
-        hostColumn = Util.getDBHelper(context).findColumn(DNSQuery.class, "host");
+        setOrderOption(new OrderOption(DatabaseHelper.getInstance(context).findColumn(DNSQuery.class, "time")).desc());
+        hostColumn = DatabaseHelper.getInstance(context).findColumn(DNSQuery.class, "host");
         reloadData();
     }
 

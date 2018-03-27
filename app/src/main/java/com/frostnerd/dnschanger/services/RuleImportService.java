@@ -15,6 +15,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import com.frostnerd.dnschanger.DNSChanger;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.PinActivity;
+import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSRule;
 import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
 import com.frostnerd.dnschanger.util.RuleImport;
@@ -111,18 +112,18 @@ public class RuleImportService extends Service {
         ContentValues values = new ContentValues(4);
         int i = 0, currentCount;
         long rowID, lastRowID;
-        String ruleTableName = Util.getDBHelper(this, false).getTableName(DNSRule.class),
-                columnHost = Util.getDBHelper(this, false).findColumn(DNSRule.class, "host").getColumnName(),
-                columnTarget = Util.getDBHelper(this, false).findColumn(DNSRule.class, "target").getColumnName(),
-                columnIPv6 = Util.getDBHelper(this, false).findColumn(DNSRule.class, "ipv6").getColumnName(),
-        columnWildcard = Util.getDBHelper(this, false).findColumn(DNSRule.class, "wildcard").getColumnName();
+        String ruleTableName = DatabaseHelper.getInstance(this).getTableName(DNSRule.class),
+                columnHost = DatabaseHelper.getInstance(this).findColumn(DNSRule.class, "host").getColumnName(),
+                columnTarget = DatabaseHelper.getInstance(this).findColumn(DNSRule.class, "target").getColumnName(),
+                columnIPv6 = DatabaseHelper.getInstance(this).findColumn(DNSRule.class, "ipv6").getColumnName(),
+        columnWildcard = DatabaseHelper.getInstance(this).findColumn(DNSRule.class, "wildcard").getColumnName();
         values.put(columnWildcard, "0");
         while(shouldContinue && configurations.size() != 0){
             Configuration configuration = configurations.removeFirst();
             determineNotificationUpdateCount(configuration.lineCount);
             updateNotification(configuration.lineCount);
             int validLines = 0, distinctEntries = 0;
-            currentDatabaseInstance = Util.getDBHelper(this, false).getWritableDatabase();
+            currentDatabaseInstance = DatabaseHelper.getInstance(this).getWritableDatabase();
             currentDatabaseInstance.beginTransaction();
             continueCurrent = true;
             for(RuleImport.ImportableFile file: configuration.fileList.files){
@@ -131,7 +132,7 @@ public class RuleImportService extends Service {
                 BufferedReader reader = new BufferedReader(new FileReader(file.getFile()));
                 RuleImport.LineParser parser = file.getFileType();
                 updateNotification(file.getFile());
-                rowID = Util.getDBHelper(this, false).getHighestRowID(DNSRule.class);
+                rowID = DatabaseHelper.getInstance(this).getHighestRowID(DNSRule.class);
                 lastRowID = rowID;
                 long currentRowID;
                 while (continueCurrent && shouldContinue && (line = reader.readLine()) != null) {
@@ -163,7 +164,7 @@ public class RuleImportService extends Service {
                     updateNotification(i, configuration.lineCount);
                 }
                 if(continueCurrent && shouldContinue && currentCount != 0 && rowID != lastRowID){
-                    Util.getDBHelper(this, false).insert(currentDatabaseInstance, new DNSRuleImport(file.getFile().getName(), System.currentTimeMillis(),
+                    DatabaseHelper.getInstance(this).insert(currentDatabaseInstance, new DNSRuleImport(file.getFile().getName(), System.currentTimeMillis(),
                             rowID,
                             lastRowID));
                 }

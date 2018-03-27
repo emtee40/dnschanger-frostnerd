@@ -37,6 +37,7 @@ import android.widget.TextView;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.adapters.RuleAdapter;
+import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.dialogs.NewRuleDialog;
 import com.frostnerd.dnschanger.services.RuleImportService;
 import com.frostnerd.dnschanger.util.ThemeHandler;
@@ -108,7 +109,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         FloatingActionButton fabNew = content.findViewById(R.id.fab_new);
         FloatingActionButton fabFilter = content.findViewById(R.id.fab_filter);
 
-        ruleAdapter = new RuleAdapter((MainActivity)getContext(), Util.getDBHelper(getContext()),
+        ruleAdapter = new RuleAdapter((MainActivity)getContext(), DatabaseHelper.getInstance(getContext()),
                 (TextView)content.findViewById(R.id.row_count), (ProgressBar)content.findViewById(R.id.progress));
         list.setLayoutManager(new LinearLayoutManager(getContext()));
         list.setAdapter(ruleAdapter);
@@ -160,9 +161,9 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
                     @Override
                     public void creationFinished(@NonNull String host, String target, @Nullable String targetV6, boolean ipv6, boolean wildcard, boolean editingMode) {
                         boolean both = targetV6 != null && !targetV6.equals("");
-                        Util.getDBHelper(getContext()).createDNSRule(host, target, !both && ipv6, wildcard);
+                        DatabaseHelper.getInstance(getContext()).createDNSRule(host, target, !both && ipv6, wildcard);
                         if (targetV6 != null && !targetV6.equals("")) {
-                            Util.getDBHelper(getContext()).createDNSRule(host, targetV6, true, wildcard);
+                            DatabaseHelper.getInstance(getContext()).createDNSRule(host, targetV6, true, wildcard);
                         }
                         if(wildcard == wildcardShown){
                             list.scrollTo(0, 0);

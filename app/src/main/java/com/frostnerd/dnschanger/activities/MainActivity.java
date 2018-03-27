@@ -37,6 +37,7 @@ import android.widget.TextView;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
 import com.frostnerd.dnschanger.dialogs.ExportSettingsDialog;
@@ -126,7 +127,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Util.getDBHelper(MainActivity.this);
+                DatabaseHelper.getInstance(MainActivity.this);
             }
         }).start();
         Util.updateAppShortcuts(this);

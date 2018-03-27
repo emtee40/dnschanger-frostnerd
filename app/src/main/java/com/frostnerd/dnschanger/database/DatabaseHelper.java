@@ -30,7 +30,6 @@ import java.util.Set;
 public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper {
     public static final String DATABASE_NAME = "data";
     public static final int DATABASE_VERSION = 3;
-    private Context context;
     public static final Set<Class<? extends Entity>> entities = new HashSet<Class<? extends Entity>>(){{
         add(DNSEntry.class);
         add(DNSQuery.class);
@@ -39,10 +38,15 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
         add(IPPortPair.class);
         add(Shortcut.class);
     }};
+    @Nullable
+    private static DatabaseHelper instance;
 
-    public DatabaseHelper(Context context) {
+    public static DatabaseHelper getInstance(Context context){
+        return instance == null ? instance = new DatabaseHelper(context) : instance;
+    }
+
+    private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, DATABASE_VERSION, entities);
-        this.context = context;
     }
 
     @Override
@@ -107,12 +111,8 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
 
     @Override
     public synchronized void close() {
-        context = null;
+        instance = null;
         super.close();
-    }
-
-    public Context getContext() {
-        return context;
     }
 
     public boolean dnsRuleExists(String host){
@@ -168,9 +168,8 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
     public DNSEntry findMatchingDNSEntry(String dnsServer){
         String address = "%" + dnsServer + "%";
         if(address.equals("%%"))return null;
-        ParsedEntity<DNSEntry> parsedEntity = Util.getDBHelper(context).getSQLHandler(DNSEntry.class);
-        return parsedEntity.selectFirstRow(Util.getDBHelper(context)
-                , false, WhereCondition.like(parsedEntity.getTable().findColumn("dns1"), address).nextOr(),
+        ParsedEntity<DNSEntry> parsedEntity = getSQLHandler(DNSEntry.class);
+        return parsedEntity.selectFirstRow(this, false, WhereCondition.like(parsedEntity.getTable().findColumn("dns1"), address).nextOr(),
                 WhereCondition.like(parsedEntity.getTable().findColumn("dns2"), address).nextOr(),
                 WhereCondition.like(parsedEntity.getTable().findColumn("dns1v6"), address).nextOr(),
                 WhereCondition.like(parsedEntity.getTable().findColumn("dns2v6"), address));

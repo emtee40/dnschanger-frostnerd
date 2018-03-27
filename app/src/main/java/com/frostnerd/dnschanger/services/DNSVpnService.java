@@ -18,6 +18,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.PinActivity;
+import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.threading.VPNRunnable;
@@ -123,7 +124,7 @@ public class DNSVpnService extends VpnService {
             DNSEntry matchingEntry;
             for(IPPortPair pair: upstreamServers){
                 if((ipv4Enabled && !pair.isIpv6()) || (ipv6Enabled && pair.isIpv6())){
-                    matchingEntry = Util.getDBHelper(this).findMatchingDNSEntry(pair.getAddress());
+                    matchingEntry = DatabaseHelper.getInstance(this).findMatchingDNSEntry(pair.getAddress());
                     contentText.append(pair.formatForTextfield(customPorts));
                     if(matchingEntry != null) contentText.append(" (").append(matchingEntry.getShortName()).append(")");
                     contentText.append("\n");
@@ -239,7 +240,7 @@ public class DNSVpnService extends VpnService {
                 stopThread();
             }
             Util.updateTiles(this);
-            Util.getDBHelper(this);
+            DatabaseHelper.getInstance(this);
         }else LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]", LogFactory.Tag.ERROR.toString()}, "Intent given is null. This isn't normal behavior");
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             Preferences.put(this, "setting_show_notification", true);

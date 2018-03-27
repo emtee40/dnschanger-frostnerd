@@ -19,6 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.util.RuleImport;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Util;
@@ -117,12 +118,12 @@ public class NewRuleDialog extends AlertDialog{
                                 listener.creationFinished(edHost.getText().toString(), edTarget.getText().toString(), null, ipv6.isChecked(), wildcard.isChecked(), true);
                                 dismiss();
                             }else{
-                                if(both.isChecked() && !Util.getDBHelper(getContext()).dnsRuleExists(edHost.getText().toString())){
+                                if(both.isChecked() && !DatabaseHelper.getInstance(getContext()).dnsRuleExists(edHost.getText().toString())){
                                     listener.creationFinished(edHost.getText().toString(),
                                             edTarget.getText().toString(), edTarget2.getText().toString(),
                                             ipv6.isChecked(), wildcard.isChecked(), false);
                                     dismiss();
-                                }else if(!Util.getDBHelper(getContext()).dnsRuleExists(edHost.getText().toString(), ipv6.isChecked())){
+                                }else if(!DatabaseHelper.getInstance(getContext()).dnsRuleExists(edHost.getText().toString(), ipv6.isChecked())){
                                     listener.creationFinished(edHost.getText().toString(),
                                             edTarget.getText().toString(), both.isChecked() ? edTarget2.getText().toString() : "",
                                             ipv6.isChecked(), wildcard.isChecked(), false);

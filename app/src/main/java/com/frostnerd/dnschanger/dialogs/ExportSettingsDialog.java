@@ -9,6 +9,7 @@ import android.support.v4.content.FileProvider;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.Shortcut;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Util;
@@ -36,7 +37,7 @@ public class ExportSettingsDialog extends AlertDialog {
     public ExportSettingsDialog(final Context context) {
         super(context, ThemeHandler.getDialogTheme(context));
         LogFactory.writeMessage(context, LOG_TAG, "Export directory dialog is now being shown");
-        if(Util.getDBHelper(context).getCount(Shortcut.class) == 0){
+        if(DatabaseHelper.getInstance(context).getCount(Shortcut.class) == 0){
             LogFactory.writeMessage(context, LOG_TAG, "User has no shortcuts. Not asking whether to export them.");
             dismiss();
             progressExport(context, false);
@@ -100,7 +101,7 @@ public class ExportSettingsDialog extends AlertDialog {
                     if(exportShortcuts){
                         LogFactory.writeMessage(context, LOG_TAG, "Exporting shortcuts aswell");
                         writer.write("\n");
-                        List<Shortcut> shortcuts = Util.getDBHelper(context).getAll(Shortcut.class);
+                        List<Shortcut> shortcuts = DatabaseHelper.getInstance(context).getAll(Shortcut.class);
                         for(Shortcut shortcut: shortcuts){
                             writer.write("'" + shortcut.toString() + "'\n");
                         }

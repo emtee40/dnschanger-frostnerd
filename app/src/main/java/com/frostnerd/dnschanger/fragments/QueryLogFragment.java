@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.adapters.QueryLogAdapter;
+import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.accessors.QueryLogger;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
 import com.frostnerd.dnschanger.util.Util;
@@ -73,7 +74,7 @@ public class QueryLogFragment extends Fragment implements SearchView.OnQueryText
             @Override
             public void run() {
                 if(queryLogAdapter == null)return;
-                queryLogAdapter.newQueryLogged(Util.getDBHelper(getContext()).getHighestRowID(DNSQuery.class));
+                queryLogAdapter.newQueryLogged(DatabaseHelper.getInstance(getContext()).getHighestRowID(DNSQuery.class));
                 if(!list.isComputingLayout()){
                     main.post(new Runnable() {
                         @Override

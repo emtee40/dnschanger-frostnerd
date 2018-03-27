@@ -67,7 +67,6 @@ public final class Util {
     public static final String BROADCAST_SERVICE_STATE_REQUEST = "com.frostnerd.dnschanger.VPN_STATE_CHANGE";
     public static final String BROADCAST_SHORTCUT_CREATED = "com.frostnerd.dnschanger.SHORTCUT_CREATED";
     private static final String LOG_TAG = "[Util]";
-    private static DatabaseHelper dbHelper;
     private static final Pattern ipv6WithPort = Pattern.compile("(\\[[0-9a-f:]+]:[0-9]{1,5})|([0-9a-f:]+)");
     private static final Pattern ipv4WithPort = Pattern.compile("([0-9]{1,3}\\.){3}[0-9]{1,3}(:[0-9]{1,5})?");
 
@@ -198,26 +197,9 @@ public final class Util {
         return Utils.isPackageInstalled(context, "net.dinglisch.android.taskerm");
     }
 
-    public static DatabaseHelper getDBHelper(Context context) {
-        return getDBHelper(context, true);
-    }
-
-    public static DatabaseHelper getDBHelper(Context context, boolean redoWithDifferentContextType){
-        if(dbHelper != null){
-            if(!redoWithDifferentContextType)return dbHelper;
-            if(context instanceof Service && !(dbHelper.getContext() instanceof Service)){ //Helper was create using the Activity but now the service is running
-                dbHelper.close();
-                return dbHelper = new DatabaseHelper(context);
-            }else if(dbHelper.getContext() instanceof Service && !isServiceRunning(dbHelper.getContext())){ //Helper was create by a service which is no longer running
-                dbHelper.close();
-                return dbHelper = new DatabaseHelper(context);
-            }else return dbHelper;
-        }else return dbHelper = new DatabaseHelper(context);
-    }
-
     public static synchronized void deleteDatabase(Context context) {
-        if(dbHelper != null)dbHelper.close();
-        dbHelper = null;
+        DatabaseHelper helper = DatabaseHelper.getInstance(context);
+        if(helper != null)helper.close();
         context.deleteDatabase("data");
         context.getDatabasePath("data.db").delete();
     }
