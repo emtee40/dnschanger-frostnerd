@@ -45,9 +45,9 @@ public class QueryLogFragment extends Fragment implements SearchView.OnQueryText
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View contentView = inflater.inflate(R.layout.fragment_query_log, container, false);
         list = contentView.findViewById(R.id.list);
-        layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new LinearLayoutManager(requireContext());
         list.setLayoutManager(layoutManager);
-        list.setAdapter(queryLogAdapter = new QueryLogAdapter(getContext(), contentView.findViewById(R.id.progress),
+        list.setAdapter(queryLogAdapter = new QueryLogAdapter(requireContext(), contentView.findViewById(R.id.progress),
                 (TextView)contentView.findViewById(R.id.row_count)));
         return contentView;
     }
@@ -74,7 +74,7 @@ public class QueryLogFragment extends Fragment implements SearchView.OnQueryText
             @Override
             public void run() {
                 if(queryLogAdapter == null)return;
-                queryLogAdapter.newQueryLogged(DatabaseHelper.getInstance(getContext()).getHighestRowID(DNSQuery.class));
+                queryLogAdapter.newQueryLogged(DatabaseHelper.getInstance(requireContext()).getHighestRowID(DNSQuery.class));
                 if(!list.isComputingLayout()){
                     main.post(new Runnable() {
                         @Override
@@ -101,17 +101,11 @@ public class QueryLogFragment extends Fragment implements SearchView.OnQueryText
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_rules, menu);
 
-        SearchManager searchManager = (SearchManager) getContext().getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) requireContext().getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(Util.getActivity(this).getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
         searchView.setOnQueryTextListener(this);
-    }
-
-    @Override
-    public Context getContext() {
-        Context context = super.getContext();
-        return context == null ? MainActivity.currentContext : context;
     }
 
     @Override

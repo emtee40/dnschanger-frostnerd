@@ -309,7 +309,7 @@ public final class Util {
         if(fragment.getActivity() == null){
             if(fragment.getContext() != null && fragment.getContext() instanceof FragmentActivity){
                 return (FragmentActivity)fragment.getContext();
-            }else return MainActivity.currentContext;
+            }else return null;
         }else return fragment.getActivity();
     }
 

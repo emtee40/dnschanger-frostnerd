@@ -51,7 +51,7 @@ public class CurrentNetworksFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View content = inflater.inflate(R.layout.fragment_current_networks, container, false);
-        ConnectivityManager mgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager mgr = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         DNSProperties dnsProperty;
         boolean vpnRunning = Util.isServiceThreadRunning();
         for(Network ntw: mgr.getAllNetworks()){
@@ -59,14 +59,14 @@ public class CurrentNetworksFragment extends Fragment {
             if(!vpnRunning || !dnsProperty.networkName.equals("tun0"))dnsProperties.add(dnsProperty);
         }
         final ListView list = content.findViewById(R.id.list);
-        final ArrayAdapter<DNSProperties> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, dnsProperties);
+        final ArrayAdapter<DNSProperties> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, dnsProperties);
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int index, long l) {
                 StringBuilder serverText = new StringBuilder();
                 final DNSProperties properties = dnsProperties.get(index);
-                boolean port = PreferencesAccessor.areCustomPortsEnabled(getContext());
+                boolean port = PreferencesAccessor.areCustomPortsEnabled(requireContext());
                 for(IPPortPair ipPortPair: properties.ipv4Servers){
                     serverText.append(ipPortPair.toString(port)).append("\n");
                 }
@@ -75,21 +75,21 @@ public class CurrentNetworksFragment extends Fragment {
                 }
                 String text = getString(R.string.text_dns_configuration).replace("[name]", properties.networkName);
                 text = text.replace("[servers]", serverText);
-                new AlertDialog.Builder(getContext(), ThemeHandler.getDialogTheme(getContext())).
+                new AlertDialog.Builder(requireContext(), ThemeHandler.getDialogTheme(requireContext())).
                         setMessage(text).setTitle(R.string.dialog_title_dns_configuration).setCancelable(true).
                         setPositiveButton(R.string.use_these_servers, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                boolean ipv4Enabled = PreferencesAccessor.isIPv4Enabled(getContext()),
-                                        ipv6Enabled = PreferencesAccessor.isIPv6Enabled(getContext());
+                                boolean ipv4Enabled = PreferencesAccessor.isIPv4Enabled(requireContext()),
+                                        ipv6Enabled = PreferencesAccessor.isIPv6Enabled(requireContext());
                                 if(ipv4Enabled && properties.ipv4Servers.size() == 0){
-                                    new AlertDialog.Builder(getContext(), ThemeHandler.getDialogTheme(getContext()))
-                                    .setMessage(getContext().getString(R.string.take_dns_configuration_missing_type).replace("[type]", "IPv4"))
+                                    new AlertDialog.Builder(requireContext(), ThemeHandler.getDialogTheme(requireContext()))
+                                    .setMessage(requireContext().getString(R.string.take_dns_configuration_missing_type).replace("[type]", "IPv4"))
                                     .setCancelable(true).setTitle(R.string.warning).setNeutralButton(R.string.close, null)
                                     .setPositiveButton(R.string.disable, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-                                            PreferencesAccessor.setIPv4Enabled(getContext(), false);
+                                            PreferencesAccessor.setIPv4Enabled(requireContext(), false);
                                             setDNSServersOf(properties);
                                         }
                                     }).setNegativeButton(R.string.ignore, new DialogInterface.OnClickListener() {
@@ -99,13 +99,13 @@ public class CurrentNetworksFragment extends Fragment {
                                         }
                                     }).show();
                                 }else if(ipv6Enabled && properties.ipv6Servers.size() == 0) {
-                                    new AlertDialog.Builder(getContext(), ThemeHandler.getDialogTheme(getContext()))
-                                            .setMessage(getContext().getString(R.string.take_dns_configuration_missing_type).replace("[type]", "IPv6"))
+                                    new AlertDialog.Builder(requireContext(), ThemeHandler.getDialogTheme(requireContext()))
+                                            .setMessage(requireContext().getString(R.string.take_dns_configuration_missing_type).replace("[type]", "IPv6"))
                                             .setCancelable(true).setTitle(R.string.warning).setNeutralButton(R.string.close, null)
                                             .setPositiveButton(R.string.disable, new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                                    PreferencesAccessor.setIPv6Enabled(getContext(), false);
+                                                    PreferencesAccessor.setIPv6Enabled(requireContext(), false);
                                                     setDNSServersOf(properties);
                                                 }
                                             }).setNegativeButton(R.string.ignore, new DialogInterface.OnClickListener() {
@@ -126,39 +126,33 @@ public class CurrentNetworksFragment extends Fragment {
 
 
     private void setDNSServersOf(DNSProperties properties){
-        boolean ipv4Enabled = PreferencesAccessor.isIPv4Enabled(getContext()),
-                ipv6Enabled = PreferencesAccessor.isIPv6Enabled(getContext());
+        boolean ipv4Enabled = PreferencesAccessor.isIPv4Enabled(requireContext()),
+                ipv6Enabled = PreferencesAccessor.isIPv6Enabled(requireContext());
         if(ipv6Enabled && properties.ipv6Servers.size() != 0){
             if(properties.ipv6Servers.size() >= 1){
-                PreferencesAccessor.Type.DNS1_V6.saveDNSPair(getContext(), properties.ipv6Servers.get(0));
+                PreferencesAccessor.Type.DNS1_V6.saveDNSPair(requireContext(), properties.ipv6Servers.get(0));
             }
             if(properties.ipv6Servers.size() >= 2){
-                PreferencesAccessor.Type.DNS2_V6.saveDNSPair(getContext(), properties.ipv6Servers.get(1));
-            }else PreferencesAccessor.Type.DNS2_V6.saveDNSPair(getContext(), IPPortPair.getEmptyPair());
-        }else if(ipv6Enabled) PreferencesAccessor.Type.DNS2_V6.saveDNSPair(getContext(), IPPortPair.getEmptyPair());
+                PreferencesAccessor.Type.DNS2_V6.saveDNSPair(requireContext(), properties.ipv6Servers.get(1));
+            }else PreferencesAccessor.Type.DNS2_V6.saveDNSPair(requireContext(), IPPortPair.getEmptyPair());
+        }else if(ipv6Enabled) PreferencesAccessor.Type.DNS2_V6.saveDNSPair(requireContext(), IPPortPair.getEmptyPair());
 
         if(ipv4Enabled && properties.ipv4Servers.size() != 0){
             if(properties.ipv4Servers.size() >= 1){
-                PreferencesAccessor.Type.DNS1.saveDNSPair(getContext(), properties.ipv4Servers.get(0));
+                PreferencesAccessor.Type.DNS1.saveDNSPair(requireContext(), properties.ipv4Servers.get(0));
             }
             if(properties.ipv4Servers.size() >= 2){
-                PreferencesAccessor.Type.DNS2.saveDNSPair(getContext(), properties.ipv4Servers.get(1));
-            }else PreferencesAccessor.Type.DNS2.saveDNSPair(getContext(), IPPortPair.getEmptyPair());
-        }else if(ipv4Enabled) PreferencesAccessor.Type.DNS2.saveDNSPair(getContext(), IPPortPair.getEmptyPair());
-        if(Util.isServiceRunning(getContext()))
-            getContext().startService(DNSVpnService.getUpdateServersIntent(getContext(), true, false));
-        Toast.makeText(getContext(), R.string.dns_configuration_taken, Toast.LENGTH_LONG).show();
+                PreferencesAccessor.Type.DNS2.saveDNSPair(requireContext(), properties.ipv4Servers.get(1));
+            }else PreferencesAccessor.Type.DNS2.saveDNSPair(requireContext(), IPPortPair.getEmptyPair());
+        }else if(ipv4Enabled) PreferencesAccessor.Type.DNS2.saveDNSPair(requireContext(), IPPortPair.getEmptyPair());
+        if(Util.isServiceRunning(requireContext()))
+            requireContext().startService(DNSVpnService.getUpdateServersIntent(requireContext(), true, false));
+        Toast.makeText(requireContext(), R.string.dns_configuration_taken, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public Context getContext() {
-        Context context = super.getContext();
-        return context == null ? MainActivity.currentContext : context;
     }
 
     private class DNSProperties{
