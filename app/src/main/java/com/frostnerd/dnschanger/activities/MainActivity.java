@@ -635,7 +635,6 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        System.out.println("PERMISSION RESULT; " + (requestCode == REQUEST_PERMISSION_EXPORT_SETTINGS) + "   " + grantResults[0]);
         if(requestCode == REQUEST_PERMISSION_EXPORT_SETTINGS && grantResults[0] == PackageManager.PERMISSION_GRANTED){
             new ExportSettingsDialog(this);
         }else if(requestCode == REQUEST_PERMISSION_IMPORT_SETTINGS && grantResults[0] == PackageManager.PERMISSION_GRANTED){

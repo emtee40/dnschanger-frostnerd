@@ -23,7 +23,6 @@ public class ConnectivityJobAPI21 extends JobService{
 
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
-        System.out.println("JOB STARTED");
         LogFactory.writeMessage(this, LOG_TAG, "Job created");
         handle = new NetworkCheckHandle(this, LOG_TAG);
         LogFactory.writeMessage(this, LOG_TAG, "Done with onStartJob");
@@ -32,7 +31,6 @@ public class ConnectivityJobAPI21 extends JobService{
 
     @Override
     public boolean onStopJob(JobParameters jobParameters) {
-        System.out.println("JOB STOPPED");
         LogFactory.writeMessage(this, LOG_TAG, "Job stopped");
         handle.stop();
         return true;

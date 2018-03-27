@@ -297,7 +297,6 @@ public final class Util {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LogFactory.writeMessage(context, LOG_TAG, "Using JobScheduler");
             if(isJobRunning(context, 0)){
-                System.out.println("ALREADY RUNNING!");
                 LogFactory.writeMessage(context, LOG_TAG, "Job is already running/scheduled, not doing anything");
                 return;
             }
