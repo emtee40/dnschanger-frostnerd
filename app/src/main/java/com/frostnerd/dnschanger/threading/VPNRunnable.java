@@ -160,7 +160,6 @@ public class VPNRunnable implements Runnable {
         }
         builder = null;
         tunnelInterface = null;
-        service = null;
         dnsProxy = null;
         builder = null;
     }
@@ -240,5 +239,6 @@ public class VPNRunnable implements Runnable {
         cleanup();
         vpnApps.clear();
         vpnApps = null;
+        service = null;
     }
 }
