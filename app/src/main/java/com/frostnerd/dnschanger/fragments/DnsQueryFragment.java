@@ -93,14 +93,14 @@ public class DnsQueryFragment extends Fragment {
             }
         });
         tcp = contentView.findViewById(R.id.query_tcp);
-        tcp.setChecked(PreferencesAccessor.sendDNSOverTCP(getContext()));
-        resultList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        infoText.setText(getString(R.string.query_destination_info).replace("[x]", getDefaultDNSServer().toString(PreferencesAccessor.areCustomPortsEnabled(getContext()))));
+        tcp.setChecked(PreferencesAccessor.sendDNSOverTCP(requireContext()));
+        resultList.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        infoText.setText(getString(R.string.query_destination_info).replace("[x]", getDefaultDNSServer().toString(PreferencesAccessor.areCustomPortsEnabled(requireContext()))));
         return contentView;
     }
 
     private IPPortPair getDefaultDNSServer(){
-        return PreferencesAccessor.isIPv4Enabled(getContext()) ? PreferencesAccessor.Type.DNS1.getPair(getContext()) : PreferencesAccessor.Type.DNS1_V6.getPair(getContext());
+        return PreferencesAccessor.isIPv4Enabled(requireContext()) ? PreferencesAccessor.Type.DNS1.getPair(requireContext()) : PreferencesAccessor.Type.DNS1_V6.getPair(requireContext());
     }
 
     private void runQuery(String queryText){
@@ -122,8 +122,8 @@ public class DnsQueryFragment extends Fragment {
                             authority = response.getSectionRRsets(2),
                             additional = response.getSectionRRsets(3);
                     if(answer == null)throw new IOException("RESULT NULL");
-                    if(getContext() != null && isAdded()){
-                        final QueryResultAdapter adapter = new QueryResultAdapter(getContext(), answer, authority, additional);
+                    if(requireContext() != null && isAdded()){
+                        final QueryResultAdapter adapter = new QueryResultAdapter(requireContext(), answer, authority, additional);
                         Util.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -133,7 +133,7 @@ public class DnsQueryFragment extends Fragment {
                         });
                     }
                 } catch (final IOException e) {
-                    if(getContext() != null && isAdded())
+                    if(requireContext() != null && isAdded())
                         Util.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -159,18 +159,12 @@ public class DnsQueryFragment extends Fragment {
 
     private void resetElements(){
         if(showingError){
-            infoText.setText(getString(R.string.query_destination_info).replace("[x]", getDefaultDNSServer().toString(PreferencesAccessor.areCustomPortsEnabled(getContext()))));
+            infoText.setText(getString(R.string.query_destination_info).replace("[x]", getDefaultDNSServer().toString(PreferencesAccessor.areCustomPortsEnabled(requireContext()))));
             showingError = false;
         }
     }
 
     private boolean isResolvable(String s){
         return NetworkUtil.isDomain(s) || (s != null && !s.equals("") && !s.contains("."));
-    }
-
-    @Override
-    public Context getContext() {
-        Context context = super.getContext();
-        return context == null ? MainActivity.currentContext : context;
     }
 }

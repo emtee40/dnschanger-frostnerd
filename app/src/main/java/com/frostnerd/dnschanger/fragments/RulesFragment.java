@@ -109,9 +109,9 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         FloatingActionButton fabNew = content.findViewById(R.id.fab_new);
         FloatingActionButton fabFilter = content.findViewById(R.id.fab_filter);
 
-        ruleAdapter = new RuleAdapter((MainActivity)getContext(), DatabaseHelper.getInstance(getContext()),
+        ruleAdapter = new RuleAdapter((MainActivity)requireContext(), DatabaseHelper.getInstance(requireContext()),
                 (TextView)content.findViewById(R.id.row_count), (ProgressBar)content.findViewById(R.id.progress));
-        list.setLayoutManager(new LinearLayoutManager(getContext()));
+        list.setLayoutManager(new LinearLayoutManager(requireContext()));
         list.setAdapter(ruleAdapter);
         list.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -126,8 +126,8 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
                 } else if (dy < 30) fabOpen.show();
             }
         });
-        ColorStateList stateList = ColorStateList.valueOf(ThemeHandler.getColor(getContext(), R.attr.inputElementColor, Color.WHITE));
-        final int textColor = ThemeHandler.getColor(getContext(), android.R.attr.textColor, Color.BLACK);
+        ColorStateList stateList = ColorStateList.valueOf(ThemeHandler.getColor(requireContext(), R.attr.inputElementColor, Color.WHITE));
+        final int textColor = ThemeHandler.getColor(requireContext(), android.R.attr.textColor, Color.BLACK);
         fabNew.setBackgroundTintList(stateList);
         fabOpen.setBackgroundTintList(stateList);
         fabSQL.setBackgroundTintList(stateList);
@@ -136,10 +136,10 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         fabSQL.setCompatElevation(4);
         fabNew.setCompatElevation(8);
         fabFilter.setCompatElevation(4);
-        fabOpen.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_settings), textColor));
-        fabNew.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_add), textColor));
-        fabSQL.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_chart), textColor));
-        fabFilter.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(getContext(), R.drawable.ic_filter), textColor));
+        fabOpen.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(requireContext(), R.drawable.ic_settings), textColor));
+        fabNew.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(requireContext(), R.drawable.ic_add), textColor));
+        fabSQL.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(requireContext(), R.drawable.ic_chart), textColor));
+        fabFilter.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(requireContext(), R.drawable.ic_filter), textColor));
 
         fabOpen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,13 +157,13 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         fabNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newRuleDialog = new NewRuleDialog((MainActivity)getContext(), new NewRuleDialog.CreationListener() {
+                newRuleDialog = new NewRuleDialog((MainActivity)requireContext(), new NewRuleDialog.CreationListener() {
                     @Override
                     public void creationFinished(@NonNull String host, String target, @Nullable String targetV6, boolean ipv6, boolean wildcard, boolean editingMode) {
                         boolean both = targetV6 != null && !targetV6.equals("");
-                        DatabaseHelper.getInstance(getContext()).createDNSRule(host, target, !both && ipv6, wildcard);
+                        DatabaseHelper.getInstance(requireContext()).createDNSRule(host, target, !both && ipv6, wildcard);
                         if (targetV6 != null && !targetV6.equals("")) {
-                            DatabaseHelper.getInstance(getContext()).createDNSRule(host, targetV6, true, wildcard);
+                            DatabaseHelper.getInstance(requireContext()).createDNSRule(host, targetV6, true, wildcard);
                         }
                         if(wildcard == wildcardShown){
                             list.scrollTo(0, 0);
@@ -180,7 +180,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
                 showFilterDialog();
             }
         });
-        int inputColor = ThemeHandler.getColor(getContext(), R.attr.inputElementColor, -1);
+        int inputColor = ThemeHandler.getColor(requireContext(), R.attr.inputElementColor, -1);
         content.findViewById(R.id.text2).setBackgroundColor(inputColor);
         content.findViewById(R.id.text).setBackgroundColor(inputColor);
         content.findViewById(R.id.text3).setBackgroundColor(inputColor);
@@ -209,7 +209,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         if (!ruleAdapter.hasFilter(RuleAdapter.ArgumentLessFilter.SHOW_WILDCARD))
             showWildcard.setChecked(false);
 
-        new AlertDialog.Builder(getContext()).setTitle(R.string.filter).setCancelable(false).setView(dialog).setNegativeButton(R.string.cancel, null).setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(requireContext()).setTitle(R.string.filter).setCancelable(false).setView(dialog).setNegativeButton(R.string.cancel, null).setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -278,13 +278,13 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
 
     @Override
     public void onPause() {
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(databaseUpdateReceiver);
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(databaseUpdateReceiver);
         super.onPause();
     }
 
     @Override
     public void onResume() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(databaseUpdateReceiver, new IntentFilter(RuleImportService.BROADCAST_EVENT_DATABASE_UPDATED));
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(databaseUpdateReceiver, new IntentFilter(RuleImportService.BROADCAST_EVENT_DATABASE_UPDATED));
         super.onResume();
     }
 
@@ -305,7 +305,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_rules, menu);
 
-        SearchManager searchManager = (SearchManager) getContext().getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) requireContext().getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(Util.getActivity(this).getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
@@ -325,12 +325,6 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
             return true;
         }
         return false;
-    }
-
-    @Override
-    public Context getContext() {
-        Context context = super.getContext();
-        return context == null ? MainActivity.currentContext : context;
     }
 
     public RuleAdapter getRuleAdapter() {

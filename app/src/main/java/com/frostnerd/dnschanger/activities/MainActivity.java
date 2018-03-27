@@ -104,7 +104,6 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
             snackbar.show();
         }
     };
-    public static MainActivity currentContext;
     private BroadcastReceiver importFinishedReceiver;
 
     @Override
@@ -123,7 +122,6 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
         textColor = ThemeHandler.resolveThemeAttribute(getTheme(), android.R.attr.textColor);
         navDrawableColor = ThemeHandler.resolveThemeAttribute(getTheme(), R.attr.navDrawableColor);
         super.onCreate(savedInstanceState);
-        currentContext = this;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -213,7 +211,6 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
         if(importFinishedReceiver != null)unregisterReceiver(importFinishedReceiver);
         unregisterReceiver(shortcutReceiver);
         super.onDestroy();
-        currentContext = null;
     }
 
     @Override
