@@ -30,6 +30,8 @@ public class IPPortPair extends MultitonEntity implements Serializable{
     }
 
     public IPPortPair(String ip, int port, boolean IPv6) {
+        if(!ip.equals("") && (port <= 0 || port > 0xFFFF))
+            throw new IllegalArgumentException("Invalid port: " + port + " (Address: " + ip + ")", new Throwable("The invalid port " + port + " was supplied"));
         this.ip = ip;
         this.port = port;
         this.ipv6 = IPv6;
