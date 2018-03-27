@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
+import android.system.OsConstants;
 
 import com.frostnerd.dnschanger.DNSChanger;
 import com.frostnerd.dnschanger.LogFactory;
@@ -162,8 +163,21 @@ public class VPNRunnable implements Runnable {
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Creating Tunnel interface");
         builder = service.createBuilder();
         builder.setSession("dnsChanger_frostnerd");
-        if(ipv4Enabled) builder = builder.addAddress(address, addresses.get(address));
-        if(ipv6Enabled) builder = builder.addAddress(NetworkUtil.randomLocalIPv6Address(),48);
+        if (advanced && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setBlocking(true);
+        }
+        if(ipv4Enabled){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder.allowFamily(OsConstants.AF_INET);
+            }
+            builder = builder.addAddress(address, addresses.get(address));
+        }
+        if(ipv6Enabled){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder.allowFamily(OsConstants.AF_INET6);
+            }
+            builder = builder.addAddress(NetworkUtil.randomLocalIPv6Address(),48);
+        }
         for(IPPortPair pair: upstreamServers){
             if((pair.isIpv6() && ipv6Enabled) || (!pair.isIpv6() && ipv4Enabled))
                 addDNSServer(pair.getAddress(), advanced, pair.isIpv6());
