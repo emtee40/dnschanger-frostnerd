@@ -34,8 +34,7 @@ import java.util.List;
 public class DefaultDNSDialog extends AlertDialog {
     private View lastLongClicked;
     private final OnProviderSelectedListener listener;
-    private List<DNSEntry> localEntries = new ArrayList<>();
-    private DefaultDNSAdapter adapter;
+    private List<DNSEntry> localEntries;
     private boolean removeButtonShown;
     private final RecyclerView list;
     private final List<DNSEntry> removal = new ArrayList<>();
@@ -59,7 +58,7 @@ public class DefaultDNSDialog extends AlertDialog {
         setView(layout);
         list = layout.findViewById(R.id.defaultDnsDialogList);
         list.setLayoutManager(new LinearLayoutManager(context));
-        list.setAdapter(adapter = new DefaultDNSAdapter());
+        list.setAdapter(new DefaultDNSAdapter());
         list.setHasFixedSize(true);
         setButton(BUTTON_NEGATIVE, context.getString(R.string.cancel), new OnClickListener() {
             @Override
@@ -88,7 +87,7 @@ public class DefaultDNSDialog extends AlertDialog {
                                             dns2, dns1V6, dns2V6, "", true));
                                     localEntries.clear();
                                     localEntries = DatabaseHelper.getInstance(context).getAll(DNSEntry.class);
-                                    list.setAdapter(adapter = new DefaultDNSAdapter());
+                                    list.setAdapter(new DefaultDNSAdapter());
                                 }
                             }).show();
                         } else {
@@ -98,7 +97,7 @@ public class DefaultDNSDialog extends AlertDialog {
                                     DatabaseHelper.getInstance(context).update(entry);
                                     localEntries.clear();
                                     localEntries = DatabaseHelper.getInstance(context).getAll(DNSEntry.class);
-                                    list.setAdapter(adapter = new DefaultDNSAdapter());
+                                    list.setAdapter(new DefaultDNSAdapter());
                                 }
                             }, removal.get(0)).show();
                             lastLongClicked.setSelected(false);
@@ -121,7 +120,7 @@ public class DefaultDNSDialog extends AlertDialog {
                             localEntries.remove(entry);
                         }
                         removal.clear();
-                        list.setAdapter(adapter = new DefaultDNSAdapter());
+                        list.setAdapter(new DefaultDNSAdapter());
                         getButton(BUTTON_POSITIVE).setText(R.string.add);
                     }
                 });
@@ -139,20 +138,21 @@ public class DefaultDNSDialog extends AlertDialog {
             private final View layout;
             private final int type;
 
-            public ViewHolder(View itemView, int type) {
+            ViewHolder(View itemView, int type) {
                 super(itemView);
                 this.layout = itemView;
                 this.type = type;
             }
         }
 
+        @NonNull
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(getLayoutInflater().inflate(viewType == 0 ? R.layout.row_text_cardview : R.layout.item_default_dns, parent, false), viewType);
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             if (holder.type == 0) {
                 ((TextView) holder.layout.findViewById(R.id.text)).setText(getContext().getString(R.string.default_dns_explain_delete));
             } else {
