@@ -11,7 +11,7 @@ import com.frostnerd.dnschanger.database.entities.DNSRule;
 import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.database.entities.Shortcut;
-import com.frostnerd.dnschanger.util.Util;
+import com.frostnerd.utils.database.MockedContext;
 import com.frostnerd.utils.database.orm.Entity;
 import com.frostnerd.utils.database.orm.parser.ParsedEntity;
 import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
@@ -40,13 +40,15 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
     }};
     @Nullable
     private static DatabaseHelper instance;
+    private MockedContext wrappedContext;
 
     public static DatabaseHelper getInstance(Context context){
-        return instance == null ? instance = new DatabaseHelper(context) : instance;
+        return instance == null ? instance = new DatabaseHelper(mock(context)) : instance;
     }
 
     private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, DATABASE_VERSION, entities);
+        wrappedContext = (MockedContext) context;
     }
 
     @Override
@@ -112,6 +114,8 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
     @Override
     public synchronized void close() {
         instance = null;
+        if(wrappedContext != null) wrappedContext.destroy(false);
+        wrappedContext = null;
         super.close();
     }
 
@@ -173,5 +177,11 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
                 WhereCondition.like(parsedEntity.getTable().findColumn("dns2"), address).nextOr(),
                 WhereCondition.like(parsedEntity.getTable().findColumn("dns1v6"), address).nextOr(),
                 WhereCondition.like(parsedEntity.getTable().findColumn("dns2v6"), address));
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        close();
+        super.finalize();
     }
 }
