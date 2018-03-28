@@ -1,8 +1,7 @@
-package com.frostnerd.dnschanger;
+package com.frostnerd.dnschanger.database;
 
 import android.test.suitebuilder.annotation.LargeTest;
 
-import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
 import com.frostnerd.dnschanger.database.entities.DNSRule;
@@ -58,7 +57,7 @@ public class DatabaseTest {
     public void setup() {
         timingLogger.addSplit("Started Test setup for test " + testName.getMethodName());
         timingLogger.disableGlobally();
-        helper = new DatabaseHelper(RuntimeEnvironment.application);
+        helper = DatabaseHelper.getInstance(RuntimeEnvironment.application);
         helper.getWritableDatabase();
         /*
             Any test specific setup here

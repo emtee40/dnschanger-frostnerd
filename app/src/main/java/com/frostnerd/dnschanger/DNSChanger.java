@@ -5,7 +5,6 @@ import android.app.Application;
 import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.util.ThemeHandler;
-import com.frostnerd.dnschanger.util.Util;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -59,7 +58,7 @@ public class DNSChanger extends Application {
     @Override
     public void onTerminate() {
         LogFactory.writeMessage(this, LOG_TAG, "Application terminated");
-        DatabaseHelper.getInstance(this).close();
+        if(DatabaseHelper.instanceActive()) DatabaseHelper.getInstance(this).close();
         LogFactory.terminate();
         super.onTerminate();
     }
