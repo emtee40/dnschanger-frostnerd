@@ -621,7 +621,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
                 return true;
             }
         });
-        return itemCreator.getDrawerItems();
+        return itemCreator.getDrawerItemsAndDestroy();
     }
 
     @Override
