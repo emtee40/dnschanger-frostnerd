@@ -72,15 +72,12 @@ public class MainFragment extends Fragment {
     private boolean vpnRunning, wasStartedWithTasker = false;
     private MaterialEditText met_dns1, met_dns2;
     public EditText dns1, dns2;
-    private boolean doStopVPN = true;
     private static final String LOG_TAG = "[MainActivity]";
     private TextView connectionText;
     private ImageView connectionImage;
     private View running_indicator;
     private boolean advancedMode;
     public boolean settingV6 = false;
-    private final int REQUEST_SETTINGS = 13;
-    private AlertDialog dialog2;
     private final BroadcastReceiver serviceStateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -308,11 +305,9 @@ public class MainFragment extends Fragment {
         }
         LocalBroadcastManager.getInstance(requireContext()).registerReceiver(serviceStateReceiver, new IntentFilter(Util.BROADCAST_SERVICE_STATUS_CHANGE));
         LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(new Intent(Util.BROADCAST_SERVICE_STATE_REQUEST));
-        doStopVPN = false;
         setEditTextState();
         ((AppCompatActivity)requireContext()).getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
         Util.getActivity(this).invalidateOptionsMenu();
-        doStopVPN = true;
         Util.getActivity(this).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
@@ -478,12 +473,10 @@ public class MainFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.menu_switch_ip_version){
-            doStopVPN = false;
             settingV6 = !settingV6;
             Util.getActivity(this).invalidateOptionsMenu();
             setEditTextState();
             ((AppCompatActivity)requireContext()).getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
-            doStopVPN = true;
         }
         return super.onOptionsItemSelected(item);
     }
