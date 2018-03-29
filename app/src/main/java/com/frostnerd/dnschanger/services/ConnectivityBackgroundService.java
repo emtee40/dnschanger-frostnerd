@@ -31,7 +31,7 @@ public class ConnectivityBackgroundService extends Service {
     public void onCreate() {
         super.onCreate();
         LogFactory.writeMessage(this, LOG_TAG, "Service created.");
-        handle = new NetworkCheckHandle(this, LOG_TAG);
+        handle = new NetworkCheckHandle(getApplicationContext() == null ? this : getApplicationContext(), LOG_TAG);
     }
 
     @Override

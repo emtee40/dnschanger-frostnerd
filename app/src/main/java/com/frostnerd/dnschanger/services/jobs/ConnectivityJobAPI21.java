@@ -24,7 +24,7 @@ public class ConnectivityJobAPI21 extends JobService{
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
         LogFactory.writeMessage(this, LOG_TAG, "Job created");
-        handle = new NetworkCheckHandle(this, LOG_TAG);
+        handle = new NetworkCheckHandle(getApplicationContext() == null ? this : getApplicationContext(), LOG_TAG);
         LogFactory.writeMessage(this, LOG_TAG, "Done with onStartJob");
         return true;
     }
