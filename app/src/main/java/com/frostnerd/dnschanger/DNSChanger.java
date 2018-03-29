@@ -55,14 +55,6 @@ public class DNSChanger extends Application {
         super.onTrimMemory(level);
     }
 
-    @Override
-    public void onTerminate() {
-        LogFactory.writeMessage(this, LOG_TAG, "Application terminated");
-        if(DatabaseHelper.instanceActive()) DatabaseHelper.getInstance(this).close();
-        LogFactory.terminate();
-        super.onTerminate();
-    }
-
     public Thread.UncaughtExceptionHandler getExceptionHandler() {
         return customHandler;
     }
