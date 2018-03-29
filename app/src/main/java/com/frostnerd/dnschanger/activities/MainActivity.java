@@ -122,12 +122,6 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
         textColor = ThemeHandler.resolveThemeAttribute(getTheme(), android.R.attr.textColor);
         navDrawableColor = ThemeHandler.resolveThemeAttribute(getTheme(), R.attr.navDrawableColor);
         super.onCreate(savedInstanceState);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                DatabaseHelper.getInstance(MainActivity.this);
-            }
-        }).start();
         Util.updateAppShortcuts(this);
         Util.runBackgroundConnectivityCheck(this);
         Preferences.put(this, "first_run", false);
@@ -677,7 +671,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
 
     @Override
     public StyleOptions getStyleOptions() {
-        return new StyleOptions(this).setListItemBackgroundColor(backgroundColor)
+        return new StyleOptions().setListItemBackgroundColor(backgroundColor)
                 .setSelectedListItemTextColor(textColor)
                 .setSelectedListItemColor(ThemeHandler.getColor(this, R.attr.inputElementColor, -1))
                 .setListItemTextColor(textColor)
