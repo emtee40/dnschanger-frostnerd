@@ -3,6 +3,7 @@ package com.frostnerd.dnschanger.services;
 import android.os.Message;
 import android.os.RemoteException;
 
+import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.utils.apis.DataExchangeService;
 import com.frostnerd.utils.apis.DataExchanger;
 import com.frostnerd.utils.apis.dataexchangers.PreferencesExchanger;
@@ -21,7 +22,7 @@ public class DataService extends DataExchangeService{
     public void handleMessage(Message message){
         if(message.replyTo != null){
             try {
-                DataExchanger.executeExchangersAndSendAnswers(this, message, message.replyTo, PreferencesExchanger.class);
+                DataExchanger.executeExchangersAndSendAnswers(Preferences.getInstance(this), message, message.replyTo, PreferencesExchanger.class);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

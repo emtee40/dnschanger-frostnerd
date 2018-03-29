@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.util.ThemeHandler;
-import com.frostnerd.utils.preferences.Preferences;
+import com.frostnerd.dnschanger.util.Preferences;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -45,7 +45,7 @@ public class NewFeaturesDialog extends AlertDialog {
             arr[i] = "- " + arr[i];
         }
         list.setAdapter(new ArrayAdapter<>(context, R.layout.item_new_feature, arr));
-        Preferences.put(context, "features_" + BuildConfig.VERSION_NAME.replace(".", "_"),true);
+        Preferences.getInstance(context).put( "features_" + BuildConfig.VERSION_NAME.replace(".", "_"),true);
     }
 
     private static int getStringArrayID(Context context){
@@ -54,6 +54,6 @@ public class NewFeaturesDialog extends AlertDialog {
     }
 
     public static boolean shouldShowDialog(Context context) {
-        return getStringArrayID(context) != 0 && !Preferences.getBoolean(context, "features_" + BuildConfig.VERSION_NAME.replace(".", "_"), false);
+        return getStringArrayID(context) != 0 && !Preferences.getInstance(context).getBoolean("features_" + BuildConfig.VERSION_NAME.replace(".", "_"), false);
     }
 }

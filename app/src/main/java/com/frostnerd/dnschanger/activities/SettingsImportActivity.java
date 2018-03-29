@@ -10,7 +10,8 @@ import android.support.annotation.Nullable;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.permissions.PermissionsUtil;
-import com.frostnerd.utils.preferences.Preferences;
+import com.frostnerd.dnschanger.util.Preferences;
+import com.frostnerd.utils.preferences.util.PreferenceHelper;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -77,7 +78,7 @@ public class SettingsImportActivity extends Activity {
                 else data.append(line);
             }
             LogFactory.writeMessage(c, LOG_TAG, "Data read: " + data);
-            Preferences.importFromStringAndPut(c, data.toString(), "<<>>");
+            PreferenceHelper.importFromStringAndPut(Preferences.getInstance(c), data.toString(), "<<>>");
             LogFactory.writeMessage(c, LOG_TAG, "Imported data and added to preferences.");
         } catch (Exception e) {
             LogFactory.writeStackTrace(c, LogFactory.Tag.ERROR, e);

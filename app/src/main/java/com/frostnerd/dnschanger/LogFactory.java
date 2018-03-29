@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
-import com.frostnerd.utils.preferences.Preferences;
+import com.frostnerd.dnschanger.util.Preferences;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -168,7 +168,7 @@ public class LogFactory {
         writeMessage(context, Tag.INFO, "Language: " + Locale.getDefault().getDisplayLanguage());
         writeMessage(context, Tag.INFO, "Device RAM: " + getTotalMemory());
         StringBuilder s = new StringBuilder();
-        Map<String,Object> prefs = Preferences.getAll(context, false);
+        Map<String,Object> prefs = Preferences.getInstance(context).getAll(false);
         for(String key: prefs.keySet())
             s.append(key).append("->").append(prefs.get(key)).append("; ");
         writeMessage(context, Tag.INFO, "Preferences: " + s);

@@ -9,7 +9,7 @@ import android.support.annotation.ColorInt;
 import android.util.TypedValue;
 
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.utils.preferences.Preferences;
+import com.frostnerd.dnschanger.util.Preferences;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -24,19 +24,19 @@ import com.frostnerd.utils.preferences.Preferences;
 public class ThemeHandler {
 
     public static void updateAppTheme(Context context, int theme) {
-        Preferences.put(context, "apptheme", theme);
+        Preferences.getInstance(context).put( "apptheme", theme);
     }
 
     public static void updateDialogTheme(Context context, int theme) {
-        Preferences.put(context, "dialogtheme", theme);
+        Preferences.getInstance(context).put( "dialogtheme", theme);
     }
 
     public static int getDialogTheme(Context context) {
-        return Preferences.getInteger(context, "dialogtheme", R.style.DialogTheme_Mono);
+        return Preferences.getInstance(context).getInteger("dialogtheme", R.style.DialogTheme_Mono);
     }
 
     public static int getAppTheme(Context context) {
-        return Preferences.getInteger(context, "apptheme", R.style.AppTheme_Mono);
+        return Preferences.getInstance(context).getInteger("apptheme", R.style.AppTheme_Mono);
     }
 
     @ColorInt

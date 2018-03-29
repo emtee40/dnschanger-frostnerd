@@ -33,7 +33,7 @@ import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.design.MaterialEditText;
-import com.frostnerd.utils.preferences.Preferences;
+import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.utils.textfilers.InputCharacterFilter;
 
 import java.util.ArrayList;
@@ -206,15 +206,16 @@ public class ConfigureActivity extends AppCompatActivity {
 
             }
         });
-        if(!creatingShortcut && Preferences.getBoolean(this, "setting_auto_wifi",false) || Preferences.getBoolean(this, "setting_auto_mobile",false)
-                || Preferences.getBoolean(this, "setting_start_boot", false) || Preferences.getBoolean(this, "setting_auto_disable",false)){
+        final Preferences preferences = Preferences.getInstance(this);
+        if(!creatingShortcut && preferences.getBoolean( "setting_auto_wifi",false) || preferences.getBoolean( "setting_auto_mobile",false)
+                || preferences.getBoolean( "setting_start_boot", false) || preferences.getBoolean( "setting_auto_disable",false)){
             new AlertDialog.Builder(this,ThemeHandler.getDialogTheme(this)).setTitle(R.string.warning).setMessage(creatingShortcut ? R.string.shortcut_conflict_text : R.string.tasker_automation_conflict_text).setCancelable(false).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Preferences.put(ConfigureActivity.this, "setting_auto_wifi", false);
-                    Preferences.put(ConfigureActivity.this, "setting_auto_mobile", false);
-                    Preferences.put(ConfigureActivity.this, "setting_start_boot", false);
-                    Preferences.put(ConfigureActivity.this, "setting_auto_disable", false);
+                    preferences.put("setting_auto_wifi", false);
+                    preferences.put( "setting_auto_mobile", false);
+                    preferences.put("setting_start_boot", false);
+                    preferences.put( "setting_auto_disable", false);
                 }
             }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                 @Override

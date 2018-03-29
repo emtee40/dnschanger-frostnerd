@@ -13,7 +13,7 @@ import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
-import com.frostnerd.utils.preferences.Preferences;
+import com.frostnerd.dnschanger.util.Preferences;
 
 import java.util.ArrayList;
 
@@ -47,7 +47,7 @@ public class ShortcutActivity extends AppCompatActivity {
         LogFactory.writeMessage(this, LOG_TAG, upstreamServers.toString());
         if(Util.isServiceRunning(this)){
             LogFactory.writeMessage(this, LOG_TAG, "Service is already running");
-            if(Preferences.getBoolean(this, "shortcut_click_again_disable",false)){
+            if(Preferences.getInstance(this).getBoolean( "shortcut_click_again_disable",false)){
                 LogFactory.writeMessage(this, LOG_TAG, "shortcut_click_again_disable is true. Checking if service was started via same shortcut");
                 LogFactory.writeMessage(this, LOG_TAG, "Binding to service");
                 bindService(DNSVpnService.getBinderIntent(this), new ServiceConnection() {

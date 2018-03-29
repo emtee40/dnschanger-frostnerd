@@ -50,7 +50,7 @@ import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.design.dialogs.LoadingDialog;
-import com.frostnerd.utils.preferences.Preferences;
+import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.utils.textfilers.InputCharacterFilter;
 
 import org.xbill.DNS.DClass;
@@ -92,7 +92,7 @@ public class MainFragment extends Fragment {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sp, String s) {
             if(s.equals("everything_disabled")){
-                boolean value = Preferences.getBoolean(requireContext(), "everything_disabled", false);
+                boolean value = Preferences.getInstance(requireContext()).getBoolean("everything_disabled", false);
                 startStopButton.setEnabled(!value);
                 startStopButton.setClickable(!value);
                 startStopButton.setAlpha(value ? 0.50f : 1f);
@@ -324,7 +324,7 @@ public class MainFragment extends Fragment {
         LogFactory.writeMessage(requireContext(), LOG_TAG, "Got OnActivityResult" ,data);
         if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
             if (!vpnRunning){
-                if(!Preferences.getBoolean(requireContext(), "44explained", false) && Build.VERSION.SDK_INT == 19){
+                if(!Preferences.getInstance(requireContext()).getBoolean("44explained", false) && Build.VERSION.SDK_INT == 19){
                     LogFactory.writeMessage(requireContext(), LOG_TAG, "Opening Dialog explaining that this might not work on Android 4.4");
                     new AlertDialog.Builder(requireContext(), ThemeHandler.getDialogTheme(requireContext())).setTitle(R.string.warning).setCancelable(false).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
@@ -337,7 +337,7 @@ public class MainFragment extends Fragment {
                 }else{
                     startVpn();
                 }
-                Preferences.getBoolean(requireContext(), "44explained", true);
+                Preferences.getInstance(requireContext()).getBoolean("44explained", true);
             }else{
                 if(wasStartedWithTasker){
                     LogFactory.writeMessage(requireContext(), LOG_TAG, "Opening dialog which warns that the app was started using Tasker");

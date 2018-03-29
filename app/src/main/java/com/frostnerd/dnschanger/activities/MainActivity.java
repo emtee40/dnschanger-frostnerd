@@ -63,7 +63,7 @@ import com.frostnerd.utils.design.material.navigationdrawer.StyleOptions;
 import com.frostnerd.utils.general.DesignUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.permissions.PermissionsUtil;
-import com.frostnerd.utils.preferences.Preferences;
+import com.frostnerd.dnschanger.util.Preferences;
 
 import java.io.File;
 import java.util.Arrays;
@@ -124,9 +124,10 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
         super.onCreate(savedInstanceState);
         Util.updateAppShortcuts(this);
         Util.runBackgroundConnectivityCheck(this);
-        Preferences.put(this, "first_run", false);
-        if(Preferences.getBoolean(this, "first_run", true)) Preferences.put(this, "excluded_apps", new ArraySet<>(Arrays.asList(getResources().getStringArray(R.array.default_blacklist))));
-        if(Preferences.getBoolean(this, "first_run", true) && Util.isTaskerInstalled(this)){
+        final Preferences preferences = Preferences.getInstance(this);
+        preferences.put( "first_run", false);
+        if(preferences.getBoolean( "first_run", true)) preferences.put( "excluded_apps", new ArraySet<>(Arrays.asList(getResources().getStringArray(R.array.default_blacklist))));
+        if(preferences.getBoolean( "first_run", true) && Util.isTaskerInstalled(this)){
             LogFactory.writeMessage(this, LOG_TAG, "Showing dialog telling the user that this app supports Tasker");
             new AlertDialog.Builder(this,ThemeHandler.getDialogTheme(this)).setTitle(R.string.tasker_support).setMessage(R.string.app_supports_tasker_text).setPositiveButton(R.string.got_it, new DialogInterface.OnClickListener() {
                 @Override
@@ -136,9 +137,9 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
             }).show();
             LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
         }
-        int random = new Random().nextInt(100), launches = Preferences.getInteger(this, "launches", 0);
-        Preferences.put(this, "launches", launches+1);
-        if(!Preferences.getBoolean(this, "first_run",true) && !Preferences.getBoolean(this, "rated",false) && random <= (launches >= 3 ? 8 : 3)){
+        int random = new Random().nextInt(100), launches = preferences.getInteger( "launches", 0);
+        preferences.put( "launches", launches+1);
+        if(!preferences.getBoolean( "first_run",true) && !preferences.getBoolean( "rated",false) && random <= (launches >= 3 ? 8 : 3)){
             LogFactory.writeMessage(this, LOG_TAG, "Showing dialog requesting rating");
             new AlertDialog.Builder(this,ThemeHandler.getDialogTheme(this)).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
@@ -148,7 +149,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
             }).setNegativeButton(R.string.dont_ask_again, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Preferences.put(MainActivity.this, "rated",true);
+                    preferences.put("rated",true);
                     dialog.cancel();
                 }
             }).setNeutralButton(R.string.not_now, new DialogInterface.OnClickListener() {
@@ -171,7 +172,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 text.setText(b ? R.string.cardview_text_disabled : R.string.cardview_text);
-                Preferences.put(MainActivity.this, "everything_disabled", b);
+                preferences.put("everything_disabled", b);
                 if(Util.isServiceRunning(MainActivity.this))startService(DNSVpnService.getDestroyIntent(MainActivity.this));
             }
         });
@@ -699,7 +700,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
             LogFactory.writeMessage(this, LOG_TAG, "Market not present. Opening with general ACTION_VIEW");
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
         }
-        Preferences.put(this, "rated",true);
+        Preferences.getInstance(this).put("rated",true);
     }
 
     public void openDefaultDNSDialog(View v) {

@@ -20,7 +20,7 @@ import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.widgets.BasicWidget;
 import com.frostnerd.utils.general.WidgetUtil;
-import com.frostnerd.utils.preferences.Preferences;
+import com.frostnerd.dnschanger.util.Preferences;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -88,10 +88,10 @@ public class NetworkCheckHandle {
         }else{
             LogFactory.writeMessage(accessContext(), LOG_TAG, "[OnCreate] Thread running: " + Util.isServiceThreadRunning());
             if (!Util.isServiceThreadRunning()) {
-                if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI && Preferences.getBoolean(accessContext(), "setting_auto_wifi", false)) {
+                if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI && Preferences.getInstance(accessContext()).getBoolean( "setting_auto_wifi", false)) {
                     LogFactory.writeMessage(accessContext(), LOG_TAG, "[OnCreate] Connected to WIFI and setting_auto_wifi is true. Starting Service..");
                     startService();
-                } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE && Preferences.getBoolean(accessContext(), "setting_auto_mobile", false)) {
+                } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE && Preferences.getInstance(accessContext()).getBoolean( "setting_auto_mobile", false)) {
                     LogFactory.writeMessage(accessContext(), LOG_TAG, "[OnCreate] Connected to MOBILE and setting_auto_mobile is true. Starting Service..");
                     startService();
                 }
@@ -142,9 +142,9 @@ public class NetworkCheckHandle {
         if(!running || PreferencesAccessor.isEverythingDisabled(accessContext()))return;
         boolean serviceRunning = Util.isServiceRunning(accessContext()),
                 serviceThreadRunning = Util.isServiceThreadRunning(),
-                autoWifi = Preferences.getBoolean(accessContext(), "setting_auto_wifi", false),
-                autoMobile = Preferences.getBoolean(accessContext(), "setting_auto_mobile", false),
-                disableNetChange = Preferences.getBoolean(accessContext(), "setting_disable_netchange", false);
+                autoWifi = Preferences.getInstance(accessContext()).getBoolean("setting_auto_wifi", false),
+                autoMobile = Preferences.getInstance(accessContext()).getBoolean("setting_auto_mobile", false),
+                disableNetChange = Preferences.getInstance(accessContext()).getBoolean( "setting_disable_netchange", false);
         LogFactory.writeMessage(accessContext(), LOG_TAG, "Connectivity changed. Connected: " + connected + ", type: " + connectionType);
         LogFactory.writeMessage(accessContext(), LOG_TAG, "Service running: " + serviceRunning + "; Thread running: " + serviceThreadRunning);
         Util.updateTiles(accessContext());
@@ -155,9 +155,9 @@ public class NetworkCheckHandle {
                 wasAnotherVPNRunning = true;
             return;
         }else {
-            if(connected && wasAnotherVPNRunning && Preferences.getBoolean(context, "start_service_when_available", false)){
+            if(connected && wasAnotherVPNRunning && Preferences.getInstance(accessContext()).getBoolean( "start_service_when_available", false)){
                 wasAnotherVPNRunning = false;
-                Preferences.put(context, "start_service_when_available", false);
+                Preferences.getInstance(accessContext()).put("start_service_when_available", false);
                 BackgroundVpnConfigureActivity.startBackgroundConfigure(context, true);
             }
         }
@@ -181,7 +181,7 @@ public class NetworkCheckHandle {
                 startService();
             }
         }else {
-            if (!(connectionType == ConnectionType.WIFI && autoWifi) && !(connectionType == ConnectionType.MOBILE && autoMobile) && Preferences.getBoolean(context, "setting_disable_netchange", false) && serviceRunning) {
+            if (!(connectionType == ConnectionType.WIFI && autoWifi) && !(connectionType == ConnectionType.MOBILE && autoMobile) && Preferences.getInstance(accessContext()).getBoolean( "setting_disable_netchange", false) && serviceRunning) {
                 LogFactory.writeMessage(accessContext(), LOG_TAG,
                         "Not on WIFI or MOBILE and setting_disable_netchange is true. Destroying DNSVPNService.",
                         i =DNSVpnService.getDestroyIntent(accessContext(), accessContext().getString(R.string.reason_stop_network_change)));

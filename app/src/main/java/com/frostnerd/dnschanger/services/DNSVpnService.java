@@ -29,7 +29,7 @@ import com.frostnerd.dnschanger.widgets.BasicWidget;
 import com.frostnerd.utils.general.IntentUtil;
 import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.general.WidgetUtil;
-import com.frostnerd.utils.preferences.Preferences;
+import com.frostnerd.dnschanger.util.Preferences;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -47,6 +47,7 @@ import java.util.Set;
 public class DNSVpnService extends VpnService {
     private static final String LOG_TAG = "[DNSVpnService]";
     private static boolean serviceRunning = false;
+    private Preferences preferences;
     private NotificationCompat.Builder notificationBuilder;
     private NotificationManager notificationManager;
     private final int NOTIFICATION_ID = 112;
@@ -69,7 +70,7 @@ public class DNSVpnService extends VpnService {
         if(variablesCleared)return;
         variablesCleared = true;
         LogFactory.writeMessage(this, LOG_TAG, "Clearing Variables");
-        if(stopReason != null && notificationManager != null && Preferences.getBoolean(this, "notification_on_stop", false)){
+        if(stopReason != null && notificationManager != null && preferences.getBoolean( "notification_on_stop", false)){
             String reasonText = getString(R.string.notification_reason_stopped).replace("[reason]", stopReason);
             notificationManager.notify(NOTIFICATION_ID+1, new NotificationCompat.Builder(this, Util.createNotificationChannel(this, false)).setAutoCancel(true)
                     .setOngoing(false).setContentText(reasonText).setStyle(new NotificationCompat.BigTextStyle().bigText(reasonText))
@@ -82,6 +83,7 @@ public class DNSVpnService extends VpnService {
         notificationManager.cancel(NOTIFICATION_ID);
         notificationManager = null;
         notificationBuilder = null;
+        preferences = null;
         stateRequestReceiver = null;
         LogFactory.writeMessage(this, LOG_TAG, "Variables cleared");
         if(stopSelf){
@@ -94,12 +96,12 @@ public class DNSVpnService extends VpnService {
         if(!serviceRunning)return;
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Updating notification");
         initNotification();
-        if(!Preferences.getBoolean(this, "setting_show_notification",true)){
+        if(!preferences.getBoolean( "setting_show_notification",true)){
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification is disabled");
             stopForeground(true);
             return;
         }else LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification is enabled");
-        boolean pinProtected = Preferences.getBoolean(this, "pin_notification",false),
+        boolean pinProtected = preferences.getBoolean( "pin_notification",false),
                 threadRunning = vpnRunnable != null && vpnRunnable.isThreadRunning();
         NotificationCompat.Action a1 = notificationBuilder.mActions.get(0);
         a1.icon = threadRunning ? R.drawable.ic_stat_pause : R.drawable.ic_stat_resume;
@@ -114,8 +116,8 @@ public class DNSVpnService extends VpnService {
         String excludedAppsText = (excludedApps.size() != 0 ? "\n" +
                 getString(excludedWhitelisted ? R.string.notification_x_whitelisted : R.string.notification_x_blacklisted)
                         .replace("[x]",""+excludedApps.size()) : "");
-        excludedAppsText = !Preferences.getBoolean(this, "app_whitelist_configured",false) ? "" : excludedAppsText;
-        if(Preferences.getBoolean(this, "show_used_dns",true)){
+        excludedAppsText = !preferences.getBoolean( "app_whitelist_configured",false) ? "" : excludedAppsText;
+        if(preferences.getBoolean( "show_used_dns",true)){
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Showing used DNS servers in notification");
             boolean ipv6Enabled = PreferencesAccessor.isIPv6Enabled(this),
                     ipv4Enabled = PreferencesAccessor.isIPv4Enabled(this),
@@ -151,7 +153,7 @@ public class DNSVpnService extends VpnService {
             notificationBuilder.setContentText(getString(threadRunning ? R.string.notification_running : R.string.notification_paused));
         }
         notificationBuilder.setUsesChronometer(threadRunning);
-        boolean hideIcon = Preferences.getBoolean(this, "hide_notification_icon", false);
+        boolean hideIcon = preferences.getBoolean("hide_notification_icon", false);
         notificationBuilder.setPriority(hideIcon ?
                 NotificationCompat.PRIORITY_MIN : NotificationCompat.PRIORITY_LOW);
         notificationBuilder.setChannelId(Util.createNotificationChannel(this, true));
@@ -218,8 +220,8 @@ public class DNSVpnService extends VpnService {
         if(variablesCleared && intent != null && !(IntentUtil.checkExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(),intent) ||
                 IntentUtil.checkExtra(VPNServiceArgument.COMMAND_STOP_VPN.getArgument(),intent)))return START_STICKY;
         serviceRunning = intent == null || !intent.getBooleanExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(), false);
-        excludedApps = Preferences.getStringSet(this, "excluded_apps");
-        excludedWhitelisted = Preferences.getBoolean(DNSVpnService.this, "excluded_whitelist", false);
+        excludedApps = preferences.getStringSet( "excluded_apps");
+        excludedWhitelisted = preferences.getBoolean("excluded_whitelist", false);
         if(intent!=null){
             WidgetUtil.updateAllWidgets(this, BasicWidget.class);
             fixedDNS = intent.hasExtra(VPNServiceArgument.FLAG_FIXED_DNS.getArgument()) ? intent.getBooleanExtra(VPNServiceArgument.FLAG_FIXED_DNS.getArgument(), false) : fixedDNS;
@@ -243,14 +245,14 @@ public class DNSVpnService extends VpnService {
             DatabaseHelper.getInstance(this);
         }else LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]", LogFactory.Tag.ERROR.toString()}, "Intent given is null. This isn't normal behavior");
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            Preferences.put(this, "setting_show_notification", true);
+            preferences.put( "setting_show_notification", true);
         }
         if(upstreamServers != null && upstreamServers.size() != 0)updateNotification();
         return START_REDELIVER_INTENT;
     }
 
     private void createAndRunThread(boolean runIfAlreadyRunning, boolean runIfNotRunning){
-        Preferences.put(this, "start_service_when_available", false);
+        preferences.put( "start_service_when_available", false);
         if(runIfNotRunning && (vpnRunnable == null || !vpnRunnable.isThreadRunning())){
             synchronized (DNSVpnService.this){
                 vpnRunnable = new VPNRunnable(this, upstreamServers, excludedApps, excludedWhitelisted);
@@ -303,6 +305,7 @@ public class DNSVpnService extends VpnService {
     public void onCreate() {
         super.onCreate();
         LogFactory.writeMessage(this, LOG_TAG, "Created Service");
+        preferences = Preferences.getInstance(this);
         initNotification();
         LocalBroadcastManager.getInstance(this).registerReceiver(stateRequestReceiver, new IntentFilter(Util.BROADCAST_SERVICE_STATE_REQUEST));
         Util.runBackgroundConnectivityCheck(this);
@@ -319,7 +322,7 @@ public class DNSVpnService extends VpnService {
     @Override
     public void onRevoke() {
         super.onRevoke();
-        Preferences.put(this, "start_service_when_available", true);
+        preferences.put( "start_service_when_available", true);
         stopService();
         Util.runBackgroundConnectivityCheck(this);
     }
