@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -678,6 +679,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
                 .setListItemTextColor(textColor)
                 .setListViewBackgroundColor(backgroundColor)
                 .setAlphaNormal(1.0f)
+                .setHeaderTextColor(textColor)
                 .setAlphaSelected(1.0f);
     }
 
