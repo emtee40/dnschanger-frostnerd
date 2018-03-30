@@ -676,7 +676,9 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
                 .setSelectedListItemTextColor(textColor)
                 .setSelectedListItemColor(ThemeHandler.getColor(this, R.attr.inputElementColor, -1))
                 .setListItemTextColor(textColor)
-                .setListViewBackgroundColor(backgroundColor);
+                .setListViewBackgroundColor(backgroundColor)
+                .setAlphaNormal(1.0f)
+                .setAlphaSelected(1.0f);
     }
 
     @Override
