@@ -44,8 +44,9 @@
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Name"
+                android:hint="@string/hint_dns_entry_name"
                 android:imeOptions="actionNext"
+                android:inputType="text"
                 android:maxLines="1"
                 android:nextFocusDown="@id/dns1"
                 android:nextFocusForward="@id/dns1"
@@ -77,13 +78,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:digits="0123456789."
-                    android:hint="DNS 1"
+                    android:hint="@string/hint_dns1"
                     android:imeOptions="actionNext"
                     android:inputType="numberDecimal"
                     android:nextFocusDown="@id/dns2"
                     android:nextFocusForward="@id/dns2"
                     android:nextFocusUp="@id/name"
-                    android:text="8.8.8.8"
+                    android:text="@string/default_dns1"
                     android:textColor="#FFF" />
             </com.frostnerd.utils.design.MaterialEditText>
 
@@ -102,21 +103,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:digits="0123456789."
-                    android:hint="DNS 2"
+                    android:hint="@string/hint_dns2"
                     android:imeOptions="actionDone"
                     android:inputType="numberDecimal"
                     android:nextFocusUp="@id/dns1"
-                    android:text="8.8.4.4"
+                    android:text="@string/default_dns2"
                     android:textColor="#FFF" />
             </com.frostnerd.utils.design.MaterialEditText>
 
-            <!-- TODO -->
             <LinearLayout
                 android:id="@+id/default_dns_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/inputElementColor"
                 android:clickable="true"
+                android:focusable="true"
                 android:onClick="openDefaultDNSDialog"
                 android:padding="10dp">
 
@@ -144,8 +145,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_marginTop="15dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
 
             <View
                 android:id="@+id/middle"
@@ -157,8 +158,10 @@
                 android:id="@+id/cancel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="3dp"
                 android:layout_marginRight="3dp"
                 android:layout_toLeftOf="@id/middle"
+                android:layout_toStartOf="@id/middle"
                 android:background="?attr/inputElementColor"
                 android:text="@string/cancel"
                 android:textColor="#FFF" />
@@ -168,6 +171,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
+                android:layout_marginStart="3dp"
+                android:layout_toEndOf="@id/middle"
                 android:layout_toRightOf="@id/middle"
                 android:background="?attr/inputElementColor"
                 android:text="@string/done"

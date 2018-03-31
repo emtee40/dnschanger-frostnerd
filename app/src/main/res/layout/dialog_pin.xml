@@ -45,6 +45,7 @@
             android:layout_height="wrap_content"
             android:cursorVisible="true"
             android:background="?attr/inputElementColor"
+            android:hint="@string/hint_pin"
             android:inputType="numberPassword"
             android:textColor="#FFF" />
     </com.frostnerd.utils.design.MaterialEditText>

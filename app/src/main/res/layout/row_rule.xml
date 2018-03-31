@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
+    android:focusable="true"
     android:longClickable="true"
     android:orientation="horizontal"
     android:paddingBottom="3dp"
@@ -14,6 +15,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.4"
+        android:paddingEnd="8dp"
         android:paddingRight="8dp" />
 
     <TextView

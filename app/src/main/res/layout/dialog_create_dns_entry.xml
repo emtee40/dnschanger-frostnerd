@@ -21,7 +21,7 @@
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name"
+            android:hint="@string/hint_dns_entry_name"
             android:imeOptions="actionNext"
             android:maxLines="1"
             android:nextFocusDown="@+id/dns1"
@@ -48,13 +48,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:digits="0123456789."
-            android:hint="DNS 1"
+            android:hint="@string/hint_dns1"
             android:imeOptions="actionNext"
             android:inputType="numberDecimal"
             android:nextFocusDown="@+id/dns2"
             android:nextFocusForward="@+id/dns2"
             android:nextFocusUp="@id/name"
-            android:text="8.8.8.8"
+            android:text="@string/default_dns1"
             android:textColor="#FFF" />
     </com.frostnerd.utils.design.MaterialEditText>
 
@@ -73,11 +73,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:digits="0123456789."
-            android:hint="DNS 2"
+            android:hint="@string/default_dns2"
             android:imeOptions="actionDone"
             android:inputType="numberDecimal"
             android:nextFocusUp="@id/dns1"
-            android:text="8.8.4.4"
+            android:text="@string/hint_dns2"
             android:textColor="#FFF" />
     </com.frostnerd.utils.design.MaterialEditText>
 

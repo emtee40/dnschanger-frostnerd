@@ -24,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/search_by_target"
+            android:inputType="text"
             android:textColor="#FFF"
             tools:ignore="HardcodedText" />
     </com.frostnerd.utils.design.MaterialEditText>
