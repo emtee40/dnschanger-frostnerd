@@ -27,7 +27,7 @@
             <ImageView
                 android:id="@+id/app_image"
                 android:layout_width="48dp"
-                android:contentDescription="App icon"
+                android:contentDescription="@string/content_description_app_entry_icon"
                 android:layout_height="48dp" />
 
             <TextView
