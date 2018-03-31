@@ -25,6 +25,7 @@
 -optimizations !code/allocation/variable
 -keep class android.support.v7.widget.SearchView { *; }
 -keep class com.frostnerd.dnschanger.util.GenericFileProvider
+-keep class com.frostnerd.dnschanger.activities.PinActivity
 -keep class android.support.v7.app.AppCompatViewInflater {
     *;
 }
