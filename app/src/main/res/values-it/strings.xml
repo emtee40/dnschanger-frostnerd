@@ -316,4 +316,8 @@
     <string name="notification_text_running_in_advanced_mode">Impostazioni avanzate abilitate.</string>
     <string name="show_system_apps">Mostra app di sistema</string>
     <string name="only_show_apps_with_internet">Mostra solo app con autorizzazione Internet</string>
+    <string name="hint_dns1">DNS 1</string>
+    <string name="hint_dns2">DNS 2</string>
+    <string name="hint_dns_entry_name">Nome</string>
+    <string name="hint_pin">PIN</string>
 </resources>

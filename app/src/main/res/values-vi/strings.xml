@@ -312,4 +312,8 @@
     <string name="notification_text_running_in_advanced_mode">Đã bật cài đặt nâng cao.</string>
     <string name="show_system_apps">Hiển thị ứng dụng hệ thống</string>
     <string name="only_show_apps_with_internet">Chỉ hiển thị ứng dụng với sự cho phép của internet</string>
+    <string name="hint_dns1">DNS 1</string>
+    <string name="hint_dns2">DNS 2</string>
+    <string name="hint_dns_entry_name">Tên</string>
+    <string name="hint_pin">GHIM</string>
 </resources>
