@@ -175,7 +175,7 @@ public class ConfigureActivity extends AppCompatActivity {
                 if(this.before.equalsIgnoreCase(s.toString()))return;
                 IPPortPair pair = Util.validateInput(s.toString(), settingV6, true,
                         PreferencesAccessor.isLoopbackAllowed(ConfigureActivity.this), 53);
-                if(pair == null || (pair.getPort() != 53 && !customPorts)){
+                if(pair == null || (pair != IPPortPair.getEmptyPair() && pair.getPort() != 53 && !customPorts)){
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 }else{
                     wasEdited = true;

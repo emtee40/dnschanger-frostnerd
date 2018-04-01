@@ -211,7 +211,7 @@ public class MainFragment extends Fragment {
                 if(this.before.equalsIgnoreCase(s.toString()))return;
                 IPPortPair pair = Util.validateInput(s.toString(), settingV6, true,
                         PreferencesAccessor.isLoopbackAllowed(requireContext()), 53);
-                if (pair == null || (pair.getPort() != 53 && !advancedMode)) {
+                if (pair == null || (pair != IPPortPair.getEmptyPair() && pair.getPort() != 53 && !advancedMode)) {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 } else {
                     met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
