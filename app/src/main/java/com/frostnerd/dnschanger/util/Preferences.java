@@ -3,6 +3,8 @@ package com.frostnerd.dnschanger.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.frostnerd.utils.preferences.restrictions.PreferencesRestrictionBuilder;
+
 /**
  * Copyright Daniel Wolf 2018
  * All rights reserved.
@@ -22,5 +24,13 @@ public class Preferences extends com.frostnerd.utils.preferences.Preferences {
 
     public Preferences(SharedPreferences sharedPreferences) {
         super(sharedPreferences);
+        setRestrictions();
+    }
+
+    private void setRestrictions(){
+        PreferencesRestrictionBuilder builder = new PreferencesRestrictionBuilder();
+        builder.key("dns1").shouldNotBe(null).always().shouldNotBe("").always().shouldBeLike(Util.ipv4WithPort).always().doneWithKey();
+        builder.key("dns1-v6").shouldNotBe(null).always().shouldNotBe("").always().shouldBeLike(Util.ipv6WithPort).always().doneWithKey();
+        restrict(builder.build());
     }
 }
