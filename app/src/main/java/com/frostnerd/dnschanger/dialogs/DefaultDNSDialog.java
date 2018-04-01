@@ -210,9 +210,9 @@ public class DefaultDNSDialog extends UtilityDialog {
                                 getButton(BUTTON_POSITIVE).setText(R.string.add);
                             }
                         } else {
-                            dismiss();
                             DNSEntry entry = (DNSEntry) v.getTag();
                             listener.onProviderSelected(entry.getName(), entry.getDns1(), entry.getDns2(), entry.getDns1V6(), entry.getDns2V6());
+                            dismiss();
                         }
                     }
                 });
