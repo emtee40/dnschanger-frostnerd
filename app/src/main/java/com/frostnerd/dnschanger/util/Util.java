@@ -123,7 +123,6 @@ public final class Util {
                     String address = input.split("]")[0].replace("[", "");
                     return NetworkUtil.isAssignableAddress(address, true) ? new IPPortPair(address,  port <= 65535 && port >= 1 ? port : defPort, true) : null;
                 } else {
-                    System.out.println("Using default port: " + defPort);
                     return NetworkUtil.isAssignableAddress(input, true) ? new IPPortPair(input, defPort, true) : null;
                 }
             } else {
