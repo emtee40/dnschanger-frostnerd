@@ -34,11 +34,11 @@ import java.util.List;
  */
 public class DefaultDNSDialog extends UtilityDialog {
     private View lastLongClicked;
-    private final OnProviderSelectedListener listener;
+    private OnProviderSelectedListener listener;
     private List<DNSEntry> localEntries;
     private boolean removeButtonShown;
-    private final RecyclerView list;
-    private final List<DNSEntry> removal = new ArrayList<>();
+    private RecyclerView list;
+    private List<DNSEntry> removal = new ArrayList<>();
 
     public DefaultDNSDialog(@NonNull final Context context, final int theme, @NonNull final OnProviderSelectedListener listener) {
         super(context, theme);
@@ -130,22 +130,34 @@ public class DefaultDNSDialog extends UtilityDialog {
         setButton(BUTTON_NEUTRAL, context.getString(R.string.remove), (OnClickListener) null);
     }
 
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        destroy();
+    }
+
+    @Override
+    public void cancel() {
+        super.cancel();
+        destroy();
+    }
+
+    private void destroy(){
+        lastLongClicked = null;
+        listener = null;
+        localEntries.clear();
+        localEntries = null;
+        list.setAdapter(null);
+        list = null;
+        removal.clear();
+        removal = null;
+    }
+
     public interface OnProviderSelectedListener {
         void onProviderSelected(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6);
     }
 
-    private class DefaultDNSAdapter extends RecyclerView.Adapter<DefaultDNSAdapter.ViewHolder> {
-        class ViewHolder extends RecyclerView.ViewHolder {
-            private final View layout;
-            private final int type;
-
-            ViewHolder(View itemView, int type) {
-                super(itemView);
-                this.layout = itemView;
-                this.type = type;
-            }
-        }
-
+    private class DefaultDNSAdapter extends RecyclerView.Adapter<ViewHolder> {
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -155,12 +167,12 @@ public class DefaultDNSDialog extends UtilityDialog {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             if (holder.type == 0) {
-                ((TextView) holder.layout.findViewById(R.id.text)).setText(getContext().getString(R.string.default_dns_explain_delete));
+                ((TextView) holder.itemView.findViewById(R.id.text)).setText(getContext().getString(R.string.default_dns_explain_delete));
             } else {
-                holder.layout.setSelected(false);
-                ((TextView) holder.layout.findViewById(R.id.text)).setText(localEntries.get(position).getName());
-                holder.layout.setLongClickable(true);
-                holder.layout.setOnLongClickListener(new View.OnLongClickListener() {
+                holder.itemView.setSelected(false);
+                ((TextView) holder.itemView.findViewById(R.id.text)).setText(localEntries.get(position).getName());
+                holder.itemView.setLongClickable(true);
+                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
                         lastLongClicked = v;
@@ -188,7 +200,7 @@ public class DefaultDNSDialog extends UtilityDialog {
                         return true;
                     }
                 });
-                holder.layout.setOnClickListener(new View.OnClickListener() {
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (removeButtonShown) {
@@ -216,10 +228,10 @@ public class DefaultDNSDialog extends UtilityDialog {
                     }
                 });
                 if (localEntries.get(position).getDescription().equals(""))
-                    holder.layout.findViewById(R.id.text2).setVisibility(View.GONE);
+                    holder.itemView.findViewById(R.id.text2).setVisibility(View.GONE);
                 else
-                    ((TextView) holder.layout.findViewById(R.id.text2)).setText(localEntries.get(position).getDescription());
-                holder.layout.setTag(localEntries.get(position));
+                    ((TextView) holder.itemView.findViewById(R.id.text2)).setText(localEntries.get(position).getDescription());
+                holder.itemView.setTag(localEntries.get(position));
             }
         }
 
@@ -236,6 +248,15 @@ public class DefaultDNSDialog extends UtilityDialog {
         @Override
         public int getItemCount() {
             return localEntries.size();
+        }
+    }
+
+    private static class ViewHolder extends RecyclerView.ViewHolder {
+        private final int type;
+
+        private ViewHolder(View itemView, int type) {
+            super(itemView);
+            this.type = type;
         }
     }
 }
