@@ -425,7 +425,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             ipv6EnableQuestionSnackbar.setAction(R.string.yes, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    scrollToPreference("debug_category"); //Scrolling to a lower preference because the wanted one would be at the bottom of the screen otherwise
+                    scrollToPreference("setting_ipv6_enabled"); //Scrolling to a lower preference because the wanted one would be at the bottom of the screen otherwise
                 }
             });
             ipv6EnableQuestionSnackbar.show();
