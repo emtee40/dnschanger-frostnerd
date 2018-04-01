@@ -82,7 +82,7 @@ public final class Util {
     }
 
     public static IPPortPair validateInput(String input, boolean iPv6, boolean allowEmpty, boolean allowLoopback, int defaultPort) {
-        if (allowEmpty && input.equals("")) return new IPPortPair("", -1, iPv6);
+        if (allowEmpty && input.equals("")) return IPPortPair.getEmptyPair();
         if (iPv6) {
             if (ipv6WithPort.matcher(input).matches()) {
                 if (input.contains("[")) {
@@ -115,7 +115,7 @@ public final class Util {
     }
 
     public static IPPortPair validateInput(String input, boolean iPv6, boolean allowEmpty, int defPort) {
-        if (allowEmpty && input.equals("")) return new IPPortPair("", -1, iPv6);
+        if (allowEmpty && input.equals("")) return IPPortPair.getEmptyPair();
         if (iPv6) {
             if (ipv6WithPort.matcher(input).matches()) {
                 if (input.contains("[")) {
