@@ -105,8 +105,8 @@ class RuleImportChooserDialog extends UtilityDialog {
                 for (RuleImport.ImportableFile file : files) {
                     if (file.getFileType() != null) importableFiles.add(file);
                 }
-                dialog.dismiss();
                 RuleImport.startImport(context, importableFiles, SQLiteDatabase.CONFLICT_IGNORE);
+                dialog.dismiss();
             }
         });
         setOnShowListener(new OnShowListener() {
