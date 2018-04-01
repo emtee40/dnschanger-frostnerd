@@ -22,8 +22,8 @@ import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.util.RuleImport;
 import com.frostnerd.dnschanger.util.ThemeHandler;
-import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.design.MaterialEditText;
+import com.frostnerd.utils.lifecyclehelper.UtilityDialog;
 import com.frostnerd.utils.networking.NetworkUtil;
 
 /**
@@ -35,7 +35,7 @@ import com.frostnerd.utils.networking.NetworkUtil;
  * <p>
  * development@frostnerd.com
  */
-public class NewRuleDialog extends AlertDialog{
+public class NewRuleDialog extends UtilityDialog {
     private MaterialEditText metHost;
     private final MaterialEditText metTarget;
     private final MaterialEditText metTarget2;

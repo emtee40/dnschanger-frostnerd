@@ -15,6 +15,7 @@ import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.design.dialogs.FileChooserDialog;
 import com.frostnerd.dnschanger.util.Preferences;
+import com.frostnerd.utils.lifecyclehelper.UtilityDialog;
 import com.frostnerd.utils.preferences.util.PreferenceHelper;
 
 import java.io.BufferedWriter;
@@ -32,7 +33,7 @@ import java.util.List;
  * <p>
  * development@frostnerd.com
  */
-public class ExportSettingsDialog extends AlertDialog {
+public class ExportSettingsDialog extends UtilityDialog {
     private static final String LOG_TAG = "[ExportSettingsDialog]";
 
     public ExportSettingsDialog(final Context context) {

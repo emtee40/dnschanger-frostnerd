@@ -1,6 +1,5 @@
 package com.frostnerd.dnschanger.dialogs;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
@@ -9,6 +8,7 @@ import android.widget.CheckBox;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.ThemeHandler;
+import com.frostnerd.utils.lifecyclehelper.UtilityDialog;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -19,7 +19,7 @@ import com.frostnerd.dnschanger.util.ThemeHandler;
  * <p>
  * development@frostnerd.com
  */
-public class VPNInfoDialog extends AlertDialog {
+public class VPNInfoDialog extends UtilityDialog {
 
     public VPNInfoDialog(Context context, final DialogInterface.OnClickListener click){
         super(context, ThemeHandler.getDialogTheme(context));

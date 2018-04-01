@@ -24,6 +24,7 @@ import com.frostnerd.dnschanger.util.RuleImport;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.design.dialogs.FileChooserDialog;
 import com.frostnerd.utils.design.dialogs.LoadingDialog;
+import com.frostnerd.utils.lifecyclehelper.UtilityDialog;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ import java.util.List;
  * <p>
  * development@frostnerd.com
  */
-class RuleImportChooserDialog extends AlertDialog {
+class RuleImportChooserDialog extends UtilityDialog {
     private final List<RuleImport.ImportableFile> files = new ArrayList<>();
     private final TextView fileLabel;
     private final TextView failFastInfo;

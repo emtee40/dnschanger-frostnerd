@@ -17,6 +17,7 @@ import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.utils.general.DesignUtil;
+import com.frostnerd.utils.lifecyclehelper.UtilityDialog;
 import com.frostnerd.utils.networking.NetworkUtil;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ import java.util.List;
  * <p>
  * development@frostnerd.com
  */
-public class DefaultDNSDialog extends AlertDialog {
+public class DefaultDNSDialog extends UtilityDialog {
     private View lastLongClicked;
     private final OnProviderSelectedListener listener;
     private List<DNSEntry> localEntries;

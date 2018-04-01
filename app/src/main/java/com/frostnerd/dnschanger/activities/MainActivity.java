@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -38,7 +37,6 @@ import android.widget.TextView;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
 import com.frostnerd.dnschanger.dialogs.ExportSettingsDialog;
@@ -207,6 +205,11 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
         if(importFinishedReceiver != null)unregisterReceiver(importFinishedReceiver);
         unregisterReceiver(shortcutReceiver);
         super.onDestroy();
+    }
+
+    @Override
+    protected Configuration getConfiguration() {
+        return Configuration.withDefaults().setDismissFragmentsOnPause(true);
     }
 
     @Override

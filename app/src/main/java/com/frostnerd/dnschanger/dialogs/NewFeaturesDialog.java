@@ -13,6 +13,7 @@ import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Preferences;
+import com.frostnerd.utils.lifecyclehelper.UtilityDialog;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -23,7 +24,7 @@ import com.frostnerd.dnschanger.util.Preferences;
  * <p>
  * development@frostnerd.com
  */
-public class NewFeaturesDialog extends AlertDialog {
+public class NewFeaturesDialog extends UtilityDialog {
 
     public NewFeaturesDialog(@NonNull Context context) {
         super(context, ThemeHandler.getDialogTheme(context));
