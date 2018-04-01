@@ -41,4 +41,9 @@ public class VPNInfoDialog extends UtilityDialog {
             show();
         }
     }
+
+    @Override
+    protected void destroy() {
+
+    }
 }

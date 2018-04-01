@@ -37,16 +37,16 @@ import com.frostnerd.utils.networking.NetworkUtil;
  */
 public class NewRuleDialog extends UtilityDialog {
     private MaterialEditText metHost;
-    private final MaterialEditText metTarget;
-    private final MaterialEditText metTarget2;
-    private final EditText edHost;
-    private final EditText edTarget;
-    private final EditText edTarget2;
-    private final CheckBox wildcard;
-    private final RadioButton ipv6;
-    private final RadioButton ipv4;
-    private final RadioButton both;
-    private final RadioGroup addressType;
+    private MaterialEditText metTarget;
+    private MaterialEditText metTarget2;
+    private EditText edHost;
+    private EditText edTarget;
+    private EditText edTarget2;
+    private CheckBox wildcard;
+    private RadioButton ipv6;
+    private RadioButton ipv4;
+    private RadioButton both;
+    private RadioGroup addressType;
     private Vibrator vibrator;
     private String v6Text = "::1", v4Text = "127.0.0.1";
     private boolean editingMode = false;
@@ -183,6 +183,17 @@ public class NewRuleDialog extends UtilityDialog {
                 metHost.setLabelText(context.getString(isChecked ? R.string.regular_expression : R.string.host));
             }
         });
+    }
+
+    @Override
+    protected void destroy() {
+        metHost = metTarget = metTarget2 = null;
+        edHost = edTarget = edTarget2 = null;
+        wildcard = null;
+        ipv4 = ipv6 = both = null;
+        addressType = null;
+        vibrator = null;
+        ruleImportChooserDialog = null;
     }
 
     private void setTargetValues(){

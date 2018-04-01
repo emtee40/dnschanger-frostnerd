@@ -43,16 +43,15 @@ import java.util.List;
  */
 class RuleImportChooserDialog extends UtilityDialog {
     private final List<RuleImport.ImportableFile> files = new ArrayList<>();
-    private final TextView fileLabel;
-    private final TextView failFastInfo;
+    private TextView fileLabel;
+    private TextView failFastInfo;
     private RuleImport.FileType type = RuleImport.FileType.DNSMASQ;
-    private RuleImport importProgressDialog;
-    private final CheckBox tryDetectType;
-    private final CheckBox failFast;
-    private final RadioButton dnsmasq;
-    private final RadioButton hosts;
-    private final RadioButton domains;
-    private final RadioButton adblock;
+    private CheckBox tryDetectType;
+    private CheckBox failFast;
+    private RadioButton dnsmasq;
+    private RadioButton hosts;
+    private RadioButton domains;
+    private RadioButton adblock;
 
     <T extends Activity &RuleImport.ImportStartedListener> RuleImportChooserDialog(@NonNull final T context) {
         super(context, ThemeHandler.getDialogTheme(context));
@@ -116,6 +115,14 @@ class RuleImportChooserDialog extends UtilityDialog {
                 getButton(BUTTON_POSITIVE).setVisibility(View.INVISIBLE);
             }
         });
+    }
+
+    @Override
+    protected void destroy() {
+        files.clear();
+        fileLabel = failFastInfo = null;
+        tryDetectType = failFast = null;
+        dnsmasq = hosts = domains = adblock = null;
     }
 
     private <T extends Activity &RuleImport.ImportStartedListener> void handlePermissionOrShowFileDialog(T context) {

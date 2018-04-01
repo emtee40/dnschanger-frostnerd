@@ -36,14 +36,13 @@ import java.util.regex.Pattern;
  * development@frostnerd.com
  */
 public class DNSCreationDialog extends UtilityDialog {
-    private IPPortPair dns1 = IPPortPair.wrap("8.8.8.8", 53), dns2 = IPPortPair.wrap("8.8.4.4", 53),
-            dns1V6 = IPPortPair.wrap("2001:4860:4860::8888", 53), dns2V6 = IPPortPair.wrap("2001:4860:4860::8844", 53);
+    private IPPortPair dns1, dns2 ,
+            dns1V6, dns2V6;
     private EditText ed_dns1, ed_dns2;
     private EditText ed_name;
     private MaterialEditText met_name, met_dns1, met_dns2;
     private Vibrator vibrator;
     private boolean settingV6;
-    private Mode mode;
     private final boolean customPorts;
     {
         customPorts = PreferencesAccessor.areCustomPortsEnabled(getContext());
@@ -62,7 +61,6 @@ public class DNSCreationDialog extends UtilityDialog {
                 listener.editingFinished(entry);
             }
         });
-        mode = Mode.EDITING;
         setTitle(R.string.edit);
         dns1 = entry.getDns1();
         dns2 = entry.getDns2();
@@ -73,9 +71,15 @@ public class DNSCreationDialog extends UtilityDialog {
         ed_name.setText(entry.getName());
     }
 
+    @Override
+    protected void destroy() {
+        ed_dns1 = ed_dns2 = ed_name = null;
+        met_dns1 = met_dns2 = met_name = null;
+        vibrator = null;
+    }
+
     public DNSCreationDialog(@NonNull final Context context, @NonNull final OnCreationFinishedListener listener) {
         super(context, ThemeHandler.getDialogTheme(context));
-        this.mode = Mode.CREATION;
         dns1 = PreferencesAccessor.Type.DNS1.getPair(context);
         dns2 = PreferencesAccessor.Type.DNS2.getPair(context);
         dns1V6 = PreferencesAccessor.Type.DNS1_V6.getPair(context);

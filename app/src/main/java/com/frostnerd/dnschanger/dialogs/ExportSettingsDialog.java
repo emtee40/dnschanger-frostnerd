@@ -72,6 +72,11 @@ public class ExportSettingsDialog extends UtilityDialog {
         }
     }
 
+    @Override
+    protected void destroy() {
+
+    }
+
     private void progressExport(final Context context, final boolean exportShortcuts){
         FileChooserDialog dialog = new FileChooserDialog(context, true, FileChooserDialog.SelectionMode.DIR, ThemeHandler.getDialogTheme(context));
         dialog.setShowFiles(false);

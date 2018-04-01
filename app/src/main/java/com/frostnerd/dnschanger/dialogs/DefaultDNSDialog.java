@@ -131,18 +131,7 @@ public class DefaultDNSDialog extends UtilityDialog {
     }
 
     @Override
-    public void dismiss() {
-        super.dismiss();
-        destroy();
-    }
-
-    @Override
-    public void cancel() {
-        super.cancel();
-        destroy();
-    }
-
-    private void destroy(){
+    protected void destroy(){
         lastLongClicked = null;
         listener = null;
         localEntries.clear();

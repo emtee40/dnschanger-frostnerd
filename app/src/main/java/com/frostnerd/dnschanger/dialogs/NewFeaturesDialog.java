@@ -49,6 +49,11 @@ public class NewFeaturesDialog extends UtilityDialog {
         Preferences.getInstance(context).put( "features_" + BuildConfig.VERSION_NAME.replace(".", "_"),true);
     }
 
+    @Override
+    protected void destroy() {
+
+    }
+
     private static int getStringArrayID(Context context){
         return context.getResources().getIdentifier("features_" + BuildConfig.VERSION_NAME.replace(".", "_"),
                 "array", context.getPackageName());
