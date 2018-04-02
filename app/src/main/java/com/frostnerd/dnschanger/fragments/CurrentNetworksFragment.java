@@ -7,6 +7,7 @@ import android.net.LinkProperties;
 import android.net.Network;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
@@ -21,7 +22,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
@@ -49,7 +49,7 @@ public class CurrentNetworksFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View content = inflater.inflate(R.layout.fragment_current_networks, container, false);
         ConnectivityManager mgr = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         DNSProperties dnsProperty;
@@ -124,23 +124,18 @@ public class CurrentNetworksFragment extends Fragment {
         return content;
     }
 
-
     private void setDNSServersOf(DNSProperties properties){
         boolean ipv4Enabled = PreferencesAccessor.isIPv4Enabled(requireContext()),
                 ipv6Enabled = PreferencesAccessor.isIPv6Enabled(requireContext());
         if(ipv6Enabled && properties.ipv6Servers.size() != 0){
-            if(properties.ipv6Servers.size() >= 1){
-                PreferencesAccessor.Type.DNS1_V6.saveDNSPair(requireContext(), properties.ipv6Servers.get(0));
-            }
+            PreferencesAccessor.Type.DNS1_V6.saveDNSPair(requireContext(), properties.ipv6Servers.get(0));
             if(properties.ipv6Servers.size() >= 2){
                 PreferencesAccessor.Type.DNS2_V6.saveDNSPair(requireContext(), properties.ipv6Servers.get(1));
             }else PreferencesAccessor.Type.DNS2_V6.saveDNSPair(requireContext(), IPPortPair.getEmptyPair());
         }else if(ipv6Enabled) PreferencesAccessor.Type.DNS2_V6.saveDNSPair(requireContext(), IPPortPair.getEmptyPair());
 
         if(ipv4Enabled && properties.ipv4Servers.size() != 0){
-            if(properties.ipv4Servers.size() >= 1){
-                PreferencesAccessor.Type.DNS1.saveDNSPair(requireContext(), properties.ipv4Servers.get(0));
-            }
+            PreferencesAccessor.Type.DNS1.saveDNSPair(requireContext(), properties.ipv4Servers.get(0));
             if(properties.ipv4Servers.size() >= 2){
                 PreferencesAccessor.Type.DNS2.saveDNSPair(requireContext(), properties.ipv4Servers.get(1));
             }else PreferencesAccessor.Type.DNS2.saveDNSPair(requireContext(), IPPortPair.getEmptyPair());
@@ -155,7 +150,7 @@ public class CurrentNetworksFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    private class DNSProperties{
+    private static class DNSProperties{
         private String networkName;
         private List<IPPortPair> ipv4Servers = new ArrayList<>(),
                 ipv6Servers = new ArrayList<>();
@@ -165,6 +160,7 @@ public class CurrentNetworksFragment extends Fragment {
             else networkName = properties.getInterfaceName();
 
             for(InetAddress address: properties.getDnsServers()){
+                if(address == null) continue;
                 if(address instanceof Inet6Address) ipv6Servers.add(IPPortPair.wrap(address.getHostAddress(), 53));
                 else if(address instanceof Inet4Address)ipv4Servers.add(IPPortPair.wrap(address.getHostAddress(), 53));
             }
