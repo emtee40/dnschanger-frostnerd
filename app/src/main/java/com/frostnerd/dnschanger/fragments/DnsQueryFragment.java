@@ -1,6 +1,5 @@
 package com.frostnerd.dnschanger.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,7 +18,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.adapters.QueryResultAdapter;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
@@ -122,7 +120,7 @@ public class DnsQueryFragment extends Fragment {
                             authority = response.getSectionRRsets(2),
                             additional = response.getSectionRRsets(3);
                     if(answer == null)throw new IOException("RESULT NULL");
-                    if(requireContext() != null && isAdded()){
+                    if(isAdded()){
                         final QueryResultAdapter adapter = new QueryResultAdapter(requireContext(), answer, authority, additional);
                         Util.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
                             @Override
@@ -133,7 +131,7 @@ public class DnsQueryFragment extends Fragment {
                         });
                     }
                 } catch (final IOException e) {
-                    if(requireContext() != null && isAdded())
+                    if(isAdded())
                         Util.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -165,6 +163,6 @@ public class DnsQueryFragment extends Fragment {
     }
 
     private boolean isResolvable(String s){
-        return NetworkUtil.isDomain(s) || (s != null && !s.equals("") && !s.contains("."));
+        return NetworkUtil.isDomain(s) || !s.equals("") && !s.contains(".");
     }
 }
