@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground"
     android:padding="16dp">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -29,8 +30,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/host"
                 android:imeOptions="actionNext"
-                android:nextFocusDown="@+id/target"
                 android:inputType="text"
+                android:nextFocusDown="@+id/target"
                 android:nextFocusForward="@+id/target"
                 android:text="example.com"
                 android:textColor="#FFF"
@@ -55,10 +56,10 @@
                 android:layout_height="wrap_content"
                 android:hint="IPv4"
                 android:imeOptions="actionNext"
+                android:inputType="text"
                 android:nextFocusDown="@+id/target2"
                 android:nextFocusForward="@+id/target2"
                 android:text="127.0.0.1"
-                android:inputType="text"
                 android:textColor="#FFF"
                 tools:ignore="HardcodedText" />
         </com.frostnerd.utils.design.MaterialEditText>

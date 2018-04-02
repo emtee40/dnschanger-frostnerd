@@ -80,6 +80,7 @@
         <item name="colorAccent">#B2EBF2</item>
         <item name="keyResource">@drawable/ic_action_key</item>
         <item name="android:windowBackground">@drawable/background_default</item>
+        <item name="android:background">@drawable/background_default</item>
 
         <item name="android:textColor">#EEEEEE</item>
         <item name="android:textColorPrimary">#EEEEEE</item>
@@ -103,6 +104,7 @@
         <item name="colorAccent">#E0E0E0</item>
         <item name="keyResource">@drawable/ic_key_mono</item>
         <item name="android:windowBackground">@drawable/background_mono</item>
+        <item name="android:background">@drawable/background_mono</item>
 
         <item name="android:textColor">#E0E0E0</item>
         <item name="android:textColorPrimary">#E0E0E0</item>
@@ -126,6 +128,7 @@
         <item name="colorAccent">#607D8B</item>
         <item name="keyResource">@drawable/ic_action_key</item>
         <item name="android:windowBackground">@drawable/background_dark</item>
+        <item name="android:background">@drawable/background_dark</item>
 
         <item name="android:textColor">#BDBDBD</item>
         <item name="android:textColorPrimary">#BDBDBD</item>
