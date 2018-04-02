@@ -6,12 +6,15 @@ They are unsigned.<br><br>
 This is the source code for my app DNS Changer, which can be found here: https://play.google.com/store/apps/details?id=com.frostnerd.dnschanger<br><br>
 
 
+As this project contains many hours of my (unpaid) work and I don't get any revenue from it at all I'm sure most of you understand that I don't want just anybody to come along and reuse my project in large parts, presenting it as their own work. That's why I impose the following restrictions:
 
-You may use parts of the source code but are NOT allowed to copy my source code as a whole or in greater parts.<br>
+You may use parts of the source code but are NOT allowed to copy my source code as a whole or in greater parts, unless given proper permission to do so.<br>
 You are NOT allowed to present parts of my work as your own without proper permission from me.<br>
 You are NOT allowed to use parts of this commercially without proper permission from me.<br>
 You MUST give attribution to me when using parts of my code (Visually to possible users and in the Sourcecode).<br>
 Additionally, when using part of my code please inform me that you want to use parts of my code AND inform your users that it contains work done by me.<br><br>
+
+If you want to use parts just wrint me a simple email. Any of these restrictions might be lifted then. I don't bite ;)
 
 
 Have a look at the wiki for this app: https://git.frostnerd.com/PublicAndroidApps/DnsChanger/wikis/home<br>
