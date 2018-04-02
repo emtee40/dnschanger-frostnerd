@@ -115,32 +115,7 @@ public final class Util {
     }
 
     public static IPPortPair validateInput(String input, boolean iPv6, boolean allowEmpty, int defPort) {
-        if (allowEmpty && input.equals("")) return IPPortPair.getEmptyPair();
-        if (iPv6) {
-            if (ipv6WithPort.matcher(input).matches()) {
-                if (input.contains("[")) {
-                    int port = Integer.parseInt(input.split("]")[1].split(":")[1]);
-                    String address = input.split("]")[0].replace("[", "");
-                    return NetworkUtil.isAssignableAddress(address, true) ? new IPPortPair(address,  port <= 65535 && port >= 1 ? port : defPort, true) : null;
-                } else {
-                    return NetworkUtil.isAssignableAddress(input, true) ? new IPPortPair(input, defPort, true) : null;
-                }
-            } else {
-                return null;
-            }
-        } else {
-            if (ipv4WithPort.matcher(input).matches()) {
-                if (input.contains(":")) {
-                    int port = Integer.parseInt(input.split(":")[1]);
-                    String address = input.split(":")[0];
-                    return NetworkUtil.isAssignableAddress(address, false) ? new IPPortPair(address, port <= 65535 && port >= 1 ? port : defPort, false) : null;
-                } else {
-                    return NetworkUtil.isAssignableAddress(input, false) ? new IPPortPair(input, defPort, false) : null;
-                }
-            } else {
-                return null;
-            }
-        }
+        return validateInput(input, iPv6, allowEmpty, false, defPort);
     }
 
     public static void updateAppShortcuts(Context context) {
