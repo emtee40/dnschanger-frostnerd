@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.VpnService;
 import android.os.Binder;
-import android.os.Build;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.RemoteException;
@@ -220,8 +219,10 @@ public class DNSVpnService extends VpnService {
         if(variablesCleared && intent != null && !(IntentUtil.checkExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(),intent) ||
                 IntentUtil.checkExtra(VPNServiceArgument.COMMAND_STOP_VPN.getArgument(),intent)))return START_STICKY;
         serviceRunning = intent == null || !intent.getBooleanExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(), false);
-        excludedApps = preferences.getStringSet( "excluded_apps");
-        excludedWhitelisted = preferences.getBoolean("excluded_whitelist", false);
+        if(preferences != null){
+            excludedApps = preferences.getStringSet( "excluded_apps");
+            excludedWhitelisted = preferences.getBoolean("excluded_whitelist", false);
+        }
         if(intent!=null){
             WidgetUtil.updateAllWidgets(this, BasicWidget.class);
             fixedDNS = intent.hasExtra(VPNServiceArgument.FLAG_FIXED_DNS.getArgument()) ? intent.getBooleanExtra(VPNServiceArgument.FLAG_FIXED_DNS.getArgument(), false) : fixedDNS;
@@ -242,7 +243,6 @@ public class DNSVpnService extends VpnService {
                 stopThread();
             }
             Util.updateTiles(this);
-            DatabaseHelper.getInstance(this);
         }else LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]", LogFactory.Tag.ERROR.toString()}, "Intent given is null. This isn't normal behavior");
         if(upstreamServers != null && upstreamServers.size() != 0)updateNotification();
         return START_REDELIVER_INTENT;
