@@ -29,3 +29,5 @@
 -keep class android.support.v7.app.AppCompatViewInflater {
     *;
 }
+-renamesourcefileattribute SourceFile
+-keepattributes SourceFile,LineNumberTable
