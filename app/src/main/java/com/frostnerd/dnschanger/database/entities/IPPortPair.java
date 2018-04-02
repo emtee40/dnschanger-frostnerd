@@ -24,6 +24,7 @@ public class IPPortPair extends MultitonEntity implements Serializable{
     @Getter(lazy = true, value = AccessLevel.PUBLIC) private static final IPPortPair emptyPair = createEmptyPair();
     @RowID
     private long id;
+    public static final IPPortPair INVALID = new IPPortPair("", Integer.MIN_VALUE, false);
 
     public IPPortPair(){
 
@@ -101,7 +102,7 @@ public class IPPortPair extends MultitonEntity implements Serializable{
     }
 
     private static IPPortPair createEmptyPair(){
-        return new IPPortPair("", -1, false);
+        return new IPPortPair("", Integer.MIN_VALUE + 1, false);
     }
 
     public boolean isEmpty(){
