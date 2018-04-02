@@ -20601,24 +20601,25 @@ com.frostnerd.dnschanger.database.entities.IPPortPair -> com.frostnerd.dnschange
     boolean ipv6 -> ipv6
     java.util.concurrent.atomic.AtomicReference emptyPair -> emptyPair
     long id -> id
-    28:30:void <init>() -> <init>
-    32:38:void <init>(java.lang.String,int,boolean) -> <init>
-    41:42:void <init>(com.frostnerd.dnschanger.database.entities.IPPortPair) -> <init>
-    45:45:com.frostnerd.dnschanger.database.entities.IPPortPair wrap(java.lang.String) -> a
-    49:49:com.frostnerd.dnschanger.database.entities.IPPortPair wrap(java.lang.String,int) -> a
-    53:53:java.lang.String getAddress() -> a
-    57:57:int getPort() -> b
-    61:61:boolean isIpv6() -> c
-    65:66:void setIp(java.lang.String) -> b
-    69:72:void setPort(int) -> a
-    80:80:java.lang.String toString() -> toString
-    84:86:java.lang.String toString(boolean) -> a
-    90:91:java.lang.String formatForTextfield(boolean) -> b
-    95:99:java.lang.String getFormattedWithPort() -> f
-    104:104:com.frostnerd.dnschanger.database.entities.IPPortPair createEmptyPair() -> g
-    108:108:boolean isEmpty() -> d
+    com.frostnerd.dnschanger.database.entities.IPPortPair INVALID -> a
+    29:31:void <init>() -> <init>
+    33:39:void <init>(java.lang.String,int,boolean) -> <init>
+    42:43:void <init>(com.frostnerd.dnschanger.database.entities.IPPortPair) -> <init>
+    46:46:com.frostnerd.dnschanger.database.entities.IPPortPair wrap(java.lang.String) -> a
+    50:50:com.frostnerd.dnschanger.database.entities.IPPortPair wrap(java.lang.String,int) -> a
+    54:54:java.lang.String getAddress() -> a
+    58:58:int getPort() -> b
+    62:62:boolean isIpv6() -> c
+    66:67:void setIp(java.lang.String) -> b
+    70:73:void setPort(int) -> a
+    81:81:java.lang.String toString() -> toString
+    85:87:java.lang.String toString(boolean) -> a
+    91:92:java.lang.String formatForTextfield(boolean) -> b
+    96:100:java.lang.String getFormattedWithPort() -> f
+    105:105:com.frostnerd.dnschanger.database.entities.IPPortPair createEmptyPair() -> g
+    109:109:boolean isEmpty() -> d
     24:24:com.frostnerd.dnschanger.database.entities.IPPortPair getEmptyPair() -> e
-    24:24:void <clinit>() -> <clinit>
+    24:27:void <clinit>() -> <clinit>
 com.frostnerd.dnschanger.database.entities.Shortcut -> com.frostnerd.dnschanger.database.entities.Shortcut:
     com.frostnerd.dnschanger.database.entities.IPPortPair dns1 -> dns1
     com.frostnerd.dnschanger.database.entities.IPPortPair dns1v6 -> dns1v6
@@ -21042,8 +21043,8 @@ com.frostnerd.dnschanger.fragments.CurrentNetworksFragment -> com.frostnerd.dnsc
     java.util.List dnsProperties -> a
     47:48:void <init>() -> <init>
     53:124:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup,android.os.Bundle) -> a
-    129:151:void setDNSServersOf(com.frostnerd.dnschanger.fragments.CurrentNetworksFragment$DNSProperties) -> a
-    155:156:void onCreate(android.os.Bundle) -> a
+    128:146:void setDNSServersOf(com.frostnerd.dnschanger.fragments.CurrentNetworksFragment$DNSProperties) -> a
+    150:151:void onCreate(android.os.Bundle) -> a
     47:47:java.util.List access$100(com.frostnerd.dnschanger.fragments.CurrentNetworksFragment) -> a
     47:47:void access$400(com.frostnerd.dnschanger.fragments.CurrentNetworksFragment,com.frostnerd.dnschanger.fragments.CurrentNetworksFragment$DNSProperties) -> a
 com.frostnerd.dnschanger.fragments.CurrentNetworksFragment$1 -> com.frostnerd.dnschanger.c.a$1:
@@ -21072,15 +21073,14 @@ com.frostnerd.dnschanger.fragments.CurrentNetworksFragment$1$1$4 -> com.frostner
     105:105:void <init>(com.frostnerd.dnschanger.fragments.CurrentNetworksFragment$1$1) -> <init>
     108:110:void onClick(android.content.DialogInterface,int) -> onClick
 com.frostnerd.dnschanger.fragments.CurrentNetworksFragment$DNSProperties -> com.frostnerd.dnschanger.c.a$a:
-    java.lang.String networkName -> b
-    java.util.List ipv4Servers -> c
-    java.util.List ipv6Servers -> d
-    com.frostnerd.dnschanger.fragments.CurrentNetworksFragment this$0 -> a
-    160:171:void <init>(com.frostnerd.dnschanger.fragments.CurrentNetworksFragment,android.net.LinkProperties) -> <init>
-    175:175:java.lang.String toString() -> toString
-    158:158:java.lang.String access$000(com.frostnerd.dnschanger.fragments.CurrentNetworksFragment$DNSProperties) -> a
-    158:158:java.util.List access$200(com.frostnerd.dnschanger.fragments.CurrentNetworksFragment$DNSProperties) -> b
-    158:158:java.util.List access$300(com.frostnerd.dnschanger.fragments.CurrentNetworksFragment$DNSProperties) -> c
+    java.lang.String networkName -> a
+    java.util.List ipv4Servers -> b
+    java.util.List ipv6Servers -> c
+    155:167:void <init>(android.net.LinkProperties) -> <init>
+    171:171:java.lang.String toString() -> toString
+    153:153:java.lang.String access$000(com.frostnerd.dnschanger.fragments.CurrentNetworksFragment$DNSProperties) -> a
+    153:153:java.util.List access$200(com.frostnerd.dnschanger.fragments.CurrentNetworksFragment$DNSProperties) -> b
+    153:153:java.util.List access$300(com.frostnerd.dnschanger.fragments.CurrentNetworksFragment$DNSProperties) -> c
 com.frostnerd.dnschanger.fragments.DnsQueryFragment -> com.frostnerd.dnschanger.c.b:
     com.frostnerd.utils.design.MaterialEditText metQuery -> a
     android.widget.EditText edQuery -> b
@@ -21090,49 +21090,49 @@ com.frostnerd.dnschanger.fragments.DnsQueryFragment -> com.frostnerd.dnschanger.
     android.widget.TextView infoText -> f
     android.widget.CheckBox tcp -> g
     boolean showingError -> h
-    48:48:void <init>() -> <init>
-    61:99:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup,android.os.Bundle) -> a
-    103:103:com.frostnerd.dnschanger.database.entities.IPPortPair getDefaultDNSServer() -> b
-    107:146:void runQuery(java.lang.String) -> b
-    149:158:void handleException(java.io.IOException) -> a
-    161:165:void resetElements() -> c
-    168:168:boolean isResolvable(java.lang.String) -> c
-    48:48:void access$000(com.frostnerd.dnschanger.fragments.DnsQueryFragment) -> a
-    48:48:boolean access$100(com.frostnerd.dnschanger.fragments.DnsQueryFragment,java.lang.String) -> a
-    48:48:com.frostnerd.utils.design.MaterialEditText access$200(com.frostnerd.dnschanger.fragments.DnsQueryFragment) -> b
-    48:48:android.widget.Button access$300(com.frostnerd.dnschanger.fragments.DnsQueryFragment) -> c
-    48:48:android.widget.EditText access$400(com.frostnerd.dnschanger.fragments.DnsQueryFragment) -> d
-    48:48:void access$500(com.frostnerd.dnschanger.fragments.DnsQueryFragment,java.lang.String) -> b
-    48:48:com.frostnerd.dnschanger.database.entities.IPPortPair access$600(com.frostnerd.dnschanger.fragments.DnsQueryFragment) -> e
-    48:48:android.widget.CheckBox access$700(com.frostnerd.dnschanger.fragments.DnsQueryFragment) -> f
-    48:48:android.support.v7.widget.RecyclerView access$800(com.frostnerd.dnschanger.fragments.DnsQueryFragment) -> g
-    48:48:android.widget.ProgressBar access$900(com.frostnerd.dnschanger.fragments.DnsQueryFragment) -> h
-    48:48:void access$1000(com.frostnerd.dnschanger.fragments.DnsQueryFragment,java.io.IOException) -> a
+    46:46:void <init>() -> <init>
+    59:97:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup,android.os.Bundle) -> a
+    101:101:com.frostnerd.dnschanger.database.entities.IPPortPair getDefaultDNSServer() -> b
+    105:144:void runQuery(java.lang.String) -> b
+    147:156:void handleException(java.io.IOException) -> a
+    159:163:void resetElements() -> c
+    166:166:boolean isResolvable(java.lang.String) -> c
+    46:46:void access$000(com.frostnerd.dnschanger.fragments.DnsQueryFragment) -> a
+    46:46:boolean access$100(com.frostnerd.dnschanger.fragments.DnsQueryFragment,java.lang.String) -> a
+    46:46:com.frostnerd.utils.design.MaterialEditText access$200(com.frostnerd.dnschanger.fragments.DnsQueryFragment) -> b
+    46:46:android.widget.Button access$300(com.frostnerd.dnschanger.fragments.DnsQueryFragment) -> c
+    46:46:android.widget.EditText access$400(com.frostnerd.dnschanger.fragments.DnsQueryFragment) -> d
+    46:46:void access$500(com.frostnerd.dnschanger.fragments.DnsQueryFragment,java.lang.String) -> b
+    46:46:com.frostnerd.dnschanger.database.entities.IPPortPair access$600(com.frostnerd.dnschanger.fragments.DnsQueryFragment) -> e
+    46:46:android.widget.CheckBox access$700(com.frostnerd.dnschanger.fragments.DnsQueryFragment) -> f
+    46:46:android.support.v7.widget.RecyclerView access$800(com.frostnerd.dnschanger.fragments.DnsQueryFragment) -> g
+    46:46:android.widget.ProgressBar access$900(com.frostnerd.dnschanger.fragments.DnsQueryFragment) -> h
+    46:46:void access$1000(com.frostnerd.dnschanger.fragments.DnsQueryFragment,java.io.IOException) -> a
 com.frostnerd.dnschanger.fragments.DnsQueryFragment$1 -> com.frostnerd.dnschanger.c.b$1:
     com.frostnerd.dnschanger.fragments.DnsQueryFragment this$0 -> a
-    68:68:void <init>(com.frostnerd.dnschanger.fragments.DnsQueryFragment) -> <init>
-    72:72:void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
-    76:81:void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
-    86:86:void afterTextChanged(android.text.Editable) -> afterTextChanged
+    66:66:void <init>(com.frostnerd.dnschanger.fragments.DnsQueryFragment) -> <init>
+    70:70:void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
+    74:79:void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
+    84:84:void afterTextChanged(android.text.Editable) -> afterTextChanged
 com.frostnerd.dnschanger.fragments.DnsQueryFragment$2 -> com.frostnerd.dnschanger.c.b$2:
     com.frostnerd.dnschanger.fragments.DnsQueryFragment this$0 -> a
-    88:88:void <init>(com.frostnerd.dnschanger.fragments.DnsQueryFragment) -> <init>
-    91:93:void onClick(android.view.View) -> onClick
+    86:86:void <init>(com.frostnerd.dnschanger.fragments.DnsQueryFragment) -> <init>
+    89:91:void onClick(android.view.View) -> onClick
 com.frostnerd.dnschanger.fragments.DnsQueryFragment$3 -> com.frostnerd.dnschanger.c.b$3:
     java.lang.String val$adjustedQuery -> a
     com.frostnerd.dnschanger.fragments.DnsQueryFragment this$0 -> b
-    109:109:void <init>(com.frostnerd.dnschanger.fragments.DnsQueryFragment,java.lang.String) -> <init>
-    113:144:void run() -> run
+    107:107:void <init>(com.frostnerd.dnschanger.fragments.DnsQueryFragment,java.lang.String) -> <init>
+    111:142:void run() -> run
 com.frostnerd.dnschanger.fragments.DnsQueryFragment$3$1 -> com.frostnerd.dnschanger.c.b$3$1:
     com.frostnerd.dnschanger.adapters.QueryResultAdapter val$adapter -> a
     com.frostnerd.dnschanger.fragments.DnsQueryFragment$3 this$1 -> b
-    127:127:void <init>(com.frostnerd.dnschanger.fragments.DnsQueryFragment$3,com.frostnerd.dnschanger.adapters.QueryResultAdapter) -> <init>
-    130:132:void run() -> run
+    125:125:void <init>(com.frostnerd.dnschanger.fragments.DnsQueryFragment$3,com.frostnerd.dnschanger.adapters.QueryResultAdapter) -> <init>
+    128:130:void run() -> run
 com.frostnerd.dnschanger.fragments.DnsQueryFragment$3$2 -> com.frostnerd.dnschanger.c.b$3$2:
     java.io.IOException val$e -> a
     com.frostnerd.dnschanger.fragments.DnsQueryFragment$3 this$1 -> b
-    137:137:void <init>(com.frostnerd.dnschanger.fragments.DnsQueryFragment$3,java.io.IOException) -> <init>
-    140:141:void run() -> run
+    135:135:void <init>(com.frostnerd.dnschanger.fragments.DnsQueryFragment$3,java.io.IOException) -> <init>
+    138:139:void run() -> run
 com.frostnerd.dnschanger.fragments.MainFragment -> com.frostnerd.dnschanger.c.c:
     android.widget.Button startStopButton -> d
     boolean vpnRunning -> e
@@ -21548,13 +21548,13 @@ com.frostnerd.dnschanger.services.DNSVpnService -> com.frostnerd.dnschanger.serv
     com.frostnerd.dnschanger.threading.VPNRunnable vpnRunnable -> n
     java.lang.Thread vpnThread -> o
     java.util.ArrayList upstreamServers -> p
-    47:56:void <init>() -> <init>
-    70:93:void clearVars(boolean) -> a
-    96:162:void updateNotification() -> a
-    165:180:void initNotification() -> h
-    184:190:void broadcastCurrentState() -> b
-    193:208:void updateDNSServers(android.content.Intent) -> a
-    219:248:int onStartCommand(android.content.Intent,int,int) -> onStartCommand
+    46:55:void <init>() -> <init>
+    69:92:void clearVars(boolean) -> a
+    95:161:void updateNotification() -> a
+    164:179:void initNotification() -> h
+    183:189:void broadcastCurrentState() -> b
+    192:207:void updateDNSServers(android.content.Intent) -> a
+    218:248:int onStartCommand(android.content.Intent,int,int) -> onStartCommand
     252:272:void createAndRunThread(boolean,boolean) -> a
     275:295:void stopThread() -> i
     298:299:void stopService() -> j
@@ -21579,18 +21579,18 @@ com.frostnerd.dnschanger.services.DNSVpnService -> com.frostnerd.dnschanger.serv
     414:414:boolean isDNSThreadRunning() -> e
     418:418:boolean isServiceRunning() -> f
     423:434:boolean addressesMatch(java.util.ArrayList) -> a
-    47:47:com.frostnerd.dnschanger.threading.VPNRunnable access$002(com.frostnerd.dnschanger.threading.VPNRunnable) -> a
-    47:47:java.util.ArrayList access$100(com.frostnerd.dnschanger.services.DNSVpnService) -> a
-    47:47:java.util.Set access$200(com.frostnerd.dnschanger.services.DNSVpnService) -> b
-    47:47:boolean access$300(com.frostnerd.dnschanger.services.DNSVpnService) -> c
-    47:47:java.lang.Thread access$402(com.frostnerd.dnschanger.services.DNSVpnService,java.lang.Thread) -> a
-    47:47:com.frostnerd.dnschanger.threading.VPNRunnable access$000() -> g
-    47:47:java.lang.Thread access$400(com.frostnerd.dnschanger.services.DNSVpnService) -> d
-    49:49:void <clinit>() -> <clinit>
+    46:46:com.frostnerd.dnschanger.threading.VPNRunnable access$002(com.frostnerd.dnschanger.threading.VPNRunnable) -> a
+    46:46:java.util.ArrayList access$100(com.frostnerd.dnschanger.services.DNSVpnService) -> a
+    46:46:java.util.Set access$200(com.frostnerd.dnschanger.services.DNSVpnService) -> b
+    46:46:boolean access$300(com.frostnerd.dnschanger.services.DNSVpnService) -> c
+    46:46:java.lang.Thread access$402(com.frostnerd.dnschanger.services.DNSVpnService,java.lang.Thread) -> a
+    46:46:com.frostnerd.dnschanger.threading.VPNRunnable access$000() -> g
+    46:46:java.lang.Thread access$400(com.frostnerd.dnschanger.services.DNSVpnService) -> d
+    48:48:void <clinit>() -> <clinit>
 com.frostnerd.dnschanger.services.DNSVpnService$1 -> com.frostnerd.dnschanger.services.DNSVpnService$1:
     com.frostnerd.dnschanger.services.DNSVpnService this$0 -> a
-    56:56:void <init>(com.frostnerd.dnschanger.services.DNSVpnService) -> <init>
-    59:61:void onReceive(android.content.Context,android.content.Intent) -> onReceive
+    55:55:void <init>(com.frostnerd.dnschanger.services.DNSVpnService) -> <init>
+    58:60:void onReceive(android.content.Context,android.content.Intent) -> onReceive
 com.frostnerd.dnschanger.services.DNSVpnService$2 -> com.frostnerd.dnschanger.services.DNSVpnService$2:
     com.frostnerd.dnschanger.services.DNSVpnService this$0 -> a
     260:260:void <init>(com.frostnerd.dnschanger.services.DNSVpnService) -> <init>
@@ -22036,20 +22036,20 @@ com.frostnerd.dnschanger.util.Util -> com.frostnerd.dnschanger.util.f:
     java.util.regex.Pattern ipv4WithPort -> b
     74:82:void updateTiles(android.content.Context) -> a
     85:112:com.frostnerd.dnschanger.database.entities.IPPortPair validateInput(java.lang.String,boolean,boolean,boolean,int) -> a
-    118:141:com.frostnerd.dnschanger.database.entities.IPPortPair validateInput(java.lang.String,boolean,boolean,int) -> a
-    147:185:void updateAppShortcuts(android.content.Context) -> b
-    188:188:boolean isServiceRunning(android.content.Context) -> c
-    192:192:boolean isServiceThreadRunning() -> a
-    196:196:boolean isTaskerInstalled(android.content.Context) -> d
-    200:204:void deleteDatabase(android.content.Context) -> e
-    217:245:void createShortcut(android.content.Context,java.util.ArrayList,java.lang.String) -> a
-    248:253:void startService(android.content.Context,android.content.Intent) -> a
-    256:274:java.lang.String createNotificationChannel(android.content.Context,boolean) -> a
-    279:292:void runBackgroundConnectivityCheck(android.content.Context) -> f
-    296:299:boolean isJobRunning(android.content.Context,int) -> a
-    308:312:android.support.v4.app.FragmentActivity getActivity(android.support.v4.app.Fragment) -> a
-    317:327:java.lang.String serializableToString(java.io.Serializable) -> a
-    332:340:java.io.Serializable serializableFromString(java.lang.String) -> a
+    118:118:com.frostnerd.dnschanger.database.entities.IPPortPair validateInput(java.lang.String,boolean,boolean,int) -> a
+    122:160:void updateAppShortcuts(android.content.Context) -> b
+    163:163:boolean isServiceRunning(android.content.Context) -> c
+    167:167:boolean isServiceThreadRunning() -> a
+    171:171:boolean isTaskerInstalled(android.content.Context) -> d
+    175:179:void deleteDatabase(android.content.Context) -> e
+    192:220:void createShortcut(android.content.Context,java.util.ArrayList,java.lang.String) -> a
+    223:228:void startService(android.content.Context,android.content.Intent) -> a
+    231:249:java.lang.String createNotificationChannel(android.content.Context,boolean) -> a
+    254:267:void runBackgroundConnectivityCheck(android.content.Context) -> f
+    271:274:boolean isJobRunning(android.content.Context,int) -> a
+    283:287:android.support.v4.app.FragmentActivity getActivity(android.support.v4.app.Fragment) -> a
+    292:302:java.lang.String serializableToString(java.io.Serializable) -> a
+    307:315:java.io.Serializable serializableFromString(java.lang.String) -> a
     70:71:void <clinit>() -> <clinit>
 com.frostnerd.dnschanger.util.Util$DNSQueryResultListener -> com.frostnerd.dnschanger.util.f$a:
     void onSuccess(org.xbill.DNS.Message) -> a
@@ -25119,30 +25119,30 @@ com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity ->
     android.os.AsyncTask asyncPopulation -> H
     42:59:void <init>() -> <init>
     65:74:void onCreate(android.os.Bundle) -> onCreate
-    78:106:void onDestroy() -> onDestroy
-    110:116:void onBackPressed() -> onBackPressed
-    120:134:boolean onKeyDown(int,android.view.KeyEvent) -> onKeyDown
-    138:138:android.widget.FrameLayout getContentFrame() -> s
-    142:209:void prepareAsyncPopulationTask() -> m
-    212:222:void setCardView(android.view.View) -> setCardView
-    225:253:void selectItem(int,android.os.Bundle,boolean) -> a
-    256:266:void addItemToBackStack(com.frostnerd.utils.design.material.navigationdrawer.DrawerItem,android.os.Bundle) -> b
-    269:273:void showNextFragment() -> r
-    280:282:void clickItem(com.frostnerd.utils.design.material.navigationdrawer.DrawerItem,android.os.Bundle) -> a
-    285:286:void setDrawerWidth() -> A
-    289:292:void resolveActionbarHeight() -> B
-    295:297:int getScreenWidth() -> C
-    301:305:void applyStyleOptions() -> D
-    309:310:void onPostCreate(android.os.Bundle) -> onPostCreate
-    314:320:void onConfigurationChanged(android.content.res.Configuration) -> onConfigurationChanged
-    324:324:boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
-    328:328:java.util.List getDrawerItems() -> t
-    332:332:android.support.v4.widget.DrawerLayout getDrawerLayout() -> u
-    336:336:android.support.v7.widget.RecyclerView getDrawerList() -> v
-    340:340:android.graphics.Typeface getRobotoMedium() -> w
-    348:348:com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerAdapter getListAdapter() -> x
-    352:353:void setNextFragment(android.support.v4.app.Fragment) -> b
-    357:357:android.support.v4.app.Fragment getCurrentFragment() -> y
+    78:108:void onDestroy() -> onDestroy
+    112:118:void onBackPressed() -> onBackPressed
+    122:136:boolean onKeyDown(int,android.view.KeyEvent) -> onKeyDown
+    140:140:android.widget.FrameLayout getContentFrame() -> s
+    144:211:void prepareAsyncPopulationTask() -> m
+    214:224:void setCardView(android.view.View) -> setCardView
+    227:255:void selectItem(int,android.os.Bundle,boolean) -> a
+    258:268:void addItemToBackStack(com.frostnerd.utils.design.material.navigationdrawer.DrawerItem,android.os.Bundle) -> b
+    271:275:void showNextFragment() -> r
+    282:284:void clickItem(com.frostnerd.utils.design.material.navigationdrawer.DrawerItem,android.os.Bundle) -> a
+    287:288:void setDrawerWidth() -> A
+    291:294:void resolveActionbarHeight() -> B
+    297:299:int getScreenWidth() -> C
+    303:307:void applyStyleOptions() -> D
+    311:312:void onPostCreate(android.os.Bundle) -> onPostCreate
+    316:322:void onConfigurationChanged(android.content.res.Configuration) -> onConfigurationChanged
+    326:326:boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
+    330:330:java.util.List getDrawerItems() -> t
+    334:334:android.support.v4.widget.DrawerLayout getDrawerLayout() -> u
+    338:338:android.support.v7.widget.RecyclerView getDrawerList() -> v
+    342:342:android.graphics.Typeface getRobotoMedium() -> w
+    350:350:com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerAdapter getListAdapter() -> x
+    354:355:void setNextFragment(android.support.v4.app.Fragment) -> b
+    359:359:android.support.v4.app.Fragment getCurrentFragment() -> y
     com.frostnerd.utils.design.material.navigationdrawer.DrawerItem getDefaultItem() -> l
     java.util.List createDrawerItems() -> n
     void onItemClicked(com.frostnerd.utils.design.material.navigationdrawer.DrawerItem,boolean) -> a
@@ -25177,47 +25177,47 @@ com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity ->
     42:42:com.frostnerd.utils.design.material.navigationdrawer.StyleOptions access$2200(com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity) -> p
 com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$1 -> com.frostnerd.utils.design.b.a.c$1:
     com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity this$0 -> a
-    142:142:void <init>(com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity) -> <init>
-    145:206:void run() -> run
+    144:144:void <init>(com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity) -> <init>
+    147:208:void run() -> run
 com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$1$1 -> com.frostnerd.utils.design.b.a.c$1$1:
     com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$1 this$1 -> a
-    148:148:void <init>(com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$1) -> <init>
-    151:162:void onGlobalLayout() -> onGlobalLayout
+    150:150:void <init>(com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$1) -> <init>
+    153:164:void onGlobalLayout() -> onGlobalLayout
 com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$1$2 -> com.frostnerd.utils.design.b.a.c$1$2:
     com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$1 this$1 -> a
-    164:164:void <init>(com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$1) -> <init>
-    167:171:void onDrawerClosed(android.view.View) -> b
-    175:176:void onDrawerOpened(android.view.View) -> a
-    180:186:void onDrawerSlide(android.view.View,float) -> a
+    166:166:void <init>(com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$1) -> <init>
+    169:173:void onDrawerClosed(android.view.View) -> b
+    177:178:void onDrawerOpened(android.view.View) -> a
+    182:188:void onDrawerSlide(android.view.View,float) -> a
 com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$1$3 -> com.frostnerd.utils.design.b.a.c$1$3:
     com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$1 this$1 -> a
-    188:188:void <init>(com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$1) -> <init>
-    191:192:void onClick(android.view.View,int) -> a
-    196:197:boolean onLongClick(android.view.View,int) -> b
+    190:190:void <init>(com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$1) -> <init>
+    193:194:void onClick(android.view.View,int) -> a
+    198:199:boolean onLongClick(android.view.View,int) -> b
 com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$AsyncPopulationTask -> com.frostnerd.utils.design.b.a.c$a:
     java.lang.Runnable postExecuteCallback -> a
-    413:415:void <init>(java.lang.Runnable) -> <init>
-    419:447:java.lang.Void doInBackground(com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity[]) -> a
-    452:454:void onCancelled() -> onCancelled
-    458:460:void onCancelled(java.lang.Void) -> a
-    464:469:void onPostExecute(java.lang.Void) -> b
-    410:410:void onCancelled(java.lang.Object) -> onCancelled
-    410:410:void onPostExecute(java.lang.Object) -> onPostExecute
-    410:410:java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
+    415:417:void <init>(java.lang.Runnable) -> <init>
+    421:449:java.lang.Void doInBackground(com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity[]) -> a
+    454:456:void onCancelled() -> onCancelled
+    460:462:void onCancelled(java.lang.Void) -> a
+    466:471:void onPostExecute(java.lang.Void) -> b
+    412:412:void onCancelled(java.lang.Object) -> onCancelled
+    412:412:void onPostExecute(java.lang.Object) -> onPostExecute
+    412:412:java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
 com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$AsyncPopulationTask$1 -> com.frostnerd.utils.design.b.a.c$a$1:
     com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity val$activity -> a
     com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$AsyncPopulationTask this$0 -> b
-    428:428:void <init>(com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$AsyncPopulationTask,com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity) -> <init>
-    431:436:void onLayoutReady() -> a
+    430:430:void <init>(com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$AsyncPopulationTask,com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity) -> <init>
+    433:438:void onLayoutReady() -> a
 com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$ItemBackState -> com.frostnerd.utils.design.b.a.c$b:
     java.lang.ref.WeakReference drawerItem -> a
     android.os.Bundle arguments -> b
-    404:407:void <init>(com.frostnerd.utils.design.material.navigationdrawer.DrawerItem,android.os.Bundle) -> <init>
-    400:400:java.lang.ref.WeakReference access$000(com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$ItemBackState) -> a
-    400:400:android.os.Bundle access$100(com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$ItemBackState) -> b
+    406:409:void <init>(com.frostnerd.utils.design.material.navigationdrawer.DrawerItem,android.os.Bundle) -> <init>
+    402:402:java.lang.ref.WeakReference access$000(com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$ItemBackState) -> a
+    402:402:android.os.Bundle access$100(com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$ItemBackState) -> b
 com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$LoadingFragment -> com.frostnerd.utils.design.b.a.c$c:
-    388:388:void <init>() -> <init>
-    392:392:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup,android.os.Bundle) -> a
+    390:390:void <init>() -> <init>
+    394:394:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup,android.os.Bundle) -> a
 com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity$RecyclerViewReadyCallback -> com.frostnerd.utils.design.b.a.c$d:
     void onLayoutReady() -> a
 com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerAdapter -> com.frostnerd.utils.design.b.a.d:
@@ -25379,40 +25379,45 @@ com.frostnerd.utils.lifecyclehelper.UtilityDialog -> com.frostnerd.utils.d.b:
     boolean closesWithLifecycle -> a
     boolean destroyed -> b
     boolean detached -> c
-    20:26:void <init>(android.content.Context) -> <init>
-    20:36:void <init>(android.content.Context,int) -> <init>
-    40:48:void setOnCancelListener(android.content.DialogInterface$OnCancelListener) -> setOnCancelListener
-    52:60:void setOnDismissListener(android.content.DialogInterface$OnDismissListener) -> setOnDismissListener
-    64:68:void dismiss() -> dismiss
-    72:76:void cancel() -> cancel
+    java.util.regex.Pattern colorHexPattern -> d
+    25:32:void <init>(android.content.Context) -> <init>
+    25:42:void <init>(android.content.Context,int) -> <init>
+    46:52:void show() -> show
+    55:65:int getColor(int) -> a
+    70:78:void setOnCancelListener(android.content.DialogInterface$OnCancelListener) -> setOnCancelListener
+    82:90:void setOnDismissListener(android.content.DialogInterface$OnDismissListener) -> setOnDismissListener
+    94:98:void dismiss() -> dismiss
+    102:106:void cancel() -> cancel
     void destroy() -> a
-    85:85:boolean closeWithActivityLifecycle() -> b
-    89:92:void attachToActivity(android.content.Context) -> a
-    95:108:void detachFromActivity(android.content.Context) -> b
-    19:19:boolean access$000(com.frostnerd.utils.lifecyclehelper.UtilityDialog) -> a
-    19:19:boolean access$002(com.frostnerd.utils.lifecyclehelper.UtilityDialog,boolean) -> a
+    115:115:boolean closeWithActivityLifecycle() -> b
+    119:122:void attachToActivity(android.content.Context) -> a
+    125:138:void detachFromActivity(android.content.Context) -> b
+    24:24:boolean access$000(com.frostnerd.utils.lifecyclehelper.UtilityDialog) -> a
+    24:24:boolean access$002(com.frostnerd.utils.lifecyclehelper.UtilityDialog,boolean) -> a
+    27:27:void <clinit>() -> <clinit>
 com.frostnerd.utils.lifecyclehelper.UtilityDialog$1 -> com.frostnerd.utils.d.b$1:
     android.content.DialogInterface$OnCancelListener val$listener -> a
     com.frostnerd.utils.lifecyclehelper.UtilityDialog this$0 -> b
-    40:40:void <init>(com.frostnerd.utils.lifecyclehelper.UtilityDialog,android.content.DialogInterface$OnCancelListener) -> <init>
-    43:46:void onCancel(android.content.DialogInterface) -> onCancel
+    70:70:void <init>(com.frostnerd.utils.lifecyclehelper.UtilityDialog,android.content.DialogInterface$OnCancelListener) -> <init>
+    73:76:void onCancel(android.content.DialogInterface) -> onCancel
 com.frostnerd.utils.lifecyclehelper.UtilityDialog$2 -> com.frostnerd.utils.d.b$2:
     android.content.DialogInterface$OnDismissListener val$listener -> a
     com.frostnerd.utils.lifecyclehelper.UtilityDialog this$0 -> b
-    52:52:void <init>(com.frostnerd.utils.lifecyclehelper.UtilityDialog,android.content.DialogInterface$OnDismissListener) -> <init>
-    55:58:void onDismiss(android.content.DialogInterface) -> onDismiss
+    82:82:void <init>(com.frostnerd.utils.lifecyclehelper.UtilityDialog,android.content.DialogInterface$OnDismissListener) -> <init>
+    85:88:void onDismiss(android.content.DialogInterface) -> onDismiss
 com.frostnerd.utils.networking.NetworkUtil -> com.frostnerd.utils.e.a:
-    java.util.regex.Pattern ipv4Pattern -> a
-    java.util.regex.Pattern domainPattern -> b
-    29:29:boolean isIPv4(java.lang.String) -> a
-    33:33:boolean isIP(java.lang.String,boolean) -> a
-    38:41:boolean isIPv6(java.lang.String) -> c
-    45:45:boolean isDomain(java.lang.String) -> b
-    50:52:java.lang.String randomLocalIPv6Address() -> a
-    56:56:java.lang.String randomIPv6LocalPrefix() -> b
-    60:63:java.lang.String randomIPv6Block(int,boolean) -> a
-    79:83:boolean isAssignableAddress(java.lang.String,boolean) -> b
-    25:26:void <clinit>() -> <clinit>
+    java.util.regex.Pattern IPV4_PATTERN -> a
+    java.util.regex.Pattern IPV6_Pattern -> b
+    java.util.regex.Pattern DOMAIN_PATTERN -> c
+    30:30:boolean isIPv4(java.lang.String) -> a
+    34:34:boolean isIP(java.lang.String,boolean) -> a
+    38:38:boolean isIPv6(java.lang.String) -> c
+    42:42:boolean isDomain(java.lang.String) -> b
+    47:49:java.lang.String randomLocalIPv6Address() -> a
+    53:53:java.lang.String randomIPv6LocalPrefix() -> b
+    57:60:java.lang.String randomIPv6Block(int,boolean) -> a
+    76:80:boolean isAssignableAddress(java.lang.String,boolean) -> b
+    25:27:void <clinit>() -> <clinit>
 com.frostnerd.utils.permissions.PermissionsUtil -> com.frostnerd.utils.f.a:
     20:20:boolean canWriteExternalStorage(android.content.Context) -> a
     24:24:boolean canReadExternalStorage(android.content.Context) -> b
