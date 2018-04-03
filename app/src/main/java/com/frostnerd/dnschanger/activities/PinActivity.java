@@ -66,27 +66,7 @@ public class PinActivity extends UtilityActivity {
         final boolean main = getIntent() != null && !getIntent().hasExtra("redirectToService");
         LogFactory.writeMessage(this, LOG_TAG, "Returning to main after pin: " + main);
         if(Utils.isServiceRunning(this, RuleImportService.class)){
-            final LoadingDialog loadingDialog = new LoadingDialog(this, ThemeHandler.getDialogTheme(this),
-                    getString(R.string.loading),
-                    getString(R.string.info_importing_rules_app_unusable));
-            loadingDialog.setCancelable(false);
-            loadingDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.background), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                }
-            });
-            loadingDialog.setCanceledOnTouchOutside(false);
-            loadingDialog.show();
-            registerReceiver(importFinishedReceiver = new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    loadingDialog.dismiss();
-                    unregisterReceiver(this);
-                    importFinishedReceiver = null;
-                    continueToFollowing(main);
-                }
-            }, new IntentFilter(RuleImportService.BROADCAST_IMPORT_FINISHED));
+            showRulesImportingDialog(main);
             return;
         }
         if (!PreferencesAccessor.isPinProtectionEnabled(this)) {
@@ -197,6 +177,30 @@ public class PinActivity extends UtilityActivity {
             LogFactory.writeMessage(this, LOG_TAG, "Service Started");
         }
         finish();
+    }
+
+    private void showRulesImportingDialog(final boolean continueToMain){
+        final LoadingDialog loadingDialog = new LoadingDialog(this, ThemeHandler.getDialogTheme(this),
+                getString(R.string.loading),
+                getString(R.string.info_importing_rules_app_unusable));
+        loadingDialog.setCancelable(false);
+        loadingDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.background), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.show();
+        registerReceiver(importFinishedReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                loadingDialog.dismiss();
+                unregisterReceiver(this);
+                importFinishedReceiver = null;
+                continueToFollowing(continueToMain);
+            }
+        }, new IntentFilter(RuleImportService.BROADCAST_IMPORT_FINISHED));
     }
 
     @Override
