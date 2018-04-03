@@ -1,6 +1,7 @@
 package com.frostnerd.dnschanger.activities;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -14,9 +15,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -35,7 +34,9 @@ import android.widget.Toast;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.general.DesignUtil;
+import com.frostnerd.utils.lifecyclehelper.UtilityActivity;
 
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
@@ -49,7 +50,7 @@ import java.util.TreeSet;
  * <p>
  * development@frostnerd.com
  */
-public class AppSelectionActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
+public class AppSelectionActivity extends UtilityActivity implements SearchView.OnQueryTextListener{
     private long lastBackPress;
     private ArrayList<String> currentSelected;
     private RecyclerView appList;
@@ -160,6 +161,13 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
             listAdapter.searchedApps.clear();
             listAdapter = null;
         }
+        appList = null;
+        fabSettings = null;
+    }
+
+    @Override
+    protected Configuration getConfiguration() {
+        return Configuration.withDefaults();
     }
 
     @Override
@@ -190,10 +198,9 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         return true;
     }
 
-    private final class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHolder> {
+    private final class AppListAdapter extends RecyclerView.Adapter<ViewHolder> {
         private final TreeSet<AppEntry> apps = new TreeSet<>();
         private final List<AppEntry> searchedApps = new ArrayList<>();
-        private final boolean apply = true;
         private boolean update = true;
         private String currentSearch = "";
 
@@ -212,7 +219,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
             List<ApplicationInfo> packages = getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
             AppEntry entry;
             for (ApplicationInfo packageInfo : packages) {
-                entry = new AppEntry(packageInfo);
+                entry = new AppEntry(AppSelectionActivity.this, packageInfo);
                 if(!onlyInternet || entry.hasPermission(Manifest.permission.INTERNET)){
                     if(showSystemApps || !entry.isSystemApp())apps.add(entry);
                 }
@@ -240,25 +247,26 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder((RelativeLayout) getLayoutInflater().inflate(viewType == 0 ? R.layout.row_appselect_info : R.layout.row_app_entry, parent, false), viewType);
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder((RelativeLayout) getLayoutInflater().inflate(viewType == 0 ?
+                    R.layout.row_appselect_info : R.layout.row_app_entry, parent, false), viewType);
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
             if(!update)return;
             if (holder.type == 0){
-                ((TextView)holder.contentView.findViewById(R.id.text)).setText(whiteList ? infoTextWhitelist : infoTextBlacklist);
+                ((TextView)holder.itemView.findViewById(R.id.text)).setText(whiteList ? infoTextWhitelist : infoTextBlacklist);
             }else{
                 int offSet = 1;
                 AppEntry entry = searchedApps.get(position - offSet);
-                CheckBox checkBox = holder.contentView.findViewById(R.id.app_selected_indicator);
-                ((ImageView) holder.contentView.findViewById(R.id.app_image)).setImageDrawable(entry.getIcon());
-                ((TextView) holder.contentView.findViewById(R.id.app_title)).setText(entry.getTitle());
-                holder.contentView.setClickable(true);
+                CheckBox checkBox = holder.itemView.findViewById(R.id.app_selected_indicator);
+                ((ImageView) holder.itemView.findViewById(R.id.app_image)).setImageDrawable(entry.getIcon());
+                ((TextView) holder.itemView.findViewById(R.id.app_title)).setText(entry.getTitle());
+                holder.itemView.setClickable(true);
                 checkBox.setOnCheckedChangeListener(null);
                 checkBox.setChecked(currentSelected.contains(entry.getPackageName()));
-                holder.contentView.setOnClickListener(new View.OnClickListener() {
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ((CheckBox) v.findViewById(R.id.app_selected_indicator)).toggle();
@@ -267,15 +275,15 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
                 checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if(!apply)return;
-                        if (isChecked)currentSelected.add(holder.appEntry.getPackageName());
-                        else currentSelected.remove(holder.appEntry.getPackageName());
+                        if(!update)return;
+                        if (isChecked) currentSelected.add(holder.appEntry.get().getPackageName());
+                        else currentSelected.remove(holder.appEntry.get().getPackageName());
                         listAdapter.notifyItemChanged(0);
                         getSupportActionBar().setSubtitle(getString(R.string.x_apps_selected).replace("[[x]]", currentSelected.size() + ""));
                         changed = true;
                     }
                 });
-                holder.appEntry = entry;
+                holder.appEntry = new SoftReference<>(entry);
             }
         }
 
@@ -288,25 +296,32 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         public int getItemCount() {
             return searchedApps.size() + 1;
         }
+    }
 
-        final class ViewHolder extends RecyclerView.ViewHolder {
-            private final RelativeLayout contentView;
-            private AppEntry appEntry;
-            private final int type;
+    private static final class ViewHolder extends RecyclerView.ViewHolder {
+        private SoftReference<AppEntry> appEntry;
+        private final int type;
 
-            ViewHolder(RelativeLayout layout, int type) {
-                super(layout);
-                this.contentView = layout;
-                this.type = type;
-            }
+        ViewHolder(RelativeLayout layout, int type) {
+            super(layout);
+            this.type = type;
+        }
+
+        @Override
+        protected void finalize() throws Throwable {
+            super.finalize();
+            appEntry.clear();
+            appEntry = null;
         }
     }
 
-    private class AppEntry implements Comparable<AppEntry> {
+    private static class AppEntry implements Comparable<AppEntry> {
         private final ApplicationInfo info;
+        private SoftReference<Context> context;
 
-        AppEntry(ApplicationInfo info) {
+        AppEntry(Context context, ApplicationInfo info) {
             this.info = info;
+            this.context = new SoftReference<>(context);
         }
 
         public ApplicationInfo getRawInfo() {
@@ -314,7 +329,9 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         }
 
         public String getTitle() {
-            return getPackageManager().getApplicationLabel(info).toString();
+            if(context.isEnqueued())
+                throw new IllegalStateException("The Context supplied to the AppEntry doesn't exist anymore");
+            return context.get().getPackageManager().getApplicationLabel(info).toString();
         }
 
         public String getPackageName(){
@@ -326,7 +343,9 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         }
 
         private Drawable getIcon() {
-            return info.loadIcon(getPackageManager());
+            if(context.isEnqueued())
+                throw new IllegalStateException("The Context supplied to the AppEntry doesn't exist anymore");
+            return info.loadIcon(context.get().getPackageManager());
         }
 
         @Override
@@ -336,7 +355,7 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
 
         public boolean hasPermission(String s){
             try {
-                PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_PERMISSIONS);
+                PackageInfo info = context.get().getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_PERMISSIONS);
                 String[] permissions = info.requestedPermissions;
                 if(permissions == null)return false;
                 for(int i = 0; i < permissions.length; i++){
