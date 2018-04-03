@@ -204,6 +204,12 @@ public class PinActivity extends UtilityActivity {
     }
 
     @Override
+    protected void onStop() {
+        if(!isFinishing()) finish();
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
         LogFactory.writeMessage(this, LOG_TAG, "Destroying activity");
         if(importFinishedReceiver != null)unregisterReceiver(importFinishedReceiver);
