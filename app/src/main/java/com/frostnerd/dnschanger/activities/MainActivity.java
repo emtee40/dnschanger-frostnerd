@@ -60,11 +60,13 @@ import com.frostnerd.utils.design.material.navigationdrawer.DrawerItemCreator;
 import com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity;
 import com.frostnerd.utils.design.material.navigationdrawer.StyleOptions;
 import com.frostnerd.utils.general.DesignUtil;
+import com.frostnerd.utils.general.SortUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.permissions.PermissionsUtil;
 import com.frostnerd.dnschanger.util.Preferences;
 
 import java.io.File;
+import java.net.InetAddress;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -789,25 +791,50 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
     @Override
     protected void onStop() {
         super.onStop();
-        if(!startedActivity && (PreferencesAccessor.isPinProtected(this, PreferencesAccessor.PinProtectable.APP)))finish();
+        if(!startedActivity && (PreferencesAccessor.isPinProtected(this, PreferencesAccessor.PinProtectable.APP))) finish();
+    }
+
+    private void updatePinState(Intent intent){
+        if((intent.getAction() != null && intent.getAction().equals(Intent.ACTION_CHOOSER)) || (intent.getComponent() != null && intent.getComponent().getPackageName().equals("com.frostnerd.dnschanger"))){
+            startedActivity = true;
+        }
     }
 
     @Override
     public void startActivity(Intent intent) {
-        if((intent.getAction() != null && intent.getAction().equals(Intent.ACTION_CHOOSER)) || (intent.getComponent() != null && intent.getComponent().getPackageName().equals("com.frostnerd.dnschanger"))){
-            startedActivity = true;
-        }
+        updatePinState(intent);
         super.startActivity(intent);
     }
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
-        if((intent.getAction() != null && intent.getAction().equals(Intent.ACTION_CHOOSER)) || (intent.getComponent() != null && intent.getComponent().getPackageName().equals("com.frostnerd.dnschanger"))){
-            startedActivity = true;
-        }
+        updatePinState(intent);
         super.startActivityForResult(intent, requestCode);
     }
 
+    @Override
+    public void startActivityFromFragment(@NonNull android.app.Fragment fragment, Intent intent, int requestCode) {
+        updatePinState(intent);
+        super.startActivityFromFragment(fragment, intent, requestCode);
+    }
+
+    @Override
+    public void startActivityFromFragment(@NonNull android.app.Fragment fragment, Intent intent, int requestCode, @Nullable Bundle options) {
+        updatePinState(intent);
+        super.startActivityFromFragment(fragment, intent, requestCode, options);
+    }
+
+    @Override
+    public void startActivityFromFragment(Fragment fragment, Intent intent, int requestCode) {
+        updatePinState(intent);
+        super.startActivityFromFragment(fragment, intent, requestCode);
+    }
+
+    @Override
+    public void startActivityFromFragment(Fragment fragment, Intent intent, int requestCode, @Nullable Bundle options) {
+        updatePinState(intent);
+        super.startActivityFromFragment(fragment, intent, requestCode, options);
+    }
 
     @Override
     public void importStarted(int combinedLines) {
