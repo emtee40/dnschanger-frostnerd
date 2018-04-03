@@ -126,7 +126,7 @@ public class AppSelectionActivity extends UtilityActivity implements SearchView.
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        listAdapter.reload();
+                        if(listAdapter != null) listAdapter.reload();
                     }
                 }).start();
             }
