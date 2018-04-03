@@ -37,6 +37,7 @@ import com.frostnerd.utils.general.DesignUtil;
 import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.general.VariableChecker;
+import com.frostnerd.utils.lifecyclehelper.UtilityActivity;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -47,7 +48,7 @@ import com.frostnerd.utils.general.VariableChecker;
  * <p>
  * development@frostnerd.com
  */
-public class PinActivity extends Activity {
+public class PinActivity extends UtilityActivity {
     private MaterialEditText met;
     private EditText pinInput;
     private String pin;
@@ -202,6 +203,17 @@ public class PinActivity extends Activity {
     protected void onDestroy() {
         LogFactory.writeMessage(this, LOG_TAG, "Destroying activity");
         if(importFinishedReceiver != null)unregisterReceiver(importFinishedReceiver);
+        importFinishedReceiver = null;
+        met = null;
+        pinInput = null;
+        vibrator = null;
+        fingerprintImage = null;
+        handler = null;
         super.onDestroy();
+    }
+
+    @Override
+    protected Configuration getConfiguration() {
+        return Configuration.withDefaults().setDismissFragmentsOnPause(true);
     }
 }
