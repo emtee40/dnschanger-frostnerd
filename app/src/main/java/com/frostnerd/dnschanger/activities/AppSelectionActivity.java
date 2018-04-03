@@ -81,12 +81,18 @@ public class AppSelectionActivity extends UtilityActivity implements SearchView.
             @Override
             public void run() {
                 listAdapter = new AppListAdapter();
-                runOnUiThread(new Runnable() {
+                if(appList != null)runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         appList.setAdapter(listAdapter);
                     }
                 });
+                else {
+                    listAdapter.update = false;
+                    listAdapter.apps.clear();
+                    listAdapter.searchedApps.clear();
+                    listAdapter = null;
+                }
             }
         }).start();
         appList.addOnScrollListener(new RecyclerView.OnScrollListener() {
