@@ -150,6 +150,14 @@ public class CurrentNetworksFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        for(DNSProperties properties: dnsProperties) properties.destroy();
+        dnsProperties.clear();
+        dnsProperties = null;
+    }
+
     private static class DNSProperties{
         private String networkName;
         private List<IPPortPair> ipv4Servers = new ArrayList<>(),
@@ -169,6 +177,19 @@ public class CurrentNetworksFragment extends Fragment {
         @Override
         public String toString() {
             return networkName;
+        }
+
+        private void destroy(){
+            ipv4Servers.clear();
+            ipv6Servers.clear();
+            ipv4Servers = null;
+            ipv6Servers = null;
+        }
+
+        @Override
+        protected void finalize() throws Throwable {
+            super.finalize();
+            destroy();
         }
     }
 }

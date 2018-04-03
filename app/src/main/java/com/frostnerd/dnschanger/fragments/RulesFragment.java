@@ -94,6 +94,13 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
     @Override
     public void onDestroy() {
         ruleAdapter.cleanup();
+        list.setAdapter(null);
+        ruleAdapter = null;
+        list = null;
+        content = null;
+        fabOpen = null;
+        sqlWrap = newWrap = filterWrap = null;
+        databaseUpdateReceiver = null;
         super.onDestroy();
     }
 

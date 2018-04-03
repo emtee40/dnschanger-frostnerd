@@ -97,6 +97,18 @@ public class DnsQueryFragment extends Fragment {
         return contentView;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        metQuery = null;
+        edQuery = null;
+        runQuery = null;
+        resultList = null;
+        progress = null;
+        infoText = null;
+        tcp = null;
+    }
+
     private IPPortPair getDefaultDNSServer(){
         return PreferencesAccessor.isIPv4Enabled(requireContext()) ? PreferencesAccessor.Type.DNS1.getPair(requireContext()) : PreferencesAccessor.Type.DNS1_V6.getPair(requireContext());
     }
