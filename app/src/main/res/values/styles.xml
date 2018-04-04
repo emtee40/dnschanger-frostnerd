@@ -95,6 +95,11 @@
         <item name="cardColor">#42A5F5</item>
         <item name="cardStrokeColor">#42A5F5</item>
         <item name="inputElementColor">#42A5F5</item>
+
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <style name="DialogTheme_Mono" parent="Theme.AppCompat.DayNight.Dialog.Alert">
@@ -118,6 +123,11 @@
         <item name="cardColor">#90A4AE</item>
         <item name="cardStrokeColor">#90A4AE</item>
         <item name="inputElementColor">#90A4AE</item>
+
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <style name="DialogTheme_Dark" parent="Theme.AppCompat.DayNight.Dialog.Alert">
@@ -141,6 +151,11 @@
         <item name="cardColor">#757575</item>
         <item name="cardStrokeColor">#757575</item>
         <item name="inputElementColor">#757575</item>
+
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <style name="PreferenceTheme" parent="PreferenceThemeOverlay.v14.Material">
