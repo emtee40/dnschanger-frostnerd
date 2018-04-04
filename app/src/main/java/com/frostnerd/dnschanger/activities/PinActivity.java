@@ -63,8 +63,8 @@ public class PinActivity extends UtilityActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        super.onCreate(savedInstanceState);
         setTheme(ThemeHandler.getDialogTheme(this));
+        super.onCreate(savedInstanceState);
         LogFactory.writeMessage(this, LOG_TAG, "Created Activity", getIntent());
         final boolean main = getIntent() != null && !getIntent().hasExtra("redirectToService");
         LogFactory.writeMessage(this, LOG_TAG, "Returning to main after pin: " + main);
