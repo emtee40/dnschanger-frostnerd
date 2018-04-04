@@ -26,7 +26,7 @@
 
     </style>
 
-    <style name="AppTheme_Dark" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme_Dark" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <item name="colorPrimary">#424242</item>
         <item name="colorPrimaryDark">#212121</item>
         <item name="colorAccent">#607D8B</item>
@@ -50,7 +50,7 @@
 
     </style>
 
-    <style name="AppTheme_Mono" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme_Mono" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <item name="colorPrimary">#607D8B</item>
         <item name="colorPrimaryDark">#37474F</item>
         <item name="colorAccent">#E0E0E0</item>
@@ -80,7 +80,6 @@
         <item name="colorAccent">#B2EBF2</item>
         <item name="keyResource">@drawable/ic_action_key</item>
         <item name="android:windowBackground">@drawable/background_default</item>
-        <item name="android:background">@drawable/background_default</item>
 
         <item name="android:textColor">#EEEEEE</item>
         <item name="android:textColorPrimary">#EEEEEE</item>
@@ -98,13 +97,12 @@
         <item name="inputElementColor">#42A5F5</item>
     </style>
 
-    <style name="DialogTheme_Mono" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="DialogTheme_Mono" parent="Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="colorPrimary">#607D8B</item>
         <item name="colorPrimaryDark">#37474F</item>
         <item name="colorAccent">#E0E0E0</item>
         <item name="keyResource">@drawable/ic_key_mono</item>
         <item name="android:windowBackground">@drawable/background_mono</item>
-        <item name="android:background">@drawable/background_mono</item>
 
         <item name="android:textColor">#E0E0E0</item>
         <item name="android:textColorPrimary">#E0E0E0</item>
@@ -122,13 +120,12 @@
         <item name="inputElementColor">#90A4AE</item>
     </style>
 
-    <style name="DialogTheme_Dark" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="DialogTheme_Dark" parent="Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="colorPrimary">#424242</item>
         <item name="colorPrimaryDark">#212121</item>
         <item name="colorAccent">#607D8B</item>
         <item name="keyResource">@drawable/ic_action_key</item>
         <item name="android:windowBackground">@drawable/background_dark</item>
-        <item name="android:background">@drawable/background_dark</item>
 
         <item name="android:textColor">#BDBDBD</item>
         <item name="android:textColorPrimary">#BDBDBD</item>
