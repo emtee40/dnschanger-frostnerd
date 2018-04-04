@@ -140,8 +140,9 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
         }
         int random = new Random().nextInt(100), launches = preferences.getInteger( "launches", 0);
         preferences.put( "launches", launches+1);
-        if(!preferences.getBoolean( "first_run",true) && !preferences.getBoolean( "rated",false) && random <= (launches >= 3 ? 8 : 3)){
-            LogFactory.writeMessage(this, LOG_TAG, "Showing dialog requesting rating");
+        if(launches >= 5 && !preferences.getBoolean("first_run", true) &&
+                !preferences.getBoolean("rated", false) && random <= 16){
+            LogFactory.writeMessage(this, LOG_TAG, "Showing dialog reqesting rating");
             new AlertDialog.Builder(this,ThemeHandler.getDialogTheme(this)).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
