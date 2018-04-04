@@ -229,8 +229,7 @@ public class VPNRunnable implements Runnable {
 
     public void stop(Thread thread){
         running = false;
-        if(dnsProxy != null)dnsProxy.stop();
-        cleanup();
+        if(dnsProxy != null) dnsProxy.stop();
         if(thread != null) thread.interrupt();
     }
 
