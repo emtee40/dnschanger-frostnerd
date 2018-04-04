@@ -2,7 +2,10 @@ package com.frostnerd.dnschanger.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
+import com.frostnerd.utils.preferences.restrictions.PreferenceRestriction;
 import com.frostnerd.utils.preferences.restrictions.PreferencesRestrictionBuilder;
 
 /**
@@ -31,6 +34,18 @@ public class Preferences extends com.frostnerd.utils.preferences.Preferences {
         PreferencesRestrictionBuilder builder = new PreferencesRestrictionBuilder();
         builder.key("dns1").shouldNotBe(null).always().shouldNotBe("").always().shouldBeLike(Util.ipv4WithPort).always().doneWithKey();
         builder.key("dns1-v6").shouldNotBe(null).always().shouldNotBe("").always().shouldBeLike(Util.ipv6WithPort).always().doneWithKey();
+        builder.key("setting_ipv6_enabled").shouldNotBe(false).when(new PreferenceRestriction.Condition() {
+            @Override
+            public boolean isMet(@NonNull com.frostnerd.utils.preferences.Preferences preferences, @NonNull String key, @Nullable Object newValue) {
+                return !preferences.getBoolean("setting_ipv4_enabled", true);
+            }
+        }).doneWithKey();
+        builder.key("setting_ipv4_enabled").shouldNotBe(false).when(new PreferenceRestriction.Condition() {
+            @Override
+            public boolean isMet(@NonNull com.frostnerd.utils.preferences.Preferences preferences, @NonNull String key, @Nullable Object newValue) {
+                return !preferences.getBoolean("setting_ipv6_enabled", true);
+            }
+        }).doneWithKey();
         restrict(builder.build());
     }
 }
