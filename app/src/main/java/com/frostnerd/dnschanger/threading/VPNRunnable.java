@@ -151,6 +151,7 @@ public class VPNRunnable implements Runnable {
     }
 
     private void cleanup(){
+        running = false;
         if(tunnelInterface != null){
             try {
                 tunnelInterface.close();
