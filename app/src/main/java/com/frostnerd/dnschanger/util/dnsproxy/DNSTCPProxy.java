@@ -303,9 +303,12 @@ public class DNSTCPProxy extends DNSProxy{
         }
         upstreamServers.clear();
         writeToDevice.clear();
+        if(resolver != null) resolver.destroy();
+        if(queryLogger != null) queryLogger.destroy();
         parcelFileDescriptor = null;
         resolver = null;
         vpnService = null;
+        queryLogger = null;
         interruptedDescriptor = blockingDescriptor = null;
     }
 

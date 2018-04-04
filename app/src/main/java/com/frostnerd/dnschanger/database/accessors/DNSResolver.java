@@ -17,7 +17,7 @@ import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondi
  * development@frostnerd.com
  */
 public class DNSResolver {
-    private final DatabaseHelper db;
+    private DatabaseHelper db;
     private final int wildcardCount;
     private final String WILDCARD_QUERY_RANDOM;
     private final String WILDCARD_QUERY_FIRST;
@@ -41,6 +41,10 @@ public class DNSResolver {
         NON_WILDCARD_QUERY = "SELECT " + targetColumn.getColumnName() + " FROM " + ruleEntity.getTableName() +
                 " WHERE " + hostColumn.getColumnName() + "=? AND " + ipv6Column.getColumnName() + "=? AND " +
                 wildcardColumn.getColumnName() + "=0";
+    }
+
+    public void destroy(){
+        db = null;
     }
 
     public String resolve(String host, boolean ipv6) {

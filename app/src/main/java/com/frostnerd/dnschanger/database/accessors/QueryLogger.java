@@ -13,7 +13,7 @@ import com.frostnerd.dnschanger.database.entities.DNSQuery;
  * development@frostnerd.com
  */
 public class QueryLogger {
-    private final DatabaseHelper helper;
+    private DatabaseHelper helper;
     private final String insertStatement;
     private static Runnable newQueryLogged;
 
@@ -33,5 +33,10 @@ public class QueryLogger {
 
     public static void setNewQueryLoggedCallback(Runnable runnable){
         newQueryLogged = runnable;
+    }
+
+    public void destroy(){
+        helper = null;
+        newQueryLogged = null;
     }
 }
