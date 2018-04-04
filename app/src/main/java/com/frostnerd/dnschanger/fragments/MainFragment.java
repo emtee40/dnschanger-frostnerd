@@ -130,6 +130,18 @@ public class MainFragment extends Fragment {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        startStopButton = null;
+        met_dns1 = met_dns2 = null;
+        dns1 = dns2 = null;
+        connectionText = null;
+        connectionImage = null;
+        running_indicator = null;
+        contentView = null;
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         settingV6 = !PreferencesAccessor.isIPv4Enabled(requireContext()) || (PreferencesAccessor.isIPv6Enabled(requireContext()) && settingV6);

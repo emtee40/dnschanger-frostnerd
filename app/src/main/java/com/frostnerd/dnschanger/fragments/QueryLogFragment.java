@@ -61,6 +61,10 @@ public class QueryLogFragment extends Fragment implements SearchView.OnQueryText
     @Override
     public void onDestroy() {
         queryLogAdapter.cleanup();
+        list.setAdapter(null);
+        queryLogAdapter = null;
+        list = null;
+        layoutManager = null;
         super.onDestroy();
     }
 

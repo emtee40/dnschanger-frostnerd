@@ -474,6 +474,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
     @Override
     public void onDestroy() {
         if(ipv6EnableQuestionSnackbar != null)ipv6EnableQuestionSnackbar.dismiss();
+        automatingCategory = debugCategory = null;
+        removeUsagePreference = sendDebugPreference = null;
+        devicePolicyManager = null;
+        deviceAdmin = null;
+        ipv6EnableQuestionSnackbar = null;
         super.onDestroy();
     }
 

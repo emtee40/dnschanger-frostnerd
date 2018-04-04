@@ -37,6 +37,7 @@ import com.frostnerd.utils.general.DesignUtil;
 import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.general.VariableChecker;
+import com.frostnerd.utils.lifecyclehelper.UtilityActivity;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -47,7 +48,7 @@ import com.frostnerd.utils.general.VariableChecker;
  * <p>
  * development@frostnerd.com
  */
-public class PinActivity extends Activity {
+public class PinActivity extends UtilityActivity {
     private MaterialEditText met;
     private EditText pinInput;
     private String pin;
@@ -65,27 +66,7 @@ public class PinActivity extends Activity {
         final boolean main = getIntent() != null && !getIntent().hasExtra("redirectToService");
         LogFactory.writeMessage(this, LOG_TAG, "Returning to main after pin: " + main);
         if(Utils.isServiceRunning(this, RuleImportService.class)){
-            final LoadingDialog loadingDialog = new LoadingDialog(this, ThemeHandler.getDialogTheme(this),
-                    getString(R.string.loading),
-                    getString(R.string.info_importing_rules_app_unusable));
-            loadingDialog.setCancelable(false);
-            loadingDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.background), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                }
-            });
-            loadingDialog.setCanceledOnTouchOutside(false);
-            loadingDialog.show();
-            registerReceiver(importFinishedReceiver = new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    loadingDialog.dismiss();
-                    unregisterReceiver(this);
-                    importFinishedReceiver = null;
-                    continueToFollowing(main);
-                }
-            }, new IntentFilter(RuleImportService.BROADCAST_IMPORT_FINISHED));
+            showRulesImportingDialog(main);
             return;
         }
         if (!PreferencesAccessor.isPinProtectionEnabled(this)) {
@@ -198,10 +179,51 @@ public class PinActivity extends Activity {
         finish();
     }
 
+    private void showRulesImportingDialog(final boolean continueToMain){
+        final LoadingDialog loadingDialog = new LoadingDialog(this, ThemeHandler.getDialogTheme(this),
+                getString(R.string.loading),
+                getString(R.string.info_importing_rules_app_unusable));
+        loadingDialog.setCancelable(false);
+        loadingDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.background), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.show();
+        registerReceiver(importFinishedReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                loadingDialog.dismiss();
+                unregisterReceiver(this);
+                importFinishedReceiver = null;
+                continueToFollowing(continueToMain);
+            }
+        }, new IntentFilter(RuleImportService.BROADCAST_IMPORT_FINISHED));
+    }
+
+    @Override
+    protected void onStop() {
+        if(!isFinishing()) finish();
+        super.onStop();
+    }
+
     @Override
     protected void onDestroy() {
         LogFactory.writeMessage(this, LOG_TAG, "Destroying activity");
         if(importFinishedReceiver != null)unregisterReceiver(importFinishedReceiver);
+        importFinishedReceiver = null;
+        met = null;
+        pinInput = null;
+        vibrator = null;
+        fingerprintImage = null;
+        handler = null;
         super.onDestroy();
+    }
+
+    @Override
+    protected Configuration getConfiguration() {
+        return Configuration.withDefaults().setDismissFragmentsOnPause(true);
     }
 }
