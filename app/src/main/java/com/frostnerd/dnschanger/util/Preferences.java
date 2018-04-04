@@ -2,6 +2,7 @@ package com.frostnerd.dnschanger.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -46,6 +47,13 @@ public class Preferences extends com.frostnerd.utils.preferences.Preferences {
                 return !preferences.getBoolean("setting_ipv6_enabled", true);
             }
         }).doneWithKey();
+        builder.key("setting_show_notification").shouldBe(true).when(new PreferenceRestriction.Condition() {
+            @Override
+            public boolean isMet(@NonNull com.frostnerd.utils.preferences.Preferences preferences, @NonNull String key, @Nullable Object newValue) {
+                return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+            }
+        }).doneWithKey();
+        builder.key("pin_value").shouldNotBe("").always().shouldNotBe(null).always().doneWithKey();
         restrict(builder.build());
     }
 }
