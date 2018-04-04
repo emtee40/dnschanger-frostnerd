@@ -39,6 +39,14 @@ public class ThemeHandler {
         return Preferences.getInstance(context).getInteger("apptheme", R.style.AppTheme_Mono);
     }
 
+    public static int getPreferenceTheme(Context context){
+        switch(getAppTheme(context)){
+            case R.style.AppTheme_Mono: return R.style.PreferenceTheme_Mono;
+            case R.style.AppTheme_Dark: return R.style.PreferenceTheme_Dark;
+            default: return R.style.PreferenceTheme;
+        }
+    }
+
     @ColorInt
     public static int getColor(Context context, @AttrRes int attribute, @ColorInt int defaultValue) {
         TypedArray ta = context.obtainStyledAttributes(getAppTheme(context), new int[]{attribute});

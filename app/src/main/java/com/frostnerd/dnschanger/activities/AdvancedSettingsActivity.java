@@ -26,7 +26,7 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        setTheme(ThemeHandler.getAppTheme(this));
+        setTheme(ThemeHandler.getPreferenceTheme(this));
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.advanced_preferences);
         findPreference("advanced_settings").setOnPreferenceChangeListener(preferenceChangeListener);
