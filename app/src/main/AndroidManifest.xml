@@ -156,6 +156,8 @@
         <activity
             android:name=".activities.PinActivity"
             android:launchMode="singleTop"
+            android:excludeFromRecents="true"
+            android:autoRemoveFromRecents="true"
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
