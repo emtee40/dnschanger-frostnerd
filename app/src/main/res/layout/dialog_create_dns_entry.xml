@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         app:allowCollapse="false"
+        app:animationDuration="0"
         app:image="@drawable/ic_language"
         app:maxCharLength="60"
         app:revealDelay="0"
@@ -24,6 +25,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/hint_dns_entry_name"
             android:imeOptions="actionNext"
+            android:inputType="text"
             android:maxLines="1"
             android:nextFocusDown="@+id/dns1"
             android:nextFocusForward="@+id/dns1"
@@ -40,6 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         app:allowCollapse="false"
+        app:animationDuration="0"
         app:image="@drawable/ic_language"
         app:revealDelay="0"
         app:revealType="revealInstant">
@@ -65,6 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:allowCollapse="false"
+        app:animationDuration="0"
         app:image="@drawable/ic_language"
         app:revealDelay="0"
         app:revealType="revealInstant">
