@@ -20,6 +20,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.text.InputType;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -60,6 +61,8 @@ public class PinActivity extends UtilityActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setTheme(ThemeHandler.getDialogTheme(this));
         LogFactory.writeMessage(this, LOG_TAG, "Created Activity", getIntent());
