@@ -3,6 +3,7 @@ package com.frostnerd.dnschanger.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -28,9 +29,9 @@ import java.util.List;
  * development@frostnerd.com
  */
 public class QueryResultAdapter extends RecyclerView.Adapter<QueryResultAdapter.ViewHolder> {
-    private final RRset[] answer;
-    private final Context context;
-    private final LayoutInflater layoutInflater;
+    private RRset[] answer;
+    private Context context;
+    private LayoutInflater layoutInflater;
     private final List<Entry> entryList = new ArrayList<>();
 
     public QueryResultAdapter(Context context, RRset[] answer, RRset[] authority, RRset[] additional){
@@ -48,14 +49,22 @@ public class QueryResultAdapter extends RecyclerView.Adapter<QueryResultAdapter.
         }
     }
 
+    public void cleanup(){
+        context = null;
+        layoutInflater = null;
+        entryList.clear();
+        answer = null;
+    }
+
+    @NonNull
     @Override
-    public QueryResultAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder((LinearLayout)layoutInflater.inflate(R.layout.row_dns_query, parent, false));
+    public QueryResultAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ViewHolder(entryList, context, (LinearLayout)layoutInflater.inflate(R.layout.row_dns_query, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(QueryResultAdapter.ViewHolder holder, int position) {
-        LinearLayout layout = holder.contentView;
+    public void onBindViewHolder(@NonNull QueryResultAdapter.ViewHolder holder, int position) {
+        LinearLayout layout = (LinearLayout) holder.itemView;
         int titleText;
         if(position == 0)titleText = R.string.query_title_name;
         else if(position == 1)titleText = R.string.query_title_ttl;
@@ -91,25 +100,22 @@ public class QueryResultAdapter extends RecyclerView.Adapter<QueryResultAdapter.
         return 5;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
-        private final LinearLayout contentView;
-
-        public ViewHolder(LinearLayout itemView) {
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        private ViewHolder(List<Entry> entryList, Context context, LinearLayout itemView) {
             super(itemView);
-            this.contentView = itemView;
             TextView text;
             for(int i = 0; i <= entryList.size(); i++){
                 text = new TextView(context);
-                contentView.addView(text);
+                itemView.addView(text);
             }
         }
     }
 
-    private class Entry{
+    private static class Entry{
         private final RRset rset;
         private final Record record;
 
-        public Entry(RRset rset, Record record) {
+        private Entry(RRset rset, Record record) {
             this.rset = rset;
             this.record = record;
         }
