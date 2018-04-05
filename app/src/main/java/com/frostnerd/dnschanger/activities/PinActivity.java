@@ -216,7 +216,7 @@ public class PinActivity extends UtilityActivity {
     protected void onDestroy() {
         LogFactory.writeMessage(this, LOG_TAG, "Destroying activity");
         if(importFinishedReceiver != null)unregisterReceiver(importFinishedReceiver);
-        handler.removeCallbacksAndMessages(null);
+        if(handler != null) handler.removeCallbacksAndMessages(null);
         importFinishedReceiver = null;
         met = null;
         pinInput = null;
