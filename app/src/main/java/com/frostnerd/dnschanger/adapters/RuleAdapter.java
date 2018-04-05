@@ -84,19 +84,33 @@ public class RuleAdapter extends DatabaseAdapter<DNSRule, RuleAdapter.ViewHolder
         reloadData();
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(layoutInflater.inflate(R.layout.row_rule, parent, false));
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
-        TextView host, target;
+    static class ViewHolder extends RecyclerView.ViewHolder{
+        private TextView host, target;
 
-        public ViewHolder(View itemView) {
+        private ViewHolder(View itemView) {
             super(itemView);
             host = itemView.findViewById(R.id.text);
             target = itemView.findViewById(R.id.text3);
         }
+
+        @Override
+        protected void finalize() throws Throwable {
+            super.finalize();
+            host = null;
+            target = null;
+        }
+    }
+
+    @Override
+    public void cleanup() {
+        super.cleanup();
+        layoutInflater = null;
     }
 
     public enum ArgumentLessFilter implements DatabaseAdapter.ArgumentLessFilter{

@@ -111,19 +111,32 @@ public class QueryLogAdapter extends DatabaseAdapter<DNSQuery, QueryLogAdapter.V
         return calendar.getTime();
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(layoutInflater.inflate(R.layout.row_query_log, parent, false));
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView host, time;
 
-        public ViewHolder(View itemView) {
+        private ViewHolder(View itemView) {
             super(itemView);
             time = itemView.findViewById(R.id.time);
             host = itemView.findViewById(R.id.host);
         }
+
+        @Override
+        protected void finalize() throws Throwable {
+            super.finalize();
+            host = time = null;
+        }
+    }
+
+    @Override
+    public void cleanup() {
+        super.cleanup();
+        layoutInflater = null;
     }
 
     public enum ArgumentBasedFilter implements ArgumentFilter{
