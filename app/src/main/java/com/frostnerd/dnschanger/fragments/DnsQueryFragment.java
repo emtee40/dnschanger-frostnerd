@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.adapters.QueryLogAdapter;
 import com.frostnerd.dnschanger.adapters.QueryResultAdapter;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
@@ -100,6 +101,12 @@ public class DnsQueryFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(resultList != null){
+            if(resultList.getAdapter() != null){
+                ((QueryLogAdapter)resultList.getAdapter()).cleanup();
+            }
+            resultList.setAdapter(null);
+        }
         metQuery = null;
         edQuery = null;
         runQuery = null;
