@@ -18,7 +18,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.dnschanger.adapters.QueryLogAdapter;
 import com.frostnerd.dnschanger.adapters.QueryResultAdapter;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
@@ -53,6 +52,7 @@ public class DnsQueryFragment extends Fragment {
     private TextView infoText;
     private CheckBox tcp;
     private boolean showingError;
+    private QueryResultAdapter adapter;
 
     @Nullable
     @Override
@@ -103,7 +103,7 @@ public class DnsQueryFragment extends Fragment {
         super.onDestroy();
         if(resultList != null){
             if(resultList.getAdapter() != null){
-                ((QueryLogAdapter)resultList.getAdapter()).cleanup();
+                ((QueryResultAdapter)resultList.getAdapter()).cleanup();
             }
             resultList.setAdapter(null);
         }
@@ -135,13 +135,12 @@ public class DnsQueryFragment extends Fragment {
                     Record record = Record.newRecord(name, Type.ANY, DClass.IN);
                     Message query = Message.newQuery(record);
                     Message response = resolver.send(query);
-                    RRset[] answer = response.getSectionRRsets(1),
-                            authority = response.getSectionRRsets(2),
-                            additional = response.getSectionRRsets(3);
+                    RRset[] answer = response.getSectionRRsets(1);
                     if(answer == null)throw new IOException("RESULT NULL");
                     if(isAdded()){
-                        final QueryResultAdapter adapter = new QueryResultAdapter(requireContext(), answer, authority, additional);
-                        Util.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
+                        if(adapter != null) adapter.cleanup();
+                        adapter = new QueryResultAdapter(requireContext(), answer);
+                        if(isAdded())Util.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 resultList.setAdapter(adapter);
@@ -176,6 +175,7 @@ public class DnsQueryFragment extends Fragment {
 
     private void resetElements(){
         if(showingError){
+            resultList.setAdapter(null);
             infoText.setText(getString(R.string.query_destination_info).replace("[x]", getDefaultDNSServer().toString(PreferencesAccessor.areCustomPortsEnabled(requireContext()))));
             showingError = false;
         }
