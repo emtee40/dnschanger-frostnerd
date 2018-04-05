@@ -30,10 +30,10 @@ import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondi
  * <p>
  * development@frostnerd.com
  */
-public class RuleAdapter extends DatabaseAdapter<DNSRule, RuleAdapter.ViewHolder>{
+public class RuleAdapter<T extends Activity &RuleImport.ImportStartedListener> extends DatabaseAdapter<DNSRule, RuleAdapter.ViewHolder>{
     private LayoutInflater layoutInflater;
     private NewRuleDialog newRuleDialog;
-    private Context context;
+    private T context;
     private static Column<DNSRule> ipv6Column;
     private static Column<DNSRule> hostColumn;
     private static Column<DNSRule> targetColumn;
@@ -51,7 +51,7 @@ public class RuleAdapter extends DatabaseAdapter<DNSRule, RuleAdapter.ViewHolder
         }
     };
 
-    public <T extends Activity &RuleImport.ImportStartedListener> RuleAdapter(final T context, DatabaseHelper databaseHelper, final TextView rowCount, ProgressBar updateProgress){
+    public RuleAdapter(T context, DatabaseHelper databaseHelper, final TextView rowCount, ProgressBar updateProgress){
         super(databaseHelper, 10000);
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
@@ -63,7 +63,7 @@ public class RuleAdapter extends DatabaseAdapter<DNSRule, RuleAdapter.ViewHolder
                 view.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        newRuleDialog = new NewRuleDialog(context, creationListener, entity.getHost(), entity.getTarget(), entity.isWildcard(), entity.isIpv6());
+                        newRuleDialog = new NewRuleDialog(RuleAdapter.this.context, creationListener, entity.getHost(), entity.getTarget(), entity.isWildcard(), entity.isIpv6());
                         newRuleDialog.show();
                         return true;
                     }
@@ -73,7 +73,7 @@ public class RuleAdapter extends DatabaseAdapter<DNSRule, RuleAdapter.ViewHolder
         setReloadCallback(new Runnable() {
             @Override
             public void run() {
-                rowCount.setText(context.getString(R.string.x_entries).replace("[x]", getItemCount() + ""));
+                rowCount.setText(RuleAdapter.this.context.getString(R.string.x_entries).replace("[x]", getItemCount() + ""));
             }
         });
         setProgressView(updateProgress);
@@ -116,6 +116,7 @@ public class RuleAdapter extends DatabaseAdapter<DNSRule, RuleAdapter.ViewHolder
     @Override
     public void cleanup() {
         super.cleanup();
+        context = null;
         layoutInflater = null;
         if(newRuleDialog != null)newRuleDialog.dismiss();
         newRuleDialog = null;
