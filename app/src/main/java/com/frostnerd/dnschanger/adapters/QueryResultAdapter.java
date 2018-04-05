@@ -18,10 +18,6 @@ import org.xbill.DNS.RRset;
 import org.xbill.DNS.Record;
 import org.xbill.DNS.Type;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 /**
  * Copyright Daniel Wolf 2017
  * All rights reserved.
@@ -29,37 +25,26 @@ import java.util.List;
  * development@frostnerd.com
  */
 public class QueryResultAdapter extends RecyclerView.Adapter<QueryResultAdapter.ViewHolder> {
-    private RRset[] answer;
+    private Record[] answer;
     private Context context;
     private LayoutInflater layoutInflater;
-    private final List<Entry> entryList = new ArrayList<>();
 
-    public QueryResultAdapter(Context context, RRset[] answer){
+    public QueryResultAdapter(Context context, Record[] answer){
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.answer = answer;
-        populateEntryList();
-    }
-
-    private void populateEntryList(){
-        for(RRset rset: answer){
-            for(Iterator<Record> it = rset.rrs(); it.hasNext();){
-                entryList.add(new Entry(rset, it.next()));
-            }
-        }
     }
 
     public void cleanup(){
         context = null;
         layoutInflater = null;
-        entryList.clear();
         answer = null;
     }
 
     @NonNull
     @Override
     public QueryResultAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(entryList, context, (LinearLayout)layoutInflater.inflate(R.layout.row_dns_query, parent, false));
+        return new ViewHolder(answer.length, context, (LinearLayout)layoutInflater.inflate(R.layout.row_dns_query, parent, false));
     }
 
     @Override
@@ -88,11 +73,11 @@ public class QueryResultAdapter extends RecyclerView.Adapter<QueryResultAdapter.
     }
 
     private String getText(int position, int index){
-        if(position == 0)return entryList.get(index-1).rset.getName().toString();
-        else if(position == 1)return entryList.get(index-1).rset.getTTL() + "";
-        else if(position == 2)return DClass.string(entryList.get(index-1).rset.getDClass());
-        else if(position == 3)return Type.string(entryList.get(index-1).rset.getType());
-        else return entryList.get(index-1).record.rdataToString();
+        if(position == 0)return answer[index-1].getName().toString();
+        else if(position == 1)return String.valueOf(answer[index-1].getTTL());
+        else if(position == 2)return DClass.string(answer[index-1].getDClass());
+        else if(position == 3)return Type.string(answer[index-1].getType());
+        else return answer[index-1].rdataToString();
     }
 
     @Override
@@ -101,23 +86,13 @@ public class QueryResultAdapter extends RecyclerView.Adapter<QueryResultAdapter.
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private ViewHolder(List<Entry> entryList, Context context, LinearLayout itemView) {
+        private ViewHolder(int elementCount, Context context, LinearLayout itemView) {
             super(itemView);
             TextView text;
-            for(int i = 0; i <= entryList.size(); i++){
+            for(int i = 0; i <= elementCount; i++){
                 text = new TextView(context);
                 itemView.addView(text);
             }
-        }
-    }
-
-    private static class Entry{
-        private final RRset rset;
-        private final Record record;
-
-        private Entry(RRset rset, Record record) {
-            this.rset = rset;
-            this.record = record;
         }
     }
 }

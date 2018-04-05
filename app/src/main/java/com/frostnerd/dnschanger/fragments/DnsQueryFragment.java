@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.adapters.QueryResultAdapter;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
@@ -25,10 +26,9 @@ import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.networking.NetworkUtil;
 
-import org.xbill.DNS.DClass;
-import org.xbill.DNS.Message;
+import org.xbill.DNS.Lookup;
 import org.xbill.DNS.Name;
-import org.xbill.DNS.RRset;
+import org.xbill.DNS.Options;
 import org.xbill.DNS.Record;
 import org.xbill.DNS.Resolver;
 import org.xbill.DNS.SimpleResolver;
@@ -53,6 +53,7 @@ public class DnsQueryFragment extends Fragment {
     private CheckBox tcp;
     private boolean showingError;
     private QueryResultAdapter adapter;
+    private static final String LOG_TAG = "DnsQueryFragment";
 
     @Nullable
     @Override
@@ -88,7 +89,7 @@ public class DnsQueryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 resetElements();
-                runQuery(edQuery.getText().toString() + ".");
+                runQuery(edQuery.getText().toString());
             }
         });
         tcp = contentView.findViewById(R.id.query_tcp);
@@ -120,7 +121,7 @@ public class DnsQueryFragment extends Fragment {
         return PreferencesAccessor.isIPv4Enabled(requireContext()) ? PreferencesAccessor.Type.DNS1.getPair(requireContext()) : PreferencesAccessor.Type.DNS1_V6.getPair(requireContext());
     }
 
-    private void runQuery(String queryText){
+    private void runQuery(final String queryText){
         progress.setVisibility(View.VISIBLE);
         final String adjustedQuery = queryText.endsWith(".") ? queryText : queryText + ".";
         new Thread(){
@@ -128,18 +129,18 @@ public class DnsQueryFragment extends Fragment {
             public void run() {
                 try {
                     IPPortPair server = getDefaultDNSServer();
+                    LogFactory.writeMessage(getContext(), LOG_TAG,"Sending query '" + adjustedQuery + "' to " + server.getAddress() + ":" + server.getPort() + " (tcp: " + tcp.isChecked() + ")");
+                    Name name = Name.fromString(adjustedQuery);
                     Resolver resolver = new SimpleResolver(server.getAddress());
                     resolver.setPort(server.getPort());
                     resolver.setTCP(tcp.isChecked());
-                    Name name = Name.fromString(adjustedQuery);
-                    Record record = Record.newRecord(name, Type.ANY, DClass.IN);
-                    Message query = Message.newQuery(record);
-                    Message response = resolver.send(query);
-                    RRset[] answer = response.getSectionRRsets(1);
-                    if(answer == null)throw new IOException("RESULT NULL");
+                    Lookup lookup = new Lookup(name, Type.ANY);
+                    lookup.setResolver(resolver);
+                    Record[] response = lookup.run();
+                    if(response == null)throw new IOException(lookup.getErrorString());
                     if(isAdded()){
                         if(adapter != null) adapter.cleanup();
-                        adapter = new QueryResultAdapter(requireContext(), answer);
+                        adapter = new QueryResultAdapter(requireContext(), response);
                         if(isAdded())Util.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
