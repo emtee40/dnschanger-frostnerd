@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.preferences.AppCompatPreferenceActivity;
 
@@ -22,7 +23,6 @@ import com.frostnerd.utils.preferences.AppCompatPreferenceActivity;
  */
 public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
     private boolean dialogShown = false;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +65,7 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
                     return false;
                 }
             }
+            Preferences.getInstance(AdvancedSettingsActivity.this).put(preference.getKey(), o);
             return true;
         }
     };
