@@ -95,6 +95,13 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
         defaultDNSEntries.put(DNSEntry.constructSimple("Unblockr UK", "Unblockr", "178.62.57.141",
                 "139.162.231.18", "", "",
                 "Non-public DNS server for kodi. Visit unblockr.net for more information.",false), 3);
+        defaultDNSEntries.put(DNSEntry.constructSimple("SafeDNS", "SafeDNS",
+                "195.46.39.39", "195.46.39.40", "", "", "Non-public (paid) DNS server with anti-porn filtering [safedns.com]", false), 3);
+        defaultDNSEntries.put(DNSEntry.constructSimple("OpenNIC (Anycast)", "OpenNIC",
+                "185.121.177.177", "169.239.202.202", "2a05:dfc7:5::53", "2a05:dfc7:5::5353",
+                "Anycast servers of the OpenNIC project. For faster speeds use a server located closer to you.", false), 3);
+        defaultDNSEntries.put(DNSEntry.constructSimple("Verisign", "Verisign",
+                "64.6.64.6", "64.6.65.6", "2620:74:1b::1:1", "2620:74:1b::2:2", "", false),  3);
     }
 
     public DNSEntry(String name, String shortName, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6, String description, boolean customEntry) {
