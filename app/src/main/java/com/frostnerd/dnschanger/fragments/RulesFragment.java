@@ -333,8 +333,4 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         }
         return false;
     }
-
-    public RuleAdapter getRuleAdapter() {
-        return ruleAdapter;
-    }
 }
