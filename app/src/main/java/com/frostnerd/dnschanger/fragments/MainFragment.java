@@ -93,7 +93,7 @@ public class MainFragment extends Fragment {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sp, String s) {
             if(s.equals("everything_disabled")){
-                boolean value = sp.getBoolean(s, false);
+                boolean value = Preferences.getInstance(requireContext()).getBoolean("everything_disabled", false);
                 startStopButton.setEnabled(!value);
                 startStopButton.setClickable(!value);
                 startStopButton.setAlpha(value ? 0.50f : 1f);
