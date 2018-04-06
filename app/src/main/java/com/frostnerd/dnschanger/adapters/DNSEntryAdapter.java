@@ -124,7 +124,9 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
                 }
             }
         });
-        setOrderOption(new OrderOption("customEntry").desc());
+        OrderOption order = new OrderOption().order("customEntry", false)
+                .order("name", true, OrderOption.Collate.NOCASE);
+        setOrderOption(order);
         reloadData();
     }
 
