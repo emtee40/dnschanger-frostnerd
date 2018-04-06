@@ -171,9 +171,13 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
         button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                LogFactory.writeMessage(MainActivity.this, new String[]{LOG_TAG, "[DISABLE-EVERYTHING]"}, "The DisableEverything switch was clicked and changed to " + b);
                 text.setText(b ? R.string.cardview_text_disabled : R.string.cardview_text);
                 preferences.put("everything_disabled", b);
-                if(Util.isServiceRunning(MainActivity.this))startService(DNSVpnService.getDestroyIntent(MainActivity.this));
+                if(Util.isServiceRunning(MainActivity.this)){
+                    LogFactory.writeMessage(MainActivity.this, new String[]{LOG_TAG, "[DISABLE-EVERYTHING]"}, "Service is running. Destroying...");
+                    startService(DNSVpnService.getDestroyIntent(MainActivity.this));
+                }
             }
         });
         cardView.setOnClickListener(new View.OnClickListener() {
