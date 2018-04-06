@@ -112,6 +112,7 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
                 }else if(onEntrySelectionUpdated != null && !view.itemView.isLongClickable()){
                     view.itemView.setOnLongClickListener(longClickListener);
                 }
+                view.itemView.setOnClickListener(clickListener);
 
                 view.itemView.setTag(idTagKey, entity.getID());
                 view.itemView.setTag(positionTagKey, position);
@@ -121,6 +122,8 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
             public void bindNonEntityRow(ViewHolder view, int position) {
                 if(view.getItemViewType() == 1){
                     view.textView.setText(R.string.default_dns_explain_delete);
+                    view.textView.setOnClickListener(null);
+                    view.itemView.setOnClickListener(null);
                 }
             }
         });
