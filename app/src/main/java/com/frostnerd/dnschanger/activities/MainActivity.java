@@ -88,7 +88,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
     private DrawerItem defaultDrawerItem, settingsDrawerItem;
     @ColorInt private int backgroundColor;
     @ColorInt private int textColor, navDrawableColor;
-    private boolean startedActivity = false;
+    private boolean startedActivity = false, importingRules = false;
     private final BroadcastReceiver shortcutReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -210,7 +210,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
 
     @Override
     protected Configuration getConfiguration() {
-        return Configuration.withDefaults().setDismissFragmentsOnPause(true);
+        return Configuration.withDefaults().setDismissFragmentsOnPause(!importingRules);
     }
 
     @Override
@@ -843,12 +843,16 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
         loadingDialog.setCancelable(false);
         loadingDialog.setCanceledOnTouchOutside(false);
         loadingDialog.show();
+        importingRules = true;
+        updateConfiguration();
         registerReceiver(importFinishedReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 loadingDialog.dismiss();
                 unregisterReceiver(this);
                 importFinishedReceiver = null;
+                importingRules = false;
+                updateConfiguration();
             }
         }, new IntentFilter(RuleImportService.BROADCAST_IMPORT_FINISHED));
     }
