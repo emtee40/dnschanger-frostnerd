@@ -13,6 +13,7 @@ import android.net.VpnService;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -92,12 +93,11 @@ public class MainFragment extends Fragment {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sp, String s) {
             if(s.equals("everything_disabled")){
-                boolean value = Preferences.getInstance(requireContext()).getBoolean("everything_disabled", false);
+                boolean value = sp.getBoolean(s, false);
                 startStopButton.setEnabled(!value);
                 startStopButton.setClickable(!value);
                 startStopButton.setAlpha(value ? 0.50f : 1f);
-                if(value)connectionText.setText(R.string.info_functionality_disabled);
-                else setIndicatorState(vpnRunning);
+                if(!value) setIndicatorState(vpnRunning);
             }
         }
     };
@@ -105,7 +105,6 @@ public class MainFragment extends Fragment {
     private void setIndicatorState(boolean vpnRunning) {
         LogFactory.writeMessage(requireContext(), LOG_TAG, "Changing IndicatorState to " + vpnRunning);
         if (vpnRunning) {
-            int color = Color.parseColor("#42A5F5");
             connectionText.setText(R.string.running);
             if(connectionImage != null)connectionImage.setImageResource(R.drawable.ic_thumb_up);
             startStopButton.setText(R.string.stop);
@@ -114,7 +113,8 @@ public class MainFragment extends Fragment {
             TypedValue typedValue = new TypedValue();
             Resources.Theme theme = requireContext().getTheme();
             theme.resolveAttribute(android.R.attr.windowBackground, typedValue, true);
-            connectionText.setText(R.string.not_running);
+            if(PreferencesAccessor.isEverythingDisabled(requireContext()))  connectionText.setText(R.string.info_functionality_disabled);
+            else connectionText.setText(R.string.not_running);
             if(connectionImage != null)connectionImage.setImageResource(R.drawable.ic_thumb_down);
             startStopButton.setText(R.string.start);
             running_indicator.setBackgroundColor(typedValue.data);
@@ -124,7 +124,7 @@ public class MainFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         contentView = inflater.inflate(R.layout.fragment_main, container, false);
         return contentView;
     }
@@ -165,7 +165,6 @@ public class MainFragment extends Fragment {
         startStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(requireContext() == null)return;
                 final Intent i = VpnService.prepare(requireContext());
                 LogFactory.writeMessage(requireContext(), LOG_TAG, "Startbutton clicked. Configuring VPN if needed");
                 if (i != null){
