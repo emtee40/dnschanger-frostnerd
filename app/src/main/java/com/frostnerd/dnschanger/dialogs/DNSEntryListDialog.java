@@ -31,7 +31,7 @@ import java.util.Set;
  * <p>
  * development@frostnerd.com
  */
-public class DefaultDNSDialog extends UtilityDialog {
+public class DNSEntryListDialog extends UtilityDialog {
     private OnProviderSelectedListener listener;
     private RecyclerView list;
     private DNSEntryAdapter adapter;
@@ -43,7 +43,7 @@ public class DefaultDNSDialog extends UtilityDialog {
     };
     private Set<Long> selectedEntries = new HashSet<>();
 
-    public DefaultDNSDialog(@NonNull final Context context, final int theme, @NonNull final OnProviderSelectedListener listener) {
+    public DNSEntryListDialog(@NonNull final Context context, final int theme, @NonNull final OnProviderSelectedListener listener) {
         super(context, theme);
         prepareAdapter();
         this.listener = listener;

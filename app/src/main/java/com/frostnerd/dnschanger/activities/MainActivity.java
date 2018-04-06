@@ -38,7 +38,7 @@ import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
-import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
+import com.frostnerd.dnschanger.dialogs.DNSEntryListDialog;
 import com.frostnerd.dnschanger.dialogs.ExportSettingsDialog;
 import com.frostnerd.dnschanger.fragments.CurrentNetworksFragment;
 import com.frostnerd.dnschanger.fragments.DnsQueryFragment;
@@ -60,13 +60,11 @@ import com.frostnerd.utils.design.material.navigationdrawer.DrawerItemCreator;
 import com.frostnerd.utils.design.material.navigationdrawer.NavigationDrawerActivity;
 import com.frostnerd.utils.design.material.navigationdrawer.StyleOptions;
 import com.frostnerd.utils.general.DesignUtil;
-import com.frostnerd.utils.general.SortUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.permissions.PermissionsUtil;
 import com.frostnerd.dnschanger.util.Preferences;
 
 import java.io.File;
-import java.net.InetAddress;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -84,7 +82,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
     private static final String LOG_TAG = "[MainActivity]";
     private static final int REQUEST_PERMISSION_IMPORT_SETTINGS = 131, REQUEST_PERMISSION_EXPORT_SETTINGS = 130;
     private AlertDialog dialog1;
-    private DefaultDNSDialog defaultDnsDialog;
+    private DNSEntryListDialog dnsEntryListDialog;
     private MainFragment mainFragment;
     private SettingsFragment settingsFragment;
     private DrawerItem defaultDrawerItem, settingsDrawerItem;
@@ -204,7 +202,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
     @Override
     protected void onDestroy() {
         if(dialog1 != null && dialog1.isShowing())dialog1.cancel();
-        if(defaultDnsDialog != null && defaultDnsDialog.isShowing())defaultDnsDialog.cancel();
+        if(dnsEntryListDialog != null && dnsEntryListDialog.isShowing()) dnsEntryListDialog.cancel();
         if(importFinishedReceiver != null)unregisterReceiver(importFinishedReceiver);
         unregisterReceiver(shortcutReceiver);
         super.onDestroy();
@@ -714,8 +712,8 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
     }
 
     public void openDefaultDNSDialog(View v) {
-        LogFactory.writeMessage(this, LOG_TAG, "Opening DefaultDNSDialog");
-        defaultDnsDialog = new DefaultDNSDialog(this, ThemeHandler.getDialogTheme(this), new DefaultDNSDialog.OnProviderSelectedListener() {
+        LogFactory.writeMessage(this, LOG_TAG, "Opening DNSEntryListDialog");
+        dnsEntryListDialog = new DNSEntryListDialog(this, ThemeHandler.getDialogTheme(this), new DNSEntryListDialog.OnProviderSelectedListener() {
             @Override
             public void onProviderSelected(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6) {
                 boolean port = PreferencesAccessor.areCustomPortsEnabled(MainActivity.this);
@@ -735,7 +733,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
                 applyDNSServersInstant();
             }
         });
-        defaultDnsDialog.show();
+        dnsEntryListDialog.show();
         LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
     }
 

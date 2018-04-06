@@ -28,7 +28,7 @@ import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
-import com.frostnerd.dnschanger.dialogs.DefaultDNSDialog;
+import com.frostnerd.dnschanger.dialogs.DNSEntryListDialog;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Util;
@@ -53,7 +53,7 @@ public class ConfigureActivity extends AppCompatActivity {
     private MaterialEditText met_dns1, met_dns2, met_name;
     private EditText ed_dns1, ed_dns2, ed_name;
     private boolean cancelled = false, creatingShortcut;
-    private DefaultDNSDialog defaultDNSDialog;
+    private DNSEntryListDialog dnsentryListDialog;
     private IPPortPair dns1 = IPPortPair.wrap("8.8.8.8" ,53), dns2 = IPPortPair.wrap("8.8.4.4", 53),
             dns1V6 = IPPortPair.wrap("2001:4860:4860::8888", 53), dns2V6 = IPPortPair.wrap("2001:4860:4860::8844", 53);
     private boolean settingV6 = false, wasEdited = false, ipv4Enabled, ipv6Enabled;
@@ -265,7 +265,7 @@ public class ConfigureActivity extends AppCompatActivity {
     }
 
     public void openDefaultDNSDialog(View v){
-        defaultDNSDialog = new DefaultDNSDialog(this, ThemeHandler.getDialogTheme(this), new DefaultDNSDialog.OnProviderSelectedListener() {
+        dnsentryListDialog = new DNSEntryListDialog(this, ThemeHandler.getDialogTheme(this), new DNSEntryListDialog.OnProviderSelectedListener() {
             @Override
             public void onProviderSelected(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6) {
                 if(settingV6){
@@ -281,12 +281,12 @@ public class ConfigureActivity extends AppCompatActivity {
                 }
             }
         });
-        defaultDNSDialog.show();
+        dnsentryListDialog.show();
     }
 
     @Override
     protected void onDestroy() {
-        if(defaultDNSDialog != null)defaultDNSDialog.cancel();
+        if(dnsentryListDialog != null) dnsentryListDialog.cancel();
         super.onDestroy();
     }
 
