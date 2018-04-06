@@ -238,7 +238,6 @@ public class VPNRunnable implements Runnable {
         running = false;
         cleanup();
         vpnApps.clear();
-        addresses.clear();
         upstreamServers.clear();
         vpnApps = null;
         service = null;
