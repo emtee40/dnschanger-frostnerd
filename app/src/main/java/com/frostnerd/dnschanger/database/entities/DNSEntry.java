@@ -87,6 +87,8 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
                 "2620:fe::fe", "", "", false), 2);
         defaultDNSEntries.put(DNSEntry.constructSimple("Quad9 secondary", "Quad9 secondary", "9.9.9.10", "",
                 "2620:fe::10", "", "", false), 2);
+        defaultDNSEntries.put(DNSEntry.constructSimple("Comodo secure", "Comodo",
+                "8.26.56.26", "8.20.247.20", "", "", "", false), 3);
         defaultDNSEntries.put(DNSEntry.constructSimple("Unblockr US", "Unblockr", "138.68.29.183",
                 "139.162.231.18", "", "",
                 "Non-public DNS server for kodi. Visit unblockr.net for more information.",false), 3);
