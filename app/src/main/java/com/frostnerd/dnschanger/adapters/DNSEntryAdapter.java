@@ -13,6 +13,7 @@ import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.utils.adapters.DatabaseAdapter;
+import com.frostnerd.utils.database.orm.statementoptions.queryoptions.OrderOption;
 import com.frostnerd.utils.general.DesignUtil;
 
 import java.util.HashSet;
@@ -116,6 +117,7 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
                 }
             }
         });
+        setOrderOption(new OrderOption("customEntry").desc());
         reloadData();
     }
 
