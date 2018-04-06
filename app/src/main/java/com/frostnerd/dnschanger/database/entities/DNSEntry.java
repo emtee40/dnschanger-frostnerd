@@ -67,7 +67,7 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
                 "209.244.0.4", "", "", "",false), 0);
         defaultDNSEntries.put(DNSEntry.constructSimple("FreeDNS", "FreeDNS", "37.235.1.174",
                 "37.235.1.177", "", "", "",false), 0);
-        defaultDNSEntries.put(DNSEntry.constructSimple("Clouldflare", "Cloudflare",
+        defaultDNSEntries.put(DNSEntry.constructSimple("Cloudflare", "Cloudflare",
                 "1.1.1.1", "1.0.0.1", "2606:4700:4700::1111", "2606:4700:4700::1001", "", false ), 3);
         defaultDNSEntries.put(DNSEntry.constructSimple("Yandex", "Yandex", "77.88.8.8",
                 "77.88.8.1", "2a02:6b8::feed:0ff", "2a02:6b8:0:1::feed:0ff", "",false), 0);
