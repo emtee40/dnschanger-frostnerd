@@ -106,6 +106,13 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
                     if(view.subText.getVisibility() != View.VISIBLE) view.subText.setVisibility(View.VISIBLE);
                 }
 
+                if(view.itemView.isLongClickable() && onEntrySelectionUpdated == null){
+                    view.itemView.setOnLongClickListener(null);
+                    view.itemView.setLongClickable(false);
+                }else if(onEntrySelectionUpdated != null && !view.itemView.isLongClickable()){
+                    view.itemView.setOnLongClickListener(longClickListener);
+                }
+
                 view.itemView.setTag(idTagKey, entity.getID());
                 view.itemView.setTag(positionTagKey, position);
             }
@@ -126,7 +133,11 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         int layout = viewType == 1 ? R.layout.row_text_cardview : R.layout.item_default_dns;
         View itemView = layoutInflater.inflate(layout, parent, false);
-        itemView.setOnLongClickListener(longClickListener);
+        if(onEntrySelectionUpdated != null)itemView.setOnLongClickListener(longClickListener);
+        else {
+            itemView.setLongClickable(false);
+            itemView.setOnLongClickListener(null);
+        }
         itemView.setOnClickListener(clickListener);
 
         return new ViewHolder(itemView, viewType);
@@ -155,7 +166,9 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
     }
 
     public void setOnEntrySelectionUpdated(OnEntrySelectionUpdated onEntrySelectionUpdated) {
+        boolean wasNull = this.onEntrySelectionUpdated == null;
         this.onEntrySelectionUpdated = onEntrySelectionUpdated;
+        if(wasNull) notifyDataSetChanged();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
