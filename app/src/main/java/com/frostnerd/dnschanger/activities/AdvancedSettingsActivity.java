@@ -65,7 +65,7 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
                     return false;
                 }
             }
-            Preferences.getInstance(AdvancedSettingsActivity.this).put(preference.getKey(), o);
+            Preferences.getInstance(AdvancedSettingsActivity.this).put(preference.getKey(), o, false);
             return true;
         }
     };
