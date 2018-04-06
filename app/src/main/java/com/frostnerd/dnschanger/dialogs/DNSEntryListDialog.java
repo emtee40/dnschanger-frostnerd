@@ -39,6 +39,7 @@ public class DNSEntryListDialog extends UtilityDialog {
         @Override
         public void selected(DNSEntry entry) {
             listener.onProviderSelected(entry.getName(), entry.getDns1(), entry.getDns2(), entry.getDns1V6(), entry.getDns2V6());
+            dismiss();
         }
     };
     private Set<Long> selectedEntries = new HashSet<>();
