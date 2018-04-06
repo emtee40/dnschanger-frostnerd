@@ -3,25 +3,24 @@ package com.frostnerd.dnschanger.dialogs;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.adapters.DNSEntryAdapter;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
-import com.frostnerd.utils.general.DesignUtil;
+import com.frostnerd.utils.adapters.DatabaseAdapter;
+import com.frostnerd.utils.database.orm.parser.ParsedEntity;
+import com.frostnerd.utils.database.orm.parser.columns.Column;
+import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
 import com.frostnerd.utils.lifecyclehelper.UtilityDialog;
-import com.frostnerd.utils.networking.NetworkUtil;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -33,80 +32,63 @@ import java.util.List;
  * development@frostnerd.com
  */
 public class DefaultDNSDialog extends UtilityDialog {
-    private View lastLongClicked;
     private OnProviderSelectedListener listener;
-    private List<DNSEntry> localEntries;
-    private boolean removeButtonShown;
     private RecyclerView list;
-    private List<DNSEntry> removal = new ArrayList<>();
+    private DNSEntryAdapter adapter;
+    private DNSEntryAdapter.OnEntrySelected entrySelected = new DNSEntryAdapter.OnEntrySelected() {
+        @Override
+        public void selected(DNSEntry entry) {
+            listener.onProviderSelected(entry.getName(), entry.getDns1(), entry.getDns2(), entry.getDns1V6(), entry.getDns2V6());
+        }
+    };
+    private Set<Long> selectedEntries = new HashSet<>();
 
     public DefaultDNSDialog(@NonNull final Context context, final int theme, @NonNull final OnProviderSelectedListener listener) {
         super(context, theme);
-        localEntries = DatabaseHelper.getInstance(context).getAll(DNSEntry.class);
-        boolean ipv4Enabled = PreferencesAccessor.isIPv4Enabled(context), ipv6Enabled = !ipv4Enabled || PreferencesAccessor.isIPv6Enabled(context);
-        List<DNSEntry> tmp = new ArrayList<>();
-        if (!ipv4Enabled || !ipv6Enabled) {
-            for (DNSEntry entry : localEntries) {
-                if ((!ipv4Enabled && NetworkUtil.isAssignableAddress(entry.getDns1V6().getAddress(), true)) ||
-                        (!ipv6Enabled && NetworkUtil.isAssignableAddress(entry.getDns1().getAddress(), false))) {
-                    tmp.add(entry);
-                }
-            }
-            localEntries = tmp;
-        }
+        prepareAdapter();
         this.listener = listener;
         View layout = LayoutInflater.from(context).inflate(R.layout.dialog_default_dns, null, false);
         setView(layout);
         list = layout.findViewById(R.id.defaultDnsDialogList);
         list.setLayoutManager(new LinearLayoutManager(context));
-        list.setAdapter(new DefaultDNSAdapter());
+        list.setAdapter(adapter);
         list.setHasFixedSize(true);
+        setTitle(R.string.default_dns_title);
+        prepareButtons();
+        setButton(BUTTON_NEUTRAL, context.getString(R.string.remove), (OnClickListener) null);
         setButton(BUTTON_NEGATIVE, context.getString(R.string.cancel), new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });
-        setButton(BUTTON_POSITIVE, context.getString(R.string.add), new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        setButton(BUTTON_POSITIVE, context.getString(R.string.add), (OnClickListener) null);
+    }
 
-            }
-        });
-        setTitle(R.string.default_dns_title);
+    private void prepareButtons(){
         setOnShowListener(new OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
                 getButton(BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (removal.size() != 1) {
-                            new DNSCreationDialog(context, new DNSCreationDialog.OnCreationFinishedListener() {
+                        if(selectedEntries.size() != 1){
+                            new DNSCreationDialog(getContext(), new DNSCreationDialog.OnCreationFinishedListener() {
                                 @Override
                                 public void onCreationFinished(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6) {
-                                    DatabaseHelper.getInstance(context).insert(new DNSEntry(name, name, dns1,
+                                    DatabaseHelper.getInstance(getContext()).insert(new DNSEntry(name, name, dns1,
                                             dns2, dns1V6, dns2V6, "", true));
-                                    localEntries.clear();
-                                    localEntries = DatabaseHelper.getInstance(context).getAll(DNSEntry.class);
-                                    list.setAdapter(new DefaultDNSAdapter());
+                                    adapter.reloadData();
                                 }
                             }).show();
-                        } else {
-                            new DNSCreationDialog(context, new DNSCreationDialog.OnEditingFinishedListener() {
+                        }else {
+                            new DNSCreationDialog(getContext(), new DNSCreationDialog.OnEditingFinishedListener() {
                                 @Override
                                 public void editingFinished(DNSEntry entry) {
-                                    DatabaseHelper.getInstance(context).update(entry);
-                                    localEntries.clear();
-                                    localEntries = DatabaseHelper.getInstance(context).getAll(DNSEntry.class);
-                                    list.setAdapter(new DefaultDNSAdapter());
+                                    DatabaseHelper.getInstance(getContext()).update(entry);
+                                    adapter.reloadData();
                                 }
-                            }, removal.get(0)).show();
-                            lastLongClicked.setSelected(false);
-                            lastLongClicked.setBackgroundColor(DesignUtil.resolveColor(getContext(), android.R.attr.windowBackground));
-                            removal.clear();
-                            removeButtonShown = false;
-                            getButton(BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
-                            getButton(BUTTON_POSITIVE).setText(R.string.add);
+                            }, DatabaseHelper.getInstance(getContext()).getByRowID(DNSEntry.class, (Long) selectedEntries.toArray()[0])).show();
                         }
                     }
                 });
@@ -114,138 +96,74 @@ public class DefaultDNSDialog extends UtilityDialog {
                 getButton(BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        removeButtonShown = false;
-                        v.setVisibility(View.INVISIBLE);
-                        for (DNSEntry entry : removal) {
-                            DatabaseHelper.getInstance(context).delete(entry);
-                            localEntries.remove(entry);
+                        DatabaseHelper helper = DatabaseHelper.getInstance(getContext());
+                        for(long l: selectedEntries){
+                            helper.delete(DNSEntry.class, WhereCondition.equal("id", String.valueOf(l)));
                         }
-                        removal.clear();
-                        list.setAdapter(new DefaultDNSAdapter());
+                        adapter.reloadData();
+                        v.setVisibility(View.INVISIBLE);
                         getButton(BUTTON_POSITIVE).setText(R.string.add);
                     }
                 });
             }
         });
-        setButton(BUTTON_NEUTRAL, context.getString(R.string.remove), (OnClickListener) null);
+    }
+
+    private void prepareAdapter(){
+        final boolean ipv4Enabled = PreferencesAccessor.isIPv4Enabled(getContext()), ipv6Enabled = !ipv4Enabled || PreferencesAccessor.isIPv6Enabled(getContext());
+        adapter = new DNSEntryAdapter(getContext(), entrySelected);
+        if(!ipv4Enabled || !ipv6Enabled) adapter.filter(new DatabaseAdapter.ArgumentLessFilter() {
+            private final WhereCondition condition;
+            {
+                ParsedEntity<DNSEntry> parsedEntity = ParsedEntity.wrapEntity(DNSEntry.class);
+                Column<DNSEntry> column = parsedEntity.getTable().findColumn(ipv4Enabled ? "dns1" : "dns1v6");
+                condition = WhereCondition.notNull(column).and(WhereCondition.equal(column, "").not());
+            }
+
+            @Override
+            public WhereCondition getCondition() {
+                return condition;
+            }
+
+            @Override
+            public boolean isResourceIntensive() {
+                return false;
+            }
+
+            @Override
+            public DatabaseAdapter.Filter[] exclusiveWith() {
+                return new DatabaseAdapter.Filter[0];
+            }
+        });
+        adapter.setOnEntrySelectionUpdated(new DNSEntryAdapter.OnEntrySelectionUpdated() {
+            @Override
+            public void selectionUpdated(Set<Long> to) {
+                selectedEntries = to;
+                if(selectedEntries.size() == 0){
+                    getButton(BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
+                    getButton(BUTTON_POSITIVE).setText(R.string.add);
+                } else {
+                    if (selectedEntries.size() == 1)
+                        getButton(BUTTON_POSITIVE).setText(R.string.edit);
+                    else
+                        getButton(BUTTON_POSITIVE).setText(R.string.add);
+                    getButton(BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     @Override
     protected void destroy(){
-        lastLongClicked = null;
+        if(adapter != null)adapter.cleanup();
         listener = null;
-        localEntries.clear();
-        localEntries = null;
+        entrySelected = null;
+        selectedEntries = null;
         list.setAdapter(null);
         list = null;
-        removal.clear();
-        removal = null;
     }
 
     public interface OnProviderSelectedListener {
         void onProviderSelected(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6);
-    }
-
-    private class DefaultDNSAdapter extends RecyclerView.Adapter<ViewHolder> {
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(getLayoutInflater().inflate(viewType == 0 ? R.layout.row_text_cardview : R.layout.item_default_dns, parent, false), viewType);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            if (holder.type == 0) {
-                ((TextView) holder.itemView.findViewById(R.id.text)).setText(getContext().getString(R.string.default_dns_explain_delete));
-            } else {
-                holder.itemView.setSelected(false);
-                ((TextView) holder.itemView.findViewById(R.id.text)).setText(localEntries.get(position).getName());
-                holder.itemView.setLongClickable(true);
-                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        lastLongClicked = v;
-                        v.setSelected(!v.isSelected());
-                        v.setBackgroundColor(v.isSelected() ? DesignUtil.resolveColor(getContext(), R.attr.inputElementColor) : DesignUtil.resolveColor(getContext(), android.R.attr.windowBackground));
-                        if (!removeButtonShown) {
-                            getButton(BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
-                            getButton(BUTTON_POSITIVE).setText(R.string.edit);
-                            removeButtonShown = true;
-                        }
-                        if (!v.isSelected()) {
-                            if (removal.size() == 2)
-                                getButton(BUTTON_POSITIVE).setText(R.string.add);
-                            removal.remove(v.getTag());
-                        } else {
-                            if (removal.size() == 1)
-                                getButton(BUTTON_POSITIVE).setText(R.string.add);
-                            removal.add((DNSEntry) v.getTag());
-                        }
-                        if (removal.size() == 0) {
-                            removeButtonShown = false;
-                            getButton(BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
-                            getButton(BUTTON_POSITIVE).setText(R.string.add);
-                        }
-                        return true;
-                    }
-                });
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (removeButtonShown) {
-                            v.setSelected(!v.isSelected());
-                            v.setBackgroundColor(v.isSelected() ? DesignUtil.resolveColor(getContext(), R.attr.inputElementColor) : DesignUtil.resolveColor(getContext(), android.R.attr.windowBackground));
-                            if (!v.isSelected()) {
-                                if (removal.size() == 2)
-                                    getButton(BUTTON_POSITIVE).setText(R.string.edit);
-                                removal.remove(v.getTag());
-                            } else {
-                                if (removal.size() == 1)
-                                    getButton(BUTTON_POSITIVE).setText(R.string.add);
-                                removal.add((DNSEntry) v.getTag());
-                            }
-                            if (removal.size() == 0) {
-                                removeButtonShown = false;
-                                getButton(BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
-                                getButton(BUTTON_POSITIVE).setText(R.string.add);
-                            }
-                        } else {
-                            DNSEntry entry = (DNSEntry) v.getTag();
-                            listener.onProviderSelected(entry.getName(), entry.getDns1(), entry.getDns2(), entry.getDns1V6(), entry.getDns2V6());
-                            dismiss();
-                        }
-                    }
-                });
-                if (localEntries.get(position).getDescription().equals(""))
-                    holder.itemView.findViewById(R.id.text2).setVisibility(View.GONE);
-                else
-                    ((TextView) holder.itemView.findViewById(R.id.text2)).setText(localEntries.get(position).getDescription());
-                holder.itemView.setTag(localEntries.get(position));
-            }
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            return position == 0 ? 0 : 1;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public int getItemCount() {
-            return localEntries.size();
-        }
-    }
-
-    private static class ViewHolder extends RecyclerView.ViewHolder {
-        private final int type;
-
-        private ViewHolder(View itemView, int type) {
-            super(itemView);
-            this.type = type;
-        }
     }
 }
