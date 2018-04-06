@@ -160,6 +160,7 @@ class RuleImportChooserDialog extends UtilityDialog {
                                 setLabelText();
                             }
                         });
+                        dialog.setClosesWithLifecycle(false);
                         dialog.show();
                         new Thread(){
                             @Override
@@ -168,11 +169,10 @@ class RuleImportChooserDialog extends UtilityDialog {
                                 RuleImport.FileType type;
                                 Handler handler = new Handler(Looper.getMainLooper());
                                 for (final File f : selectedFiles) {
-                                    if(!dialog.isShowing())break;
-                                    handler.post(new Runnable() {
+                                    if(dialog.isShowing()) handler.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            dialog.appendToMessage("\n\n" + f.getName());
+                                            if(dialog.isShowing())dialog.appendToMessage("\n\n" + f.getName());
                                         }
                                     });
                                     if ((lines = RuleImport.getFileLines(f)) == 0) continue;
