@@ -57,7 +57,7 @@ public class RuleAdapter<T extends Activity &RuleImport.ImportStartedListener> e
         this.context = context;
         setOnRowLoaded(new OnRowLoaded<DNSRule, ViewHolder>() {
             @Override
-            public void bindRow(ViewHolder view, final DNSRule entity) {
+            public void bindRow(ViewHolder view, final DNSRule entity, int position) {
                 view.host.setText(entity.getHost());
                 view.target.setText(entity.getTarget());
                 view.itemView.setOnLongClickListener(new View.OnLongClickListener() {

@@ -47,7 +47,7 @@ public class QueryLogAdapter extends DatabaseAdapter<DNSQuery, QueryLogAdapter.V
         this.layoutInflater = LayoutInflater.from(context);
         setOnRowLoaded(new OnRowLoaded<DNSQuery, ViewHolder>() {
             @Override
-            public void bindRow(ViewHolder view, DNSQuery entity) {
+            public void bindRow(ViewHolder view, DNSQuery entity, int position) {
                 String text;
                 if (entity.getTime() < dayStart) {
                     if (entity.getTime() < yearStart) {
