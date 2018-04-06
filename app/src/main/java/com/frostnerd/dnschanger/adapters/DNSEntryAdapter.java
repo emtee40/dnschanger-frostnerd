@@ -77,6 +77,7 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
     @Override
     public void reloadData() {
         selectedEntries.clear();
+        if(onEntrySelectionUpdated != null) onEntrySelectionUpdated.selectionUpdated(selectedEntries);
         super.reloadData();
     }
 
