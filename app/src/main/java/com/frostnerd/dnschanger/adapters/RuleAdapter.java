@@ -69,6 +69,11 @@ public class RuleAdapter<T extends Activity &RuleImport.ImportStartedListener> e
                     }
                 });
             }
+
+            @Override
+            public void bindNonEntityRow(ViewHolder view, int position) {
+
+            }
         });
         setReloadCallback(new Runnable() {
             @Override

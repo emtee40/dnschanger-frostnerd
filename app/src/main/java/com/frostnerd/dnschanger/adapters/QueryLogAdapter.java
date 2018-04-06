@@ -57,6 +57,11 @@ public class QueryLogAdapter extends DatabaseAdapter<DNSQuery, QueryLogAdapter.V
                 view.time.setText(text);
                 view.host.setText(entity.getHost());
             }
+
+            @Override
+            public void bindNonEntityRow(ViewHolder view, int position) {
+
+            }
         });
         setReloadCallback(new Runnable() {
             final Handler main = new Handler(Looper.getMainLooper());
