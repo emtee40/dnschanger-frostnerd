@@ -29,20 +29,20 @@ import java.util.Set;
  * development@frostnerd.com
  */
 public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.ViewHolder> {
-    private Context context;
-    private LayoutInflater layoutInflater;
-    private Set<Long> selectedEntries = new HashSet<>();
+    @NonNull private Context context;
+    @NonNull private LayoutInflater layoutInflater;
+    @NonNull private Set<Long> selectedEntries = new HashSet<>();
     @NonNull private OnEntrySelected entrySelected;
     private OnEntrySelectionUpdated onEntrySelectionUpdated;
     private static final int idTagKey = R.string.active, positionTagKey = R.string.app_name;
-    private View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
+    @NonNull private View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
             toggleEntrySelection(v);
             return true;
         }
     };
-    private View.OnClickListener clickListener = new View.OnClickListener() {
+    @NonNull private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if(selectedEntries.size() == 0){
@@ -76,10 +76,10 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
     }
 
     @Override
-    public void reloadData() {
+    protected boolean beforeReload() {
         selectedEntries.clear();
         if(onEntrySelectionUpdated != null) onEntrySelectionUpdated.selectionUpdated(selectedEntries);
-        super.reloadData();
+        return true;
     }
 
     public DNSEntryAdapter(@NonNull Context context, @NonNull OnEntrySelected entrySelected) {
@@ -158,6 +158,7 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
         return 0;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void cleanup() {
         super.cleanup();
@@ -193,10 +194,10 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
     }
 
     public interface OnEntrySelected {
-        public void selected(DNSEntry entry);
+        void selected(DNSEntry entry);
     }
 
     public interface OnEntrySelectionUpdated {
-        public void selectionUpdated(Set<Long> to);
+        void selectionUpdated(Set<Long> to);
     }
 }
