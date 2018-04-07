@@ -144,7 +144,7 @@ public class QueryLogAdapter extends DatabaseAdapter<DNSQuery, QueryLogAdapter.V
     }
 
     @Override
-    public void cleanup() {
+    protected void cleanup() {
         super.cleanup();
         layoutInflater = null;
     }

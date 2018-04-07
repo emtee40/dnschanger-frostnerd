@@ -124,7 +124,7 @@ public class RuleAdapter<T extends Activity &RuleImport.ImportStartedListener> e
     }
 
     @Override
-    public void cleanup() {
+    protected void cleanup() {
         super.cleanup();
         context = null;
         layoutInflater = null;

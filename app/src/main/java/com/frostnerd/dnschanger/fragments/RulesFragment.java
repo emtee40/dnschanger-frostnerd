@@ -93,7 +93,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
 
     @Override
     public void onDestroy() {
-        ruleAdapter.cleanup();
+        ruleAdapter.destroy();
         list.setAdapter(null);
         ruleAdapter = null;
         list = null;

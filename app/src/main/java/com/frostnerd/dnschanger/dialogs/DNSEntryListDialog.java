@@ -156,7 +156,7 @@ public class DNSEntryListDialog extends UtilityDialog {
 
     @Override
     protected void destroy(){
-        if(adapter != null)adapter.cleanup();
+        if(adapter != null)adapter.destroy();
         listener = null;
         entrySelected = null;
         selectedEntries = null;

@@ -104,7 +104,7 @@ public class DnsQueryFragment extends Fragment {
         super.onDestroy();
         if(resultList != null){
             if(resultList.getAdapter() != null){
-                ((QueryResultAdapter)resultList.getAdapter()).cleanup();
+                ((QueryResultAdapter)resultList.getAdapter()).destroy();
             }
             resultList.setAdapter(null);
         }
@@ -139,7 +139,7 @@ public class DnsQueryFragment extends Fragment {
                     Record[] response = lookup.run();
                     if(response == null)throw new IOException(lookup.getErrorString());
                     if(isAdded()){
-                        if(adapter != null) adapter.cleanup();
+                        if(adapter != null) adapter.destroy();
                         adapter = new QueryResultAdapter(requireContext(), response);
                         if(isAdded())Util.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
                             @Override

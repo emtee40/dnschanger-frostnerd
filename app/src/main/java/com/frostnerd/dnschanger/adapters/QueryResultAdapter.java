@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.utils.adapters.BaseAdapter;
 import com.frostnerd.utils.general.DesignUtil;
 
 import org.xbill.DNS.DClass;
@@ -24,7 +25,7 @@ import org.xbill.DNS.Type;
  * <p>
  * development@frostnerd.com
  */
-public class QueryResultAdapter extends RecyclerView.Adapter<QueryResultAdapter.ViewHolder> {
+public class QueryResultAdapter extends BaseAdapter<QueryResultAdapter.ViewHolder> {
     private Record[] answer;
     private Context context;
     private LayoutInflater layoutInflater;
@@ -35,7 +36,8 @@ public class QueryResultAdapter extends RecyclerView.Adapter<QueryResultAdapter.
         this.answer = answer;
     }
 
-    public void cleanup(){
+    @Override
+    protected void cleanup(){
         context = null;
         layoutInflater = null;
         answer = null;
@@ -49,24 +51,25 @@ public class QueryResultAdapter extends RecyclerView.Adapter<QueryResultAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull QueryResultAdapter.ViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
         LinearLayout layout = (LinearLayout) holder.itemView;
         int titleText;
-        if(position == 0)titleText = R.string.query_title_name;
-        else if(position == 1)titleText = R.string.query_title_ttl;
-        else if(position == 2)titleText = R.string.query_title_dclass;
-        else if(position == 3)titleText = R.string.query_title_type;
+        if (position == 0) titleText = R.string.query_title_name;
+        else if (position == 1) titleText = R.string.query_title_ttl;
+        else if (position == 2) titleText = R.string.query_title_dclass;
+        else if (position == 3) titleText = R.string.query_title_type;
         else titleText = R.string.query_title_answer;
-        int padding = (int)DesignUtil.dpToPixels(8, context), paddingLeft = position == 0 ? 0 : padding,
-                paddingRight = position == getItemCount()-1 ? 0 : padding;
-        TextView textView = (TextView)layout.getChildAt(0);
+        int padding = (int) DesignUtil.dpToPixels(8, context), paddingLeft = position == 0 ? 0 : padding,
+                paddingRight = position == getItemCount() - 1 ? 0 : padding;
+        TextView textView = (TextView) layout.getChildAt(0);
 
         textView.setText(titleText);
         textView.setTextColor(Color.parseColor("#FFFFFF"));
         textView.setPadding(paddingLeft, 0, paddingRight, 0);
         textView.setTypeface(null, Typeface.BOLD);
 
-        for(int i = 1; i < layout.getChildCount(); i++){
-            textView =  ((TextView)layout.getChildAt(i));
+        for (int i = 1; i < layout.getChildCount(); i++) {
+            textView = ((TextView) layout.getChildAt(i));
             textView.setText(getText(position, i));
             textView.setPadding(paddingLeft, padding, paddingRight, 0);
         }

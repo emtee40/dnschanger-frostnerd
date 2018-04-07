@@ -160,7 +160,7 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    public void cleanup() {
+    protected void cleanup() {
         super.cleanup();
         context = null;
         layoutInflater = null;
