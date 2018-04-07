@@ -119,6 +119,11 @@ public class RuleAdapter<T extends Activity &RuleImport.ImportStartedListener> e
     }
 
     @Override
+    protected boolean beforeReload() {
+        return true;
+    }
+
+    @Override
     public void cleanup() {
         super.cleanup();
         context = null;

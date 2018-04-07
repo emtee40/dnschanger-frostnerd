@@ -139,6 +139,11 @@ public class QueryLogAdapter extends DatabaseAdapter<DNSQuery, QueryLogAdapter.V
     }
 
     @Override
+    protected boolean beforeReload() {
+        return true;
+    }
+
+    @Override
     public void cleanup() {
         super.cleanup();
         layoutInflater = null;
