@@ -268,6 +268,9 @@ public class MainFragment extends Fragment {
         if(settingV6 || customPorts){
             dns1.setInputType(InputType.TYPE_CLASS_TEXT);
             dns2.setInputType(InputType.TYPE_CLASS_TEXT);
+        } else {
+            dns1.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            dns2.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         }
         if(!settingV6){
             InputFilter filter = new InputCharacterFilter(customPorts ?
