@@ -126,7 +126,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 LogFactory.writeMessage(requireContext(), LOG_TAG, "Preference " + preference.getKey() + " was changed to " +
-                        newValue + ", Type: " + PreferenceHelper.getType(newValue));
+                        newValue + ", Type: " + Preferences.guessType(newValue));
                 boolean value = (Boolean) newValue;
                 if (value && !devicePolicyManager.isAdminActive(deviceAdmin)) {
                     LogFactory.writeMessage(requireContext(), LOG_TAG, "User wants app to function as DeviceAdmin but access isn't granted yet. Showing dialog explaining Device Admin");
@@ -171,7 +171,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                preferences.put(preference.getKey(), newValue);
                 LogFactory.writeMessage(requireContext(), LOG_TAG, "Preference " + preference.getKey() + " was changed to " +
-                        newValue + ", Type: " + PreferenceHelper.getType(newValue));
+                        newValue + ", Type: " + Preferences.guessType(newValue));
                 boolean val = (Boolean) newValue;
                 if (!val) {
                     debugCategory.removePreference(sendDebugPreference);
@@ -447,7 +447,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             LogFactory.writeMessage(requireContext(), LOG_TAG, "Preference " + preference.getKey() + " was changed to " +
-                    newValue + ", Type: " + PreferenceHelper.getType(newValue));
+                    newValue + ", Type: " + Preferences.guessType(newValue));
             Preferences.getInstance(requireContext()).put(preference.getKey(), newValue, false);
             String key = preference.getKey();
             if((key.equalsIgnoreCase("setting_show_notification") || key.equalsIgnoreCase("show_used_dns") ||

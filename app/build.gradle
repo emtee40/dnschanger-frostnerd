@@ -43,6 +43,7 @@ dependencies {
     implementation project(path: ':AndroidUtils:library')
     testImplementation 'junit:junit:4.12'
     testImplementation "org.robolectric:robolectric:3.6.1"
+    implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'dnsjava:dnsjava:2.1.8'
     implementation 'org.pcap4j:pcap4j-core:1.7.3'
     implementation 'org.pcap4j:pcap4j-packetfactory-static:1.7.3'

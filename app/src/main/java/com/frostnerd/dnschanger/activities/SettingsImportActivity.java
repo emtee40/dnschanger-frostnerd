@@ -12,6 +12,10 @@ import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.permissions.PermissionsUtil;
 import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.utils.preferences.util.PreferenceHelper;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -78,7 +82,7 @@ public class SettingsImportActivity extends Activity {
                 else data.append(line);
             }
             LogFactory.writeMessage(c, LOG_TAG, "Data read: " + data);
-            PreferenceHelper.importFromStringAndPut(Preferences.getInstance(c), data.toString(), "<<>>");
+            PreferenceHelper.importFromJSON(Preferences.getInstance(c), new Gson().fromJson(data.toString(), JsonObject.class));
             LogFactory.writeMessage(c, LOG_TAG, "Imported data and added to preferences.");
         } catch (Exception e) {
             LogFactory.writeStackTrace(c, LogFactory.Tag.ERROR, e);
