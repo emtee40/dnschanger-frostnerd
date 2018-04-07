@@ -32,6 +32,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
+import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.AdvancedSettingsActivity;
@@ -52,7 +53,6 @@ import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.utils.preferences.searchablepreferences.SearchSettings;
 import com.frostnerd.utils.preferences.searchablepreferences.v14.PreferenceSearcher;
 import com.frostnerd.utils.preferences.searchablepreferences.v14.SearchablePreference;
-import com.frostnerd.utils.preferences.util.PreferenceHelper;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -205,7 +205,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 Uri zipURI = FileProvider.getUriForFile(requireContext(), "com.frostnerd.dnschanger", zip);
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                         "mailto", "support@frostnerd.com", null));
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " - " + BuildConfig.VERSION_NAME);
                 emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.mail_debug_text));
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, "support@frostnerd.com");
                 for (ResolveInfo resolveInfo : requireContext().getPackageManager().queryIntentActivities(emailIntent, PackageManager.MATCH_DEFAULT_ONLY)) {
