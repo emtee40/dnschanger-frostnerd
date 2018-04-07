@@ -67,7 +67,7 @@ public class Preferences extends com.frostnerd.utils.preferences.Preferences {
             builder.key(s).ofType(Type.BOOLEAN).doneWithKey();
         }
 
-        builder.key("theme").ofType(Type.INTEGER).doneWithKey();
+        builder.key("theme").ofType(Type.STRING).doneWithKey();
         builder.key("tcp_timeout").ofType(Type.INTEGER).doneWithKey();
         builder.key("launches").ofType(Type.INTEGER).doneWithKey();
         builder.key("autopause_apps_count").ofType(Type.INTEGER).doneWithKey();
