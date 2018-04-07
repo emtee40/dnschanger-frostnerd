@@ -158,7 +158,7 @@ public class MainFragment extends Fragment {
         running_indicator = findViewById(R.id.running_indicator);
         startStopButton = (Button) findViewById(R.id.startStopButton);
 
-        if(settingV6){
+        if(settingV6 || PreferencesAccessor.areCustomPortsEnabled(requireContext())){
             dns1.setInputType(InputType.TYPE_CLASS_TEXT);
             dns2.setInputType(InputType.TYPE_CLASS_TEXT);
         }
