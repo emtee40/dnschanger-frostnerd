@@ -290,22 +290,25 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             @Override
             public boolean onPreferenceChange(Preference preference, final Object newValue) {
                 final boolean val = (boolean) newValue;
-               preferences.put(preference.getKey(), newValue);
-                if (!val)
+                if (!val){
                     new AlertDialog.Builder(requireContext(), ThemeHandler.getDialogTheme(requireContext())).setNegativeButton(R.string.cancel, null).
                             setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    v6Enabled.setEnabled(val);
+                                    preferences.put("setting_ipv4_enabled", false);
+                                    v6Enabled.setEnabled(false);
                                     if (Util.isServiceRunning(requireContext()))
                                         requireContext().startService(new Intent(requireContext(), DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true));
-                                    v4Enabled.setChecked(val);
+                                    v4Enabled.setChecked(false);
                                 }
                             }).setTitle(R.string.warning).setMessage(R.string.warning_disabling_v4).show();
-                else if (Util.isServiceRunning(requireContext())) {
-                    requireContext().startService(new Intent(requireContext(), DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true));
+                }else{
+                    v6Enabled.setEnabled(true);
+                    preferences.put("setting_ipv4_enabled", true);
+                    if (Util.isServiceRunning(requireContext())) {
+                        requireContext().startService(new Intent(requireContext(), DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true));
+                    }
                 }
-                v6Enabled.setEnabled(val);
                 return val;
             }
         });
