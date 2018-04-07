@@ -10,6 +10,8 @@ import com.frostnerd.utils.preferences.restrictions.PreferenceRestriction;
 import com.frostnerd.utils.preferences.restrictions.PreferencesRestrictionBuilder;
 import com.frostnerd.utils.preferences.restrictions.Type;
 
+import java.util.Arrays;
+
 /**
  * Copyright Daniel Wolf 2018
  * All rights reserved.
@@ -67,12 +69,13 @@ public class Preferences extends com.frostnerd.utils.preferences.Preferences {
             builder.key(s).ofType(Type.BOOLEAN).doneWithKey();
         }
 
-        builder.key("theme").ofType(Type.STRING).doneWithKey();
+        builder.key("theme").ofType(Type.STRING).shouldBeOneOf(Arrays.asList("1", "2", "3")).always().doneWithKey();
         builder.key("tcp_timeout").ofType(Type.INTEGER).doneWithKey();
         builder.key("launches").ofType(Type.INTEGER).doneWithKey();
         builder.key("autopause_apps_count").ofType(Type.INTEGER).doneWithKey();
         builder.key("autopause_apps").ofType(Type.ANY_SAVEABLE).doneWithKey();
-        builder.key("dialogtheme").ofType(Type.INTEGER).nextKey("apptheme").ofType(Type.INTEGER).doneWithKey();
+        builder.key("dialogtheme").ofType(Type.INTEGER).shouldBeOneOf(Arrays.asList(1, 2, 3)).always()
+                .nextKey("apptheme").ofType(Type.INTEGER).shouldBeOneOf(Arrays.asList(1, 2, 3)).always().doneWithKey();
         restrict(builder.build());
     }
 }
