@@ -56,6 +56,7 @@ public class CurrentNetworksFragment extends Fragment {
         boolean vpnRunning = Util.isServiceThreadRunning();
         for(Network ntw: mgr.getAllNetworks()){
             dnsProperty = new DNSProperties(mgr.getLinkProperties(ntw));
+            if(dnsProperty.ipv4Servers.size() == 0 && dnsProperty.ipv6Servers.size() == 0)continue;
             if(!vpnRunning || !dnsProperty.networkName.equals("tun0"))dnsProperties.add(dnsProperty);
         }
         final ListView list = content.findViewById(R.id.list);
