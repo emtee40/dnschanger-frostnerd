@@ -5,7 +5,6 @@ import android.database.Cursor;
 
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSRule;
-import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.database.orm.parser.ParsedEntity;
 import com.frostnerd.utils.database.orm.parser.columns.Column;
 import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;

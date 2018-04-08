@@ -3,7 +3,6 @@ package com.frostnerd.dnschanger;
 import android.app.Application;
 
 import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
-import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 
 /**

@@ -15,7 +15,6 @@ import com.frostnerd.utils.adapters.BaseAdapter;
 import com.frostnerd.utils.general.DesignUtil;
 
 import org.xbill.DNS.DClass;
-import org.xbill.DNS.RRset;
 import org.xbill.DNS.Record;
 import org.xbill.DNS.Type;
 

@@ -7,13 +7,9 @@ import android.os.IBinder;
 import android.os.ParcelFileDescriptor;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.system.ErrnoException;
 import android.system.OsConstants;
 
 import com.frostnerd.utils.networking.NetworkUtil;
-
-import java.io.FileDescriptor;
-import java.io.IOException;
 
 /**
  * Copyright Daniel Wolf 2017

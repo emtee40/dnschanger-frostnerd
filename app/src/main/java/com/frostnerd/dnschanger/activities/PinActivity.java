@@ -1,7 +1,6 @@
 package com.frostnerd.dnschanger.activities;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.KeyguardManager;
 import android.content.BroadcastReceiver;

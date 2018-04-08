@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.adapters.QueryLogAdapter;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.accessors.QueryLogger;

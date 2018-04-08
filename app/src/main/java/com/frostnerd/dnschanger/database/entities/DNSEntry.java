@@ -11,7 +11,6 @@ import com.frostnerd.utils.database.orm.annotations.Serialized;
 import com.frostnerd.utils.database.orm.annotations.Table;
 import com.frostnerd.utils.database.orm.annotations.Unique;
 
-import java.util.Comparator;
 import java.util.TreeMap;
 
 @Table(name = "DNSEntry")

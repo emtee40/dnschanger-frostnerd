@@ -28,7 +28,6 @@ import com.frostnerd.utils.networking.NetworkUtil;
 
 import org.xbill.DNS.Lookup;
 import org.xbill.DNS.Name;
-import org.xbill.DNS.Options;
 import org.xbill.DNS.Record;
 import org.xbill.DNS.Resolver;
 import org.xbill.DNS.SimpleResolver;

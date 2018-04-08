@@ -13,7 +13,6 @@ import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.accessors.DNSResolver;
 import com.frostnerd.dnschanger.database.accessors.QueryLogger;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
-import com.frostnerd.dnschanger.util.Util;
 
 import org.pcap4j.packet.IpPacket;
 import org.pcap4j.packet.IpSelector;

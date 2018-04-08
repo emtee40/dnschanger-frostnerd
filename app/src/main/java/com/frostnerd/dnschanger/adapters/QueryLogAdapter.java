@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
-import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.adapters.DatabaseAdapter;
 import com.frostnerd.utils.database.orm.parser.columns.Column;
 import com.frostnerd.utils.database.orm.statementoptions.queryoptions.OrderOption;

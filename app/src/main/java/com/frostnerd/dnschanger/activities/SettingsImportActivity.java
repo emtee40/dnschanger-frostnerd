@@ -15,8 +15,6 @@ import com.frostnerd.utils.preferences.util.PreferenceHelper;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
