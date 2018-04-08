@@ -233,6 +233,7 @@
                 <data android:scheme="uri" />
                 <data android:scheme="http" />
                 <data android:scheme="https" />
+                <data android:scheme="application" />
                 <data android:mimeType="*/*" />
                 <data android:host="*" />
                 <data android:pathPattern=".*\\.settings" />

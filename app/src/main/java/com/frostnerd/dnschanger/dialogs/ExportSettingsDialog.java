@@ -129,7 +129,7 @@ public class ExportSettingsDialog extends UtilityDialog {
                         public void onClick(DialogInterface dialog, int which) {
                             LogFactory.writeMessage(context, LOG_TAG, "User choose to share exported settings file");
                             Intent intentShareFile = new Intent(Intent.ACTION_SEND);
-                            intentShareFile.setType("text/plain");
+                            intentShareFile.setType("application/pdf");
                             intentShareFile.putExtra(Intent.EXTRA_STREAM,  FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", f));
                             intentShareFile.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.settings));
                             intentShareFile.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.settings));
