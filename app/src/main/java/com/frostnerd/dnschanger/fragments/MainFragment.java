@@ -55,7 +55,7 @@ import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.utils.textfilers.InputCharacterFilter;
 
 import org.xbill.DNS.DClass;
-import org.xbill.DNS.Message;
+import org.xbill.DNS.Record;
 import org.xbill.DNS.Type;
 
 import java.util.ArrayList;
@@ -466,7 +466,7 @@ public class MainFragment extends Fragment {
         for(final IPPortPair pair: servers){
             DNSQueryUtil.runAsyncDNSQuery(pair, "frostnerd.com.", PreferencesAccessor.sendDNSOverTCP(requireContext()), Type.A, DClass.IN, new Util.DNSQueryResultListener() {
                 @Override
-                public void onSuccess(Message response) {
+                public void onSuccess(Record[] response) {
                     callback.checkProgress(pair, true);
                 }
 

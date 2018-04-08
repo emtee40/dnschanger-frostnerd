@@ -26,7 +26,6 @@ import android.util.Base64OutputStream;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.activities.ShortcutActivity;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
@@ -41,7 +40,7 @@ import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.networking.NetworkUtil;
 
-import org.xbill.DNS.Message;
+import org.xbill.DNS.Record;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -320,7 +319,7 @@ public final class Util {
     }
 
     public interface DNSQueryResultListener{
-        void onSuccess(Message response);
+        void onSuccess(Record[] response);
         void onError(@Nullable Exception e);
     }
 }

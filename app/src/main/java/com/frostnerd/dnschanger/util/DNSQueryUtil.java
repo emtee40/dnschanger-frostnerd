@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 
 import org.xbill.DNS.DClass;
-import org.xbill.DNS.Message;
+import org.xbill.DNS.Lookup;
 import org.xbill.DNS.Name;
 import org.xbill.DNS.Record;
 import org.xbill.DNS.Resolver;
@@ -31,7 +31,7 @@ public class DNSQueryUtil {
         runAsyncDNSQuery(PreferencesAccessor.isIPv4Enabled(context) ? PreferencesAccessor.Type.DNS1.getPair(context) :
                 PreferencesAccessor.Type.DNS1_V6.getPair(context), "frostnerd.com", false, Type.A, DClass.ANY, new Util.DNSQueryResultListener() {
             @Override
-            public void onSuccess(Message response) {
+            public void onSuccess(Record[] response) {
                 callback.onCheckDone(true);
             }
 
@@ -42,10 +42,10 @@ public class DNSQueryUtil {
         }, 2);
     }
 
-    public static void startDNSServerConnectivityCheck(@NonNull final Context context, @NonNull final IPPortPair server, @NonNull final Util.ConnectivityCheckCallback callback){
+    public static void startDNSServerConnectivityCheck(@NonNull final IPPortPair server, @NonNull final Util.ConnectivityCheckCallback callback){
         runAsyncDNSQuery(server, "frostnerd.com", false, Type.A, DClass.ANY, new Util.DNSQueryResultListener() {
             @Override
-            public void onSuccess(Message response) {
+            public void onSuccess(Record[] response) {
                 callback.onCheckDone(true);
             }
 
@@ -66,12 +66,11 @@ public class DNSQueryUtil {
                     resolver.setPort(server.getPort());
                     resolver.setTCP(tcp);
                     resolver.setTimeout(timeout);
-                    Name name = Name.fromString(query.endsWith(".") ? query : query + ".");
-                    Record record = Record.newRecord(name, type, dClass);
-                    Message query = Message.newQuery(record);
-                    Message response = resolver.send(query);
-                    if(response.getSectionRRsets(1) == null)throw new IllegalStateException("Answer is null");
-                    resultListener.onSuccess(response);
+                    Lookup lookup = new Lookup(Name.fromString(query.endsWith(".") ? query : query + "."), type, dClass);
+                    lookup.setResolver(resolver);
+                    Record[] result = lookup.run();
+                    if(result == null) throw new IllegalStateException("The result is null");
+                    resultListener.onSuccess(result);
                 } catch (IOException e) {
                     resultListener.onError(e);
                 }
@@ -79,19 +78,18 @@ public class DNSQueryUtil {
         }.start();
     }
 
-    public static Message runSyncDNSQuery(final IPPortPair server, final String query, final boolean tcp, final int type,
-                                          final int dClass, Util.DNSQueryResultListener dnsQueryResultListener, final int timeout){
+    public static Record[] runSyncDNSQuery(final IPPortPair server, final String query, final boolean tcp, final int type,
+                                          final int dClass, final int timeout){
         try {
             Resolver resolver = new SimpleResolver(server.getAddress());
             resolver.setPort(server.getPort());
             resolver.setTCP(tcp);
             resolver.setTimeout(timeout);
-            Name name = Name.fromString(query.endsWith(".") ? query : query + ".");
-            Record record = Record.newRecord(name, type, dClass);
-            Message mquery = Message.newQuery(record);
-            Message response = resolver.send(mquery);
-            if(response.getSectionRRsets(1) == null)throw new IllegalStateException("Answer is null");
-            return response;
+            Lookup lookup = new Lookup(Name.fromString(query.endsWith(".") ? query : query + "."), type, dClass);
+            lookup.setResolver(resolver);
+            Record[] result = lookup.run();
+            if(result == null) throw new IllegalStateException("The result is null");
+            return result;
         } catch (IOException e) {
             return null;
         }
