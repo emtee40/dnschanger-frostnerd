@@ -102,6 +102,12 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
                 "Anycast servers of the OpenNIC project. For faster speeds use a server located closer to you.", false), 3);
         defaultDNSEntries.put(DNSEntry.constructSimple("Verisign", "Verisign",
                 "64.6.64.6", "64.6.65.6", "2620:74:1b::1:1", "2620:74:1b::2:2", "", false),  3);
+        defaultDNSEntries.put(DNSEntry.constructSimple("CleanBrowsing Family Filter", "CleanBrowsing",
+                "185.228.168.168", "185.228.168.169", "2a0d:2a00:1::", "2a0d:2a00:2::",
+                "Blocks access to all adult sites (including sites like reddit). Google, Bing and Youtube are set to the Safe Mode.", false), 3);
+        defaultDNSEntries.put(DNSEntry.constructSimple("CleanBrowsing Adult Filter", "CleanBrowsing",
+                "185.228.168.10", "185.228.168.11", "2a0d:2a00:1::1", "2a0d:2a00:2::1",
+                "Blocks access to all adult sites. Sites like Reddit are allowed. Google and Bing are set to the Safe Mode.", false), 3);
     }
 
     public DNSEntry(String name, String shortName, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6, String description, boolean customEntry) {
