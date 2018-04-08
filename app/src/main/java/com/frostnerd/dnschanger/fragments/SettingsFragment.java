@@ -268,10 +268,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 String val = (String) newValue;
-                int theme = val.equalsIgnoreCase("1") ? R.style.AppTheme : (val.equalsIgnoreCase("2") ? R.style.AppTheme_Mono : R.style.AppTheme_Dark),
-                        dialogTheme = val.equalsIgnoreCase("1") ? R.style.DialogTheme : (val.equalsIgnoreCase("2") ? R.style.DialogTheme_Mono : R.style.DialogTheme_Dark);
+                int theme = Integer.parseInt(val);
                 ThemeHandler.updateAppTheme(requireContext(), theme);
-                ThemeHandler.updateDialogTheme(requireContext(), dialogTheme);
+                ThemeHandler.updateDialogTheme(requireContext(), theme);
                 IntentUtil.restartActivity(Util.getActivity(SettingsFragment.this));
                 return true;
             }

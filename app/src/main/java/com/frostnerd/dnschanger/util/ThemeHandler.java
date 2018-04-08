@@ -32,10 +32,26 @@ public class ThemeHandler {
     }
 
     public static int getDialogTheme(Context context) {
+        switch(Preferences.getInstance(context).getInteger("dialogtheme", 2)) {
+            case 1: return R.style.DialogTheme;
+            case 2: return R.style.DialogTheme_Mono;
+            case 3: return R.style.DialogTheme_Dark;
+            case R.style.AppTheme: Preferences.getInstance(context).put("dialogtheme", 1); return R.style.DialogTheme;
+            case R.style.AppTheme_Mono: Preferences.getInstance(context).put("dialogtheme", 2); return R.style.DialogTheme_Mono;
+            case R.style.AppTheme_Dark: Preferences.getInstance(context).put("dialogtheme", 3); return R.style.DialogTheme_Dark;
+        }
         return Preferences.getInstance(context).getInteger("dialogtheme", R.style.DialogTheme_Mono);
     }
 
     public static int getAppTheme(Context context) {
+        switch(Preferences.getInstance(context).getInteger("apptheme", 2)) {
+            case 1: return R.style.AppTheme;
+            case 2: return R.style.AppTheme_Mono;
+            case 3: return R.style.AppTheme_Dark;
+            case R.style.AppTheme: Preferences.getInstance(context).put("apptheme", 1); return R.style.AppTheme;
+            case R.style.AppTheme_Mono: Preferences.getInstance(context).put("apptheme", 2); return R.style.AppTheme_Mono;
+            case R.style.AppTheme_Dark: Preferences.getInstance(context).put("apptheme", 3); return R.style.AppTheme_Dark;
+        }
         return Preferences.getInstance(context).getInteger("apptheme", R.style.AppTheme_Mono);
     }
 

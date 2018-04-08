@@ -75,8 +75,8 @@ public class Preferences extends com.frostnerd.utils.preferences.Preferences {
         builder.key("launches").ofType(Type.INTEGER).doneWithKey();
         builder.key("autopause_apps_count").ofType(Type.INTEGER).doneWithKey();
         builder.key("autopause_apps").ofType(Type.ANY_SAVEABLE).doneWithKey();
-        builder.key("dialogtheme").ofType(Type.INTEGER).shouldBeOneOf(Arrays.asList(R.style.DialogTheme, R.style.DialogTheme_Dark, R.style.DialogTheme_Mono)).always()
-                .nextKey("apptheme").ofType(Type.INTEGER).shouldBeOneOf(Arrays.asList(R.style.AppTheme, R.style.AppTheme_Dark, R.style.AppTheme_Mono)).always().doneWithKey();
+        builder.key("dialogtheme").ofType(Type.INTEGER).shouldBeOneOf(Arrays.asList(1,2,3)).always()
+                .nextKey("apptheme").ofType(Type.INTEGER).shouldBeOneOf(Arrays.asList(1,2,3)).always().doneWithKey();
         restrict(builder.build());
     }
 }
