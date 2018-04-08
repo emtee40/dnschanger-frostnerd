@@ -52,12 +52,7 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
     @RowID
     private long ID;
 
-    public static final TreeMap<DNSEntry, Integer> defaultDNSEntries = new TreeMap<>(new Comparator<DNSEntry>() {
-        @Override
-        public int compare(DNSEntry dnsEntry, DNSEntry t1) {
-            return dnsEntry.compareTo(t1);
-        }
-    });
+    public static final TreeMap<DNSEntry, Integer> defaultDNSEntries = new TreeMap<>();
     static {
         defaultDNSEntries.put(DNSEntry.constructSimple("Google", "Google", "8.8.8.8",
                 "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844", "",false), 0);
