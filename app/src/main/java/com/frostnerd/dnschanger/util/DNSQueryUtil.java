@@ -71,7 +71,7 @@ public class DNSQueryUtil {
                     Record[] result = lookup.run();
                     if(result == null) throw new IllegalStateException("The result is null");
                     resultListener.onSuccess(result);
-                } catch (IOException e) {
+                } catch (IOException | IllegalStateException e) {
                     resultListener.onError(e);
                 }
             }
@@ -90,7 +90,7 @@ public class DNSQueryUtil {
             Record[] result = lookup.run();
             if(result == null) throw new IllegalStateException("The result is null");
             return result;
-        } catch (IOException e) {
+        } catch (IOException | IllegalStateException e) {
             return null;
         }
     }
