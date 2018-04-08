@@ -320,4 +320,6 @@
     <string name="hint_dns2">DNS 2</string>
     <string name="hint_dns_entry_name">Name</string>
     <string name="hint_pin">PIN</string>
+    <string name="loading_exporting_queries">Exporting Anfragen, bitte warten…</string>
+    <string name="exported_dns_queries">[x] Anfragen exportiert.</string>
 </resources>

@@ -316,4 +316,6 @@
     <string name="hint_dns2">DNS 2</string>
     <string name="hint_dns_entry_name">Tên</string>
     <string name="hint_pin">GHIM</string>
+    <string name="loading_exporting_queries">Đang xuất truy vấn, vui lòng đợi…</string>
+    <string name="exported_dns_queries">[x] truy vấn được xuất.</string>
 </resources>

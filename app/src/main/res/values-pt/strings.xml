@@ -319,4 +319,6 @@
     <string name="hint_dns2">DNS 2</string>
     <string name="hint_dns_entry_name">Nome</string>
     <string name="hint_pin">PIN</string>
+    <string name="loading_exporting_queries">Exportando consultas, por favor aguarde…</string>
+    <string name="exported_dns_queries">[x] consultas exportadas.</string>
 </resources>
