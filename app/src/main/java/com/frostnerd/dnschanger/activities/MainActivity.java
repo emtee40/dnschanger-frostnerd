@@ -297,6 +297,11 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
                 public Fragment getFragment(@Nullable Bundle arguments) {
                     return new CurrentNetworksFragment();
                 }
+            }).accessLastItemAndContinue(new DrawerItemCreator.ItemAccessor() {
+                @Override
+                public void access(DrawerItem item) {
+                    item.setInvalidateActivityMenu(true);
+                }
             });
         }
         if(PreferencesAccessor.isAdvancedModeEnabled(this)){
