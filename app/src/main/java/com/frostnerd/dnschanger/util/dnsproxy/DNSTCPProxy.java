@@ -3,6 +3,7 @@ package com.frostnerd.dnschanger.util.dnsproxy;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.system.ErrnoException;
 import android.system.Os;
@@ -294,7 +295,10 @@ public class DNSTCPProxy extends DNSProxy{
         }
         synchronized (futureSocketAnswers){
                 try {
-                    for(Socket socket: futureSocketAnswers.keySet())socket.close();
+                    for(Map.Entry<Socket, PacketWrap> entry: futureSocketAnswers.entrySet()){
+                        entry.getKey().close();
+                        entry.getValue().packet = null;
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -312,7 +316,7 @@ public class DNSTCPProxy extends DNSProxy{
     }
 
     private class PacketWrap{
-        private final IpPacket packet;
+        private IpPacket packet;
         private final long time;
 
         public PacketWrap(IpPacket packet) {

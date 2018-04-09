@@ -31,6 +31,7 @@ import java.net.DatagramSocket;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -274,7 +275,10 @@ public class DNSUDPProxy extends DNSProxy{
         } catch (Exception ignored) {
         }
         synchronized (futureSocketAnswers){
-            for(DatagramSocket socket: futureSocketAnswers.keySet())socket.close();
+            for(Map.Entry<DatagramSocket, PacketWrap> entry: futureSocketAnswers.entrySet()){
+                entry.getKey().close();
+                entry.getValue().packet = null;
+            }
             futureSocketAnswers.clear();
         }
         upstreamServers.clear();
@@ -289,7 +293,7 @@ public class DNSUDPProxy extends DNSProxy{
     }
 
     private class PacketWrap{
-        private final IpPacket packet;
+        private IpPacket packet;
         private final long time;
 
         public PacketWrap(IpPacket packet) {
