@@ -76,7 +76,7 @@ public class DNSEntryListDialog extends UtilityDialog {
                         if(selectedEntries.size() != 1){
                             new DNSCreationDialog(getContext(), new DNSCreationDialog.OnCreationFinishedListener() {
                                 @Override
-                                public void onCreationFinished(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6) {
+                                public void onCreationFinished(@NonNull String name, @NonNull IPPortPair dns1, IPPortPair dns2, @NonNull IPPortPair dns1V6, IPPortPair dns2V6) {
                                     DatabaseHelper.getInstance(getContext()).insert(new DNSEntry(name, name, dns1,
                                             dns2, dns1V6, dns2V6, "", true));
                                     adapter.reloadData();
@@ -86,7 +86,7 @@ public class DNSEntryListDialog extends UtilityDialog {
                             //noinspection ConstantConditions
                             new DNSCreationDialog(getContext(), new DNSCreationDialog.OnEditingFinishedListener() {
                                 @Override
-                                public void editingFinished(DNSEntry entry) {
+                                public void editingFinished(@NonNull DNSEntry entry) {
                                     DatabaseHelper.getInstance(getContext()).update(entry);
                                     adapter.reloadData();
                                 }

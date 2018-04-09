@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -50,7 +51,7 @@ public class DNSCreationDialog extends UtilityDialog {
     public DNSCreationDialog(@NonNull Context context, @NonNull final OnEditingFinishedListener listener, final DNSEntry entry) {
         this(context, new OnCreationFinishedListener() {
             @Override
-            public void onCreationFinished(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6) {
+            public void onCreationFinished(@NonNull String name, @NonNull IPPortPair dns1, IPPortPair dns2, @NonNull IPPortPair dns1V6, IPPortPair dns2V6) {
                 entry.setDns1(dns1);
                 entry.setDns2(dns2);
                 entry.setDns1V6(dns1V6);
@@ -223,11 +224,12 @@ public class DNSCreationDialog extends UtilityDialog {
     }
 
     public interface OnCreationFinishedListener {
-        void onCreationFinished(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6);
+        void onCreationFinished(@NonNull String name, @NonNull IPPortPair dns1, @Nullable IPPortPair dns2,
+                                @NonNull IPPortPair dns1V6, @Nullable IPPortPair dns2V6);
     }
 
     public interface OnEditingFinishedListener{
-        void editingFinished(DNSEntry entry);
+        void editingFinished(@NonNull DNSEntry entry);
     }
 
     public enum Mode{
