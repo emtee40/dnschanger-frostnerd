@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.util.ThemeHandler;
+import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.permissions.PermissionsUtil;
 import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.utils.preferences.util.PreferenceHelper;
@@ -37,8 +38,8 @@ public class SettingsImportActivity extends Activity {
         setTheme(ThemeHandler.getAppTheme(this));
         LogFactory.writeMessage(this, LOG_TAG, "Created activity", getIntent());
         Intent intent = getIntent();
-        if (intent.getAction().equals(Intent.ACTION_VIEW) && PermissionsUtil.canReadExternalStorage(this)) {
-            Uri uri = intent.getData();
+        if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_VIEW) && PermissionsUtil.canReadExternalStorage(this)) {
+            Uri uri = Utils.requireNonNull(intent.getData());
             LogFactory.writeMessage(this, LOG_TAG, "Importing from given URI: " + uri);
             try {
                 importFromStream(this, this.getContentResolver().openInputStream(uri));

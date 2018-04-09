@@ -1,6 +1,7 @@
 package com.frostnerd.dnschanger.util;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -15,6 +16,7 @@ import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
 import android.service.quicksettings.TileService;
+import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
@@ -118,7 +120,7 @@ public final class Util {
 
     public static void updateAppShortcuts(Context context) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N_MR1) {
-            ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
+            ShortcutManager shortcutManager = Utils.requireNonNull(context.getSystemService(ShortcutManager.class));
             if (!PreferencesAccessor.areAppShortcutsEnabled(context)) {
                 shortcutManager.removeAllDynamicShortcuts();
                 return;
@@ -194,7 +196,7 @@ public final class Util {
         shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         shortcutIntent.putExtra("servers", serializableToString(servers));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            ShortcutManager shortcutManager = (ShortcutManager) context.getSystemService(Activity.SHORTCUT_SERVICE);
+            ShortcutManager shortcutManager = Utils.requireNonNull((ShortcutManager) context.getSystemService(Activity.SHORTCUT_SERVICE));
             if (shortcutManager.isRequestPinShortcutSupported()) {
                 ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(context, StringUtil.randomString(30))
                         .setIcon(Icon.createWithResource(context, R.mipmap.ic_launcher))
@@ -219,7 +221,7 @@ public final class Util {
 
     public static void startService(Context context, Intent intent){
         if(PreferencesAccessor.isEverythingDisabled(context))return;
-        if(intent.getComponent().getClassName().equals(DNSVpnService.class.getName()) &&
+        if(intent.getComponent() != null && intent.getComponent().getClassName().equals(DNSVpnService.class.getName()) &&
                 PreferencesAccessor.isNotificationEnabled(context) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             context.startForegroundService(intent);
         }else context.startService(intent);
@@ -227,12 +229,13 @@ public final class Util {
 
     public static String createNotificationChannel(Context context, boolean allowHiding){
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationManager notificationManager = Utils.requireNonNull((NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE));
             if(allowHiding && PreferencesAccessor.shouldHideNotificationIcon(context)){
-                NotificationChannel channel = new NotificationChannel("noIconChannel", context.getString(R.string.notification_channel_hiddenicon), NotificationManager.IMPORTANCE_MIN);
+                NotificationChannel channel = new NotificationChannel("noIconChannel", context.getString(R.string.notification_channel_hiddenicon), NotificationManager.IMPORTANCE_NONE);
                 channel.enableLights(false);
                 channel.enableVibration(false);
                 channel.setDescription(context.getString(R.string.notification_channel_hiddenicon_description));
+                channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
                 notificationManager.createNotificationChannel(channel);
                 return "noIconChannel";
             }else{
@@ -240,6 +243,7 @@ public final class Util {
                 channel.enableLights(false);
                 channel.enableVibration(false);
                 channel.setDescription(context.getString(R.string.notification_channel_default_description));
+                channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
                 notificationManager.createNotificationChannel(channel);
                 return "defaultchannel";
             }
@@ -255,7 +259,7 @@ public final class Util {
                 LogFactory.writeMessage(context, LOG_TAG, "Job is already running/scheduled, not doing anything");
                 return;
             }
-            JobScheduler scheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+            JobScheduler scheduler = Utils.requireNonNull((JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE));
             scheduler.schedule(new JobInfo.Builder(0, new ComponentName(context, ConnectivityJobAPI21.class)).setPersisted(true)
                     .setRequiresCharging(false).setMinimumLatency(0).setOverrideDeadline(0).build());
         } else {
@@ -265,8 +269,8 @@ public final class Util {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private static boolean isJobRunning(Context context, int jobID){
-        JobScheduler scheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+    private static boolean isJobRunning(Context context, @IntRange(from = 0) int jobID){
+        JobScheduler scheduler = Utils.requireNonNull((JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE));
         for ( JobInfo jobInfo : scheduler.getAllPendingJobs())
             if (jobInfo.getId() == jobID) return true;
         return false;

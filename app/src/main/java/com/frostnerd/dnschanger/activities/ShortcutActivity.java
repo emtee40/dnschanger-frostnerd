@@ -44,6 +44,7 @@ public class ShortcutActivity extends AppCompatActivity {
             if(!TextUtils.isEmpty(dns1v6))upstreamServers.add(new IPPortPair(dns1v6, 53, true));
             if(!TextUtils.isEmpty(dns2v6))upstreamServers.add(new IPPortPair(dns2v6, 53, true));
         }
+        //noinspection ConstantConditions
         LogFactory.writeMessage(this, LOG_TAG, upstreamServers.toString());
         if(Util.isServiceRunning(this)){
             LogFactory.writeMessage(this, LOG_TAG, "Service is already running");

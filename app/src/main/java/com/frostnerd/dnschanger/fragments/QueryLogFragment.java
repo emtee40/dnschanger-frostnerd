@@ -24,6 +24,7 @@ import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.accessors.QueryLogger;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
 import com.frostnerd.dnschanger.util.Util;
+import com.frostnerd.utils.general.Utils;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -104,7 +105,7 @@ public class QueryLogFragment extends Fragment implements SearchView.OnQueryText
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_rules, menu);
 
-        SearchManager searchManager = (SearchManager) requireContext().getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = Utils.requireNonNull((SearchManager) requireContext().getSystemService(Context.SEARCH_SERVICE));
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(Util.getActivity(this).getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default

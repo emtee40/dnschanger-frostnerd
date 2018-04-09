@@ -26,10 +26,10 @@ public class DNSResolver {
     public DNSResolver(Context context) {
         db = DatabaseHelper.getInstance(context);
         ParsedEntity<DNSRule> ruleEntity = db.getSQLHandler(DNSRule.class);
-        Column<DNSRule> targetColumn = ruleEntity.getTable().findColumn("target");
-        Column<DNSRule> hostColumn = ruleEntity.getTable().findColumn("host");
-        Column<DNSRule> ipv6Column = ruleEntity.getTable().findColumn("ipv6");
-        Column<DNSRule> wildcardColumn = ruleEntity.getTable().findColumn("wildcard");
+        Column<DNSRule> targetColumn = ruleEntity.getTable().requireColumn("target");
+        Column<DNSRule> hostColumn = ruleEntity.getTable().requireColumn("host");
+        Column<DNSRule> ipv6Column = ruleEntity.getTable().requireColumn("ipv6");
+        Column<DNSRule> wildcardColumn = ruleEntity.getTable().requireColumn("wildcard");
         wildcardCount = ruleEntity.getCount(db, WhereCondition.equal(wildcardColumn, "1"));
         WILDCARD_QUERY_RANDOM = "SELECT " + targetColumn.getColumnName() + " FROM " + ruleEntity.getTableName() +
                 " WHERE " + ipv6Column.getColumnName() + "" + "=? AND " + wildcardColumn.getColumnName()

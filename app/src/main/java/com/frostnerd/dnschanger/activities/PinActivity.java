@@ -123,8 +123,8 @@ public class PinActivity extends UtilityActivity {
         });
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M && PreferencesAccessor.canUseFingerprintForPin(this)) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) == PackageManager.PERMISSION_GRANTED){
-                FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
-                KeyguardManager keyguardManager = getSystemService(KeyguardManager.class);
+                FingerprintManager fingerprintManager = Utils.requireNonNull((FingerprintManager) getSystemService(FINGERPRINT_SERVICE));
+                KeyguardManager keyguardManager = Utils.requireNonNull(getSystemService(KeyguardManager.class));
                 fingerprintImage = findViewById(R.id.image);
                 if(fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints() && keyguardManager.isKeyguardSecure()) {
                     handler = new Handler();

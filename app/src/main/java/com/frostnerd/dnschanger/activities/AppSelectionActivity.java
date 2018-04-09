@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.general.DesignUtil;
+import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.lifecyclehelper.UtilityActivity;
 
 import java.lang.ref.SoftReference;
@@ -67,7 +68,7 @@ public class AppSelectionActivity extends UtilityActivity implements SearchView.
         setContentView(R.layout.activity_app_select);
         appList = findViewById(R.id.app_list);
         fabSettings = findViewById(R.id.fab_settings);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Utils.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         onlyInternet = getIntent() != null && getIntent().getBooleanExtra("onlyInternet",false);
         currentSelected = getIntent() != null && getIntent().hasExtra("apps") ? getIntent().getStringArrayListExtra("apps") : new ArrayList<String>();
@@ -285,7 +286,7 @@ public class AppSelectionActivity extends UtilityActivity implements SearchView.
                         if (isChecked) currentSelected.add(holder.appEntry.get().getPackageName());
                         else currentSelected.remove(holder.appEntry.get().getPackageName());
                         listAdapter.notifyItemChanged(0);
-                        getSupportActionBar().setSubtitle(getString(R.string.x_apps_selected).replace("[[x]]", currentSelected.size() + ""));
+                        Utils.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.x_apps_selected).replace("[[x]]", currentSelected.size() + ""));
                         changed = true;
                     }
                 });

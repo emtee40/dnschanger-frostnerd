@@ -52,6 +52,7 @@ import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.design.dialogs.LoadingDialog;
 import com.frostnerd.dnschanger.util.Preferences;
+import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.textfilers.InputCharacterFilter;
 
 import org.xbill.DNS.DClass;
@@ -320,9 +321,9 @@ public class MainFragment extends Fragment {
         LocalBroadcastManager.getInstance(requireContext()).registerReceiver(serviceStateReceiver, new IntentFilter(Util.BROADCAST_SERVICE_STATUS_CHANGE));
         LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(new Intent(Util.BROADCAST_SERVICE_STATE_REQUEST));
         setEditTextState();
-        ((AppCompatActivity)requireContext()).getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
-        Util.getActivity(this).invalidateOptionsMenu();
-        Util.getActivity(this).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        Utils.requireNonNull(((AppCompatActivity)requireContext()).getSupportActionBar()).setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
+        Utils.requireNonNull(Util.getActivity(this)).invalidateOptionsMenu();
+        Utils.requireNonNull(Util.getActivity(this)).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     @Override

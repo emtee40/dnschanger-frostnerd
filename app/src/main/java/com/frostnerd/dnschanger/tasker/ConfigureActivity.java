@@ -34,6 +34,7 @@ import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.dnschanger.util.Preferences;
+import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.textfilers.InputCharacterFilter;
 
 import java.util.ArrayList;
@@ -87,13 +88,14 @@ public class ConfigureActivity extends AppCompatActivity {
     }
 
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(ThemeHandler.getAppTheme(this));
         setContentView(R.layout.tasker_configure_layout);
         LogFactory.writeMessage(this, LOG_TAG, "Activity created", getIntent());
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Utils.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         customPorts = PreferencesAccessor.areCustomPortsEnabled(this);
 
         ipv4Enabled = PreferencesAccessor.isIPv4Enabled(this);
@@ -304,7 +306,7 @@ public class ConfigureActivity extends AppCompatActivity {
             setInputType();
             ed_dns1.setText(settingV6 ? dns1V6.formatForTextfield(customPorts) : dns1.formatForTextfield(customPorts));
             ed_dns2.setText(settingV6 ? dns2V6.formatForTextfield(customPorts) : dns2.formatForTextfield(customPorts));
-            getSupportActionBar().setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
+            Utils.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
         }else if(item.getItemId() == android.R.id.home){
             lastBackPress = System.currentTimeMillis();
             onBackPressed();

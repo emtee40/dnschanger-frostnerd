@@ -19,9 +19,9 @@ public class QueryLogger {
 
     public QueryLogger(DatabaseHelper databaseHelper){
         this.helper = databaseHelper;
-        String host = databaseHelper.findColumn(DNSQuery.class, "host").getColumnName(),
-                ipv6 = databaseHelper.findColumn(DNSQuery.class, "ipv6").getColumnName(),
-                time = databaseHelper.findColumn(DNSQuery.class, "time").getColumnName();
+        String host = databaseHelper.findColumnOrThrow(DNSQuery.class, "host").getColumnName(),
+                ipv6 = databaseHelper.findColumnOrThrow(DNSQuery.class, "ipv6").getColumnName(),
+                time = databaseHelper.findColumnOrThrow(DNSQuery.class, "time").getColumnName();
         insertStatement = "INSERT INTO " + databaseHelper.getTableName(DNSQuery.class) + "(" + host +
                 "," + ipv6 + "," + time + ")VALUES(?,?,?)";
     }

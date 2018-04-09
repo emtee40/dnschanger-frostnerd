@@ -119,7 +119,7 @@ public class DNSTCPProxy extends DNSProxy{
         resolver = new DNSResolver(context);
         this.vpnService = context;
         for(IPPortPair pair: upstreamDNSServers){
-            if(pair.getAddress() != null && !pair.getAddress().equals(""))this.upstreamServers.put(pair.getAddress(), pair.getPort());
+            if(pair != IPPortPair.getEmptyPair() && !pair.getAddress().equals(""))this.upstreamServers.put(pair.getAddress(), pair.getPort());
         }
         this.resolveLocalRules = resolveLocalRules;
         this.queryLogging = queryLogging;

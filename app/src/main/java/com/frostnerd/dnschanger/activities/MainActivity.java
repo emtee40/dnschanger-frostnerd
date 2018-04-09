@@ -194,7 +194,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
         if(getCurrentFragment() == settingsFragment){
             getMenuInflater().inflate(R.menu.menu_settings, menu);
 
-            SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
+            SearchManager searchManager = Utils.requireNonNull((SearchManager)getSystemService(Context.SEARCH_SERVICE));
             SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
             searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default

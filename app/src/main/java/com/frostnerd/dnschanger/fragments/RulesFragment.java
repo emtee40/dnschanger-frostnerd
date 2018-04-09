@@ -44,6 +44,7 @@ import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.design.MaterialEditText;
 import com.frostnerd.utils.general.DesignUtil;
+import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.networking.NetworkUtil;
 
 /**
@@ -312,7 +313,7 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_rules, menu);
 
-        SearchManager searchManager = (SearchManager) requireContext().getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = Utils.requireNonNull((SearchManager) requireContext().getSystemService(Context.SEARCH_SERVICE));
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(Util.getActivity(this).getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default

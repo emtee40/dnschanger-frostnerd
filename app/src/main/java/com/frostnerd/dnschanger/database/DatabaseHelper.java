@@ -118,6 +118,7 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public synchronized void close() {
         instance = null;

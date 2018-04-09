@@ -27,6 +27,7 @@ import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Util;
+import com.frostnerd.utils.general.Utils;
 
 import java.net.Inet4Address;
 import java.net.Inet6Address;
@@ -51,7 +52,7 @@ public class CurrentNetworksFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View content = inflater.inflate(R.layout.fragment_current_networks, container, false);
-        ConnectivityManager mgr = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager mgr = Utils.requireNonNull((ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE));
         DNSProperties dnsProperty;
         boolean vpnRunning = Util.isServiceThreadRunning();
         for(Network ntw: mgr.getAllNetworks()){

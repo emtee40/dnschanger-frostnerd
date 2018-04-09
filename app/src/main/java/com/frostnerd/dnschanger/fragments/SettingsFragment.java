@@ -530,7 +530,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             snackbar.setAction(R.string.show, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(snackbar != null)snackbar.dismiss();
+                    snackbar.dismiss();
                     Utils.goToLauncher(requireContext());
                 }
             });
@@ -554,7 +554,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_settings, menu);
 
-        SearchManager searchManager = (SearchManager)requireContext().getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = Utils.requireNonNull((SearchManager)requireContext().getSystemService(Context.SEARCH_SERVICE));
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(Util.getActivity(this).getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default

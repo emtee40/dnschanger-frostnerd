@@ -83,6 +83,7 @@ public class DNSEntryListDialog extends UtilityDialog {
                                 }
                             }).show();
                         }else {
+                            //noinspection ConstantConditions
                             new DNSCreationDialog(getContext(), new DNSCreationDialog.OnEditingFinishedListener() {
                                 @Override
                                 public void editingFinished(DNSEntry entry) {

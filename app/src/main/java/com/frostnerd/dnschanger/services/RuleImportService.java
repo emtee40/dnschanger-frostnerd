@@ -113,10 +113,10 @@ public class RuleImportService extends Service {
         int i = 0, currentCount;
         long rowID, lastRowID;
         String ruleTableName = DatabaseHelper.getInstance(this).getTableName(DNSRule.class),
-                columnHost = DatabaseHelper.getInstance(this).findColumn(DNSRule.class, "host").getColumnName(),
-                columnTarget = DatabaseHelper.getInstance(this).findColumn(DNSRule.class, "target").getColumnName(),
-                columnIPv6 = DatabaseHelper.getInstance(this).findColumn(DNSRule.class, "ipv6").getColumnName(),
-        columnWildcard = DatabaseHelper.getInstance(this).findColumn(DNSRule.class, "wildcard").getColumnName();
+                columnHost = DatabaseHelper.getInstance(this).findColumnOrThrow(DNSRule.class, "host").getColumnName(),
+                columnTarget = DatabaseHelper.getInstance(this).findColumnOrThrow(DNSRule.class, "target").getColumnName(),
+                columnIPv6 = DatabaseHelper.getInstance(this).findColumnOrThrow(DNSRule.class, "ipv6").getColumnName(),
+        columnWildcard = DatabaseHelper.getInstance(this).findColumnOrThrow(DNSRule.class, "wildcard").getColumnName();
         values.put(columnWildcard, "0");
         while(shouldContinue && configurations.size() != 0){
             Configuration configuration = configurations.removeFirst();
