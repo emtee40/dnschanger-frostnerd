@@ -38,6 +38,11 @@ public class Preferences extends com.frostnerd.utils.preferences.Preferences {
         PreferencesRestrictionBuilder builder = new PreferencesRestrictionBuilder();
         builder.key("dns1").ofType(Type.STRING).shouldNotBe(null).always().shouldNotBe("").always().shouldBeLike(Util.ipv4WithPort).always().doneWithKey();
         builder.key("dns1-v6").ofType(Type.STRING).shouldNotBe(null).always().shouldNotBe("").always().shouldBeLike(Util.ipv6WithPort).always().doneWithKey();
+        builder.key("dns2").ofType(Type.STRING).shouldNotBe(null).always().shouldBeLike(Util.ipv4WithPort)
+                .whenToStringIsNotEmpty().doneWithKey();
+        builder.key("dns2-v6").ofType(Type.STRING).shouldNotBe(null).always().shouldBeLike(Util.ipv4WithPort)
+                .whenToStringIsNotEmpty().doneWithKey();
+
         builder.key("setting_ipv6_enabled").ofType(Type.BOOLEAN).shouldNotBe(false).when(new PreferenceRestriction.Condition() {
             @Override
             public boolean isMet(@NonNull com.frostnerd.utils.preferences.Preferences preferences, @NonNull String key, @Nullable Object newValue) {
