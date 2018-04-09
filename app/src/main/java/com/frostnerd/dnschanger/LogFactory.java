@@ -169,8 +169,8 @@ public class LogFactory {
         writeMessage(context, Tag.INFO, "Device RAM: " + getTotalMemory());
         StringBuilder s = new StringBuilder();
         Map<String,Object> prefs = Preferences.getInstance(context).getAll(false);
-        for(String key: prefs.keySet())
-            s.append(key).append("->").append(prefs.get(key)).append("; ");
+        for(Map.Entry<String, Object> entry: prefs.entrySet())
+            s.append(entry.getKey()).append("->").append(entry.getValue()).append("; ");
         writeMessage(context, Tag.INFO, "Preferences: " + s);
         writeMessage(context, Tag.INFO, "Prepare caller stack: " + stacktraceToString(new Throwable(), true));
         writeMessage(context, Tag.NO_TAG, "--------------------------------------------------");

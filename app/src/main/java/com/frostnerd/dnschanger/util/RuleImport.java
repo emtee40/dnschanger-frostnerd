@@ -78,11 +78,11 @@ public class RuleImport {
                     if(lineBuffer != null && lineBuffer.size() != 0){ //We had a focus before which wasn't successful in finding the Type
                         HashMap<FileType, Integer> validLinesTemp = new HashMap<>(validLines);
                         validLinesTemp.remove(focus); //Remove the current focus from the temporary map (Otherwise it would increase its line count twice)
-                        for(FileType type: validLinesTemp.keySet()){ //Update the other types
-                            if(type.validateLine(line)){
-                                validLinesTemp.put(type, validLinesBuffer=(validLinesTemp.get(type)+1));
+                        for(Map.Entry<FileType, Integer> entry: validLinesTemp.entrySet()){ //Update the other types
+                            if(entry.getKey().validateLine(line)){
+                                validLinesTemp.put(entry.getKey(), validLinesBuffer=(entry.getValue()+1));
                                 if(validLinesBuffer >= 50){
-                                    won = type;
+                                    won = entry.getKey();
                                     break;
                                 }
                             }
@@ -109,11 +109,11 @@ public class RuleImport {
                     // LineBuffer might be null because there is no sense in buffering anymore
                     if(lineBuffer != null)lineBuffer.add(line); //Safe the lines for the other types (will be queried if focus has no result)
                 }else{ //Either we are in fail-fast or the focus isn't net
-                    for(FileType type: validLines.keySet()){
-                        if(type.validateLine(line)){
-                            validLines.put(type, validLinesBuffer=(validLines.get(type)+1));
+                    for(Map.Entry<FileType, Integer> entry: validLines.entrySet()){
+                        if(entry.getKey().validateLine(line)){
+                            validLines.put(entry.getKey(), validLinesBuffer=(entry.getValue()+1));
                             if(validLinesBuffer >= 50){
-                                won = type;
+                                won = entry.getKey();
                                 break;
                             }
                         }
