@@ -1,6 +1,7 @@
 package com.frostnerd.dnschanger.database.entities;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.frostnerd.dnschanger.database.serializers.IPPortSerializer;
 import com.frostnerd.utils.database.orm.MultitonEntity;
@@ -18,30 +19,37 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
     @Serialized(using = IPPortSerializer.class)
     @Named(name = "dns1")
     @NotNull
+    @NonNull
     private IPPortPair dns1;
 
     @Named(name = "dns2")
     @Serialized(using = IPPortSerializer.class)
+    @Nullable
     private IPPortPair dns2;
 
     @Named(name = "dns1v6")
     @Serialized(using = IPPortSerializer.class)
     @NotNull
+    @NonNull
     private IPPortPair dns1V6;
 
     @Named(name = "dns2v6")
     @Serialized(using = IPPortSerializer.class)
+    @Nullable
     private IPPortPair dns2V6;
 
     @Named(name = "name")
     @NotNull
     @Unique
+    @NonNull
     private String name;
 
     @Named(name = "description")
+    @NonNull
     private String description;
 
     @Named(name = "shortname")
+    @NonNull
     private String shortName;
 
     @Named(name = "customentry")
@@ -104,7 +112,8 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
                 "Blocks access to all adult sites. Sites like Reddit are allowed. Google and Bing are set to the Safe Mode.", false), 3);
     }
 
-    public DNSEntry(String name, String shortName, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1V6, IPPortPair dns2V6, String description, boolean customEntry) {
+    public DNSEntry(@NonNull String name, @NonNull String shortName, @NonNull IPPortPair dns1, @Nullable IPPortPair dns2,
+                    @NonNull IPPortPair dns1V6, @Nullable IPPortPair dns2V6, @NonNull String description, boolean customEntry) {
         this.name = name;
         this.dns1 = dns1;
         this.dns2 = dns2;
@@ -129,22 +138,27 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
                 IPPortPair.wrap(dns1V6, 53),IPPortPair.wrap(dns2V6, 53), description, customEntry);
     }
 
+    @NonNull
     public String getName() {
         return name;
     }
 
+    @NonNull
     public IPPortPair getDns1() {
         return dns1;
     }
 
+    @Nullable
     public IPPortPair getDns2() {
         return dns2;
     }
 
+    @NonNull
     public IPPortPair getDns1V6() {
         return dns1V6;
     }
 
+    @Nullable
     public IPPortPair getDns2V6() {
         return dns2V6;
     }
@@ -153,10 +167,12 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
         return customEntry;
     }
 
+    @NonNull
     public String getDescription() {
         return description;
     }
 
+    @NonNull
     public String getShortName() {
         return shortName;
     }
@@ -165,31 +181,31 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
         return ID;
     }
 
-    public void setName(String name) {
+    public void setName(@NonNull String name) {
         this.name = name;
     }
 
-    public void setDns1(IPPortPair dns1) {
+    public void setDns1(@NonNull IPPortPair dns1) {
         this.dns1 = dns1;
     }
 
-    public void setDns2(IPPortPair dns2) {
+    public void setDns2(@Nullable IPPortPair dns2) {
         this.dns2 = dns2;
     }
 
-    public void setDns1V6(IPPortPair dns1V6) {
+    public void setDns1V6(@NonNull IPPortPair dns1V6) {
         this.dns1V6 = dns1V6;
     }
 
-    public void setDns2V6(IPPortPair dns2V6) {
+    public void setDns2V6(@Nullable IPPortPair dns2V6) {
         this.dns2V6 = dns2V6;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(@NonNull String description) {
         this.description = description;
     }
 
-    public void setShortName(String shortName) {
+    public void setShortName(@NonNull String shortName) {
         this.shortName = shortName;
     }
 
@@ -217,7 +233,7 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
                 '}';
     }
 
-    private boolean entryAddressMatches(String ip, IPPortPair pair){
+    private boolean entryAddressMatches(@Nullable String ip, @Nullable IPPortPair pair){
         return ip != null && pair != null && ip.equals(pair.getAddress());
     }
 }

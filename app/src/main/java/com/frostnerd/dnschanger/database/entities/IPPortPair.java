@@ -1,5 +1,7 @@
 package com.frostnerd.dnschanger.database.entities;
 
+import android.support.annotation.NonNull;
+
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.utils.database.orm.MultitonEntity;
 import com.frostnerd.utils.database.orm.annotations.Ignore;
@@ -15,6 +17,7 @@ import lombok.Getter;
 @Table(name = "IPPortPair")
 public class IPPortPair extends MultitonEntity implements Serializable{
     @Named(name = "IP")
+    @NonNull
     private String ip;
     @Named(name = "Port")
     private int port;
@@ -30,7 +33,7 @@ public class IPPortPair extends MultitonEntity implements Serializable{
 
     }
 
-    public IPPortPair(String ip, int port, boolean IPv6) {
+    public IPPortPair(@NonNull String ip, int port, boolean IPv6) {
         if(!ip.equals("") && (port <= 0 || port > 0xFFFF))
             throw new IllegalArgumentException("Invalid port: " + port + " (Address: " + ip + ")", new Throwable("The invalid port " + port + " was supplied"));
         this.ip = ip;
@@ -50,6 +53,7 @@ public class IPPortPair extends MultitonEntity implements Serializable{
         return Util.validateInput(s, s.contains("[") || s.matches("[a-fA-F0-9:]+"), true, defPort);
     }
 
+    @NonNull
     public String getAddress() {
         return ip;
     }
@@ -62,7 +66,7 @@ public class IPPortPair extends MultitonEntity implements Serializable{
         return ipv6;
     }
 
-    public void setIp(String ip) {
+    public void setIp(@NonNull String ip) {
         this.ip = ip;
     }
 

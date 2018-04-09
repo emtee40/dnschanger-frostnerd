@@ -1,5 +1,7 @@
 package com.frostnerd.dnschanger.database.entities;
 
+import android.support.annotation.NonNull;
+
 import com.frostnerd.utils.database.orm.MultitonEntity;
 import com.frostnerd.utils.database.orm.annotations.Default;
 import com.frostnerd.utils.database.orm.annotations.Named;
@@ -21,9 +23,12 @@ import com.frostnerd.utils.database.orm.annotations.Table;
 public class DNSRule extends MultitonEntity{
     @PrimaryKey
     @Named(name = "Host")
+    @NonNull
+    @NotNull
     private String host;
     @NotNull
     @Named(name = "Target")
+    @NonNull
     private String target;
     @PrimaryKey
     @Named(name = "Ipv6")
@@ -39,17 +44,19 @@ public class DNSRule extends MultitonEntity{
 
     }
 
-    public DNSRule(String host, String target, boolean ipv6, boolean wildcard) {
+    public DNSRule(@NonNull String host, @NonNull String target, boolean ipv6, boolean wildcard) {
         this.host = host;
         this.target = target;
         this.ipv6 = ipv6;
         this.wildcard = wildcard;
     }
 
+    @NonNull
     public String getHost() {
         return host;
     }
 
+    @NonNull
     public String getTarget() {
         return target;
     }
@@ -62,7 +69,7 @@ public class DNSRule extends MultitonEntity{
         return wildcard;
     }
 
-    public void setTarget(String target) {
+    public void setTarget(@NonNull String target) {
         this.target = target;
     }
 

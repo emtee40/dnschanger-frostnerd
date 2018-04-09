@@ -3,6 +3,7 @@ package com.frostnerd.dnschanger.database;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
@@ -30,6 +31,7 @@ import java.util.Set;
 public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper {
     public static final String DATABASE_NAME = "data";
     public static final int DATABASE_VERSION = 3;
+    @NonNull
     public static final Set<Class<? extends Entity>> entities = new HashSet<Class<? extends Entity>>(){{
         add(DNSEntry.class);
         add(DNSQuery.class);
@@ -40,9 +42,10 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
     }};
     @Nullable
     private static DatabaseHelper instance;
+    @NonNull
     private MockedContext wrappedContext;
 
-    public static DatabaseHelper getInstance(Context context){
+    public static DatabaseHelper getInstance(@NonNull Context context){
         return instance == null ? instance = new DatabaseHelper(mock(context)) : instance;
     }
 
@@ -50,7 +53,7 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
         return instance != null;
     }
 
-    private DatabaseHelper(Context context) {
+    private DatabaseHelper(@NonNull Context context) {
         super(context, DATABASE_NAME, DATABASE_VERSION, entities);
         wrappedContext = (MockedContext) context;
     }
@@ -118,62 +121,63 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
     @Override
     public synchronized void close() {
         instance = null;
-        if(wrappedContext != null) wrappedContext.destroy(false);
+        wrappedContext.destroy(false);
         wrappedContext = null;
         super.close();
     }
 
-    public boolean dnsRuleExists(String host){
+    public boolean dnsRuleExists(@NonNull String host){
         return this.rowExists(DNSRule.class, WhereCondition.equal(findColumn(DNSRule.class, "host"), host));
     }
 
-    public boolean dnsRuleExists(String host, boolean ipv6){
+    public boolean dnsRuleExists(@NonNull String host, boolean ipv6){
         return this.rowExists(DNSRule.class,
                 WhereCondition.equal(findColumn(DNSRule.class, "host"), host),
                 WhereCondition.equal(findColumn(DNSRule.class, "ipv6"), ipv6 ? "1" : "0"));
     }
 
-    public DNSRule getDNSRule(String host, boolean ipv6){
+    public DNSRule getDNSRule(@NonNull String host, boolean ipv6){
         return getSQLHandler(DNSRule.class).selectFirstRow(this, false,
                 WhereCondition.equal(findColumn(DNSRule.class, "host"), host),
                 WhereCondition.equal(findColumn(DNSRule.class, "ipv6"), ipv6 ? "1" : "0"));
     }
 
-    public boolean deleteDNSRule(String host, boolean ipv6){
+    public boolean deleteDNSRule(@NonNull String host, boolean ipv6){
         return delete(DNSRule.class,
                 WhereCondition.equal(findColumn(DNSRule.class, "host"), host),
                 WhereCondition.equal(findColumn(DNSRule.class, "ipv6"), ipv6 ? "1" : "0")) != 0;
     }
 
-    public int editDNSRule(String host, boolean ipv6, String newTarget){
+    public int editDNSRule(@NonNull String host, boolean ipv6, @NonNull String newTarget){
         DNSRule rule = getDNSRule(host, ipv6);
         rule.setTarget(newTarget);
         return update(rule);
     }
 
-    public void createDNSRule(String host, String target, boolean ipv6, boolean wildcard){
+    public void createDNSRule(@NonNull String host, @NonNull String target, boolean ipv6, boolean wildcard){
         insert(new DNSRule(host, target, ipv6, wildcard));
     }
 
 
-    public void createShortcut(String name, IPPortPair dns1, IPPortPair dns2, IPPortPair dns1v6, IPPortPair dns2v6){
-        if(dns1 != null)insert(dns1);
-        if(dns2 != null)insert(dns2);
-        if(dns1v6 != null)insert(dns1v6);
-        if(dns2v6 != null)insert(dns2v6);
+    public void createShortcut(@NonNull String name, @NonNull IPPortPair dns1, @Nullable IPPortPair dns2,
+                               @NonNull IPPortPair dns1v6, @Nullable IPPortPair dns2v6) {
+        insert(dns1);
+        if (dns2 != null) insert(dns2);
+        insert(dns1v6);
+        if (dns2v6 != null) insert(dns2v6);
         insert(new Shortcut(name, dns1, dns2, dns1v6, dns2v6));
     }
 
-    public void createShortcut(Shortcut shortcut){
-        if(shortcut.getDns1() != null)insert(shortcut.getDns1());
-        if(shortcut.getDns2() != null)insert(shortcut.getDns2());
-        if(shortcut.getDns1v6() != null)insert(shortcut.getDns1v6());
-        if(shortcut.getDns2v6() != null)insert(shortcut.getDns2v6());
+    private void createShortcut(@NonNull Shortcut shortcut) {
+        insert(shortcut.getDns1());
+        if (shortcut.getDns2() != null) insert(shortcut.getDns2());
+        insert(shortcut.getDns1v6());
+        if (shortcut.getDns2v6() != null) insert(shortcut.getDns2v6());
         insert(shortcut);
     }
 
     @Nullable
-    public DNSEntry findMatchingDNSEntry(String dnsServer){
+    public DNSEntry findMatchingDNSEntry(@NonNull String dnsServer){
         String address = "%" + dnsServer + "%";
         if(address.equals("%%"))return null;
         ParsedEntity<DNSEntry> parsedEntity = getSQLHandler(DNSEntry.class);

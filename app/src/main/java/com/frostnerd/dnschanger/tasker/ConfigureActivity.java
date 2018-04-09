@@ -389,9 +389,9 @@ public class ConfigureActivity extends AppCompatActivity {
             setResult(RESULT_OK);
             LogFactory.writeMessage(this, LOG_TAG, "Shortcut added to Launcher");
             DatabaseHelper.getInstance(this).createShortcut(ed_name.getText().toString(),
-                    ipv4Enabled ? dns1 : null,
+                    dns1,
                     !TextUtils.isEmpty(dns2.getAddress()) && ipv4Enabled ? dns2 : null,
-                    ipv6Enabled ? dns1V6 : null,
+                    dns1V6,
                     !TextUtils.isEmpty(dns2V6.getAddress()) && ipv6Enabled ? dns2V6 : null);
         }
         super.finish();

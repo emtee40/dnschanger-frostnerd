@@ -1,7 +1,10 @@
 package com.frostnerd.dnschanger.database.entities;
 
+import android.support.annotation.NonNull;
+
 import com.frostnerd.utils.database.orm.MultitonEntity;
 import com.frostnerd.utils.database.orm.annotations.Named;
+import com.frostnerd.utils.database.orm.annotations.NotNull;
 import com.frostnerd.utils.database.orm.annotations.PrimaryKey;
 import com.frostnerd.utils.database.orm.annotations.Table;
 
@@ -18,6 +21,8 @@ import com.frostnerd.utils.database.orm.annotations.Table;
 public class DNSQuery extends MultitonEntity {
     @PrimaryKey
     @Named(name = "Host")
+    @NonNull
+    @NotNull
     private String host;
     @Named(name = "Ipv6")
     private boolean ipv6;
@@ -25,7 +30,7 @@ public class DNSQuery extends MultitonEntity {
     @Named(name = "Time")
     private long time;
 
-    public DNSQuery(String host, boolean ipv6, long time) {
+    public DNSQuery(@NonNull String host, boolean ipv6, long time) {
         this.host = host;
         this.ipv6 = ipv6;
         this.time = time;
@@ -35,6 +40,7 @@ public class DNSQuery extends MultitonEntity {
 
     }
 
+    @NonNull
     public String getHost() {
         return host;
     }
