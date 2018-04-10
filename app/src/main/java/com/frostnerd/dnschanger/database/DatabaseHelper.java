@@ -92,8 +92,8 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
                 int i = 0;
                 do{
                     DNSEntry found = DNSEntry.findDefaultEntryByLongName(cursor.getString(0));
-                    if(found == null)entries.add(new DNSEntry(cursor.getString(0, "Name " + i++),
-                            cursor.getString(0, "Name " + i),
+                    if(found == null)entries.add(new DNSEntry(cursor.getStringNonEmpty(0, "Name " + i++),
+                            cursor.getStringNonEmpty(0, "Name " + i),
                             IPPortPair.wrap(cursor.getString(1, ""), 53),
                             IPPortPair.wrap(cursor.getString(2), 53),
                             IPPortPair.wrap(cursor.getString(3, ""), 53),
