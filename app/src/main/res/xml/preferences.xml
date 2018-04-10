@@ -108,6 +108,7 @@
             android:summary="@string/summary_pin_tile"
             android:title="@string/title_pin_tile" />
         <CheckBoxPreference
+            android:dependency="setting_pin_enabled"
             android:key="pin_app_shortcut"
             android:summary="@string/summary_pin_app_shortcut"
             android:title="@string/title_pin_app_shortcut" />
@@ -220,7 +221,9 @@
             android:title="@string/title_reset" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/title_advanced_settings" android:key="category_advanced">
+    <PreferenceCategory
+        android:key="category_advanced"
+        android:title="@string/title_advanced_settings">
         <Preference
             android:key="jump_advanced_settings"
             android:summary="@string/summary_jump_advanced_settings"
