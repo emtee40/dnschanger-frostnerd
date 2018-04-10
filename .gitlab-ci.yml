@@ -43,7 +43,7 @@ build:
 build_release:
   stage: build
   script:
-   - ./gradlew clean check assembleRelease --stacktrace -Pandroid.injected.signing.store.file=$KEYSTORE_FILE -Pandroid.injected.signing.store.password=$KEYSTORE_PASSWORD -Pandroid.injected.signing.key.alias=$KEYSTORE_KEY_NAME -Pandroid.injected.signing.key.password=$KEYSTORE_KEY_PASSWORD
+   - ./gradlew clean check assembleRelease --stacktrace -Pandroid.injected.signing.store.file=$KEYSTORE_FILE -Pandroid.injected.signing.store.password=$KEYSTORE_PASSWORD -Pandroid.injected.signing.key.alias=$KEYSTORE_KEY_NAME -Pandroid.injected.signing.key.password=$KEYSTORE_KEY_PASSWORD -x test
   only:
    - release
   artifacts:
