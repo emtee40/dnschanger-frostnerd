@@ -79,7 +79,7 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
             if(cursor.moveToFirst()){
                 int i = 0;
                 do{
-                    shortcuts.add(new Shortcut(cursor.getString(0, "Name " + i++),
+                    shortcuts.add(new Shortcut(legacyString(0, cursor, "Name " + i++),
                             IPPortPair.wrap(cursor.getString(1, ""), 53),
                             IPPortPair.wrap(cursor.getString(2 ), 53),
                             IPPortPair.wrap(cursor.getString(3, ""), 53),
@@ -92,8 +92,8 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
                 int i = 0;
                 do{
                     DNSEntry found = DNSEntry.findDefaultEntryByLongName(cursor.getString(0));
-                    if(found == null)entries.add(new DNSEntry(cursor.getStringNonEmpty(0, "Name " + i++),
-                            cursor.getStringNonEmpty(0, "Name " + i),
+                    if(found == null)entries.add(new DNSEntry(legacyString(0, cursor, "Name " + i++),
+                            legacyString(0, cursor,"Name " + i),
                             IPPortPair.wrap(cursor.getString(1, ""), 53),
                             IPPortPair.wrap(cursor.getString(2), 53),
                             IPPortPair.wrap(cursor.getString(3, ""), 53),
@@ -111,6 +111,16 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
                 createShortcut(shortcut);
             }
         }
+    }
+
+    private String legacyString(@NonNull String column, @NonNull CursorWithDefaults cursor, @NonNull String defaultValue){
+        return legacyString(cursor.getColumnIndex(column), cursor, defaultValue);
+    }
+
+    private String legacyString(int column, @NonNull CursorWithDefaults cursor, @NonNull String defaultValue){
+        String fromDB = cursor.getStringNonEmpty(column, defaultValue);
+        fromDB = fromDB.replaceAll("\\r|\\n", "");
+        return Utils.notEmptyOrDefault(fromDB, defaultValue);
     }
 
     @Override
