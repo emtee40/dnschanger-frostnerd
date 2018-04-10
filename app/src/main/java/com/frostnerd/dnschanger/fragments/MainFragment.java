@@ -42,7 +42,6 @@ import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
-import com.frostnerd.dnschanger.dialogs.NewFeaturesDialog;
 import com.frostnerd.dnschanger.dialogs.VPNInfoDialog;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.util.DNSQueryUtil;
@@ -239,9 +238,6 @@ public class MainFragment extends Fragment {
             }
         });
         setEditTextLabel();
-        if(NewFeaturesDialog.shouldShowDialog(requireContext())){
-            new NewFeaturesDialog(requireContext()).show();
-        }
         LogFactory.writeMessage(requireContext(), LOG_TAG, "Done with OnCreate");
     }
 
