@@ -220,9 +220,6 @@ public class DNSCreationDialog extends UtilityDialog {
         if(settingV6 || customPorts){
             ed_dns1.setInputType(InputType.TYPE_CLASS_TEXT);
             ed_dns2.setInputType(InputType.TYPE_CLASS_TEXT);
-        } else {
-            ed_dns1.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            ed_dns2.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         }
         if(settingV6){
             InputFilter filter = new InputCharacterFilter(customPorts ?
