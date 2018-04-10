@@ -229,17 +229,6 @@
     <string name="permissions_description_access_data">允许应用以常规方式访问 DNS Changer 的数据</string>
     <string name="edit">编辑</string>
     <string name="new_features">新功能</string>
-    <string-array name="features_1_16">
-        <item>添加高亮显示新功能的对话框</item>
-        <item>主菜单现在可显示即将使用的 DNS 提供程序名称</item>
-        <item>你现在可以使用域名作为 DNS 服务器</item>
-        <item>应用现在可以在已配置的 DNS 服务器无法建立连接时提醒你</item>
-        <item>TV 优化</item>
-        <item>你现在可以在 PIN码对话框中使用你的指纹</item>
-        <item>你现在可以提供实际的 VPN 证书</item>
-        <item>你现在可以配置 DNS Changer 自动启动的 WIFI 名称</item>
-        <item>Bug 修复</item>
-    </string-array>
     <string name="summary_pin_fingerprint">允许授权使用任何已保存的指纹</string>
     <string name="title_pin_fingerprint">指纹</string>
     <string name="checking_connectivity">正在检查连通性</string>

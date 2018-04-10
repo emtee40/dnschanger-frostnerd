@@ -189,7 +189,7 @@
     <string name="nav_title_more">Và hơn thế nữa</string>
     <string name="about_text">Ứng dụng này là mã nguồn mở. Mã nguồn mở có thể được tìm thấy tại git.frostnerd.com.\nCác biểu tượng từ Google được sử dụng (Gói nguyên vật liệu biểu tượng - https://material.io/icons).\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2017\nĐã đăng ký Bản quyền.\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger\n\n Dịch sang Ngôn ngữ Braxin bởi Lukinhas</string>
     <string name="close">Đóng lại</string>
-    <string name="info_text_how_does_it_work">Android cho phép bạn định cấu hình máy chủ DNS trong cài đặt wifi - nhưng không cho các kết nối di động (3G, 4G ...). Tuy nhiên điều này đòi hỏi bạn phải sử dụng một địa chỉ IP tĩnh, không cho phép chuyển đổi một cách dễ dàng và sẽ không làm việc với IPv6, trong số những nhược điểm khác khi so sánh với ứng dụng này.\n\nỨng dụng này tận dụng cấu trúc VPN của Android cho phép thiết bị đặt máy chủ DNS tự động. Để đạt được điều này một vpn cục bộ được tạo ra sử dụng cùng một thiết bị như là thiết bị đầu cuối - điều này có nghĩa các kết nối VPN không phải kết nối với internet riêng của mình, cũng không phải là phát hiện từ bên ngoài.\nVì VPN giả này có thể được chạy / dừng tự động nó cho phép một loạt các tính năng và tự động hóa. VPN này không được khai thác và không có dữ liệu nào được đọc bởi nó. Nó chỉ là trung gian trong việc thay đổi các máy chủ DNS..\n\nNếu bạn quan tâm đến khía cạnh kỹ thuật của việc này, truy cập vào git của tôi tại git.frostnerd.com.</string>
+    <string name="info_text_how_does_it_work">Android cho phép bạn định cấu hình máy chủ DNS trong cài đặt wifi - nhưng không cho các kết nối di động (3G, 4G …). Tuy nhiên điều này đòi hỏi bạn phải sử dụng một địa chỉ IP tĩnh, không cho phép chuyển đổi một cách dễ dàng và sẽ không làm việc với IPv6, trong số những nhược điểm khác khi so sánh với ứng dụng này.\n\nỨng dụng này tận dụng cấu trúc VPN của Android cho phép thiết bị đặt máy chủ DNS tự động. Để đạt được điều này một vpn cục bộ được tạo ra sử dụng cùng một thiết bị như là thiết bị đầu cuối - điều này có nghĩa các kết nối VPN không phải kết nối với internet riêng của mình, cũng không phải là phát hiện từ bên ngoài.\nVì VPN giả này có thể được chạy / dừng tự động nó cho phép một loạt các tính năng và tự động hóa. VPN này không được khai thác và không có dữ liệu nào được đọc bởi nó. Nó chỉ là trung gian trong việc thay đổi các máy chủ DNS..\n\nNếu bạn quan tâm đến khía cạnh kỹ thuật của việc này, truy cập vào git của tôi tại git.frostnerd.com.</string>
     <string name="create_one">Tạo một cái</string>
     <string name="feature_shortcuts">Sử dụng ứng dụng này, bạn có thể tạo lối tắt trên màn hình chính. Các lối tắt này chứa các thiết lập DNS và thay đổi máy chủ DNS của bạn bằng cách nhấp vào chúng mà không cần bạn mở ứng dụng. \nĐiều này làm cho chúng đặc biệt thuận tiện nếu bạn muốn nhanh chóng chuyển đổi giữa các máy chủ khác nhau - chỉ cần tạo một loạt các phím tắt và đặt chúng trên màn hình chính của bạn.\n\nBạn có thể cấu hình hành vi của chúng trong trình đơn cài đặt.</string>
     <string name="notification_channel_default">Kênh mặc định</string>
@@ -226,14 +226,6 @@
     <string name="permissions_description_access_data">Cho phép ứng dụng truy cập dữ liệu của thay đổi tổng quát DNS</string>
     <string name="edit">Chỉnh sửa</string>
     <string name="new_features">Các tính năng mới</string>
-    <string-array name="features_1_16">
-        <item>Đã thêm vào hộp thoại này để làm nổi bật các tính năng mới</item>
-        <item>Trình đơn chính bây giờ hiển thị tên của nhà cung cấp DNS đang được sử dụng</item>
-        <item>Ứng dụng hiện nay cảnh báo bạn nếu không có kết nối có thể được thiết lập để máy chủ DNS cấu hình</item>
-        <item>Bây giờ bạn có thể sử dụng dấu vân tay của bạn trong hộp thoại ghim</item>
-        <item>Bây giờ, bạn có thể cấu hình các tên WIFI mà Trình thay đổi DNS sẽ tự khởi động</item>
-        <item>Sửa lỗi</item>
-    </string-array>
     <string name="summary_pin_fingerprint">Cho phép xác thực bằng bất kỳ dấu vân tay đã lưu nào</string>
     <string name="title_pin_fingerprint">Dấu vân tây</string>
     <string name="checking_connectivity">Kiểm tra kết nối</string>

@@ -7,7 +7,7 @@
     <string name="info_dns_button">Informazioni sui DNS</string>
     <string name="default_dns">Indirizzi DNS predefiniti</string>
     <string name="default_dns_title">Providers  di DNS pubblici</string>
-    <string name="info_text_dns">DNS sta per Domain Name System.\n\nIl Domain Name System (Sistema dei Nomi di Dominio) viene utilizzato per risolvere i domini (google.com, yahoo.com, esempio.com ...) in indirizzi IP (ad esempio 192.168.178.1) per comunicare su Internet.\n\nSi tratta di uno dei sistemi più importanti utilizzato nelle reti basate su IP.</string>
+    <string name="info_text_dns">DNS sta per Domain Name System.\n\nIl Domain Name System (Sistema dei Nomi di Dominio) viene utilizzato per risolvere i domini (google.com, yahoo.com, esempio.com …) in indirizzi IP (ad esempio 192.168.178.1) per comunicare su Internet.\n\nSi tratta di uno dei sistemi più importanti utilizzato nelle reti basate su IP.</string>
     <string name="vpn_explain">Questa app funziona su telefoni senza root. \n\nPer rendere possibile ciò, tutto il traffico viene reindirizzato utilizzando una VPN. Tale VPN reindirizza il tuo traffico solo localmente, mantenendo i dati sul tuo telefono ed utilizzando sempre la predetta connessione.\n\nTi verrà chiesto di consentire la connessione VPN nella finestra successiva; senza il tuo permesso, i servers DNS impostati, non funzioneranno.\n\n\nPuoi trovare il codice sorgente all\'indirizzo https://git.frostnerd.com/PublicAndroidApps/DnsChanger.</string>
     <string name="information">Informazioni</string>
     <string name="settings">Impostazioni</string>
@@ -62,7 +62,7 @@
     <string name="summary_pin">Abilita la protezione PIN</string>
     <string name="summary_pin_value">Tocca qui per cambiare il PIN</string>
     <string name="title_pin_value">Cambia PIN</string>
-    <string name="settings_information_text">Questa app è stata realizzata da Daniel Wolf (frostnerd.com)\n\nUtilizza icone di Google (Material icon pack - https://material.io/icons/)\n\n\nSe necessiti di una una funzionalità, hai trovato un bug od hai un quesito generale, non esitare a contattarmi all\'indirizzo support@frostnerd.com\nThe Sourcecode to this app can be viewed at https://git.frostnerd.com/PublicAndroidApps/DnsChanger</string>
+    <string name="settings_information_text">Questa app è stata realizzata da Daniel Wolf (frostnerd.com)\n\nUtilizza icone di Google (Material icon pack - https://material.io/icons/)\n\n\nSe necessiti di una funzionalità, hai trovato un bug od hai un quesito generale, non esitare a contattarmi all\'indirizzo support@frostnerd.com\nThe Sourcecode to this app can be viewed at https://git.frostnerd.com/PublicAndroidApps/DnsChanger</string>
     <string name="create_tasker_action">Creazione di azione Tasker</string>
     <string name="show">Mostra</string>
     <string name="android4_4_warning">Attenzione: la tua versione Android (4,4) è nota per avere problemi con le connessioni VPN. Se questa app si arresta in modo anomalo o semplicemente non funziona, molto probabilmente è il tuo sistema e non un errore di questa app.\nMi dispiace per l\'inconveniente.</string>
@@ -141,7 +141,7 @@
     <string name="invalid_dns_error_text">Sembra che uno dei server DNS configurati non possa essere utilizzato sul tuo dispositivo. \nHai inserito un indirizzo IP non valido, nessun server DNS è presente all\'indirizzo IP fornito o si tratta di un errore temporaneo.\n\nTi prego di verificare la configurazione nel menù principale e verificare che, gli indirizzi inseriti, siano corretti.</string>
     <string name="title_enable_ipv6">Abilita IPv6</string>
     <string name="summary_enable_ipv6">Abilitazione IPv6. Ciò consente di fornire indirizzi ipv6 da utilizzare come servers DNS.</string>
-    <string name="default_dns_legal_warning">Tutti i providers qui mostrati, potrebbero essere identificabili in marchi registrati dai rispettivi proprietari. Si applicano le loro condizioni d'uso.\nTieni presente che i servers DNS, potrebbero registrare la tua navigazione.</string>
+    <string name="default_dns_legal_warning">Tutti i providers qui mostrati, potrebbero essere identificabili in marchi registrati dai rispettivi proprietari. Si applicano le loro condizioni d\'uso.\nTieni presente che i servers DNS, potrebbero registrare la tua navigazione.</string>
     <string name="add">Aggiungi</string>
     <string name="new_entry">Nuova voce</string>
     <string name="title_exclude_apps">Escludi apps dalla VPN</string>
@@ -193,9 +193,9 @@
     <string name="nav_title_more">E molto altro</string>
     <string name="about_text">Questa app è open source. Il codice sorgente è disponibile su git.frostnerd.com.\nVengono utilizzate icone di Google (Material icon pack - https://material.io/icons).\n\nVersione [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2017\nTutti i diritti sono riservati.\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger\n\nTraduzione brasiliana a cura di Lukinhas\n\nTraduzione cinese semplificato a cura di Majida Whale\n\nTraduzione vietnamita a cura di Phi\n\nTraduzione italiana a cura di Massimo Castiglia</string>
     <string name="close">Chiudi</string>
-    <string name="info_text_how_does_it_work">Android consente di configurare i servers DNS nelle impostazioni delle connessioni wifi, ma non di quelle mobili (3G, 4G...). Tra gli altri svantaggi, a differenza di quest\'app, Android richiede l\'utilizzo di un indirizzo IP statico, non agevola lo switch e non funziona con IPv6.\n\nQuesta app, sfrutta la struttura di Androids VPN che consente ai dispositivi di impostare i servers DNS in modo dinamico. Per ottenere ciò, viene creata una VPN locale che utilizza lo stesso dispositivo dell\'endpoint - questo significa che, la connessione VPN, non si connette ad Internet autonomamente né è rilevabile dall\'esterno.\nPoiché questa VPN fittizia può essere avviata/arrestata dinamicamente, consente una gamma di funzioni ed automazioni. Questa VPN non viene intercettata e da essa, non viene letto alcun dato. È solo un intermediario che cambia i servers DNS.\n\nSe ti interessa il lato tecnico di questo argomento, visita il mio git all\'indirizzo git.frostnerd.com.</string>
+    <string name="info_text_how_does_it_work">Android consente di configurare i servers DNS nelle impostazioni delle connessioni wifi, ma non di quelle mobili (3G, 4G…). Tra gli altri svantaggi, a differenza di quest\'app, Android richiede l\'utilizzo di un indirizzo IP statico, non agevola lo switch e non funziona con IPv6.\n\nQuesta app, sfrutta la struttura di Androids VPN che consente ai dispositivi di impostare i servers DNS in modo dinamico. Per ottenere ciò, viene creata una VPN locale che utilizza lo stesso dispositivo dell\'endpoint - questo significa che, la connessione VPN, non si connette ad Internet autonomamente né è rilevabile dall\'esterno.\nPoiché questa VPN fittizia può essere avviata/arrestata dinamicamente, consente una gamma di funzioni ed automazioni. Questa VPN non viene intercettata e da essa, non viene letto alcun dato. È solo un intermediario che cambia i servers DNS.\n\nSe ti interessa il lato tecnico di questo argomento, visita il mio git all\'indirizzo git.frostnerd.com.</string>
     <string name="create_one">Creane una</string>
-    <string name="feature_shortcuts">Usando questa app, puoi creare delle scorciatoie sulla tua schermata principale. Tali scorciatoie, contengono le impostazioni DNS e modificano i servers DNS toccandole, senza che sia necessario aprire l\'app.\nCiò le rende particolarmente convenienti se desideri eseguire rapidamente dei passaggi tra diversi servers - crea un pò di scorciatoie e lasciale in attesa sulla tua home.\n\nPuoi configurarne il comportamento nelle impostazioni.</string>
+    <string name="feature_shortcuts">Usando questa app, puoi creare delle scorciatoie sulla tua schermata principale. Tali scorciatoie, contengono le impostazioni DNS e modificano i servers DNS toccandole, senza che sia necessario aprire l\'app.\nCiò le rende particolarmente convenienti se desideri eseguire rapidamente dei passaggi tra diversi servers - crea un po' di scorciatoie e lasciale in attesa sulla tua home.\n\nPuoi configurarne il comportamento nelle impostazioni.</string>
     <string name="notification_channel_default">Canale predefinito</string>
     <string name="notification_channel_default_description">Canale predefinito per la pubblicazione delle notifiche.</string>
     <string name="feature_tiles">Per un accesso rapido, puoi inserire le tessere nell\'area di notifica. Possono essere utilizzate per avviare/arrestare e sospendere/riprendere DNS Changer.\n\nPer aggiungerle, trascina verso il basso l\'area di notifica, tocca la penna e trascinale verso l\'alto, toccandole.</string>
@@ -230,14 +230,6 @@
     <string name="permissions_description_access_data">Consente all\'app di accedere ai dati di DNS Changer in generale</string>
     <string name="edit">Modifica</string>
     <string name="new_features">Nuove funzionalità</string>
-    <string-array name="features_1_16">
-        <item>Aggiunta di questa finestra di dialogo per evidenziare le nuove funzionalità</item>
-        <item>Il menù principale mostra ora il nome del provider DNS utilizzato</item>
-        <item>L\'app ora avverte se non è possibile stabilire alcuna connessione al server DNS configurato</item>
-        <item>Ora puoi utilizzare la tua impronta digitale nella finestra di dialogo del pin</item>
-        <item>Puoi ora configurare i nomi delle reti WiFi per le quali, DNS Changer, si avvierà automaticamente</item>
-        <item>Correzioni</item>
-    </string-array>
     <string name="summary_pin_fingerprint">Consente l\'autenticazione utilizzando qualsiasi impronta digitale salvata</string>
     <string name="title_pin_fingerprint">Impronta digitale</string>
     <string name="checking_connectivity">Controllo della connettività</string>
@@ -281,7 +273,7 @@
     <string name="fail_fast">Blocco rapido</string>
     <string name="disable_failfast_info">Disabilita il blocco rapido se il tipo di file non può essere rilevato. Poiché ciò richiederà più tempo, prova a specificare tu, il tipo di file.</string>
     <string name="loading">Caricamento</string>
-    <string name="wait_importing_rules">Rilevamento dei tipi di file, attendere...</string>
+    <string name="wait_importing_rules">Rilevamento dei tipi di file, attendere…</string>
     <string name="title_query_logging">Registrazione delle richieste</string>
     <string name="summary_query_logging">Registra tutte le richieste DNS quando l\'app è in esecuzione</string>
     <string name="title_export_queries">Esporta richieste</string>

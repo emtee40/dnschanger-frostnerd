@@ -229,15 +229,6 @@
     <string name="permissions_description_access_data">Erlaubt es der App auf Daten von DNS Changer zuzugreifen</string>
     <string name="edit">Bearbeiten</string>
     <string name="new_features">Neue Funktionalitäten</string>
-
-    <string-array name="features_1_16">
-        <item>Diesen Dialog hinzugefügt, um über neue Features zu informieren</item>
-        <item>Im Hauptmenü wird nun der Name des DNS Servers angezeigt, welcher verwendet wird</item>
-        <item>Die App warnt nun, sollte keine Verbindung zu dem eingestellten DNS Servern möglich sein</item>
-        <item>Es kann nun der Fingerabdruck im Pin dialog verwendet werden</item>
-        <item>Es kann nun eingestellt werden, in welchen WLANs DNS Changer automatisch startet</item>
-        <item>Bugfixes</item>
-    </string-array>
     <string name="checking_connectivity">Überprüfe Verbindung</string>
     <string name="dialog_connectivity_description">Übeprüfe, ob die DNS Server erreichbar sind.</string>
     <string name="no_connectivity_warning_text">Von [x] Servern sind [y] nicht erreichbar:\n\n[servers]\nDie Server können offline sein, sind nicht erreichbar (vielleicht ist keine Internetverbindung verfügbar?) oder werden von deinem Internetanbieter blockiert.</string>
