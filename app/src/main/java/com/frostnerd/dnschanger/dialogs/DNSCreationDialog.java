@@ -190,6 +190,22 @@ public class DNSCreationDialog extends UtilityDialog {
 
             }
         });
+        ed_name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().trim().equals("")) met_name.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
+            }
+        });
     }
 
     private boolean isConfigurationValid() {

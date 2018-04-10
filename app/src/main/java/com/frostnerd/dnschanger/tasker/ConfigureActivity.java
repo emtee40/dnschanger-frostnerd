@@ -205,7 +205,7 @@ public class ConfigureActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if(s.toString().trim().equals("")) met_name.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
             }
         });
         final Preferences preferences = Preferences.getInstance(this);
