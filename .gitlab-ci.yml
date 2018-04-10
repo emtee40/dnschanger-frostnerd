@@ -32,7 +32,7 @@ build:
     - ./gradlew assembleDebug --stacktrace
   artifacts:
     paths:
-    - app/build/outputs/apk
+    - app/build/outputs/apk/debug/app-debug.apk
   except:
     - /^no_ci.*$/
     - /^no_build.*$/
@@ -48,7 +48,7 @@ build_release:
    - release
   artifacts:
     paths:
-    - app/release/app-release.apk
+    - app/build/outputs/release/app-release.apk
     
 unitTests:
   stage: test
@@ -85,7 +85,7 @@ upload:
 upload_release:
   stage: webdeploy
   script:
-    - cp -f app/release/app-release.apk $RELEASE_DEPLOY_DIR/$(/./home/public/gitrunner/determineAppVersionName.sh app/release/app-release.apk).apk
+    - cp -f app/build/outputs/release/app-release.apk $RELEASE_DEPLOY_DIR/$(/./home/public/gitrunner/determineAppVersionName.sh app/build/outputs/release/app-release.apk).apk
   only:
     - release
 
