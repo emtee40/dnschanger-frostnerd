@@ -1,5 +1,6 @@
 package com.frostnerd.dnschanger.services;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.VpnService;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.RemoteException;
@@ -171,8 +173,12 @@ public class DNSVpnService extends VpnService {
             notificationBuilder.setAutoCancel(false);
             notificationBuilder.setOngoing(true);
             notificationBuilder.setUsesChronometer(true);
-            notificationBuilder.addAction(new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_pause, getString(R.string.action_pause),null));
-            notificationBuilder.addAction(new android.support.v4.app.NotificationCompat.Action(R.drawable.ic_stat_stop, getString(R.string.action_stop),null));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                notificationBuilder.setBadgeIconType(Notification.BADGE_ICON_NONE);
+            }
+            notificationBuilder.setPriority(NotificationCompat.PRIORITY_MIN);
+            notificationBuilder.addAction(new NotificationCompat.Action(R.drawable.ic_stat_pause, getString(R.string.action_pause),null));
+            notificationBuilder.addAction(new NotificationCompat.Action(R.drawable.ic_stat_stop, getString(R.string.action_stop),null));
             notificationBuilder.setColorized(false);
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification created (Not yet posted)");
         }

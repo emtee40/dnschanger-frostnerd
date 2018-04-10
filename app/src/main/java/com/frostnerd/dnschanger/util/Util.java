@@ -231,10 +231,11 @@ public final class Util {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationManager notificationManager = Utils.requireNonNull((NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE));
             if(allowHiding && PreferencesAccessor.shouldHideNotificationIcon(context)){
-                NotificationChannel channel = new NotificationChannel("noIconChannel", context.getString(R.string.notification_channel_hiddenicon), NotificationManager.IMPORTANCE_NONE);
+                NotificationChannel channel = new NotificationChannel("noIconChannel", context.getString(R.string.notification_channel_hiddenicon), NotificationManager.IMPORTANCE_MIN);
                 channel.enableLights(false);
                 channel.enableVibration(false);
                 channel.setDescription(context.getString(R.string.notification_channel_hiddenicon_description));
+                channel.setImportance(NotificationManager.IMPORTANCE_MIN);
                 channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
                 notificationManager.createNotificationChannel(channel);
                 return "noIconChannel";
