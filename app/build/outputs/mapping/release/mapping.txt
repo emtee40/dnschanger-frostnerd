@@ -20293,12 +20293,12 @@ com.frostnerd.dnschanger.activities.PinActivity -> com.frostnerd.dnschanger.acti
     android.os.Handler handler -> t
     android.content.BroadcastReceiver importFinishedReceiver -> u
     51:51:void <init>() -> <init>
-    63:161:void onCreate(android.os.Bundle) -> onCreate
-    164:182:void continueToFollowing(boolean) -> c
-    185:206:void showRulesImportingDialog(boolean) -> d
-    210:212:void onStop() -> onStop
-    216:226:void onDestroy() -> onDestroy
-    230:230:com.frostnerd.utils.lifecyclehelper.UtilityActivity$Configuration getConfiguration() -> k
+    63:164:void onCreate(android.os.Bundle) -> onCreate
+    167:185:void continueToFollowing(boolean) -> c
+    188:209:void showRulesImportingDialog(boolean) -> d
+    213:215:void onStop() -> onStop
+    219:229:void onDestroy() -> onDestroy
+    233:233:com.frostnerd.utils.lifecyclehelper.UtilityActivity$Configuration getConfiguration() -> k
     51:51:java.lang.String access$000(com.frostnerd.dnschanger.activities.PinActivity) -> a
     51:51:android.widget.EditText access$100(com.frostnerd.dnschanger.activities.PinActivity) -> b
     51:51:com.frostnerd.utils.design.MaterialEditText access$200(com.frostnerd.dnschanger.activities.PinActivity) -> c
@@ -20315,28 +20315,28 @@ com.frostnerd.dnschanger.activities.PinActivity$2 -> com.frostnerd.dnschanger.ac
     boolean val$main -> a
     com.frostnerd.dnschanger.activities.PinActivity this$0 -> b
     110:110:void <init>(com.frostnerd.dnschanger.activities.PinActivity,boolean) -> <init>
-    113:122:void onClick(android.view.View) -> onClick
+    113:123:void onClick(android.view.View) -> onClick
 com.frostnerd.dnschanger.activities.PinActivity$3 -> com.frostnerd.dnschanger.activities.PinActivity$3:
     boolean val$main -> a
     int val$color -> b
     com.frostnerd.dnschanger.activities.PinActivity this$0 -> c
-    132:132:void <init>(com.frostnerd.dnschanger.activities.PinActivity,boolean,int) -> <init>
-    135:139:void onAuthenticationSucceeded(android.hardware.fingerprint.FingerprintManager$AuthenticationResult) -> onAuthenticationSucceeded
-    143:154:void onAuthenticationFailed() -> onAuthenticationFailed
+    133:133:void <init>(com.frostnerd.dnschanger.activities.PinActivity,boolean,int) -> <init>
+    136:141:void onAuthenticationSucceeded(android.hardware.fingerprint.FingerprintManager$AuthenticationResult) -> onAuthenticationSucceeded
+    145:157:void onAuthenticationFailed() -> onAuthenticationFailed
 com.frostnerd.dnschanger.activities.PinActivity$3$1 -> com.frostnerd.dnschanger.activities.PinActivity$3$1:
     com.frostnerd.dnschanger.activities.PinActivity$3 this$1 -> a
-    147:147:void <init>(com.frostnerd.dnschanger.activities.PinActivity$3) -> <init>
-    150:152:void run() -> run
+    150:150:void <init>(com.frostnerd.dnschanger.activities.PinActivity$3) -> <init>
+    153:155:void run() -> run
 com.frostnerd.dnschanger.activities.PinActivity$4 -> com.frostnerd.dnschanger.activities.PinActivity$4:
     com.frostnerd.dnschanger.activities.PinActivity this$0 -> a
-    189:189:void <init>(com.frostnerd.dnschanger.activities.PinActivity) -> <init>
-    192:193:void onClick(android.content.DialogInterface,int) -> onClick
+    192:192:void <init>(com.frostnerd.dnschanger.activities.PinActivity) -> <init>
+    195:196:void onClick(android.content.DialogInterface,int) -> onClick
 com.frostnerd.dnschanger.activities.PinActivity$5 -> com.frostnerd.dnschanger.activities.PinActivity$5:
     com.frostnerd.utils.design.dialogs.LoadingDialog val$loadingDialog -> a
     boolean val$continueToMain -> b
     com.frostnerd.dnschanger.activities.PinActivity this$0 -> c
-    197:197:void <init>(com.frostnerd.dnschanger.activities.PinActivity,com.frostnerd.utils.design.dialogs.LoadingDialog,boolean) -> <init>
-    200:204:void onReceive(android.content.Context,android.content.Intent) -> onReceive
+    200:200:void <init>(com.frostnerd.dnschanger.activities.PinActivity,com.frostnerd.utils.design.dialogs.LoadingDialog,boolean) -> <init>
+    203:207:void onReceive(android.content.Context,android.content.Intent) -> onReceive
 com.frostnerd.dnschanger.activities.SettingsImportActivity -> com.frostnerd.dnschanger.activities.SettingsImportActivity:
     32:32:void <init>() -> <init>
     37:52:void onCreate(android.os.Bundle) -> onCreate
@@ -20607,20 +20607,20 @@ com.frostnerd.dnschanger.database.DatabaseHelper -> com.frostnerd.dnschanger.dat
     59:61:void <init>(android.content.Context) -> <init>
     65:66:void onAfterCreate(android.database.sqlite.SQLiteDatabase) -> a
     71:71:void onBeforeCreate(android.database.sqlite.SQLiteDatabase) -> b
-    75:114:void onBeforeUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> a
-    121:123:java.lang.String legacyString(int,com.frostnerd.utils.database.CursorWithDefaults,java.lang.String) -> a
-    129:134:void onAfterUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> b
-    139:143:void close() -> close
-    146:146:boolean dnsRuleExists(java.lang.String) -> a
-    150:152:boolean dnsRuleExists(java.lang.String,boolean) -> a
-    156:158:com.frostnerd.dnschanger.database.entities.DNSRule getDNSRule(java.lang.String,boolean) -> b
-    162:164:boolean deleteDNSRule(java.lang.String,boolean) -> c
-    168:170:int editDNSRule(java.lang.String,boolean,java.lang.String) -> a
-    174:175:void createDNSRule(java.lang.String,java.lang.String,boolean,boolean) -> a
-    180:185:void createShortcut(java.lang.String,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair) -> a
-    188:193:void createShortcut(com.frostnerd.dnschanger.database.entities.Shortcut) -> a
-    197:203:com.frostnerd.dnschanger.database.entities.DNSEntry findMatchingDNSEntry(java.lang.String) -> b
-    208:210:void finalize() -> finalize
+    75:116:void onBeforeUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> a
+    123:125:java.lang.String legacyString(int,com.frostnerd.utils.database.CursorWithDefaults,java.lang.String) -> a
+    131:136:void onAfterUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> b
+    141:145:void close() -> close
+    148:148:boolean dnsRuleExists(java.lang.String) -> a
+    152:154:boolean dnsRuleExists(java.lang.String,boolean) -> a
+    158:160:com.frostnerd.dnschanger.database.entities.DNSRule getDNSRule(java.lang.String,boolean) -> b
+    164:166:boolean deleteDNSRule(java.lang.String,boolean) -> c
+    170:172:int editDNSRule(java.lang.String,boolean,java.lang.String) -> a
+    176:177:void createDNSRule(java.lang.String,java.lang.String,boolean,boolean) -> a
+    182:187:void createShortcut(java.lang.String,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair) -> a
+    190:195:void createShortcut(com.frostnerd.dnschanger.database.entities.Shortcut) -> a
+    199:205:com.frostnerd.dnschanger.database.entities.DNSEntry findMatchingDNSEntry(java.lang.String) -> b
+    210:212:void finalize() -> finalize
     37:37:void <clinit>() -> <clinit>
 com.frostnerd.dnschanger.database.DatabaseHelper$1 -> com.frostnerd.dnschanger.database.a$1:
     37:44:void <init>() -> <init>
@@ -21030,99 +21030,106 @@ com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog -> com.frostnerd.dnscha
     android.widget.RadioButton hosts -> h
     android.widget.RadioButton domains -> i
     android.widget.RadioButton adblock -> j
-    45:118:void <init>(android.app.Activity) -> <init>
-    122:126:void destroy() -> a
-    129:261:void handlePermissionOrShowFileDialog(android.app.Activity) -> a
+    com.frostnerd.utils.design.dialogs.FileChooserDialog fileChooserDialog -> k
+    45:125:void <init>(android.app.Activity) -> <init>
+    129:133:void destroy() -> a
+    136:270:void handlePermissionOrShowFileDialog(android.app.Activity) -> a
     44:44:void access$000(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog,android.app.Activity) -> a
     44:44:android.widget.CheckBox access$100(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> a
     44:44:android.widget.TextView access$200(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> b
     44:44:com.frostnerd.dnschanger.util.RuleImport$FileType access$302(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog,com.frostnerd.dnschanger.util.RuleImport$FileType) -> a
     44:44:java.util.List access$400(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> c
-    44:44:android.widget.CheckBox access$500(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> d
-    44:44:com.frostnerd.dnschanger.util.RuleImport$FileType access$300(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> e
-    44:44:android.widget.RadioButton access$700(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> f
+    44:44:com.frostnerd.utils.design.dialogs.FileChooserDialog access$500(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> d
+    44:44:android.widget.CheckBox access$600(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> e
+    44:44:com.frostnerd.utils.design.dialogs.FileChooserDialog access$502(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog,com.frostnerd.utils.design.dialogs.FileChooserDialog) -> a
+    44:44:com.frostnerd.dnschanger.util.RuleImport$FileType access$300(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> f
     44:44:android.widget.RadioButton access$800(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> g
     44:44:android.widget.RadioButton access$900(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> h
     44:44:android.widget.RadioButton access$1000(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> i
-    44:44:android.widget.TextView access$1100(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> j
+    44:44:android.widget.RadioButton access$1100(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> j
+    44:44:android.widget.TextView access$1200(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> k
 com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$1 -> com.frostnerd.dnschanger.b.e$1:
     android.app.Activity val$context -> a
     com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog this$0 -> b
-    69:69:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog,android.app.Activity) -> <init>
-    72:73:void onClick(android.view.View) -> onClick
+    70:70:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog,android.app.Activity) -> <init>
+    73:74:void onClick(android.view.View) -> onClick
 com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$2 -> com.frostnerd.dnschanger.b.e$2:
     com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog this$0 -> a
-    75:75:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> <init>
-    78:80:void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
+    76:76:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> <init>
+    79:81:void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
 com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$3 -> com.frostnerd.dnschanger.b.e$3:
     com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog this$0 -> a
-    82:82:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> <init>
-    85:93:void onCheckedChanged(android.widget.RadioGroup,int) -> onCheckedChanged
+    83:83:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> <init>
+    86:94:void onCheckedChanged(android.widget.RadioGroup,int) -> onCheckedChanged
 com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$4 -> com.frostnerd.dnschanger.b.e$4:
     com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog this$0 -> a
-    95:95:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> <init>
-    98:99:void onClick(android.content.DialogInterface,int) -> onClick
+    96:96:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> <init>
+    99:100:void onClick(android.content.DialogInterface,int) -> onClick
 com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$5 -> com.frostnerd.dnschanger.b.e$5:
     android.app.Activity val$context -> a
     com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog this$0 -> b
-    101:101:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog,android.app.Activity) -> <init>
-    104:110:void onClick(android.content.DialogInterface,int) -> onClick
+    102:102:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog,android.app.Activity) -> <init>
+    105:111:void onClick(android.content.DialogInterface,int) -> onClick
 com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$6 -> com.frostnerd.dnschanger.b.e$6:
     com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog this$0 -> a
-    112:112:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> <init>
-    115:116:void onShow(android.content.DialogInterface) -> onShow
+    113:113:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> <init>
+    116:117:void onShow(android.content.DialogInterface) -> onShow
 com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7 -> com.frostnerd.dnschanger.b.e$7:
     com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog this$0 -> a
-    131:131:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> <init>
-    134:136:void fileSelected(java.io.File,com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode) -> a
-    140:142:void multipleFilesSelected(java.io.File[]) -> a
-    145:186:void detectFileTypes(java.io.File[]) -> b
-    190:232:void detectSingleFileType(java.io.File) -> a
-    235:251:void setLabelText() -> a
-    131:131:void access$600(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7) -> a
-com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7$1 -> com.frostnerd.dnschanger.b.e$7$1:
-    com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7 this$1 -> a
-    151:151:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7) -> <init>
-    154:155:void onClick(android.content.DialogInterface,int) -> onClick
-com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7$2 -> com.frostnerd.dnschanger.b.e$7$2:
-    com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7 this$1 -> a
-    157:157:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7) -> <init>
-    160:161:void onCancel(android.content.DialogInterface) -> onCancel
-com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7$3 -> com.frostnerd.dnschanger.b.e$7$3:
+    119:119:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> <init>
+    122:123:void onDismiss(android.content.DialogInterface) -> onDismiss
+com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8 -> com.frostnerd.dnschanger.b.e$8:
+    com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog this$0 -> a
+    138:138:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog) -> <init>
+    141:144:void fileSelected(java.io.File,com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode) -> a
+    148:151:void multipleFilesSelected(java.io.File[]) -> a
+    154:195:void detectFileTypes(java.io.File[]) -> b
+    199:241:void detectSingleFileType(java.io.File) -> a
+    244:260:void setLabelText() -> a
+    138:138:void access$700(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8) -> a
+com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8$1 -> com.frostnerd.dnschanger.b.e$8$1:
+    com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8 this$1 -> a
+    160:160:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8) -> <init>
+    163:164:void onClick(android.content.DialogInterface,int) -> onClick
+com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8$2 -> com.frostnerd.dnschanger.b.e$8$2:
+    com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8 this$1 -> a
+    166:166:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8) -> <init>
+    169:170:void onCancel(android.content.DialogInterface) -> onCancel
+com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8$3 -> com.frostnerd.dnschanger.b.e$8$3:
     java.io.File[] val$selectedFiles -> a
     com.frostnerd.utils.design.dialogs.LoadingDialog val$dialog -> b
-    com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7 this$1 -> c
-    165:165:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7,java.io.File[],com.frostnerd.utils.design.dialogs.LoadingDialog) -> <init>
-    170:183:void run() -> run
-com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7$3$1 -> com.frostnerd.dnschanger.b.e$7$3$1:
+    com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8 this$1 -> c
+    174:174:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8,java.io.File[],com.frostnerd.utils.design.dialogs.LoadingDialog) -> <init>
+    179:192:void run() -> run
+com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8$3$1 -> com.frostnerd.dnschanger.b.e$8$3$1:
     java.io.File val$f -> a
-    com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7$3 this$2 -> b
-    172:172:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7$3,java.io.File) -> <init>
-    175:176:void run() -> run
-com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7$4 -> com.frostnerd.dnschanger.b.e$7$4:
-    com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7 this$1 -> a
-    197:197:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7) -> <init>
-    200:201:void onClick(android.content.DialogInterface,int) -> onClick
-com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7$5 -> com.frostnerd.dnschanger.b.e$7$5:
+    com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8$3 this$2 -> b
+    181:181:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8$3,java.io.File) -> <init>
+    184:185:void run() -> run
+com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8$4 -> com.frostnerd.dnschanger.b.e$8$4:
+    com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8 this$1 -> a
+    206:206:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8) -> <init>
+    209:210:void onClick(android.content.DialogInterface,int) -> onClick
+com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8$5 -> com.frostnerd.dnschanger.b.e$8$5:
     java.io.File val$file -> a
     int val$lines -> b
-    com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7 this$1 -> c
-    203:203:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7,java.io.File,int) -> <init>
-    206:222:void onCancel(android.content.DialogInterface) -> onCancel
-com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7$6 -> com.frostnerd.dnschanger.b.e$7$6:
+    com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8 this$1 -> c
+    212:212:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8,java.io.File,int) -> <init>
+    215:231:void onCancel(android.content.DialogInterface) -> onCancel
+com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8$6 -> com.frostnerd.dnschanger.b.e$8$6:
     java.io.File val$file -> a
     com.frostnerd.utils.design.dialogs.LoadingDialog val$dialog -> b
-    com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7 this$1 -> c
-    225:225:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7,java.io.File,com.frostnerd.utils.design.dialogs.LoadingDialog) -> <init>
-    228:230:void run() -> run
-com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7$7 -> com.frostnerd.dnschanger.b.e$7$7:
-    com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7 this$1 -> a
-    235:235:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$7) -> <init>
-    238:238:int compare(com.frostnerd.dnschanger.util.RuleImport$ImportableFile,com.frostnerd.dnschanger.util.RuleImport$ImportableFile) -> a
-    235:235:int compare(java.lang.Object,java.lang.Object) -> compare
-com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8 -> com.frostnerd.dnschanger.b.e$8:
+    com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8 this$1 -> c
+    234:234:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8,java.io.File,com.frostnerd.utils.design.dialogs.LoadingDialog) -> <init>
+    237:239:void run() -> run
+com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8$7 -> com.frostnerd.dnschanger.b.e$8$7:
+    com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8 this$1 -> a
+    244:244:void <init>(com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$8) -> <init>
+    247:247:int compare(com.frostnerd.dnschanger.util.RuleImport$ImportableFile,com.frostnerd.dnschanger.util.RuleImport$ImportableFile) -> a
+    244:244:int compare(java.lang.Object,java.lang.Object) -> compare
+com.frostnerd.dnschanger.dialogs.RuleImportChooserDialog$9 -> com.frostnerd.dnschanger.b.e$9:
     int[] $SwitchMap$com$frostnerd$dnschanger$util$RuleImport$FileType -> a
-    206:206:void <clinit>() -> <clinit>
+    215:215:void <clinit>() -> <clinit>
 com.frostnerd.dnschanger.dialogs.VPNInfoDialog -> com.frostnerd.dnschanger.b.f:
     25:43:void <init>(android.content.Context,android.content.DialogInterface$OnClickListener) -> <init>
     48:48:void destroy() -> a
@@ -21354,8 +21361,8 @@ com.frostnerd.dnschanger.fragments.MainFragment$DNSReachabilityCallback -> com.f
     int servers -> c
     492:494:void <init>() -> <init>
     void checkFinished(java.util.List,java.util.List) -> a
-    500:503:void checkProgress(com.frostnerd.dnschanger.database.entities.IPPortPair,boolean) -> a
-    506:507:void setServers(int) -> a
+    500:504:void checkProgress(com.frostnerd.dnschanger.database.entities.IPPortPair,boolean) -> a
+    507:508:void setServers(int) -> a
 com.frostnerd.dnschanger.fragments.QueryLogFragment -> com.frostnerd.dnschanger.c.d:
     com.frostnerd.dnschanger.adapters.QueryLogAdapter queryLogAdapter -> a
     android.support.v7.widget.RecyclerView list -> b
@@ -21825,77 +21832,81 @@ com.frostnerd.dnschanger.tasker.ConfigureActivity -> com.frostnerd.dnschanger.ta
     long lastBackPress -> E
     com.frostnerd.dnschanger.tasker.ConfigureActivity$Action currentAction -> F
     boolean customPorts -> G
-    53:62:void <init>() -> <init>
-    85:87:boolean checkValidity() -> k
-    94:267:void onCreate(android.os.Bundle) -> onCreate
-    270:287:void openDefaultDNSDialog(android.view.View) -> openDefaultDNSDialog
-    291:293:void onDestroy() -> onDestroy
-    297:298:boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
-    303:314:boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
-    318:332:void setInputType() -> l
-    336:346:void onBackPressed() -> onBackPressed
-    350:397:void finish() -> finish
-    400:408:java.util.ArrayList createPortPair() -> m
-    53:53:boolean access$000(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> a
-    53:53:boolean access$100(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> b
-    53:53:com.frostnerd.utils.design.MaterialEditText access$200(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> c
-    53:53:boolean access$302(com.frostnerd.dnschanger.tasker.ConfigureActivity,boolean) -> a
-    53:53:com.frostnerd.dnschanger.database.entities.IPPortPair access$402(com.frostnerd.dnschanger.tasker.ConfigureActivity,com.frostnerd.dnschanger.database.entities.IPPortPair) -> a
-    53:53:com.frostnerd.dnschanger.database.entities.IPPortPair access$502(com.frostnerd.dnschanger.tasker.ConfigureActivity,com.frostnerd.dnschanger.database.entities.IPPortPair) -> b
-    53:53:com.frostnerd.utils.design.MaterialEditText access$600(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> d
-    53:53:com.frostnerd.dnschanger.database.entities.IPPortPair access$702(com.frostnerd.dnschanger.tasker.ConfigureActivity,com.frostnerd.dnschanger.database.entities.IPPortPair) -> c
-    53:53:com.frostnerd.dnschanger.database.entities.IPPortPair access$802(com.frostnerd.dnschanger.tasker.ConfigureActivity,com.frostnerd.dnschanger.database.entities.IPPortPair) -> d
-    53:53:com.frostnerd.utils.design.MaterialEditText access$900(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> e
-    53:53:com.frostnerd.dnschanger.tasker.ConfigureActivity$Action access$1002(com.frostnerd.dnschanger.tasker.ConfigureActivity,com.frostnerd.dnschanger.tasker.ConfigureActivity$Action) -> a
-    53:53:boolean access$1202(com.frostnerd.dnschanger.tasker.ConfigureActivity,boolean) -> b
-    53:53:android.widget.EditText access$1300(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> f
-    53:53:android.widget.EditText access$1400(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> g
+    54:63:void <init>() -> <init>
+    86:88:boolean checkValidity() -> k
+    95:271:void onCreate(android.os.Bundle) -> onCreate
+    274:291:void openDefaultDNSDialog(android.view.View) -> openDefaultDNSDialog
+    295:297:void onDestroy() -> onDestroy
+    301:302:boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
+    307:318:boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
+    322:336:void setInputType() -> l
+    339:350:void setEditTextLabel() -> m
+    354:364:void onBackPressed() -> onBackPressed
+    368:415:void finish() -> finish
+    418:426:java.util.ArrayList createPortPair() -> n
+    54:54:boolean access$000(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> a
+    54:54:boolean access$100(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> b
+    54:54:com.frostnerd.utils.design.MaterialEditText access$200(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> c
+    54:54:boolean access$302(com.frostnerd.dnschanger.tasker.ConfigureActivity,boolean) -> a
+    54:54:com.frostnerd.dnschanger.database.entities.IPPortPair access$402(com.frostnerd.dnschanger.tasker.ConfigureActivity,com.frostnerd.dnschanger.database.entities.IPPortPair) -> a
+    54:54:com.frostnerd.dnschanger.database.entities.IPPortPair access$502(com.frostnerd.dnschanger.tasker.ConfigureActivity,com.frostnerd.dnschanger.database.entities.IPPortPair) -> b
+    54:54:void access$600(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> d
+    54:54:com.frostnerd.utils.design.MaterialEditText access$700(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> e
+    54:54:com.frostnerd.dnschanger.database.entities.IPPortPair access$802(com.frostnerd.dnschanger.tasker.ConfigureActivity,com.frostnerd.dnschanger.database.entities.IPPortPair) -> c
+    54:54:com.frostnerd.dnschanger.database.entities.IPPortPair access$902(com.frostnerd.dnschanger.tasker.ConfigureActivity,com.frostnerd.dnschanger.database.entities.IPPortPair) -> d
+    54:54:com.frostnerd.utils.design.MaterialEditText access$1000(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> f
+    54:54:com.frostnerd.dnschanger.tasker.ConfigureActivity$Action access$1102(com.frostnerd.dnschanger.tasker.ConfigureActivity,com.frostnerd.dnschanger.tasker.ConfigureActivity$Action) -> a
+    54:54:boolean access$1302(com.frostnerd.dnschanger.tasker.ConfigureActivity,boolean) -> b
+    54:54:android.widget.EditText access$1400(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> g
+    54:54:android.widget.EditText access$1500(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> h
+    54:54:com.frostnerd.dnschanger.database.entities.IPPortPair access$500(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> i
+    54:54:com.frostnerd.dnschanger.database.entities.IPPortPair access$400(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> j
 com.frostnerd.dnschanger.tasker.ConfigureActivity$1 -> com.frostnerd.dnschanger.tasker.ConfigureActivity$1:
     java.lang.String before -> b
     com.frostnerd.dnschanger.tasker.ConfigureActivity this$0 -> a
-    141:141:void <init>(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> <init>
-    145:146:void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
-    150:161:void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
-    166:166:void afterTextChanged(android.text.Editable) -> afterTextChanged
+    142:142:void <init>(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> <init>
+    146:147:void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
+    151:163:void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
+    168:168:void afterTextChanged(android.text.Editable) -> afterTextChanged
 com.frostnerd.dnschanger.tasker.ConfigureActivity$2 -> com.frostnerd.dnschanger.tasker.ConfigureActivity$2:
     java.lang.String before -> b
     com.frostnerd.dnschanger.tasker.ConfigureActivity this$0 -> a
-    168:168:void <init>(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> <init>
-    172:173:void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
-    177:188:void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
-    193:193:void afterTextChanged(android.text.Editable) -> afterTextChanged
+    170:170:void <init>(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> <init>
+    174:175:void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
+    179:191:void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
+    196:196:void afterTextChanged(android.text.Editable) -> afterTextChanged
 com.frostnerd.dnschanger.tasker.ConfigureActivity$3 -> com.frostnerd.dnschanger.tasker.ConfigureActivity$3:
     com.frostnerd.dnschanger.tasker.ConfigureActivity this$0 -> a
-    195:195:void <init>(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> <init>
-    199:199:void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
-    203:204:void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
-    208:209:void afterTextChanged(android.text.Editable) -> afterTextChanged
+    198:198:void <init>(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> <init>
+    202:202:void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
+    206:207:void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
+    211:212:void afterTextChanged(android.text.Editable) -> afterTextChanged
 com.frostnerd.dnschanger.tasker.ConfigureActivity$4 -> com.frostnerd.dnschanger.tasker.ConfigureActivity$4:
     com.frostnerd.dnschanger.tasker.ConfigureActivity this$0 -> a
-    222:222:void <init>(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> <init>
-    225:226:void onClick(android.content.DialogInterface,int) -> onClick
+    225:225:void <init>(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> <init>
+    228:229:void onClick(android.content.DialogInterface,int) -> onClick
 com.frostnerd.dnschanger.tasker.ConfigureActivity$5 -> com.frostnerd.dnschanger.tasker.ConfigureActivity$5:
     com.frostnerd.dnschanger.util.Preferences val$preferences -> a
     com.frostnerd.dnschanger.tasker.ConfigureActivity this$0 -> b
-    214:214:void <init>(com.frostnerd.dnschanger.tasker.ConfigureActivity,com.frostnerd.dnschanger.util.Preferences) -> <init>
-    217:221:void onClick(android.content.DialogInterface,int) -> onClick
+    217:217:void <init>(com.frostnerd.dnschanger.tasker.ConfigureActivity,com.frostnerd.dnschanger.util.Preferences) -> <init>
+    220:224:void onClick(android.content.DialogInterface,int) -> onClick
 com.frostnerd.dnschanger.tasker.ConfigureActivity$6 -> com.frostnerd.dnschanger.tasker.ConfigureActivity$6:
     com.frostnerd.dnschanger.tasker.ConfigureActivity this$0 -> a
-    236:236:void <init>(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> <init>
-    239:242:void onItemSelected(android.widget.AdapterView,android.view.View,int,long) -> onItemSelected
-    247:247:void onNothingSelected(android.widget.AdapterView) -> onNothingSelected
+    239:239:void <init>(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> <init>
+    242:245:void onItemSelected(android.widget.AdapterView,android.view.View,int,long) -> onItemSelected
+    250:250:void onNothingSelected(android.widget.AdapterView) -> onNothingSelected
 com.frostnerd.dnschanger.tasker.ConfigureActivity$7 -> com.frostnerd.dnschanger.tasker.ConfigureActivity$7:
     com.frostnerd.dnschanger.tasker.ConfigureActivity this$0 -> a
-    252:252:void <init>(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> <init>
-    255:256:void onClick(android.view.View) -> onClick
+    255:255:void <init>(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> <init>
+    258:259:void onClick(android.view.View) -> onClick
 com.frostnerd.dnschanger.tasker.ConfigureActivity$8 -> com.frostnerd.dnschanger.tasker.ConfigureActivity$8:
     com.frostnerd.dnschanger.tasker.ConfigureActivity this$0 -> a
-    258:258:void <init>(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> <init>
-    261:263:void onClick(android.view.View) -> onClick
+    261:261:void <init>(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> <init>
+    264:266:void onClick(android.view.View) -> onClick
 com.frostnerd.dnschanger.tasker.ConfigureActivity$9 -> com.frostnerd.dnschanger.tasker.ConfigureActivity$9:
     com.frostnerd.dnschanger.tasker.ConfigureActivity this$0 -> a
-    270:270:void <init>(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> <init>
-    273:284:void onProviderSelected(java.lang.String,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair) -> a
+    274:274:void <init>(com.frostnerd.dnschanger.tasker.ConfigureActivity) -> <init>
+    277:288:void onProviderSelected(java.lang.String,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair) -> a
 com.frostnerd.dnschanger.tasker.ConfigureActivity$Action -> com.frostnerd.dnschanger.tasker.ConfigureActivity$a:
     com.frostnerd.dnschanger.tasker.ConfigureActivity$Action PAUSE -> PAUSE
     com.frostnerd.dnschanger.tasker.ConfigureActivity$Action START -> START
@@ -21903,12 +21914,12 @@ com.frostnerd.dnschanger.tasker.ConfigureActivity$Action -> com.frostnerd.dnscha
     com.frostnerd.dnschanger.tasker.ConfigureActivity$Action RESUME -> RESUME
     int positionInList -> positionInList
     com.frostnerd.dnschanger.tasker.ConfigureActivity$Action[] $VALUES -> $VALUES
-    66:66:com.frostnerd.dnschanger.tasker.ConfigureActivity$Action[] values() -> values
-    66:66:com.frostnerd.dnschanger.tasker.ConfigureActivity$Action valueOf(java.lang.String) -> valueOf
-    70:72:void <init>(java.lang.String,int,int) -> <init>
-    75:80:com.frostnerd.dnschanger.tasker.ConfigureActivity$Action getAction(int) -> a
-    66:66:int access$1100(com.frostnerd.dnschanger.tasker.ConfigureActivity$Action) -> a
-    66:67:void <clinit>() -> <clinit>
+    67:67:com.frostnerd.dnschanger.tasker.ConfigureActivity$Action[] values() -> values
+    67:67:com.frostnerd.dnschanger.tasker.ConfigureActivity$Action valueOf(java.lang.String) -> valueOf
+    71:73:void <init>(java.lang.String,int,int) -> <init>
+    76:81:com.frostnerd.dnschanger.tasker.ConfigureActivity$Action getAction(int) -> a
+    67:67:int access$1200(com.frostnerd.dnschanger.tasker.ConfigureActivity$Action) -> a
+    67:68:void <clinit>() -> <clinit>
 com.frostnerd.dnschanger.tasker.FireReceiver -> com.frostnerd.dnschanger.tasker.FireReceiver:
     27:27:void <init>() -> <init>
     32:80:void onReceive(android.content.Context,android.content.Intent) -> onReceive
@@ -21956,7 +21967,7 @@ com.frostnerd.dnschanger.tiles.TileStartStop -> com.frostnerd.dnschanger.tiles.T
     71:86:void onClick() -> onClick
     90:92:void onStopListening() -> onStopListening
 com.frostnerd.dnschanger.util.DNSQueryUtil -> com.frostnerd.dnschanger.util.a:
-    61:79:void runAsyncDNSQuery(com.frostnerd.dnschanger.database.entities.IPPortPair,java.lang.String,boolean,int,int,com.frostnerd.dnschanger.util.Util$DNSQueryResultListener,int) -> a
+    62:81:void runAsyncDNSQuery(com.frostnerd.dnschanger.database.entities.IPPortPair,java.lang.String,boolean,int,int,com.frostnerd.dnschanger.util.Util$DNSQueryResultListener,int) -> a
 com.frostnerd.dnschanger.util.DNSQueryUtil$3 -> com.frostnerd.dnschanger.util.a$1:
     com.frostnerd.dnschanger.database.entities.IPPortPair val$server -> a
     boolean val$tcp -> b
@@ -21965,8 +21976,8 @@ com.frostnerd.dnschanger.util.DNSQueryUtil$3 -> com.frostnerd.dnschanger.util.a$
     int val$type -> e
     int val$dClass -> f
     com.frostnerd.dnschanger.util.Util$DNSQueryResultListener val$resultListener -> g
-    61:61:void <init>(com.frostnerd.dnschanger.database.entities.IPPortPair,boolean,int,java.lang.String,int,int,com.frostnerd.dnschanger.util.Util$DNSQueryResultListener) -> <init>
-    65:77:void run() -> run
+    63:63:void <init>(com.frostnerd.dnschanger.database.entities.IPPortPair,boolean,int,java.lang.String,int,int,com.frostnerd.dnschanger.util.Util$DNSQueryResultListener) -> <init>
+    67:79:void run() -> run
 com.frostnerd.dnschanger.util.GenericFileProvider -> com.frostnerd.dnschanger.util.GenericFileProvider:
     14:14:void <init>() -> <init>
 com.frostnerd.dnschanger.util.Preferences -> com.frostnerd.dnschanger.util.b:
@@ -24174,21 +24185,22 @@ com.frostnerd.utils.database.DatabaseHelper -> com.frostnerd.utils.database.b:
     void onAfterUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> b
     152:155:android.database.sqlite.SQLiteDatabase getWritableDatabase() -> getWritableDatabase
     160:163:android.database.sqlite.SQLiteDatabase getReadableDatabase() -> getReadableDatabase
-    185:187:void insert(com.frostnerd.utils.database.orm.Entity) -> a
-    197:199:void insert(android.database.sqlite.SQLiteDatabase,com.frostnerd.utils.database.orm.Entity,com.frostnerd.utils.database.orm.Entity[]) -> a
-    202:202:int update(com.frostnerd.utils.database.orm.Entity) -> b
-    214:214:int delete(java.lang.Class,com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition,com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition[]) -> a
-    223:224:java.util.List getAll(java.lang.Class) -> a
-    228:228:int getCount(java.lang.Class) -> b
-    232:232:int getCount(java.lang.Class,com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition[]) -> a
-    251:251:com.frostnerd.utils.database.orm.parser.columns.Column findColumn(java.lang.Class,java.lang.String) -> a
-    256:256:com.frostnerd.utils.database.orm.parser.columns.Column findColumnOrThrow(java.lang.Class,java.lang.String) -> b
-    260:260:boolean rowExists(java.lang.Class,com.frostnerd.utils.database.orm.statementoptions.queryoptions.QueryOption[]) -> a
-    265:265:java.lang.String getTableName(java.lang.Class) -> c
-    280:280:com.frostnerd.utils.database.orm.parser.ParsedEntity getSQLHandler(java.lang.Class) -> d
-    300:304:int getHighestRowID(java.lang.Class) -> e
-    309:309:com.frostnerd.utils.database.orm.parser.columns.SimpleColumn getRowIDColumn(java.lang.Class) -> f
-    314:315:com.frostnerd.utils.database.orm.Entity getByRowID(java.lang.Class,long) -> a
+    198:204:boolean tableExists(java.lang.String) -> c
+    209:211:void insert(com.frostnerd.utils.database.orm.Entity) -> a
+    221:223:void insert(android.database.sqlite.SQLiteDatabase,com.frostnerd.utils.database.orm.Entity,com.frostnerd.utils.database.orm.Entity[]) -> a
+    226:226:int update(com.frostnerd.utils.database.orm.Entity) -> b
+    238:238:int delete(java.lang.Class,com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition,com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition[]) -> a
+    247:248:java.util.List getAll(java.lang.Class) -> a
+    252:252:int getCount(java.lang.Class) -> b
+    256:256:int getCount(java.lang.Class,com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition[]) -> a
+    275:275:com.frostnerd.utils.database.orm.parser.columns.Column findColumn(java.lang.Class,java.lang.String) -> a
+    280:280:com.frostnerd.utils.database.orm.parser.columns.Column findColumnOrThrow(java.lang.Class,java.lang.String) -> b
+    284:284:boolean rowExists(java.lang.Class,com.frostnerd.utils.database.orm.statementoptions.queryoptions.QueryOption[]) -> a
+    289:289:java.lang.String getTableName(java.lang.Class) -> c
+    304:304:com.frostnerd.utils.database.orm.parser.ParsedEntity getSQLHandler(java.lang.Class) -> d
+    324:328:int getHighestRowID(java.lang.Class) -> e
+    333:333:com.frostnerd.utils.database.orm.parser.columns.SimpleColumn getRowIDColumn(java.lang.Class) -> f
+    338:339:com.frostnerd.utils.database.orm.Entity getByRowID(java.lang.Class,long) -> a
 com.frostnerd.utils.database.MockedContext -> com.frostnerd.utils.database.c:
     com.frostnerd.utils.database.MockedContext$DatabaseLazyLoader database -> a
     java.io.File path -> b
@@ -25142,12 +25154,13 @@ com.frostnerd.utils.design.dialogs.FileChooserDialog -> com.frostnerd.utils.desi
     166:168:com.frostnerd.utils.design.dialogs.FileChooserDialog setNavigateToLastPath(boolean) -> a
     172:175:void setCanSelectMultiple(boolean) -> b
     186:219:com.frostnerd.utils.design.dialogs.FileChooserDialog showDialog() -> a
-    224:225:com.frostnerd.utils.design.dialogs.FileChooserDialog setShowFiles(boolean) -> c
-    230:231:com.frostnerd.utils.design.dialogs.FileChooserDialog setShowDirs(boolean) -> d
-    241:242:com.frostnerd.utils.design.dialogs.FileChooserDialog setFileListener(com.frostnerd.utils.design.dialogs.FileChooserDialog$FileSelectedListener) -> a
-    249:318:void refresh(java.io.File) -> b
-    321:324:void updateFileView(android.view.View) -> a
-    330:333:java.io.File getChosenFile(java.lang.String) -> a
+    227:228:void dismiss() -> b
+    232:233:com.frostnerd.utils.design.dialogs.FileChooserDialog setShowFiles(boolean) -> c
+    238:239:com.frostnerd.utils.design.dialogs.FileChooserDialog setShowDirs(boolean) -> d
+    249:250:com.frostnerd.utils.design.dialogs.FileChooserDialog setFileListener(com.frostnerd.utils.design.dialogs.FileChooserDialog$FileSelectedListener) -> a
+    257:326:void refresh(java.io.File) -> b
+    329:332:void updateFileView(android.view.View) -> a
+    338:341:java.io.File getChosenFile(java.lang.String) -> a
     43:43:android.widget.ListView access$000(com.frostnerd.utils.design.dialogs.FileChooserDialog) -> a
     43:43:java.io.File access$100(com.frostnerd.utils.design.dialogs.FileChooserDialog,java.lang.String) -> a
     43:43:java.util.Set access$200(com.frostnerd.utils.design.dialogs.FileChooserDialog) -> b
@@ -25170,8 +25183,8 @@ com.frostnerd.utils.design.dialogs.FileChooserDialog$1 -> com.frostnerd.utils.de
     77:109:void onItemClick(android.widget.AdapterView,android.view.View,int,long) -> onItemClick
 com.frostnerd.utils.design.dialogs.FileChooserDialog$10 -> com.frostnerd.utils.design.a.a$2:
     com.frostnerd.utils.design.dialogs.FileChooserDialog this$0 -> a
-    301:301:void <init>(com.frostnerd.utils.design.dialogs.FileChooserDialog,android.content.Context,int,java.lang.Object[]) -> <init>
-    305:314:android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
+    309:309:void <init>(com.frostnerd.utils.design.dialogs.FileChooserDialog,android.content.Context,int,java.lang.Object[]) -> <init>
+    313:322:android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
 com.frostnerd.utils.design.dialogs.FileChooserDialog$2 -> com.frostnerd.utils.design.a.a$3:
     boolean val$canCreateFolder -> a
     com.frostnerd.utils.design.dialogs.FileChooserDialog this$0 -> b
@@ -25203,22 +25216,22 @@ com.frostnerd.utils.design.dialogs.FileChooserDialog$5$2 -> com.frostnerd.utils.
     206:211:void onClick(android.view.View) -> onClick
 com.frostnerd.utils.design.dialogs.FileChooserDialog$6 -> com.frostnerd.utils.design.a.a$7:
     com.frostnerd.utils.design.dialogs.FileChooserDialog this$0 -> a
-    252:252:void <init>(com.frostnerd.utils.design.dialogs.FileChooserDialog) -> <init>
-    255:255:boolean accept(java.io.File) -> accept
+    260:260:void <init>(com.frostnerd.utils.design.dialogs.FileChooserDialog) -> <init>
+    263:263:boolean accept(java.io.File) -> accept
 com.frostnerd.utils.design.dialogs.FileChooserDialog$7 -> com.frostnerd.utils.design.a.a$8:
     com.frostnerd.utils.design.dialogs.FileChooserDialog this$0 -> a
-    258:258:void <init>(com.frostnerd.utils.design.dialogs.FileChooserDialog) -> <init>
-    261:261:boolean accept(java.io.File) -> accept
+    266:266:void <init>(com.frostnerd.utils.design.dialogs.FileChooserDialog) -> <init>
+    269:269:boolean accept(java.io.File) -> accept
 com.frostnerd.utils.design.dialogs.FileChooserDialog$8 -> com.frostnerd.utils.design.a.a$9:
     com.frostnerd.utils.design.dialogs.FileChooserDialog this$0 -> a
-    279:279:void <init>(com.frostnerd.utils.design.dialogs.FileChooserDialog) -> <init>
-    282:282:int compare(java.io.File,java.io.File) -> a
-    279:279:int compare(java.lang.Object,java.lang.Object) -> compare
+    287:287:void <init>(com.frostnerd.utils.design.dialogs.FileChooserDialog) -> <init>
+    290:290:int compare(java.io.File,java.io.File) -> a
+    287:287:int compare(java.lang.Object,java.lang.Object) -> compare
 com.frostnerd.utils.design.dialogs.FileChooserDialog$9 -> com.frostnerd.utils.design.a.a$10:
     com.frostnerd.utils.design.dialogs.FileChooserDialog this$0 -> a
-    285:285:void <init>(com.frostnerd.utils.design.dialogs.FileChooserDialog) -> <init>
-    288:288:int compare(java.io.File,java.io.File) -> a
-    285:285:int compare(java.lang.Object,java.lang.Object) -> compare
+    293:293:void <init>(com.frostnerd.utils.design.dialogs.FileChooserDialog) -> <init>
+    296:296:int compare(java.io.File,java.io.File) -> a
+    293:293:int compare(java.lang.Object,java.lang.Object) -> compare
 com.frostnerd.utils.design.dialogs.FileChooserDialog$FileSelectedListener -> com.frostnerd.utils.design.a.a$a:
     void fileSelected(java.io.File,com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode) -> a
     void multipleFilesSelected(java.io.File[]) -> a
@@ -25227,10 +25240,10 @@ com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode -> com.frostn
     com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode DIR -> DIR
     com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode BOTH -> BOTH
     com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode[] $VALUES -> $VALUES
-    337:337:com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode[] values() -> values
-    337:337:com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode valueOf(java.lang.String) -> valueOf
-    337:337:void <init>(java.lang.String,int) -> <init>
-    337:338:void <clinit>() -> <clinit>
+    345:345:com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode[] values() -> values
+    345:345:com.frostnerd.utils.design.dialogs.FileChooserDialog$SelectionMode valueOf(java.lang.String) -> valueOf
+    345:345:void <init>(java.lang.String,int) -> <init>
+    345:346:void <clinit>() -> <clinit>
 com.frostnerd.utils.design.dialogs.LoadingDialog -> com.frostnerd.utils.design.a.b:
     java.lang.String message -> a
     android.widget.TextView messageView -> b
