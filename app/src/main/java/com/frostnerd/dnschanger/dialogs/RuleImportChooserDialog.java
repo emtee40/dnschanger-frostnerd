@@ -52,6 +52,7 @@ class RuleImportChooserDialog extends UtilityDialog {
     private RadioButton hosts;
     private RadioButton domains;
     private RadioButton adblock;
+    private FileChooserDialog fileChooserDialog;
 
     <T extends Activity &RuleImport.ImportStartedListener> RuleImportChooserDialog(@NonNull final T context) {
         super(context, ThemeHandler.getDialogTheme(context));
@@ -115,6 +116,12 @@ class RuleImportChooserDialog extends UtilityDialog {
                 getButton(BUTTON_POSITIVE).setVisibility(View.INVISIBLE);
             }
         });
+        setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if(fileChooserDialog != null)fileChooserDialog.dismiss();
+            }
+        });
     }
 
     @Override
@@ -127,18 +134,20 @@ class RuleImportChooserDialog extends UtilityDialog {
 
     private <T extends Activity &RuleImport.ImportStartedListener> void handlePermissionOrShowFileDialog(T context) {
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            FileChooserDialog dialog = new FileChooserDialog(getContext(), false, FileChooserDialog.SelectionMode.FILE, ThemeHandler.getDialogTheme(getContext()));
-            dialog.setFileListener(new FileChooserDialog.FileSelectedListener() {
+            fileChooserDialog = new FileChooserDialog(getContext(), false, FileChooserDialog.SelectionMode.FILE, ThemeHandler.getDialogTheme(getContext()));
+            fileChooserDialog.setFileListener(new FileChooserDialog.FileSelectedListener() {
                 @Override
                 public void fileSelected(File f, FileChooserDialog.SelectionMode selectionMode) {
                     files.clear();
                     if (tryDetectType.isChecked()) detectFileTypes(f);
+                    fileChooserDialog = null;
                 }
 
                 @Override
                 public void multipleFilesSelected(File... selected) {
                     files.clear();
                     detectFileTypes(selected);
+                    fileChooserDialog = null;
                 }
 
                 private void detectFileTypes(final File... selectedFiles) {
@@ -250,9 +259,9 @@ class RuleImportChooserDialog extends UtilityDialog {
                     else getButton(BUTTON_POSITIVE).setVisibility(View.VISIBLE);
                 }
             });
-            dialog.setCanSelectMultiple(true);
-            dialog.setNavigateToLastPath(true);
-            dialog.showDialog();
+            fileChooserDialog.setCanSelectMultiple(true);
+            fileChooserDialog.setNavigateToLastPath(true);
+            fileChooserDialog.showDialog();
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 999);
