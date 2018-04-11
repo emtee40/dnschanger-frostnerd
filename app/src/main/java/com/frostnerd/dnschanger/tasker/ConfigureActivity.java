@@ -273,12 +273,12 @@ public class ConfigureActivity extends AppCompatActivity {
                 if(settingV6){
                     ed_dns1.setText(dns1V6.toString(customPorts));
                     ed_dns2.setText(dns2V6.toString(customPorts));
-                    ConfigureActivity.this.dns1 = dns1;
+                    ConfigureActivity.this.dns1 = dns1 != IPPortPair.getEmptyPair() ? dns1 : ConfigureActivity.this.dns1;
                     ConfigureActivity.this.dns2 = dns2;
                 }else{
                     ed_dns1.setText(dns1.toString(customPorts));
                     ed_dns2.setText(dns2.toString(customPorts));
-                    ConfigureActivity.this.dns1V6 = dns1V6;
+                    ConfigureActivity.this.dns1V6 = dns1V6 != IPPortPair.getEmptyPair() ? dns1V6 : ConfigureActivity.this.dns1V6;
                     ConfigureActivity.this.dns2V6 = dns2V6;
                 }
             }
