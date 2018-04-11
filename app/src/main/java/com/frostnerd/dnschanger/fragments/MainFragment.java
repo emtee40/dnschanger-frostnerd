@@ -242,7 +242,7 @@ public class MainFragment extends Fragment {
     }
 
     private void setEditTextLabel(){
-        String label1 = "DNS 1", label2 = "DNS 2";
+        String label1 = getString(R.string.hint_dns1), label2 = getString(R.string.hint_dns2);
         if(settingV6){
             DNSEntry entry;
             if((entry = PreferencesAccessor.Type.DNS1_V6.findMatchingDatabaseEntry(requireContext())) != null)
