@@ -26,8 +26,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/search_by_target"
             android:inputType="text"
-            android:textColor="#FFF"
-            tools:ignore="HardcodedText" />
+            android:textColor="#FFF"/>
     </com.frostnerd.utils.design.MaterialEditText>
 
     <RadioGroup
