@@ -110,6 +110,7 @@ public class PinActivity extends UtilityActivity {
         findViewById(R.id.pin_dialog_ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(isFinishing())return;
                 if (pinInput.getText().toString().equals(pin)) {
                     LogFactory.writeMessage(PinActivity.this, LOG_TAG, "Correct pin entered");
                     met.setIndicatorState(MaterialEditText.IndicatorState.CORRECT);
@@ -123,7 +124,7 @@ public class PinActivity extends UtilityActivity {
         });
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M && PreferencesAccessor.canUseFingerprintForPin(this)) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) == PackageManager.PERMISSION_GRANTED){
-                FingerprintManager fingerprintManager = Utils.requireNonNull((FingerprintManager) getSystemService(FINGERPRINT_SERVICE));
+                final FingerprintManager fingerprintManager = Utils.requireNonNull((FingerprintManager) getSystemService(FINGERPRINT_SERVICE));
                 KeyguardManager keyguardManager = Utils.requireNonNull(getSystemService(KeyguardManager.class));
                 fingerprintImage = findViewById(R.id.image);
                 if(fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints() && keyguardManager.isKeyguardSecure()) {
@@ -132,6 +133,7 @@ public class PinActivity extends UtilityActivity {
                     fingerprintManager.authenticate(null, new CancellationSignal(), 0, new FingerprintManager.AuthenticationCallback() {
                         @Override
                         public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
+                            if(isFinishing())return;
                             met.setIndicatorState(MaterialEditText.IndicatorState.CORRECT);
                             continueToFollowing(main);
                             fingerprintImage.setImageDrawable(DesignUtil.setDrawableColor
@@ -140,6 +142,7 @@ public class PinActivity extends UtilityActivity {
 
                         @Override
                         public void onAuthenticationFailed() {
+                            if(isFinishing())return;
                             met.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                             vibrator.vibrate(200);
                             fingerprintImage.setImageDrawable(DesignUtil.setDrawableColor
