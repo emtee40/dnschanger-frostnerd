@@ -376,7 +376,7 @@ public class MainFragment extends Fragment {
             dialog.show();
             checkDNSReachability(new DNSReachabilityCallback() {
                 @Override
-                public void checkFinished(List<IPPortPair> unreachable, List<IPPortPair> reachable) {
+                public void checkFinished(@NonNull List<IPPortPair> unreachable, @NonNull List<IPPortPair> reachable) {
                     dialog.dismiss();
                     if(unreachable.size() == 0){
                         ((MainActivity)requireContext()).runOnUiThread(new Runnable() {
@@ -391,7 +391,7 @@ public class MainFragment extends Fragment {
                         _text = _text.replace("[x]", unreachable.size() + reachable.size() + "");
                         _text = _text.replace("[y]", unreachable.size() + "");
                         boolean customPorts = PreferencesAccessor.areCustomPortsEnabled(requireContext());
-                        for(IPPortPair p: unreachable)builder.append("- ").append(p.formatForTextfield(customPorts)).append("\n");
+                        for(IPPortPair p: unreachable) builder.append("- ").append(p.formatForTextfield(customPorts)).append("\n");
                         _text = _text.replace("[servers]", builder.toString());
                         final String text = _text;
                         ((MainActivity)requireContext()).runOnUiThread(new Runnable() {
@@ -490,13 +490,14 @@ public class MainFragment extends Fragment {
     }
 
     public static abstract class DNSReachabilityCallback{
-        private final List<IPPortPair> unreachable = new ArrayList<>();
-        private final List<IPPortPair> reachable = new ArrayList<>();
+        @NonNull private final List<IPPortPair> unreachable = new ArrayList<>();
+        @NonNull private final List<IPPortPair> reachable = new ArrayList<>();
         private int servers;
 
-        public abstract void checkFinished(List<IPPortPair> unreachable, List<IPPortPair> reachable);
+        public abstract void checkFinished(@NonNull List<IPPortPair> unreachable, @NonNull List<IPPortPair> reachable);
 
         public final void checkProgress(IPPortPair server, boolean reachable){
+            if(server == null)return;
             if(!reachable)unreachable.add(server);
             else this.reachable.add(server);
             if(this.unreachable.size() + this.reachable.size() >= servers)checkFinished(unreachable, this.reachable);

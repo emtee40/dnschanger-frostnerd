@@ -43,6 +43,7 @@ public class DNSQueryUtil {
     }
 
     public static void startDNSServerConnectivityCheck(@NonNull final IPPortPair server, @NonNull final Util.ConnectivityCheckCallback callback){
+        if(server == null)return;
         runAsyncDNSQuery(server, "frostnerd.com", false, Type.A, DClass.ANY, new Util.DNSQueryResultListener() {
             @Override
             public void onSuccess(Record[] response) {
@@ -58,6 +59,7 @@ public class DNSQueryUtil {
 
     public static void runAsyncDNSQuery(final IPPortPair server, final String query, final boolean tcp, final int type,
                                         final int dClass, final Util.DNSQueryResultListener resultListener, final int timeout){
+        if(server == null)return;
         new Thread(){
             @Override
             public void run() {
@@ -80,6 +82,7 @@ public class DNSQueryUtil {
 
     public static Record[] runSyncDNSQuery(final IPPortPair server, final String query, final boolean tcp, final int type,
                                           final int dClass, final int timeout){
+        if(server == null) return null;
         try {
             Resolver resolver = new SimpleResolver(server.getAddress());
             resolver.setPort(server.getPort());
