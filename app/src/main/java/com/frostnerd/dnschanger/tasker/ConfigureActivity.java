@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
+import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.dialogs.DNSEntryListDialog;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
@@ -158,6 +159,7 @@ public class ConfigureActivity extends AppCompatActivity {
                     if(settingV6)dns1V6 = pair;
                     else dns1 = pair;
                 }
+                setEditTextLabel();
             }
 
             @Override
@@ -185,6 +187,7 @@ public class ConfigureActivity extends AppCompatActivity {
                     if(settingV6)dns2V6 = pair;
                     else dns2 = pair;
                 }
+                setEditTextLabel();
             }
 
             @Override
@@ -264,6 +267,7 @@ public class ConfigureActivity extends AppCompatActivity {
         });
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setInputType();
+        setEditTextLabel();
     }
 
     public void openDefaultDNSDialog(View v){
@@ -329,6 +333,20 @@ public class ConfigureActivity extends AppCompatActivity {
         }
         ed_dns1.setFilters(new InputFilter[]{filter});
         ed_dns2.setFilters(new InputFilter[]{filter});
+    }
+
+    private void setEditTextLabel(){
+        String label1 = getString(R.string.hint_dns1), label2 = getString(R.string.hint_dns2);
+        IPPortPair firstPair = settingV6 ? dns1V6 : dns1;
+        IPPortPair secondPair = settingV6 ? dns2V6 : dns2;
+        DNSEntry entry;
+        if ((entry = DatabaseHelper.getInstance(this).findMatchingDNSEntry(firstPair.getAddress())) != null)
+            label1 += " (" + entry.getShortName() + ")";
+        if (secondPair != null && secondPair != IPPortPair.getEmptyPair() &&
+                (entry = DatabaseHelper.getInstance(this).findMatchingDNSEntry(secondPair.getAddress())) != null)
+            label2 += " (" + entry.getShortName() + ")";
+        met_dns1.setLabelText(label1);
+        met_dns2.setLabelText(label2);
     }
 
     @Override
