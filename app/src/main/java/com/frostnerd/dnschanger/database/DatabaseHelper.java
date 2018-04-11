@@ -73,43 +73,45 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
     @Override
     public void onBeforeUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if(oldVersion <= 1){
-            CursorWithDefaults cursor = CursorWithDefaults.of(db.rawQuery("SELECT Name, dns1, dns2, dns1v6, dns2v6 FROM Shortcuts", null));
             List<Shortcut> shortcuts = new ArrayList<>();
             List<DNSEntry> entries = new ArrayList<>();
-            if(cursor.moveToFirst()){
-                int i = 0;
-                do{
-                    shortcuts.add(new Shortcut(legacyString(0, cursor, "Name " + i++),
-                            IPPortPair.wrap(cursor.getString(1, ""), 53),
-                            IPPortPair.wrap(cursor.getString(2 ), 53),
-                            IPPortPair.wrap(cursor.getString(3, ""), 53),
-                            IPPortPair.wrap(cursor.getString(4), 53)));
-                }while(cursor.moveToNext());
+            if(tableExists("Shortcuts")){
+                CursorWithDefaults cursor = CursorWithDefaults.of(db.rawQuery("SELECT Name, dns1, dns2, dns1v6, dns2v6 FROM Shortcuts", null));
+                if(cursor.moveToFirst()){
+                    int i = 0;
+                    do{
+                        shortcuts.add(new Shortcut(legacyString(0, cursor, "Name " + i++),
+                                IPPortPair.wrap(cursor.getString(1, ""), 53),
+                                IPPortPair.wrap(cursor.getString(2 ), 53),
+                                IPPortPair.wrap(cursor.getString(3, ""), 53),
+                                IPPortPair.wrap(cursor.getString(4), 53)));
+                    }while(cursor.moveToNext());
+                }
+                cursor.close();
             }
-            cursor.close();
-            cursor = CursorWithDefaults.of(db.rawQuery("SELECT Name, dns1, dns2, dns1v6, dns2v6, description, CustomEntry FROM DNSEntries", null));
-            if(cursor.moveToFirst()){
-                int i = 0;
-                do{
-                    DNSEntry found = DNSEntry.findDefaultEntryByLongName(cursor.getString(0));
-                    if(found == null)entries.add(new DNSEntry(legacyString(0, cursor, "Name " + i++),
-                            legacyString(0, cursor,"Name " + i),
-                            IPPortPair.wrap(cursor.getString(1, ""), 53),
-                            IPPortPair.wrap(cursor.getString(2), 53),
-                            IPPortPair.wrap(cursor.getString(3, ""), 53),
-                            IPPortPair.wrap(cursor.getString(4), 53),
-                            cursor.getString(5, ""),
-                            cursor.getInt(6, 0) == 1));
-                }while(cursor.moveToNext());
+            if(tableExists("DNSEntries")){
+                CursorWithDefaults cursor = CursorWithDefaults.of(db.rawQuery("SELECT Name, dns1, dns2, dns1v6, dns2v6, description, CustomEntry FROM DNSEntries", null));
+                if(cursor.moveToFirst()){
+                    int i = 0;
+                    do{
+                        DNSEntry found = DNSEntry.findDefaultEntryByLongName(cursor.getString(0));
+                        if(found == null)entries.add(new DNSEntry(legacyString(0, cursor, "Name " + i++),
+                                legacyString(0, cursor,"Name " + i),
+                                IPPortPair.wrap(cursor.getString(1, ""), 53),
+                                IPPortPair.wrap(cursor.getString(2), 53),
+                                IPPortPair.wrap(cursor.getString(3, ""), 53),
+                                IPPortPair.wrap(cursor.getString(4), 53),
+                                cursor.getString(5, ""),
+                                cursor.getInt(6, 0) == 1));
+                    }while(cursor.moveToNext());
+                }
+                cursor.close();
             }
-            cursor.close();
             db.execSQL("DROP TABLE IF EXISTS Shortcuts");
             db.execSQL("DROP TABLE IF EXISTS DNSEntries");
             onCreate(db);
-            for(DNSEntry entry: entries)insert(entry);
-            for(Shortcut shortcut: shortcuts){
-                createShortcut(shortcut);
-            }
+            for(DNSEntry entry: entries) insert(entry);
+            for(Shortcut shortcut: shortcuts) createShortcut(shortcut);
         }
     }
 
