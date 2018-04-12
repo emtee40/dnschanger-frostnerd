@@ -417,8 +417,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         findPreference("pin_value").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                awaitingPinChange = false;
-               preferences.put("pin_value", "" + newValue);
+                if(newValue.toString().equals("")){
+                    findPreference("setting_pin_enabled").setEnabled(false);
+                }else {
+                    awaitingPinChange = false;
+                    preferences.put("pin_value",String.valueOf(newValue));
+                }
                 return false;
             }
         });
