@@ -418,7 +418,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if(newValue.toString().equals("")){
-                    findPreference("setting_pin_enabled").setEnabled(false);
+                    ((CheckBoxPreference)findPreference("setting_pin_enabled")).setChecked(false);
                 }else {
                     awaitingPinChange = false;
                     preferences.put("pin_value",String.valueOf(newValue));
