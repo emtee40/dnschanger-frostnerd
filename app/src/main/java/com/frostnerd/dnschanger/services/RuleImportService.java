@@ -79,6 +79,9 @@ public class RuleImportService extends Service {
             if(first)new Thread(){
                 @Override
                 public void run() {
+                    if(DNSVpnService.isServiceRunning()){
+                        startService(DNSVpnService.getDestroyIntent(RuleImportService.this));
+                    }
                     try {
                         startImport();
                     } catch (IOException e) {
