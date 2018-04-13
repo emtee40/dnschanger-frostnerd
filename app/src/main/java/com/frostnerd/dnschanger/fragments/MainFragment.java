@@ -496,11 +496,11 @@ public class MainFragment extends Fragment {
 
         public abstract void checkFinished(@NonNull List<IPPortPair> unreachable, @NonNull List<IPPortPair> reachable);
 
-        public final void checkProgress(IPPortPair server, boolean reachable){
-            if(server == null)return;
+        public final void checkProgress(@NonNull IPPortPair server, boolean reachable){
+            if(server == null || server.isEmpty())return;
             if(!reachable)unreachable.add(server);
             else this.reachable.add(server);
-            if(this.unreachable.size() + this.reachable.size() >= servers)checkFinished(unreachable, this.reachable);
+            if(this.unreachable.size() + this.reachable.size() >= servers)checkFinished(this.unreachable, this.reachable);
         }
 
         void setServers(int servers){

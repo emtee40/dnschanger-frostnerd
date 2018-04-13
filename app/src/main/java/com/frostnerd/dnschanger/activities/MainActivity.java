@@ -761,7 +761,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
                     dialog.show();
                     ((MainFragment)currentFragment()).checkDNSReachability(new MainFragment.DNSReachabilityCallback() {
                         @Override
-                        public void checkFinished(@NonNull List<IPPortPair> unreachable, List<IPPortPair> reachable) {
+                        public void checkFinished(@NonNull List<IPPortPair> unreachable, @NonNull List<IPPortPair> reachable) {
                             dialog.dismiss();
                             if(unreachable.size() == 0){
                                 MainActivity.this.runOnUiThread(new Runnable() {
