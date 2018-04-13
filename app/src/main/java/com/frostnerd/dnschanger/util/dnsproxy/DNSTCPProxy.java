@@ -157,7 +157,7 @@ public class DNSTCPProxy extends DNSProxy{
                     pollingFd.fd = ParcelFileDescriptor.fromSocket(socket).getFileDescriptor();
                     pollingFd.events = (short)OsConstants.POLLIN;
                 }
-                Os.poll(polls, -1);
+                poll(polls, -1);
             }
             if(blockFd.revents != 0){
                 shouldRun = false;
@@ -177,6 +177,22 @@ public class DNSTCPProxy extends DNSProxy{
             }
             if(shouldRun && (structFd.revents & OsConstants.POLLOUT) != 0)outputStream.write(writeToDevice.poll());
             if(shouldRun && (structFd.revents & OsConstants.POLLIN) != 0)handleDeviceDNSPacket(inputStream, packet);
+        }
+    }
+
+    private int pollTries = 0;
+    private void poll(StructPollfd[] polls, int timeout) throws ErrnoException {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            Os.poll(polls, timeout);
+        }else {
+            pollTries++;
+            try{
+                Os.poll(polls, timeout);
+                pollTries = 0;
+            } catch(ErrnoException ex){
+                if(pollTries < 3) poll(polls, timeout);
+                else throw ex;
+            }
         }
     }
 
