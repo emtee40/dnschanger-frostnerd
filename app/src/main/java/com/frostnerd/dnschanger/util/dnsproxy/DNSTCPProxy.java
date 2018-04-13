@@ -157,7 +157,7 @@ public class DNSTCPProxy extends DNSProxy{
                     pollingFd.fd = ParcelFileDescriptor.fromSocket(socket).getFileDescriptor();
                     pollingFd.events = (short)OsConstants.POLLIN;
                 }
-                poll(polls, -1);
+                poll(polls, 3000);
             }
             if(blockFd.revents != 0){
                 shouldRun = false;
@@ -187,7 +187,7 @@ public class DNSTCPProxy extends DNSProxy{
         }else {
             pollTries++;
             try{
-                Os.poll(polls, timeout);
+                Os.poll(polls, timeout/pollTries);
                 pollTries = 0;
             } catch(ErrnoException ex){
                 if(pollTries < 3) poll(polls, timeout);
