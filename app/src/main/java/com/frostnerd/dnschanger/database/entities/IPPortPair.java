@@ -110,7 +110,7 @@ public class IPPortPair extends MultitonEntity implements Serializable{
     }
 
     public boolean isEmpty(){
-        return getAddress().equals("");
+        return getAddress().equals("") || this == getEmptyPair();
     }
 
 }
