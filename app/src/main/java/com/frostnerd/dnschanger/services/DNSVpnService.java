@@ -29,6 +29,7 @@ import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.widgets.BasicWidget;
 import com.frostnerd.utils.general.IntentUtil;
 import com.frostnerd.utils.general.StringUtil;
+import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.general.WidgetUtil;
 import com.frostnerd.dnschanger.util.Preferences;
 
@@ -222,6 +223,11 @@ public class DNSVpnService extends VpnService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         //intent = intent == null ? intent : restoreSettings(intent);
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Got StartCommand", intent);
+        if(Utils.isServiceRunning(this, RuleImportService.class)){
+            LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Not starting the service because rules are currently being imported");
+            stopSelf();
+            return START_NOT_STICKY;
+        }
         if(variablesCleared && intent != null && !(IntentUtil.checkExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(),intent) ||
                 IntentUtil.checkExtra(VPNServiceArgument.COMMAND_STOP_VPN.getArgument(),intent)))return START_STICKY;
         serviceRunning = intent == null || !intent.getBooleanExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(), false);
