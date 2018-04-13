@@ -183,8 +183,6 @@ public class DNSTCPProxy extends DNSProxy{
     private int pollTries = 0;
     private void poll(StructPollfd[] polls, int timeout) throws ErrnoException {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
-            Os.poll(polls, timeout);
-        }else {
             pollTries++;
             try{
                 Os.poll(polls, timeout/pollTries);
@@ -193,6 +191,8 @@ public class DNSTCPProxy extends DNSProxy{
                 if(pollTries < 3) poll(polls, timeout);
                 else throw ex;
             }
+        }else {
+            Os.poll(polls, timeout);
         }
     }
 
