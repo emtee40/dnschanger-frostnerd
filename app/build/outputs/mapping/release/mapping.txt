@@ -20611,16 +20611,17 @@ com.frostnerd.dnschanger.database.DatabaseHelper -> com.frostnerd.dnschanger.dat
     123:125:java.lang.String legacyString(int,com.frostnerd.utils.database.CursorWithDefaults,java.lang.String) -> a
     131:136:void onAfterUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> b
     141:145:void close() -> close
-    148:148:boolean dnsRuleExists(java.lang.String) -> a
-    152:154:boolean dnsRuleExists(java.lang.String,boolean) -> a
-    158:160:com.frostnerd.dnschanger.database.entities.DNSRule getDNSRule(java.lang.String,boolean) -> b
-    164:166:boolean deleteDNSRule(java.lang.String,boolean) -> c
-    170:172:int editDNSRule(java.lang.String,boolean,java.lang.String) -> a
-    176:177:void createDNSRule(java.lang.String,java.lang.String,boolean,boolean) -> a
-    182:187:void createShortcut(java.lang.String,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair) -> a
-    190:195:void createShortcut(com.frostnerd.dnschanger.database.entities.Shortcut) -> a
-    199:205:com.frostnerd.dnschanger.database.entities.DNSEntry findMatchingDNSEntry(java.lang.String) -> b
-    210:212:void finalize() -> finalize
+    148:148:boolean dnsEntryExists(java.lang.String) -> a
+    152:152:boolean dnsRuleExists(java.lang.String) -> b
+    156:158:boolean dnsRuleExists(java.lang.String,boolean) -> a
+    162:164:com.frostnerd.dnschanger.database.entities.DNSRule getDNSRule(java.lang.String,boolean) -> b
+    168:170:boolean deleteDNSRule(java.lang.String,boolean) -> c
+    174:176:int editDNSRule(java.lang.String,boolean,java.lang.String) -> a
+    180:181:void createDNSRule(java.lang.String,java.lang.String,boolean,boolean) -> a
+    186:191:void createShortcut(java.lang.String,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair) -> a
+    194:199:void createShortcut(com.frostnerd.dnschanger.database.entities.Shortcut) -> a
+    203:209:com.frostnerd.dnschanger.database.entities.DNSEntry findMatchingDNSEntry(java.lang.String) -> c
+    214:216:void finalize() -> finalize
     37:37:void <clinit>() -> <clinit>
 com.frostnerd.dnschanger.database.DatabaseHelper$1 -> com.frostnerd.dnschanger.database.a$1:
     37:44:void <init>() -> <init>
@@ -20765,79 +20766,79 @@ com.frostnerd.dnschanger.dialogs.DNSCreationDialog -> com.frostnerd.dnschanger.b
     android.os.Vibrator vibrator -> k
     boolean settingV6 -> l
     boolean customPorts -> m
-    52:72:void <init>(android.content.Context,com.frostnerd.dnschanger.dialogs.DNSCreationDialog$OnEditingFinishedListener,com.frostnerd.dnschanger.database.entities.DNSEntry) -> <init>
-    76:79:void destroy() -> a
-    48:209:void <init>(android.content.Context,com.frostnerd.dnschanger.dialogs.DNSCreationDialog$OnCreationFinishedListener) -> <init>
-    212:216:boolean isConfigurationValid() -> c
-    220:237:void setEditTextStates() -> d
-    38:38:boolean access$000(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> a
-    38:38:android.widget.EditText access$100(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> b
-    38:38:com.frostnerd.dnschanger.database.entities.IPPortPair access$200(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> c
-    38:38:com.frostnerd.dnschanger.database.entities.IPPortPair access$300(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> d
-    38:38:com.frostnerd.dnschanger.database.entities.IPPortPair access$400(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> e
-    38:38:com.frostnerd.dnschanger.database.entities.IPPortPair access$500(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> f
-    38:38:android.os.Vibrator access$600(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> g
-    38:38:boolean access$702(com.frostnerd.dnschanger.dialogs.DNSCreationDialog,boolean) -> a
-    38:38:boolean access$700(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> h
-    38:38:void access$800(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> i
-    38:38:boolean access$900(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> j
-    38:38:com.frostnerd.utils.design.MaterialEditText access$1000(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> k
-    38:38:com.frostnerd.dnschanger.database.entities.IPPortPair access$402(com.frostnerd.dnschanger.dialogs.DNSCreationDialog,com.frostnerd.dnschanger.database.entities.IPPortPair) -> a
-    38:38:com.frostnerd.dnschanger.database.entities.IPPortPair access$202(com.frostnerd.dnschanger.dialogs.DNSCreationDialog,com.frostnerd.dnschanger.database.entities.IPPortPair) -> b
-    38:38:com.frostnerd.utils.design.MaterialEditText access$1100(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> l
-    38:38:com.frostnerd.dnschanger.database.entities.IPPortPair access$502(com.frostnerd.dnschanger.dialogs.DNSCreationDialog,com.frostnerd.dnschanger.database.entities.IPPortPair) -> c
-    38:38:com.frostnerd.dnschanger.database.entities.IPPortPair access$302(com.frostnerd.dnschanger.dialogs.DNSCreationDialog,com.frostnerd.dnschanger.database.entities.IPPortPair) -> d
-    38:38:com.frostnerd.utils.design.MaterialEditText access$1200(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> m
+    53:73:void <init>(android.content.Context,com.frostnerd.dnschanger.dialogs.DNSCreationDialog$OnEditingFinishedListener,com.frostnerd.dnschanger.database.entities.DNSEntry) -> <init>
+    77:80:void destroy() -> a
+    49:212:void <init>(android.content.Context,com.frostnerd.dnschanger.dialogs.DNSCreationDialog$OnCreationFinishedListener) -> <init>
+    215:219:boolean isConfigurationValid() -> c
+    223:240:void setEditTextStates() -> d
+    39:39:boolean access$000(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> a
+    39:39:android.widget.EditText access$100(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> b
+    39:39:com.frostnerd.dnschanger.database.entities.IPPortPair access$200(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> c
+    39:39:com.frostnerd.dnschanger.database.entities.IPPortPair access$300(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> d
+    39:39:com.frostnerd.dnschanger.database.entities.IPPortPair access$400(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> e
+    39:39:com.frostnerd.dnschanger.database.entities.IPPortPair access$500(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> f
+    39:39:android.os.Vibrator access$600(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> g
+    39:39:boolean access$702(com.frostnerd.dnschanger.dialogs.DNSCreationDialog,boolean) -> a
+    39:39:boolean access$700(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> h
+    39:39:void access$800(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> i
+    39:39:boolean access$900(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> j
+    39:39:com.frostnerd.utils.design.MaterialEditText access$1000(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> k
+    39:39:com.frostnerd.dnschanger.database.entities.IPPortPair access$402(com.frostnerd.dnschanger.dialogs.DNSCreationDialog,com.frostnerd.dnschanger.database.entities.IPPortPair) -> a
+    39:39:com.frostnerd.dnschanger.database.entities.IPPortPair access$202(com.frostnerd.dnschanger.dialogs.DNSCreationDialog,com.frostnerd.dnschanger.database.entities.IPPortPair) -> b
+    39:39:com.frostnerd.utils.design.MaterialEditText access$1100(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> l
+    39:39:com.frostnerd.dnschanger.database.entities.IPPortPair access$502(com.frostnerd.dnschanger.dialogs.DNSCreationDialog,com.frostnerd.dnschanger.database.entities.IPPortPair) -> c
+    39:39:com.frostnerd.dnschanger.database.entities.IPPortPair access$302(com.frostnerd.dnschanger.dialogs.DNSCreationDialog,com.frostnerd.dnschanger.database.entities.IPPortPair) -> d
+    39:39:com.frostnerd.utils.design.MaterialEditText access$1200(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> m
 com.frostnerd.dnschanger.dialogs.DNSCreationDialog$1 -> com.frostnerd.dnschanger.b.a$1:
     com.frostnerd.dnschanger.database.entities.DNSEntry val$entry -> a
     com.frostnerd.dnschanger.dialogs.DNSCreationDialog$OnEditingFinishedListener val$listener -> b
-    52:52:void <init>(com.frostnerd.dnschanger.database.entities.DNSEntry,com.frostnerd.dnschanger.dialogs.DNSCreationDialog$OnEditingFinishedListener) -> <init>
-    55:62:void onCreationFinished(java.lang.String,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair) -> a
+    53:53:void <init>(com.frostnerd.dnschanger.database.entities.DNSEntry,com.frostnerd.dnschanger.dialogs.DNSCreationDialog$OnEditingFinishedListener) -> <init>
+    56:63:void onCreationFinished(java.lang.String,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair) -> a
 com.frostnerd.dnschanger.dialogs.DNSCreationDialog$2 -> com.frostnerd.dnschanger.b.a$2:
     com.frostnerd.dnschanger.dialogs.DNSCreationDialog this$0 -> a
-    102:102:void <init>(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> <init>
-    105:106:void onClick(android.content.DialogInterface,int) -> onClick
+    103:103:void <init>(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> <init>
+    106:107:void onClick(android.content.DialogInterface,int) -> onClick
 com.frostnerd.dnschanger.dialogs.DNSCreationDialog$3 -> com.frostnerd.dnschanger.b.a$3:
     com.frostnerd.dnschanger.dialogs.DNSCreationDialog this$0 -> a
-    108:108:void <init>(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> <init>
-    112:112:void onClick(android.content.DialogInterface,int) -> onClick
+    109:109:void <init>(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> <init>
+    113:113:void onClick(android.content.DialogInterface,int) -> onClick
 com.frostnerd.dnschanger.dialogs.DNSCreationDialog$4 -> com.frostnerd.dnschanger.b.a$4:
     com.frostnerd.dnschanger.dialogs.DNSCreationDialog$OnCreationFinishedListener val$listener -> a
     boolean val$ipv6Enabled -> b
     boolean val$ipv4Enabled -> c
     com.frostnerd.dnschanger.dialogs.DNSCreationDialog this$0 -> d
-    115:115:void <init>(com.frostnerd.dnschanger.dialogs.DNSCreationDialog,com.frostnerd.dnschanger.dialogs.DNSCreationDialog$OnCreationFinishedListener,boolean,boolean) -> <init>
-    118:137:void onShow(android.content.DialogInterface) -> onShow
+    116:116:void <init>(com.frostnerd.dnschanger.dialogs.DNSCreationDialog,com.frostnerd.dnschanger.dialogs.DNSCreationDialog$OnCreationFinishedListener,boolean,boolean) -> <init>
+    119:138:void onShow(android.content.DialogInterface) -> onShow
 com.frostnerd.dnschanger.dialogs.DNSCreationDialog$4$1 -> com.frostnerd.dnschanger.b.a$4$1:
     com.frostnerd.dnschanger.dialogs.DNSCreationDialog$4 this$1 -> a
-    118:118:void <init>(com.frostnerd.dnschanger.dialogs.DNSCreationDialog$4) -> <init>
-    121:127:void onClick(android.view.View) -> onClick
+    119:119:void <init>(com.frostnerd.dnschanger.dialogs.DNSCreationDialog$4) -> <init>
+    122:128:void onClick(android.view.View) -> onClick
 com.frostnerd.dnschanger.dialogs.DNSCreationDialog$4$2 -> com.frostnerd.dnschanger.b.a$4$2:
     com.frostnerd.dnschanger.dialogs.DNSCreationDialog$4 this$1 -> a
-    129:129:void <init>(com.frostnerd.dnschanger.dialogs.DNSCreationDialog$4) -> <init>
-    132:135:void onClick(android.view.View) -> onClick
+    130:130:void <init>(com.frostnerd.dnschanger.dialogs.DNSCreationDialog$4) -> <init>
+    133:136:void onClick(android.view.View) -> onClick
 com.frostnerd.dnschanger.dialogs.DNSCreationDialog$5 -> com.frostnerd.dnschanger.b.a$5:
     java.lang.String before -> c
     android.content.Context val$context -> a
     com.frostnerd.dnschanger.dialogs.DNSCreationDialog this$0 -> b
-    139:139:void <init>(com.frostnerd.dnschanger.dialogs.DNSCreationDialog,android.content.Context) -> <init>
-    143:144:void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
-    148:159:void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
-    164:164:void afterTextChanged(android.text.Editable) -> afterTextChanged
+    140:140:void <init>(com.frostnerd.dnschanger.dialogs.DNSCreationDialog,android.content.Context) -> <init>
+    144:145:void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
+    149:160:void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
+    165:165:void afterTextChanged(android.text.Editable) -> afterTextChanged
 com.frostnerd.dnschanger.dialogs.DNSCreationDialog$6 -> com.frostnerd.dnschanger.b.a$6:
     java.lang.String before -> c
     android.content.Context val$context -> a
     com.frostnerd.dnschanger.dialogs.DNSCreationDialog this$0 -> b
-    166:166:void <init>(com.frostnerd.dnschanger.dialogs.DNSCreationDialog,android.content.Context) -> <init>
-    170:171:void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
-    175:186:void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
-    191:191:void afterTextChanged(android.text.Editable) -> afterTextChanged
+    167:167:void <init>(com.frostnerd.dnschanger.dialogs.DNSCreationDialog,android.content.Context) -> <init>
+    171:172:void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
+    176:187:void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
+    192:192:void afterTextChanged(android.text.Editable) -> afterTextChanged
 com.frostnerd.dnschanger.dialogs.DNSCreationDialog$7 -> com.frostnerd.dnschanger.b.a$7:
     com.frostnerd.dnschanger.dialogs.DNSCreationDialog this$0 -> a
-    193:193:void <init>(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> <init>
-    197:197:void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
-    202:202:void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
-    206:207:void afterTextChanged(android.text.Editable) -> afterTextChanged
+    194:194:void <init>(com.frostnerd.dnschanger.dialogs.DNSCreationDialog) -> <init>
+    198:198:void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
+    203:203:void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
+    207:210:void afterTextChanged(android.text.Editable) -> afterTextChanged
 com.frostnerd.dnschanger.dialogs.DNSCreationDialog$OnCreationFinishedListener -> com.frostnerd.dnschanger.b.a$a:
     void onCreationFinished(java.lang.String,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair) -> a
 com.frostnerd.dnschanger.dialogs.DNSCreationDialog$OnEditingFinishedListener -> com.frostnerd.dnschanger.b.a$b:
@@ -21267,13 +21268,13 @@ com.frostnerd.dnschanger.fragments.MainFragment -> com.frostnerd.dnschanger.c.c:
     296:320:void onResume() -> x
     324:328:void onPause() -> y
     332:371:void onActivityResult(int,int,android.content.Intent) -> a
-    374:431:void startVpn() -> ah
-    435:440:void stopVpn() -> ai
-    443:446:void toggleVPN() -> b
-    449:454:boolean toggleCurrentInputFocus() -> c
-    458:473:void checkDNSReachability(com.frostnerd.dnschanger.fragments.MainFragment$DNSReachabilityCallback) -> a
-    477:479:void onCreateOptionsMenu(android.view.Menu,android.view.MenuInflater) -> a
-    483:489:boolean onOptionsItemSelected(android.view.MenuItem) -> a
+    374:434:void startVpn() -> ah
+    438:443:void stopVpn() -> ai
+    446:449:void toggleVPN() -> b
+    452:457:boolean toggleCurrentInputFocus() -> c
+    461:476:void checkDNSReachability(com.frostnerd.dnschanger.fragments.MainFragment$DNSReachabilityCallback) -> a
+    480:482:void onCreateOptionsMenu(android.view.Menu,android.view.MenuInflater) -> a
+    486:492:boolean onOptionsItemSelected(android.view.MenuItem) -> a
     71:71:boolean access$002(com.frostnerd.dnschanger.fragments.MainFragment,boolean) -> a
     71:71:boolean access$102(com.frostnerd.dnschanger.fragments.MainFragment,boolean) -> b
     71:71:void access$200(com.frostnerd.dnschanger.fragments.MainFragment,boolean) -> c
@@ -21293,9 +21294,9 @@ com.frostnerd.dnschanger.fragments.MainFragment$10 -> com.frostnerd.dnschanger.c
     com.frostnerd.dnschanger.fragments.MainFragment$DNSReachabilityCallback val$callback -> a
     com.frostnerd.dnschanger.database.entities.IPPortPair val$pair -> b
     com.frostnerd.dnschanger.fragments.MainFragment this$0 -> c
-    461:461:void <init>(com.frostnerd.dnschanger.fragments.MainFragment,com.frostnerd.dnschanger.fragments.MainFragment$DNSReachabilityCallback,com.frostnerd.dnschanger.database.entities.IPPortPair) -> <init>
-    464:465:void onSuccess(org.xbill.DNS.Record[]) -> a
-    469:470:void onError(java.lang.Exception) -> a
+    464:464:void <init>(com.frostnerd.dnschanger.fragments.MainFragment,com.frostnerd.dnschanger.fragments.MainFragment$DNSReachabilityCallback,com.frostnerd.dnschanger.database.entities.IPPortPair) -> <init>
+    467:468:void onSuccess(org.xbill.DNS.Record[]) -> a
+    472:473:void onError(java.lang.Exception) -> a
 com.frostnerd.dnschanger.fragments.MainFragment$2 -> com.frostnerd.dnschanger.c.c$3:
     com.frostnerd.dnschanger.fragments.MainFragment this$0 -> a
     92:92:void <init>(com.frostnerd.dnschanger.fragments.MainFragment) -> <init>
@@ -21339,8 +21340,8 @@ com.frostnerd.dnschanger.fragments.MainFragment$9 -> com.frostnerd.dnschanger.c.
     com.frostnerd.utils.design.dialogs.LoadingDialog val$dialog -> a
     com.frostnerd.dnschanger.fragments.MainFragment this$0 -> b
     377:377:void <init>(com.frostnerd.dnschanger.fragments.MainFragment,com.frostnerd.utils.design.dialogs.LoadingDialog) -> <init>
-    380:410:void checkFinished(java.util.List,java.util.List) -> a
-    414:420:void start() -> a
+    380:413:void checkFinished(java.util.List,java.util.List) -> a
+    417:423:void start() -> a
     377:377:void access$1000(com.frostnerd.dnschanger.fragments.MainFragment$9) -> a
 com.frostnerd.dnschanger.fragments.MainFragment$9$1 -> com.frostnerd.dnschanger.c.c$10$1:
     com.frostnerd.dnschanger.fragments.MainFragment$9 this$1 -> a
@@ -21349,20 +21350,20 @@ com.frostnerd.dnschanger.fragments.MainFragment$9$1 -> com.frostnerd.dnschanger.
 com.frostnerd.dnschanger.fragments.MainFragment$9$2 -> com.frostnerd.dnschanger.c.c$10$2:
     java.lang.String val$text -> a
     com.frostnerd.dnschanger.fragments.MainFragment$9 this$1 -> b
-    397:397:void <init>(com.frostnerd.dnschanger.fragments.MainFragment$9,java.lang.String) -> <init>
-    400:407:void run() -> run
+    400:400:void <init>(com.frostnerd.dnschanger.fragments.MainFragment$9,java.lang.String) -> <init>
+    403:410:void run() -> run
 com.frostnerd.dnschanger.fragments.MainFragment$9$2$1 -> com.frostnerd.dnschanger.c.c$10$2$1:
     com.frostnerd.dnschanger.fragments.MainFragment$9$2 this$2 -> a
-    401:401:void <init>(com.frostnerd.dnschanger.fragments.MainFragment$9$2) -> <init>
-    404:405:void onClick(android.content.DialogInterface,int) -> onClick
+    404:404:void <init>(com.frostnerd.dnschanger.fragments.MainFragment$9$2) -> <init>
+    407:408:void onClick(android.content.DialogInterface,int) -> onClick
 com.frostnerd.dnschanger.fragments.MainFragment$DNSReachabilityCallback -> com.frostnerd.dnschanger.c.c$a:
     java.util.List unreachable -> a
     java.util.List reachable -> b
     int servers -> c
-    492:494:void <init>() -> <init>
+    495:497:void <init>() -> <init>
     void checkFinished(java.util.List,java.util.List) -> a
-    500:504:void checkProgress(com.frostnerd.dnschanger.database.entities.IPPortPair,boolean) -> a
-    507:508:void setServers(int) -> a
+    503:507:void checkProgress(com.frostnerd.dnschanger.database.entities.IPPortPair,boolean) -> a
+    510:511:void setServers(int) -> a
 com.frostnerd.dnschanger.fragments.QueryLogFragment -> com.frostnerd.dnschanger.c.d:
     com.frostnerd.dnschanger.adapters.QueryLogAdapter queryLogAdapter -> a
     android.support.v7.widget.RecyclerView list -> b
@@ -21487,19 +21488,19 @@ com.frostnerd.dnschanger.fragments.SettingsFragment -> com.frostnerd.dnschanger.
     android.support.design.widget.Snackbar ipv6EnableQuestionSnackbar -> af
     android.support.v7.preference.Preference$OnPreferenceChangeListener changeListener -> ag
     java.util.regex.Pattern emptySearchPattern -> ah
-    71:564:void <init>() -> <init>
+    71:568:void <init>() -> <init>
     88:95:void onCreatePreferences(android.os.Bundle,java.lang.String) -> a
-    99:436:void onCreate(android.os.Bundle) -> a
-    440:446:void onRequestPermissionsResult(int,java.lang.String[],int[]) -> a
-    469:474:void onResume() -> x
-    478:485:void onDestroy() -> z
-    489:550:void onActivityResult(int,int,android.content.Intent) -> a
-    554:562:void onCreateOptionsMenu(android.view.Menu,android.view.MenuInflater) -> a
-    567:574:boolean preferenceMatches(android.support.v7.preference.Preference,java.lang.String) -> a
-    579:579:com.frostnerd.utils.preferences.searchablepreferences.SearchSettings getSearchOptions() -> ak
-    584:584:android.support.v7.preference.PreferenceGroup getTopLevelPreferenceGroup() -> al
-    589:589:boolean onQueryTextSubmit(java.lang.String) -> a_
-    594:595:boolean onQueryTextChange(java.lang.String) -> b
+    99:440:void onCreate(android.os.Bundle) -> a
+    444:450:void onRequestPermissionsResult(int,java.lang.String[],int[]) -> a
+    473:478:void onResume() -> x
+    482:489:void onDestroy() -> z
+    493:554:void onActivityResult(int,int,android.content.Intent) -> a
+    558:566:void onCreateOptionsMenu(android.view.Menu,android.view.MenuInflater) -> a
+    571:578:boolean preferenceMatches(android.support.v7.preference.Preference,java.lang.String) -> a
+    583:583:com.frostnerd.utils.preferences.searchablepreferences.SearchSettings getSearchOptions() -> ak
+    588:588:android.support.v7.preference.PreferenceGroup getTopLevelPreferenceGroup() -> al
+    593:593:boolean onQueryTextSubmit(java.lang.String) -> a_
+    598:599:boolean onQueryTextChange(java.lang.String) -> b
     71:71:android.content.ComponentName access$000(com.frostnerd.dnschanger.fragments.SettingsFragment) -> a
     71:71:android.app.admin.DevicePolicyManager access$100(com.frostnerd.dnschanger.fragments.SettingsFragment) -> b
     71:71:android.support.v7.preference.Preference access$200(com.frostnerd.dnschanger.fragments.SettingsFragment) -> c
@@ -21549,20 +21550,20 @@ com.frostnerd.dnschanger.fragments.SettingsFragment$14 -> com.frostnerd.dnschang
     com.frostnerd.dnschanger.util.Preferences val$preferences -> a
     com.frostnerd.dnschanger.fragments.SettingsFragment this$0 -> b
     417:417:void <init>(com.frostnerd.dnschanger.fragments.SettingsFragment,com.frostnerd.dnschanger.util.Preferences) -> <init>
-    420:422:boolean onPreferenceChange(android.support.v7.preference.Preference,java.lang.Object) -> a
+    420:426:boolean onPreferenceChange(android.support.v7.preference.Preference,java.lang.Object) -> a
 com.frostnerd.dnschanger.fragments.SettingsFragment$15 -> com.frostnerd.dnschanger.c.f$7:
     com.frostnerd.dnschanger.fragments.SettingsFragment this$0 -> a
-    427:427:void <init>(com.frostnerd.dnschanger.fragments.SettingsFragment) -> <init>
-    430:431:void onClick(android.view.View) -> onClick
+    431:431:void <init>(com.frostnerd.dnschanger.fragments.SettingsFragment) -> <init>
+    434:435:void onClick(android.view.View) -> onClick
 com.frostnerd.dnschanger.fragments.SettingsFragment$16 -> com.frostnerd.dnschanger.c.f$8:
     com.frostnerd.dnschanger.fragments.SettingsFragment this$0 -> a
-    448:448:void <init>(com.frostnerd.dnschanger.fragments.SettingsFragment) -> <init>
-    451:463:boolean onPreferenceChange(android.support.v7.preference.Preference,java.lang.Object) -> a
+    452:452:void <init>(com.frostnerd.dnschanger.fragments.SettingsFragment) -> <init>
+    455:467:boolean onPreferenceChange(android.support.v7.preference.Preference,java.lang.Object) -> a
 com.frostnerd.dnschanger.fragments.SettingsFragment$17 -> com.frostnerd.dnschanger.c.f$9:
     android.support.design.widget.Snackbar val$snackbar -> a
     com.frostnerd.dnschanger.fragments.SettingsFragment this$0 -> b
-    530:530:void <init>(com.frostnerd.dnschanger.fragments.SettingsFragment,android.support.design.widget.Snackbar) -> <init>
-    533:535:void onClick(android.view.View) -> onClick
+    534:534:void <init>(com.frostnerd.dnschanger.fragments.SettingsFragment,android.support.design.widget.Snackbar) -> <init>
+    537:539:void onClick(android.view.View) -> onClick
 com.frostnerd.dnschanger.fragments.SettingsFragment$2 -> com.frostnerd.dnschanger.c.f$10:
     com.frostnerd.dnschanger.util.Preferences val$preferences -> a
     com.frostnerd.dnschanger.fragments.SettingsFragment this$0 -> b
@@ -21654,62 +21655,62 @@ com.frostnerd.dnschanger.services.DNSVpnService -> com.frostnerd.dnschanger.serv
     com.frostnerd.dnschanger.threading.VPNRunnable vpnRunnable -> n
     java.lang.Thread vpnThread -> o
     java.util.ArrayList upstreamServers -> p
-    48:57:void <init>() -> <init>
-    71:94:void clearVars(boolean) -> a
-    97:163:void updateNotification() -> a
-    166:185:void initNotification() -> h
-    189:195:void broadcastCurrentState() -> b
-    198:213:void updateDNSServers(android.content.Intent) -> a
-    224:254:int onStartCommand(android.content.Intent,int,int) -> onStartCommand
-    258:278:void createAndRunThread(boolean,boolean) -> a
-    281:301:void stopThread() -> i
-    304:305:void stopService() -> j
-    309:315:void onCreate() -> onCreate
-    319:323:void onDestroy() -> onDestroy
-    327:331:void onRevoke() -> onRevoke
-    335:337:void onLowMemory() -> onLowMemory
-    341:343:void onTrimMemory(int) -> onTrimMemory
-    347:349:void onTaskRemoved(android.content.Intent) -> onTaskRemoved
-    353:354:android.os.IBinder onBind(android.content.Intent) -> onBind
-    359:359:boolean onUnbind(android.content.Intent) -> onUnbind
-    363:363:android.net.VpnService$Builder createBuilder() -> c
-    367:367:android.content.Intent getDestroyIntent(android.content.Context) -> a
-    371:373:android.content.Intent getDestroyIntent(android.content.Context,java.lang.String) -> a
-    377:377:android.content.Intent getStartVPNIntent(android.content.Context) -> b
-    381:382:android.content.Intent getStartVPNIntent(android.content.Context,boolean) -> a
-    386:387:android.content.Intent getStopVPNIntent(android.content.Context) -> c
-    391:394:android.content.Intent getStartVPNIntent(android.content.Context,java.util.ArrayList,boolean,boolean) -> a
-    405:408:android.content.Intent getUpdateServersIntent(android.content.Context,boolean,boolean) -> a
-    412:412:android.content.Intent getBinderIntent(android.content.Context) -> d
-    416:416:boolean wasStartedFromShortcut() -> d
-    420:420:boolean isDNSThreadRunning() -> e
-    424:424:boolean isServiceRunning() -> f
-    429:440:boolean addressesMatch(java.util.ArrayList) -> a
-    48:48:com.frostnerd.dnschanger.threading.VPNRunnable access$002(com.frostnerd.dnschanger.threading.VPNRunnable) -> a
-    48:48:java.util.ArrayList access$100(com.frostnerd.dnschanger.services.DNSVpnService) -> a
-    48:48:java.util.Set access$200(com.frostnerd.dnschanger.services.DNSVpnService) -> b
-    48:48:boolean access$300(com.frostnerd.dnschanger.services.DNSVpnService) -> c
-    48:48:java.lang.Thread access$402(com.frostnerd.dnschanger.services.DNSVpnService,java.lang.Thread) -> a
-    48:48:com.frostnerd.dnschanger.threading.VPNRunnable access$000() -> g
-    48:48:java.lang.Thread access$400(com.frostnerd.dnschanger.services.DNSVpnService) -> d
-    50:50:void <clinit>() -> <clinit>
+    49:58:void <init>() -> <init>
+    72:95:void clearVars(boolean) -> a
+    98:164:void updateNotification() -> a
+    167:186:void initNotification() -> h
+    190:196:void broadcastCurrentState() -> b
+    199:214:void updateDNSServers(android.content.Intent) -> a
+    225:260:int onStartCommand(android.content.Intent,int,int) -> onStartCommand
+    264:284:void createAndRunThread(boolean,boolean) -> a
+    287:307:void stopThread() -> i
+    310:311:void stopService() -> j
+    315:321:void onCreate() -> onCreate
+    325:329:void onDestroy() -> onDestroy
+    333:337:void onRevoke() -> onRevoke
+    341:343:void onLowMemory() -> onLowMemory
+    347:349:void onTrimMemory(int) -> onTrimMemory
+    353:355:void onTaskRemoved(android.content.Intent) -> onTaskRemoved
+    359:360:android.os.IBinder onBind(android.content.Intent) -> onBind
+    365:365:boolean onUnbind(android.content.Intent) -> onUnbind
+    369:369:android.net.VpnService$Builder createBuilder() -> c
+    373:373:android.content.Intent getDestroyIntent(android.content.Context) -> a
+    377:379:android.content.Intent getDestroyIntent(android.content.Context,java.lang.String) -> a
+    383:383:android.content.Intent getStartVPNIntent(android.content.Context) -> b
+    387:388:android.content.Intent getStartVPNIntent(android.content.Context,boolean) -> a
+    392:393:android.content.Intent getStopVPNIntent(android.content.Context) -> c
+    397:400:android.content.Intent getStartVPNIntent(android.content.Context,java.util.ArrayList,boolean,boolean) -> a
+    411:414:android.content.Intent getUpdateServersIntent(android.content.Context,boolean,boolean) -> a
+    418:418:android.content.Intent getBinderIntent(android.content.Context) -> d
+    422:422:boolean wasStartedFromShortcut() -> d
+    426:426:boolean isDNSThreadRunning() -> e
+    430:430:boolean isServiceRunning() -> f
+    435:446:boolean addressesMatch(java.util.ArrayList) -> a
+    49:49:com.frostnerd.dnschanger.threading.VPNRunnable access$002(com.frostnerd.dnschanger.threading.VPNRunnable) -> a
+    49:49:java.util.ArrayList access$100(com.frostnerd.dnschanger.services.DNSVpnService) -> a
+    49:49:java.util.Set access$200(com.frostnerd.dnschanger.services.DNSVpnService) -> b
+    49:49:boolean access$300(com.frostnerd.dnschanger.services.DNSVpnService) -> c
+    49:49:java.lang.Thread access$402(com.frostnerd.dnschanger.services.DNSVpnService,java.lang.Thread) -> a
+    49:49:com.frostnerd.dnschanger.threading.VPNRunnable access$000() -> g
+    49:49:java.lang.Thread access$400(com.frostnerd.dnschanger.services.DNSVpnService) -> d
+    51:51:void <clinit>() -> <clinit>
 com.frostnerd.dnschanger.services.DNSVpnService$1 -> com.frostnerd.dnschanger.services.DNSVpnService$1:
     com.frostnerd.dnschanger.services.DNSVpnService this$0 -> a
-    57:57:void <init>(com.frostnerd.dnschanger.services.DNSVpnService) -> <init>
-    60:62:void onReceive(android.content.Context,android.content.Intent) -> onReceive
+    58:58:void <init>(com.frostnerd.dnschanger.services.DNSVpnService) -> <init>
+    61:63:void onReceive(android.content.Context,android.content.Intent) -> onReceive
 com.frostnerd.dnschanger.services.DNSVpnService$2 -> com.frostnerd.dnschanger.services.DNSVpnService$2:
     com.frostnerd.dnschanger.services.DNSVpnService this$0 -> a
-    266:266:void <init>(com.frostnerd.dnschanger.services.DNSVpnService) -> <init>
-    269:274:void run() -> run
+    272:272:void <init>(com.frostnerd.dnschanger.services.DNSVpnService) -> <init>
+    275:280:void run() -> run
 com.frostnerd.dnschanger.services.DNSVpnService$3 -> com.frostnerd.dnschanger.services.DNSVpnService$3:
     com.frostnerd.dnschanger.services.DNSVpnService this$0 -> a
-    285:285:void <init>(com.frostnerd.dnschanger.services.DNSVpnService) -> <init>
-    288:291:void run() -> run
+    291:291:void <init>(com.frostnerd.dnschanger.services.DNSVpnService) -> <init>
+    294:297:void run() -> run
 com.frostnerd.dnschanger.services.DNSVpnService$ServiceBinder -> com.frostnerd.dnschanger.services.DNSVpnService$a:
     com.frostnerd.dnschanger.services.DNSVpnService this$0 -> a
-    443:443:void <init>(com.frostnerd.dnschanger.services.DNSVpnService) -> <init>
-    445:445:com.frostnerd.dnschanger.services.DNSVpnService getService() -> a
-    451:455:boolean onTransact(int,android.os.Parcel,android.os.Parcel,int) -> onTransact
+    449:449:void <init>(com.frostnerd.dnschanger.services.DNSVpnService) -> <init>
+    451:451:com.frostnerd.dnschanger.services.DNSVpnService getService() -> a
+    457:461:boolean onTransact(int,android.os.Parcel,android.os.Parcel,int) -> onTransact
 com.frostnerd.dnschanger.services.DataService -> com.frostnerd.dnschanger.services.DataService:
     20:20:void <init>() -> <init>
     23:30:void handleMessage(android.os.Message) -> a
@@ -21726,43 +21727,43 @@ com.frostnerd.dnschanger.services.RuleImportService -> com.frostnerd.dnschanger.
     android.database.sqlite.SQLiteDatabase currentDatabaseInstance -> j
     43:58:void <init>() -> <init>
     62:66:android.content.Intent createIntent(android.content.Context,int,int,com.frostnerd.dnschanger.util.RuleImport$ImportableFile[]) -> a
-    71:97:int onStartCommand(android.content.Intent,int,int) -> onStartCommand
-    105:107:void onCreate() -> onCreate
-    112:189:void startImport() -> a
-    193:195:void onDestroy() -> onDestroy
-    200:200:android.os.IBinder onBind(android.content.Intent) -> onBind
-    204:213:void cleanup() -> b
-    216:218:void updateNotification(java.io.File) -> a
-    221:226:void updateNotification(int,int) -> a
-    229:231:void updateNotification(int) -> a
-    234:257:void initNotification() -> c
-    260:270:void determineNotificationUpdateCount(int) -> b
-    273:274:boolean isValidIntent(android.content.Intent) -> a
+    71:100:int onStartCommand(android.content.Intent,int,int) -> onStartCommand
+    108:110:void onCreate() -> onCreate
+    115:192:void startImport() -> a
+    196:198:void onDestroy() -> onDestroy
+    203:203:android.os.IBinder onBind(android.content.Intent) -> onBind
+    207:216:void cleanup() -> b
+    219:221:void updateNotification(java.io.File) -> a
+    224:229:void updateNotification(int,int) -> a
+    232:234:void updateNotification(int) -> a
+    237:260:void initNotification() -> c
+    263:273:void determineNotificationUpdateCount(int) -> b
+    276:277:boolean isValidIntent(android.content.Intent) -> a
     43:43:void access$000(com.frostnerd.dnschanger.services.RuleImportService) -> a
 com.frostnerd.dnschanger.services.RuleImportService$1 -> com.frostnerd.dnschanger.services.RuleImportService$1:
     com.frostnerd.dnschanger.services.RuleImportService this$0 -> a
     79:79:void <init>(com.frostnerd.dnschanger.services.RuleImportService) -> <init>
-    83:87:void run() -> run
+    82:90:void run() -> run
 com.frostnerd.dnschanger.services.RuleImportService$Configuration -> com.frostnerd.dnschanger.services.RuleImportService$a:
     com.frostnerd.dnschanger.services.RuleImportService$FileList fileList -> b
     int lineCount -> c
     int databaseConflictHandling -> d
     com.frostnerd.dnschanger.services.RuleImportService this$0 -> a
-    303:307:void <init>(com.frostnerd.dnschanger.services.RuleImportService,com.frostnerd.dnschanger.services.RuleImportService$FileList,int,int) -> <init>
-    298:298:int access$100(com.frostnerd.dnschanger.services.RuleImportService$Configuration) -> a
-    298:298:com.frostnerd.dnschanger.services.RuleImportService$FileList access$200(com.frostnerd.dnschanger.services.RuleImportService$Configuration) -> b
-    298:298:int access$400(com.frostnerd.dnschanger.services.RuleImportService$Configuration) -> c
+    306:310:void <init>(com.frostnerd.dnschanger.services.RuleImportService,com.frostnerd.dnschanger.services.RuleImportService$FileList,int,int) -> <init>
+    301:301:int access$100(com.frostnerd.dnschanger.services.RuleImportService$Configuration) -> a
+    301:301:com.frostnerd.dnschanger.services.RuleImportService$FileList access$200(com.frostnerd.dnschanger.services.RuleImportService$Configuration) -> b
+    301:301:int access$400(com.frostnerd.dnschanger.services.RuleImportService$Configuration) -> c
 com.frostnerd.dnschanger.services.RuleImportService$FileList -> com.frostnerd.dnschanger.services.RuleImportService$b:
     com.frostnerd.dnschanger.util.RuleImport$ImportableFile[] files -> a
-    280:282:void <init>(com.frostnerd.dnschanger.util.RuleImport$ImportableFile[]) -> <init>
-    285:285:com.frostnerd.dnschanger.services.RuleImportService$FileList of(com.frostnerd.dnschanger.util.RuleImport$ImportableFile[]) -> a
-    289:295:void sort() -> a
-    277:277:com.frostnerd.dnschanger.util.RuleImport$ImportableFile[] access$300(com.frostnerd.dnschanger.services.RuleImportService$FileList) -> a
+    283:285:void <init>(com.frostnerd.dnschanger.util.RuleImport$ImportableFile[]) -> <init>
+    288:288:com.frostnerd.dnschanger.services.RuleImportService$FileList of(com.frostnerd.dnschanger.util.RuleImport$ImportableFile[]) -> a
+    292:298:void sort() -> a
+    280:280:com.frostnerd.dnschanger.util.RuleImport$ImportableFile[] access$300(com.frostnerd.dnschanger.services.RuleImportService$FileList) -> a
 com.frostnerd.dnschanger.services.RuleImportService$FileList$1 -> com.frostnerd.dnschanger.services.RuleImportService$b$1:
     com.frostnerd.dnschanger.services.RuleImportService$FileList this$0 -> a
-    289:289:void <init>(com.frostnerd.dnschanger.services.RuleImportService$FileList) -> <init>
-    292:292:int compare(com.frostnerd.dnschanger.util.RuleImport$ImportableFile,com.frostnerd.dnschanger.util.RuleImport$ImportableFile) -> a
-    289:289:int compare(java.lang.Object,java.lang.Object) -> compare
+    292:292:void <init>(com.frostnerd.dnschanger.services.RuleImportService$FileList) -> <init>
+    295:295:int compare(com.frostnerd.dnschanger.util.RuleImport$ImportableFile,com.frostnerd.dnschanger.util.RuleImport$ImportableFile) -> a
+    292:292:int compare(java.lang.Object,java.lang.Object) -> compare
 com.frostnerd.dnschanger.services.jobs.ConnectivityJobAPI21 -> com.frostnerd.dnschanger.services.jobs.ConnectivityJobAPI21:
     com.frostnerd.dnschanger.services.jobs.NetworkCheckHandle handle -> a
     20:20:void <init>() -> <init>
@@ -22222,13 +22223,15 @@ com.frostnerd.dnschanger.util.dnsproxy.DNSTCPProxy -> com.frostnerd.dnschanger.u
     int timeout -> m
     java.util.HashMap upstreamServers -> n
     java.util.LinkedHashMap futureSocketAnswers -> o
-    67:129:void <init>(android.net.VpnService,android.os.ParcelFileDescriptor,java.util.Set,boolean,boolean,int) -> <init>
+    int pollTries -> p
+    67:183:void <init>(android.net.VpnService,android.os.ParcelFileDescriptor,java.util.Set,boolean,boolean,int) -> <init>
     133:181:void run() -> a
-    184:222:void handleDeviceDNSPacket(java.io.InputStream,byte[]) -> a
-    226:242:void sendPacketToUpstreamDNSServer(java.net.DatagramPacket,org.pcap4j.packet.IpPacket) -> a
-    246:253:void handleRawUpstreamDNSResponse(java.net.Socket,org.pcap4j.packet.IpPacket) -> a
-    256:286:void handleUpstreamDNSResponse(org.pcap4j.packet.IpPacket,byte[]) -> a
-    290:316:void stop() -> b
+    185:197:void poll(android.system.StructPollfd[],int) -> a
+    200:238:void handleDeviceDNSPacket(java.io.InputStream,byte[]) -> a
+    242:258:void sendPacketToUpstreamDNSServer(java.net.DatagramPacket,org.pcap4j.packet.IpPacket) -> a
+    262:269:void handleRawUpstreamDNSResponse(java.net.Socket,org.pcap4j.packet.IpPacket) -> a
+    272:302:void handleUpstreamDNSResponse(org.pcap4j.packet.IpPacket,byte[]) -> a
+    306:332:void stop() -> b
     66:66:boolean access$000(com.frostnerd.dnschanger.util.dnsproxy.DNSTCPProxy) -> a
 com.frostnerd.dnschanger.util.dnsproxy.DNSTCPProxy$1 -> com.frostnerd.dnschanger.util.a.b$1:
     int countSinceCleanup -> b
@@ -22242,10 +22245,10 @@ com.frostnerd.dnschanger.util.dnsproxy.DNSTCPProxy$PacketWrap -> com.frostnerd.d
     org.pcap4j.packet.IpPacket packet -> b
     long time -> c
     com.frostnerd.dnschanger.util.dnsproxy.DNSTCPProxy this$0 -> a
-    322:325:void <init>(com.frostnerd.dnschanger.util.dnsproxy.DNSTCPProxy,org.pcap4j.packet.IpPacket) -> <init>
-    328:328:org.pcap4j.packet.IpPacket getPacket() -> a
-    336:336:long getTimeDiff() -> b
-    318:318:org.pcap4j.packet.IpPacket access$102(com.frostnerd.dnschanger.util.dnsproxy.DNSTCPProxy$PacketWrap,org.pcap4j.packet.IpPacket) -> a
+    338:341:void <init>(com.frostnerd.dnschanger.util.dnsproxy.DNSTCPProxy,org.pcap4j.packet.IpPacket) -> <init>
+    344:344:org.pcap4j.packet.IpPacket getPacket() -> a
+    352:352:long getTimeDiff() -> b
+    334:334:org.pcap4j.packet.IpPacket access$102(com.frostnerd.dnschanger.util.dnsproxy.DNSTCPProxy$PacketWrap,org.pcap4j.packet.IpPacket) -> a
 com.frostnerd.dnschanger.util.dnsproxy.DNSUDPProxy -> com.frostnerd.dnschanger.util.a.c:
     java.io.FileDescriptor interruptedDescriptor -> c
     java.io.FileDescriptor blockingDescriptor -> d
@@ -22259,13 +22262,15 @@ com.frostnerd.dnschanger.util.dnsproxy.DNSUDPProxy -> com.frostnerd.dnschanger.u
     android.net.VpnService vpnService -> l
     java.util.HashMap upstreamServers -> m
     java.util.LinkedHashMap futureSocketAnswers -> n
-    63:119:void <init>(android.net.VpnService,android.os.ParcelFileDescriptor,java.util.Set,boolean,boolean) -> <init>
-    123:171:void run() -> a
-    174:212:void handleDeviceDNSPacket(java.io.InputStream,byte[]) -> a
-    216:224:void sendPacketToUpstreamDNSServer(java.net.DatagramPacket,org.pcap4j.packet.IpPacket) -> a
-    228:235:void handleRawUpstreamDNSResponse(java.net.DatagramSocket,org.pcap4j.packet.IpPacket) -> a
-    238:267:void handleUpstreamDNSResponse(org.pcap4j.packet.IpPacket,byte[]) -> a
-    271:293:void stop() -> b
+    int pollTries -> o
+    63:174:void <init>(android.net.VpnService,android.os.ParcelFileDescriptor,java.util.Set,boolean,boolean) -> <init>
+    123:172:void run() -> a
+    176:188:void poll(android.system.StructPollfd[],int) -> a
+    191:229:void handleDeviceDNSPacket(java.io.InputStream,byte[]) -> a
+    233:241:void sendPacketToUpstreamDNSServer(java.net.DatagramPacket,org.pcap4j.packet.IpPacket) -> a
+    245:252:void handleRawUpstreamDNSResponse(java.net.DatagramSocket,org.pcap4j.packet.IpPacket) -> a
+    255:284:void handleUpstreamDNSResponse(org.pcap4j.packet.IpPacket,byte[]) -> a
+    288:310:void stop() -> b
     62:62:boolean access$000(com.frostnerd.dnschanger.util.dnsproxy.DNSUDPProxy) -> a
 com.frostnerd.dnschanger.util.dnsproxy.DNSUDPProxy$1 -> com.frostnerd.dnschanger.util.a.c$1:
     int countSinceCleanup -> b
@@ -22279,10 +22284,10 @@ com.frostnerd.dnschanger.util.dnsproxy.DNSUDPProxy$PacketWrap -> com.frostnerd.d
     org.pcap4j.packet.IpPacket packet -> b
     long time -> c
     com.frostnerd.dnschanger.util.dnsproxy.DNSUDPProxy this$0 -> a
-    299:302:void <init>(com.frostnerd.dnschanger.util.dnsproxy.DNSUDPProxy,org.pcap4j.packet.IpPacket) -> <init>
-    305:305:org.pcap4j.packet.IpPacket getPacket() -> a
-    313:313:long getTimeDiff() -> b
-    295:295:org.pcap4j.packet.IpPacket access$102(com.frostnerd.dnschanger.util.dnsproxy.DNSUDPProxy$PacketWrap,org.pcap4j.packet.IpPacket) -> a
+    316:319:void <init>(com.frostnerd.dnschanger.util.dnsproxy.DNSUDPProxy,org.pcap4j.packet.IpPacket) -> <init>
+    322:322:org.pcap4j.packet.IpPacket getPacket() -> a
+    330:330:long getTimeDiff() -> b
+    312:312:org.pcap4j.packet.IpPacket access$102(com.frostnerd.dnschanger.util.dnsproxy.DNSUDPProxy$PacketWrap,org.pcap4j.packet.IpPacket) -> a
 com.frostnerd.dnschanger.util.dnsproxy.DummyProxy -> com.frostnerd.dnschanger.util.a.d:
     boolean shouldRun -> c
     12:13:void <init>() -> <init>
@@ -24185,7 +24190,7 @@ com.frostnerd.utils.database.DatabaseHelper -> com.frostnerd.utils.database.b:
     void onAfterUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> b
     152:155:android.database.sqlite.SQLiteDatabase getWritableDatabase() -> getWritableDatabase
     160:163:android.database.sqlite.SQLiteDatabase getReadableDatabase() -> getReadableDatabase
-    198:204:boolean tableExists(java.lang.String) -> c
+    198:204:boolean tableExists(java.lang.String) -> d
     209:211:void insert(com.frostnerd.utils.database.orm.Entity) -> a
     221:223:void insert(android.database.sqlite.SQLiteDatabase,com.frostnerd.utils.database.orm.Entity,com.frostnerd.utils.database.orm.Entity[]) -> a
     226:226:int update(com.frostnerd.utils.database.orm.Entity) -> b
@@ -24201,6 +24206,8 @@ com.frostnerd.utils.database.DatabaseHelper -> com.frostnerd.utils.database.b:
     324:328:int getHighestRowID(java.lang.Class) -> e
     333:333:com.frostnerd.utils.database.orm.parser.columns.SimpleColumn getRowIDColumn(java.lang.Class) -> f
     338:339:com.frostnerd.utils.database.orm.Entity getByRowID(java.lang.Class,long) -> a
+    354:354:java.util.List select(java.lang.Class,com.frostnerd.utils.database.orm.statementoptions.queryoptions.QueryOption[]) -> b
+    359:359:java.util.List select(java.lang.Class,boolean,com.frostnerd.utils.database.orm.statementoptions.queryoptions.QueryOption[]) -> a
 com.frostnerd.utils.database.MockedContext -> com.frostnerd.utils.database.c:
     com.frostnerd.utils.database.MockedContext$DatabaseLazyLoader database -> a
     java.io.File path -> b
