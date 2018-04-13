@@ -391,7 +391,10 @@ public class MainFragment extends Fragment {
                         _text = _text.replace("[x]", unreachable.size() + reachable.size() + "");
                         _text = _text.replace("[y]", unreachable.size() + "");
                         boolean customPorts = PreferencesAccessor.areCustomPortsEnabled(requireContext());
-                        for(IPPortPair p: unreachable) builder.append("- ").append(p.formatForTextfield(customPorts)).append("\n");
+                        for(IPPortPair p: unreachable) {
+                            if(p == null)continue;
+                            builder.append("- ").append(p.formatForTextfield(customPorts)).append("\n");
+                        }
                         _text = _text.replace("[servers]", builder.toString());
                         final String text = _text;
                         ((MainActivity)requireContext()).runOnUiThread(new Runnable() {
