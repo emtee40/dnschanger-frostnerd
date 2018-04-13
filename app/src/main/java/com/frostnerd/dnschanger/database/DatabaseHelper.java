@@ -144,6 +144,10 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
         super.close();
     }
 
+    public boolean dnsEntryExists(String name){
+        return select(DNSEntry.class, WhereCondition.equal("name", name)).size() != 0;
+    }
+
     public boolean dnsRuleExists(@NonNull String host){
         return this.rowExists(DNSRule.class, WhereCondition.equal(findColumn(DNSRule.class, "host"), host));
     }

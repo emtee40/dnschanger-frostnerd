@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
@@ -119,7 +120,7 @@ public class DNSCreationDialog extends UtilityDialog {
                     @Override
                     public void onClick(View v) {
                         if (isConfigurationValid()) {
-                            listener.onCreationFinished(ed_name.getText().toString(), dns1, dns2, dns1V6, dns2V6);
+                            listener.onCreationFinished(ed_name.getText().toString().trim(), dns1, dns2, dns1V6, dns2V6);
                             dismiss();
                         } else {
                             vibrator.vibrate(300);
@@ -204,6 +205,8 @@ public class DNSCreationDialog extends UtilityDialog {
             @Override
             public void afterTextChanged(Editable s) {
                 if(s.toString().trim().equals("")) met_name.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
+                else if(DatabaseHelper.getInstance(getContext()).dnsEntryExists(s.toString().trim())) met_name.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
+                else met_name.setIndicatorState(MaterialEditText.IndicatorState.CORRECT);
             }
         });
     }
