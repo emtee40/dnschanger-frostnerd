@@ -127,7 +127,7 @@ public class DNSUDPProxy extends DNSProxy{
         FileInputStream inputStream = new FileInputStream(parcelFileDescriptor.getFileDescriptor());
         FileOutputStream outputStream = new FileOutputStream(parcelFileDescriptor.getFileDescriptor());
         byte[] packet = new byte[32767];
-        while(shouldRun){
+        outer: while(shouldRun){
             StructPollfd structFd = new StructPollfd();
             structFd.fd = inputStream.getFD();
             structFd.events = (short) OsConstants.POLLIN;
@@ -143,6 +143,7 @@ public class DNSUDPProxy extends DNSProxy{
             int index = 0;
             if(shouldRun){
                 for(DatagramSocket socket: futureSocketAnswers.keySet()){
+                    if(!shouldRun)break outer;
                     StructPollfd pollingFd = polls[2 + index++] = new StructPollfd();
                     pollingFd.fd = ParcelFileDescriptor.fromDatagramSocket(socket).getFileDescriptor();
                     pollingFd.events = (short)OsConstants.POLLIN;
