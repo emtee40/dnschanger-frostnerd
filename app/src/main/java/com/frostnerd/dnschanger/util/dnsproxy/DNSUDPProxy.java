@@ -108,14 +108,14 @@ public class DNSUDPProxy extends DNSProxy{
         if(parcelFileDescriptor == null)throw new IllegalStateException("The ParcelFileDescriptor passed to DNSUDPProxy is null.");
         if(context == null)throw new IllegalStateException("The DNSVPNService passed to DNSUDPProxy is null.");
         this.parcelFileDescriptor = parcelFileDescriptor;
-        resolver = new DNSResolver(context);
         this.vpnService = context;
         for(IPPortPair pair: upstreamDNSServers){
             if(pair != IPPortPair.getEmptyPair() && !pair.getAddress().equals(""))this.upstreamServers.put(pair.getAddress(), pair.getPort());
         }
         this.resolveLocalRules = resolveLocalRules;
         this.queryLogging = queryLogging;
-        if(queryLogging)queryLogger = new QueryLogger(DatabaseHelper.getInstance(context));
+        if(queryLogging) queryLogger = new QueryLogger(DatabaseHelper.getInstance(context));
+        if(resolveLocalRules) resolver = new DNSResolver(context);
     }
 
     @Override

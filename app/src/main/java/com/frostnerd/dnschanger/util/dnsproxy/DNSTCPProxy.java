@@ -117,7 +117,6 @@ public class DNSTCPProxy extends DNSProxy{
         if(parcelFileDescriptor == null)throw new IllegalStateException("The ParcelFileDescriptor passed to DNSTCPProxy is null.");
         if(context == null)throw new IllegalStateException("The DNSVPNService passed to DNSTCPProxy is null.");
         this.parcelFileDescriptor = parcelFileDescriptor;
-        resolver = new DNSResolver(context);
         this.vpnService = context;
         for(IPPortPair pair: upstreamDNSServers){
             if(pair != IPPortPair.getEmptyPair() && !pair.getAddress().equals(""))this.upstreamServers.put(pair.getAddress(), pair.getPort());
@@ -125,6 +124,7 @@ public class DNSTCPProxy extends DNSProxy{
         this.resolveLocalRules = resolveLocalRules;
         this.queryLogging = queryLogging;
         if(queryLogging)queryLogger = new QueryLogger(DatabaseHelper.getInstance(context));
+        if(resolveLocalRules)resolver = new DNSResolver(context);
         this.timeout = timeout;
     }
 
