@@ -8,7 +8,9 @@ import android.system.ErrnoException;
 import android.system.Os;
 import android.system.OsConstants;
 import android.system.StructPollfd;
+import android.util.Log;
 
+import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.accessors.DNSResolver;
 import com.frostnerd.dnschanger.database.accessors.QueryLogger;
@@ -60,6 +62,7 @@ import de.measite.minidns.record.Data;
  */
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class DNSUDPProxy extends DNSProxy{
+    private static final String LOG_TAG = "[DNSUDPProxy]";
     private FileDescriptor interruptedDescriptor = null;
     private FileDescriptor blockingDescriptor = null;
     private ParcelFileDescriptor parcelFileDescriptor;
@@ -105,28 +108,43 @@ public class DNSUDPProxy extends DNSProxy{
 
     public DNSUDPProxy(VpnService context, ParcelFileDescriptor parcelFileDescriptor,
                        Set<IPPortPair> upstreamDNSServers, boolean resolveLocalRules, boolean queryLogging){
+        LogFactory.writeMessage(context, LOG_TAG, "Creating the proxy...");
         if(parcelFileDescriptor == null)throw new IllegalStateException("The ParcelFileDescriptor passed to DNSUDPProxy is null.");
         if(context == null)throw new IllegalStateException("The DNSVPNService passed to DNSUDPProxy is null.");
         this.parcelFileDescriptor = parcelFileDescriptor;
         this.vpnService = context;
+        LogFactory.writeMessage(context, LOG_TAG, "Parsing the upstream servers...");
         for(IPPortPair pair: upstreamDNSServers){
-            if(pair != IPPortPair.getEmptyPair() && !pair.getAddress().equals(""))this.upstreamServers.put(pair.getAddress(), pair.getPort());
+            if(pair != IPPortPair.getEmptyPair() && !pair.getAddress().equals("")) this.upstreamServers.put(pair.getAddress(), pair.getPort());
         }
+        LogFactory.writeMessage(context, LOG_TAG, "Upstream servers parsed to: " + this.upstreamServers);
         this.resolveLocalRules = resolveLocalRules;
         this.queryLogging = queryLogging;
-        if(queryLogging) queryLogger = new QueryLogger(DatabaseHelper.getInstance(context));
-        if(resolveLocalRules) resolver = new DNSResolver(context);
+        if(queryLogging) {
+            queryLogger = new QueryLogger(DatabaseHelper.getInstance(context));
+            LogFactory.writeMessage(context, LOG_TAG, "Created the query logger.");
+        }
+        if(resolveLocalRules) {
+            resolver = new DNSResolver(context);
+            LogFactory.writeMessage(context, LOG_TAG, "Created the rule resolver.");
+        }
+        LogFactory.writeMessage(context, LOG_TAG, "Created the proxy.");
     }
 
     @Override
     public void run() throws IOException, ErrnoException {
+        LogFactory.writeMessage(vpnService, LOG_TAG, "Starting the proxy");
+        if(!shouldRun){
+            LogFactory.writeMessage(vpnService, LOG_TAG, "Not running as shouldRun is false.");
+            return;
+        }
         FileDescriptor[] pipes = Os.pipe();
         interruptedDescriptor = pipes[0];
         blockingDescriptor = pipes[1];
-        if(!shouldRun)return;
         FileInputStream inputStream = new FileInputStream(parcelFileDescriptor.getFileDescriptor());
         FileOutputStream outputStream = new FileOutputStream(parcelFileDescriptor.getFileDescriptor());
         byte[] packet = new byte[32767];
+        LogFactory.writeMessage(vpnService, LOG_TAG, "Entering the while loop");
         outer: while(shouldRun){
             StructPollfd structFd = new StructPollfd();
             structFd.fd = inputStream.getFD();
@@ -179,6 +197,7 @@ public class DNSUDPProxy extends DNSProxy{
                 Os.poll(polls, timeout/pollTries);
                 pollTries = 0;
             } catch(ErrnoException ex){
+                LogFactory.writeMessage(vpnService, LOG_TAG, "Polling failed with exception: " + ex.getMessage() + "(Cause: " + ex.getCause() + ")");
                 if(pollTries < 3) poll(polls, timeout);
                 else throw ex;
             }
@@ -236,6 +255,7 @@ public class DNSUDPProxy extends DNSProxy{
             if(ipPacket != null) futureSocketAnswers.put(socket, new PacketWrap(ipPacket));
             else socket.close();
         }catch(IOException exception){
+            LogFactory.writeStackTrace(vpnService, LOG_TAG, exception);
             handleUpstreamDNSResponse(ipPacket, outgoingPacket.getData());
         }
     }
@@ -247,7 +267,7 @@ public class DNSUDPProxy extends DNSProxy{
             dnsSocket.receive(replyPacket);
             handleUpstreamDNSResponse(parsedPacket, datagramData);
         } catch (IOException e) {
-            e.printStackTrace();
+            LogFactory.writeStackTrace(vpnService, LOG_TAG, e);
         }
     }
 
@@ -285,11 +305,14 @@ public class DNSUDPProxy extends DNSProxy{
 
     @Override
     public void stop() {
+        LogFactory.writeMessage(vpnService, LOG_TAG, "Stopping the proxy");
         shouldRun = false;
         try {
+            LogFactory.writeMessage(vpnService, LOG_TAG, "Closing the descriptors.");
             if(interruptedDescriptor != null) Os.close(interruptedDescriptor);
             if(blockingDescriptor != null) Os.close(blockingDescriptor);
         } catch (Exception ignored) {
+            LogFactory.writeMessage(vpnService, LOG_TAG, "An error occurred when closing the descriptors: " + ignored.getMessage() + "(Cause: " + ignored.getCause() + ")");
         }
         synchronized (futureSocketAnswers){
             for(Map.Entry<DatagramSocket, PacketWrap> entry: futureSocketAnswers.entrySet()){
@@ -300,8 +323,10 @@ public class DNSUDPProxy extends DNSProxy{
         }
         upstreamServers.clear();
         writeToDevice.clear();
+
         if(resolver != null) resolver.destroy();
         if(queryLogger != null) queryLogger.destroy();
+        LogFactory.writeMessage(vpnService, LOG_TAG, "Everything was destructed.");
         parcelFileDescriptor = null;
         resolver = null;
         vpnService = null;
@@ -313,12 +338,12 @@ public class DNSUDPProxy extends DNSProxy{
         private IpPacket packet;
         private final long time;
 
-        public PacketWrap(IpPacket packet) {
+        PacketWrap(IpPacket packet) {
             this.packet = packet;
             this.time = System.currentTimeMillis();
         }
 
-        public IpPacket getPacket() {
+        IpPacket getPacket() {
             return packet;
         }
 
