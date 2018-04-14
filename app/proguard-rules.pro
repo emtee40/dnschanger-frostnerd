@@ -19,7 +19,6 @@
 -dontnote org.xbill.DNS.spi.DNSJavaNameServiceDescriptor
 -dontwarn org.xbill.DNS.spi.DNSJavaNameServiceDescriptor
 -dontwarn java.awt.*
--dontwarn org.slf4j.*
 
 # See http://stackoverflow.com/questions/5701126, happens in dnsjava
 -optimizations !code/allocation/variable
@@ -31,3 +30,15 @@
 }
 -renamesourcefileattribute SourceFile
 -keepattributes SourceFile,LineNumberTable
+
+-dontwarn org.slf4j.impl.*
+-keep class org.slf4j.** {
+    *;
+}
+-keep class org.pcap4j.** {
+    *;
+}
+-assumenosideeffects class org.slf4j.Logger {
+    public void debug(...);
+    public void trace(...);
+}
