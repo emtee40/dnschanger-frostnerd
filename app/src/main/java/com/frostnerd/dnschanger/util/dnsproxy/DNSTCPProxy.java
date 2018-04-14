@@ -65,7 +65,7 @@ import de.measite.minidns.record.Data;
  */
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class DNSTCPProxy extends DNSProxy{
-    private static final String LOG_TAG = "[DNSUDPProxy]";
+    private static final String LOG_TAG = "[DNSTCPProxy]";
     private FileDescriptor interruptedDescriptor = null;
     private FileDescriptor blockingDescriptor = null;
     private ParcelFileDescriptor parcelFileDescriptor;
@@ -256,10 +256,12 @@ public class DNSTCPProxy extends DNSProxy{
     }
 
     private void sendPacketToUpstreamDNSServer(DatagramPacket outgoingPacket, IpPacket ipPacket){
+        LogFactory.writeMessage(vpnService, LOG_TAG,"Writing packet to upstream: " + outgoingPacket);
         try{
             Socket socket = SocketChannel.open().socket();
             vpnService.protect(socket); //The sent packets shouldn't be handled by this class
             outgoingPacket.setPort(upstreamServers.get(outgoingPacket.getAddress().getHostAddress()));
+            LogFactory.writeMessage(vpnService, LOG_TAG, "Connecting to " + outgoingPacket + "(PORT: " + outgoingPacket.getPort() + ")");
             socket.connect(outgoingPacket.getSocketAddress(),timeout);
             byte[] data = ipPacket == null ? new byte[0] : outgoingPacket.getData();
             DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
@@ -271,8 +273,10 @@ public class DNSTCPProxy extends DNSProxy{
                 outputStream.close(); //Closes the associated socket
             }
         }catch(IOException exception){
-            if(!(exception instanceof SocketTimeoutException))handleUpstreamDNSResponse(ipPacket, outgoingPacket.getData());
-            LogFactory.writeStackTrace(vpnService, LOG_TAG, exception);
+            if(!(exception instanceof SocketTimeoutException)){
+                LogFactory.writeStackTrace(vpnService, LOG_TAG, exception);
+                handleUpstreamDNSResponse(ipPacket, outgoingPacket.getData());
+            }
         }
     }
 

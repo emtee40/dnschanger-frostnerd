@@ -323,6 +323,7 @@ public class DNSUDPProxy extends DNSProxy{
         }
         upstreamServers.clear();
         writeToDevice.clear();
+
         if(resolver != null) resolver.destroy();
         if(queryLogger != null) queryLogger.destroy();
         LogFactory.writeMessage(vpnService, LOG_TAG, "Everything was destructed.");
