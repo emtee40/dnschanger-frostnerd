@@ -39,7 +39,7 @@
         <EditTextPreference
             android:defaultValue="500"
             android:dependency="dns_over_tcp"
-            android:inputType="numberDecimal"
+            android:inputType="number"
             android:key="tcp_timeout"
             android:summary="@string/summary_tcp_timeout"
             android:title="@string/title_tcp_timeout" />
