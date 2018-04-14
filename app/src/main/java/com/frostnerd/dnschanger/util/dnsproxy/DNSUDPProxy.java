@@ -166,7 +166,7 @@ public class DNSUDPProxy extends DNSProxy{
                     pollingFd.fd = ParcelFileDescriptor.fromDatagramSocket(socket).getFileDescriptor();
                     pollingFd.events = (short)OsConstants.POLLIN;
                 }
-                poll(polls, 3000);
+                poll(polls, 5000);
             }
             if(blockFd.revents != 0){
                 shouldRun = false;
@@ -191,14 +191,14 @@ public class DNSUDPProxy extends DNSProxy{
 
     private int pollTries = 0;
     private void poll(StructPollfd[] polls, int timeout) throws ErrnoException {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
             pollTries++;
             try{
                 Os.poll(polls, timeout/pollTries);
                 pollTries = 0;
             } catch(ErrnoException ex){
                 LogFactory.writeMessage(vpnService, LOG_TAG, "Polling failed with exception: " + ex.getMessage() + "(Cause: " + ex.getCause() + ")");
-                if(pollTries < 3) poll(polls, timeout);
+                if(ex.errno == OsConstants.EINTR && pollTries <= 5) poll(polls, timeout);
                 else throw ex;
             }
         }else {
