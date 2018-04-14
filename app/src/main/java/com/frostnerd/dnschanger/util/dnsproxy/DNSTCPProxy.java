@@ -256,12 +256,10 @@ public class DNSTCPProxy extends DNSProxy{
     }
 
     private void sendPacketToUpstreamDNSServer(DatagramPacket outgoingPacket, IpPacket ipPacket){
-        LogFactory.writeMessage(vpnService, LOG_TAG,"Writing packet to upstream: " + outgoingPacket);
         try{
             Socket socket = SocketChannel.open().socket();
             vpnService.protect(socket); //The sent packets shouldn't be handled by this class
             outgoingPacket.setPort(upstreamServers.get(outgoingPacket.getAddress().getHostAddress()));
-            LogFactory.writeMessage(vpnService, LOG_TAG, "Connecting to " + outgoingPacket + "(PORT: " + outgoingPacket.getPort() + ")");
             socket.connect(outgoingPacket.getSocketAddress(),timeout);
             byte[] data = ipPacket == null ? new byte[0] : outgoingPacket.getData();
             DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
@@ -274,7 +272,6 @@ public class DNSTCPProxy extends DNSProxy{
             }
         }catch(IOException exception){
             if(!(exception instanceof SocketTimeoutException)){
-                LogFactory.writeStackTrace(vpnService, LOG_TAG, exception);
                 handleUpstreamDNSResponse(ipPacket, outgoingPacket.getData());
             }
         }
@@ -288,7 +285,6 @@ public class DNSTCPProxy extends DNSProxy{
             handleUpstreamDNSResponse(parsedPacket, data);
         } catch (IOException e) {
             e.printStackTrace();
-            LogFactory.writeStackTrace(vpnService, LOG_TAG, e);
         }
     }
 
