@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/hint_dns_lookup"
             android:text="google.com"
-            android:inputType="text"
+            android:inputType="textNoSuggestions"
             android:textColor="#FFF" />
     </com.frostnerd.utils.design.MaterialEditText>
 

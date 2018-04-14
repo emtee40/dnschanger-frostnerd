@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_dns_entry_name"
                 android:imeOptions="actionNext"
-                android:inputType="text"
+                android:inputType="textNoSuggestions"
                 android:maxLines="1"
                 android:nextFocusDown="@id/dns1"
                 android:nextFocusForward="@id/dns1"

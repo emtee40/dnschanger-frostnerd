@@ -107,8 +107,9 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
                 }
                 cursor.close();
             }
-            db.execSQL("DROP TABLE IF EXISTS Shortcuts");
-            db.execSQL("DROP TABLE IF EXISTS DNSEntries");
+            for(String s: getTableNames(db)){
+                db.execSQL("DROP TABLE IF EXISTS " + s);
+            }
             onCreate(db);
             for(DNSEntry entry: entries) insert(entry);
             for(Shortcut shortcut: shortcuts) createShortcut(shortcut);

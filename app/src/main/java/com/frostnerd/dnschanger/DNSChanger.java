@@ -21,16 +21,18 @@ public class DNSChanger extends Application {
         public void uncaughtException(Thread t, Throwable e) {
             LogFactory.writeMessage(DNSChanger.this, new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, "Caught uncaught exception");
             LogFactory.writeStackTrace(DNSChanger.this, new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, e);
+            if (defaultHandler != null) defaultHandler.uncaughtException(t, e);
             if (showErrorDialog(e)) {
                 ErrorDialogActivity.show(DNSChanger.this, e);
                 System.exit(2);
-            } else if (defaultHandler != null) defaultHandler.uncaughtException(t, e);
+            }
         }
     };
     private Thread.UncaughtExceptionHandler defaultHandler;
 
     private boolean showErrorDialog(Throwable exception) {
-        return exception.getMessage() != null && exception.getMessage().toLowerCase().contains("cannot create interface");
+        return true;
+        //return exception.getMessage() != null && exception.getMessage().toLowerCase().contains("cannot create interface");
     }
 
     @Override
