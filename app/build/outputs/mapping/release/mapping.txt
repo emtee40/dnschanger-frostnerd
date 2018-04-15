@@ -19679,18 +19679,18 @@ android.support.v7.widget.WithHint -> android.support.v7.widget.bx:
 com.frostnerd.dnschanger.DNSChanger -> com.frostnerd.dnschanger.DNSChanger:
     java.lang.Thread$UncaughtExceptionHandler customHandler -> a
     java.lang.Thread$UncaughtExceptionHandler defaultHandler -> b
-    17:19:void <init>() -> <init>
-    34:34:boolean showErrorDialog(java.lang.Throwable) -> a
-    40:45:void onCreate() -> onCreate
-    49:51:void onLowMemory() -> onLowMemory
-    55:57:void onTrimMemory(int) -> onTrimMemory
-    60:60:java.lang.Thread$UncaughtExceptionHandler getExceptionHandler() -> a
-    17:17:boolean access$000(com.frostnerd.dnschanger.DNSChanger,java.lang.Throwable) -> a
-    17:17:java.lang.Thread$UncaughtExceptionHandler access$100(com.frostnerd.dnschanger.DNSChanger) -> a
+    18:20:void <init>() -> <init>
+    35:36:boolean showErrorDialog(java.lang.Throwable) -> a
+    41:46:void onCreate() -> onCreate
+    50:52:void onLowMemory() -> onLowMemory
+    56:58:void onTrimMemory(int) -> onTrimMemory
+    61:61:java.lang.Thread$UncaughtExceptionHandler getExceptionHandler() -> a
+    18:18:boolean access$000(com.frostnerd.dnschanger.DNSChanger,java.lang.Throwable) -> a
+    18:18:java.lang.Thread$UncaughtExceptionHandler access$100(com.frostnerd.dnschanger.DNSChanger) -> a
 com.frostnerd.dnschanger.DNSChanger$1 -> com.frostnerd.dnschanger.DNSChanger$1:
     com.frostnerd.dnschanger.DNSChanger this$0 -> a
-    19:19:void <init>(com.frostnerd.dnschanger.DNSChanger) -> <init>
-    22:29:void uncaughtException(java.lang.Thread,java.lang.Throwable) -> uncaughtException
+    20:20:void <init>(com.frostnerd.dnschanger.DNSChanger) -> <init>
+    23:30:void uncaughtException(java.lang.Thread,java.lang.Throwable) -> uncaughtException
 com.frostnerd.dnschanger.LogFactory -> com.frostnerd.dnschanger.a:
     java.io.File logFile -> a
     java.io.File logDir -> b
@@ -20604,29 +20604,29 @@ com.frostnerd.dnschanger.adapters.RuleAdapter$ViewHolder -> com.frostnerd.dnscha
 com.frostnerd.dnschanger.database.DatabaseHelper -> com.frostnerd.dnschanger.database.a:
     java.util.Set entities -> a
     com.frostnerd.dnschanger.database.DatabaseHelper instance -> b
-    com.frostnerd.utils.database.MockedContext wrappedContext -> c
-    51:51:com.frostnerd.dnschanger.database.DatabaseHelper getInstance(android.content.Context) -> a
-    59:61:void <init>(android.content.Context) -> <init>
-    65:66:void onAfterCreate(android.database.sqlite.SQLiteDatabase) -> a
-    71:71:void onBeforeCreate(android.database.sqlite.SQLiteDatabase) -> b
-    75:117:void onBeforeUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> a
+    android.content.Context wrappedContext -> c
+    50:50:com.frostnerd.dnschanger.database.DatabaseHelper getInstance(android.content.Context) -> a
+    58:60:void <init>(android.content.Context) -> <init>
+    64:65:void onAfterCreate(android.database.sqlite.SQLiteDatabase) -> a
+    70:70:void onBeforeCreate(android.database.sqlite.SQLiteDatabase) -> b
+    74:117:void onBeforeUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> a
     124:126:java.lang.String legacyString(int,com.frostnerd.utils.database.CursorWithDefaults,java.lang.String) -> a
     132:137:void onAfterUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> b
-    142:146:void close() -> close
-    149:149:boolean dnsEntryExists(java.lang.String) -> a
-    153:153:boolean dnsRuleExists(java.lang.String) -> b
-    157:159:boolean dnsRuleExists(java.lang.String,boolean) -> a
-    163:165:com.frostnerd.dnschanger.database.entities.DNSRule getDNSRule(java.lang.String,boolean) -> b
-    169:171:boolean deleteDNSRule(java.lang.String,boolean) -> c
-    175:177:int editDNSRule(java.lang.String,boolean,java.lang.String) -> a
-    181:182:void createDNSRule(java.lang.String,java.lang.String,boolean,boolean) -> a
-    187:192:void createShortcut(java.lang.String,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair) -> a
-    195:200:void createShortcut(com.frostnerd.dnschanger.database.entities.Shortcut) -> a
-    204:210:com.frostnerd.dnschanger.database.entities.DNSEntry findMatchingDNSEntry(java.lang.String) -> c
-    215:217:void finalize() -> finalize
-    37:37:void <clinit>() -> <clinit>
+    142:145:void close() -> close
+    148:148:boolean dnsEntryExists(java.lang.String) -> a
+    152:152:boolean dnsRuleExists(java.lang.String) -> b
+    156:158:boolean dnsRuleExists(java.lang.String,boolean) -> a
+    162:164:com.frostnerd.dnschanger.database.entities.DNSRule getDNSRule(java.lang.String,boolean) -> b
+    168:170:boolean deleteDNSRule(java.lang.String,boolean) -> c
+    174:176:int editDNSRule(java.lang.String,boolean,java.lang.String) -> a
+    180:181:void createDNSRule(java.lang.String,java.lang.String,boolean,boolean) -> a
+    186:191:void createShortcut(java.lang.String,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair) -> a
+    194:199:void createShortcut(com.frostnerd.dnschanger.database.entities.Shortcut) -> a
+    203:209:com.frostnerd.dnschanger.database.entities.DNSEntry findMatchingDNSEntry(java.lang.String) -> c
+    214:216:void finalize() -> finalize
+    36:36:void <clinit>() -> <clinit>
 com.frostnerd.dnschanger.database.DatabaseHelper$1 -> com.frostnerd.dnschanger.database.a$1:
-    37:44:void <init>() -> <init>
+    36:43:void <init>() -> <init>
 com.frostnerd.dnschanger.database.accessors.DNSResolver -> com.frostnerd.dnschanger.database.a.a:
     com.frostnerd.dnschanger.database.DatabaseHelper db -> a
     int wildcardCount -> b
@@ -24179,7 +24179,6 @@ com.frostnerd.utils.database.DatabaseHelper -> com.frostnerd.utils.database.b:
     boolean foreignKeyActive -> c
     java.lang.ref.SoftReference readableDatabase -> d
     java.lang.ref.SoftReference writeableDatabase -> e
-    51:55:com.frostnerd.utils.database.MockedContext mock(android.content.Context) -> b
     45:74:void <init>(android.content.Context,java.lang.String,android.database.sqlite.SQLiteDatabase$CursorFactory,int,android.database.DatabaseErrorHandler,java.util.Set) -> <init>
     78:79:void <init>(android.content.Context,java.lang.String,android.database.sqlite.SQLiteDatabase$CursorFactory,int,java.util.Set) -> <init>
     82:83:void <init>(android.content.Context,java.lang.String,int,java.util.Set) -> <init>
@@ -24216,27 +24215,6 @@ com.frostnerd.utils.database.DatabaseHelper -> com.frostnerd.utils.database.b:
     385:386:com.frostnerd.utils.database.orm.Entity getByRowID(java.lang.Class,long) -> a
     401:401:java.util.List select(java.lang.Class,com.frostnerd.utils.database.orm.statementoptions.queryoptions.QueryOption[]) -> b
     406:406:java.util.List select(java.lang.Class,boolean,com.frostnerd.utils.database.orm.statementoptions.queryoptions.QueryOption[]) -> a
-com.frostnerd.utils.database.MockedContext -> com.frostnerd.utils.database.c:
-    com.frostnerd.utils.database.MockedContext$DatabaseLazyLoader database -> a
-    java.io.File path -> b
-    android.content.Context context -> c
-    32:40:void <init>(android.content.Context) -> <init>
-    43:44:void destroy(boolean) -> a
-    48:52:java.io.File getDatabasePath(java.lang.String) -> getDatabasePath
-    57:61:android.database.sqlite.SQLiteDatabase openOrCreateDatabase(java.lang.String,int,android.database.sqlite.SQLiteDatabase$CursorFactory) -> openOrCreateDatabase
-    66:70:android.database.sqlite.SQLiteDatabase openOrCreateDatabase(java.lang.String,int,android.database.sqlite.SQLiteDatabase$CursorFactory,android.database.DatabaseErrorHandler) -> openOrCreateDatabase
-    78:80:void finalize() -> finalize
-com.frostnerd.utils.database.MockedContext$1 -> com.frostnerd.utils.database.c$1:
-com.frostnerd.utils.database.MockedContext$DatabaseLazyLoader -> com.frostnerd.utils.database.c$a:
-    android.content.Context context -> b
-    android.database.sqlite.SQLiteDatabase database -> c
-    com.frostnerd.utils.database.MockedContext this$0 -> a
-    89:93:void <init>(com.frostnerd.utils.database.MockedContext,android.content.Context) -> <init>
-    100:106:android.database.sqlite.SQLiteDatabase getDatabase(java.lang.String,int,android.database.sqlite.SQLiteDatabase$CursorFactory,android.database.DatabaseErrorHandler) -> a
-    110:114:void destroy(boolean) -> a
-    87:87:void <init>(com.frostnerd.utils.database.MockedContext,android.content.Context,com.frostnerd.utils.database.MockedContext$1) -> <init>
-    87:87:void access$100(com.frostnerd.utils.database.MockedContext$DatabaseLazyLoader,boolean) -> a
-    87:87:android.database.sqlite.SQLiteDatabase access$200(com.frostnerd.utils.database.MockedContext$DatabaseLazyLoader,java.lang.String,int,android.database.sqlite.SQLiteDatabase$CursorFactory,android.database.DatabaseErrorHandler) -> a
 com.frostnerd.utils.database.orm.Entity -> com.frostnerd.utils.database.orm.Entity:
     java.util.Comparator entityReferenceComparator -> entityReferenceComparator
     java.util.Comparator flatEntityReferenceComparator -> flatEntityReferenceComparator
