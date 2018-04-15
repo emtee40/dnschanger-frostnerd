@@ -48,7 +48,7 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
     private MockedContext wrappedContext;
 
     public static DatabaseHelper getInstance(@NonNull Context context){
-        return instance == null ? instance = new DatabaseHelper(mock(context)) : instance;
+        return instance == null ? instance = new DatabaseHelper(context.getApplicationContext() != null ? context.getApplicationContext() : context) : instance;
     }
 
     public static boolean instanceActive(){
@@ -108,6 +108,7 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
                 cursor.close();
             }
             for(String s: getTableNames(db)){
+                if(!s.equalsIgnoreCase("sqlite_sequence"))
                 db.execSQL("DROP TABLE IF EXISTS " + s);
             }
             onCreate(db);
