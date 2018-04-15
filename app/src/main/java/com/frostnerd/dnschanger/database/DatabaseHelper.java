@@ -13,7 +13,6 @@ import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.database.entities.Shortcut;
 import com.frostnerd.utils.database.CursorWithDefaults;
-import com.frostnerd.utils.database.MockedContext;
 import com.frostnerd.utils.database.orm.Entity;
 import com.frostnerd.utils.database.orm.parser.ParsedEntity;
 import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
@@ -45,7 +44,7 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
     @Nullable
     private static DatabaseHelper instance;
     @NonNull
-    private MockedContext wrappedContext;
+    private Context wrappedContext;
 
     public static DatabaseHelper getInstance(@NonNull Context context){
         return instance == null ? instance = new DatabaseHelper(context.getApplicationContext() != null ? context.getApplicationContext() : context) : instance;
@@ -57,7 +56,7 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
 
     private DatabaseHelper(@NonNull Context context) {
         super(context, DATABASE_NAME, DATABASE_VERSION, entities);
-        wrappedContext = (MockedContext) context;
+        wrappedContext = context;
     }
 
     @Override
@@ -141,7 +140,6 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
     @Override
     public synchronized void close() {
         instance = null;
-        wrappedContext.destroy(false);
         wrappedContext = null;
         super.close();
     }
