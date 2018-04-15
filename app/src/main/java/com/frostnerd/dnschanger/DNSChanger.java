@@ -1,6 +1,7 @@
 package com.frostnerd.dnschanger;
 
 import android.app.Application;
+import android.database.sqlite.SQLiteException;
 
 import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
 import com.frostnerd.dnschanger.util.ThemeHandler;
@@ -31,8 +32,8 @@ public class DNSChanger extends Application {
     private Thread.UncaughtExceptionHandler defaultHandler;
 
     private boolean showErrorDialog(Throwable exception) {
-        return true;
-        //return exception.getMessage() != null && exception.getMessage().toLowerCase().contains("cannot create interface");
+        if(exception instanceof SQLiteException || (exception.getCause() != null && exception instanceof SQLiteException))return true;
+        return exception.getMessage() != null && exception.getMessage().toLowerCase().contains("cannot create interface");
     }
 
     @Override
