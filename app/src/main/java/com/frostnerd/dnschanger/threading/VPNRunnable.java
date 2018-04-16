@@ -5,6 +5,8 @@ import android.content.pm.PackageManager;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.system.OsConstants;
 
 import com.frostnerd.dnschanger.DNSChanger;
@@ -57,7 +59,7 @@ public class VPNRunnable implements Runnable {
         addresses.put("172.31.255.1", 28);
     }
 
-    public VPNRunnable(DNSVpnService service, List<IPPortPair> upstreamServers, Set<String> vpnApps, boolean whitelistMode){
+    public VPNRunnable(@NonNull DNSVpnService service, @NonNull List<IPPortPair> upstreamServers, @NonNull Set<String> vpnApps, boolean whitelistMode){
         if(service == null)throw new IllegalStateException("The DNSVPNService passed to VPNRunnable is null.");
         this.service = service;
         this.whitelistMode = whitelistMode;
@@ -140,11 +142,11 @@ public class VPNRunnable implements Runnable {
         }
     }
 
-    public void addAfterThreadStop(Runnable runnable){
+    public void addAfterThreadStop(@NonNull Runnable runnable){
         afterThreadStop.add(runnable);
     }
 
-    private boolean isDNSInvalid(Exception ex){
+    private boolean isDNSInvalid(@NonNull Exception ex){
         for(StackTraceElement ste: ex.getStackTrace())
             if(ste.toString().contains("Builder.addDnsServer") && ex instanceof IllegalArgumentException && ex.getMessage().contains("Bad address"))return true;
         return false;
@@ -165,7 +167,7 @@ public class VPNRunnable implements Runnable {
         builder = null;
     }
 
-    private void configure(String address, boolean advanced){
+    private void configure(@NonNull String address, boolean advanced){
         boolean ipv6Enabled = PreferencesAccessor.isIPv6Enabled(service), ipv4Enabled = PreferencesAccessor.isIPv4Enabled(service);
         if(!ipv4Enabled && !ipv6Enabled)ipv4Enabled = true;
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Creating Tunnel interface");
@@ -215,7 +217,7 @@ public class VPNRunnable implements Runnable {
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface created, not yet connected");
     }
 
-    private void addDNSServer(String server, boolean addRoute, boolean ipv6){
+    private void addDNSServer(@NonNull String server, boolean addRoute, boolean ipv6){
         if(server != null && !server.equals("")){
             if(server.equals("127.0.0.1"))server = DNSProxy.IPV4_LOOPBACK_REPLACEMENT;
             else if(server.equals("::1"))server = DNSProxy.IPV6_LOOPBACK_REPLACEMENT;
@@ -228,7 +230,7 @@ public class VPNRunnable implements Runnable {
         return running;
     }
 
-    public void stop(Thread thread){
+    public void stop(@Nullable Thread thread){
         running = false;
         if(dnsProxy != null) dnsProxy.stop();
         if(thread != null) thread.interrupt();
