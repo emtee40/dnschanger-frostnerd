@@ -3,6 +3,8 @@ package com.frostnerd.dnschanger.util.dnsproxy;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.system.ErrnoException;
 import android.system.Os;
@@ -190,7 +192,7 @@ public class DNSUDPProxy extends DNSProxy{
     }
 
     private int pollTries = 0;
-    private void poll(StructPollfd[] polls, int timeout) throws ErrnoException {
+    private void poll(@NonNull StructPollfd[] polls, int timeout) throws ErrnoException {
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
             pollTries++;
             try{
@@ -206,7 +208,7 @@ public class DNSUDPProxy extends DNSProxy{
         }
     }
 
-    private void handleDeviceDNSPacket(InputStream inputStream, byte[] packetBytes) throws IOException{
+    private void handleDeviceDNSPacket(@NonNull InputStream inputStream, @NonNull byte[] packetBytes) throws IOException{
         packetBytes = Arrays.copyOfRange(packetBytes, 0, inputStream.read(packetBytes));
         IpPacket packet;
         try {
@@ -247,7 +249,7 @@ public class DNSUDPProxy extends DNSProxy{
         }
     }
 
-    private void sendPacketToUpstreamDNSServer(DatagramPacket outgoingPacket, IpPacket ipPacket){
+    private void sendPacketToUpstreamDNSServer(@NonNull DatagramPacket outgoingPacket, @Nullable IpPacket ipPacket){
         try{
             DatagramSocket socket = new DatagramSocket();
             vpnService.protect(socket); //The sent packets shouldn't be handled by this class
@@ -255,23 +257,20 @@ public class DNSUDPProxy extends DNSProxy{
             if(ipPacket != null) futureSocketAnswers.put(socket, new PacketWrap(ipPacket));
             else socket.close();
         }catch(IOException exception){
-            LogFactory.writeStackTrace(vpnService, LOG_TAG, exception);
-            handleUpstreamDNSResponse(ipPacket, outgoingPacket.getData());
+            if(ipPacket != null)handleUpstreamDNSResponse(ipPacket, outgoingPacket.getData());
         }
     }
 
-    private void handleRawUpstreamDNSResponse(DatagramSocket dnsSocket, IpPacket parsedPacket){
+    private void handleRawUpstreamDNSResponse(@NonNull DatagramSocket dnsSocket, @NonNull IpPacket parsedPacket){
         try {
             byte[] datagramData = new byte[1024];
             DatagramPacket replyPacket = new DatagramPacket(datagramData, datagramData.length);
             dnsSocket.receive(replyPacket);
             handleUpstreamDNSResponse(parsedPacket, datagramData);
-        } catch (IOException e) {
-            LogFactory.writeStackTrace(vpnService, LOG_TAG, e);
-        }
+        } catch (IOException ignored) {}
     }
 
-    private void handleUpstreamDNSResponse(IpPacket packet, byte[] payloadData){
+    private void handleUpstreamDNSResponse(@NonNull IpPacket packet, @NonNull byte[] payloadData){
         UdpPacket dnsPacket = (UdpPacket) packet.getPayload();
         UdpPacket.Builder dnsPayloadBuilder = new UdpPacket.Builder(dnsPacket)
                 .srcPort(dnsPacket.getHeader().getDstPort())
@@ -335,15 +334,15 @@ public class DNSUDPProxy extends DNSProxy{
     }
 
     private class PacketWrap{
-        private IpPacket packet;
+        @NonNull private IpPacket packet;
         private final long time;
 
-        PacketWrap(IpPacket packet) {
+        PacketWrap(@NonNull IpPacket packet) {
             this.packet = packet;
             this.time = System.currentTimeMillis();
         }
 
-        IpPacket getPacket() {
+        @NonNull IpPacket getPacket() {
             return packet;
         }
 
