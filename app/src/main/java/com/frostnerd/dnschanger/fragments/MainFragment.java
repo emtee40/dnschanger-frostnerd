@@ -159,8 +159,8 @@ public class MainFragment extends Fragment {
         startStopButton = (Button) findViewById(R.id.startStopButton);
 
         if(settingV6 || PreferencesAccessor.areCustomPortsEnabled(requireContext())){
-            dns1.setInputType(InputType.TYPE_CLASS_TEXT);
-            dns2.setInputType(InputType.TYPE_CLASS_TEXT);
+            dns1.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+            dns2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         }
         startStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -263,8 +263,8 @@ public class MainFragment extends Fragment {
     private void setEditTextState(){
         boolean customPorts = PreferencesAccessor.areCustomPortsEnabled(requireContext());
         if(settingV6 || customPorts){
-            dns1.setInputType(InputType.TYPE_CLASS_TEXT);
-            dns2.setInputType(InputType.TYPE_CLASS_TEXT);
+            dns1.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+            dns2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         }
         if(!settingV6){
             InputFilter filter = new InputCharacterFilter(customPorts ?
@@ -449,9 +449,9 @@ public class MainFragment extends Fragment {
     }
 
     public boolean toggleCurrentInputFocus(){
-        if(dns1.hasFocus()){
+        if(dns1 != null && dns1.hasFocus()){
             dns2.requestFocus();
-        }else if(dns2.hasFocus()){
+        }else if(dns2 != null && dns2.hasFocus()){
             dns1.requestFocus();
         }else return false;
         return true;

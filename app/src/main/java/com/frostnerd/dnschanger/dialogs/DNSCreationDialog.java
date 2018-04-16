@@ -221,8 +221,8 @@ public class DNSCreationDialog extends UtilityDialog {
 
     private void setEditTextStates(){
         if(settingV6 || customPorts){
-            ed_dns1.setInputType(InputType.TYPE_CLASS_TEXT);
-            ed_dns2.setInputType(InputType.TYPE_CLASS_TEXT);
+            ed_dns1.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+            ed_dns2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         }
         if(settingV6){
             InputFilter filter = new InputCharacterFilter(customPorts ?
