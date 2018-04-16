@@ -63,6 +63,8 @@
                 android:imeOptions="actionDone"
                 android:inputType="numberDecimal"
                 android:nextFocusUp="@id/dns1"
+                android:nextFocusDown="@id/default_dns_view"
+                android:nextFocusForward="@id/default_dns_view"
                 android:text="@string/default_dns2"
                 android:textColor="#FFF" />
         </com.frostnerd.utils.design.MaterialEditText>
@@ -74,6 +76,10 @@
             android:background="?attr/inputElementColor"
             android:clickable="true"
             android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:nextFocusUp="@id/dns2"
+            android:nextFocusForward="@id/startStopButton"
+            android:nextFocusDown="@id/startStopButton"
             android:onClick="openDefaultDNSDialog"
             android:padding="10dp">
 
@@ -104,6 +110,9 @@
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:nextFocusUp="@id/default_dns_view"
+            android:nextFocusForward="@id/dns1"
+            android:nextFocusDown="@id/dns1"
             android:layout_marginTop="45dp"
             android:background="?attr/cardColor"
             android:text="@string/start"
