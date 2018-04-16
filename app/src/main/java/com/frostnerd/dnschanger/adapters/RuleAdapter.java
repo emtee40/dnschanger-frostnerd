@@ -15,6 +15,7 @@ import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSRule;
 import com.frostnerd.dnschanger.dialogs.NewRuleDialog;
 import com.frostnerd.dnschanger.util.RuleImport;
+import com.frostnerd.utils.adapters.BaseViewHolder;
 import com.frostnerd.utils.adapters.DatabaseAdapter;
 import com.frostnerd.utils.database.orm.parser.columns.Column;
 import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
@@ -100,13 +101,18 @@ public class RuleAdapter<T extends Activity &RuleImport.ImportStartedListener> e
         return new ViewHolder(layoutInflater.inflate(R.layout.row_rule, parent, false));
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
+    static class ViewHolder extends BaseViewHolder{
         private TextView host, target;
 
         private ViewHolder(View itemView) {
             super(itemView);
             host = itemView.findViewById(R.id.text);
             target = itemView.findViewById(R.id.text3);
+        }
+
+        @Override
+        protected void destroy() {
+            host = target = null;
         }
 
         @Override

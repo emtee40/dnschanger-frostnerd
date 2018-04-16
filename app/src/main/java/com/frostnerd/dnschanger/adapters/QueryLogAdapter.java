@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
+import com.frostnerd.utils.adapters.BaseViewHolder;
 import com.frostnerd.utils.adapters.DatabaseAdapter;
 import com.frostnerd.utils.database.orm.parser.columns.Column;
 import com.frostnerd.utils.database.orm.statementoptions.queryoptions.OrderOption;
@@ -121,13 +122,18 @@ public class QueryLogAdapter extends DatabaseAdapter<DNSQuery, QueryLogAdapter.V
         return new ViewHolder(layoutInflater.inflate(R.layout.row_query_log, parent, false));
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends BaseViewHolder {
         private TextView host, time;
 
         private ViewHolder(View itemView) {
             super(itemView);
             time = itemView.findViewById(R.id.time);
             host = itemView.findViewById(R.id.host);
+        }
+
+        @Override
+        protected void destroy() {
+            host = time = null;
         }
 
         @Override

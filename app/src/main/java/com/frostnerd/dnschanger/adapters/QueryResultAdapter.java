@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.utils.adapters.BaseAdapter;
+import com.frostnerd.utils.adapters.BaseViewHolder;
 import com.frostnerd.utils.general.DesignUtil;
 
 import org.xbill.DNS.DClass;
@@ -87,7 +88,7 @@ public class QueryResultAdapter extends BaseAdapter<QueryResultAdapter.ViewHolde
         return 5;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends BaseViewHolder{
         private ViewHolder(int elementCount, Context context, LinearLayout itemView) {
             super(itemView);
             TextView text;
@@ -95,6 +96,11 @@ public class QueryResultAdapter extends BaseAdapter<QueryResultAdapter.ViewHolde
                 text = new TextView(context);
                 itemView.addView(text);
             }
+        }
+
+        @Override
+        protected void destroy() {
+
         }
     }
 }

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
+import com.frostnerd.utils.adapters.BaseViewHolder;
 import com.frostnerd.utils.adapters.DatabaseAdapter;
 import com.frostnerd.utils.database.orm.statementoptions.queryoptions.OrderOption;
 import com.frostnerd.utils.general.DesignUtil;
@@ -177,7 +178,7 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
         if(wasNull) notifyDataSetChanged();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends BaseViewHolder {
         private TextView textView, subText;
 
         private ViewHolder(View itemView, int type) {
@@ -189,6 +190,11 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
         @Override
         protected void finalize() throws Throwable {
             super.finalize();
+            textView = subText = null;
+        }
+
+        @Override
+        protected void destroy() {
             textView = subText = null;
         }
     }
