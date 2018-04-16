@@ -91,6 +91,7 @@ public class CurrentNetworksFragment extends Fragment {
                                     .setPositiveButton(R.string.disable, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
+                                            PreferencesAccessor.setIPv6Enabled(requireContext(), true);
                                             PreferencesAccessor.setIPv4Enabled(requireContext(), false);
                                             setDNSServersOf(properties);
                                         }
@@ -107,6 +108,7 @@ public class CurrentNetworksFragment extends Fragment {
                                             .setPositiveButton(R.string.disable, new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                                    PreferencesAccessor.setIPv4Enabled(requireContext(), true);
                                                     PreferencesAccessor.setIPv6Enabled(requireContext(), false);
                                                     setDNSServersOf(properties);
                                                 }
