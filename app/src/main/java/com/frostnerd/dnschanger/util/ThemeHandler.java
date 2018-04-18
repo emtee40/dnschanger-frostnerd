@@ -77,6 +77,11 @@ public class ThemeHandler {
         return value.data;
     }
 
+    @ColorInt
+    public static int getSelectedItemColor(Context context){
+        return getColor(context, R.attr.inputElementColor, -1);
+    }
+
     public static Drawable getDrawableFromTheme(Context context, @AttrRes int attribute){
         TypedArray ta = context.obtainStyledAttributes(getAppTheme(context), new int[]{attribute});
         Drawable drawable = ta.getDrawable(0);

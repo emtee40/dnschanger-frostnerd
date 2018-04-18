@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -24,6 +25,12 @@ import com.frostnerd.dnschanger.util.RuleImport;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.utils.design.dialogs.FileChooserDialog;
 import com.frostnerd.utils.design.dialogs.LoadingDialog;
+import com.frostnerd.utils.design.filechooseractivity.Configuration;
+import com.frostnerd.utils.design.filechooseractivity.FileChooserActivity;
+import com.frostnerd.utils.design.filechooseractivity.FileInformation;
+import com.frostnerd.utils.design.filechooseractivity.FileListAdapter;
+import com.frostnerd.utils.design.filechooseractivity.FileSelectedListener;
+import com.frostnerd.utils.design.filechooseractivity.StyleOptions;
 import com.frostnerd.utils.lifecyclehelper.UtilityDialog;
 
 import java.io.File;
@@ -31,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -52,7 +60,7 @@ class RuleImportChooserDialog extends UtilityDialog {
     private RadioButton hosts;
     private RadioButton domains;
     private RadioButton adblock;
-    private FileChooserDialog fileChooserDialog;
+    private FileChooserActivity fileChooserActivity;
 
     <T extends Activity &RuleImport.ImportStartedListener> RuleImportChooserDialog(@NonNull final T context) {
         super(context, ThemeHandler.getDialogTheme(context));
@@ -116,12 +124,6 @@ class RuleImportChooserDialog extends UtilityDialog {
                 getButton(BUTTON_POSITIVE).setVisibility(View.INVISIBLE);
             }
         });
-        setOnDismissListener(new OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                if(fileChooserDialog != null)fileChooserDialog.dismiss();
-            }
-        });
     }
 
     @Override
@@ -132,28 +134,53 @@ class RuleImportChooserDialog extends UtilityDialog {
         dnsmasq = hosts = domains = adblock = null;
     }
 
-    private <T extends Activity &RuleImport.ImportStartedListener> void handlePermissionOrShowFileDialog(T context) {
+    private <T extends Activity &RuleImport.ImportStartedListener> void handlePermissionOrShowFileDialog(final T context) {
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            fileChooserDialog = new FileChooserDialog(getContext(), false, FileChooserDialog.SelectionMode.FILE, ThemeHandler.getDialogTheme(getContext()));
-            fileChooserDialog.setFileListener(new FileChooserDialog.FileSelectedListener() {
+            Configuration.Builder configuration = Configuration.newBuilder();
+            configuration.selectionMode(FileSelectedListener.FileSelectionMode.FILE);
+            configuration.allowMultipleSelection(true);
+            configuration.startAtLastDirectory(true);
+            StyleOptions options = StyleOptions.withDefaults(context);
+            options.setTheme(ThemeHandler.getAppTheme(context));
+            options.setIconTint(ThemeHandler.getColor(context, android.R.attr.textColor, Color.BLACK));
+            options.setRowSelectionStyler(new StyleOptions.RowSelectionStyler() {
                 @Override
-                public void fileSelected(File f, FileChooserDialog.SelectionMode selectionMode) {
+                public void style(@NonNull FileListAdapter.RowView rowView, boolean selected) {
+                    if(selected) rowView.itemView.setBackgroundColor(ThemeHandler.getSelectedItemColor(context));
+                    else rowView.itemView.setBackgroundColor(0x00000000);
+                }
+            });
+            configuration.hook(new FileChooserActivity.Hook() {
+                @Override
+                public void activityCreated(@NonNull FileChooserActivity activity) {
+                    fileChooserActivity = activity;
+                }
+            });
+            configuration.styleOptions(options);
+            configuration.fileSelectedListener(new FileSelectedListener() {
+                @Override
+                public void fileSelected(@NonNull FileInformation file, @NonNull FileSelectionMode selectionMode) {
+                    fileChooserActivity.finish();
                     files.clear();
-                    if (tryDetectType.isChecked()) detectFileTypes(f);
-                    fileChooserDialog = null;
+                    if (tryDetectType.isChecked()) detectFileTypes(file);
                 }
 
                 @Override
-                public void multipleFilesSelected(File... selected) {
+                public void multipleFilesSelected(@NonNull Set<FileInformation> files) {
+                    fileChooserActivity.finish();
                     files.clear();
-                    detectFileTypes(selected);
-                    fileChooserDialog = null;
+                    detectFileTypes(files.toArray(new FileInformation[files.size()]));
                 }
 
-                private void detectFileTypes(final File... selectedFiles) {
+                @Override
+                public boolean fileSelectionUpdated(@NonNull Set<FileInformation> selectedFiles) {
+                    return true;
+                }
+
+                private void detectFileTypes(final FileInformation... selectedFiles) {
                     if (selectedFiles.length == 0) return;
                     if (selectedFiles.length == 1) {
-                        detectSingleFileType(selectedFiles[0]);
+                        detectSingleFileType(selectedFiles[0].getFilePath());
                     } else {
                         getButton(BUTTON_POSITIVE).setVisibility(View.VISIBLE);
                         final LoadingDialog dialog = new LoadingDialog(getContext(), ThemeHandler.getDialogTheme(getContext()), R.string.loading, R.string.wait_importing_rules);
@@ -177,7 +204,8 @@ class RuleImportChooserDialog extends UtilityDialog {
                                 int lines;
                                 RuleImport.FileType type;
                                 Handler handler = new Handler(Looper.getMainLooper());
-                                for (final File f : selectedFiles) {
+                                for (FileInformation info : selectedFiles) {
+                                    final File f = info.getFilePath();
                                     if(dialog.isShowing()) handler.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -259,9 +287,7 @@ class RuleImportChooserDialog extends UtilityDialog {
                     else getButton(BUTTON_POSITIVE).setVisibility(View.VISIBLE);
                 }
             });
-            fileChooserDialog.setCanSelectMultiple(true);
-            fileChooserDialog.setNavigateToLastPath(true);
-            fileChooserDialog.showDialog();
+            FileChooserActivity.show(context, configuration.build());
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 999);

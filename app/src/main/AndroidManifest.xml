@@ -246,6 +246,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="com.frostnerd.utils.design.filechooseractivity.FileChooserActivity" />
+
         <receiver
             android:name=".receivers.AdminReceiver"
             android:description="@string/device_admin_description"
