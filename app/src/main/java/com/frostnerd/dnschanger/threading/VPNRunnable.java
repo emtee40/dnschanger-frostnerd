@@ -25,7 +25,10 @@ import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.networking.NetworkUtil;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -218,14 +221,30 @@ public class VPNRunnable implements Runnable {
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface created, not yet connected");
         builder.setConfigureIntent(PendingIntent.getActivity(service, 1, new Intent(service, MainActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
     }
+    public static final Map<String, InetAddress> addressRemap = new HashMap<>();
+    private final String addressRemapBase = "244.0.0.";
+    private int addressRemapIndex = 1;
 
     private void addDNSServer(@NonNull String server, boolean addRoute, boolean ipv6){
         if(server != null && !server.equals("")){
             if(server.equals("127.0.0.1"))server = DNSProxy.IPV4_LOOPBACK_REPLACEMENT;
             else if(server.equals("::1"))server = DNSProxy.IPV6_LOOPBACK_REPLACEMENT;
+            else if(PreferencesAccessor.sendDNSOverTLS(service)) {
+                addressRemap.put(addressRemapBase + addressRemapIndex++, getRemappedAddress(server));
+                server = addressRemapBase + (addressRemapIndex-1);
+            }
             builder.addDnsServer(server);
-            if(addRoute)builder.addRoute(server, ipv6 ? 128 : 32);
+            if(addRoute) builder.addRoute(server, ipv6 ? 128 : 32);
         }
+    }
+
+    private InetAddress getRemappedAddress(String server){
+        try {
+            return InetAddress.getByName(server);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public boolean isThreadRunning(){

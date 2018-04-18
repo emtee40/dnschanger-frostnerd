@@ -15,9 +15,9 @@ import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.accessors.DNSResolver;
 import com.frostnerd.dnschanger.database.accessors.QueryLogger;
-import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.DNSTLSConfiguration;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.threading.VPNRunnable;
 import com.frostnerd.dnschanger.util.TLSSocketFactory;
 
 import org.pcap4j.packet.IpPacket;
@@ -89,8 +89,8 @@ public class DNSTLSProxy extends DNSProxy{
     private QueryLogger queryLogger;
     private VpnService vpnService;
     private final int timeout;
-    private final HashMap<String, Socket> upstreamServers = new HashMap<>();
-    private final HashMap<String, DNSTLSConfiguration> upstreamConfig = new HashMap<>();
+    private final Map<String, Socket> upstreamServers = new HashMap<>();
+    private final Map<String, DNSTLSConfiguration> upstreamConfig = new HashMap<>();
 
     public DNSTLSProxy(VpnService context, ParcelFileDescriptor parcelFileDescriptor,
                        Set<IPPortPair> upstreamDNSServers, boolean resolveLocalRules, boolean queryLogging, int timeout){
@@ -202,10 +202,8 @@ public class DNSTLSProxy extends DNSProxy{
         } catch (Exception e) {
             return; //Packet from device isn't IP kind and thus is discarded
         }
-        InetAddress destination = packet.getHeader().getDstAddr();
+        InetAddress destination = VPNRunnable.addressRemap.get(packet.getHeader().getDstAddr().getHostAddress());
         if(destination == null || !upstreamConfig.containsKey(destination.getHostAddress()))return;
-        if(destination.getHostAddress().equals(IPV4_LOOPBACK_REPLACEMENT))destination = LOOPBACK_IPV4;
-        else if(destination.getHostAddress().equals(IPV6_LOOPBACK_REPLACEMENT))destination = LOOPBACK_IPV6;
         UdpPacket udpPacket = (UdpPacket)packet.getPayload();
         if(udpPacket.getPayload() == null){
             DatagramPacket outPacket = new DatagramPacket(new byte[0], 0, 0, destination, 53);
@@ -306,27 +304,32 @@ public class DNSTLSProxy extends DNSProxy{
 
     @NonNull
     private Socket establishConnection(String host) throws IOException {
-        System.out.println("EStablishing connection to " + host);
-        Socket socket = null;
-        if(!upstreamServers.containsKey(host) || (socket = upstreamServers.get(host)) == null || socket.isClosed()){
-            if(socket != null) closeSocket(socket);
-        } else if(upstreamServers.containsKey(host)) {
+        try{
+            System.out.println("EStablishing connection to " + host);
+            Socket socket = null;
+            if(!upstreamServers.containsKey(host) || (socket = upstreamServers.get(host)) == null || socket.isClosed()){
+                if(socket != null) closeSocket(socket);
+            } else if(upstreamServers.containsKey(host)) {
+                return socket;
+            }
+            DNSTLSConfiguration configuration = upstreamConfig.get(host);
+            System.out.println("Creating socket to " + host + ":" + configuration.getPort());
+            socket = getSocketFactory().createSocket(host, configuration.getPort());
+            System.out.println("Socket create");
+            SSLSession session = ((SSLSocket) socket).getSession();
+            System.out.println("Got session");
+            Certificate[] cchain = session.getPeerCertificates();
+            System.out.println("The Certificates used by peer");
+            for (int i = 0; i < cchain.length; i++) {
+                System.out.println(((X509Certificate) cchain[i]).getSubjectDN());
+            }
+            vpnService.protect(socket); //The sent packets shouldn't be handled by this class
+            upstreamServers.put(host, socket);
             return socket;
+        } catch (Exception e) {
+            e.printStackTrace(); //TODO remove
         }
-        DNSTLSConfiguration configuration = upstreamConfig.get(host);
-        System.out.println("Creating socket to " + host + ":" + configuration.getPort());
-        socket = getSocketFactory().createSocket(host, 53);
-        System.out.println("Socket create");
-        SSLSession session = ((SSLSocket) socket).getSession();
-        System.out.println("Got session");
-        Certificate[] cchain = session.getPeerCertificates();
-        System.out.println("The Certificates used by peer");
-        for (int i = 0; i < cchain.length; i++) {
-            System.out.println(((X509Certificate) cchain[i]).getSubjectDN());
-        }
-        vpnService.protect(socket); //The sent packets shouldn't be handled by this class
-        upstreamServers.put(host, socket);
-        return socket;
+        return null;
     }
 
     private SSLSocketFactory getSocketFactory(){
