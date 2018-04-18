@@ -18,6 +18,7 @@ import com.frostnerd.dnschanger.database.accessors.QueryLogger;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.DNSTLSConfiguration;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.util.TLSSocketFactory;
 
 import org.pcap4j.packet.IpPacket;
 import org.pcap4j.packet.IpSelector;
@@ -40,6 +41,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.nio.channels.SocketChannel;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
@@ -90,7 +93,7 @@ public class DNSTLSProxy extends DNSProxy{
     private final HashMap<String, DNSTLSConfiguration> upstreamConfig = new HashMap<>();
 
     public DNSTLSProxy(VpnService context, ParcelFileDescriptor parcelFileDescriptor,
-                       Set<IPPortPair> upstreamDNSServers, @Nullable DNSTLSConfiguration tlsConfiguration, boolean resolveLocalRules, boolean queryLogging, int timeout){
+                       Set<IPPortPair> upstreamDNSServers, boolean resolveLocalRules, boolean queryLogging, int timeout){
         LogFactory.writeMessage(context, LOG_TAG, "Creating the proxy...");
         if(parcelFileDescriptor == null)throw new IllegalStateException("The ParcelFileDescriptor passed to DNSUDPProxy is null.");
         if(context == null)throw new IllegalStateException("The DNSVPNService passed to DNSTCPProxy is null.");
@@ -106,7 +109,7 @@ public class DNSTLSProxy extends DNSProxy{
             }
             upstreamConfig.put(pair.getAddress(), config);
         }
-        LogFactory.writeMessage(context, LOG_TAG, "Upstream servers parsed to: " + this.upstreamServers);
+        LogFactory.writeMessage(context, LOG_TAG, "Upstream servers parsed to: " + this.upstreamConfig);
         this.resolveLocalRules = resolveLocalRules;
         this.queryLogging = queryLogging;
         if(queryLogging) {
@@ -200,7 +203,7 @@ public class DNSTLSProxy extends DNSProxy{
             return; //Packet from device isn't IP kind and thus is discarded
         }
         InetAddress destination = packet.getHeader().getDstAddr();
-        if(destination == null || !upstreamServers.containsKey(destination.getHostAddress()))return;
+        if(destination == null || !upstreamConfig.containsKey(destination.getHostAddress()))return;
         if(destination.getHostAddress().equals(IPV4_LOOPBACK_REPLACEMENT))destination = LOOPBACK_IPV4;
         else if(destination.getHostAddress().equals(IPV6_LOOPBACK_REPLACEMENT))destination = LOOPBACK_IPV6;
         UdpPacket udpPacket = (UdpPacket)packet.getPayload();
@@ -303,16 +306,19 @@ public class DNSTLSProxy extends DNSProxy{
 
     @NonNull
     private Socket establishConnection(String host) throws IOException {
+        System.out.println("EStablishing connection to " + host);
         Socket socket = null;
         if(!upstreamServers.containsKey(host) || (socket = upstreamServers.get(host)) == null || socket.isClosed()){
             if(socket != null) closeSocket(socket);
         } else if(upstreamServers.containsKey(host)) {
             return socket;
         }
-        SSLSocketFactory ssf = (SSLSocketFactory) SSLSocketFactory.getDefault();
         DNSTLSConfiguration configuration = upstreamConfig.get(host);
-        socket = ssf.createSocket(host, configuration.getPort());
+        System.out.println("Creating socket to " + host + ":" + configuration.getPort());
+        socket = getSocketFactory().createSocket(host, 53);
+        System.out.println("Socket create");
         SSLSession session = ((SSLSocket) socket).getSession();
+        System.out.println("Got session");
         Certificate[] cchain = session.getPeerCertificates();
         System.out.println("The Certificates used by peer");
         for (int i = 0; i < cchain.length; i++) {
@@ -321,6 +327,17 @@ public class DNSTLSProxy extends DNSProxy{
         vpnService.protect(socket); //The sent packets shouldn't be handled by this class
         upstreamServers.put(host, socket);
         return socket;
+    }
+
+    private SSLSocketFactory getSocketFactory(){
+        try {
+            return new TLSSocketFactory();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return (SSLSocketFactory) SSLSocketFactory.getDefault();
     }
 
     @Override

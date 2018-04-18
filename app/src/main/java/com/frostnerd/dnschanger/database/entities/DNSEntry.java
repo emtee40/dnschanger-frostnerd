@@ -14,6 +14,7 @@ import com.frostnerd.utils.database.orm.annotations.Serialized;
 import com.frostnerd.utils.database.orm.annotations.Table;
 import com.frostnerd.utils.database.orm.annotations.Unique;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeMap;
@@ -64,7 +65,7 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
     private long ID;
 
     public static final TreeMap<DNSEntry, Integer> defaultDNSEntries = new TreeMap<>();
-    public static final TreeMap<DNSTLSConfiguration, Integer> defaultTLSConfig = new TreeMap<>();
+    public static final HashMap<DNSTLSConfiguration, Integer> defaultTLSConfig = new HashMap<>();
     static {
         defaultDNSEntries.put(DNSEntry.constructSimple("Google", "Google", "8.8.8.8",
                 "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844", "",false), 0);
@@ -118,7 +119,7 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
 
 
         DNSEntry cloudflare = findDefaultEntryByLongName("Cloudflare");
-        DNSTLSConfiguration cloudflareConfig = new DNSTLSConfiguration(853, cloudflare.getServers(), "cloudflare-dns.com");
+        DNSTLSConfiguration cloudflareConfig = new DNSTLSConfiguration(853, new HashSet<>(cloudflare.getServers()), "cloudflare-dns.com");
         defaultTLSConfig.put(cloudflareConfig, 4);
     }
 

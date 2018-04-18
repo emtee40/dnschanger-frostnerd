@@ -43,6 +43,13 @@
             android:key="tcp_timeout"
             android:summary="@string/summary_tcp_timeout"
             android:title="@string/title_tcp_timeout" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="advanced_settings"
+            android:key="dns_over_tls"
+            android:summary="DNS over TLS"
+            android:title="DNS over TLS" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/title_query_logging">

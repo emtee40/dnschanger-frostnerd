@@ -65,6 +65,7 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
     @Override
     public void onAfterCreate(SQLiteDatabase db) {
         getSQLHandler(DNSEntry.class).insert(this, DNSEntry.defaultDNSEntries.keySet());
+        getSQLHandler(DNSTLSConfiguration.class).insert(this, DNSEntry.defaultTLSConfig.keySet());
     }
 
     @Override

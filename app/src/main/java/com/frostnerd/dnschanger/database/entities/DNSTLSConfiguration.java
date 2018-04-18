@@ -37,13 +37,13 @@ public class DNSTLSConfiguration extends MultitonEntity {
     private String hostName;
     @Serialized(scope = Serialized.Scope.INNER, using = IPPortSerializer.class)
     @NonNull
-    private Set<IPPortPair> affectedServers;
+    private HashSet<IPPortPair> affectedServers;
 
-    public DNSTLSConfiguration(int port, @NonNull Set<IPPortPair> affectedServers) {
+    public DNSTLSConfiguration(int port, @NonNull HashSet<IPPortPair> affectedServers) {
         this(port, affectedServers, null);
     }
 
-    public DNSTLSConfiguration(int port, @NonNull Set<IPPortPair> affectedServers, @Nullable String hostName) {
+    public DNSTLSConfiguration(int port, @NonNull HashSet<IPPortPair> affectedServers, @Nullable String hostName) {
         this.port = port;
         this.hostName = hostName;
         this.affectedServers = affectedServers;
@@ -64,5 +64,15 @@ public class DNSTLSConfiguration extends MultitonEntity {
     @NonNull
     public Set<IPPortPair> getAffectedServers() {
         return affectedServers;
+    }
+
+    @Override
+    public String toString() {
+        return "DNSTLSConfiguration{" +
+                "ID=" + ID +
+                ", port=" + port +
+                ", hostName='" + hostName + '\'' +
+                ", affectedServers=" + affectedServers +
+                '}';
     }
 }

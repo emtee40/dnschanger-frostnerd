@@ -74,7 +74,8 @@ public class PreferencesAccessor {
         return areCustomPortsEnabled(context) ||
                 areRulesEnabled(context) ||
                 isQueryLoggingEnabled(context) ||
-                sendDNSOverTCP(context) || isLoopbackAllowed(context);
+                sendDNSOverTCP(context) || isLoopbackAllowed(context) ||
+                sendDNSOverTLS(context);
     }
 
     public static boolean areCustomPortsEnabled(@NonNull Context context){
@@ -108,6 +109,11 @@ public class PreferencesAccessor {
     public static boolean sendDNSOverTCP(@NonNull Context context){
         return isAdvancedModeEnabled(context) &&
                 Preferences.getInstance(context).getBoolean(  "dns_over_tcp", false);
+    }
+
+    public static boolean sendDNSOverTLS(@NonNull Context context){
+        return isAdvancedModeEnabled(context) &&
+                Preferences.getInstance(context).getBoolean(  "dns_over_tls", false);
     }
 
     public static int getTCPTimeout(@NonNull Context context){

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.SwitchPreference;
 import android.support.annotation.NonNull;
@@ -85,6 +86,26 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
         });
+        final CheckBoxPreference tls = (CheckBoxPreference) findPreference("dns_over_tcp"),
+                tcp = (CheckBoxPreference) findPreference("dns_over_tcp");
+        tls.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                boolean val = (boolean)newValue;
+                tcp.setEnabled(!val);
+                return preferenceChangeListener.onPreferenceChange(preference, newValue);
+            }
+        });
+        tcp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                boolean val = (boolean)newValue;
+                tls.setEnabled(!val);
+                return preferenceChangeListener.onPreferenceChange(preference, newValue);
+            }
+        });
+        tcp.setEnabled(!tls.isChecked() && tcp.isEnabled());
+        tls.setEnabled(!tcp.isChecked() && tls.isEnabled());
     }
 
     @Override

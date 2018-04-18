@@ -8,6 +8,7 @@ import android.system.ErrnoException;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ import java.util.Set;
  */
 public abstract class DNSProxy {
     private static final String LOG_TAG = "[DNSPROXY]";
-    public static final String IPV4_LOOPBACK_REPLACEMENT = "1.1.1.1",
+    public static final String IPV4_LOOPBACK_REPLACEMENT = "1.0.0.0",
     IPV6_LOOPBACK_REPLACEMENT = "fdce:b45b:8dd7:6e47:1:2:3:4";
     static InetAddress LOOPBACK_IPV4, LOOPBACK_IPV6;
     static{
@@ -46,11 +47,15 @@ public abstract class DNSProxy {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static DNSProxy createProxy(VpnService context, ParcelFileDescriptor parcelFileDescriptor,
-                                       Set<IPPortPair> upstreamDNSServers, boolean resolveLocalRules, boolean queryLogging, boolean tcp) {
+                                       Set<IPPortPair> upstreamDNSServers, boolean resolveLocalRules, boolean queryLogging) {
         LogFactory.writeMessage(context, LOG_TAG, "Creating a proxy with upstreamservers: " + upstreamDNSServers + " and file descriptor: " + parcelFileDescriptor);
-        if (tcp) {
+        if (PreferencesAccessor.sendDNSOverTCP(context)) {
             LogFactory.writeMessage(context, LOG_TAG, "Creating a TCP proxy");
             return new DNSTCPProxy(context, parcelFileDescriptor, upstreamDNSServers,
+                    resolveLocalRules, queryLogging, PreferencesAccessor.getTCPTimeout(context));
+        } else if(PreferencesAccessor.sendDNSOverTLS(context)){
+            LogFactory.writeMessage(context, LOG_TAG, "Creating a TLS proxy");
+            return new DNSTLSProxy(context, parcelFileDescriptor, upstreamDNSServers,
                     resolveLocalRules, queryLogging, PreferencesAccessor.getTCPTimeout(context));
         } else {
             LogFactory.writeMessage(context, LOG_TAG, "Creating an UDP proxy");
