@@ -22,6 +22,7 @@ import com.frostnerd.utils.general.Utils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -118,11 +119,6 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
             for(Shortcut shortcut: shortcuts) createShortcut(shortcut);
         }else if(oldVersion <= 3) {
             getSQLHandler(DNSTLSConfiguration.class).createTable(db);
-            AlterTableBuilder builder = new AlterTableBuilder(getTableName(DNSEntry.class));
-            findColumn(DNSEntry.class, "tlsconfig").createColumnStructure(builder);
-            for(String s: builder.getStatements()){
-                db.execSQL(s);
-            }
         }
     }
 
@@ -139,10 +135,14 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
     @Override
     public void onAfterUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         int version;
-        for(DNSEntry entry: DNSEntry.defaultDNSEntries.keySet()){
-            version = DNSEntry.defaultDNSEntries.get(entry);
-            if(getCount(DNSEntry.class, WhereCondition.equal("name", entry.getName())) == 0)
-                if(version > oldVersion && version <= newVersion)insert(entry);
+        for(Map.Entry<DNSEntry, Integer> entry: DNSEntry.defaultDNSEntries.entrySet()){
+            version = entry.getValue();
+            if(getCount(DNSEntry.class, WhereCondition.equal("name", entry.getKey().getName())) == 0)
+                if(version > oldVersion && version <= newVersion)insert(entry.getKey());
+        }
+        for(Map.Entry<DNSTLSConfiguration, Integer> configuration: DNSEntry.defaultTLSConfig.entrySet()){
+            version = configuration.getValue();
+            if(version > oldVersion && version <= newVersion)insert(configuration.getKey());
         }
     }
 
@@ -217,6 +217,46 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
                 WhereCondition.like(parsedEntity.getTable().findColumn("dns2"), address).nextOr(),
                 WhereCondition.like(parsedEntity.getTable().findColumn("dns1v6"), address).nextOr(),
                 WhereCondition.like(parsedEntity.getTable().findColumn("dns2v6"), address));
+    }
+
+    @NonNull
+    public Set<DNSEntry> findMatchingDNSEntries(@NonNull String dnsServer) {
+        String address = "%" + dnsServer + "%";
+        if (address.equals("%%")) return new HashSet<>();
+        ParsedEntity<DNSEntry> parsedEntity = getSQLHandler(DNSEntry.class);
+        return new HashSet<>(parsedEntity.select(this, false, WhereCondition.like(parsedEntity.getTable().findColumn("dns1"), address).nextOr(),
+                WhereCondition.like(parsedEntity.getTable().findColumn("dns2"), address).nextOr(),
+                WhereCondition.like(parsedEntity.getTable().findColumn("dns1v6"), address).nextOr(),
+                WhereCondition.like(parsedEntity.getTable().findColumn("dns2v6"), address)));
+    }
+
+    @Nullable
+    public DNSTLSConfiguration findTLSConfiguration(@NonNull DNSEntry entry){
+        DNSTLSConfiguration best = null;
+        int maxHits = 0;
+        for(DNSTLSConfiguration configuration: getAll(DNSTLSConfiguration.class)){
+            for(IPPortPair pair: entry.getServers()) {
+                int hits = 0;
+                for(IPPortPair ip: configuration.getAffectedServers()) {
+                    if(pair.getAddress().equalsIgnoreCase(ip.getAddress())) hits++;
+                }
+                if(hits > maxHits) {
+                    maxHits = hits;
+                    best = configuration;
+                }
+            }
+        }
+        return best;
+    }
+
+    @Nullable
+    public DNSTLSConfiguration findTLSConfiguration(@NonNull IPPortPair pair){
+        for(DNSTLSConfiguration configuration: getAll(DNSTLSConfiguration.class)){
+            for(IPPortPair ip: configuration.getAffectedServers()) {
+                if(ip.getAddress().equalsIgnoreCase(pair.getAddress())) return configuration;
+            }
+        }
+        return null;
     }
 
     @Override

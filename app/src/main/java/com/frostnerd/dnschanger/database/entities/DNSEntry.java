@@ -1,11 +1,12 @@
 package com.frostnerd.dnschanger.database.entities;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.serializers.IPPortSerializer;
 import com.frostnerd.utils.database.orm.MultitonEntity;
-import com.frostnerd.utils.database.orm.annotations.Default;
 import com.frostnerd.utils.database.orm.annotations.Named;
 import com.frostnerd.utils.database.orm.annotations.NotNull;
 import com.frostnerd.utils.database.orm.annotations.RowID;
@@ -13,6 +14,8 @@ import com.frostnerd.utils.database.orm.annotations.Serialized;
 import com.frostnerd.utils.database.orm.annotations.Table;
 import com.frostnerd.utils.database.orm.annotations.Unique;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.TreeMap;
 
 @Table(name = "DNSEntry")
@@ -56,15 +59,12 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
     @Named(name = "customentry")
     private boolean customEntry;
 
-    @Nullable
-    @Named(name = "tlsconfig")
-    private DNSTLSConfiguration dnsTLSConfiguration;
-
     @Named(name = "id")
     @RowID
     private long ID;
 
     public static final TreeMap<DNSEntry, Integer> defaultDNSEntries = new TreeMap<>();
+    public static final TreeMap<DNSTLSConfiguration, Integer> defaultTLSConfig = new TreeMap<>();
     static {
         defaultDNSEntries.put(DNSEntry.constructSimple("Google", "Google", "8.8.8.8",
                 "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844", "",false), 0);
@@ -115,6 +115,11 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
         defaultDNSEntries.put(DNSEntry.constructSimple("CleanBrowsing Adult Filter", "CleanBrowsing",
                 "185.228.168.10", "185.228.168.11", "2a0d:2a00:1::1", "2a0d:2a00:2::1",
                 "Blocks access to all adult sites. Sites like Reddit are allowed. Google and Bing are set to the Safe Mode.", false), 3);
+
+
+        DNSEntry cloudflare = findDefaultEntryByLongName("Cloudflare");
+        DNSTLSConfiguration cloudflareConfig = new DNSTLSConfiguration(853, cloudflare.getServers(), "cloudflare-dns.com");
+        defaultTLSConfig.put(cloudflareConfig, 4);
     }
 
     public DNSEntry(@NonNull String name, @NonNull String shortName, @NonNull IPPortPair dns1, @Nullable IPPortPair dns2,
@@ -223,17 +228,23 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
         return !(ip == null || ip.equals("")) && (entryAddressMatches(ip, dns1) || entryAddressMatches(ip, dns2) || entryAddressMatches(ip, dns1V6) || entryAddressMatches(ip, dns2V6));
     }
 
-    public boolean supportsDNSOverTLS(){
-        return dnsTLSConfiguration != null;
+    public boolean supportsDNSOverTLS(Context context){
+        return DatabaseHelper.getInstance(context).findTLSConfiguration(this) != null;
     }
 
-    @Nullable
-    public DNSTLSConfiguration getDnsTLSConfiguration() {
-        return dnsTLSConfiguration;
+    private boolean entryAddressMatches(@Nullable String ip, @Nullable IPPortPair pair){
+        return ip != null && pair != null && ip.equals(pair.getAddress());
     }
 
-    public void setDnsTLSConfiguration(@Nullable DNSTLSConfiguration dnsTLSConfiguration) {
-        this.dnsTLSConfiguration = dnsTLSConfiguration;
+    public Set<IPPortPair> getServers(){
+        Set<IPPortPair> servers = new HashSet<>();
+        servers.add(dns1);
+        servers.add(dns1V6);
+        if(dns2 != null && dns2 != IPPortPair.getEmptyPair() && dns2 != IPPortPair.INVALID)
+            servers.add(dns2);
+        if(dns2V6 != null && dns2V6 != IPPortPair.getEmptyPair() && dns2V6 != IPPortPair.INVALID)
+            servers.add(dns2V6);
+        return servers;
     }
 
     @Override
@@ -249,9 +260,5 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
                 ", customEntry=" + customEntry +
                 ", ID=" + ID +
                 '}';
-    }
-
-    private boolean entryAddressMatches(@Nullable String ip, @Nullable IPPortPair pair){
-        return ip != null && pair != null && ip.equals(pair.getAddress());
     }
 }

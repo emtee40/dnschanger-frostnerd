@@ -1,9 +1,17 @@
 package com.frostnerd.dnschanger.database.entities;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import com.frostnerd.dnschanger.database.serializers.IPPortSerializer;
 import com.frostnerd.utils.database.orm.MultitonEntity;
 import com.frostnerd.utils.database.orm.annotations.Named;
 import com.frostnerd.utils.database.orm.annotations.RowID;
+import com.frostnerd.utils.database.orm.annotations.Serialized;
 import com.frostnerd.utils.database.orm.annotations.Table;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import lombok.NoArgsConstructor;
 
@@ -25,11 +33,20 @@ public class DNSTLSConfiguration extends MultitonEntity {
     @Named(name = "port")
     private int port;
     @Named(name = "host")
+    @Nullable
     private String hostName;
+    @Serialized(scope = Serialized.Scope.INNER, using = IPPortSerializer.class)
+    @NonNull
+    private Set<IPPortPair> affectedServers;
 
-    public DNSTLSConfiguration(int port, String hostName) {
+    public DNSTLSConfiguration(int port, @NonNull Set<IPPortPair> affectedServers) {
+        this(port, affectedServers, null);
+    }
+
+    public DNSTLSConfiguration(int port, @NonNull Set<IPPortPair> affectedServers, @Nullable String hostName) {
         this.port = port;
         this.hostName = hostName;
+        this.affectedServers = affectedServers;
     }
 
     public int getPort() {
@@ -42,5 +59,10 @@ public class DNSTLSConfiguration extends MultitonEntity {
 
     public String getHostName() {
         return hostName;
+    }
+
+    @NonNull
+    public Set<IPPortPair> getAffectedServers() {
+        return affectedServers;
     }
 }
