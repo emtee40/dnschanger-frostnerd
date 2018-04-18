@@ -214,7 +214,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
 
     @Override
     protected Configuration getConfiguration() {
-        return Configuration.withDefaults().setDismissFragmentsOnPause(!importingRules);
+        return Configuration.withDefaults().setDismissFragmentsOnPause(false);
     }
 
     @Override
