@@ -1,7 +1,6 @@
 package com.frostnerd.dnschanger.database;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,11 +9,13 @@ import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
 import com.frostnerd.dnschanger.database.entities.DNSRule;
 import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
+import com.frostnerd.dnschanger.database.entities.DNSTLSConfiguration;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.database.entities.Shortcut;
 import com.frostnerd.utils.database.CursorWithDefaults;
 import com.frostnerd.utils.database.orm.Entity;
 import com.frostnerd.utils.database.orm.parser.ParsedEntity;
+import com.frostnerd.utils.database.orm.parser.statementbuilder.tablemodification.AlterTableBuilder;
 import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
 import com.frostnerd.utils.general.Utils;
 
@@ -31,7 +32,7 @@ import java.util.Set;
  */
 public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper {
     public static final String DATABASE_NAME = "data";
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     @NonNull
     public static final Set<Class<? extends Entity>> entities = new HashSet<Class<? extends Entity>>(){{
         add(DNSEntry.class);
@@ -40,6 +41,7 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
         add(DNSRuleImport.class);
         add(IPPortPair.class);
         add(Shortcut.class);
+        add(DNSTLSConfiguration.class);
     }};
     @Nullable
     private static DatabaseHelper instance;
@@ -71,6 +73,7 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
 
     @Override
     public void onBeforeUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        System.out.println("Updating from " + oldVersion + " to " + newVersion);
         if(oldVersion <= 1){
             List<Shortcut> shortcuts = new ArrayList<>();
             List<DNSEntry> entries = new ArrayList<>();
@@ -113,6 +116,13 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
             onCreate(db);
             for(DNSEntry entry: entries) insert(entry);
             for(Shortcut shortcut: shortcuts) createShortcut(shortcut);
+        }else if(oldVersion <= 3) {
+            getSQLHandler(DNSTLSConfiguration.class).createTable(db);
+            AlterTableBuilder builder = new AlterTableBuilder(getTableName(DNSEntry.class));
+            findColumn(DNSEntry.class, "tlsconfig").createColumnStructure(builder);
+            for(String s: builder.getStatements()){
+                db.execSQL(s);
+            }
         }
     }
 

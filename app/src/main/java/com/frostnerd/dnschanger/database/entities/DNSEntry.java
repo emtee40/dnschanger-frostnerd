@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.frostnerd.dnschanger.database.serializers.IPPortSerializer;
 import com.frostnerd.utils.database.orm.MultitonEntity;
+import com.frostnerd.utils.database.orm.annotations.Default;
 import com.frostnerd.utils.database.orm.annotations.Named;
 import com.frostnerd.utils.database.orm.annotations.NotNull;
 import com.frostnerd.utils.database.orm.annotations.RowID;
@@ -54,6 +55,10 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
 
     @Named(name = "customentry")
     private boolean customEntry;
+
+    @Nullable
+    @Named(name = "tlsconfig")
+    private DNSTLSConfiguration dnsTLSConfiguration;
 
     @Named(name = "id")
     @RowID
@@ -216,6 +221,19 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
 
     public boolean hasIP(String ip) {
         return !(ip == null || ip.equals("")) && (entryAddressMatches(ip, dns1) || entryAddressMatches(ip, dns2) || entryAddressMatches(ip, dns1V6) || entryAddressMatches(ip, dns2V6));
+    }
+
+    public boolean supportsDNSOverTLS(){
+        return dnsTLSConfiguration != null;
+    }
+
+    @Nullable
+    public DNSTLSConfiguration getDnsTLSConfiguration() {
+        return dnsTLSConfiguration;
+    }
+
+    public void setDnsTLSConfiguration(@Nullable DNSTLSConfiguration dnsTLSConfiguration) {
+        this.dnsTLSConfiguration = dnsTLSConfiguration;
     }
 
     @Override
