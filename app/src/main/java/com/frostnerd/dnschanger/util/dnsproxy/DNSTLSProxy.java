@@ -20,12 +20,15 @@ import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.threading.VPNRunnable;
 import com.frostnerd.dnschanger.util.TLSSocketFactory;
 
+import org.pcap4j.packet.IllegalRawDataException;
 import org.pcap4j.packet.IpPacket;
 import org.pcap4j.packet.IpSelector;
 import org.pcap4j.packet.IpV4Packet;
 import org.pcap4j.packet.IpV6Packet;
 import org.pcap4j.packet.UdpPacket;
 import org.pcap4j.packet.UnknownPacket;
+import org.pcap4j.packet.namednumber.IpVersion;
+import org.pcap4j.util.ByteArrays;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -39,24 +42,13 @@ import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
-import java.nio.channels.SocketChannel;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.Certificate;
-import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
 
 import de.measite.minidns.DNSMessage;
 import de.measite.minidns.Record;
@@ -83,14 +75,10 @@ public class DNSTLSProxy extends DNSProxy{
     private FileDescriptor blockingDescriptor = null;
     private ParcelFileDescriptor parcelFileDescriptor;
     private boolean shouldRun = true, resolveLocalRules, queryLogging;
-    private final LinkedList<byte[]> writeToDevice = new LinkedList<>();
-    private final static int MAX_WAITING_SOCKETS = 1000, SOCKET_TIMEOUT_MS = 10000, INSERT_CLEANUP_COUNT = 50;
     private DNSResolver resolver;
     private QueryLogger queryLogger;
     private VpnService vpnService;
-    private final int timeout;
-    private final Map<String, Socket> upstreamServers = new HashMap<>();
-    private final Map<String, DNSTLSConfiguration> upstreamConfig = new HashMap<>();
+    private DNSTLSUtil tlsUtil;
 
     public DNSTLSProxy(VpnService context, ParcelFileDescriptor parcelFileDescriptor,
                        Set<IPPortPair> upstreamDNSServers, boolean resolveLocalRules, boolean queryLogging, int timeout){
@@ -101,6 +89,7 @@ public class DNSTLSProxy extends DNSProxy{
         this.vpnService = context;
         LogFactory.writeMessage(context, LOG_TAG, "Parsing the upstream servers...");
         DNSTLSConfiguration config;
+        Map<String, DNSTLSConfiguration> upstreamConfig = new LinkedHashMap<>();
         for(IPPortPair pair: upstreamDNSServers){
             config = DatabaseHelper.getInstance(context).findTLSConfiguration(pair);
             if(config == null){
@@ -109,7 +98,7 @@ public class DNSTLSProxy extends DNSProxy{
             }
             upstreamConfig.put(pair.getAddress(), config);
         }
-        LogFactory.writeMessage(context, LOG_TAG, "Upstream servers parsed to: " + this.upstreamConfig);
+        LogFactory.writeMessage(context, LOG_TAG, "Upstream servers parsed to: " + upstreamConfig);
         this.resolveLocalRules = resolveLocalRules;
         this.queryLogging = queryLogging;
         if(queryLogging) {
@@ -121,7 +110,7 @@ public class DNSTLSProxy extends DNSProxy{
             LogFactory.writeMessage(context, LOG_TAG, "Created the rule resolver.");
         }
         LogFactory.writeMessage(context, LOG_TAG, "Created the proxy.");
-        this.timeout = timeout;
+        this.tlsUtil = new DNSTLSUtil(vpnService, upstreamConfig);
     }
 
     @Override
@@ -146,32 +135,17 @@ public class DNSTLSProxy extends DNSProxy{
             StructPollfd blockFd = new StructPollfd();
             blockFd.fd = blockingDescriptor;
             blockFd.events = (short) (OsConstants.POLLHUP | OsConstants.POLLERR);
-            if(!writeToDevice.isEmpty())structFd.events = (short) (structFd.events | OsConstants.POLLOUT);
 
-            StructPollfd[] polls = new StructPollfd[2 + upstreamServers.size()];
+            StructPollfd[] polls = new StructPollfd[2];
             polls[0] = structFd;
             polls[1] = blockFd;
-            int index = 0;
-            if(shouldRun){
-                for(Socket socket: upstreamServers.values()){
-                    StructPollfd pollingFd = polls[2 + index++] = new StructPollfd();
-                    pollingFd.fd = ParcelFileDescriptor.fromSocket(socket).getFileDescriptor();
-                    pollingFd.events = (short)OsConstants.POLLIN;
-                }
-                poll(polls, 5000);
-            }
+            poll(polls, 5000);
             if(blockFd.revents != 0){
                 shouldRun = false;
                 break;
             }
-
-            index = 0;
-            for(Socket s: upstreamServers.values()){
-                if((polls[2 + index++].revents & OsConstants.POLLIN) != 0){
-                    //TODO Read packet from socket
-                }
-            }
-            if(shouldRun && (structFd.revents & OsConstants.POLLOUT) != 0)outputStream.write(writeToDevice.poll());
+            tlsUtil.pollSockets(5);
+            if(shouldRun && tlsUtil.canPollResponsedata())outputStream.write(tlsUtil.pollResponseData());
             if(shouldRun && (structFd.revents & OsConstants.POLLIN) != 0)handleDeviceDNSPacket(inputStream, packet);
         }
     }
@@ -203,11 +177,11 @@ public class DNSTLSProxy extends DNSProxy{
             return; //Packet from device isn't IP kind and thus is discarded
         }
         InetAddress destination = VPNRunnable.addressRemap.get(packet.getHeader().getDstAddr().getHostAddress());
-        if(destination == null || !upstreamConfig.containsKey(destination.getHostAddress()))return;
+        if(destination == null)return;
         UdpPacket udpPacket = (UdpPacket)packet.getPayload();
         if(udpPacket.getPayload() == null){
             DatagramPacket outPacket = new DatagramPacket(new byte[0], 0, 0, destination, 53);
-            sendPacketToUpstreamDNSServer(outPacket, null);
+            sendPacketToUpstreamDNSServer(outPacket, null, null);
         }else{
             byte[] payloadData = udpPacket.getPayload().getRawData();
             DNSMessage dnsMsg = new DNSMessage(payloadData);
@@ -223,124 +197,16 @@ public class DNSTLSProxy extends DNSProxy{
                     builder = dnsMsg.asBuilder().setQrFlag(true).addAnswer(
                             new Record<Data>(query, Record.TYPE.A, 1, 64, new AAAA(Inet6Address.getByName(target).getAddress())));
                 }
-                if(builder != null)handleUpstreamDNSResponse(packet, builder.build().toArray());
+                if(builder != null)tlsUtil.handleUpstreamDNSResponse(packet, builder.build().toArray());
             }else{
                 DatagramPacket outPacket = new DatagramPacket(payloadData, 0, payloadData.length, destination, 53);
-                sendPacketToUpstreamDNSServer(outPacket, packet);
+                sendPacketToUpstreamDNSServer(outPacket, packet, dnsMsg);
             }
         }
     }
 
-    private void sendPacketToUpstreamDNSServer(@NonNull DatagramPacket outgoingPacket, @Nullable IpPacket ipPacket){
-        try{
-            Socket socket = establishConnection(outgoingPacket.getAddress().getHostAddress());
-            outgoingPacket.setPort(upstreamConfig.get(outgoingPacket.getAddress().getHostAddress()).getPort());
-            socket.connect(outgoingPacket.getSocketAddress(),timeout);
-            byte[] data = ipPacket == null ? new byte[0] : outgoingPacket.getData();
-            DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
-            outputStream.writeShort(data.length);
-            outputStream.write(data);
-            outputStream.flush();
-            /*if(ipPacket != null)futureSocketAnswers.put(socket, new PacketWrap(ipPacket));
-            else{
-                outputStream.close(); //Closes the associated socket
-            }*/ //TODO
-        }catch(IOException exception){
-            if(!(exception instanceof SocketTimeoutException) && ipPacket != null){
-                handleUpstreamDNSResponse(ipPacket, outgoingPacket.getData());
-            }
-        }
-    }
-
-    private void handleRawUpstreamDNSResponse(@NonNull Socket dnsSocket, @NonNull IpPacket parsedPacket){
-        try {
-            DataInputStream inputStream = new DataInputStream(dnsSocket.getInputStream());
-            byte[] data = new byte[inputStream.readUnsignedShort()];
-            inputStream.read(data);
-            handleUpstreamDNSResponse(parsedPacket, data);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void handleUpstreamDNSResponse(@NonNull IpPacket packet, @NonNull byte[] payloadData){
-        UdpPacket dnsPacket = (UdpPacket) packet.getPayload();
-        UdpPacket.Builder dnsPayloadBuilder = new UdpPacket.Builder(dnsPacket)
-                .srcPort(dnsPacket.getHeader().getDstPort())
-                .dstPort(dnsPacket.getHeader().getSrcPort())
-                .srcAddr(packet.getHeader().getDstAddr())
-                .dstAddr(packet.getHeader().getSrcAddr())
-                .correctChecksumAtBuild(true)
-                .correctLengthAtBuild(true)
-                .payloadBuilder(
-                        new UnknownPacket.Builder().rawData(payloadData)
-                );
-
-        if(packet instanceof IpV4Packet){
-            packet = new IpV4Packet.Builder((IpV4Packet)packet)
-                    .srcAddr((Inet4Address)packet.getHeader().getDstAddr())
-                    .dstAddr((Inet4Address) packet.getHeader().getSrcAddr())
-                    .correctChecksumAtBuild(true)
-                    .correctLengthAtBuild(true)
-                    .payloadBuilder(dnsPayloadBuilder)
-                    .build();
-        }else{
-            packet = new IpV6Packet.Builder((IpV6Packet)packet)
-                    .srcAddr((Inet6Address)packet.getHeader().getDstAddr())
-                    .dstAddr((Inet6Address) packet.getHeader().getSrcAddr())
-                    .correctLengthAtBuild(true)
-                    .payloadBuilder(dnsPayloadBuilder)
-                    .build();
-        }
-
-        writeToDevice.add(packet.getRawData());
-    }
-
-    private void closeSocket(@NonNull Socket socket){
-        try {
-            socket.close();
-        } catch (IOException ignored) {}
-    }
-
-    @NonNull
-    private Socket establishConnection(String host) throws IOException {
-        try{
-            System.out.println("EStablishing connection to " + host);
-            Socket socket = null;
-            if(!upstreamServers.containsKey(host) || (socket = upstreamServers.get(host)) == null || socket.isClosed()){
-                if(socket != null) closeSocket(socket);
-            } else if(upstreamServers.containsKey(host)) {
-                return socket;
-            }
-            DNSTLSConfiguration configuration = upstreamConfig.get(host);
-            System.out.println("Creating socket to " + host + ":" + configuration.getPort());
-            socket = getSocketFactory().createSocket(host, configuration.getPort());
-            System.out.println("Socket create");
-            SSLSession session = ((SSLSocket) socket).getSession();
-            System.out.println("Got session");
-            Certificate[] cchain = session.getPeerCertificates();
-            System.out.println("The Certificates used by peer");
-            for (int i = 0; i < cchain.length; i++) {
-                System.out.println(((X509Certificate) cchain[i]).getSubjectDN());
-            }
-            vpnService.protect(socket); //The sent packets shouldn't be handled by this class
-            upstreamServers.put(host, socket);
-            return socket;
-        } catch (Exception e) {
-            e.printStackTrace(); //TODO remove
-        }
-        return null;
-    }
-
-    private SSLSocketFactory getSocketFactory(){
-        try {
-            return new TLSSocketFactory();
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return (SSLSocketFactory) SSLSocketFactory.getDefault();
+    private void sendPacketToUpstreamDNSServer(@NonNull DatagramPacket outgoingPacket, @Nullable IpPacket ipPacket, @Nullable DNSMessage dnsMessage){
+        tlsUtil.sendPacket(outgoingPacket, ipPacket, dnsMessage);
     }
 
     @Override
@@ -354,14 +220,6 @@ public class DNSTLSProxy extends DNSProxy{
         } catch (Exception ignored) {
             LogFactory.writeMessage(vpnService, LOG_TAG, "An error occurred when closing the descriptors: " + ignored.getMessage() + "(Cause: " + ignored.getCause() + ")");
         }
-        synchronized (upstreamServers) {
-            for (Map.Entry<String, Socket> entry : upstreamServers.entrySet()) {
-                closeSocket(entry.getValue());
-            }
-            upstreamServers.clear();
-        }
-        writeToDevice.clear();
-        upstreamConfig.clear();
         if(resolver != null) resolver.destroy();
         if(queryLogger != null) queryLogger.destroy();
         LogFactory.writeMessage(vpnService, LOG_TAG, "Everything was destructed.");
