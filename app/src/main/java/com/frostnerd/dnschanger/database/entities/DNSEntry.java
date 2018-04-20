@@ -121,6 +121,9 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
         DNSEntry cloudflare = findDefaultEntryByLongName("Cloudflare");
         DNSTLSConfiguration cloudflareConfig = new DNSTLSConfiguration(853, new HashSet<>(cloudflare.getServers()), "cloudflare-dns.com");
         defaultTLSConfig.put(cloudflareConfig, 4);
+        DNSEntry quad9 = findDefaultEntryByLongName("Quad9");
+        DNSTLSConfiguration quad9Config = new DNSTLSConfiguration(853, new HashSet<>(quad9.getServers()), "dns.quad9.net");
+        defaultTLSConfig.put(quad9Config, 4);
     }
 
     public DNSEntry(@NonNull String name, @NonNull String shortName, @NonNull IPPortPair dns1, @Nullable IPPortPair dns2,
