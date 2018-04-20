@@ -79,6 +79,7 @@ public class DNSTLSUtil {
     }
 
     public void pollSockets(int maxPacketCount) throws IOException {
+        System.out.println("Polling sockets..");
         try{
             outer: for(Socket socket: upstreamServers.values()) {
                 int count = 0;
@@ -136,8 +137,10 @@ public class DNSTLSUtil {
             Socket socket = establishConnection(outgoingPacket.getAddress().getHostAddress());
             outgoingPacket.setPort(upstreamConfig.get(outgoingPacket.getAddress().getHostAddress()).getPort());
             byte[] data = outgoingPacket.getData();
+            DNSMessage message = new DNSMessage(data);
             DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
             System.out.println("DATA LEN: " + data.length);
+            System.out.println("SENDING MSG: " + message);
             outputStream.writeShort(data.length);
             outputStream.write(data);
             outputStream.flush();
@@ -185,6 +188,7 @@ public class DNSTLSUtil {
     }
 
     private boolean certificateIsFor(String domain, X509Certificate certificate){
+        if(domain == null || domain.equals(""))return true;
         Pattern pattern = Pattern.compile("^(\\*\\.)?" + domain + "$");
         Matcher matcher = pattern.matcher("");
         if(matcher.reset(certificate.getSubjectDN().toString()).matches())return true;

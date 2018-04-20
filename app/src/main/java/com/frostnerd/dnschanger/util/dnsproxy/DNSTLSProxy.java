@@ -135,18 +135,29 @@ public class DNSTLSProxy extends DNSProxy{
             StructPollfd blockFd = new StructPollfd();
             blockFd.fd = blockingDescriptor;
             blockFd.events = (short) (OsConstants.POLLHUP | OsConstants.POLLERR);
+            if(tlsUtil.canPollResponsedata())structFd.events = (short) (structFd.events | OsConstants.POLLOUT);
 
             StructPollfd[] polls = new StructPollfd[2];
             polls[0] = structFd;
             polls[1] = blockFd;
+            tlsUtil.pollSockets(5);
+            System.out.println("polled sockets. Polling Polls");
             poll(polls, 5000);
+            System.out.println("Polled polls.");
             if(blockFd.revents != 0){
                 shouldRun = false;
+                System.out.println("Break.");
                 break;
             }
-            tlsUtil.pollSockets(5);
-            if(shouldRun && tlsUtil.canPollResponsedata())outputStream.write(tlsUtil.pollResponseData());
-            if(shouldRun && (structFd.revents & OsConstants.POLLIN) != 0)handleDeviceDNSPacket(inputStream, packet);
+            if(shouldRun && tlsUtil.canPollResponsedata()){
+                System.out.println("Writing to device");
+                outputStream.write(tlsUtil.pollResponseData());
+                outputStream.flush();
+            }
+            if(shouldRun && (structFd.revents & OsConstants.POLLIN) != 0){
+                System.out.println("Handling device packet");
+                handleDeviceDNSPacket(inputStream, packet);
+            }
         }
     }
 
@@ -206,11 +217,13 @@ public class DNSTLSProxy extends DNSProxy{
     }
 
     private void sendPacketToUpstreamDNSServer(@NonNull DatagramPacket outgoingPacket, @Nullable IpPacket ipPacket, @Nullable DNSMessage dnsMessage){
+        System.out.println("Sending to upstream");
         tlsUtil.sendPacket(outgoingPacket, ipPacket, dnsMessage);
     }
 
     @Override
     public void stop() {
+        System.out.println("Stop.");
         LogFactory.writeMessage(vpnService, LOG_TAG, "Stopping the proxy");
         shouldRun = false;
         try {
