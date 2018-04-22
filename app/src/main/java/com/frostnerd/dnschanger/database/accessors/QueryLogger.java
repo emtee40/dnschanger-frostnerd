@@ -28,7 +28,7 @@ public class QueryLogger {
     private final String insertStatement;
     private static Runnable newQueryLogged;
     private boolean logUpstreamAnswers;
-    private List<WaitingQuery> waitingQueries = new LinkedList<>();
+    private final List<WaitingQuery> waitingQueries = new LinkedList<>();
 
     public QueryLogger(DatabaseHelper databaseHelper, boolean logUpstreamAnswers){
         this.helper = databaseHelper;
@@ -44,16 +44,19 @@ public class QueryLogger {
         helper.getWritableDatabase().execSQL(insertStatement, new Object[]{dnsMessage.getQuestion().name, ipv6, System.currentTimeMillis()});
         if(newQueryLogged != null)newQueryLogged.run();
         if(logUpstreamAnswers){
-            waitingQueries.add(new WaitingQuery( helper.getLastRow(DNSQuery.class), dnsMessage.id));
+            WaitingQuery waitingQuery = new WaitingQuery(helper.getLastRow(DNSQuery.class), dnsMessage.id);
+            synchronized (waitingQueries){
+                waitingQueries.add(waitingQuery);
+            }
         }
     }
 
     public void logUpstreamAnswer(DNSMessage dnsMessage){
         if(!logUpstreamAnswers || dnsMessage.answerSection.size() == 0)return;
         WaitingQuery waitingQuery;
-        for(Iterator<WaitingQuery> iterator = waitingQueries.iterator(); iterator.hasNext();){
-            waitingQuery = iterator.next();
+        for (int i = 0; i < waitingQueries.size(); i++) {
             String answer = null;
+            waitingQuery = waitingQueries.get(i);
             if(waitingQuery.messageID == dnsMessage.id){
                 answer = getAnswer(dnsMessage);
             }else if(dnsMessage.getQuestion() != null && waitingQuery.query.getHost().equalsIgnoreCase(dnsMessage.getQuestion().name.ace)){
@@ -62,7 +65,9 @@ public class QueryLogger {
             if(answer != null) {
                 waitingQuery.query.setUpstreamAnswer(answer);
                 helper.update(waitingQuery.query);
-                iterator.remove();
+                synchronized (waitingQueries){
+                    waitingQueries.remove(i); //This is possible because we only add to the end of the list
+                }
                 break;
             }
         }
