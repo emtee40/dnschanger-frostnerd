@@ -1,6 +1,7 @@
 package com.frostnerd.dnschanger.util.dnsproxy;
 
 import android.net.VpnService;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -32,7 +33,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -69,52 +70,56 @@ import de.measite.minidns.Record;
  * https://tools.ietf.org/html/rfc7858
  */
 public class DNSTLSUtil {
-    private Map<String, Socket> upstreamServers = new LinkedHashMap<>();
-    private Map<Socket, DataInputStream> inputStreamMap = new HashMap<>();
-    private Map<String, DNSTLSConfiguration> upstreamConfig;
-    private LinkedHashMap<DNSMessage, IpPacket> waitingQuestions = new LinkedHashMap<>();
-    private LinkedList<byte[]> responseData = new LinkedList<>();
-    private List<PastAnswer> history = new ArrayList<>();
+    private final Map<String, Socket> upstreamServers = new LinkedHashMap<>();
+    private final Map<String, DNSTLSConfiguration> upstreamConfig;
+    private final LinkedHashMap<DNSMessage, IpPacket> waitingQuestions = new LinkedHashMap<>();
+    private final LinkedList<byte[]> responseData = new LinkedList<>();
+    private final List<PastAnswer> history = new ArrayList<>();
     private VpnService service;
     private QueryLogger queryLogger;
     private final static int MAX_HISTORY_COMPARISONS = 600;
+    private Handler handler;
+    private Runnable pollRunnable = new Runnable() {
+        @Override
+        public void run() {
+            try{
+                while(true){
+                    Set<Socket> sockets = new HashSet<>(upstreamServers.values());
+                    outer: for(Socket socket: sockets) {
+                        int count = 0;
+                        DNSMessage message;
+                        do{
+                            if((message = readDNSMessage(socket)) == null)continue outer;
+                            Map.Entry<DNSMessage, IpPacket> entry;
+                            synchronized (waitingQuestions) {
+                                for(Iterator<Map.Entry<DNSMessage, IpPacket>> iterator = waitingQuestions.entrySet().iterator(); iterator.hasNext();){
+                                    entry = iterator.next();
+                                    if(entry.getKey().id == message.id){
+                                        handleUpstreamDNSResponse(entry.getValue(), message.asDatagram(null, 1).getData());
+                                        history.add(new PastAnswer(message, message.getQuestion()));
+                                            iterator.remove();
+                                    }
+                                }
+                            }
+                        }while(count++ <= 5);
+                    }
+                    Thread.sleep(500);
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+        }
+    };
 
     public DNSTLSUtil(VpnService service, Map<String, DNSTLSConfiguration> upstreamConfig) {
         this.upstreamConfig = upstreamConfig;
         this.service = service;
+        new Thread(pollRunnable).start();
     }
 
     public void setQueryLogger(QueryLogger queryLogger) {
         this.queryLogger = queryLogger;
-    }
-
-    private Set<String> availableServers(){
-        return upstreamConfig.keySet();
-    }
-
-    public synchronized void pollSockets(int maxPacketCount) throws IOException {
-        try{
-            outer: for(Socket socket: upstreamServers.values()) {
-                int count = 0;
-                DNSMessage message;
-                do{
-                    if((message = readDNSMessage(socket)) == null)continue outer;
-                    System.out.println(message);
-                    Map.Entry<DNSMessage, IpPacket> entry;
-                    for(Iterator<Map.Entry<DNSMessage, IpPacket>> iterator = waitingQuestions.entrySet().iterator(); iterator.hasNext();){
-                        entry = iterator.next();
-                        if(entry.getKey().id == message.id){
-                            handleUpstreamDNSResponse(entry.getValue(), message.asDatagram(null, 1).getData());
-                            history.add(new PastAnswer(message, message.getQuestion()));
-                            iterator.remove();
-                        }
-                    }
-                }while(count++ <= maxPacketCount);
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-            throw e;
-        }
     }
 
     public boolean canPollResponsedata(){
@@ -122,11 +127,13 @@ public class DNSTLSUtil {
     }
 
     public byte[] pollResponseData(){
-        return responseData.poll();
+        synchronized (responseData){
+            return responseData.poll();
+        }
     }
 
     private DNSMessage readDNSMessage(Socket socket) throws IOException {
-        DataInputStream in = inputStreamMap.get(socket);
+        DataInputStream in = new DataInputStream(socket.getInputStream());
         byte[] lengthBytes = new byte[2];
         if(in.read(lengthBytes) <= 0)return null;
         int length = (lengthBytes[0]&0xFF) + (lengthBytes[1]&0xFF) << 8;
@@ -169,8 +176,8 @@ public class DNSTLSUtil {
         }
     }
 
-    int sendTries = 0;
-    public synchronized void sendPacket(@NonNull DatagramPacket outgoingPacket, @Nullable IpPacket packet, @Nullable DNSMessage dnsMessage) {
+    private int sendTries = 0;
+    public void sendPacket(@NonNull DatagramPacket outgoingPacket, @Nullable IpPacket packet, @Nullable DNSMessage dnsMessage) {
         Socket socket = null;
         String host = outgoingPacket.getAddress().getHostAddress();
         try {
@@ -189,7 +196,9 @@ public class DNSTLSUtil {
             outputStream.writeShort(data.length);
             outputStream.write(data);
             outputStream.flush();
-            waitingQuestions.put(dnsMessage, packet);
+            synchronized (waitingQuestions){
+                waitingQuestions.put(dnsMessage, packet);
+            }
             sendTries = 0;
         } catch(Exception exception) {
             if(exception instanceof SSLException){
@@ -210,15 +219,16 @@ public class DNSTLSUtil {
         if (upstreamServers.containsKey(host)) {
             return upstreamServers.get(host);
         }
-        DNSTLSConfiguration configuration = upstreamConfig.get(host);
-        Socket socket = getSocketFactory().createSocket(host, configuration.getPort());
-        socket.setKeepAlive(true);
-        socket.setTcpNoDelay(false);
-        checkCertificate(((SSLSocket) socket).getSession(), configuration);
-        service.protect(socket); //The sent packets shouldn't be handled by this class
-        upstreamServers.put(host, socket);
-        inputStreamMap.put(socket, new DataInputStream(socket.getInputStream()));
-        return socket;
+        synchronized (upstreamServers){
+            DNSTLSConfiguration configuration = upstreamConfig.get(host);
+            Socket socket = getSocketFactory().createSocket(host, configuration.getPort());
+            socket.setKeepAlive(true);
+            socket.setTcpNoDelay(false);
+            checkCertificate(((SSLSocket) socket).getSession(), configuration);
+            service.protect(socket); //The sent packets shouldn't be handled by this class
+            upstreamServers.put(host, socket);
+            return socket;
+        }
     }
 
     private void checkCertificate(@NonNull SSLSession session, @NonNull DNSTLSConfiguration tlsConfiguration) throws SSLPeerUnverifiedException,
@@ -271,7 +281,6 @@ public class DNSTLSUtil {
         try {
             socket.close();
         } catch (IOException ignored) {}
-        inputStreamMap.remove(socket);
     }
 
     public void handleUpstreamDNSResponse(@NonNull IpPacket packet, @NonNull byte[] payloadData){
@@ -303,7 +312,9 @@ public class DNSTLSUtil {
                     .payloadBuilder(dnsPayloadBuilder)
                     .build();
         }
-        responseData.add(packet.getRawData());
+        synchronized (responseData){
+            responseData.add(packet.getRawData());
+        }
         if(queryLogger != null && queryLogger.logUpstreamAnswers()){
             try {
                 queryLogger.logUpstreamAnswer(new DNSMessage(payloadData));

@@ -18,20 +18,9 @@ import com.frostnerd.dnschanger.database.accessors.QueryLogger;
 import com.frostnerd.dnschanger.database.entities.DNSTLSConfiguration;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.threading.VPNRunnable;
-import com.frostnerd.dnschanger.util.TLSSocketFactory;
-
-import org.pcap4j.packet.IllegalRawDataException;
 import org.pcap4j.packet.IpPacket;
 import org.pcap4j.packet.IpSelector;
-import org.pcap4j.packet.IpV4Packet;
-import org.pcap4j.packet.IpV6Packet;
 import org.pcap4j.packet.UdpPacket;
-import org.pcap4j.packet.UnknownPacket;
-import org.pcap4j.packet.namednumber.IpVersion;
-import org.pcap4j.util.ByteArrays;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -41,7 +30,6 @@ import java.net.DatagramPacket;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -141,7 +129,6 @@ public class DNSTLSProxy extends DNSProxy{
             StructPollfd[] polls = new StructPollfd[2];
             polls[0] = structFd;
             polls[1] = blockFd;
-            tlsUtil.pollSockets(5);
             poll(polls, 5000);
             if(blockFd.revents != 0){
                 shouldRun = false;
@@ -235,11 +222,5 @@ public class DNSTLSProxy extends DNSProxy{
         vpnService = null;
         queryLogger = null;
         interruptedDescriptor = blockingDescriptor = null;
-    }
-
-    private class UpstreamConfig {
-        private String server;
-        private DNSTLSConfiguration tlsConfig;
-        private Socket upstream;
     }
 }
