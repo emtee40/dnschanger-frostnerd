@@ -4,6 +4,7 @@ import android.net.VpnService;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.frostnerd.dnschanger.database.accessors.QueryLogger;
 import com.frostnerd.dnschanger.database.entities.DNSTLSConfiguration;
 import com.frostnerd.dnschanger.util.TLSSocketFactory;
 
@@ -29,15 +30,19 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
@@ -47,6 +52,8 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import de.measite.minidns.DNSMessage;
+import de.measite.minidns.Question;
+import de.measite.minidns.Record;
 
 /**
  * Copyright Daniel Wolf 2018
@@ -64,22 +71,28 @@ import de.measite.minidns.DNSMessage;
 public class DNSTLSUtil {
     private Map<String, Socket> upstreamServers = new LinkedHashMap<>();
     private Map<Socket, DataInputStream> inputStreamMap = new HashMap<>();
-    private Map<String, DNSTLSConfiguration> upstreamConfig = new LinkedHashMap<>();
+    private Map<String, DNSTLSConfiguration> upstreamConfig;
     private LinkedHashMap<DNSMessage, IpPacket> waitingQuestions = new LinkedHashMap<>();
-    private VpnService service;
     private LinkedList<byte[]> responseData = new LinkedList<>();
+    private List<PastAnswer> history = new ArrayList<>();
+    private VpnService service;
+    private QueryLogger queryLogger;
+    private final static int MAX_HISTORY_COMPARISONS = 600;
 
     public DNSTLSUtil(VpnService service, Map<String, DNSTLSConfiguration> upstreamConfig) {
         this.upstreamConfig = upstreamConfig;
         this.service = service;
     }
 
+    public void setQueryLogger(QueryLogger queryLogger) {
+        this.queryLogger = queryLogger;
+    }
+
     private Set<String> availableServers(){
         return upstreamConfig.keySet();
     }
 
-    public void pollSockets(int maxPacketCount) throws IOException {
-        System.out.println("Polling sockets..");
+    public synchronized void pollSockets(int maxPacketCount) throws IOException {
         try{
             outer: for(Socket socket: upstreamServers.values()) {
                 int count = 0;
@@ -92,14 +105,15 @@ public class DNSTLSUtil {
                         entry = iterator.next();
                         if(entry.getKey().id == message.id){
                             handleUpstreamDNSResponse(entry.getValue(), message.asDatagram(null, 1).getData());
+                            history.add(new PastAnswer(message, message.getQuestion()));
                             iterator.remove();
-                            System.out.println("Send response.");
                         }
                     }
                 }while(count++ <= maxPacketCount);
             }
         }catch(Exception e){
             e.printStackTrace();
+            throw e;
         }
     }
 
@@ -115,10 +129,33 @@ public class DNSTLSUtil {
         DataInputStream in = inputStreamMap.get(socket);
         byte[] lengthBytes = new byte[2];
         if(in.read(lengthBytes) <= 0)return null;
-        int length = lengthBytes[0] + lengthBytes[1] << 8;
+        int length = (lengthBytes[0]&0xFF) + (lengthBytes[1]&0xFF) << 8;
         byte[] data = new byte[length];
         in.read(data);
         return new DNSMessage(data);
+    }
+
+    @Nullable
+    private DNSMessage getOldAnswer(@NonNull DNSMessage currentMessage){
+        if(history.size() != 0){
+            int comparisons = 0;
+            PastAnswer found = null;
+            Question currentQuestion = currentMessage.getQuestion();
+            for (PastAnswer pastAnswer : history) {
+                if(++comparisons > MAX_HISTORY_COMPARISONS)break;
+                if(currentQuestion.name.compareTo(pastAnswer.oldQuestion.name) != 0)continue;
+                if(currentQuestion.type != pastAnswer.oldQuestion.type && currentQuestion.type != Record.TYPE.ANY)continue;
+                if(currentQuestion.clazz != pastAnswer.oldQuestion.clazz && currentQuestion.clazz != Record.CLASS.ANY)continue;
+                found = pastAnswer;
+                break;
+            }
+            if(found != null) {
+                System.out.println("Found an old answer for " + currentMessage);
+                found.futureHits++;
+                Collections.sort(history);
+            }
+        }
+        return null;
     }
 
     public void sendPacket(@NonNull DatagramPacket outgoingPacket, @Nullable IpPacket packet) {
@@ -132,25 +169,37 @@ public class DNSTLSUtil {
         }
     }
 
-    public void sendPacket(@NonNull DatagramPacket outgoingPacket, @Nullable IpPacket packet, @Nullable DNSMessage dnsMessage) {
+    int sendTries = 0;
+    public synchronized void sendPacket(@NonNull DatagramPacket outgoingPacket, @Nullable IpPacket packet, @Nullable DNSMessage dnsMessage) {
+        Socket socket = null;
+        String host = outgoingPacket.getAddress().getHostAddress();
         try {
-            Socket socket = establishConnection(outgoingPacket.getAddress().getHostAddress());
             outgoingPacket.setPort(upstreamConfig.get(outgoingPacket.getAddress().getHostAddress()).getPort());
             byte[] data = outgoingPacket.getData();
             DNSMessage message = new DNSMessage(data);
+            if(packet != null && dnsMessage != null) {
+                if ((message = getOldAnswer(message)) != null) {
+                    handleUpstreamDNSResponse(packet, message.asDatagram(null, 1).getData());
+                    return;
+                }
+            }
+            sendTries++;
+            socket = establishConnection(host);
             DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
-            System.out.println("DATA LEN: " + data.length);
-            System.out.println("SENDING MSG: " + message);
             outputStream.writeShort(data.length);
             outputStream.write(data);
             outputStream.flush();
-            if(packet != null && dnsMessage != null){
-                waitingQuestions.put(dnsMessage, packet);
-            }
-            System.out.println("Send packet.");
+            waitingQuestions.put(dnsMessage, packet);
+            sendTries = 0;
         } catch(Exception exception) {
-            System.out.println("Error: " + exception.getMessage());
-            if(!(exception instanceof SocketTimeoutException) && packet != null){
+            if(exception instanceof SSLException){
+                if(sendTries <= 5) {
+                    System.out.println("Retrying sending. Tries: " + sendTries);
+                    if(socket != null) closeSocket(socket);
+                    upstreamServers.remove(host);
+                    sendPacket(outgoingPacket, packet, dnsMessage);
+                }else throw new RuntimeException(exception);
+            }else if(!(exception instanceof SocketTimeoutException) && packet != null){
                 handleUpstreamDNSResponse(packet, outgoingPacket.getData());
             }
         }
@@ -158,15 +207,11 @@ public class DNSTLSUtil {
 
     @NonNull
     private Socket establishConnection(String host) throws IOException, CertificateException {
-        Socket socket = null;
-        if (!upstreamServers.containsKey(host) || (socket = upstreamServers.get(host)) == null) {
-            if (socket != null) closeSocket(socket);
-        } else if (upstreamServers.containsKey(host)) {
-            return socket;
+        if (upstreamServers.containsKey(host)) {
+            return upstreamServers.get(host);
         }
-        System.out.println("Establishing new connection");
         DNSTLSConfiguration configuration = upstreamConfig.get(host);
-        socket = getSocketFactory().createSocket(host, configuration.getPort());
+        Socket socket = getSocketFactory().createSocket(host, configuration.getPort());
         socket.setKeepAlive(true);
         socket.setTcpNoDelay(false);
         checkCertificate(((SSLSocket) socket).getSession(), configuration);
@@ -259,5 +304,28 @@ public class DNSTLSUtil {
                     .build();
         }
         responseData.add(packet.getRawData());
+        if(queryLogger != null && queryLogger.logUpstreamAnswers()){
+            try {
+                queryLogger.logUpstreamAnswer(new DNSMessage(payloadData));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static final class PastAnswer implements Comparable<PastAnswer> {
+        private int futureHits = 0;
+        @NonNull private DNSMessage oldAnswer;
+        @NonNull private Question oldQuestion;
+
+        public PastAnswer(@NonNull DNSMessage oldAnswer, @NonNull Question oldQuestion) {
+            this.oldAnswer = oldAnswer;
+            this.oldQuestion = oldQuestion;
+        }
+
+        @Override
+        public int compareTo(@NonNull PastAnswer o) {
+            return futureHits - o.futureHits;
+        }
     }
 }

@@ -86,7 +86,7 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
         });
-        final CheckBoxPreference tls = (CheckBoxPreference) findPreference("dns_over_tcp"),
+        final CheckBoxPreference tls = (CheckBoxPreference) findPreference("dns_over_tls"),
                 tcp = (CheckBoxPreference) findPreference("dns_over_tcp");
         tls.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -104,8 +104,9 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
                 return preferenceChangeListener.onPreferenceChange(preference, newValue);
             }
         });
-        tcp.setEnabled(!tls.isChecked() && tcp.isEnabled());
-        tls.setEnabled(!tcp.isChecked() && tls.isEnabled());
+
+        if(tls.isChecked() && tls.isEnabled())tcp.setEnabled(false);
+        else if(tcp.isChecked() && tcp.isEnabled())tls.setEnabled(false);
     }
 
     @Override

@@ -74,8 +74,10 @@ public class PreferencesAccessor {
         return areCustomPortsEnabled(context) ||
                 areRulesEnabled(context) ||
                 isQueryLoggingEnabled(context) ||
-                sendDNSOverTCP(context) || isLoopbackAllowed(context) ||
-                sendDNSOverTLS(context);
+                sendDNSOverTCP(context) ||
+                isLoopbackAllowed(context) ||
+                sendDNSOverTLS(context) ||
+                logUpstreamDNSAnswers(context);
     }
 
     public static boolean areCustomPortsEnabled(@NonNull Context context){
@@ -91,6 +93,11 @@ public class PreferencesAccessor {
     public static boolean isQueryLoggingEnabled(@NonNull Context context){
         return isAdvancedModeEnabled(context) &&
                 Preferences.getInstance(context).getBoolean(  "query_logging", false);
+    }
+
+    public static boolean logUpstreamDNSAnswers(@NonNull Context context){
+        return isAdvancedModeEnabled(context) &&
+                Preferences.getInstance(context).getBoolean(  "upstream_query_logging", false);
     }
 
     public static boolean isPinProtectionEnabled(@NonNull Context context){

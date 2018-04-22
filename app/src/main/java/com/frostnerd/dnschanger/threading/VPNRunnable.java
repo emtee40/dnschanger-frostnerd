@@ -112,7 +112,8 @@ public class VPNRunnable implements Runnable {
                     if(PreferencesAccessor.isRunningInAdvancedMode(service) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){
                         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "We are in advanced mode, starting DNS proxy");
                         dnsProxy = DNSProxy.createProxy(service, tunnelInterface, new HashSet<>(upstreamServers)
-                                ,PreferencesAccessor.areRulesEnabled(service), PreferencesAccessor.isQueryLoggingEnabled(service));
+                                ,PreferencesAccessor.areRulesEnabled(service), PreferencesAccessor.isQueryLoggingEnabled(service),
+                                PreferencesAccessor.logUpstreamDNSAnswers(service));
                         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "DNS proxy created");
                     }else dnsProxy = new DummyProxy();
                     dnsProxy.run();

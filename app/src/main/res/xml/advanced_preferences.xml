@@ -44,16 +44,9 @@
             android:summary="@string/summary_tcp_timeout"
             android:title="@string/title_tcp_timeout" />
 
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:dependency="advanced_settings"
-            android:key="dns_over_tls"
-            android:summary="DNS over TLS"
-            android:title="DNS over TLS" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/title_query_logging">
-
         <CheckBoxPreference
             android:defaultValue="false"
             android:dependency="advanced_settings"
@@ -61,10 +54,33 @@
             android:summary="@string/summary_query_logging"
             android:title="@string/title_query_logging" />
 
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="query_logging"
+            android:key="upstream_query_logging"
+            android:summary="Upstream logging"
+            android:title="Log upstreams answers" />
+
         <Preference
             android:dependency="query_logging"
             android:key="export_queries"
             android:summary="@string/summary_export_queries"
             android:title="@string/title_export_queries" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/title_dns_over_tls">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="advanced_settings"
+            android:key="dns_over_tls"
+            android:summary="DNS over TLS"
+            android:title="@string/title_dns_over_tls" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="dns_over_tls"
+            android:key="dns_over_tls_disable_mobile"
+            android:summary="@string/summary_dns_over_tls_disable_mobile"
+            android:title="@string/title_dns_over_tls_disable_mobile" />
     </PreferenceCategory>
 </PreferenceScreen>

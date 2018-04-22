@@ -47,20 +47,20 @@ public abstract class DNSProxy {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static DNSProxy createProxy(VpnService context, ParcelFileDescriptor parcelFileDescriptor,
-                                       Set<IPPortPair> upstreamDNSServers, boolean resolveLocalRules, boolean queryLogging) {
+                                       Set<IPPortPair> upstreamDNSServers, boolean resolveLocalRules, boolean queryLogging, boolean logUpstreamAnswers) {
         LogFactory.writeMessage(context, LOG_TAG, "Creating a proxy with upstreamservers: " + upstreamDNSServers + " and file descriptor: " + parcelFileDescriptor);
         if (PreferencesAccessor.sendDNSOverTCP(context)) {
             LogFactory.writeMessage(context, LOG_TAG, "Creating a TCP proxy");
             return new DNSTCPProxy(context, parcelFileDescriptor, upstreamDNSServers,
-                    resolveLocalRules, queryLogging, PreferencesAccessor.getTCPTimeout(context));
+                    resolveLocalRules, queryLogging, logUpstreamAnswers, PreferencesAccessor.getTCPTimeout(context));
         } else if(PreferencesAccessor.sendDNSOverTLS(context)){
             LogFactory.writeMessage(context, LOG_TAG, "Creating a TLS proxy");
             return new DNSTLSProxy(context, parcelFileDescriptor, upstreamDNSServers,
-                    resolveLocalRules, queryLogging, PreferencesAccessor.getTCPTimeout(context));
+                    resolveLocalRules, queryLogging, logUpstreamAnswers, PreferencesAccessor.getTCPTimeout(context));
         } else {
             LogFactory.writeMessage(context, LOG_TAG, "Creating an UDP proxy");
             return new DNSUDPProxy(context, parcelFileDescriptor, upstreamDNSServers,
-                    resolveLocalRules, queryLogging);
+                    resolveLocalRules, queryLogging, logUpstreamAnswers);
         }
     }
 }

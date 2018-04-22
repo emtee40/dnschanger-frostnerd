@@ -81,7 +81,7 @@ public class DNSTLSProxy extends DNSProxy{
     private DNSTLSUtil tlsUtil;
 
     public DNSTLSProxy(VpnService context, ParcelFileDescriptor parcelFileDescriptor,
-                       Set<IPPortPair> upstreamDNSServers, boolean resolveLocalRules, boolean queryLogging, int timeout){
+                       Set<IPPortPair> upstreamDNSServers, boolean resolveLocalRules, boolean queryLogging, boolean logUpstreamAnswers, int timeout){
         LogFactory.writeMessage(context, LOG_TAG, "Creating the proxy...");
         if(parcelFileDescriptor == null)throw new IllegalStateException("The ParcelFileDescriptor passed to DNSUDPProxy is null.");
         if(context == null)throw new IllegalStateException("The DNSVPNService passed to DNSTCPProxy is null.");
@@ -102,7 +102,7 @@ public class DNSTLSProxy extends DNSProxy{
         this.resolveLocalRules = resolveLocalRules;
         this.queryLogging = queryLogging;
         if(queryLogging) {
-            queryLogger = new QueryLogger(DatabaseHelper.getInstance(context));
+            queryLogger = new QueryLogger(DatabaseHelper.getInstance(context), logUpstreamAnswers);
             LogFactory.writeMessage(context, LOG_TAG, "Created the query logger.");
         }
         if(resolveLocalRules) {
@@ -111,6 +111,7 @@ public class DNSTLSProxy extends DNSProxy{
         }
         LogFactory.writeMessage(context, LOG_TAG, "Created the proxy.");
         this.tlsUtil = new DNSTLSUtil(vpnService, upstreamConfig);
+        tlsUtil.setQueryLogger(queryLogger);
     }
 
     @Override
@@ -141,21 +142,16 @@ public class DNSTLSProxy extends DNSProxy{
             polls[0] = structFd;
             polls[1] = blockFd;
             tlsUtil.pollSockets(5);
-            System.out.println("polled sockets. Polling Polls");
             poll(polls, 5000);
-            System.out.println("Polled polls.");
             if(blockFd.revents != 0){
                 shouldRun = false;
-                System.out.println("Break.");
                 break;
             }
             if(shouldRun && tlsUtil.canPollResponsedata()){
-                System.out.println("Writing to device");
                 outputStream.write(tlsUtil.pollResponseData());
                 outputStream.flush();
             }
             if(shouldRun && (structFd.revents & OsConstants.POLLIN) != 0){
-                System.out.println("Handling device packet");
                 handleDeviceDNSPacket(inputStream, packet);
             }
         }
@@ -198,7 +194,7 @@ public class DNSTLSProxy extends DNSProxy{
             DNSMessage dnsMsg = new DNSMessage(payloadData);
             if(dnsMsg.getQuestion() == null)return;
             String query = dnsMsg.getQuestion().name.toString(), target;
-            if(queryLogging)queryLogger.logQuery(query, dnsMsg.getQuestion().type == Record.TYPE.AAAA);
+            if(queryLogging)queryLogger.logQuery(dnsMsg, dnsMsg.getQuestion().type == Record.TYPE.AAAA);
             if(resolveLocalRules && (target = resolver.resolve(query, dnsMsg.getQuestion().type == Record.TYPE.AAAA ,true)) != null){
                 DNSMessage.Builder builder = null;
                 if(dnsMsg.getQuestion().type == Record.TYPE.A){
@@ -217,13 +213,11 @@ public class DNSTLSProxy extends DNSProxy{
     }
 
     private void sendPacketToUpstreamDNSServer(@NonNull DatagramPacket outgoingPacket, @Nullable IpPacket ipPacket, @Nullable DNSMessage dnsMessage){
-        System.out.println("Sending to upstream");
         tlsUtil.sendPacket(outgoingPacket, ipPacket, dnsMessage);
     }
 
     @Override
     public void stop() {
-        System.out.println("Stop.");
         LogFactory.writeMessage(vpnService, LOG_TAG, "Stopping the proxy");
         shouldRun = false;
         try {

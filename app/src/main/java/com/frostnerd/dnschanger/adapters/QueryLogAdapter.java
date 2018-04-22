@@ -5,7 +5,7 @@ import android.content.res.Configuration;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +47,7 @@ public class QueryLogAdapter extends DatabaseAdapter<DNSQuery, QueryLogAdapter.V
         this.layoutInflater = LayoutInflater.from(context);
         setOnRowLoaded(new OnRowLoaded<DNSQuery, ViewHolder>() {
             @Override
-            public void bindRow(ViewHolder view, DNSQuery entity, int position) {
+            public void bindRow(@NonNull ViewHolder view, @NonNull DNSQuery entity, int position) {
                 String text;
                 if (entity.getTime() < dayStart) {
                     if (entity.getTime() < yearStart) {
@@ -55,7 +55,9 @@ public class QueryLogAdapter extends DatabaseAdapter<DNSQuery, QueryLogAdapter.V
                     } else text = formatterDate.format(entity.getTime());
                 } else text = timeFormatter.format(entity.getTime());
                 view.time.setText(text);
-                view.host.setText(entity.getHost());
+                String hostText = entity.getHost();
+                if(!TextUtils.isEmpty(entity.getUpstreamAnswer())) hostText += "\n -> " + entity.getUpstreamAnswer();
+                view.host.setText(hostText);
             }
 
             @Override

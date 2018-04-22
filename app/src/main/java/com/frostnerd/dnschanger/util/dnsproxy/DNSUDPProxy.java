@@ -109,7 +109,7 @@ public class DNSUDPProxy extends DNSProxy{
 
 
     public DNSUDPProxy(VpnService context, ParcelFileDescriptor parcelFileDescriptor,
-                       Set<IPPortPair> upstreamDNSServers, boolean resolveLocalRules, boolean queryLogging){
+                       Set<IPPortPair> upstreamDNSServers, boolean resolveLocalRules, boolean queryLogging, boolean logUpstreamAnswers){
         LogFactory.writeMessage(context, LOG_TAG, "Creating the proxy...");
         if(parcelFileDescriptor == null)throw new IllegalStateException("The ParcelFileDescriptor passed to DNSUDPProxy is null.");
         if(context == null)throw new IllegalStateException("The DNSVPNService passed to DNSUDPProxy is null.");
@@ -123,7 +123,7 @@ public class DNSUDPProxy extends DNSProxy{
         this.resolveLocalRules = resolveLocalRules;
         this.queryLogging = queryLogging;
         if(queryLogging) {
-            queryLogger = new QueryLogger(DatabaseHelper.getInstance(context));
+            queryLogger = new QueryLogger(DatabaseHelper.getInstance(context), logUpstreamAnswers);
             LogFactory.writeMessage(context, LOG_TAG, "Created the query logger.");
         }
         if(resolveLocalRules) {
@@ -231,7 +231,7 @@ public class DNSUDPProxy extends DNSProxy{
             DNSMessage dnsMsg = new DNSMessage(payloadData);
             if(dnsMsg.getQuestion() == null)return;
             String query = dnsMsg.getQuestion().name.toString(), target;
-            if(queryLogging)queryLogger.logQuery(query, dnsMsg.getQuestion().type == Record.TYPE.AAAA);
+            if(queryLogging)queryLogger.logQuery(dnsMsg, dnsMsg.getQuestion().type == Record.TYPE.AAAA);
             if(resolveLocalRules && (target = resolver.resolve(query, dnsMsg.getQuestion().type == Record.TYPE.AAAA ,true)) != null){
                 DNSMessage.Builder builder = null;
                 if(dnsMsg.getQuestion().type == Record.TYPE.A){
@@ -300,6 +300,13 @@ public class DNSUDPProxy extends DNSProxy{
                     .build();
         }
         writeToDevice.add(packet.getRawData());
+        if(queryLogger != null && queryLogger.logUpstreamAnswers()){
+            try {
+                queryLogger.logUpstreamAnswer(new DNSMessage(payloadData));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
