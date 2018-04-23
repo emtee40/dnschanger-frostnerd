@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -15,9 +14,11 @@ import com.frostnerd.utils.adapters.BaseAdapter;
 import com.frostnerd.utils.adapters.BaseViewHolder;
 import com.frostnerd.utils.general.DesignUtil;
 
-import org.xbill.DNS.DClass;
-import org.xbill.DNS.Record;
-import org.xbill.DNS.Type;
+
+import java.util.List;
+
+import de.measite.minidns.Record;
+import de.measite.minidns.record.Data;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -26,11 +27,11 @@ import org.xbill.DNS.Type;
  * development@frostnerd.com
  */
 public class QueryResultAdapter extends BaseAdapter<QueryResultAdapter.ViewHolder> {
-    private Record[] answer;
+    private List<Record<? extends Data>> answer;
     private Context context;
     private LayoutInflater layoutInflater;
 
-    public QueryResultAdapter(Context context, Record[] answer){
+    public QueryResultAdapter(Context context, List<Record<? extends Data>> answer){
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.answer = answer;
@@ -46,7 +47,7 @@ public class QueryResultAdapter extends BaseAdapter<QueryResultAdapter.ViewHolde
     @NonNull
     @Override
     public QueryResultAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(answer.length, context, (LinearLayout)layoutInflater.inflate(R.layout.row_dns_query, parent, false));
+        return new ViewHolder(answer.size(), context, (LinearLayout)layoutInflater.inflate(R.layout.row_dns_query, parent, false));
     }
 
     @Override
@@ -76,11 +77,11 @@ public class QueryResultAdapter extends BaseAdapter<QueryResultAdapter.ViewHolde
     }
 
     private String getText(int position, int index){
-        if(position == 0)return answer[index-1].getName().toString();
-        else if(position == 1)return String.valueOf(answer[index-1].getTTL());
-        else if(position == 2)return DClass.string(answer[index-1].getDClass());
-        else if(position == 3)return Type.string(answer[index-1].getType());
-        else return answer[index-1].rdataToString();
+        if(position == 0)return answer.get(index-1).name.toString();
+        else if(position == 1)return String.valueOf(answer.get(index-1).ttl);
+        else if(position == 2)return answer.get(index-1).clazz.name();
+        else if(position == 3)return answer.get(index-1).type.name();
+        else return answer.get(index-1).payloadData.toString();
     }
 
     @Override

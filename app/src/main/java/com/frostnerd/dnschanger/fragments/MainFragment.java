@@ -54,13 +54,12 @@ import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.textfilers.InputCharacterFilter;
 
-import org.xbill.DNS.DClass;
-import org.xbill.DNS.Record;
-import org.xbill.DNS.Type;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import de.measite.minidns.Record;
+import de.measite.minidns.record.Data;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -461,9 +460,10 @@ public class MainFragment extends Fragment {
         List<IPPortPair> servers = PreferencesAccessor.getAllDNSPairs(requireContext(), true);
         callback.setServers(servers.size());
         for(final IPPortPair pair: servers){
-            DNSQueryUtil.runAsyncDNSQuery(pair, "frostnerd.com.", PreferencesAccessor.sendDNSOverTCP(requireContext()), Type.A, DClass.IN, new Util.DNSQueryResultListener() {
+            DNSQueryUtil.runAsyncDNSQuery(pair, "frostnerd.com.", PreferencesAccessor.sendDNSOverTCP(requireContext()), Record.TYPE.A,
+                    Record.CLASS.ANY, new Util.DNSQueryResultListener() {
                 @Override
-                public void onSuccess(Record[] response) {
+                public void onSuccess(List<Record<? extends Data>> response) {
                     callback.checkProgress(pair, true);
                 }
 

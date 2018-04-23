@@ -330,4 +330,5 @@
     <string name="summary_upstream_query_logging">Save the IP-address the server responds to a query</string>
     <string name="title_dns_over_tls_disable_mobile">Disable TLS on mobile</string>
     <string name="summary_dns_over_tls_disable_mobile">Disable DNS over TLS when being connected over a mobile connection (like 3G, 4G..)</string>
+    <string name="dnssec" translatable="false">DNSSEC</string>
 </resources>

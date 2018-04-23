@@ -15,13 +15,9 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
-# This dnsjava class uses old Sun API
--dontnote org.xbill.DNS.spi.DNSJavaNameServiceDescriptor
--dontwarn org.xbill.DNS.spi.DNSJavaNameServiceDescriptor
 -dontwarn java.awt.*
 
 # See http://stackoverflow.com/questions/5701126, happens in dnsjava
--optimizations !code/allocation/variable
 -keep class android.support.v7.widget.SearchView { *; }
 -keep class com.frostnerd.dnschanger.util.GenericFileProvider
 -keep class com.frostnerd.dnschanger.activities.PinActivity

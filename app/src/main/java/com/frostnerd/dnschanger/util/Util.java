@@ -41,7 +41,6 @@ import com.frostnerd.utils.general.StringUtil;
 import com.frostnerd.utils.general.Utils;
 import com.frostnerd.utils.networking.NetworkUtil;
 
-import org.xbill.DNS.Record;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -52,6 +51,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import de.measite.minidns.Record;
+import de.measite.minidns.record.Data;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -323,7 +325,7 @@ public final class Util {
     }
 
     public interface DNSQueryResultListener{
-        void onSuccess(Record[] response);
+        void onSuccess(List<Record<? extends Data>> response);
         void onError(@Nullable Exception e);
     }
 }
