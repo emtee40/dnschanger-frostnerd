@@ -460,8 +460,8 @@ public class MainFragment extends Fragment {
         List<IPPortPair> servers = PreferencesAccessor.getAllDNSPairs(requireContext(), true);
         callback.setServers(servers.size());
         for(final IPPortPair pair: servers){
-            DNSQueryUtil.runAsyncDNSQuery(pair, "frostnerd.com.", PreferencesAccessor.sendDNSOverTCP(requireContext()), Record.TYPE.A,
-                    Record.CLASS.ANY, new Util.DNSQueryResultListener() {
+            DNSQueryUtil.runAsyncDNSQuery(pair, "frostnerd.com", PreferencesAccessor.sendDNSOverTCP(requireContext()), Record.TYPE.A,
+                    Record.CLASS.IN, new Util.DNSQueryResultListener() {
                 @Override
                 public void onSuccess(List<Record<? extends Data>> response) {
                     callback.checkProgress(pair, true);
