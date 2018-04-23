@@ -28,7 +28,7 @@ public class DNSQueryUtil {
 
     public static void startDNSServerConnectivityCheck(@NonNull final Context context, @NonNull final Util.ConnectivityCheckCallback callback){
         runAsyncDNSQuery(PreferencesAccessor.isIPv4Enabled(context) ? PreferencesAccessor.Type.DNS1.getPair(context) :
-                PreferencesAccessor.Type.DNS1_V6.getPair(context), "frostnerd.com", false, Record.TYPE.A, Record.CLASS.ANY, new Util.DNSQueryResultListener() {
+                PreferencesAccessor.Type.DNS1_V6.getPair(context), "frostnerd.com", false, Record.TYPE.A, Record.CLASS.IN, new Util.DNSQueryResultListener() {
             @Override
             public void onSuccess(List<Record<? extends Data>> response) {
                 callback.onCheckDone(true);
@@ -43,7 +43,7 @@ public class DNSQueryUtil {
 
     public static void startDNSServerConnectivityCheck(@NonNull final IPPortPair server, @NonNull final Util.ConnectivityCheckCallback callback){
         if(server == null)return;
-        runAsyncDNSQuery(server, "frostnerd.com", false, Record.TYPE.A, Record.CLASS.ANY, new Util.DNSQueryResultListener() {
+        runAsyncDNSQuery(server, "frostnerd.com", false, Record.TYPE.A, Record.CLASS.IN, new Util.DNSQueryResultListener() {
             @Override
             public void onSuccess(List<Record<? extends Data>> response) {
                 callback.onCheckDone(true);
@@ -64,9 +64,8 @@ public class DNSQueryUtil {
             public void run() {
                 try {
                     Resolver resolver = new Resolver(server.getAddress());
-                    ResolverResult<Data> result = resolver.resolve(query.endsWith(".") ? query : query + ".", type, clazz,  tcp, server.getPort());
+                    ResolverResult<Data> result = resolver.resolve(query, type, clazz,  tcp, server.getPort());
                     if(!result.wasSuccessful()) resultListener.onError(new IllegalStateException("The query wasn't successful"));
-                    if(!result.isAuthenticData()) resultListener.onError(new IllegalStateException("DNSSEC validation failed"));
                     resultListener.onSuccess(result.getDnsMessage().answerSection);
                 } catch (IOException | IllegalStateException e) {
                     resultListener.onError(e);
@@ -80,9 +79,8 @@ public class DNSQueryUtil {
         if(server == null) return null;
         try {
             Resolver resolver = new Resolver(server.getAddress());
-            ResolverResult<Data> result = resolver.resolve(query.endsWith(".") ? query : query + ".", type, clazz,  tcp, server.getPort());
+            ResolverResult<Data> result = resolver.resolve(query, type, clazz,  tcp, server.getPort());
             if(!result.wasSuccessful()) return new ArrayList<>();
-            if(!result.isAuthenticData()) return new ArrayList<>();
             return result.getDnsMessage().answerSection;
         } catch (IOException | IllegalStateException e) {
             return null;
