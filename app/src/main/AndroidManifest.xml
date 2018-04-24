@@ -45,7 +45,7 @@
         android:networkSecurityConfig="@xml/security_config"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme_Mono">
 
         <meta-data
             android:name="android.max_aspect"
