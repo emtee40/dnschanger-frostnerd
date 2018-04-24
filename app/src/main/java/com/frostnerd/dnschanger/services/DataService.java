@@ -21,7 +21,7 @@ import com.frostnerd.utils.apis.dataexchangers.PreferencesExchanger;
 public class DataService extends DataExchangeService {
     public static final int ARG_CHOOSE_SERVER = 1;
 
-    public void handleMessage(final Message message) {
+    public boolean handleMessage(final Message message) {
         if (message.replyTo != null) {
             if (message.arg1 == ARG_CHOOSE_SERVER) {
                 startActivity(new Intent(this, BackgroundDNSListActivity.class).
@@ -35,5 +35,6 @@ public class DataService extends DataExchangeService {
                 e.printStackTrace();
             }
         }
+        return false;
     }
 }
