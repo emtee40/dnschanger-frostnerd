@@ -95,6 +95,11 @@
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
 
         <activity
+            android:name=".activities.BackgroundDNSListActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
+
+        <activity
             android:name=".tasker.ConfigureActivity"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
