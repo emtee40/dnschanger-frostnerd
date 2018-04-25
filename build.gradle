@@ -27,8 +27,8 @@ def getArtifactoryPassword(){
     return pw
 }
 
-def artifactory_username = getArtifactoryUser()
-def artifactory_password = getArtifactoryPassword()
+ext.artifactory_username = getArtifactoryUser()
+ext.artifactory_password = getArtifactoryPassword()
 
 
 buildscript {
@@ -37,13 +37,6 @@ buildscript {
         google()
         maven {
             url "https://maven.google.com"
-        }
-        maven {
-            url 'https://artifactory.frostnerd.com/artifactory/libs-release-local'
-            credentials {
-                username = "$artifactory_username"
-                password = "$artifactory_password"
-            }
         }
     }
     dependencies {
