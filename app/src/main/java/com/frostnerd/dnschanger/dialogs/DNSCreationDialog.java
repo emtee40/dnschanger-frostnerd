@@ -21,9 +21,9 @@ import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Util;
-import com.frostnerd.utils.design.MaterialEditText;
-import com.frostnerd.utils.lifecyclehelper.UtilityDialog;
-import com.frostnerd.utils.textfilers.InputCharacterFilter;
+import com.frostnerd.general.textfilers.InputCharacterFilter;
+import com.frostnerd.lifecycle.BaseDialog;
+import com.frostnerd.materialedittext.MaterialEditText;
 
 import java.util.regex.Pattern;
 
@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  * <p>
  * development@frostnerd.com
  */
-public class DNSCreationDialog extends UtilityDialog {
+public class DNSCreationDialog extends BaseDialog {
     private IPPortPair dns1, dns2 ,
             dns1V6, dns2V6;
     private EditText ed_dns1, ed_dns2;

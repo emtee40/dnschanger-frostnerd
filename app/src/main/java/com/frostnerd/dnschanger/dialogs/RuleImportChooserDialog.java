@@ -20,18 +20,17 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.frostnerd.design.dialogs.LoadingDialog;
+import com.frostnerd.design.filechooseractivity.Configuration;
+import com.frostnerd.design.filechooseractivity.FileChooserActivity;
+import com.frostnerd.design.filechooseractivity.FileInformation;
+import com.frostnerd.design.filechooseractivity.FileListAdapter;
+import com.frostnerd.design.filechooseractivity.FileSelectedListener;
+import com.frostnerd.design.filechooseractivity.StyleOptions;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.util.RuleImport;
 import com.frostnerd.dnschanger.util.ThemeHandler;
-import com.frostnerd.utils.design.dialogs.FileChooserDialog;
-import com.frostnerd.utils.design.dialogs.LoadingDialog;
-import com.frostnerd.utils.design.filechooseractivity.Configuration;
-import com.frostnerd.utils.design.filechooseractivity.FileChooserActivity;
-import com.frostnerd.utils.design.filechooseractivity.FileInformation;
-import com.frostnerd.utils.design.filechooseractivity.FileListAdapter;
-import com.frostnerd.utils.design.filechooseractivity.FileSelectedListener;
-import com.frostnerd.utils.design.filechooseractivity.StyleOptions;
-import com.frostnerd.utils.lifecyclehelper.UtilityDialog;
+import com.frostnerd.lifecycle.BaseDialog;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -49,7 +48,7 @@ import java.util.Set;
  * <p>
  * development@frostnerd.com
  */
-class RuleImportChooserDialog extends UtilityDialog {
+class RuleImportChooserDialog extends BaseDialog {
     private final List<RuleImport.ImportableFile> files = new ArrayList<>();
     private TextView fileLabel;
     private TextView failFastInfo;

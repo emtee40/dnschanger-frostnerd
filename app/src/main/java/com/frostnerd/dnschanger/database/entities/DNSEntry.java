@@ -4,15 +4,15 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.frostnerd.database.orm.MultitonEntity;
+import com.frostnerd.database.orm.annotations.Named;
+import com.frostnerd.database.orm.annotations.NotNull;
+import com.frostnerd.database.orm.annotations.RowID;
+import com.frostnerd.database.orm.annotations.Serialized;
+import com.frostnerd.database.orm.annotations.Table;
+import com.frostnerd.database.orm.annotations.Unique;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.serializers.IPPortSerializer;
-import com.frostnerd.utils.database.orm.MultitonEntity;
-import com.frostnerd.utils.database.orm.annotations.Named;
-import com.frostnerd.utils.database.orm.annotations.NotNull;
-import com.frostnerd.utils.database.orm.annotations.RowID;
-import com.frostnerd.utils.database.orm.annotations.Serialized;
-import com.frostnerd.utils.database.orm.annotations.Table;
-import com.frostnerd.utils.database.orm.annotations.Unique;
 
 import java.util.HashMap;
 import java.util.HashSet;

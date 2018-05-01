@@ -25,15 +25,13 @@ import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.dnsquery.Resolver;
 import com.frostnerd.dnschanger.util.dnsquery.ResolverResult;
-import com.frostnerd.utils.design.MaterialEditText;
-import com.frostnerd.utils.networking.NetworkUtil;
+import com.frostnerd.materialedittext.MaterialEditText;
+import com.frostnerd.networking.NetworkUtil;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
-import java.util.Set;
 
 import de.measite.minidns.Record;
-import de.measite.minidns.record.A;
 import de.measite.minidns.record.Data;
 
 /**

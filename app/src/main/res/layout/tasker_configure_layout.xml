@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <com.frostnerd.utils.design.MaterialEditText
+        <com.frostnerd.materialedittext.MaterialEditText
             android:id="@+id/met_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
 
                 <requestFocus />
             </EditText>
-        </com.frostnerd.utils.design.MaterialEditText>
+        </com.frostnerd.materialedittext.MaterialEditText>
 
         <LinearLayout
             android:id="@+id/wrapper"
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.frostnerd.utils.design.MaterialEditText
+            <com.frostnerd.materialedittext.MaterialEditText
                 android:id="@+id/met_dns1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -85,10 +85,10 @@
                     android:nextFocusUp="@id/name"
                     android:text="@string/default_dns1"
                     android:textColor="#FFF" />
-            </com.frostnerd.utils.design.MaterialEditText>
+            </com.frostnerd.materialedittext.MaterialEditText>
 
 
-            <com.frostnerd.utils.design.MaterialEditText
+            <com.frostnerd.materialedittext.MaterialEditText
                 android:id="@+id/met_dns2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -108,7 +108,7 @@
                     android:nextFocusUp="@id/dns1"
                     android:text="@string/default_dns2"
                     android:textColor="#FFF" />
-            </com.frostnerd.utils.design.MaterialEditText>
+            </com.frostnerd.materialedittext.MaterialEditText>
 
             <LinearLayout
                 android:id="@+id/default_dns_view"

@@ -5,6 +5,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.frostnerd.database.CursorWithDefaults;
+import com.frostnerd.database.orm.Entity;
+import com.frostnerd.database.orm.parser.ParsedEntity;
+import com.frostnerd.database.orm.statementoptions.queryoptions.WhereCondition;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
 import com.frostnerd.dnschanger.database.entities.DNSRule;
@@ -12,12 +16,7 @@ import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
 import com.frostnerd.dnschanger.database.entities.DNSTLSConfiguration;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.database.entities.Shortcut;
-import com.frostnerd.utils.database.CursorWithDefaults;
-import com.frostnerd.utils.database.orm.Entity;
-import com.frostnerd.utils.database.orm.parser.ParsedEntity;
-import com.frostnerd.utils.database.orm.parser.statementbuilder.tablemodification.AlterTableBuilder;
-import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
-import com.frostnerd.utils.general.Utils;
+import com.frostnerd.general.Utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -31,7 +30,7 @@ import java.util.Set;
  * <p>
  * development@frostnerd.com
  */
-public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper {
+public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
     public static final String DATABASE_NAME = "data";
     public static final int DATABASE_VERSION = 4;
     @NonNull

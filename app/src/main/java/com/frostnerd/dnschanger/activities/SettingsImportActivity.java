@@ -9,10 +9,10 @@ import android.support.annotation.Nullable;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.util.ThemeHandler;
-import com.frostnerd.utils.general.Utils;
-import com.frostnerd.utils.permissions.PermissionsUtil;
 import com.frostnerd.dnschanger.util.Preferences;
-import com.frostnerd.utils.preferences.util.PreferenceHelper;
+import com.frostnerd.general.Utils;
+import com.frostnerd.general.permissions.PermissionsUtil;
+import com.frostnerd.preferenceexport.PreferenceHelper;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 

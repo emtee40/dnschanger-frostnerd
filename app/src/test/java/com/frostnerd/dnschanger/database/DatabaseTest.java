@@ -2,15 +2,15 @@ package com.frostnerd.dnschanger.database;
 
 import android.test.suitebuilder.annotation.LargeTest;
 
+import com.frostnerd.database.orm.parser.ParsedEntity;
+import com.frostnerd.database.orm.statementoptions.queryoptions.WhereCondition;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
 import com.frostnerd.dnschanger.database.entities.DNSRule;
 import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.database.entities.Shortcut;
-import com.frostnerd.utils.database.orm.parser.ParsedEntity;
-import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
-import com.frostnerd.utils.general.DetailedTimingLogger;
+import com.frostnerd.logging.DetailedTimingLogger;
 
 import org.junit.After;
 import org.junit.AfterClass;

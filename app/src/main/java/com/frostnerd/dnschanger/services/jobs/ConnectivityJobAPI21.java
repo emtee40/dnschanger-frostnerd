@@ -6,6 +6,8 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import com.frostnerd.dnschanger.LogFactory;
+import com.frostnerd.dnschanger.util.Preferences;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -24,15 +26,28 @@ public class ConnectivityJobAPI21 extends JobService{
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
         LogFactory.writeMessage(this, LOG_TAG, "Job created");
-        handle = new NetworkCheckHandle(getApplicationContext() == null ? this : getApplicationContext(), LOG_TAG);
+        Preferences pref = Preferences.getInstance(this);
+        boolean run = pref.getBoolean("setting_auto_wifi", false) ||
+                pref.getBoolean("setting_auto_mobile", false) ||
+                pref.getBoolean("setting_disable_netchange", false) ||
+                pref.getBoolean("start_service_when_available", false);
+        if(run){
+            boolean initial = (boolean) jobParameters.getExtras().get("initial");
+            System.out.println("INITIAL: " + initial);
+            handle = new NetworkCheckHandle(getApplicationContext() == null ? this : getApplicationContext(),
+                    LOG_TAG, initial);
+        } else {
+            LogFactory.writeMessage(this, LOG_TAG, "Not starting handle because the respective settings aren't enabled");
+            stopSelf();
+        }
         LogFactory.writeMessage(this, LOG_TAG, "Done with onStartJob");
-        return true;
+        return run;
     }
 
     @Override
     public boolean onStopJob(JobParameters jobParameters) {
         LogFactory.writeMessage(this, LOG_TAG, "Job stopped");
-        handle.stop();
+        if(handle != null)handle.stop();
         return true;
     }
 }

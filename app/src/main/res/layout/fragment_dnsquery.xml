@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
-    <com.frostnerd.utils.design.MaterialEditText
+    <com.frostnerd.materialedittext.MaterialEditText
         android:id="@+id/met_query"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
             android:text="google.com"
             android:inputType="textNoSuggestions"
             android:textColor="#FFF" />
-    </com.frostnerd.utils.design.MaterialEditText>
+    </com.frostnerd.materialedittext.MaterialEditText>
 
     <RelativeLayout
         android:id="@+id/start_button_wrap"

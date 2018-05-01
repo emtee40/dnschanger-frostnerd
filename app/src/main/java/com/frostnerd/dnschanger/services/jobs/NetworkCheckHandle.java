@@ -19,8 +19,8 @@ import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.widgets.BasicWidget;
-import com.frostnerd.utils.general.WidgetUtil;
 import com.frostnerd.dnschanger.util.Preferences;
+import com.frostnerd.general.WidgetUtil;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -38,9 +38,11 @@ public class NetworkCheckHandle {
     private Context context;
     private final String LOG_TAG;
     private boolean running = true, wasAnotherVPNRunning = false;
+    private final long start; // the first network callback received is the initial state. Just ignore any change the first 250ms.
 
-    public NetworkCheckHandle(Context context, String logTag){
+    public NetworkCheckHandle(Context context, String logTag, boolean handleInitialState){
         if(context == null)throw new IllegalStateException("Context passed to NetworkCheckHandle is null.");
+        start = System.currentTimeMillis();
         this.context = context;
         LOG_TAG = logTag;
         connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -58,6 +60,7 @@ public class NetworkCheckHandle {
                 }
 
                 private void handleChange(){
+                    if(System.currentTimeMillis() - start < 250)return;
                     if(running){
                         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
                         try {
@@ -77,7 +80,7 @@ public class NetworkCheckHandle {
             }, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
         try {
-            handleInitialState();
+            if(handleInitialState) handleInitialState();
         } catch (ReallyWeiredExceptionOnlyAFewPeopleHave ignored) {}//Look below
     }
 

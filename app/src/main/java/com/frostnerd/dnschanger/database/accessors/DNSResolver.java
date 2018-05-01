@@ -3,11 +3,11 @@ package com.frostnerd.dnschanger.database.accessors;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.frostnerd.database.orm.parser.ParsedEntity;
+import com.frostnerd.database.orm.parser.columns.Column;
+import com.frostnerd.database.orm.statementoptions.queryoptions.WhereCondition;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSRule;
-import com.frostnerd.utils.database.orm.parser.ParsedEntity;
-import com.frostnerd.utils.database.orm.parser.columns.Column;
-import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
 
 /**
  * Copyright Daniel Wolf 2017

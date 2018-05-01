@@ -1,6 +1,6 @@
 package com.frostnerd.dnschanger;
 
-import com.frostnerd.utils.general.DetailedTimingLogger;
+import com.frostnerd.logging.DetailedTimingLogger;
 
 import org.junit.After;
 import org.junit.AfterClass;

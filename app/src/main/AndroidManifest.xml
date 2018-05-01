@@ -82,6 +82,8 @@
             <intent-filter>
                 <action android:name="android.net.VpnService" />
             </intent-filter>
+            <meta-data android:name="android.net.VpnService.SUPPORTS_ALWAYS_ON"
+                android:value="true" />
         </service>
 
         <activity
@@ -252,7 +254,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.frostnerd.utils.design.filechooseractivity.FileChooserActivity" />
+        <activity android:name="com.frostnerd.design.filechooseractivity.FileChooserActivity" />
 
         <receiver
             android:name=".receivers.AdminReceiver"

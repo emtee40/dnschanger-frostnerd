@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.frostnerd.utils.design.MaterialEditText
+        <com.frostnerd.materialedittext.MaterialEditText
             android:id="@+id/met_dns1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,10 +39,10 @@
                 android:nextFocusForward="@+id/dns2"
                 android:text="@string/default_dns1"
                 android:textColor="#FFF" />
-        </com.frostnerd.utils.design.MaterialEditText>
+        </com.frostnerd.materialedittext.MaterialEditText>
 
 
-        <com.frostnerd.utils.design.MaterialEditText
+        <com.frostnerd.materialedittext.MaterialEditText
             android:id="@+id/met_dns2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                 android:nextFocusForward="@id/default_dns_view"
                 android:text="@string/default_dns2"
                 android:textColor="#FFF" />
-        </com.frostnerd.utils.design.MaterialEditText>
+        </com.frostnerd.materialedittext.MaterialEditText>
 
         <LinearLayout
             android:id="@+id/default_dns_view"

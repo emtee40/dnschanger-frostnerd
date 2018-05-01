@@ -2,7 +2,7 @@ package com.frostnerd.dnschanger.util;
 
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
-import com.frostnerd.utils.general.DetailedTimingLogger;
+import com.frostnerd.logging.DetailedTimingLogger;
 
 import org.junit.After;
 import org.junit.AfterClass;

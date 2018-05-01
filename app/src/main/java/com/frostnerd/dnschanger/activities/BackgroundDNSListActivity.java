@@ -7,10 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
+import com.frostnerd.api.dnschanger.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.dialogs.DNSEntryListDialog;
 import com.frostnerd.dnschanger.util.ThemeHandler;
-import com.frostnerd.utils.apis.dnschanger.DNSEntry;
 
 /**
  * Copyright Daniel Wolf 2017

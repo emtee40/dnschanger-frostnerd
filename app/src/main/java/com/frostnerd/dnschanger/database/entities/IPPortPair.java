@@ -2,12 +2,12 @@ package com.frostnerd.dnschanger.database.entities;
 
 import android.support.annotation.NonNull;
 
+import com.frostnerd.database.orm.MultitonEntity;
+import com.frostnerd.database.orm.annotations.Ignore;
+import com.frostnerd.database.orm.annotations.Named;
+import com.frostnerd.database.orm.annotations.RowID;
+import com.frostnerd.database.orm.annotations.Table;
 import com.frostnerd.dnschanger.util.Util;
-import com.frostnerd.utils.database.orm.MultitonEntity;
-import com.frostnerd.utils.database.orm.annotations.Ignore;
-import com.frostnerd.utils.database.orm.annotations.Named;
-import com.frostnerd.utils.database.orm.annotations.RowID;
-import com.frostnerd.utils.database.orm.annotations.Table;
 
 import java.io.Serializable;
 

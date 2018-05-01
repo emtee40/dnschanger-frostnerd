@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.frostnerd.utils.design.MaterialEditText
+        <com.frostnerd.materialedittext.MaterialEditText
             android:id="@+id/met_host"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,9 +36,9 @@
                 android:text="example.com"
                 android:textColor="#FFF"
                 tools:ignore="HardcodedText" />
-        </com.frostnerd.utils.design.MaterialEditText>
+        </com.frostnerd.materialedittext.MaterialEditText>
 
-        <com.frostnerd.utils.design.MaterialEditText
+        <com.frostnerd.materialedittext.MaterialEditText
             android:id="@+id/met_target"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,9 +62,9 @@
                 android:text="127.0.0.1"
                 android:textColor="#FFF"
                 tools:ignore="HardcodedText" />
-        </com.frostnerd.utils.design.MaterialEditText>
+        </com.frostnerd.materialedittext.MaterialEditText>
 
-        <com.frostnerd.utils.design.MaterialEditText
+        <com.frostnerd.materialedittext.MaterialEditText
             android:id="@+id/met_target2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
                 android:text="::1"
                 android:textColor="#FFF"
                 tools:ignore="HardcodedText" />
-        </com.frostnerd.utils.design.MaterialEditText>
+        </com.frostnerd.materialedittext.MaterialEditText>
 
         <CheckBox
             android:id="@+id/wildcard"

@@ -3,10 +3,11 @@ package com.frostnerd.dnschanger.database.entities;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.frostnerd.utils.database.orm.MultitonEntity;
-import com.frostnerd.utils.database.orm.annotations.Named;
-import com.frostnerd.utils.database.orm.annotations.NotNull;
-import com.frostnerd.utils.database.orm.annotations.Table;
+
+import com.frostnerd.database.orm.MultitonEntity;
+import com.frostnerd.database.orm.annotations.Named;
+import com.frostnerd.database.orm.annotations.NotNull;
+import com.frostnerd.database.orm.annotations.Table;
 
 import java.io.Serializable;
 
