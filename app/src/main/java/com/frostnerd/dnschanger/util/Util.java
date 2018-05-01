@@ -15,8 +15,10 @@ import android.content.pm.ShortcutManager;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.service.quicksettings.TileService;
 import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
@@ -255,24 +257,56 @@ public final class Util {
         }
     }
 
-    public static void runBackgroundConnectivityCheck(Context context){
+    public static void runBackgroundConnectivityCheck(Context context, boolean handleInitialState){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LogFactory.writeMessage(context, LOG_TAG, "Using JobScheduler");
             if(isJobRunning(context, 0)){
                 LogFactory.writeMessage(context, LOG_TAG, "Job is already running/scheduled, not doing anything");
                 return;
             }
+            PersistableBundle extras = new PersistableBundle();
+            extras.putBoolean("initial", handleInitialState);
+            System.out.println("HANDLE INITIAL STATE: " + handleInitialState);
             JobScheduler scheduler = Utils.requireNonNull((JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE));
             scheduler.schedule(new JobInfo.Builder(0, new ComponentName(context, ConnectivityJobAPI21.class)).setPersisted(true)
-                    .setRequiresCharging(false).setMinimumLatency(0).setOverrideDeadline(0).build());
+                    .setRequiresCharging(false).setMinimumLatency(0).setOverrideDeadline(0).setExtras(extras).build());
         } else {
             LogFactory.writeMessage(context, LOG_TAG, "Starting Service (Util below 21)");
-            context.startService(new Intent(context, ConnectivityBackgroundService.class));
+            context.startService(new Intent(context, ConnectivityBackgroundService.class).putExtra("initial", handleInitialState));
+        }
+    }
+
+    public static void stopBackgroundConnectivityCheck(Context context){
+        LogFactory.writeMessage(context, LOG_TAG, "Stopping the background connectivity check..");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LogFactory.writeMessage(context, LOG_TAG, "Using JobScheduler");
+            if(isJobRunning(context, 0)){
+                LogFactory.writeMessage(context, LOG_TAG, "Job is running, stopping..");
+                JobScheduler scheduler = Utils.requireNonNull((JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE));
+                scheduler.cancel(0);
+            }else {
+                LogFactory.writeMessage(context, LOG_TAG, "Job is not running, thus not stopping.");
+            }
+        } else {
+            if(isBackgroundConnectivityCheckRunning(context)){
+                LogFactory.writeMessage(context, LOG_TAG, "Stopping Service (API below 21)");
+                context.stopService(new Intent(context, ConnectivityBackgroundService.class));
+            } else {
+                LogFactory.writeMessage(context, LOG_TAG, "Service is not running, thus not stopping.");
+            }
+        }
+    }
+
+    public static boolean isBackgroundConnectivityCheckRunning(@NonNull Context context){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return isJobRunning(context, 0);
+        } else {
+            return Utils.isServiceRunning(context, ConnectivityBackgroundService.class);
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private static boolean isJobRunning(Context context, @IntRange(from = 0) int jobID){
+    private static boolean isJobRunning(@NonNull Context context, @IntRange(from = 0) int jobID){
         JobScheduler scheduler = Utils.requireNonNull((JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE));
         for ( JobInfo jobInfo : scheduler.getAllPendingJobs())
             if (jobInfo.getId() == jobID) return true;

@@ -122,7 +122,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
         navDrawableColor = ThemeHandler.resolveThemeAttribute(getTheme(), R.attr.navDrawableColor);
         super.onCreate(savedInstanceState);
         Util.updateAppShortcuts(this);
-        Util.runBackgroundConnectivityCheck(this);
+        Util.runBackgroundConnectivityCheck(this, true);
         final Preferences preferences = Preferences.getInstance(this);
         preferences.put( "first_run", false);
         if(preferences.getBoolean( "first_run", true)) preferences.put( "excluded_apps", new ArraySet<>(Arrays.asList(getResources().getStringArray(R.array.default_blacklist))));

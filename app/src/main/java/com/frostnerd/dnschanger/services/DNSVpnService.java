@@ -317,7 +317,7 @@ public class DNSVpnService extends VpnService {
         preferences = Preferences.getInstance(this);
         initNotification();
         LocalBroadcastManager.getInstance(this).registerReceiver(stateRequestReceiver, new IntentFilter(Util.BROADCAST_SERVICE_STATE_REQUEST));
-        Util.runBackgroundConnectivityCheck(this);
+        Util.runBackgroundConnectivityCheck(this, true);
     }
 
     @Override
@@ -333,7 +333,7 @@ public class DNSVpnService extends VpnService {
         super.onRevoke();
         preferences.put( "start_service_when_available", true);
         stopService();
-        Util.runBackgroundConnectivityCheck(this);
+        Util.runBackgroundConnectivityCheck(this, true);
     }
 
     @Override

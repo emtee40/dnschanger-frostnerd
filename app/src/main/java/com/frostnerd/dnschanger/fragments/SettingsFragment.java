@@ -104,7 +104,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         findPreference("setting_start_boot").setOnPreferenceChangeListener(changeListener);
         findPreference("setting_show_notification").setOnPreferenceChangeListener(changeListener);
         findPreference("show_used_dns").setOnPreferenceChangeListener(changeListener);
-        findPreference("setting_auto_mobile").setOnPreferenceChangeListener(changeListener);
         findPreference("setting_disable_netchange").setOnPreferenceChangeListener(changeListener);
         findPreference("notification_on_stop").setOnPreferenceChangeListener(changeListener);
         findPreference("shortcut_click_again_disable").setOnPreferenceChangeListener(changeListener);
@@ -437,7 +436,29 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             ipv6EnableQuestionSnackbar.show();
            preferences.put("ipv6_asked", true);
         }
+        findPreference("setting_auto_mobile").setOnPreferenceChangeListener(autoSettingsChanged);
+        findPreference("setting_auto_wifi").setOnPreferenceChangeListener(autoSettingsChanged);
+        findPreference("setting_disable_netchange").setOnPreferenceChangeListener(autoSettingsChanged);
     }
+
+    private final Preference.OnPreferenceChangeListener autoSettingsChanged = new Preference.OnPreferenceChangeListener() {
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+            Preferences.getInstance(requireContext()).put(preference.getKey(), newValue);
+            boolean running = Util.isBackgroundConnectivityCheckRunning(requireContext());
+            Preferences pref = Preferences.getInstance(requireContext());
+            boolean run = pref.getBoolean("setting_auto_wifi", false) ||
+                    pref.getBoolean("setting_auto_mobile", false) ||
+                    pref.getBoolean("setting_disable_netchange", false);
+
+            if(run && !running){
+                Util.runBackgroundConnectivityCheck(requireContext(), false);
+            } else if(!run && running) {
+                Util.stopBackgroundConnectivityCheck(requireContext());
+            }
+            return true;
+        }
+    };
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
