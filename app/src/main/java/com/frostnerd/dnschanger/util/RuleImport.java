@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 
 import com.frostnerd.dnschanger.services.RuleImportService;
-import com.frostnerd.utils.networking.NetworkUtil;
+import com.frostnerd.networking.NetworkUtil;
 
 import java.io.BufferedReader;
 import java.io.File;

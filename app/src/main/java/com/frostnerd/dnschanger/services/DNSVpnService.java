@@ -27,11 +27,11 @@ import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.widgets.BasicWidget;
-import com.frostnerd.utils.general.IntentUtil;
-import com.frostnerd.utils.general.StringUtil;
-import com.frostnerd.utils.general.Utils;
-import com.frostnerd.utils.general.WidgetUtil;
 import com.frostnerd.dnschanger.util.Preferences;
+import com.frostnerd.general.IntentUtil;
+import com.frostnerd.general.StringUtil;
+import com.frostnerd.general.Utils;
+import com.frostnerd.general.WidgetUtil;
 
 import java.util.ArrayList;
 import java.util.Random;

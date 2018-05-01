@@ -6,9 +6,10 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.frostnerd.utils.preferences.restrictions.PreferenceRestriction;
-import com.frostnerd.utils.preferences.restrictions.PreferencesRestrictionBuilder;
-import com.frostnerd.utils.preferences.restrictions.Type;
+
+import com.frostnerd.preferences.restrictions.PreferenceRestriction;
+import com.frostnerd.preferences.restrictions.PreferencesRestrictionBuilder;
+import com.frostnerd.preferences.restrictions.Type;
 
 import java.util.Arrays;
 
@@ -21,7 +22,7 @@ import java.util.Arrays;
  * <p>
  * development@frostnerd.com
  */
-public class Preferences extends com.frostnerd.utils.preferences.Preferences {
+public class Preferences extends com.frostnerd.preferences.Preferences {
     private static Preferences instance;
 
     public static Preferences getInstance(Context context){
@@ -45,19 +46,19 @@ public class Preferences extends com.frostnerd.utils.preferences.Preferences {
 
         builder.key("setting_ipv6_enabled").ofType(Type.BOOLEAN).shouldNotBe(false).when(new PreferenceRestriction.Condition() {
             @Override
-            public boolean isMet(@NonNull com.frostnerd.utils.preferences.Preferences preferences, @NonNull String key, @Nullable Object newValue) {
+            public boolean isMet(@NonNull com.frostnerd.preferences.Preferences preferences, @NonNull String key, @Nullable Object newValue) {
                 return !preferences.getBoolean("setting_ipv4_enabled", true);
             }
         }).doneWithKey();
         builder.key("setting_ipv4_enabled").ofType(Type.BOOLEAN).shouldNotBe(false).when(new PreferenceRestriction.Condition() {
             @Override
-            public boolean isMet(@NonNull com.frostnerd.utils.preferences.Preferences preferences, @NonNull String key, @Nullable Object newValue) {
+            public boolean isMet(@NonNull com.frostnerd.preferences.Preferences preferences, @NonNull String key, @Nullable Object newValue) {
                 return !preferences.getBoolean("setting_ipv6_enabled", true);
             }
         }).doneWithKey();
         builder.key("setting_show_notification").ofType(Type.BOOLEAN).shouldBe(true).when(new PreferenceRestriction.Condition() {
             @Override
-            public boolean isMet(@NonNull com.frostnerd.utils.preferences.Preferences preferences, @NonNull String key, @Nullable Object newValue) {
+            public boolean isMet(@NonNull com.frostnerd.preferences.Preferences preferences, @NonNull String key, @Nullable Object newValue) {
                 return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
             }
         }).doneWithKey();

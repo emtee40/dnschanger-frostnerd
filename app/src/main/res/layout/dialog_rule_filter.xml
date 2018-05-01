@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <com.frostnerd.utils.design.MaterialEditText
+    <com.frostnerd.materialedittext.MaterialEditText
         android:id="@+id/met_target"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
             android:hint="@string/search_by_target"
             android:inputType="textNoSuggestions"
             android:textColor="#FFF"/>
-    </com.frostnerd.utils.design.MaterialEditText>
+    </com.frostnerd.materialedittext.MaterialEditText>
 
     <RadioGroup
         android:layout_width="match_parent"

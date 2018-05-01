@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.frostnerd.design.DesignUtil;
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.utils.adapters.BaseAdapter;
-import com.frostnerd.utils.adapters.BaseViewHolder;
-import com.frostnerd.utils.general.DesignUtil;
+import com.frostnerd.lifecycle.BaseAdapter;
+import com.frostnerd.lifecycle.BaseViewHolder;
 
 
 import java.util.List;
@@ -89,7 +89,7 @@ public class QueryResultAdapter extends BaseAdapter<QueryResultAdapter.ViewHolde
         return 5;
     }
 
-    static class ViewHolder extends BaseViewHolder{
+    static class ViewHolder extends BaseViewHolder {
         private ViewHolder(int elementCount, Context context, LinearLayout itemView) {
             super(itemView);
             TextView text;

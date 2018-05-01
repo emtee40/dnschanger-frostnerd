@@ -37,6 +37,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.frostnerd.design.dialogs.LoadingDialog;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
@@ -48,11 +49,10 @@ import com.frostnerd.dnschanger.util.DNSQueryUtil;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Util;
-import com.frostnerd.utils.design.MaterialEditText;
-import com.frostnerd.utils.design.dialogs.LoadingDialog;
 import com.frostnerd.dnschanger.util.Preferences;
-import com.frostnerd.utils.general.Utils;
-import com.frostnerd.utils.textfilers.InputCharacterFilter;
+import com.frostnerd.general.Utils;
+import com.frostnerd.general.textfilers.InputCharacterFilter;
+import com.frostnerd.materialedittext.MaterialEditText;
 
 import java.util.ArrayList;
 import java.util.List;

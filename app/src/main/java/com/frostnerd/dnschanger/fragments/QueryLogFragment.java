@@ -24,7 +24,7 @@ import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.accessors.QueryLogger;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
 import com.frostnerd.dnschanger.util.Util;
-import com.frostnerd.utils.general.Utils;
+import com.frostnerd.general.Utils;
 
 /**
  * Copyright Daniel Wolf 2017

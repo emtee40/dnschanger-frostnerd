@@ -19,8 +19,8 @@ import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.widgets.BasicWidget;
-import com.frostnerd.utils.general.WidgetUtil;
 import com.frostnerd.dnschanger.util.Preferences;
+import com.frostnerd.general.WidgetUtil;
 
 /**
  * Copyright Daniel Wolf 2017

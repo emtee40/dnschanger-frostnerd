@@ -21,8 +21,8 @@ import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.dnsproxy.DNSProxy;
 import com.frostnerd.dnschanger.util.dnsproxy.DummyProxy;
-import com.frostnerd.utils.general.StringUtil;
-import com.frostnerd.utils.networking.NetworkUtil;
+import com.frostnerd.general.StringUtil;
+import com.frostnerd.networking.NetworkUtil;
 
 import java.io.IOException;
 import java.net.InetAddress;

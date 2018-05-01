@@ -14,6 +14,8 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 
+import com.frostnerd.design.dialogs.FileChooserDialog;
+import com.frostnerd.design.dialogs.LoadingDialog;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
@@ -21,10 +23,8 @@ import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
 import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.dnschanger.util.ThemeHandler;
-import com.frostnerd.utils.design.dialogs.FileChooserDialog;
-import com.frostnerd.utils.design.dialogs.LoadingDialog;
-import com.frostnerd.utils.permissions.PermissionsUtil;
-import com.frostnerd.utils.preferences.AppCompatPreferenceActivity;
+import com.frostnerd.general.permissions.PermissionsUtil;
+import com.frostnerd.preferences.AppCompatPreferenceActivity;
 
 import java.io.BufferedWriter;
 import java.io.File;

@@ -52,10 +52,14 @@ allprojects {
         jcenter()
         google()
         maven {
-            url "https://maven.google.com"
+            url 'https://artifactory.frostnerd.com/artifactory/libs-release-local'
+            credentials {
+                username = "$artifactory_username"
+                password = "$artifactory_password"
+            }
         }
         maven {
-            url 'https://artifactory.frostnerd.com/artifactory/libs-release-local'
+            url 'https://artifactory.frostnerd.com/artifactory/libs-snapshot-local'
             credentials {
                 username = "$artifactory_username"
                 password = "$artifactory_password"

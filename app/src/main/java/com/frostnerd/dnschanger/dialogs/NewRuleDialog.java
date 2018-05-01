@@ -21,9 +21,9 @@ import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.util.RuleImport;
 import com.frostnerd.dnschanger.util.ThemeHandler;
-import com.frostnerd.utils.design.MaterialEditText;
-import com.frostnerd.utils.lifecyclehelper.UtilityDialog;
-import com.frostnerd.utils.networking.NetworkUtil;
+import com.frostnerd.lifecycle.BaseDialog;
+import com.frostnerd.materialedittext.MaterialEditText;
+import com.frostnerd.networking.NetworkUtil;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -34,7 +34,7 @@ import com.frostnerd.utils.networking.NetworkUtil;
  * <p>
  * development@frostnerd.com
  */
-public class NewRuleDialog extends UtilityDialog {
+public class NewRuleDialog extends BaseDialog {
     private MaterialEditText metHost;
     private MaterialEditText metTarget;
     private MaterialEditText metTarget2;

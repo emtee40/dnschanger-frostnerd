@@ -31,11 +31,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.frostnerd.design.DesignUtil;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.util.ThemeHandler;
-import com.frostnerd.utils.general.DesignUtil;
-import com.frostnerd.utils.general.Utils;
-import com.frostnerd.utils.lifecyclehelper.UtilityActivity;
+import com.frostnerd.general.Utils;
+import com.frostnerd.lifecycle.BaseActivity;
 
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ import java.util.TreeSet;
  * <p>
  * development@frostnerd.com
  */
-public class AppSelectionActivity extends UtilityActivity implements SearchView.OnQueryTextListener{
+public class AppSelectionActivity extends BaseActivity implements SearchView.OnQueryTextListener{
     private long lastBackPress;
     private ArrayList<String> currentSelected;
     private RecyclerView appList;

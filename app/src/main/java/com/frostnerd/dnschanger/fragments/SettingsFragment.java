@@ -32,6 +32,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
+import com.frostnerd.design.DesignUtil;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
@@ -45,14 +46,13 @@ import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
-import com.frostnerd.utils.general.DesignUtil;
-import com.frostnerd.utils.general.IntentUtil;
-import com.frostnerd.utils.general.Utils;
-import com.frostnerd.utils.permissions.PermissionsUtil;
 import com.frostnerd.dnschanger.util.Preferences;
-import com.frostnerd.utils.preferences.searchablepreferences.SearchSettings;
-import com.frostnerd.utils.preferences.searchablepreferences.v14.PreferenceSearcher;
-import com.frostnerd.utils.preferences.searchablepreferences.v14.SearchablePreference;
+import com.frostnerd.general.IntentUtil;
+import com.frostnerd.general.Utils;
+import com.frostnerd.general.permissions.PermissionsUtil;
+import com.frostnerd.preferences.searchablepreferences.SearchSettings;
+import com.frostnerd.preferences.searchablepreferences.v14.PreferenceSearcher;
+import com.frostnerd.preferences.searchablepreferences.v14.SearchablePreference;
 
 import java.io.File;
 import java.util.ArrayList;

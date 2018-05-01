@@ -3,12 +3,12 @@ package com.frostnerd.dnschanger.database.entities;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.frostnerd.database.orm.MultitonEntity;
+import com.frostnerd.database.orm.annotations.Named;
+import com.frostnerd.database.orm.annotations.RowID;
+import com.frostnerd.database.orm.annotations.Serialized;
+import com.frostnerd.database.orm.annotations.Table;
 import com.frostnerd.dnschanger.database.serializers.IPPortSerializer;
-import com.frostnerd.utils.database.orm.MultitonEntity;
-import com.frostnerd.utils.database.orm.annotations.Named;
-import com.frostnerd.utils.database.orm.annotations.RowID;
-import com.frostnerd.utils.database.orm.annotations.Serialized;
-import com.frostnerd.utils.database.orm.annotations.Table;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -37,6 +37,7 @@ public class DNSTLSConfiguration extends MultitonEntity {
     private String hostName;
     @Serialized(scope = Serialized.Scope.INNER, using = IPPortSerializer.class)
     @NonNull
+    @Named(name = "affected_servers")
     private HashSet<IPPortPair> affectedServers;
 
     public DNSTLSConfiguration(int port, @NonNull HashSet<IPPortPair> affectedServers) {

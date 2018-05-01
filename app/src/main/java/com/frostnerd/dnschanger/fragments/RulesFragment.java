@@ -34,6 +34,7 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.frostnerd.design.DesignUtil;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.adapters.RuleAdapter;
@@ -42,10 +43,9 @@ import com.frostnerd.dnschanger.dialogs.NewRuleDialog;
 import com.frostnerd.dnschanger.services.RuleImportService;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Util;
-import com.frostnerd.utils.design.MaterialEditText;
-import com.frostnerd.utils.general.DesignUtil;
-import com.frostnerd.utils.general.Utils;
-import com.frostnerd.utils.networking.NetworkUtil;
+import com.frostnerd.general.Utils;
+import com.frostnerd.materialedittext.MaterialEditText;
+import com.frostnerd.networking.NetworkUtil;
 
 /**
  * Copyright Daniel Wolf 2017

@@ -37,9 +37,9 @@ import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.services.jobs.ConnectivityJobAPI21;
 import com.frostnerd.dnschanger.tiles.TilePauseResume;
 import com.frostnerd.dnschanger.tiles.TileStartStop;
-import com.frostnerd.utils.general.StringUtil;
-import com.frostnerd.utils.general.Utils;
-import com.frostnerd.utils.networking.NetworkUtil;
+import com.frostnerd.general.StringUtil;
+import com.frostnerd.general.Utils;
+import com.frostnerd.networking.NetworkUtil;
 
 
 import java.io.ByteArrayInputStream;

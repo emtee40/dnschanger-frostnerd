@@ -23,6 +23,8 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.frostnerd.design.DesignUtil;
+import com.frostnerd.design.dialogs.LoadingDialog;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.services.DNSVpnService;
@@ -31,13 +33,11 @@ import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
-import com.frostnerd.utils.design.MaterialEditText;
-import com.frostnerd.utils.design.dialogs.LoadingDialog;
-import com.frostnerd.utils.general.DesignUtil;
-import com.frostnerd.utils.general.StringUtil;
-import com.frostnerd.utils.general.Utils;
-import com.frostnerd.utils.general.VariableChecker;
-import com.frostnerd.utils.lifecyclehelper.UtilityActivity;
+import com.frostnerd.general.StringUtil;
+import com.frostnerd.general.Utils;
+import com.frostnerd.lifecycle.BaseActivity;
+import com.frostnerd.materialedittext.MaterialEditText;
+import com.frostnerd.preferences.util.VariableChecker;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -48,7 +48,7 @@ import com.frostnerd.utils.lifecyclehelper.UtilityActivity;
  * <p>
  * development@frostnerd.com
  */
-public class PinActivity extends UtilityActivity {
+public class PinActivity extends BaseActivity {
     private MaterialEditText met;
     private EditText pinInput;
     private String pin;

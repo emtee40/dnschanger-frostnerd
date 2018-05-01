@@ -27,7 +27,7 @@ import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Util;
-import com.frostnerd.utils.general.Utils;
+import com.frostnerd.general.Utils;
 
 import java.net.Inet4Address;
 import java.net.Inet6Address;

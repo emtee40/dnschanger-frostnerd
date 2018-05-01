@@ -11,14 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.frostnerd.database.DatabaseAdapter;
+import com.frostnerd.database.orm.parser.columns.Column;
+import com.frostnerd.database.orm.statementoptions.queryoptions.OrderOption;
+import com.frostnerd.database.orm.statementoptions.queryoptions.WhereCondition;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
-import com.frostnerd.utils.adapters.BaseViewHolder;
-import com.frostnerd.utils.adapters.DatabaseAdapter;
-import com.frostnerd.utils.database.orm.parser.columns.Column;
-import com.frostnerd.utils.database.orm.statementoptions.queryoptions.OrderOption;
-import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
+import com.frostnerd.lifecycle.BaseViewHolder;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

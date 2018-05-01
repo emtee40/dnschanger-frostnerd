@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.os.Message;
 import android.os.RemoteException;
 
+import com.frostnerd.api.DataExchangeService;
+import com.frostnerd.api.DataExchanger;
+import com.frostnerd.api.dataexchangers.PreferencesExchanger;
 import com.frostnerd.dnschanger.activities.BackgroundDNSListActivity;
 import com.frostnerd.dnschanger.util.Preferences;
-import com.frostnerd.utils.apis.DataExchangeService;
-import com.frostnerd.utils.apis.DataExchanger;
-import com.frostnerd.utils.apis.dataexchangers.PreferencesExchanger;
 /**
  * Copyright Daniel Wolf 2017
  * All rights reserved.
