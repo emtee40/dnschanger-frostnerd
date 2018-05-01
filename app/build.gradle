@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'project-report'
 
 android {
     compileSdkVersion 27
@@ -40,8 +41,8 @@ android {
 dependencies {
     implementation 'com.frostnerd.utils:general:1.0.2'
     implementation 'com.frostnerd.utils:database:1.0.4'
-    implementation 'com.frostnerd.utils:design:1.0.3'
-    implementation 'com.frostnerd.utils:materialedittext:1.0.1'
+    implementation 'com.frostnerd.utils:design:1.0.5'
+    implementation 'com.frostnerd.utils:materialedittext:1.0.3'
     implementation 'com.frostnerd.utils:preferences:1.0.1'
     implementation 'com.frostnerd.utils:networking:1.0.1'
     implementation 'com.frostnerd.utils:preferenceexport:1.0.1'
