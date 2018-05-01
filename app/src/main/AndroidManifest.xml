@@ -252,7 +252,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.frostnerd.utils.design.filechooseractivity.FileChooserActivity" />
+        <activity android:name="com.frostnerd.design.filechooseractivity.FileChooserActivity" />
 
         <receiver
             android:name=".receivers.AdminReceiver"
