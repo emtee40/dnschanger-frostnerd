@@ -46,6 +46,7 @@ dependencies {
     implementation 'com.frostnerd.utils:networking:1.0.0-SNAPSHOT'
     implementation 'com.frostnerd.utils:preferenceexport:1.0.0-SNAPSHOT'
     implementation 'com.frostnerd.utils:api:1.0.0'
+    testImplementation 'com.frostnerd.utils:logging:1.0.0-SNAPSHOT'
 
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
