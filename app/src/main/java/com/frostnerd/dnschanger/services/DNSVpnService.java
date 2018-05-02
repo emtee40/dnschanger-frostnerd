@@ -18,6 +18,7 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
 import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
@@ -334,6 +335,9 @@ public class DNSVpnService extends VpnService {
         preferences.put( "start_service_when_available", true);
         stopService();
         Util.runBackgroundConnectivityCheck(this, true);
+        if(Preferences.getInstance(this).getBoolean("setting_protect_other_vpns", false)) {
+            BackgroundVpnConfigureActivity.startBackgroundConfigure(this, true);
+        }
     }
 
     @Override

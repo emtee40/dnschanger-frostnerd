@@ -112,6 +112,13 @@
             android:key="pin_app_shortcut"
             android:summary="@string/summary_pin_app_shortcut"
             android:title="@string/title_pin_app_shortcut" />
+
+        <CheckBoxPreference
+            android:dependency="setting_pin_enabled"
+            android:key="setting_protect_other_vpns"
+            android:summary="@string/summary_protect_other_vpns"
+            android:title="@string/title_protect_other_vpns" />
+
         <EditTextPreference
             android:defaultValue="1234"
             android:dependency="setting_pin_enabled"

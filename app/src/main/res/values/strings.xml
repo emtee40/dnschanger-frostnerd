@@ -333,4 +333,6 @@
     <string name="dnssec" translatable="false">DNSSEC</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="summary_protect_other_vpns">Only allow the app to stop via the inbuilt methods</string>
+    <string name="title_protect_other_vpns">Only graceful stop</string>
 </resources>
