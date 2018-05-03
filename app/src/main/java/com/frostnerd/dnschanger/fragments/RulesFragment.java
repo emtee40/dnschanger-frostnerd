@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -39,6 +40,7 @@ import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.adapters.RuleAdapter;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
+import com.frostnerd.dnschanger.database.entities.DNSRule;
 import com.frostnerd.dnschanger.dialogs.NewRuleDialog;
 import com.frostnerd.dnschanger.services.RuleImportService;
 import com.frostnerd.dnschanger.util.ThemeHandler;
@@ -284,15 +286,21 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         });
     }
 
+    private boolean wasPaused = false;
+
     @Override
     public void onPause() {
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(databaseUpdateReceiver);
+        wasPaused = true;
         super.onPause();
     }
 
     @Override
     public void onResume() {
         LocalBroadcastManager.getInstance(requireContext()).registerReceiver(databaseUpdateReceiver, new IntentFilter(RuleImportService.BROADCAST_EVENT_DATABASE_UPDATED));
+        if(wasPaused && ruleAdapter.getItemCount() != ruleAdapter.queryDBCount())
+            ruleAdapter.reloadData();
+        wasPaused = false;
         super.onResume();
     }
 

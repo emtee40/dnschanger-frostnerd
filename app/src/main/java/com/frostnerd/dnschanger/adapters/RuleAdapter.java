@@ -137,6 +137,11 @@ public class RuleAdapter<T extends Activity &RuleImport.ImportStartedListener> e
         newRuleDialog = null;
     }
 
+    @Override
+    public int queryDBCount() {
+        return super.queryDBCount();
+    }
+
     public enum ArgumentLessFilter implements DatabaseAdapter.ArgumentLessFilter{
         SHOW_IPV6 {
             @Override
