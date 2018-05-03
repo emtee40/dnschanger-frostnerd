@@ -86,6 +86,15 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
         });
+        findPreference("clear_queries").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                showClearQueriesDialog();
+                return true;
+            }
+        });
+
+
         final CheckBoxPreference tls = (CheckBoxPreference) findPreference("dns_over_tls"),
                 tcp = (CheckBoxPreference) findPreference("dns_over_tcp");
         tls.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -104,7 +113,6 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
                 return preferenceChangeListener.onPreferenceChange(preference, newValue);
             }
         });
-
         if(tls.isChecked() && tls.isEnabled())tcp.setEnabled(false);
         else if(tcp.isChecked() && tcp.isEnabled())tls.setEnabled(false);
     }
@@ -241,7 +249,7 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
     }
 
     private void showQueryExportSuccessDialog(final File f, int queries) {
-        new android.app.AlertDialog.Builder(this)
+        new AlertDialog.Builder(this)
                 .setMessage(getString(R.string.exported_dns_queries).replace("[x]", String.valueOf(queries)))
                 .setCancelable(true)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -263,6 +271,15 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
                 startActivity(Intent.createChooser(intentShareFile, getString(R.string.open_share_file)));
             }
         }).setTitle(R.string.success).show();
+    }
+
+    private void showClearQueriesDialog(){
+        new AlertDialog.Builder(this).setTitle(R.string.title_clear_queries).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DatabaseHelper.getInstance(AdvancedSettingsActivity.this).deleteAll(DNSQuery.class);
+            }
+        }).setNegativeButton(R.string.cancel, null).setMessage(R.string.dialog_are_you_sure).show();
     }
 
     @Override

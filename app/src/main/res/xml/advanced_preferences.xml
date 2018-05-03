@@ -63,6 +63,12 @@
 
         <Preference
             android:dependency="query_logging"
+            android:key="clear_queries"
+            android:summary="@string/summary_clear_queries"
+            android:title="@string/title_clear_queries" />
+
+        <Preference
+            android:dependency="query_logging"
             android:key="export_queries"
             android:summary="@string/summary_export_queries"
             android:title="@string/title_export_queries" />
