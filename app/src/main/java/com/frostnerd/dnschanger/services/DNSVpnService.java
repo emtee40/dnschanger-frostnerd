@@ -332,11 +332,12 @@ public class DNSVpnService extends VpnService {
     @Override
     public void onRevoke() {
         super.onRevoke();
-        preferences.put( "start_service_when_available", true);
         stopService();
         Util.runBackgroundConnectivityCheck(this, true);
         if(Preferences.getInstance(this).getBoolean("setting_protect_other_vpns", false)) {
             BackgroundVpnConfigureActivity.startBackgroundConfigure(this, true);
+        } else {
+            preferences.put( "start_service_when_available", true);
         }
     }
 
