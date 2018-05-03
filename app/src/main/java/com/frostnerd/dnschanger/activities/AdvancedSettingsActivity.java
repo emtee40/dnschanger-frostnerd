@@ -105,7 +105,7 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
         findPreference("clear_local_rules").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                showClearListDialog(R.string.title_clear_local_rules, DNSRule.class, DNSRuleImport.class);
+                showClearListDialog(R.string.title_clear_local_rules, DNSRuleImport.class, DNSRule.class);
                 return true;
             }
         });
