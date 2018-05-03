@@ -14,13 +14,17 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 
+import com.frostnerd.database.orm.Entity;
 import com.frostnerd.design.dialogs.FileChooserDialog;
 import com.frostnerd.design.dialogs.LoadingDialog;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
+import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
+import com.frostnerd.dnschanger.database.entities.DNSRule;
+import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
 import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.general.permissions.PermissionsUtil;
@@ -89,11 +93,17 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
         findPreference("clear_queries").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                showClearQueriesDialog();
+                showClearListDialog(DNSQuery.class);
                 return true;
             }
         });
-
+        findPreference("clear_local_rules").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                showClearListDialog(DNSRule.class, DNSRuleImport.class);
+                return true;
+            }
+        });
 
         final CheckBoxPreference tls = (CheckBoxPreference) findPreference("dns_over_tls"),
                 tcp = (CheckBoxPreference) findPreference("dns_over_tcp");
@@ -273,11 +283,14 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
         }).setTitle(R.string.success).show();
     }
 
-    private void showClearQueriesDialog(){
+    @SafeVarargs
+    private final void showClearListDialog(final Class<? extends Entity>... entities){
         new AlertDialog.Builder(this).setTitle(R.string.title_clear_queries).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                DatabaseHelper.getInstance(AdvancedSettingsActivity.this).deleteAll(DNSQuery.class);
+                for (Class<? extends Entity> entity : entities) {
+                    DatabaseHelper.getInstance(AdvancedSettingsActivity.this).deleteAll(entity);
+                }
             }
         }).setNegativeButton(R.string.cancel, null).setMessage(R.string.dialog_are_you_sure).show();
     }

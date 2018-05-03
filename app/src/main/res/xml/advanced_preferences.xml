@@ -25,13 +25,6 @@
         <CheckBoxPreference
             android:defaultValue="false"
             android:dependency="advanced_settings"
-            android:key="rules_activated"
-            android:summary="@string/summary_rules_activated"
-            android:title="@string/title_rules_activated" />
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:dependency="advanced_settings"
             android:key="dns_over_tcp"
             android:summary="@string/summary_dns_over_tcp"
             android:title="@string/title_dns_over_tcp" />
@@ -44,6 +37,21 @@
             android:summary="@string/summary_tcp_timeout"
             android:title="@string/title_tcp_timeout" />
 
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/title_rules_activated">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="advanced_settings"
+            android:key="rules_activated"
+            android:summary="@string/summary_rules_activated"
+            android:title="@string/title_rules_activated" />
+
+        <Preference
+            android:dependency="rules_activated"
+            android:key="clear_local_rules"
+            android:summary="@string/summary_clear_local_rules"
+            android:title="@string/title_clear_local_rules" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/title_query_logging">
