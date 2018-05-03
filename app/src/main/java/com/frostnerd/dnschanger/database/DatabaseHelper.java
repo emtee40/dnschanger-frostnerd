@@ -119,6 +119,7 @@ public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
             for(Shortcut shortcut: shortcuts) createShortcut(shortcut);
         }else if(oldVersion <= 3) {
             getSQLHandler(DNSTLSConfiguration.class).createTable(db);
+            deleteAll(DNSRuleImport.class);
         }
     }
 
