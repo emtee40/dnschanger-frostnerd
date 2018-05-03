@@ -348,8 +348,8 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
                             String.valueOf(dnsRuleImport.getFirstInsert()),
                             String.valueOf(dnsRuleImport.getLastInsert()));
 
-                    DatabaseHelper.getInstance(AdvancedSettingsActivity.this).delete(DNSRule.class, condition);
                     DatabaseHelper.getInstance(AdvancedSettingsActivity.this).delete(dnsRuleImport);
+                    DatabaseHelper.getInstance(AdvancedSettingsActivity.this).delete(DNSRule.class, condition);
                 }
                 loadingDialog.dismiss();
                 loadingDialog.cancel();
