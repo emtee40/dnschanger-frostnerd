@@ -65,6 +65,14 @@ public class DNSRuleImport extends MultitonEntity {
         return databaseHelper.getByRowID(DNSRule.class, firstInsert);
     }
 
+    public long getFirstInsert() {
+        return firstInsert;
+    }
+
+    public long getLastInsert() {
+        return lastInsert;
+    }
+
     @Override
     public String toString() {
         return "DNSRuleImport{" +

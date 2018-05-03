@@ -15,13 +15,14 @@ import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 
 import com.frostnerd.database.orm.Entity;
+import com.frostnerd.database.orm.parser.columns.Column;
+import com.frostnerd.database.orm.statementoptions.queryoptions.WhereCondition;
 import com.frostnerd.design.dialogs.FileChooserDialog;
 import com.frostnerd.design.dialogs.LoadingDialog;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
-import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
 import com.frostnerd.dnschanger.database.entities.DNSRule;
 import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
@@ -35,6 +36,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -101,6 +106,13 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 showClearListDialog(DNSRule.class, DNSRuleImport.class);
+                return true;
+            }
+        });
+        findPreference("undo_rule_import").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                showUndoRuleImportDialog();
                 return true;
             }
         });
@@ -293,6 +305,56 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
                 }
             }
         }).setNegativeButton(R.string.cancel, null).setMessage(R.string.dialog_are_you_sure).show();
+    }
+
+    private void showUndoRuleImportDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, ThemeHandler.getDialogTheme(this));
+        builder.setTitle(R.string.title_undo_rule_import);
+        final HashMap<String, DNSRuleImport> imports = new HashMap<>();
+        for (DNSRuleImport dnsRuleImport : DatabaseHelper.getInstance(this).getAll(DNSRuleImport.class)) {
+            imports.put(dnsRuleImport.toString(), dnsRuleImport);
+        }
+        final String[] displayedTexts = imports.keySet().toArray(new String[imports.size()]);
+        final Set<DNSRuleImport> selectedImports = new HashSet<>();
+
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.setMultiChoiceItems(displayedTexts, null, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                String current = displayedTexts[which];
+                DNSRuleImport dnsRuleImport = imports.get(current);
+                if(selectedImports.contains(dnsRuleImport)) selectedImports.remove(dnsRuleImport);
+                else selectedImports.add(dnsRuleImport);
+            }
+        });
+        builder.setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                undoImports(selectedImports);
+            }
+        });
+        builder.show();
+    }
+
+    private void undoImports(final Collection<DNSRuleImport> imports){
+        final LoadingDialog loadingDialog = new LoadingDialog(this, R.string.loading);
+        loadingDialog.show();
+        new Thread(){
+            @Override
+            public void run() {
+                Column<DNSRuleImport> rowid = DatabaseHelper.getInstance(AdvancedSettingsActivity.this).getRowIDColumn(DNSRuleImport.class);
+                for(DNSRuleImport dnsRuleImport: imports){
+                    WhereCondition condition = WhereCondition.between(rowid,
+                            String.valueOf(dnsRuleImport.getFirstInsert()),
+                            String.valueOf(dnsRuleImport.getLastInsert()));
+
+                    DatabaseHelper.getInstance(AdvancedSettingsActivity.this).delete(DNSRule.class, condition);
+                    DatabaseHelper.getInstance(AdvancedSettingsActivity.this).delete(dnsRuleImport);
+                }
+                loadingDialog.dismiss();
+                loadingDialog.cancel();
+            }
+        }.start();
     }
 
     @Override

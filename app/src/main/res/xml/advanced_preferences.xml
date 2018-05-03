@@ -52,6 +52,12 @@
             android:key="clear_local_rules"
             android:summary="@string/summary_clear_local_rules"
             android:title="@string/title_clear_local_rules" />
+
+        <Preference
+            android:dependency="rules_activated"
+            android:key="undo_rule_import"
+            android:summary="@string/summary_undo_rule_import"
+            android:title="@string/title_undo_rule_import" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/title_query_logging">

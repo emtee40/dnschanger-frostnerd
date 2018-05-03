@@ -340,4 +340,6 @@
     <string name="dialog_are_you_sure">Are you sure you want to do that?</string>
     <string name="summary_clear_local_rules">Deletes all local rules. Cannot be reverted.</string>
     <string name="title_clear_local_rules">Clear local rules</string>
+    <string name="summary_undo_rule_import">Revert a rule import from a file. Cannot be reverted.</string>
+    <string name="title_undo_rule_import">Undo import</string>
 </resources>
