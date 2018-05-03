@@ -135,7 +135,7 @@ public class RuleImportService extends Service {
                 BufferedReader reader = new BufferedReader(new FileReader(file.getFile()));
                 RuleImport.LineParser parser = file.getFileType();
                 updateNotification(file.getFile());
-                rowID = DatabaseHelper.getInstance(this).getHighestRowID(DNSRule.class);
+                rowID = DatabaseHelper.getInstance(this).getHighestUnusedRowID(DNSRule.class);
                 lastRowID = rowID;
                 long currentRowID;
                 while (continueCurrent && shouldContinue && (line = reader.readLine()) != null) {
