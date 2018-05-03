@@ -10,6 +10,8 @@ import com.frostnerd.database.orm.annotations.NotNull;
 import com.frostnerd.database.orm.annotations.Table;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 
+import java.text.DateFormat;
+
 
 /**
  * Copyright Daniel Wolf 2017
@@ -73,13 +75,10 @@ public class DNSRuleImport extends MultitonEntity {
         return lastInsert;
     }
 
+    private static final DateFormat TIME_FORMATTER = DateFormat.getDateTimeInstance();
+
     @Override
     public String toString() {
-        return "DNSRuleImport{" +
-                "filename='" + filename + '\'' +
-                ", time=" + time +
-                ", firstInsert=" + firstInsert +
-                ", lastInsert=" + lastInsert +
-                '}';
+        return filename + " (" + TIME_FORMATTER.format(time) + ", " + (lastInsert-firstInsert) + " total)";
     }
 }
