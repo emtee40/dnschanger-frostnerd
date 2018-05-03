@@ -98,14 +98,14 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
         findPreference("clear_queries").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                showClearListDialog(DNSQuery.class);
+                showClearListDialog(R.string.title_clear_queries, DNSQuery.class);
                 return true;
             }
         });
         findPreference("clear_local_rules").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                showClearListDialog(DNSRule.class, DNSRuleImport.class);
+                showClearListDialog(R.string.title_clear_local_rules, DNSRule.class, DNSRuleImport.class);
                 return true;
             }
         });
@@ -296,8 +296,8 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
     }
 
     @SafeVarargs
-    private final void showClearListDialog(final Class<? extends Entity>... entities){
-        new AlertDialog.Builder(this).setTitle(R.string.title_clear_queries).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+    private final void showClearListDialog(int title, final Class<? extends Entity>... entities){
+        new AlertDialog.Builder(this).setTitle(title).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 for (Class<? extends Entity> entity : entities) {
