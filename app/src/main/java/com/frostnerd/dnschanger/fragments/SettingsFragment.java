@@ -475,7 +475,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             LogFactory.writeMessage(requireContext(), LOG_TAG, "Preference " + preference.getKey() + " was changed to " +
                     newValue + ", Type: " + Preferences.guessType(newValue));
-            Preferences.getInstance(requireContext()).put(preference.getKey(), newValue, false);
+            Preferences.getInstance(requireContext()).put(preference.getKey(), newValue);
             String key = preference.getKey();
             if((key.equalsIgnoreCase("setting_show_notification") || key.equalsIgnoreCase("show_used_dns") ||
                     key.equalsIgnoreCase("auto_pause") || key.equalsIgnoreCase("hide_notification_icon")) && Util.isServiceRunning(requireContext())){
