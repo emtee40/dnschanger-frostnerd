@@ -137,6 +137,11 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
         });
         if(tls.isChecked() && tls.isEnabled())tcp.setEnabled(false);
         else if(tcp.isChecked() && tcp.isEnabled())tls.setEnabled(false);
+        setUndoRuleImportStatus();
+    }
+
+    private void setUndoRuleImportStatus() {
+        findPreference("undo_rule_import").setEnabled(DatabaseHelper.getInstance(this).getCount(DNSRuleImport.class) != 0);
     }
 
     @Override
@@ -303,6 +308,7 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
                 for (Class<? extends Entity> entity : entities) {
                     DatabaseHelper.getInstance(AdvancedSettingsActivity.this).deleteAll(entity);
                 }
+                setUndoRuleImportStatus();
             }
         }).setNegativeButton(R.string.cancel, null).setMessage(R.string.dialog_are_you_sure).show();
     }
@@ -351,8 +357,14 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
                     DatabaseHelper.getInstance(AdvancedSettingsActivity.this).delete(dnsRuleImport);
                     DatabaseHelper.getInstance(AdvancedSettingsActivity.this).delete(DNSRule.class, condition);
                 }
-                loadingDialog.dismiss();
-                loadingDialog.cancel();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingDialog.dismiss();
+                        loadingDialog.cancel();
+                        setUndoRuleImportStatus();
+                    }
+                });
             }
         }.start();
     }
