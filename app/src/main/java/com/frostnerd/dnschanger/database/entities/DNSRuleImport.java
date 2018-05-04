@@ -30,10 +30,10 @@ public class DNSRuleImport extends MultitonEntity {
     private String filename;
     @Named(name = "Time")
     private long time;
-    @ForeignKey(referencedEntity = DNSRule.class, referencedField = "rowid")
+    @ForeignKey(referencedEntity = DNSRule.class, referencedField = "rowid", onDelete = ForeignKey.ForeignChangeBehavior.NO_ACTION)
     @Named(name = "FirstInsert")
     private long firstInsert;
-    @ForeignKey(referencedEntity = DNSRule.class, referencedField = "rowid")
+    @ForeignKey(referencedEntity = DNSRule.class, referencedField = "rowid", onDelete = ForeignKey.ForeignChangeBehavior.NO_ACTION)
     @Named(name = "LastInsert")
     private long lastInsert;
 
