@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.frostnerd.database.orm.MultitonEntity;
-import com.frostnerd.database.orm.annotations.ForeignKey;
+import com.frostnerd.database.orm.annotations.DeletableForeignKey;
 import com.frostnerd.database.orm.annotations.Named;
 import com.frostnerd.database.orm.annotations.NotNull;
 import com.frostnerd.database.orm.annotations.Table;
@@ -30,10 +30,10 @@ public class DNSRuleImport extends MultitonEntity {
     private String filename;
     @Named(name = "Time")
     private long time;
-    @ForeignKey(referencedEntity = DNSRule.class, referencedField = "rowid", onDelete = ForeignKey.ForeignChangeBehavior.NO_ACTION)
+    @DeletableForeignKey(referencedEntity = DNSRule.class, referencedField = "rowid")
     @Named(name = "FirstInsert")
     private long firstInsert;
-    @ForeignKey(referencedEntity = DNSRule.class, referencedField = "rowid", onDelete = ForeignKey.ForeignChangeBehavior.NO_ACTION)
+    @DeletableForeignKey(referencedEntity = DNSRule.class, referencedField = "rowid")
     @Named(name = "LastInsert")
     private long lastInsert;
 
