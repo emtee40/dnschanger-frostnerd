@@ -94,7 +94,7 @@ public class Preferences extends com.frostnerd.preferences.Preferences {
         }
 
         builder.key("theme").ofType(Type.STRING).shouldBeOneOf(Arrays.asList("1", "2", "3")).always().doneWithKey();
-        builder.key("tcp_timeout").ofType(Type.INTEGER).doneWithKey();
+        builder.key("tcp_timeout").ofType(Type.STRING).shouldMatch(Type.STRING.getUsedMatcher()).always().doneWithKey();
         builder.key("launches").ofType(Type.INTEGER).doneWithKey();
         builder.key("autopause_apps_count").ofType(Type.INTEGER).doneWithKey();
         builder.key("autopause_apps").ofType(Type.ANY_SAVEABLE).doneWithKey();
