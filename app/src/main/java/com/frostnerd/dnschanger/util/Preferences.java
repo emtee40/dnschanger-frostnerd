@@ -7,11 +7,29 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 
+import com.frostnerd.dnschanger.database.DatabaseHelper;
+import com.frostnerd.dnschanger.database.entities.DNSEntry;
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.preferenceexport.PreferenceHelper;
 import com.frostnerd.preferences.restrictions.PreferenceRestriction;
 import com.frostnerd.preferences.restrictions.PreferencesRestrictionBuilder;
 import com.frostnerd.preferences.restrictions.Type;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Copyright Daniel Wolf 2018
@@ -80,8 +98,73 @@ public class Preferences extends com.frostnerd.preferences.Preferences {
         builder.key("launches").ofType(Type.INTEGER).doneWithKey();
         builder.key("autopause_apps_count").ofType(Type.INTEGER).doneWithKey();
         builder.key("autopause_apps").ofType(Type.ANY_SAVEABLE).doneWithKey();
-        builder.key("dialogtheme").ofType(Type.INTEGER).shouldBeOneOf(Arrays.asList(1,2,3)).always()
-                .nextKey("apptheme").ofType(Type.INTEGER).shouldBeOneOf(Arrays.asList(1,2,3)).always().doneWithKey();
+        builder.key("dialogtheme").ofType(Type.INTEGER).shouldBeOneOf(Arrays.asList(1, 2, 3)).always()
+                .nextKey("apptheme").ofType(Type.INTEGER).shouldBeOneOf(Arrays.asList(1, 2, 3)).always().doneWithKey();
         restrict(builder.build());
+    }
+
+    public static String exportToJson(Context context) throws JSONException {
+        Set<String> excludedKeys = new HashSet<>();
+        excludedKeys.add("first_run");
+        excludedKeys.add("device_admin");
+        excludedKeys.add("launches");
+        excludedKeys.add("rated");
+
+        Map<String, JsonElement> additionalData = new HashMap<>();
+        Map<String, Object> headers = new HashMap<>();
+        List<DNSEntry> customEntries = DatabaseHelper.getInstance(context).getCustomDNSEntries();
+        if(customEntries.size() != 0)
+            additionalData.put("dnsentries", exportDNSEntries(customEntries));
+
+        return PreferenceHelper.exportToJSON(Preferences.getInstance(context), false, excludedKeys, headers, additionalData).toString();
+    }
+
+    public static void importFromJson(Context context, String jsonString) throws JSONException {
+        PreferenceHelper.ImportPayload payload = PreferenceHelper.importFromJSON(getInstance(context),
+                new Gson().fromJson(jsonString, JsonObject.class));
+        if(payload.getPayload().containsKey("dnsentries")){
+            importDNSEntries((JsonArray) payload.getPayload().get("dnsentries"), context);
+        }
+    }
+
+    private static JsonArray exportDNSEntries(Collection<DNSEntry> entries) throws JSONException {
+        JsonArray entryBase = new JsonArray();
+        for(DNSEntry entry: entries){
+            JsonObject current = new JsonObject();
+            current.addProperty("name", entry.getName());
+            current.addProperty("shortname", entry.getShortName());
+            current.addProperty("description", entry.getDescription());
+            current.addProperty("dns1", entry.getDns1().toString(true));
+            if(entry.getDns2() != null)current.addProperty("dns2", entry.getDns2().toString(true));
+            current.addProperty("dns1v6", entry.getDns1V6().toString(true));
+            if(entry.getDns2V6() != null)current.addProperty("dns2v6", entry.getDns2V6().toString(true));
+            entryBase.add(current);
+        }
+        return entryBase;
+    }
+
+    private static void importDNSEntries(JsonArray jsonElements, Context context){
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(context);
+        for (int i = 0; i < jsonElements.size(); i++) {
+            JsonObject current = jsonElements.get(i).getAsJsonObject();
+            databaseHelper.insert(new DNSEntry(
+                    findUnusedDNSEntryName(databaseHelper, current.get("name").getAsString()),
+                    current.get("shortname").getAsString(),
+                    IPPortPair.wrap(current.get("dns1").getAsString()),
+                    current.has("dns2") ? IPPortPair.wrap(current.get("dns2").getAsString()) : null,
+                    IPPortPair.wrap(current.get("dns1v6").getAsString()),
+                    current.has("dns2v6") ? IPPortPair.wrap(current.get("dns2v6").getAsString()) : null,
+                    current.get("description").getAsString(),
+                    true
+            ));
+        }
+    }
+
+    private static String findUnusedDNSEntryName(DatabaseHelper helper, String name){
+        for (int i = 0; i < 100; i++) {
+            String newName = i == 0 ? name : String.valueOf(i) + "_" + name;
+            if(!helper.dnsEntryExists(newName)) return newName;
+        }
+        return name;
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceCategory;
 import android.support.annotation.Nullable;
 
 import com.frostnerd.dnschanger.LogFactory;
@@ -81,7 +82,7 @@ public class SettingsImportActivity extends Activity {
                 else data.append(line);
             }
             LogFactory.writeMessage(c, LOG_TAG, "Data read: " + data);
-            PreferenceHelper.importFromJSON(Preferences.getInstance(c), new Gson().fromJson(data.toString(), JsonObject.class));
+            Preferences.importFromJson(c, data.toString());
             LogFactory.writeMessage(c, LOG_TAG, "Imported data and added to preferences.");
         } catch (Exception e) {
             LogFactory.writeStackTrace(c, LogFactory.Tag.ERROR, e);

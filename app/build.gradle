@@ -45,7 +45,7 @@ dependencies {
     implementation 'com.frostnerd.utils:materialedittext:1.0.3'
     implementation 'com.frostnerd.utils:preferences:1.0.1'
     implementation 'com.frostnerd.utils:networking:1.0.1'
-    implementation 'com.frostnerd.utils:preferenceexport:1.0.1'
+    implementation 'com.frostnerd.utils:preferenceexport:1.0.2'
     implementation 'com.frostnerd.utils:api:1.0.2'
     testImplementation 'com.frostnerd.utils:logging:1.0.1'
 

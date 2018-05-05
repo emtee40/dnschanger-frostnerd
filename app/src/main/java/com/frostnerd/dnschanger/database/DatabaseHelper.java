@@ -251,6 +251,10 @@ public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
         return best;
     }
 
+    public List<DNSEntry> getCustomDNSEntries(){
+        return select(DNSEntry.class, WhereCondition.equal("customentry", "1"));
+    }
+
     @Nullable
     public DNSTLSConfiguration findTLSConfiguration(@NonNull IPPortPair pair){
         for(DNSTLSConfiguration configuration: getAll(DNSTLSConfiguration.class)){
