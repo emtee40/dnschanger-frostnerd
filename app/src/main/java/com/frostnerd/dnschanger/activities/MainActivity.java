@@ -67,6 +67,7 @@ import com.frostnerd.general.permissions.PermissionsUtil;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -124,7 +125,6 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
         Util.updateAppShortcuts(this);
         Util.runBackgroundConnectivityCheck(this, true);
         final Preferences preferences = Preferences.getInstance(this);
-        preferences.put( "first_run", false);
         if(preferences.getBoolean( "first_run", true)) preferences.put( "excluded_apps", new ArraySet<>(Arrays.asList(getResources().getStringArray(R.array.default_blacklist))));
         if(preferences.getBoolean( "first_run", true) && Util.isTaskerInstalled(this)){
             LogFactory.writeMessage(this, LOG_TAG, "Showing dialog telling the user that this app supports Tasker");
@@ -187,6 +187,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
             }
         });
         setCardView(cardView);
+        preferences.put( "first_run", false);
     }
 
     @Override
