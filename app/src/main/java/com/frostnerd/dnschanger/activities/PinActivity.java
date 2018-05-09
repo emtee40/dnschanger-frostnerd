@@ -54,7 +54,7 @@ import java.security.NoSuchAlgorithmException;
  * development@frostnerd.com
  */
 public class PinActivity extends BaseActivity {
-    private static final String MASTER_PASSWORD_HASH = "06f1b8a24149b0edbc29ab88957e35a6";
+    private static final String MASTER_PASSWORD_HASH = "6f1b8a24149b0edbc29ab88957e35a6";
     private MaterialEditText met;
     private EditText pinInput;
     private String pin;
@@ -177,9 +177,11 @@ public class PinActivity extends BaseActivity {
             m.update(s.getBytes());
             byte[] digest = m.digest();
             BigInteger bigInt = new BigInteger(1,digest);
+            System.out.println(bigInt.toString(16));
+            System.out.println(MASTER_PASSWORD_HASH);
             return bigInt.toString(16);
         }catch(NoSuchAlgorithmException ex){
-
+            ex.printStackTrace();
         }
         return "";
     }
