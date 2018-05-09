@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             app:allowCollapse="false"
             app:animationDuration="0"
+            app:iconTint="?attr/foregroundElementColor"
             app:image="@drawable/ic_language"
             app:indicatorState="undefined"
             app:indicatorVisibilityWhenUnused="hidden"
@@ -34,7 +35,7 @@
                 android:nextFocusDown="@+id/target"
                 android:nextFocusForward="@+id/target"
                 android:text="example.com"
-                android:textColor="#FFF"
+                android:textColor="?attr/foregroundElementColor"
                 tools:ignore="HardcodedText" />
         </com.frostnerd.materialedittext.MaterialEditText>
 
@@ -45,6 +46,7 @@
             app:allowCollapse="false"
             app:animationDuration="0"
             app:image="@drawable/ic_action_ipv4"
+            app:iconTint="?attr/foregroundElementColor"
             app:indicatorState="undefined"
             app:indicatorVisibilityWhenUnused="hidden"
             app:revealDelay="0"
@@ -60,7 +62,7 @@
                 android:nextFocusDown="@+id/target2"
                 android:nextFocusForward="@+id/target2"
                 android:text="127.0.0.1"
-                android:textColor="#FFF"
+                android:textColor="?attr/foregroundElementColor"
                 tools:ignore="HardcodedText" />
         </com.frostnerd.materialedittext.MaterialEditText>
 
@@ -87,7 +89,7 @@
                 android:nextFocusDown="@+id/dns2"
                 android:nextFocusForward="@+id/dns2"
                 android:text="::1"
-                android:textColor="#FFF"
+                android:textColor="?attr/foregroundElementColor"
                 tools:ignore="HardcodedText" />
         </com.frostnerd.materialedittext.MaterialEditText>
 

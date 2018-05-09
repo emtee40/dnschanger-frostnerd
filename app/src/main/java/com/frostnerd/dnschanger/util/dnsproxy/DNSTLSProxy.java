@@ -44,11 +44,16 @@ import de.measite.minidns.record.A;
 import de.measite.minidns.record.AAAA;
 import de.measite.minidns.record.Data;*/
 
+import android.net.VpnService;
 import android.os.Build;
+import android.os.ParcelFileDescriptor;
 import android.support.annotation.RequiresApi;
 import android.system.ErrnoException;
 
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
+
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -64,6 +69,10 @@ import java.io.IOException;
  */
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class DNSTLSProxy extends DNSProxy{
+    public DNSTLSProxy(VpnService context, ParcelFileDescriptor parcelFileDescriptor, Set<IPPortPair> upstreamDNSServers, boolean resolveLocalRules, boolean queryLogging, boolean logUpstreamAnswers, int tcpTimeout) {
+        super();
+    }
+
     @Override
     public void run() throws InterruptedException, IOException, ErrnoException {
 

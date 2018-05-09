@@ -9,7 +9,8 @@
         android:id="@+id/cardview_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:textColor="?attr/inputElementColor" />
 
     <TextView
         android:id="@+id/title"

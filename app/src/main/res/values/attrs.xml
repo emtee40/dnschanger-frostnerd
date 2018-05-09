@@ -3,4 +3,6 @@
     <attr name="inputElementColor" format="color"/>
     <attr name="keyResource" format="reference"/>
     <attr name="navDrawableColor" format="color"/>
+
+    <attr name="foregroundElementColor" format="color"/>
 </resources>

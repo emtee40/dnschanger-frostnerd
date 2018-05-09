@@ -10,4 +10,5 @@
     <color name="defaultBackgroundColor">#2196F3</color>
     <color name="monoBackgroundColor">#546E7A</color>
     <color name="darkBackgroundColor">#424242</color>
+    <color name="trueBlackBackgroundColor">#000</color>
 </resources>

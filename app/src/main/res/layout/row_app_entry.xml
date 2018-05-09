@@ -43,7 +43,7 @@
                 android:layout_toRightOf="@id/app_image"
                 android:layout_toStartOf="@+id/app_selected_indicator"
                 android:gravity="center"
-                android:textColor="?android:attr/textColor"
+                android:textColor="?attr/foregroundElementColor"
                 android:text="" />
 
             <CheckBox

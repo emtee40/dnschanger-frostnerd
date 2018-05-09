@@ -19,6 +19,9 @@
         app:indicatorState="undefined"
         app:indicatorVisibilityWhenUnused="hidden"
         app:revealDelay="0"
+        app:iconTint="?attr/foregroundElementColor"
+        app:labelColorPrimary="?attr/foregroundElementColor"
+        app:labelColorSecondary="?attr/foregroundElementColor"
         app:revealType="revealInstant">
 
         <EditText
@@ -28,7 +31,7 @@
             android:hint="@string/hint_dns_lookup"
             android:text="google.com"
             android:inputType="textNoSuggestions"
-            android:textColor="#FFF" />
+            android:textColor="?attr/foregroundElementColor"/>
     </com.frostnerd.materialedittext.MaterialEditText>
 
     <RelativeLayout
@@ -46,7 +49,7 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:text="@string/run_query"
-            android:textColor="#FFF" />
+            android:textColor="?attr/foregroundElementColor" />
 
         <TextView
             android:id="@+id/query_destination_info_text"

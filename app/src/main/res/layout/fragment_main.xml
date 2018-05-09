@@ -21,9 +21,12 @@
             android:layout_height="wrap_content"
             app:allowCollapse="false"
             app:animationDuration="0"
+            app:iconTint="?attr/foregroundElementColor"
             app:image="@drawable/ic_language"
             app:indicatorState="undefined"
             app:indicatorVisibilityWhenUnused="hidden"
+            app:labelColorPrimary="?attr/foregroundElementColor"
+            app:labelColorSecondary="?attr/foregroundElementColor"
             app:revealDelay="0"
             app:revealType="revealInstant">
 
@@ -36,9 +39,9 @@
                 android:imeOptions="actionNext"
                 android:inputType="numberDecimal"
                 android:nextFocusDown="@+id/dns2"
+                android:textColor="?attr/foregroundElementColor"
                 android:nextFocusForward="@+id/dns2"
-                android:text="@string/default_dns1"
-                android:textColor="#FFF" />
+                android:text="@string/default_dns1" />
         </com.frostnerd.materialedittext.MaterialEditText>
 
 
@@ -48,9 +51,12 @@
             android:layout_height="wrap_content"
             app:allowCollapse="false"
             app:animationDuration="0"
+            app:iconTint="?attr/foregroundElementColor"
             app:image="@drawable/ic_language"
             app:indicatorState="undefined"
             app:indicatorVisibilityWhenUnused="hidden"
+            app:labelColorPrimary="?attr/foregroundElementColor"
+            app:labelColorSecondary="?attr/foregroundElementColor"
             app:revealDelay="0"
             app:revealType="revealInstant">
 
@@ -62,11 +68,11 @@
                 android:hint="@string/hint_dns2"
                 android:imeOptions="actionDone"
                 android:inputType="numberDecimal"
-                android:nextFocusUp="@id/dns1"
+                android:textColor="?attr/foregroundElementColor"
                 android:nextFocusDown="@id/default_dns_view"
                 android:nextFocusForward="@id/default_dns_view"
-                android:text="@string/default_dns2"
-                android:textColor="#FFF" />
+                android:nextFocusUp="@id/dns1"
+                android:text="@string/default_dns2" />
         </com.frostnerd.materialedittext.MaterialEditText>
 
         <LinearLayout
@@ -77,9 +83,9 @@
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:nextFocusUp="@id/dns2"
-            android:nextFocusForward="@id/startStopButton"
             android:nextFocusDown="@id/startStopButton"
+            android:nextFocusForward="@id/startStopButton"
+            android:nextFocusUp="@id/dns2"
             android:onClick="openDefaultDNSDialog"
             android:padding="10dp">
 
@@ -90,19 +96,19 @@
                 android:layout_height="32dp"
                 android:background="?attr/inputElementColor"
                 android:src="@drawable/ic_action_import"
-                android:tint="#FFF" />
+                android:tint="?attr/foregroundElementColor" />
 
             <View
                 android:layout_width="2dp"
                 android:layout_height="match_parent"
-                android:background="#FFF" />
+                android:background="?attr/foregroundElementColor" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/default_dns"
-                android:textColor="#FFF" />
+                android:textColor="?attr/foregroundElementColor" />
         </LinearLayout>
 
         <Button
@@ -110,13 +116,13 @@
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:nextFocusUp="@id/default_dns_view"
-            android:nextFocusForward="@id/dns1"
-            android:nextFocusDown="@id/dns1"
             android:layout_marginTop="45dp"
             android:background="?attr/cardColor"
+            android:nextFocusDown="@id/dns1"
+            android:nextFocusForward="@id/dns1"
+            android:nextFocusUp="@id/default_dns_view"
             android:text="@string/start"
-            android:textColor="#FFF" />
+            android:textColor="?attr/foregroundElementColor" />
 
         <View
             android:id="@+id/running_indicator"
@@ -129,8 +135,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textColor="#FFF" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
         <RelativeLayout
             android:layout_width="match_parent"

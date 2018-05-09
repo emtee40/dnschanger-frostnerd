@@ -15,6 +15,9 @@
         app:allowCollapse="false"
         app:animationDuration="0"
         app:image="@drawable/ic_language"
+        app:labelColorPrimary="?attr/foregroundElementColor"
+        app:labelColorSecondary="?attr/foregroundElementColor"
+        app:iconTint="?attr/foregroundElementColor"
         app:indicatorState="undefined"
         app:indicatorVisibilityWhenUnused="hidden"
         app:revealDelay="0"
@@ -26,7 +29,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/search_by_target"
             android:inputType="textNoSuggestions"
-            android:textColor="#FFF"/>
+            android:textColor="?attr/foregroundElementColor"/>
     </com.frostnerd.materialedittext.MaterialEditText>
 
     <RadioGroup
@@ -39,7 +42,6 @@
             android:layout_height="wrap_content"
             android:text="IPv4"
             android:textColor="?android:attr/textColor" />
-
 
         <RadioButton
             android:id="@+id/radio_ipv6"

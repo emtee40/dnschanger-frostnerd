@@ -38,6 +38,9 @@
         app:image="?attr/keyResource"
         app:indicatorState="undefined"
         app:indicatorVisibilityWhenUnused="hidden"
+        app:labelColorPrimary="?attr/foregroundElementColor"
+        app:labelColorSecondary="?attr/foregroundElementColor"
+        app:iconTint="?attr/foregroundElementColor"
         app:labelText="PIN"
         app:revealDelay="0"
         app:revealType="revealInstant">
@@ -50,7 +53,7 @@
             android:cursorVisible="true"
             android:hint="@string/hint_pin"
             android:inputType="numberPassword"
-            android:textColor="#FFF" />
+            android:textColor="?attr/foregroundElementColor" />
     </com.frostnerd.materialedittext.MaterialEditText>
 
     <TextView

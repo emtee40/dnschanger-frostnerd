@@ -98,8 +98,8 @@ public class Preferences extends com.frostnerd.preferences.Preferences {
         builder.key("launches").ofType(Type.INTEGER).doneWithKey();
         builder.key("autopause_apps_count").ofType(Type.INTEGER).doneWithKey();
         builder.key("autopause_apps").ofType(Type.ANY_SAVEABLE).doneWithKey();
-        builder.key("dialogtheme").ofType(Type.INTEGER).shouldBeOneOf(Arrays.asList(1, 2, 3)).always()
-                .nextKey("apptheme").ofType(Type.INTEGER).shouldBeOneOf(Arrays.asList(1, 2, 3)).always().doneWithKey();
+        builder.key("dialogtheme").ofType(Type.INTEGER).shouldBeOneOf(Arrays.asList(1, 2, 3, 4)).always()
+                .nextKey("apptheme").ofType(Type.INTEGER).shouldBeOneOf(Arrays.asList(1, 2, 3, 4)).always().doneWithKey();
         restrict(builder.build());
     }
 
