@@ -1,6 +1,6 @@
 package com.frostnerd.dnschanger.util.dnsproxy;
 
-import android.net.VpnService;
+/*import android.net.VpnService;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.support.annotation.NonNull;
@@ -42,7 +42,13 @@ import de.measite.minidns.DNSMessage;
 import de.measite.minidns.Record;
 import de.measite.minidns.record.A;
 import de.measite.minidns.record.AAAA;
-import de.measite.minidns.record.Data;
+import de.measite.minidns.record.Data;*/
+
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.system.ErrnoException;
+
+import java.io.IOException;
 
 /**
  * Copyright Daniel Wolf 2017
@@ -58,7 +64,16 @@ import de.measite.minidns.record.Data;
  */
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class DNSTLSProxy extends DNSProxy{
-    private static final String LOG_TAG = "[DNSTLSProxy]";
+    @Override
+    public void run() throws InterruptedException, IOException, ErrnoException {
+
+    }
+
+    @Override
+    public void stop() {
+
+    }
+    /*private static final String LOG_TAG = "[DNSTLSProxy]";
     private FileDescriptor interruptedDescriptor = null;
     private FileDescriptor blockingDescriptor = null;
     private ParcelFileDescriptor parcelFileDescriptor;
@@ -222,5 +237,5 @@ public class DNSTLSProxy extends DNSProxy{
         vpnService = null;
         queryLogger = null;
         interruptedDescriptor = blockingDescriptor = null;
-    }
+    }*/
 }

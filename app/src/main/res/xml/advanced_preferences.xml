@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" key="advanced_preferences_screen">
 
     <SwitchPreference
         android:defaultValue="false"
@@ -88,7 +88,7 @@
             android:title="@string/title_export_queries" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/title_dns_over_tls">
+    <PreferenceCategory android:title="@string/title_dns_over_tls" android:enabled="false" android:key="dns_over_tls_category">
         <CheckBoxPreference
             android:defaultValue="false"
             android:dependency="advanced_settings"

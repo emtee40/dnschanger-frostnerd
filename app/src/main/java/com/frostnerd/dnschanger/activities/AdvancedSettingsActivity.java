@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
+import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -62,6 +63,7 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
         setTheme(ThemeHandler.getPreferenceTheme(this));
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.advanced_preferences);
+        ((PreferenceScreen)findPreference("advanced_preferences_screen")).removePreference(findPreference("dns_over_tls_category"));
         findPreference("advanced_settings").setOnPreferenceChangeListener(preferenceChangeListener);
         findPreference("advanced_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
