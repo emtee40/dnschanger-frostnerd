@@ -91,7 +91,6 @@
                 android:background="?attr/inputElementColor"
                 android:clickable="true"
                 android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:nextFocusDown="@id/startStopButton"
                 android:nextFocusForward="@id/startStopButton"
                 android:nextFocusUp="@id/dns2"
