@@ -310,4 +310,22 @@
     <string name="hint_pin">GHIM</string>
     <string name="loading_exporting_queries">Đang xuất truy vấn, vui lòng đợi…</string>
     <string name="exported_dns_queries">[x] truy vấn được xuất.</string>
+    <string name="ok">được</string>
+    <string name="cancel">Hủy bỏ</string>
+    <string name="summary_protect_other_vpns">Chỉ cho phép ứng dụng dừng qua các phương thức sẵn có</string>
+    <string name="title_protect_other_vpns">Chỉ dừng chân duyên dáng</string>
+    <string name="summary_clear_queries">Xóa tất cả các truy vấn đã đăng nhập. Không thể hoàn nguyên.</string>
+    <string name="title_clear_queries">Xóa truy vấn</string>
+    <string name="dialog_are_you_sure">Bạn có chắc chắn muốn làm điều đó?</string>
+    <string name="summary_clear_local_rules">Xóa tất cả các quy tắc cục bộ. Không thể hoàn nguyên.</string>
+    <string name="title_clear_local_rules">Xóa quy tắc địa phương</string>
+    <string name="summary_undo_rule_import">Hoàn nguyên quy tắc nhập từ một tệp. Không thể hoàn nguyên.</string>
+    <string name="title_undo_rule_import">Hoàn tác nhập</string>
+    <string name="title_upstream_query_logging">Ghi nhật ký truy vấn ngược dòng</string>
+    <string name="summary_upstream_query_logging">Lưu địa chỉ IP máy chủ trả lời truy vấn</string>
+    <string name="title_dns_over_tls_disable_mobile">Tắt TLS trên thiết bị di động</string>
+    <string name="summary_dns_over_tls_disable_mobile">Vô hiệu hóa DNS trên TLS khi được kết nối qua kết nối di động (như 3G, 4G ..)</string>
+    <string name="title_dns_over_tls">DNS trên TLS</string>
+
+
 </resources>

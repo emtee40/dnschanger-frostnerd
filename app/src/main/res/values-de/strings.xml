@@ -313,4 +313,6 @@
     <string name="hint_pin">PIN</string>
     <string name="loading_exporting_queries">Exporting Anfragen, bitte warten…</string>
     <string name="exported_dns_queries">[x] Anfragen exportiert.</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Abbrechen</string>
 </resources>
