@@ -8,8 +8,8 @@ android {
         applicationId "com.frostnerd.dnschanger"
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 83
-        versionName "1.16.0.4"
+        versionCode 84
+        versionName "BETA 1.16.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
