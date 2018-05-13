@@ -315,4 +315,19 @@
     <string name="loading_exporting_queries">Esportare le query, attendere…</string>
     <string name="exported_dns_queries">[x] query esportate.</string>
     <string name="ok">OK</string>
+    <string name="title_dns_over_tls">DNS su TLS</string>
+    <string name="title_upstream_query_logging">Registrazione di query upstream</string>
+    <string name="summary_upstream_query_logging">Salva l\'indirizzo IP il server risponde a una query</string>
+    <string name="title_dns_over_tls_disable_mobile">Disabilita TLS su dispositivo mobile</string>
+    <string name="summary_dns_over_tls_disable_mobile">Disabilita DNS su TLS durante la connessione tramite una connessione mobile (come 3G, 4G ..)</string>
+    <string name="cancel">Annulla</string>
+    <string name="summary_protect_other_vpns">Consenti solo all\'app di fermarsi tramite i metodi incorporati</string>
+    <string name="title_protect_other_vpns">Solo una fermata graziosa</string>
+    <string name="summary_clear_queries">Elimina tutte le query registrate. Non può essere ripristinato</string>
+    <string name="title_clear_queries">Cancella domande</string>
+    <string name="dialog_are_you_sure">Sei sicuro di volerlo fare?</string>
+    <string name="summary_clear_local_rules">Elimina tutte le regole locali. Non può essere ripristinato</string>
+    <string name="title_clear_local_rules">Cancella le regole locali</string>
+    <string name="summary_undo_rule_import">Ripristina un\'importazione di regole da un file. Non può essere ripristinato</string>
+    <string name="title_undo_rule_import">Annulla importazione</string>
 </resources>
