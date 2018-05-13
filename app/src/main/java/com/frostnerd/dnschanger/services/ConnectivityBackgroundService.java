@@ -43,7 +43,7 @@ public class ConnectivityBackgroundService extends Service {
                 pref.getBoolean("start_service_when_available", false);
         if(run){
             handle = new NetworkCheckHandle(getApplicationContext() == null ? this : getApplicationContext(),
-                    LOG_TAG, intent.getBooleanExtra("initial", true));
+                    LOG_TAG, intent == null || intent.getBooleanExtra("initial", true));
         } else {
             LogFactory.writeMessage(this, LOG_TAG, "Not starting handle because the respective settings aren't enabled");
             stopSelf();

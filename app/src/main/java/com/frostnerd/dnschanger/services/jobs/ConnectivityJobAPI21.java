@@ -32,7 +32,7 @@ public class ConnectivityJobAPI21 extends JobService{
                 pref.getBoolean("setting_disable_netchange", false) ||
                 pref.getBoolean("start_service_when_available", false);
         if(run){
-            boolean initial = (boolean) jobParameters.getExtras().get("initial");
+            boolean initial = jobParameters == null || !jobParameters.getExtras().containsKey("initial") || (boolean) jobParameters.getExtras().get("initial");
             System.out.println("INITIAL: " + initial);
             handle = new NetworkCheckHandle(getApplicationContext() == null ? this : getApplicationContext(),
                     LOG_TAG, initial);
