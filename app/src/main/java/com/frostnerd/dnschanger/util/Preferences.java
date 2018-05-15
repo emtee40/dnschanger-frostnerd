@@ -14,14 +14,16 @@ import com.frostnerd.preferenceexport.PreferenceHelper;
 import com.frostnerd.preferences.restrictions.PreferenceRestriction;
 import com.frostnerd.preferences.restrictions.PreferencesRestrictionBuilder;
 import com.frostnerd.preferences.restrictions.Type;
+import com.frostnerd.preferences.util.CustomBackendSharedPreference;
+import com.frostnerd.preferences.util.ObscuredSharedPreferences;
+import com.frostnerd.preferences.util.backends.SQLiteOpenHelperBackend;
+import com.frostnerd.preferences.util.obscureres.Base64Obscurer;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -44,8 +46,19 @@ public class Preferences extends com.frostnerd.preferences.Preferences {
     private static Preferences instance;
 
     public static Preferences getInstance(Context context){
-        if(instance == null)return instance = new Preferences(getDefaultPreferences(context));
-        else return instance;
+        if(instance == null){
+            SharedPreferences previous = getDefaultPreferences(context);
+            SQLiteOpenHelperBackend backend = new SQLiteOpenHelperBackend(DatabaseHelper.getInstance(context));
+            ObscuredSharedPreferences obscuredSharedPreferences;
+            if(previous.getAll().size() != 0 && !previous.contains("outdated")) {
+                obscuredSharedPreferences = ObscuredSharedPreferences.convertFrom(previous, new CustomBackendSharedPreference(backend), new Base64Obscurer());
+                previous.edit().putBoolean("outdated", true).commit();
+            } else {
+                obscuredSharedPreferences = new ObscuredSharedPreferences(
+                        new CustomBackendSharedPreference(backend), new Base64Obscurer());
+            }
+            return instance = new Preferences(obscuredSharedPreferences);
+        } else return instance;
     }
 
     public Preferences(SharedPreferences sharedPreferences) {

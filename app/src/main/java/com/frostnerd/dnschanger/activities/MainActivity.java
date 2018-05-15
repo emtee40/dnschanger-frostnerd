@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -202,6 +203,11 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
             searchView.setOnQueryTextListener(settingsFragment);
             return true;
         }else return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public SharedPreferences getSharedPreferences(String name, int mode) {
+        return Preferences.getInstance(this);
     }
 
     @Override
