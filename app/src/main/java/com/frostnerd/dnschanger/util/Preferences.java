@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+
 /**
  * Copyright Daniel Wolf 2018
  * All rights reserved.
@@ -47,18 +48,26 @@ public class Preferences extends com.frostnerd.preferences.Preferences {
 
     public static Preferences getInstance(Context context){
         if(instance == null){
-            SharedPreferences previous = getDefaultPreferences(context);
-            SQLiteOpenHelperBackend backend = new SQLiteOpenHelperBackend(DatabaseHelper.getInstance(context));
-            ObscuredSharedPreferences obscuredSharedPreferences;
-            if(previous.getAll().size() != 0 && !previous.contains("outdated")) {
-                obscuredSharedPreferences = ObscuredSharedPreferences.convertFrom(previous, new CustomBackendSharedPreference(backend), new Base64Obscurer());
-                previous.edit().putBoolean("outdated", true).commit();
-            } else {
-                obscuredSharedPreferences = new ObscuredSharedPreferences(
-                        new CustomBackendSharedPreference(backend), new Base64Obscurer());
-            }
-            return instance = new Preferences(obscuredSharedPreferences);
+            return instance = new Preferences(createPreferences(context));
         } else return instance;
+    }
+
+    private static SharedPreferences createPreferences(@NonNull Context context){
+        ObscuredSharedPreferences obscuredSharedPreferences;
+
+        SQLiteOpenHelperBackend backend = new SQLiteOpenHelperBackend(DatabaseHelper.getInstance(context));
+
+        CustomBackendSharedPreference customBackendSharedPreference = new CustomBackendSharedPreference(backend);
+
+        SharedPreferences previous = getDefaultPreferences(context);
+        if(previous.getAll().size() != 0) {
+            obscuredSharedPreferences = ObscuredSharedPreferences.convertFrom(previous, customBackendSharedPreference, new Base64Obscurer(true,true));
+            previous.edit().clear().apply();
+        } else {
+            obscuredSharedPreferences = new ObscuredSharedPreferences(
+                    customBackendSharedPreference, new Base64Obscurer(true,true));
+        }
+        return obscuredSharedPreferences;
     }
 
     public Preferences(SharedPreferences sharedPreferences) {
