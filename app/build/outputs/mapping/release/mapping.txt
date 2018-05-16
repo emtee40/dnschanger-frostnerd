@@ -23488,291 +23488,292 @@ com.frostnerd.dnschanger.activities.MainActivity -> com.frostnerd.dnschanger.act
     boolean importingRules -> y
     android.content.BroadcastReceiver shortcutReceiver -> z
     android.content.BroadcastReceiver importFinishedReceiver -> A
-    82:93:void <init>() -> <init>
-    111:116:void onResume() -> onResume
-    120:191:void onCreate(android.os.Bundle) -> onCreate
-    195:204:boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
-    209:214:void onDestroy() -> onDestroy
-    218:218:com.frostnerd.lifecycle.BaseActivity$Configuration getConfiguration() -> k
-    223:236:boolean onKeyDown(int,android.view.KeyEvent) -> onKeyDown
-    242:242:com.frostnerd.design.navigationdrawer.DrawerItem getDefaultItem() -> s
-    247:247:void onItemClicked(com.frostnerd.design.navigationdrawer.DrawerItem,boolean) -> a
-    250:250:android.support.v4.app.Fragment currentFragment() -> x
-    255:647:java.util.List createDrawerItems() -> t
-    652:658:void onRequestPermissionsResult(int,java.lang.String[],int[]) -> onRequestPermissionsResult
-    661:679:void importSettings() -> A
-    682:688:void openSettingsAndScrollToKey(java.lang.String) -> a
-    691:692:android.graphics.drawable.Drawable setDrawableColor(android.graphics.drawable.Drawable) -> a
-    697:704:com.frostnerd.design.navigationdrawer.StyleOptions getStyleOptions() -> u
-    709:709:boolean useItemBackStack() -> v
-    714:714:int maxBackStackRecursion() -> w
-    718:729:void rateApp() -> y
-    732:755:void openDefaultDNSDialog(android.view.View) -> openDefaultDNSDialog
-    758:805:void applyDNSServersInstant() -> B
-    809:811:void onStop() -> onStop
-    814:817:void updatePinState(android.content.Intent) -> c
-    821:823:void startActivity(android.content.Intent) -> startActivity
-    827:829:void startActivityForResult(android.content.Intent,int) -> startActivityForResult
-    833:835:void startActivityFromFragment(android.app.Fragment,android.content.Intent,int) -> startActivityFromFragment
-    839:841:void startActivityFromFragment(android.app.Fragment,android.content.Intent,int,android.os.Bundle) -> startActivityFromFragment
-    851:853:void startActivityFromFragment(android.support.v4.app.Fragment,android.content.Intent,int,android.os.Bundle) -> a
-    857:875:void importStarted(int) -> d
-    82:82:android.widget.FrameLayout access$000(com.frostnerd.dnschanger.activities.MainActivity) -> a
-    82:82:com.frostnerd.design.navigationdrawer.DrawerItem access$102(com.frostnerd.dnschanger.activities.MainActivity,com.frostnerd.design.navigationdrawer.DrawerItem) -> a
-    82:82:com.frostnerd.dnschanger.fragments.MainFragment access$202(com.frostnerd.dnschanger.activities.MainActivity,com.frostnerd.dnschanger.fragments.MainFragment) -> a
-    82:82:com.frostnerd.design.navigationdrawer.DrawerItem access$302(com.frostnerd.dnschanger.activities.MainActivity,com.frostnerd.design.navigationdrawer.DrawerItem) -> b
-    82:82:com.frostnerd.dnschanger.fragments.SettingsFragment access$402(com.frostnerd.dnschanger.activities.MainActivity,com.frostnerd.dnschanger.fragments.SettingsFragment) -> a
-    82:82:com.frostnerd.dnschanger.fragments.SettingsFragment access$400(com.frostnerd.dnschanger.activities.MainActivity) -> b
-    82:82:android.support.v7.app.AlertDialog access$502(com.frostnerd.dnschanger.activities.MainActivity,android.support.v7.app.AlertDialog) -> a
-    82:82:void access$600(com.frostnerd.dnschanger.activities.MainActivity,java.lang.String) -> a
-    82:82:android.support.v7.app.AlertDialog access$500(com.frostnerd.dnschanger.activities.MainActivity) -> c
-    82:82:android.graphics.drawable.Drawable access$700(com.frostnerd.dnschanger.activities.MainActivity,android.graphics.drawable.Drawable) -> a
-    82:82:void access$800(com.frostnerd.dnschanger.activities.MainActivity) -> d
-    82:82:com.frostnerd.dnschanger.fragments.MainFragment access$200(com.frostnerd.dnschanger.activities.MainActivity) -> e
-    82:82:void access$900(com.frostnerd.dnschanger.activities.MainActivity) -> f
-    82:82:android.content.BroadcastReceiver access$1002(com.frostnerd.dnschanger.activities.MainActivity,android.content.BroadcastReceiver) -> a
-    82:82:boolean access$1102(com.frostnerd.dnschanger.activities.MainActivity,boolean) -> a
-    82:82:void access$1200(com.frostnerd.dnschanger.activities.MainActivity) -> g
+    83:94:void <init>() -> <init>
+    112:117:void onResume() -> onResume
+    121:192:void onCreate(android.os.Bundle) -> onCreate
+    196:205:boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
+    210:210:android.content.SharedPreferences getSharedPreferences(java.lang.String,int) -> getSharedPreferences
+    215:220:void onDestroy() -> onDestroy
+    224:224:com.frostnerd.lifecycle.BaseActivity$Configuration getConfiguration() -> k
+    229:242:boolean onKeyDown(int,android.view.KeyEvent) -> onKeyDown
+    248:248:com.frostnerd.design.navigationdrawer.DrawerItem getDefaultItem() -> s
+    253:253:void onItemClicked(com.frostnerd.design.navigationdrawer.DrawerItem,boolean) -> a
+    256:256:android.support.v4.app.Fragment currentFragment() -> x
+    261:653:java.util.List createDrawerItems() -> t
+    658:664:void onRequestPermissionsResult(int,java.lang.String[],int[]) -> onRequestPermissionsResult
+    667:685:void importSettings() -> A
+    688:694:void openSettingsAndScrollToKey(java.lang.String) -> a
+    697:698:android.graphics.drawable.Drawable setDrawableColor(android.graphics.drawable.Drawable) -> a
+    703:710:com.frostnerd.design.navigationdrawer.StyleOptions getStyleOptions() -> u
+    715:715:boolean useItemBackStack() -> v
+    720:720:int maxBackStackRecursion() -> w
+    724:735:void rateApp() -> y
+    738:761:void openDefaultDNSDialog(android.view.View) -> openDefaultDNSDialog
+    764:811:void applyDNSServersInstant() -> B
+    815:817:void onStop() -> onStop
+    820:823:void updatePinState(android.content.Intent) -> c
+    827:829:void startActivity(android.content.Intent) -> startActivity
+    833:835:void startActivityForResult(android.content.Intent,int) -> startActivityForResult
+    839:841:void startActivityFromFragment(android.app.Fragment,android.content.Intent,int) -> startActivityFromFragment
+    845:847:void startActivityFromFragment(android.app.Fragment,android.content.Intent,int,android.os.Bundle) -> startActivityFromFragment
+    857:859:void startActivityFromFragment(android.support.v4.app.Fragment,android.content.Intent,int,android.os.Bundle) -> a
+    863:881:void importStarted(int) -> d
+    83:83:android.widget.FrameLayout access$000(com.frostnerd.dnschanger.activities.MainActivity) -> a
+    83:83:com.frostnerd.design.navigationdrawer.DrawerItem access$102(com.frostnerd.dnschanger.activities.MainActivity,com.frostnerd.design.navigationdrawer.DrawerItem) -> a
+    83:83:com.frostnerd.dnschanger.fragments.MainFragment access$202(com.frostnerd.dnschanger.activities.MainActivity,com.frostnerd.dnschanger.fragments.MainFragment) -> a
+    83:83:com.frostnerd.design.navigationdrawer.DrawerItem access$302(com.frostnerd.dnschanger.activities.MainActivity,com.frostnerd.design.navigationdrawer.DrawerItem) -> b
+    83:83:com.frostnerd.dnschanger.fragments.SettingsFragment access$402(com.frostnerd.dnschanger.activities.MainActivity,com.frostnerd.dnschanger.fragments.SettingsFragment) -> a
+    83:83:com.frostnerd.dnschanger.fragments.SettingsFragment access$400(com.frostnerd.dnschanger.activities.MainActivity) -> b
+    83:83:android.support.v7.app.AlertDialog access$502(com.frostnerd.dnschanger.activities.MainActivity,android.support.v7.app.AlertDialog) -> a
+    83:83:void access$600(com.frostnerd.dnschanger.activities.MainActivity,java.lang.String) -> a
+    83:83:android.support.v7.app.AlertDialog access$500(com.frostnerd.dnschanger.activities.MainActivity) -> c
+    83:83:android.graphics.drawable.Drawable access$700(com.frostnerd.dnschanger.activities.MainActivity,android.graphics.drawable.Drawable) -> a
+    83:83:void access$800(com.frostnerd.dnschanger.activities.MainActivity) -> d
+    83:83:com.frostnerd.dnschanger.fragments.MainFragment access$200(com.frostnerd.dnschanger.activities.MainActivity) -> e
+    83:83:void access$900(com.frostnerd.dnschanger.activities.MainActivity) -> f
+    83:83:android.content.BroadcastReceiver access$1002(com.frostnerd.dnschanger.activities.MainActivity,android.content.BroadcastReceiver) -> a
+    83:83:boolean access$1102(com.frostnerd.dnschanger.activities.MainActivity,boolean) -> a
+    83:83:void access$1200(com.frostnerd.dnschanger.activities.MainActivity) -> g
 com.frostnerd.dnschanger.activities.MainActivity$1 -> com.frostnerd.dnschanger.activities.MainActivity$1:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    93:93:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    96:105:void onReceive(android.content.Context,android.content.Intent) -> onReceive
+    94:94:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    97:106:void onReceive(android.content.Context,android.content.Intent) -> onReceive
 com.frostnerd.dnschanger.activities.MainActivity$1$1 -> com.frostnerd.dnschanger.activities.MainActivity$1$1:
     android.support.design.widget.Snackbar val$snackbar -> a
     com.frostnerd.dnschanger.activities.MainActivity$1 this$1 -> b
-    97:97:void <init>(com.frostnerd.dnschanger.activities.MainActivity$1,android.support.design.widget.Snackbar) -> <init>
-    100:102:void onClick(android.view.View) -> onClick
+    98:98:void <init>(com.frostnerd.dnschanger.activities.MainActivity$1,android.support.design.widget.Snackbar) -> <init>
+    101:103:void onClick(android.view.View) -> onClick
 com.frostnerd.dnschanger.activities.MainActivity$10 -> com.frostnerd.dnschanger.activities.MainActivity$2:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    276:276:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    279:281:void access(com.frostnerd.design.navigationdrawer.DrawerItem) -> a
+    282:282:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    285:287:void access(com.frostnerd.design.navigationdrawer.DrawerItem) -> a
 com.frostnerd.dnschanger.activities.MainActivity$11 -> com.frostnerd.dnschanger.activities.MainActivity$3:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    269:269:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    272:274:android.support.v4.app.Fragment getFragment(android.os.Bundle) -> a
+    275:275:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    278:280:android.support.v4.app.Fragment getFragment(android.os.Bundle) -> a
 com.frostnerd.dnschanger.activities.MainActivity$12 -> com.frostnerd.dnschanger.activities.MainActivity$4:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    288:288:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    291:292:void access(com.frostnerd.design.navigationdrawer.DrawerItem) -> a
+    294:294:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    297:298:void access(com.frostnerd.design.navigationdrawer.DrawerItem) -> a
 com.frostnerd.dnschanger.activities.MainActivity$13 -> com.frostnerd.dnschanger.activities.MainActivity$5:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    283:283:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    286:286:android.support.v4.app.Fragment getFragment(android.os.Bundle) -> a
+    289:289:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    292:292:android.support.v4.app.Fragment getFragment(android.os.Bundle) -> a
 com.frostnerd.dnschanger.activities.MainActivity$14 -> com.frostnerd.dnschanger.activities.MainActivity$6:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    301:301:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    304:305:void access(com.frostnerd.design.navigationdrawer.DrawerItem) -> a
+    307:307:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    310:311:void access(com.frostnerd.design.navigationdrawer.DrawerItem) -> a
 com.frostnerd.dnschanger.activities.MainActivity$15 -> com.frostnerd.dnschanger.activities.MainActivity$7:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    295:295:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    299:299:android.support.v4.app.Fragment getFragment(android.os.Bundle) -> a
+    301:301:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    305:305:android.support.v4.app.Fragment getFragment(android.os.Bundle) -> a
 com.frostnerd.dnschanger.activities.MainActivity$16 -> com.frostnerd.dnschanger.activities.MainActivity$8:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    310:310:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    313:314:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
-    319:319:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
+    316:316:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    319:320:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
+    325:325:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
 com.frostnerd.dnschanger.activities.MainActivity$17 -> com.frostnerd.dnschanger.activities.MainActivity$9:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    323:323:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    326:326:android.support.v4.app.Fragment getFragment(android.os.Bundle) -> a
+    329:329:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    332:332:android.support.v4.app.Fragment getFragment(android.os.Bundle) -> a
 com.frostnerd.dnschanger.activities.MainActivity$18 -> com.frostnerd.dnschanger.activities.MainActivity$10:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    336:336:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    339:340:void access(com.frostnerd.design.navigationdrawer.DrawerItem) -> a
+    342:342:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    345:346:void access(com.frostnerd.design.navigationdrawer.DrawerItem) -> a
 com.frostnerd.dnschanger.activities.MainActivity$19 -> com.frostnerd.dnschanger.activities.MainActivity$11:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    331:331:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    334:334:android.support.v4.app.Fragment getFragment(android.os.Bundle) -> a
+    337:337:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    340:340:android.support.v4.app.Fragment getFragment(android.os.Bundle) -> a
 com.frostnerd.dnschanger.activities.MainActivity$2 -> com.frostnerd.dnschanger.activities.MainActivity$12:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    131:131:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    134:135:void onClick(android.content.DialogInterface,int) -> onClick
+    132:132:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    135:136:void onClick(android.content.DialogInterface,int) -> onClick
 com.frostnerd.dnschanger.activities.MainActivity$20 -> com.frostnerd.dnschanger.activities.MainActivity$13:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    345:345:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    348:355:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
-    360:360:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
+    351:351:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    354:361:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
+    366:366:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
 com.frostnerd.dnschanger.activities.MainActivity$20$1 -> com.frostnerd.dnschanger.activities.MainActivity$13$1:
     com.frostnerd.dnschanger.activities.MainActivity$20 this$1 -> a
-    349:349:void <init>(com.frostnerd.dnschanger.activities.MainActivity$20) -> <init>
-    352:353:void onClick(android.content.DialogInterface,int) -> onClick
+    355:355:void <init>(com.frostnerd.dnschanger.activities.MainActivity$20) -> <init>
+    358:359:void onClick(android.content.DialogInterface,int) -> onClick
 com.frostnerd.dnschanger.activities.MainActivity$21 -> com.frostnerd.dnschanger.activities.MainActivity$14:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    363:363:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    366:374:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
-    379:379:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
+    369:369:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    372:380:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
+    385:385:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
 com.frostnerd.dnschanger.activities.MainActivity$21$1 -> com.frostnerd.dnschanger.activities.MainActivity$14$1:
     com.frostnerd.dnschanger.activities.MainActivity$21 this$1 -> a
-    367:367:void <init>(com.frostnerd.dnschanger.activities.MainActivity$21) -> <init>
-    370:371:void onClick(android.content.DialogInterface,int) -> onClick
+    373:373:void <init>(com.frostnerd.dnschanger.activities.MainActivity$21) -> <init>
+    376:377:void onClick(android.content.DialogInterface,int) -> onClick
 com.frostnerd.dnschanger.activities.MainActivity$22 -> com.frostnerd.dnschanger.activities.MainActivity$15:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    383:383:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    386:412:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
-    417:417:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
+    389:389:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    392:418:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
+    423:423:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
 com.frostnerd.dnschanger.activities.MainActivity$22$1 -> com.frostnerd.dnschanger.activities.MainActivity$15$1:
     com.frostnerd.dnschanger.activities.MainActivity$22 this$1 -> a
-    393:393:void <init>(com.frostnerd.dnschanger.activities.MainActivity$22) -> <init>
-    397:400:void onClick(android.content.DialogInterface,int) -> onClick
+    399:399:void <init>(com.frostnerd.dnschanger.activities.MainActivity$22) -> <init>
+    403:406:void onClick(android.content.DialogInterface,int) -> onClick
 com.frostnerd.dnschanger.activities.MainActivity$22$2 -> com.frostnerd.dnschanger.activities.MainActivity$15$2:
     com.frostnerd.dnschanger.activities.MainActivity$22 this$1 -> a
-    387:387:void <init>(com.frostnerd.dnschanger.activities.MainActivity$22) -> <init>
-    390:391:void onClick(android.content.DialogInterface,int) -> onClick
+    393:393:void <init>(com.frostnerd.dnschanger.activities.MainActivity$22) -> <init>
+    396:397:void onClick(android.content.DialogInterface,int) -> onClick
 com.frostnerd.dnschanger.activities.MainActivity$22$3 -> com.frostnerd.dnschanger.activities.MainActivity$15$3:
     com.frostnerd.dnschanger.activities.MainActivity$22 this$1 -> a
-    402:402:void <init>(com.frostnerd.dnschanger.activities.MainActivity$22) -> <init>
-    405:409:void onShow(android.content.DialogInterface) -> onShow
+    408:408:void <init>(com.frostnerd.dnschanger.activities.MainActivity$22) -> <init>
+    411:415:void onShow(android.content.DialogInterface) -> onShow
 com.frostnerd.dnschanger.activities.MainActivity$23 -> com.frostnerd.dnschanger.activities.MainActivity$16:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    421:421:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    424:424:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
-    429:429:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
+    427:427:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    430:430:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
+    435:435:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
 com.frostnerd.dnschanger.activities.MainActivity$24 -> com.frostnerd.dnschanger.activities.MainActivity$17:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    434:434:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    437:439:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
-    444:444:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
+    440:440:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    443:445:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
+    450:450:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
 com.frostnerd.dnschanger.activities.MainActivity$25 -> com.frostnerd.dnschanger.activities.MainActivity$18:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    448:448:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    451:468:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
-    473:473:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
+    454:454:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    457:474:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
+    479:479:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
 com.frostnerd.dnschanger.activities.MainActivity$25$1 -> com.frostnerd.dnschanger.activities.MainActivity$18$1:
     com.frostnerd.dnschanger.activities.MainActivity$25 this$1 -> a
-    452:452:void <init>(com.frostnerd.dnschanger.activities.MainActivity$25) -> <init>
-    455:456:void onClick(android.content.DialogInterface,int) -> onClick
+    458:458:void <init>(com.frostnerd.dnschanger.activities.MainActivity$25) -> <init>
+    461:462:void onClick(android.content.DialogInterface,int) -> onClick
 com.frostnerd.dnschanger.activities.MainActivity$25$2 -> com.frostnerd.dnschanger.activities.MainActivity$18$2:
     com.frostnerd.dnschanger.activities.MainActivity$25 this$1 -> a
-    458:458:void <init>(com.frostnerd.dnschanger.activities.MainActivity$25) -> <init>
-    461:465:void onShow(android.content.DialogInterface) -> onShow
+    464:464:void <init>(com.frostnerd.dnschanger.activities.MainActivity$25) -> <init>
+    467:471:void onShow(android.content.DialogInterface) -> onShow
 com.frostnerd.dnschanger.activities.MainActivity$26 -> com.frostnerd.dnschanger.activities.MainActivity$19:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    476:476:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    479:479:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
-    484:484:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
+    482:482:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    485:485:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
+    490:490:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
 com.frostnerd.dnschanger.activities.MainActivity$27 -> com.frostnerd.dnschanger.activities.MainActivity$20:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    488:488:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    491:496:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
-    501:501:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
+    494:494:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    497:502:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
+    507:507:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
 com.frostnerd.dnschanger.activities.MainActivity$28 -> com.frostnerd.dnschanger.activities.MainActivity$21:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    504:504:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    507:512:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
-    517:517:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
+    510:510:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    513:518:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
+    523:523:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
 com.frostnerd.dnschanger.activities.MainActivity$29 -> com.frostnerd.dnschanger.activities.MainActivity$22:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    521:521:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    524:525:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
-    530:530:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
+    527:527:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    530:531:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
+    536:536:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
 com.frostnerd.dnschanger.activities.MainActivity$3 -> com.frostnerd.dnschanger.activities.MainActivity$23:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    155:155:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    158:159:void onClick(android.content.DialogInterface,int) -> onClick
+    156:156:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    159:160:void onClick(android.content.DialogInterface,int) -> onClick
 com.frostnerd.dnschanger.activities.MainActivity$30 -> com.frostnerd.dnschanger.activities.MainActivity$24:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    533:533:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    536:542:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
-    547:547:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
+    539:539:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    542:548:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
+    553:553:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
 com.frostnerd.dnschanger.activities.MainActivity$31 -> com.frostnerd.dnschanger.activities.MainActivity$25:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    550:550:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    553:562:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
-    567:567:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
+    556:556:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    559:568:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
+    573:573:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
 com.frostnerd.dnschanger.activities.MainActivity$32 -> com.frostnerd.dnschanger.activities.MainActivity$26:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    570:570:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    573:618:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
-    623:623:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
+    576:576:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    579:624:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
+    629:629:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
 com.frostnerd.dnschanger.activities.MainActivity$32$1 -> com.frostnerd.dnschanger.activities.MainActivity$26$1:
     com.frostnerd.dnschanger.activities.MainActivity$32 this$1 -> a
-    579:579:void <init>(com.frostnerd.dnschanger.activities.MainActivity$32) -> <init>
-    582:583:void onClick(android.view.View) -> onClick
+    585:585:void <init>(com.frostnerd.dnschanger.activities.MainActivity$32) -> <init>
+    588:589:void onClick(android.view.View) -> onClick
 com.frostnerd.dnschanger.activities.MainActivity$32$2 -> com.frostnerd.dnschanger.activities.MainActivity$26$2:
     com.frostnerd.dnschanger.activities.MainActivity$32 this$1 -> a
-    584:584:void <init>(com.frostnerd.dnschanger.activities.MainActivity$32) -> <init>
-    587:592:void onClick(android.view.View) -> onClick
+    590:590:void <init>(com.frostnerd.dnschanger.activities.MainActivity$32) -> <init>
+    593:598:void onClick(android.view.View) -> onClick
 com.frostnerd.dnschanger.activities.MainActivity$32$3 -> com.frostnerd.dnschanger.activities.MainActivity$26$3:
     com.frostnerd.dnschanger.activities.MainActivity$32 this$1 -> a
-    593:593:void <init>(com.frostnerd.dnschanger.activities.MainActivity$32) -> <init>
-    596:597:void onClick(android.view.View) -> onClick
+    599:599:void <init>(com.frostnerd.dnschanger.activities.MainActivity$32) -> <init>
+    602:603:void onClick(android.view.View) -> onClick
 com.frostnerd.dnschanger.activities.MainActivity$32$4 -> com.frostnerd.dnschanger.activities.MainActivity$26$4:
     com.frostnerd.dnschanger.activities.MainActivity$32 this$1 -> a
-    598:598:void <init>(com.frostnerd.dnschanger.activities.MainActivity$32) -> <init>
-    601:602:void onClick(android.view.View) -> onClick
+    604:604:void <init>(com.frostnerd.dnschanger.activities.MainActivity$32) -> <init>
+    607:608:void onClick(android.view.View) -> onClick
 com.frostnerd.dnschanger.activities.MainActivity$32$5 -> com.frostnerd.dnschanger.activities.MainActivity$26$5:
     com.frostnerd.dnschanger.activities.MainActivity$32 this$1 -> a
-    603:603:void <init>(com.frostnerd.dnschanger.activities.MainActivity$32) -> <init>
-    606:607:void onClick(android.view.View) -> onClick
+    609:609:void <init>(com.frostnerd.dnschanger.activities.MainActivity$32) -> <init>
+    612:613:void onClick(android.view.View) -> onClick
 com.frostnerd.dnschanger.activities.MainActivity$33 -> com.frostnerd.dnschanger.activities.MainActivity$27:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    626:626:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    629:637:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
-    642:644:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
+    632:632:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    635:643:boolean onClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity,android.os.Bundle) -> a
+    648:650:boolean onLongClick(com.frostnerd.design.navigationdrawer.DrawerItem,com.frostnerd.design.navigationdrawer.NavigationDrawerActivity) -> a
 com.frostnerd.dnschanger.activities.MainActivity$33$1 -> com.frostnerd.dnschanger.activities.MainActivity$27$1:
     com.frostnerd.dnschanger.activities.MainActivity$33 this$1 -> a
-    631:631:void <init>(com.frostnerd.dnschanger.activities.MainActivity$33) -> <init>
-    634:635:void onClick(android.content.DialogInterface,int) -> onClick
+    637:637:void <init>(com.frostnerd.dnschanger.activities.MainActivity$33) -> <init>
+    640:641:void onClick(android.content.DialogInterface,int) -> onClick
 com.frostnerd.dnschanger.activities.MainActivity$34 -> com.frostnerd.dnschanger.activities.MainActivity$28:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    662:662:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    665:670:void fileSelected(java.io.File,com.frostnerd.design.dialogs.FileChooserDialog$SelectionMode) -> a
-    675:675:void multipleFilesSelected(java.io.File[]) -> a
+    668:668:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    671:676:void fileSelected(java.io.File,com.frostnerd.design.dialogs.FileChooserDialog$SelectionMode) -> a
+    681:681:void multipleFilesSelected(java.io.File[]) -> a
 com.frostnerd.dnschanger.activities.MainActivity$35 -> com.frostnerd.dnschanger.activities.MainActivity$29:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    733:733:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    736:751:void onProviderSelected(java.lang.String,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair) -> a
+    739:739:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    742:757:void onProviderSelected(java.lang.String,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair) -> a
 com.frostnerd.dnschanger.activities.MainActivity$36 -> com.frostnerd.dnschanger.activities.MainActivity$30:
     com.frostnerd.design.dialogs.LoadingDialog val$dialog -> a
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> b
-    763:763:void <init>(com.frostnerd.dnschanger.activities.MainActivity,com.frostnerd.design.dialogs.LoadingDialog) -> <init>
-    766:796:void checkFinished(java.util.List,java.util.List) -> a
+    769:769:void <init>(com.frostnerd.dnschanger.activities.MainActivity,com.frostnerd.design.dialogs.LoadingDialog) -> <init>
+    772:802:void checkFinished(java.util.List,java.util.List) -> a
 com.frostnerd.dnschanger.activities.MainActivity$36$1 -> com.frostnerd.dnschanger.activities.MainActivity$30$1:
     com.frostnerd.dnschanger.activities.MainActivity$36 this$1 -> a
-    768:768:void <init>(com.frostnerd.dnschanger.activities.MainActivity$36) -> <init>
-    771:772:void run() -> run
+    774:774:void <init>(com.frostnerd.dnschanger.activities.MainActivity$36) -> <init>
+    777:778:void run() -> run
 com.frostnerd.dnschanger.activities.MainActivity$36$2 -> com.frostnerd.dnschanger.activities.MainActivity$30$2:
     java.lang.String val$text -> a
     com.frostnerd.dnschanger.activities.MainActivity$36 this$1 -> b
-    783:783:void <init>(com.frostnerd.dnschanger.activities.MainActivity$36,java.lang.String) -> <init>
-    786:793:void run() -> run
+    789:789:void <init>(com.frostnerd.dnschanger.activities.MainActivity$36,java.lang.String) -> <init>
+    792:799:void run() -> run
 com.frostnerd.dnschanger.activities.MainActivity$36$2$1 -> com.frostnerd.dnschanger.activities.MainActivity$30$2$1:
     com.frostnerd.dnschanger.activities.MainActivity$36$2 this$2 -> a
-    787:787:void <init>(com.frostnerd.dnschanger.activities.MainActivity$36$2) -> <init>
-    790:791:void onClick(android.content.DialogInterface,int) -> onClick
+    793:793:void <init>(com.frostnerd.dnschanger.activities.MainActivity$36$2) -> <init>
+    796:797:void onClick(android.content.DialogInterface,int) -> onClick
 com.frostnerd.dnschanger.activities.MainActivity$37 -> com.frostnerd.dnschanger.activities.MainActivity$31:
     com.frostnerd.design.dialogs.LoadingDialog val$loadingDialog -> a
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> b
-    865:865:void <init>(com.frostnerd.dnschanger.activities.MainActivity,com.frostnerd.design.dialogs.LoadingDialog) -> <init>
-    868:873:void onReceive(android.content.Context,android.content.Intent) -> onReceive
+    871:871:void <init>(com.frostnerd.dnschanger.activities.MainActivity,com.frostnerd.design.dialogs.LoadingDialog) -> <init>
+    874:879:void onReceive(android.content.Context,android.content.Intent) -> onReceive
 com.frostnerd.dnschanger.activities.MainActivity$4 -> com.frostnerd.dnschanger.activities.MainActivity$32:
     com.frostnerd.dnschanger.util.Preferences val$preferences -> a
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> b
-    149:149:void <init>(com.frostnerd.dnschanger.activities.MainActivity,com.frostnerd.dnschanger.util.Preferences) -> <init>
-    152:154:void onClick(android.content.DialogInterface,int) -> onClick
+    150:150:void <init>(com.frostnerd.dnschanger.activities.MainActivity,com.frostnerd.dnschanger.util.Preferences) -> <init>
+    153:155:void onClick(android.content.DialogInterface,int) -> onClick
 com.frostnerd.dnschanger.activities.MainActivity$5 -> com.frostnerd.dnschanger.activities.MainActivity$33:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    144:144:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    147:148:void onClick(android.content.DialogInterface,int) -> onClick
+    145:145:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    148:149:void onClick(android.content.DialogInterface,int) -> onClick
 com.frostnerd.dnschanger.activities.MainActivity$6 -> com.frostnerd.dnschanger.activities.MainActivity$34:
     android.widget.TextView val$text -> a
     com.frostnerd.dnschanger.util.Preferences val$preferences -> b
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> c
-    171:171:void <init>(com.frostnerd.dnschanger.activities.MainActivity,android.widget.TextView,com.frostnerd.dnschanger.util.Preferences) -> <init>
-    174:181:void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
+    172:172:void <init>(com.frostnerd.dnschanger.activities.MainActivity,android.widget.TextView,com.frostnerd.dnschanger.util.Preferences) -> <init>
+    175:182:void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
 com.frostnerd.dnschanger.activities.MainActivity$7 -> com.frostnerd.dnschanger.activities.MainActivity$35:
     android.widget.Switch val$button -> a
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> b
-    183:183:void <init>(com.frostnerd.dnschanger.activities.MainActivity,android.widget.Switch) -> <init>
-    186:187:void onClick(android.view.View) -> onClick
+    184:184:void <init>(com.frostnerd.dnschanger.activities.MainActivity,android.widget.Switch) -> <init>
+    187:188:void onClick(android.view.View) -> onClick
 com.frostnerd.dnschanger.activities.MainActivity$8 -> com.frostnerd.dnschanger.activities.MainActivity$36:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    262:262:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    265:267:void access(com.frostnerd.design.navigationdrawer.DrawerItem) -> a
+    268:268:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    271:273:void access(com.frostnerd.design.navigationdrawer.DrawerItem) -> a
 com.frostnerd.dnschanger.activities.MainActivity$9 -> com.frostnerd.dnschanger.activities.MainActivity$37:
     com.frostnerd.dnschanger.activities.MainActivity this$0 -> a
-    257:257:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
-    260:260:android.support.v4.app.Fragment getFragment(android.os.Bundle) -> a
+    263:263:void <init>(com.frostnerd.dnschanger.activities.MainActivity) -> <init>
+    266:266:android.support.v4.app.Fragment getFragment(android.os.Bundle) -> a
 com.frostnerd.dnschanger.activities.PinActivity -> com.frostnerd.dnschanger.activities.PinActivity:
     com.frostnerd.materialedittext.MaterialEditText met -> n
     android.widget.EditText pinInput -> o
@@ -25525,26 +25526,27 @@ com.frostnerd.dnschanger.util.GenericFileProvider -> com.frostnerd.dnschanger.ut
     14:14:void <init>() -> <init>
 com.frostnerd.dnschanger.util.Preferences -> com.frostnerd.dnschanger.util.b:
     com.frostnerd.dnschanger.util.Preferences instance -> a
-    47:48:com.frostnerd.dnschanger.util.Preferences getInstance(android.content.Context) -> a
-    52:54:void <init>(android.content.SharedPreferences) -> <init>
-    57:104:void setRestrictions() -> c
-    107:119:java.lang.String exportToJson(android.content.Context) -> b
-    123:128:void importFromJson(android.content.Context,java.lang.String) -> a
-    131:143:com.google.gson.JsonArray exportDNSEntries(java.util.Collection) -> a
-    147:161:void importDNSEntries(com.google.gson.JsonArray,android.content.Context) -> a
-    164:168:java.lang.String findUnusedDNSEntryName(com.frostnerd.dnschanger.database.DatabaseHelper,java.lang.String) -> a
+    50:52:com.frostnerd.dnschanger.util.Preferences getInstance(android.content.Context) -> a
+    58:70:android.content.SharedPreferences createPreferences(android.content.Context) -> d
+    74:76:void <init>(android.content.SharedPreferences) -> <init>
+    79:126:void setRestrictions() -> c
+    129:141:java.lang.String exportToJson(android.content.Context) -> b
+    145:150:void importFromJson(android.content.Context,java.lang.String) -> a
+    153:165:com.google.gson.JsonArray exportDNSEntries(java.util.Collection) -> a
+    169:183:void importDNSEntries(com.google.gson.JsonArray,android.content.Context) -> a
+    186:190:java.lang.String findUnusedDNSEntryName(com.frostnerd.dnschanger.database.DatabaseHelper,java.lang.String) -> a
 com.frostnerd.dnschanger.util.Preferences$1 -> com.frostnerd.dnschanger.util.b$1:
     com.frostnerd.dnschanger.util.Preferences this$0 -> a
-    65:65:void <init>(com.frostnerd.dnschanger.util.Preferences) -> <init>
-    68:68:boolean isMet(com.frostnerd.preferences.Preferences,java.lang.String,java.lang.Object) -> a
+    87:87:void <init>(com.frostnerd.dnschanger.util.Preferences) -> <init>
+    90:90:boolean isMet(com.frostnerd.preferences.Preferences,java.lang.String,java.lang.Object) -> a
 com.frostnerd.dnschanger.util.Preferences$2 -> com.frostnerd.dnschanger.util.b$2:
     com.frostnerd.dnschanger.util.Preferences this$0 -> a
-    71:71:void <init>(com.frostnerd.dnschanger.util.Preferences) -> <init>
-    74:74:boolean isMet(com.frostnerd.preferences.Preferences,java.lang.String,java.lang.Object) -> a
+    93:93:void <init>(com.frostnerd.dnschanger.util.Preferences) -> <init>
+    96:96:boolean isMet(com.frostnerd.preferences.Preferences,java.lang.String,java.lang.Object) -> a
 com.frostnerd.dnschanger.util.Preferences$3 -> com.frostnerd.dnschanger.util.b$3:
     com.frostnerd.dnschanger.util.Preferences this$0 -> a
-    77:77:void <init>(com.frostnerd.dnschanger.util.Preferences) -> <init>
-    80:80:boolean isMet(com.frostnerd.preferences.Preferences,java.lang.String,java.lang.Object) -> a
+    99:99:void <init>(com.frostnerd.dnschanger.util.Preferences) -> <init>
+    102:102:boolean isMet(com.frostnerd.preferences.Preferences,java.lang.String,java.lang.Object) -> a
 com.frostnerd.dnschanger.util.PreferencesAccessor -> com.frostnerd.dnschanger.util.c:
     25:25:boolean isIPv6Enabled(android.content.Context) -> a
     29:29:boolean isIPv4Enabled(android.content.Context) -> b
@@ -27698,6 +27700,20 @@ com.frostnerd.preferences.restrictions.Type -> com.frostnerd.f.a.c:
     46:46:java.lang.String getTypeName() -> b
     55:58:com.frostnerd.preferences.restrictions.Type fromTypeName(java.lang.String) -> a
     15:29:void <clinit>() -> <clinit>
+com.frostnerd.preferences.restrictions.Type$PersistedType -> com.frostnerd.f.a.c$a:
+    com.frostnerd.preferences.restrictions.Type$PersistedType BOOLEAN -> a
+    com.frostnerd.preferences.restrictions.Type$PersistedType INTEGER -> b
+    com.frostnerd.preferences.restrictions.Type$PersistedType FLOAT -> c
+    com.frostnerd.preferences.restrictions.Type$PersistedType STRING -> d
+    com.frostnerd.preferences.restrictions.Type$PersistedType LONG -> e
+    java.lang.String typeName -> f
+    com.frostnerd.preferences.restrictions.Type$PersistedType[] $VALUES -> g
+    61:61:com.frostnerd.preferences.restrictions.Type$PersistedType[] values() -> values
+    61:61:com.frostnerd.preferences.restrictions.Type$PersistedType valueOf(java.lang.String) -> valueOf
+    70:72:void <init>(java.lang.String,int,java.lang.String) -> <init>
+    76:76:java.lang.String getTypeName() -> a
+    81:84:com.frostnerd.preferences.restrictions.Type$PersistedType fromTypeName(java.lang.String) -> a
+    61:66:void <clinit>() -> <clinit>
 com.frostnerd.preferences.restrictions.matchers.CollectionMatcher -> com.frostnerd.f.a.a.a:
     java.util.Collection values -> a
     boolean inverted -> b
@@ -27766,13 +27782,128 @@ com.frostnerd.preferences.transforming.TransformationResult$State -> com.frostne
     34:34:com.frostnerd.preferences.transforming.TransformationResult$State valueOf(java.lang.String) -> valueOf
     34:34:void <init>(java.lang.String,int) -> <init>
     34:35:void <clinit>() -> <clinit>
-com.frostnerd.preferences.util.DelegatedSharedPreferences -> com.frostnerd.f.d.a:
+com.frostnerd.preferences.util.CustomBackendSharedPreference -> com.frostnerd.f.d.a:
+    com.frostnerd.preferences.util.backends.Backend backend -> a
+    java.util.Set listeners -> b
+    java.util.concurrent.atomic.AtomicBoolean backendLoaded -> c
+    java.util.concurrent.atomic.AtomicBoolean backendLoadStarted -> d
+    java.lang.Object backendLoadLock -> e
+    28:44:void <init>(com.frostnerd.preferences.util.backends.Backend) -> <init>
+    52:61:void waitBackendLoaded() -> b
+    78:79:java.util.Map getAll() -> getAll
+    85:86:java.lang.String getString(java.lang.String,java.lang.String) -> getString
+    92:93:java.util.Set getStringSet(java.lang.String,java.util.Set) -> getStringSet
+    98:99:int getInt(java.lang.String,int) -> getInt
+    104:105:long getLong(java.lang.String,long) -> getLong
+    110:111:float getFloat(java.lang.String,float) -> getFloat
+    116:117:boolean getBoolean(java.lang.String,boolean) -> getBoolean
+    122:123:boolean contains(java.lang.String) -> contains
+    128:131:void registerOnSharedPreferenceChangeListener(android.content.SharedPreferences$OnSharedPreferenceChangeListener) -> registerOnSharedPreferenceChangeListener
+    135:138:void unregisterOnSharedPreferenceChangeListener(android.content.SharedPreferences$OnSharedPreferenceChangeListener) -> unregisterOnSharedPreferenceChangeListener
+    142:142:com.frostnerd.preferences.util.CustomBackendSharedPreference$Editor edit() -> a
+    25:25:android.content.SharedPreferences$Editor edit() -> edit
+    26:26:java.lang.Object access$000(com.frostnerd.preferences.util.CustomBackendSharedPreference) -> a
+    26:26:java.util.concurrent.atomic.AtomicBoolean access$100(com.frostnerd.preferences.util.CustomBackendSharedPreference) -> b
+    26:26:com.frostnerd.preferences.util.backends.Backend access$200(com.frostnerd.preferences.util.CustomBackendSharedPreference) -> c
+    26:26:java.util.concurrent.atomic.AtomicBoolean access$300(com.frostnerd.preferences.util.CustomBackendSharedPreference) -> d
+    26:26:java.util.Set access$400(com.frostnerd.preferences.util.CustomBackendSharedPreference) -> e
+    26:26:void access$500(com.frostnerd.preferences.util.CustomBackendSharedPreference) -> f
+com.frostnerd.preferences.util.CustomBackendSharedPreference$1 -> com.frostnerd.f.d.a$1:
+    com.frostnerd.preferences.util.CustomBackendSharedPreference this$0 -> a
+    34:34:void <init>(com.frostnerd.preferences.util.CustomBackendSharedPreference) -> <init>
+    37:42:void run() -> run
+com.frostnerd.preferences.util.CustomBackendSharedPreference$Editor -> com.frostnerd.f.d.a$a:
+    java.util.Map modified -> b
+    boolean clear -> c
+    com.frostnerd.preferences.util.CustomBackendSharedPreference this$0 -> a
+    145:147:void <init>(com.frostnerd.preferences.util.CustomBackendSharedPreference) -> <init>
+    151:154:android.content.SharedPreferences$Editor putString(java.lang.String,java.lang.String) -> putString
+    159:162:android.content.SharedPreferences$Editor putStringSet(java.lang.String,java.util.Set) -> putStringSet
+    167:170:android.content.SharedPreferences$Editor putInt(java.lang.String,int) -> putInt
+    175:178:android.content.SharedPreferences$Editor putLong(java.lang.String,long) -> putLong
+    183:186:android.content.SharedPreferences$Editor putFloat(java.lang.String,float) -> putFloat
+    191:194:android.content.SharedPreferences$Editor putBoolean(java.lang.String,boolean) -> putBoolean
+    199:202:android.content.SharedPreferences$Editor remove(java.lang.String) -> remove
+    207:209:android.content.SharedPreferences$Editor clear() -> clear
+    214:236:boolean commit() -> commit
+    241:247:void apply() -> apply
+com.frostnerd.preferences.util.CustomBackendSharedPreference$Editor$1 -> com.frostnerd.f.d.a$a$1:
+    com.frostnerd.preferences.util.CustomBackendSharedPreference$Editor this$1 -> a
+    241:241:void <init>(com.frostnerd.preferences.util.CustomBackendSharedPreference$Editor) -> <init>
+    244:245:void run() -> run
+com.frostnerd.preferences.util.CustomBackendSharedPreference$ObjectChange -> com.frostnerd.f.d.a$b:
+    com.frostnerd.preferences.restrictions.Type type -> a
+    java.lang.Object value -> b
+    254:257:void <init>(java.lang.Object,com.frostnerd.preferences.restrictions.Type) -> <init>
+    250:250:com.frostnerd.preferences.restrictions.Type access$600(com.frostnerd.preferences.util.CustomBackendSharedPreference$ObjectChange) -> a
+    250:250:java.lang.Object access$700(com.frostnerd.preferences.util.CustomBackendSharedPreference$ObjectChange) -> b
+com.frostnerd.preferences.util.DelegatedSharedPreferences -> com.frostnerd.f.d.b:
     15:15:void <init>() -> <init>
-com.frostnerd.preferences.util.PreferenceSerializer -> com.frostnerd.f.d.b:
+com.frostnerd.preferences.util.ObscuredSharedPreferences -> com.frostnerd.f.d.c:
+    android.content.SharedPreferences delegate -> a
+    com.frostnerd.preferences.util.PreferenceObscurer preferenceObscurer -> b
+    java.util.Map localStorage -> c
+    28:33:void <init>(android.content.SharedPreferences,com.frostnerd.preferences.util.PreferenceObscurer) -> <init>
+    43:63:com.frostnerd.preferences.util.ObscuredSharedPreferences convertFrom(android.content.SharedPreferences,android.content.SharedPreferences,com.frostnerd.preferences.util.PreferenceObscurer) -> a
+    77:99:java.util.Map getAll() -> getAll
+    105:107:java.lang.String getString(java.lang.String,java.lang.String) -> getString
+    113:121:java.util.Set getStringSet(java.lang.String,java.util.Set) -> getStringSet
+    126:128:int getInt(java.lang.String,int) -> getInt
+    133:135:long getLong(java.lang.String,long) -> getLong
+    140:142:float getFloat(java.lang.String,float) -> getFloat
+    147:149:boolean getBoolean(java.lang.String,boolean) -> getBoolean
+    154:154:boolean contains(java.lang.String) -> contains
+    160:160:com.frostnerd.preferences.util.ObscuredSharedPreferences$Editor edit() -> a
+    165:166:void registerOnSharedPreferenceChangeListener(android.content.SharedPreferences$OnSharedPreferenceChangeListener) -> registerOnSharedPreferenceChangeListener
+    170:171:void unregisterOnSharedPreferenceChangeListener(android.content.SharedPreferences$OnSharedPreferenceChangeListener) -> unregisterOnSharedPreferenceChangeListener
+    24:24:android.content.SharedPreferences$Editor edit() -> edit
+    25:25:android.content.SharedPreferences access$000(com.frostnerd.preferences.util.ObscuredSharedPreferences) -> a
+    25:25:com.frostnerd.preferences.util.PreferenceObscurer access$100(com.frostnerd.preferences.util.ObscuredSharedPreferences) -> b
+    25:25:java.util.Map access$202(com.frostnerd.preferences.util.ObscuredSharedPreferences,java.util.Map) -> a
+com.frostnerd.preferences.util.ObscuredSharedPreferences$Editor -> com.frostnerd.f.d.c$a:
+    android.content.SharedPreferences$Editor delegate -> b
+    java.util.Map localStorage -> c
+    com.frostnerd.preferences.util.ObscuredSharedPreferences this$0 -> a
+    175:180:void <init>(com.frostnerd.preferences.util.ObscuredSharedPreferences) -> <init>
+    185:188:android.content.SharedPreferences$Editor putString(java.lang.String,java.lang.String) -> putString
+    194:210:android.content.SharedPreferences$Editor putStringSet(java.lang.String,java.util.Set) -> putStringSet
+    216:218:android.content.SharedPreferences$Editor putInt(java.lang.String,int) -> putInt
+    224:226:android.content.SharedPreferences$Editor putLong(java.lang.String,long) -> putLong
+    232:234:android.content.SharedPreferences$Editor putFloat(java.lang.String,float) -> putFloat
+    240:242:android.content.SharedPreferences$Editor putBoolean(java.lang.String,boolean) -> putBoolean
+    248:250:android.content.SharedPreferences$Editor remove(java.lang.String) -> remove
+    256:258:android.content.SharedPreferences$Editor clear() -> clear
+    263:264:boolean commit() -> commit
+    269:271:void apply() -> apply
+com.frostnerd.preferences.util.PreferenceObscurer -> com.frostnerd.f.d.d:
+    boolean obscureKeys -> a
+    boolean obscureValues -> b
+    java.util.Set obscuredKeys -> c
+    java.util.Set obscuredValueKeys -> d
+    java.util.regex.Pattern persistedPattern -> e
+    13:77:void <init>(boolean,boolean) -> <init>
+    23:23:boolean isObscureKey(java.lang.String) -> a
+    27:27:boolean isObscureValue(java.lang.String) -> b
+    59:59:boolean isObscureValues() -> a
+    72:74:java.lang.String _obscureValue(java.lang.String,java.lang.String,com.frostnerd.preferences.restrictions.Type$PersistedType) -> a
+    82:92:java.lang.Object _deobscureValue(java.lang.String,java.lang.String) -> a
+    97:99:java.lang.String obscureType(com.frostnerd.preferences.restrictions.Type$PersistedType) -> a
+    103:105:com.frostnerd.preferences.restrictions.Type$PersistedType deobscureType(java.lang.String) -> h
+    110:111:java.lang.String _obscureKey(java.lang.String) -> c
+    116:117:java.lang.String _deobscureKey(java.lang.String) -> d
+    java.lang.String obscureKey(java.lang.String) -> e
+    java.lang.String deobscureKey(java.lang.String) -> f
+    java.lang.String obscureValue(java.lang.String) -> g
+    java.lang.Object deobscureValue(java.lang.String,com.frostnerd.preferences.restrictions.Type$PersistedType) -> a
+    135:147:java.lang.Object parseValue(java.lang.String,com.frostnerd.preferences.restrictions.Type$PersistedType) -> b
+com.frostnerd.preferences.util.PreferenceObscurer$1 -> com.frostnerd.f.d.d$1:
+    int[] $SwitchMap$com$frostnerd$preferences$restrictions$Type$PersistedType -> a
+    135:135:void <clinit>() -> <clinit>
+com.frostnerd.preferences.util.PreferenceSerializer -> com.frostnerd.f.d.e:
     15:15:void <init>() -> <init>
     java.lang.String serialize(java.lang.String,java.lang.Object) -> a
     java.lang.Object deserialize(java.lang.String,java.lang.String) -> a
-com.frostnerd.preferences.util.VariableChecker -> com.frostnerd.f.d.c:
+com.frostnerd.preferences.util.VariableChecker -> com.frostnerd.f.d.f:
     17:18:boolean isInteger(java.lang.Object) -> a
     23:28:boolean isInteger(java.lang.String) -> a
     32:33:int parseInt(java.lang.Object) -> b
@@ -27787,6 +27918,81 @@ com.frostnerd.preferences.util.VariableChecker -> com.frostnerd.f.d.c:
     86:87:boolean parseBoolean(java.lang.Object) -> h
     91:91:boolean isSet(java.lang.Object) -> i
     95:95:boolean isString(java.lang.Object) -> j
+com.frostnerd.preferences.util.backends.Backend -> com.frostnerd.f.d.a.a:
+    int version -> a
+    24:33:void <init>(int) -> <init>
+    boolean putAll(java.util.Set) -> a
+    boolean removeAll(java.util.Set) -> b
+    void removeAll() -> a
+    boolean contains(java.lang.String) -> a
+    int loadAll() -> b
+    void update(int,int) -> a
+    java.lang.Object get(java.lang.String,java.lang.Object,com.frostnerd.preferences.restrictions.Type) -> a
+    java.util.Map getAll() -> c
+    21:21:int access$000(com.frostnerd.preferences.util.backends.Backend) -> a
+com.frostnerd.preferences.util.backends.Backend$1 -> com.frostnerd.f.d.a.a$1:
+    com.frostnerd.preferences.util.backends.Backend this$0 -> a
+    26:26:void <init>(com.frostnerd.preferences.util.backends.Backend,java.lang.String) -> <init>
+    30:31:void run() -> run
+com.frostnerd.preferences.util.backends.Backend$Commit -> com.frostnerd.f.d.a.a$a:
+    java.lang.String key -> a
+    com.frostnerd.preferences.restrictions.Type expectedType -> b
+    java.lang.Object value -> c
+    74:78:void <init>(java.lang.String,com.frostnerd.preferences.restrictions.Type,java.lang.Object) -> <init>
+    82:82:java.lang.String getKey() -> a
+    87:87:com.frostnerd.preferences.restrictions.Type getExpectedType() -> b
+    92:92:java.lang.Object getValue() -> c
+    97:97:java.lang.String toString() -> toString
+com.frostnerd.preferences.util.backends.SQLiteOpenHelperBackend -> com.frostnerd.f.d.a.b:
+    java.lang.String baseTableName -> a
+    java.lang.String metaTableName -> b
+    java.lang.String dataTableName -> c
+    java.lang.String stringSetTableName -> d
+    android.database.sqlite.SQLiteOpenHelper database -> e
+    java.util.Map localStorage -> f
+    java.util.concurrent.LinkedBlockingDeque outstandingChanges -> g
+    java.util.concurrent.atomic.AtomicBoolean diskWriteRunning -> h
+    java.util.concurrent.atomic.AtomicBoolean closeDatabaseAfterWrite -> i
+    java.util.concurrent.atomic.AtomicBoolean databaseClosed -> j
+    32:46:void <init>(android.database.sqlite.SQLiteOpenHelper,java.lang.String) -> <init>
+    49:50:void <init>(android.database.sqlite.SQLiteOpenHelper) -> <init>
+    87:144:void enqueueDiskWrite() -> d
+    148:155:boolean putAll(java.util.Set) -> a
+    160:169:boolean removeAll(java.util.Set) -> b
+    174:184:void removeAll() -> a
+    188:188:boolean contains(java.lang.String) -> a
+    199:238:int loadAll() -> b
+    244:244:void update(int,int) -> a
+    249:250:java.lang.Object get(java.lang.String,java.lang.Object,com.frostnerd.preferences.restrictions.Type) -> a
+    262:266:java.util.Map getAll() -> c
+    29:29:java.util.concurrent.atomic.AtomicBoolean access$000(com.frostnerd.preferences.util.backends.SQLiteOpenHelperBackend) -> a
+    29:29:android.database.sqlite.SQLiteOpenHelper access$100(com.frostnerd.preferences.util.backends.SQLiteOpenHelperBackend) -> b
+    29:29:java.util.concurrent.LinkedBlockingDeque access$200(com.frostnerd.preferences.util.backends.SQLiteOpenHelperBackend) -> c
+    29:29:java.util.concurrent.atomic.AtomicBoolean access$300(com.frostnerd.preferences.util.backends.SQLiteOpenHelperBackend) -> d
+    29:29:java.lang.String access$400(com.frostnerd.preferences.util.backends.SQLiteOpenHelperBackend) -> e
+    29:29:java.lang.String access$500(com.frostnerd.preferences.util.backends.SQLiteOpenHelperBackend) -> f
+    29:29:java.util.concurrent.atomic.AtomicBoolean access$600(com.frostnerd.preferences.util.backends.SQLiteOpenHelperBackend) -> g
+com.frostnerd.preferences.util.backends.SQLiteOpenHelperBackend$1 -> com.frostnerd.f.d.a.b$1:
+    com.frostnerd.preferences.util.backends.SQLiteOpenHelperBackend this$0 -> a
+    88:88:void <init>(com.frostnerd.preferences.util.backends.SQLiteOpenHelperBackend) -> <init>
+    91:141:void run() -> run
+com.frostnerd.preferences.util.backends.SQLiteOpenHelperBackend$2 -> com.frostnerd.f.d.a.b$2:
+    int[] $SwitchMap$com$frostnerd$preferences$restrictions$Type -> a
+    215:215:void <clinit>() -> <clinit>
+com.frostnerd.preferences.util.backends.SQLiteOpenHelperBackend$LocalObject -> com.frostnerd.f.d.a.b$a:
+    java.lang.Object object -> a
+    com.frostnerd.preferences.restrictions.Type type -> b
+    273:276:void <init>(java.lang.Object,com.frostnerd.preferences.restrictions.Type) -> <init>
+    280:280:java.lang.String toString() -> toString
+    269:269:void <init>(java.lang.Object,com.frostnerd.preferences.restrictions.Type,com.frostnerd.preferences.util.backends.SQLiteOpenHelperBackend$1) -> <init>
+    269:269:java.lang.Object access$900(com.frostnerd.preferences.util.backends.SQLiteOpenHelperBackend$LocalObject) -> a
+com.frostnerd.preferences.util.obscureres.Base64Obscurer -> com.frostnerd.f.d.b.a:
+    21:22:void <init>(boolean,boolean) -> <init>
+    25:26:void <init>() -> <init>
+    31:31:java.lang.String obscureKey(java.lang.String) -> e
+    38:40:java.lang.String deobscureKey(java.lang.String) -> f
+    47:47:java.lang.String obscureValue(java.lang.String) -> g
+    54:56:java.lang.Object deobscureValue(java.lang.String,com.frostnerd.preferences.restrictions.Type$PersistedType) -> a
 com.google.gson.ExclusionStrategy -> com.a.a.a:
     boolean shouldSkipField(com.google.gson.FieldAttributes) -> a
     boolean shouldSkipClass(java.lang.Class) -> a
