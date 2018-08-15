@@ -42,8 +42,8 @@ android {
 dependencies {
     implementation 'com.frostnerd.utils:general:1.0.4'
     implementation 'com.frostnerd.utils:database:1.1.13'
-    implementation 'com.frostnerd.utils:design:1.0.8'
-    implementation 'com.frostnerd.utils:materialedittext:1.0.7'
+    implementation 'com.frostnerd.utils:design:1.0.9'
+    implementation 'com.frostnerd.utils:materialedittext:1.0.8'
     implementation 'com.frostnerd.utils:preferences:2.2.5'
     implementation 'com.frostnerd.utils:networking:1.0.2'
     implementation 'com.frostnerd.utils:preferenceexport:1.0.5'
@@ -61,7 +61,7 @@ dependencies {
     implementation 'org.pcap4j:pcap4j-core:1.7.3'
     implementation 'org.pcap4j:pcap4j-packetfactory-static:1.7.3'
     implementation 'de.measite.minidns:minidns-core:0.2.4'
-    implementation "de.measite.minidns:minidns-hla:0.2.4"
+    implementation 'de.measite.minidns:minidns-hla:0.2.4'
     compileOnly 'org.projectlombok:lombok:1.16.20'
-    annotationProcessor "orlg.projectlombok:lombok:1.16.20"
+    annotationProcessor 'org.projectlombok:lombok:1.16.20'
 }

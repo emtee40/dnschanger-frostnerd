@@ -2,11 +2,9 @@
 
 def getArtifactoryUser(){
     def user = System.getenv("ARTIFACTORY_USER")
-    print("user first stage: " + user)
     if(user == null){
         user = artifactory_username
     }
-    print("user second stage: " + user)
 
     if(user == null){
         throw new Exception("Artifactory user not set!")
@@ -35,9 +33,6 @@ buildscript {
     repositories {
         jcenter()
         google()
-        maven {
-            url "https://maven.google.com"
-        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
