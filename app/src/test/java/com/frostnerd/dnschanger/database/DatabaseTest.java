@@ -1,6 +1,5 @@
 package com.frostnerd.dnschanger.database;
 
-import android.test.suitebuilder.annotation.LargeTest;
 
 import com.frostnerd.database.orm.parser.ParsedEntity;
 import com.frostnerd.database.orm.statementoptions.queryoptions.WhereCondition;
@@ -40,7 +39,6 @@ import static org.junit.Assert.assertTrue;
  * development@frostnerd.com
  */
 @RunWith(RobolectricTestRunner.class)
-@LargeTest
 public class DatabaseTest {
     @Rule
     public TestName testName = new TestName();
