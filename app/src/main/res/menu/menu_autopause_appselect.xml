@@ -6,12 +6,12 @@
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search"
         android:title="@string/search"
-        android:actionViewClass="androidx.appcompat.widget.SearchView"
-        android:showAsAction="ifRoom" />
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_done"
         android:icon="@drawable/ic_done"
         android:title="@string/done"
-        android:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom" />
 </menu>
