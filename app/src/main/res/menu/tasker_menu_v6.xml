@@ -7,5 +7,5 @@
         android:icon="@drawable/ic_action_ipv6"
         android:orderInCategory="0"
         android:title="IPv6"
-        app:showAsAction="ifRoom" />
+        android:showAsAction="ifRoom" />
 </menu>
