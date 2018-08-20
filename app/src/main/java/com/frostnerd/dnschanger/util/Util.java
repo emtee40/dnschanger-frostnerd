@@ -1,5 +1,6 @@
 package com.frostnerd.dnschanger.util;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -305,6 +306,7 @@ public final class Util {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private static boolean isJobRunning(@NonNull Context context, @IntRange(from = 0) int jobID){
         JobScheduler scheduler = Utils.requireNonNull((JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE));

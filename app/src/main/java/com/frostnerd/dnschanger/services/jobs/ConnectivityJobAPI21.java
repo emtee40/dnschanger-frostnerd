@@ -1,5 +1,6 @@
 package com.frostnerd.dnschanger.services.jobs;
 
+import android.annotation.TargetApi;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.os.Build;
@@ -17,6 +18,7 @@ import com.frostnerd.dnschanger.util.Preferences;
  * <p>
  * development@frostnerd.com
  */
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class ConnectivityJobAPI21 extends JobService{
     private static final String LOG_TAG = "[ConnectivityJobAPI21]";

@@ -1,5 +1,6 @@
 package com.frostnerd.dnschanger.fragments;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
@@ -45,6 +46,7 @@ import java.util.List;
  * development@frostnerd.com
  */
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class CurrentNetworksFragment extends Fragment {
     private List<DNSProperties> dnsProperties = new ArrayList<>();
 

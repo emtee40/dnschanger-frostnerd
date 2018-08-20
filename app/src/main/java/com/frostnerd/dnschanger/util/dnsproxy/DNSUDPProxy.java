@@ -1,5 +1,6 @@
 package com.frostnerd.dnschanger.util.dnsproxy;
 
+import android.annotation.TargetApi;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
@@ -61,6 +62,7 @@ import de.measite.minidns.record.Data;
  * Rather it was used as guidance.
  */
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class DNSUDPProxy extends DNSProxy{
     private static final String LOG_TAG = "[DNSUDPProxy]";
     private FileDescriptor interruptedDescriptor = null;
