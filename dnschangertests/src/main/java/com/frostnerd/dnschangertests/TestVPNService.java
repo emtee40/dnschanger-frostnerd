@@ -9,6 +9,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import android.system.OsConstants;
 
+import com.frostnerd.networking.NetworkUtil;
+
 /**
  * Copyright Daniel Wolf 2017
  * All rights reserved.
