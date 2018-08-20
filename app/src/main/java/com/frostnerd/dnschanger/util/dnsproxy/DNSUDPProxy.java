@@ -10,7 +10,6 @@ import android.system.ErrnoException;
 import android.system.Os;
 import android.system.OsConstants;
 import android.system.StructPollfd;
-import android.util.Log;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
@@ -35,7 +34,6 @@ import java.net.DatagramSocket;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;

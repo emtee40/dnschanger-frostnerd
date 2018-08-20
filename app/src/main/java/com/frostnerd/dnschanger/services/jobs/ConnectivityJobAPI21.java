@@ -7,7 +7,6 @@ import androidx.annotation.RequiresApi;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.util.Preferences;
-import com.frostnerd.dnschanger.util.PreferencesAccessor;
 
 /**
  * Copyright Daniel Wolf 2017

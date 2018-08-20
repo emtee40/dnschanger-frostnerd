@@ -8,7 +8,6 @@ import android.system.ErrnoException;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
-import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 
 import java.io.IOException;

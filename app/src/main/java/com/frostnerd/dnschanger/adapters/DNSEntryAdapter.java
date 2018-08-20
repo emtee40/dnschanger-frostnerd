@@ -2,7 +2,7 @@ package com.frostnerd.dnschanger.adapters;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;

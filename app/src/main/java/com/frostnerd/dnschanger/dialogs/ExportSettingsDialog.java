@@ -15,7 +15,6 @@ import com.frostnerd.dnschanger.database.entities.Shortcut;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.lifecycle.BaseDialog;
-import com.frostnerd.preferenceexport.PreferenceHelper;
 
 import org.json.JSONException;
 
