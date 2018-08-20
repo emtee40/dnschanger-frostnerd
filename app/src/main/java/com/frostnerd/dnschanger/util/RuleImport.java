@@ -1,7 +1,7 @@
 package com.frostnerd.dnschanger.util;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.frostnerd.dnschanger.services.RuleImportService;
 import com.frostnerd.networking.NetworkUtil;

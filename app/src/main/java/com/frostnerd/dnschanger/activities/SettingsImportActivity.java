@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceCategory;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.util.ThemeHandler;

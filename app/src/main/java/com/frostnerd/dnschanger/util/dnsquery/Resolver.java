@@ -1,7 +1,7 @@
 package com.frostnerd.dnschanger.util.dnsquery;
 
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.net.InetAddress;

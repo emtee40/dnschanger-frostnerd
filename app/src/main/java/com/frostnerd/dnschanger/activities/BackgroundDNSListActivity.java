@@ -3,8 +3,8 @@ package com.frostnerd.dnschanger.activities;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.RemoteException;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.Window;
 
 import com.frostnerd.api.dnschanger.DNSEntry;

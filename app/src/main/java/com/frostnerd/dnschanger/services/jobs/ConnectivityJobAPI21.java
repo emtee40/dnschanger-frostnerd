@@ -3,7 +3,7 @@ package com.frostnerd.dnschanger.services.jobs;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.util.Preferences;
