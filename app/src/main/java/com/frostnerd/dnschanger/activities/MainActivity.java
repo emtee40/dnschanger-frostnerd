@@ -16,6 +16,7 @@ import android.os.Bundle;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -81,7 +82,7 @@ import java.util.Random;
  */
 public class MainActivity extends NavigationDrawerActivity implements RuleImport.ImportStartedListener {
     private static final String LOG_TAG = "[MainActivity]";
-    private static final int REQUEST_PERMISSION_IMPORT_SETTINGS = 131, REQUEST_PERMISSION_EXPORT_SETTINGS = 130;
+    private static final int REQUEST_PERMISSION_IMPORT_SETTINGS = 131, REQUEST_PERMISSION_EXPORT_SETTINGS = 130, REQUEST_ADVANCED_SETTINGS = 132;
     private AlertDialog dialog1;
     private DNSEntryListDialog dnsEntryListDialog;
     private MainFragment mainFragment;
@@ -315,7 +316,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
             itemCreator.createItemAndContinue(R.string.title_advanced_settings, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_settings)), new DrawerItem.ClickListener() {
                 @Override
                 public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
-                    startActivity(new Intent(MainActivity.this, AdvancedSettingsActivity.class));
+                    startActivityForResult(new Intent(MainActivity.this, AdvancedSettingsActivity.class), REQUEST_ADVANCED_SETTINGS);
                     return false;
                 }
 
@@ -660,6 +661,14 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
         }else if(requestCode == REQUEST_PERMISSION_IMPORT_SETTINGS && grantResults[0] == PackageManager.PERMISSION_GRANTED){
             importSettings();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_ADVANCED_SETTINGS && resultCode == AppCompatActivity.RESULT_FIRST_USER){
+            reloadMenuItems();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void importSettings(){
