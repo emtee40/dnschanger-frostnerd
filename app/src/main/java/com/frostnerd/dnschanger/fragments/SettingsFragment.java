@@ -569,7 +569,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                         putExtra(VPNServiceArgument.FLAG_DONT_UPDATE_DNS.getArgument(),true));
             }
         }else if(requestCode == REQUEST_ADVANCED_SETTINGS && resultCode == AppCompatActivity.RESULT_FIRST_USER){
-            IntentUtil.restartActivity(((MainActivity)requireContext()));
+            ((MainActivity)requireContext()).reloadMenuItems();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
