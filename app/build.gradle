@@ -44,16 +44,16 @@ dependencies {
     implementation 'com.frostnerd.utils:database:1.1.14'
     implementation 'com.frostnerd.utils:design:1.0.12'
     implementation 'com.frostnerd.utils:materialedittext:1.0.11'
-    implementation 'com.frostnerd.utils:preferences:2.2.6'
+    implementation 'com.frostnerd.utils:preferences:2.2.7'
     implementation 'com.frostnerd.utils:networking:1.0.3'
-    implementation 'com.frostnerd.utils:preferenceexport:1.0.6'
+    implementation 'com.frostnerd.utils:preferenceexport:1.0.7'
     implementation 'com.frostnerd.utils:api:1.0.4'
     testImplementation 'com.frostnerd.utils:logging:1.0.5'
 
     implementation "androidx.appcompat:appcompat:1.0.0-rc01"
     implementation "androidx.cardview:cardview:1.0.0-rc01"
     implementation "androidx.recyclerview:recyclerview:1.0.0-rc01"
-    implementation "androidx.legacy:legacy-preference-v14:1.0.0-rc01"
+    implementation "androidx.preference:preference:1.0.0-rc01"
     implementation "com.google.android.material:material:1.0.0-rc01"
     testImplementation 'junit:junit:4.12'
     testImplementation "org.robolectric:robolectric:4.0-alpha-3-SNAPSHOT"
