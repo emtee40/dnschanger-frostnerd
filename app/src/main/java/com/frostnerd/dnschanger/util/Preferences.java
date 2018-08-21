@@ -17,6 +17,7 @@ import com.frostnerd.preferences.restrictions.Type;
 import com.frostnerd.preferences.util.CustomBackendSharedPreference;
 import com.frostnerd.preferences.util.ObscuredSharedPreferences;
 import com.frostnerd.preferences.util.backends.SQLiteOpenHelperBackend;
+import com.frostnerd.preferences.util.backends.SharedPreferencesBackend;
 import com.frostnerd.preferences.util.obscureres.Base64Obscurer;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -53,21 +54,20 @@ public class Preferences extends com.frostnerd.preferences.Preferences {
     }
 
     private static SharedPreferences createPreferences(@NonNull Context context){
+        SharedPreferences sharedPreferences;
+
         ObscuredSharedPreferences obscuredSharedPreferences;
-
         SQLiteOpenHelperBackend backend = new SQLiteOpenHelperBackend(DatabaseHelper.getInstance(context));
-
         CustomBackendSharedPreference customBackendSharedPreference = new CustomBackendSharedPreference(backend);
+        obscuredSharedPreferences = new ObscuredSharedPreferences(customBackendSharedPreference, new Base64Obscurer(true, true));
 
-        SharedPreferences previous = getDefaultPreferences(context);
-        if(previous.getAll().size() != 0) {
-            obscuredSharedPreferences = ObscuredSharedPreferences.convertFrom(previous, customBackendSharedPreference, new Base64Obscurer(true,true));
-            previous.edit().clear().apply();
+        if(obscuredSharedPreferences.getAll().size() != 0) {
+            sharedPreferences = CustomBackendSharedPreference.convertFromOldBackend(new SharedPreferencesBackend(obscuredSharedPreferences), new SharedPreferencesBackend(getDefaultPreferences(context)));
+            obscuredSharedPreferences.edit().clear().commit();
         } else {
-            obscuredSharedPreferences = new ObscuredSharedPreferences(
-                    customBackendSharedPreference, new Base64Obscurer(true,true));
+            sharedPreferences = getDefaultPreferences(context);
         }
-        return obscuredSharedPreferences;
+        return sharedPreferences;
     }
 
     public Preferences(SharedPreferences sharedPreferences) {
