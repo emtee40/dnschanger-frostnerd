@@ -1,12 +1,11 @@
 package com.frostnerd.dnschanger.database.accessors;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 

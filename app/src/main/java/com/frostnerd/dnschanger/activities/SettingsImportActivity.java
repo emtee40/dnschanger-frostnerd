@@ -5,17 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceCategory;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.general.Utils;
 import com.frostnerd.general.permissions.PermissionsUtil;
-import com.frostnerd.preferenceexport.PreferenceHelper;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import java.io.BufferedReader;
 import java.io.File;

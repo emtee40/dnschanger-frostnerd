@@ -1,16 +1,16 @@
 package com.frostnerd.dnschanger.util.dnsproxy;
 
+import android.annotation.TargetApi;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import android.system.ErrnoException;
 import android.system.Os;
 import android.system.OsConstants;
 import android.system.StructPollfd;
-import android.util.Log;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
@@ -35,7 +35,6 @@ import java.net.DatagramSocket;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -63,6 +62,7 @@ import de.measite.minidns.record.Data;
  * Rather it was used as guidance.
  */
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class DNSUDPProxy extends DNSProxy{
     private static final String LOG_TAG = "[DNSUDPProxy]";
     private FileDescriptor interruptedDescriptor = null;

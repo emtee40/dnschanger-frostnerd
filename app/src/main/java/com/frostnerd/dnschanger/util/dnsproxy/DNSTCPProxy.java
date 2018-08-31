@@ -1,11 +1,12 @@
 package com.frostnerd.dnschanger.util.dnsproxy;
 
+import android.annotation.TargetApi;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import android.system.ErrnoException;
 import android.system.Os;
 import android.system.OsConstants;
@@ -65,6 +66,7 @@ import de.measite.minidns.record.Data;
  * Rather it was used as guidance.
  */
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+@TargetApi(value = Build.VERSION_CODES.LOLLIPOP)
 public class DNSTCPProxy extends DNSProxy{
     private static final String LOG_TAG = "[DNSTCPProxy]";
     private FileDescriptor interruptedDescriptor = null;

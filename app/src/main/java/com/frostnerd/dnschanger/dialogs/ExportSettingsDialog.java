@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.content.FileProvider;
+import androidx.core.content.FileProvider;
 
 import com.frostnerd.design.dialogs.FileChooserDialog;
 import com.frostnerd.dnschanger.BuildConfig;
@@ -15,7 +15,6 @@ import com.frostnerd.dnschanger.database.entities.Shortcut;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.lifecycle.BaseDialog;
-import com.frostnerd.preferenceexport.PreferenceHelper;
 
 import org.json.JSONException;
 

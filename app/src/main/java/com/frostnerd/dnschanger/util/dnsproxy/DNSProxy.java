@@ -3,12 +3,11 @@ package com.frostnerd.dnschanger.util.dnsproxy;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 import android.system.ErrnoException;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
-import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 
 import java.io.IOException;

@@ -6,7 +6,7 @@
     android:paddingBottom="10dp"
     android:layout_height="wrap_content">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         app:cardCornerRadius="4dp"
         app:cardElevation="3dp"
@@ -19,6 +19,6 @@
                 android:id="@+id/text"
                 android:padding="5dp"
                 android:layout_height="wrap_content" />
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

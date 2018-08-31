@@ -1,6 +1,6 @@
 package com.frostnerd.dnschanger.database.entities;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.frostnerd.database.orm.MultitonEntity;
 import com.frostnerd.database.orm.annotations.Ignore;

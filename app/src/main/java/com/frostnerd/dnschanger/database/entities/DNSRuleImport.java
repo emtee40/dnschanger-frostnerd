@@ -1,7 +1,7 @@
 package com.frostnerd.dnschanger.database.entities;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.frostnerd.database.orm.MultitonEntity;
 import com.frostnerd.database.orm.annotations.DeletableForeignKey;

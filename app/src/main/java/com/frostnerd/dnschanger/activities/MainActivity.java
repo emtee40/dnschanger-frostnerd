@@ -13,16 +13,15 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.util.ArraySet;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.SearchView;
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.collection.ArraySet;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -64,11 +63,11 @@ import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.general.Utils;
 import com.frostnerd.general.permissions.PermissionsUtil;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 /**
