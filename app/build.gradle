@@ -61,7 +61,7 @@ dependencies {
     implementation 'org.pcap4j:pcap4j-core:1.7.3'
     implementation 'org.pcap4j:pcap4j-packetfactory-static:1.7.3'
     implementation 'de.measite.minidns:minidns-core:0.2.4'
-    implementation 'de.measite.minidns:minidns-hla:0.3.2'
+    implementation 'de.measite.minidns:minidns-hla:0.2.4'
     compileOnly 'org.projectlombok:lombok:1.18.2'
     annotationProcessor 'org.projectlombok:lombok:1.18.2'
 }
