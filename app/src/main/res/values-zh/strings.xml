@@ -192,12 +192,12 @@
     <string name="nav_title_more">更多</string>
     <string name="about_text">这个应用是开源的。源代码可以在 git.frostnerd.com 中找到。\n图标源自 Google (Material icon pack - https://material.io/icons).\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2017\n保留所有权利\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger\n\nBrazilian translation by Lukinhas\n\nChinese Simplified translation by Majida Whale\n\nVietnamese translation by Phi</string>
     <string name="close">关闭</string>
-    <string name="info_text_how_does_it_work">Android 允许你在 WiFi 设置中配置 DNS 服务器 - 但是在移动连接中则不可以 (3G, 4G…)。然而，需要你使用静态 IP 地址，不允许轻松切换并不能使用 IPv6，与这个应用相比时的其他缺点之中。\n\n这个应用采用的是 Android 的 VPN 结构以允许设备动态地设置 DNS 服务器。要达到这个，需要创建一个将同台设备用作为末端的局域 VPN - 这意味着 VPN 连接既不能连接到互联网也不能被外部检测到。\n由于这个虚拟 VPN 可以动态地开始/停止，允许一系列功能及自动化。 这个 VPN 不能点击且自身读取不到数据。这只是个更改 DNS 服务器的中间人。\n\n如果你对这个技术方面的内容感兴趣，可以访问我的git: git.frostnerd.com.</string>
+    <string name="info_text_how_does_it_work">Android 允许你在 WiFi 设置中配置 DNS 服务器 - 但是在移动连接中则不可以 (3G, 4G…)。然而，与此相比的缺点是，需要你使用静态 IP 地址，不允许轻松切换并不能使用 IPv6。\n\n这个应用采用的是 Android 的 VPN 结构以允许设备动态地设置 DNS 服务器。要达到此目的，需要创建一个将同台设备用作为末端的局域 VPN - 这意味着 VPN 连接既不能连接到互联网也不能被外部检测到。\n由于这个虚拟 VPN 可以动态地开始/停止，允许一系列功能及自动化。这个 VPN 不能点击且自身读取不到数据。这只是个更改 DNS 服务器的中间人。\n\n如果你对这个技术方面的内容感兴趣，可以访问我的git: git.frostnerd.com.</string>
     <string name="create_one">创建一个</string>
     <string name="feature_shortcuts">使用这个应用，你可以在你的主屏幕上创建快捷方式。这些快捷方式包含 DNS 设置，无需打开应用即可通过点击更改你的 DNS 服务器。\n如果你想在不同的服务器中快速切换，这样做会显得尤其方便 - 只需创建多个快捷方式并放置在你的主屏幕上。\n\n你可以在设置中配置这些快捷方式的行为</string>
     <string name="notification_channel_default">默认通道</string>
     <string name="notification_channel_default_description">发布通知的默认通道</string>
-    <string name="feature_tiles">为了快速访问，你可以在通知区域放置瓷贴。它们可用于开始/停止及暂停/恢复 DNS Changer。\n\n要添加瓷贴，只需下拉通知区域，点击钢笔图标并通过长按将瓷贴向上拖曳即可。</string>
+    <string name="feature_tiles">为了快速访问，你可以在通知区域放置磁贴。它们可用于开始/停止及暂停/恢复 DNS Changer。\n\n要添加瓷贴，只需下拉通知区域，点击铅笔图标并通过长按将瓷贴向上拖曳即可。</string>
     <string name="feature_pin_protection">你可以使用 PIN码保护每一个开始/停止/暂停/恢复 DNS Changer 的操作。每次执行操作时，都会向你显示询问 PIN码的对话框。\n\n如果用户不精通技术，这样可用于防止手机用户干扰到应用。专为阻止小孩停止该应用而开发。\n打开设置可选择要保护的项目。</string>
     <string name="no_disable_android_o">这个无法在 Android O 及更高系统版本上停用</string>
     <string name="blacklist">黑名单</string>
@@ -299,18 +299,18 @@
     <string name="nav_title_current_networks">目前的网络</string>
     <string name="title_loopback_allowed">允许回送地址</string>
     <string name="summary_loopback_allowed">允许您在所有字段（:: 1和127.0.0.1）中输入回送地址</string>
-    <string name="nav_title_importexport">进口 / 出口</string>
+    <string name="nav_title_importexport">导入/导出</string>
     <string name="tcp">TCP</string>
     <string name="info_importing_rules_app_unusable">该应用程序现在正在导入规则。 在此期间，您将无法使用应用程序，因为内部数据库在此期间被锁定。</string>
     <string name="background">背景</string>
-    <string name="stop_all">全部停下来</string>
+    <string name="stop_all">全部停止</string>
     <string name="notification_text_running_in_advanced_mode">高级设置已启用。</string>
     <string name="show_system_apps">显示系统应用</string>
     <string name="only_show_apps_with_internet">只显示具有互联网权限的应用程序</string>
     <string name="hint_dns1">DNS 1</string>
     <string name="hint_dns2">DNS 2</string>
     <string name="hint_dns_entry_name">名称</string>
-    <string name="hint_pin">销</string>
+    <string name="hint_pin">PIN</string>
     <string name="loading_exporting_queries">导出查询，请稍候…</string>
     <string name="exported_dns_queries">[x]导出的查询。</string>
 </resources>
