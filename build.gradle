@@ -47,6 +47,7 @@ allprojects {
         jcenter()
         google()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url = 'https://dl.bintray.com/michaelbull/maven' }
         maven {
             url 'https://artifactory.frostnerd.com/artifactory/libs-release-local'
             credentials {
