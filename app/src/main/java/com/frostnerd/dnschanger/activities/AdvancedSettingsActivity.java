@@ -3,6 +3,7 @@ package com.frostnerd.dnschanger.activities;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -142,6 +143,11 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
 
     private void setUndoRuleImportStatus() {
         findPreference("undo_rule_import").setEnabled(DatabaseHelper.getInstance(this).getCount(DNSRuleImport.class) != 0);
+    }
+
+    @Override
+    public SharedPreferences getSharedPreferences(String name, int mode) {
+        return Preferences.getInstance(this);
     }
 
     @Override

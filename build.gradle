@@ -35,8 +35,8 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
-        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.7.1"
+        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.7.5"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -47,6 +47,7 @@ allprojects {
         jcenter()
         google()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url = 'https://dl.bintray.com/michaelbull/maven' }
         maven {
             url 'https://artifactory.frostnerd.com/artifactory/libs-release-local'
             credentials {
