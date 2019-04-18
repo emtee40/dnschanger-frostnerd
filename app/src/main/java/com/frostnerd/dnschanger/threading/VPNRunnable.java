@@ -251,7 +251,6 @@ public class VPNRunnable implements Runnable {
     public void destroy(){
         running = false;
         cleanup();
-        vpnApps.clear();
         upstreamServers.clear();
         vpnApps = null;
         service = null;
