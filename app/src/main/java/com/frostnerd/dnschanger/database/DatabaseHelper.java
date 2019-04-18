@@ -43,7 +43,7 @@ import java.util.Set;
  */
 public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper {
     public static final String DATABASE_NAME = "data";
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 5;
     @NonNull
     public static final Set<Class<? extends Entity>> entities = new HashSet<Class<? extends Entity>>(){{
         add(DNSEntry.class);
@@ -79,6 +79,11 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
     @Override
     public void onBeforeCreate(SQLiteDatabase db) {
 
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if(oldVersion != 4 && oldVersion != 3) super.onUpgrade(db, oldVersion, newVersion);
     }
 
     @Override
@@ -140,11 +145,13 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
 
     @Override
     public void onAfterUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        int version;
-        for(DNSEntry entry: DNSEntry.defaultDNSEntries.keySet()){
-            version = DNSEntry.defaultDNSEntries.get(entry);
-            if(getCount(DNSEntry.class, WhereCondition.equal("name", entry.getName())) == 0)
-                if(version > oldVersion && version <= newVersion)insert(entry);
+        if(oldVersion != 4) {
+            int version;
+            for(DNSEntry entry: DNSEntry.defaultDNSEntries.keySet()){
+                version = DNSEntry.defaultDNSEntries.get(entry);
+                if(getCount(DNSEntry.class, WhereCondition.equal("name", entry.getName())) == 0)
+                    if(version > oldVersion && version <= newVersion)insert(entry);
+            }
         }
     }
 
