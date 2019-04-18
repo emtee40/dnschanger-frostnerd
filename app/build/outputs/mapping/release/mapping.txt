@@ -20613,21 +20613,22 @@ com.frostnerd.dnschanger.database.DatabaseHelper -> com.frostnerd.dnschanger.dat
     70:72:void <init>(android.content.Context) -> <init>
     76:77:void onAfterCreate(android.database.sqlite.SQLiteDatabase) -> a
     82:82:void onBeforeCreate(android.database.sqlite.SQLiteDatabase) -> b
-    86:129:void onBeforeUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> a
-    136:138:java.lang.String legacyString(int,com.frostnerd.utils.database.CursorWithDefaults,java.lang.String) -> a
-    144:149:void onAfterUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> b
-    154:157:void close() -> close
-    160:160:boolean dnsEntryExists(java.lang.String) -> a
-    164:164:boolean dnsRuleExists(java.lang.String) -> b
-    168:170:boolean dnsRuleExists(java.lang.String,boolean) -> a
-    174:176:com.frostnerd.dnschanger.database.entities.DNSRule getDNSRule(java.lang.String,boolean) -> b
-    180:182:boolean deleteDNSRule(java.lang.String,boolean) -> c
-    186:188:int editDNSRule(java.lang.String,boolean,java.lang.String) -> a
-    192:193:void createDNSRule(java.lang.String,java.lang.String,boolean,boolean) -> a
-    198:203:void createShortcut(java.lang.String,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair) -> a
-    206:211:void createShortcut(com.frostnerd.dnschanger.database.entities.Shortcut) -> a
-    215:221:com.frostnerd.dnschanger.database.entities.DNSEntry findMatchingDNSEntry(java.lang.String) -> c
-    226:228:void finalize() -> finalize
+    86:87:void onUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> onUpgrade
+    91:134:void onBeforeUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> a
+    141:143:java.lang.String legacyString(int,com.frostnerd.utils.database.CursorWithDefaults,java.lang.String) -> a
+    148:156:void onAfterUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> b
+    161:164:void close() -> close
+    167:167:boolean dnsEntryExists(java.lang.String) -> a
+    171:171:boolean dnsRuleExists(java.lang.String) -> b
+    175:177:boolean dnsRuleExists(java.lang.String,boolean) -> a
+    181:183:com.frostnerd.dnschanger.database.entities.DNSRule getDNSRule(java.lang.String,boolean) -> b
+    187:189:boolean deleteDNSRule(java.lang.String,boolean) -> c
+    193:195:int editDNSRule(java.lang.String,boolean,java.lang.String) -> a
+    199:200:void createDNSRule(java.lang.String,java.lang.String,boolean,boolean) -> a
+    205:210:void createShortcut(java.lang.String,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair,com.frostnerd.dnschanger.database.entities.IPPortPair) -> a
+    213:218:void createShortcut(com.frostnerd.dnschanger.database.entities.Shortcut) -> a
+    222:228:com.frostnerd.dnschanger.database.entities.DNSEntry findMatchingDNSEntry(java.lang.String) -> c
+    233:235:void finalize() -> finalize
     48:48:void <clinit>() -> <clinit>
 com.frostnerd.dnschanger.database.DatabaseHelper$1 -> com.frostnerd.dnschanger.database.a$1:
     48:55:void <init>() -> <init>
