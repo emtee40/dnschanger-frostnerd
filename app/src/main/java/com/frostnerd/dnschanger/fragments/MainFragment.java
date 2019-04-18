@@ -35,6 +35,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.frostnerd.dnschanger.LogFactory;
@@ -81,14 +82,13 @@ import java.util.regex.Pattern;
  * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 public class MainFragment extends Fragment {
-    private Button startStopButton;
+    private Switch startStopButton;
     private boolean vpnRunning, wasStartedWithTasker = false;
     private MaterialEditText met_dns1, met_dns2;
     public EditText dns1, dns2;
     private static final String LOG_TAG = "[MainActivity]";
     private TextView connectionText;
     private ImageView connectionImage;
-    private View running_indicator;
     private boolean advancedMode;
     public boolean settingV6 = false;
     private final BroadcastReceiver serviceStateReceiver = new BroadcastReceiver() {
@@ -119,8 +119,7 @@ public class MainFragment extends Fragment {
         if (vpnRunning) {
             connectionText.setText(R.string.running);
             if(connectionImage != null)connectionImage.setImageResource(R.drawable.ic_thumb_up);
-            startStopButton.setText(R.string.stop);
-            running_indicator.setBackgroundColor(Color.parseColor("#4CAF50"));
+            startStopButton.setChecked(true);
         } else {
             TypedValue typedValue = new TypedValue();
             Resources.Theme theme = requireContext().getTheme();
@@ -128,8 +127,7 @@ public class MainFragment extends Fragment {
             if(PreferencesAccessor.isEverythingDisabled(requireContext()))  connectionText.setText(R.string.info_functionality_disabled);
             else connectionText.setText(R.string.not_running);
             if(connectionImage != null)connectionImage.setImageResource(R.drawable.ic_thumb_down);
-            startStopButton.setText(R.string.start);
-            running_indicator.setBackgroundColor(typedValue.data);
+            startStopButton.setChecked(false);
         }
         LogFactory.writeMessage(requireContext(), LOG_TAG, "IndictorState set");
     }
@@ -149,7 +147,6 @@ public class MainFragment extends Fragment {
         dns1 = dns2 = null;
         connectionText = null;
         connectionImage = null;
-        running_indicator = null;
         contentView = null;
     }
 
@@ -167,8 +164,7 @@ public class MainFragment extends Fragment {
         dns2 = (EditText) findViewById(R.id.dns2);
         connectionImage = vertical ? null : (ImageView)findViewById(R.id.connection_status_image);
         connectionText = (TextView)findViewById(R.id.connection_status_text);
-        running_indicator = findViewById(R.id.running_indicator);
-        startStopButton = (Button) findViewById(R.id.startStopButton);
+        startStopButton = (Switch) findViewById(R.id.startStopButton);
 
         if(settingV6 || PreferencesAccessor.areCustomPortsEnabled(requireContext())){
             dns1.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);

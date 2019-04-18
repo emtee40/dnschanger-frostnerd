@@ -28,7 +28,7 @@ import com.frostnerd.utils.apis.dataexchangers.PreferencesExchanger;
  */
 public class DataService extends DataExchangeService{
 
-    public void handleMessage(Message message){
+    public boolean handleMessage(Message message){
         if(message.replyTo != null){
             try {
                 DataExchanger.executeExchangersAndSendAnswers(Preferences.getInstance(this), message, message.replyTo, PreferencesExchanger.class);
@@ -36,5 +36,6 @@ public class DataService extends DataExchangeService{
                 e.printStackTrace();
             }
         }
+        return true;
     }
 }

@@ -306,8 +306,8 @@
     <string name="notification_text_running_in_advanced_mode">Configurações avançadas habilitadas.</string>
     <string name="show_system_apps">Mostrar aplicativos do sistema</string>
     <string name="only_show_apps_with_internet">Apenas mostre aplicativos com a permissão de internet</string>
-    <string name="hint_dns1">DNS 1</string>
-    <string name="hint_dns2">DNS 2</string>
+    <string name="hint_dns1">Servidor principal</string>
+    <string name="hint_dns2">Servidor secundário</string>
     <string name="hint_dns_entry_name">Nome</string>
     <string name="hint_pin">PIN</string>
     <string name="loading_exporting_queries">Exportando consultas, por favor aguarde…</string>
