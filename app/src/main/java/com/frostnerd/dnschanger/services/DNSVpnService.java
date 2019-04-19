@@ -107,7 +107,7 @@ public class DNSVpnService extends VpnService {
         if(!serviceRunning)return;
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Updating notification");
         initNotification();
-        if(!preferences.getBoolean( "setting_show_notification",true)){
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O && !preferences.getBoolean( "setting_show_notification",true)){
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Notification is disabled");
             stopForeground(true);
             return;
@@ -232,6 +232,7 @@ public class DNSVpnService extends VpnService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         //intent = intent == null ? intent : restoreSettings(intent);
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Got StartCommand", intent);
+        if(notificationBuilder != null) startForeground(NOTIFICATION_ID, notificationBuilder.build());
         if(Utils.isServiceRunning(this, RuleImportService.class)){
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Not starting the service because rules are currently being imported");
             stopSelf();
@@ -265,7 +266,7 @@ public class DNSVpnService extends VpnService {
             }
             Util.updateTiles(this);
         }else LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]", LogFactory.Tag.ERROR.toString()}, "Intent given is null. This isn't normal behavior");
-        if(upstreamServers != null && upstreamServers.size() != 0)updateNotification();
+        if(upstreamServers != null && upstreamServers.size() != 0) updateNotification();
         return START_REDELIVER_INTENT;
     }
 

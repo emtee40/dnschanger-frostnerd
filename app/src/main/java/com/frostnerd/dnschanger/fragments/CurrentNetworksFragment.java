@@ -79,10 +79,10 @@ public class CurrentNetworksFragment extends Fragment {
                 final DNSProperties properties = dnsProperties.get(index);
                 boolean port = PreferencesAccessor.areCustomPortsEnabled(requireContext());
                 for(IPPortPair ipPortPair: properties.ipv4Servers){
-                    serverText.append(ipPortPair.toString(port)).append("\n");
+                    if(ipPortPair != null) serverText.append(ipPortPair.toString(port)).append("\n");
                 }
                 for(IPPortPair ipPortPair: properties.ipv6Servers){
-                    serverText.append(ipPortPair.toString(port)).append("\n");
+                    if(ipPortPair != null) serverText.append(ipPortPair.toString(port)).append("\n");
                 }
                 String text = getString(R.string.text_dns_configuration).replace("[name]", properties.networkName);
                 text = text.replace("[servers]", serverText);

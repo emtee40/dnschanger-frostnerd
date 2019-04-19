@@ -785,7 +785,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
                                 _text = _text.replace("[x]", unreachable.size() + reachable.size() + "");
                                 _text = _text.replace("[y]", unreachable.size() + "");
                                 boolean customPorts = PreferencesAccessor.areCustomPortsEnabled(MainActivity.this);
-                                for(IPPortPair p: unreachable)builder.append("- ").append(p.formatForTextfield(customPorts)).append("\n");
+                                for(IPPortPair p: unreachable)if(p != null) builder.append("- ").append(p.formatForTextfield(customPorts)).append("\n");
                                 _text = _text.replace("[servers]", builder.toString());
                                 final String text = _text;
                                 MainActivity.this.runOnUiThread(new Runnable() {
