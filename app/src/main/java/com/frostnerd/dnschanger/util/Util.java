@@ -230,9 +230,11 @@ public final class Util {
 
     public static void startService(Context context, Intent intent){
         if(PreferencesAccessor.isEverythingDisabled(context))return;
-        if(intent.getComponent() != null && intent.getComponent().getClassName().equals(DNSVpnService.class.getName()) &&
-                PreferencesAccessor.isNotificationEnabled(context) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            context.startForegroundService(intent);
+        if((intent.getComponent() != null && intent.getComponent().getClassName().equals(DNSVpnService.class.getName()) &&
+                (PreferencesAccessor.isNotificationEnabled(context)) || Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)){
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(intent);
+            } else  context.startService(intent);
         }else context.startService(intent);
     }
 
