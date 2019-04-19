@@ -21667,31 +21667,31 @@ com.frostnerd.dnschanger.services.DNSVpnService -> com.frostnerd.dnschanger.serv
     176:195:void initNotification() -> h
     199:205:void broadcastCurrentState() -> b
     208:223:void updateDNSServers(android.content.Intent) -> a
-    234:269:int onStartCommand(android.content.Intent,int,int) -> onStartCommand
-    273:293:void createAndRunThread(boolean,boolean) -> a
-    296:316:void stopThread() -> i
-    319:320:void stopService() -> j
-    324:330:void onCreate() -> onCreate
-    334:338:void onDestroy() -> onDestroy
-    342:346:void onRevoke() -> onRevoke
-    350:352:void onLowMemory() -> onLowMemory
-    356:358:void onTrimMemory(int) -> onTrimMemory
-    362:364:void onTaskRemoved(android.content.Intent) -> onTaskRemoved
-    368:369:android.os.IBinder onBind(android.content.Intent) -> onBind
-    374:374:boolean onUnbind(android.content.Intent) -> onUnbind
-    378:378:android.net.VpnService$Builder createBuilder() -> c
-    382:382:android.content.Intent getDestroyIntent(android.content.Context) -> a
-    386:388:android.content.Intent getDestroyIntent(android.content.Context,java.lang.String) -> a
-    392:392:android.content.Intent getStartVPNIntent(android.content.Context) -> b
-    396:397:android.content.Intent getStartVPNIntent(android.content.Context,boolean) -> a
-    401:402:android.content.Intent getStopVPNIntent(android.content.Context) -> c
-    406:409:android.content.Intent getStartVPNIntent(android.content.Context,java.util.ArrayList,boolean,boolean) -> a
-    420:423:android.content.Intent getUpdateServersIntent(android.content.Context,boolean,boolean) -> a
-    427:427:android.content.Intent getBinderIntent(android.content.Context) -> d
-    431:431:boolean wasStartedFromShortcut() -> d
-    435:435:boolean isDNSThreadRunning() -> e
-    439:439:boolean isServiceRunning() -> f
-    444:455:boolean addressesMatch(java.util.ArrayList) -> a
+    234:270:int onStartCommand(android.content.Intent,int,int) -> onStartCommand
+    274:294:void createAndRunThread(boolean,boolean) -> a
+    297:317:void stopThread() -> i
+    320:321:void stopService() -> j
+    325:331:void onCreate() -> onCreate
+    335:339:void onDestroy() -> onDestroy
+    343:347:void onRevoke() -> onRevoke
+    351:353:void onLowMemory() -> onLowMemory
+    357:359:void onTrimMemory(int) -> onTrimMemory
+    363:365:void onTaskRemoved(android.content.Intent) -> onTaskRemoved
+    369:370:android.os.IBinder onBind(android.content.Intent) -> onBind
+    375:375:boolean onUnbind(android.content.Intent) -> onUnbind
+    379:379:android.net.VpnService$Builder createBuilder() -> c
+    383:383:android.content.Intent getDestroyIntent(android.content.Context) -> a
+    387:389:android.content.Intent getDestroyIntent(android.content.Context,java.lang.String) -> a
+    393:393:android.content.Intent getStartVPNIntent(android.content.Context) -> b
+    397:398:android.content.Intent getStartVPNIntent(android.content.Context,boolean) -> a
+    402:403:android.content.Intent getStopVPNIntent(android.content.Context) -> c
+    407:410:android.content.Intent getStartVPNIntent(android.content.Context,java.util.ArrayList,boolean,boolean) -> a
+    421:424:android.content.Intent getUpdateServersIntent(android.content.Context,boolean,boolean) -> a
+    428:428:android.content.Intent getBinderIntent(android.content.Context) -> d
+    432:432:boolean wasStartedFromShortcut() -> d
+    436:436:boolean isDNSThreadRunning() -> e
+    440:440:boolean isServiceRunning() -> f
+    445:456:boolean addressesMatch(java.util.ArrayList) -> a
     58:58:com.frostnerd.dnschanger.threading.VPNRunnable access$002(com.frostnerd.dnschanger.threading.VPNRunnable) -> a
     58:58:java.util.ArrayList access$100(com.frostnerd.dnschanger.services.DNSVpnService) -> a
     58:58:java.util.Set access$200(com.frostnerd.dnschanger.services.DNSVpnService) -> b
@@ -21706,17 +21706,17 @@ com.frostnerd.dnschanger.services.DNSVpnService$1 -> com.frostnerd.dnschanger.se
     70:72:void onReceive(android.content.Context,android.content.Intent) -> onReceive
 com.frostnerd.dnschanger.services.DNSVpnService$2 -> com.frostnerd.dnschanger.services.DNSVpnService$2:
     com.frostnerd.dnschanger.services.DNSVpnService this$0 -> a
-    281:281:void <init>(com.frostnerd.dnschanger.services.DNSVpnService) -> <init>
-    284:289:void run() -> run
+    282:282:void <init>(com.frostnerd.dnschanger.services.DNSVpnService) -> <init>
+    285:290:void run() -> run
 com.frostnerd.dnschanger.services.DNSVpnService$3 -> com.frostnerd.dnschanger.services.DNSVpnService$3:
     com.frostnerd.dnschanger.services.DNSVpnService this$0 -> a
-    300:300:void <init>(com.frostnerd.dnschanger.services.DNSVpnService) -> <init>
-    303:306:void run() -> run
+    301:301:void <init>(com.frostnerd.dnschanger.services.DNSVpnService) -> <init>
+    304:307:void run() -> run
 com.frostnerd.dnschanger.services.DNSVpnService$ServiceBinder -> com.frostnerd.dnschanger.services.DNSVpnService$a:
     com.frostnerd.dnschanger.services.DNSVpnService this$0 -> a
-    458:458:void <init>(com.frostnerd.dnschanger.services.DNSVpnService) -> <init>
-    460:460:com.frostnerd.dnschanger.services.DNSVpnService getService() -> a
-    466:470:boolean onTransact(int,android.os.Parcel,android.os.Parcel,int) -> onTransact
+    459:459:void <init>(com.frostnerd.dnschanger.services.DNSVpnService) -> <init>
+    461:461:com.frostnerd.dnschanger.services.DNSVpnService getService() -> a
+    467:471:boolean onTransact(int,android.os.Parcel,android.os.Parcel,int) -> onTransact
 com.frostnerd.dnschanger.services.DataService -> com.frostnerd.dnschanger.services.DataService:
     29:29:void <init>() -> <init>
     32:39:boolean handleMessage(android.os.Message) -> a
@@ -22174,13 +22174,13 @@ com.frostnerd.dnschanger.util.Util -> com.frostnerd.dnschanger.util.f:
     180:180:boolean isTaskerInstalled(android.content.Context) -> d
     184:188:void deleteDatabase(android.content.Context) -> e
     201:229:void createShortcut(android.content.Context,java.util.ArrayList,java.lang.String) -> a
-    232:237:void startService(android.content.Context,android.content.Intent) -> a
-    240:261:java.lang.String createNotificationChannel(android.content.Context,boolean) -> a
-    266:279:void runBackgroundConnectivityCheck(android.content.Context) -> f
-    283:286:boolean isJobRunning(android.content.Context,int) -> a
-    295:299:android.support.v4.app.FragmentActivity getActivity(android.support.v4.app.Fragment) -> a
-    304:314:java.lang.String serializableToString(java.io.Serializable) -> a
-    319:327:java.io.Serializable serializableFromString(java.lang.String) -> a
+    232:239:void startService(android.content.Context,android.content.Intent) -> a
+    242:263:java.lang.String createNotificationChannel(android.content.Context,boolean) -> a
+    268:281:void runBackgroundConnectivityCheck(android.content.Context) -> f
+    285:288:boolean isJobRunning(android.content.Context,int) -> a
+    297:301:android.support.v4.app.FragmentActivity getActivity(android.support.v4.app.Fragment) -> a
+    306:316:java.lang.String serializableToString(java.io.Serializable) -> a
+    321:329:java.io.Serializable serializableFromString(java.lang.String) -> a
     79:80:void <clinit>() -> <clinit>
 com.frostnerd.dnschanger.util.Util$DNSQueryResultListener -> com.frostnerd.dnschanger.util.f$a:
     void onSuccess(org.xbill.DNS.Record[]) -> a
