@@ -321,8 +321,8 @@
     <string name="content_description_app_entry_icon" translatable="false">App icon</string>
     <string name="default_dns1" translatable="false">8.8.8.8</string>
     <string name="default_dns2" translatable="false">8.8.4.4</string>
-    <string name="hint_dns1">DNS 1</string>
-    <string name="hint_dns2">DNS 2</string>
+    <string name="hint_dns1">Primary server</string>
+    <string name="hint_dns2">Secondary server</string>
     <string name="hint_dns_entry_name">Name</string>
     <string name="hint_pin">PIN</string>
     <string name="loading_exporting_queries">Exporting queries, please wait…</string>
