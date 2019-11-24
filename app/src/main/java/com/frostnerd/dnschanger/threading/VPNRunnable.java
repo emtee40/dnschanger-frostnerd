@@ -15,6 +15,7 @@ import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
 import com.frostnerd.dnschanger.activities.InvalidDNSDialogActivity;
 import com.frostnerd.dnschanger.activities.MainActivity;
+import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
@@ -232,7 +233,7 @@ public class VPNRunnable implements Runnable {
             builder.setMtu(1500);
         }else builder.setMtu(1280);
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface created, not yet connected");
-        builder.setConfigureIntent(PendingIntent.getActivity(service, 12, new Intent(service, MainActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
+        builder.setConfigureIntent(PendingIntent.getActivity(service, 12, new Intent(service, PinActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
     }
     public static final Map<String, InetAddress> addressRemap = new HashMap<>();
     private final String addressRemapBase = "244.0.0.";
