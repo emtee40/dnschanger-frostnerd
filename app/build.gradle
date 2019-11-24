@@ -2,15 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'project-report'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 29
 
     defaultConfig {
         applicationId "com.frostnerd.dnschanger"
         minSdkVersion 14
         targetSdkVersion 29
-        versionCode 89
-        versionName "1.16.0.7"
+        versionCode 90
+        versionName "1.16.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -43,7 +42,7 @@ android {
 dependencies {
     implementation 'com.frostnerd.utils:general:1.0.9'
     implementation 'com.frostnerd.utils:database:1.1.19'
-    implementation 'com.frostnerd.utils:design:1.0.14-fix1'
+    implementation 'com.frostnerd.utils:design:1.0.14-fix4'
     implementation 'com.frostnerd.utils:materialedittext:1.0.20'
     implementation 'com.frostnerd.utils:preferences:2.4.6'
     implementation 'com.frostnerd.utils:networking:1.0.4'
