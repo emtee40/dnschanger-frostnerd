@@ -341,4 +341,6 @@
     <string name="title_clear_local_rules">Clear local rules</string>
     <string name="summary_undo_rule_import">Revert a rule import from a file. Cannot be reverted.</string>
     <string name="title_undo_rule_import">Undo import</string>
+
+    <string name="nebulo_download_text">I created a new App named Nebulo, an open-source and ad-free App for dns-over-https and dns-over-tls. It is on the store.\nDo you want to have a look at it? Clicking yes opens the store.</string>
 </resources>

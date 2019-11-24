@@ -2,6 +2,7 @@ package com.frostnerd.dnschanger.activities;
 
 import android.Manifest;
 import android.app.SearchManager;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -168,6 +169,8 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
                 }
             }).setMessage(R.string.rate_request_text).setTitle(R.string.rate).show();
             LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
+        } else if(launches >= 7 && !preferences.getBoolean("nebulo_shown", false) && random <= 15) {
+            showNebuloDialog();
         }
         Util.updateTiles(this);
         View cardView = getLayoutInflater().inflate(R.layout.main_cardview, null, false);
@@ -532,6 +535,24 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
             }
         });
         itemCreator.createItemAndContinue(R.string.app_name);
+        itemCreator.createItemAndContinue("Nebulo", setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_nebulo)), new DrawerItem.ClickListener() {
+            @Override
+            public boolean onClick(DrawerItem drawerItem, NavigationDrawerActivity navigationDrawerActivity, @Nullable Bundle bundle) {
+                showNebuloDialog();
+                return false;
+            }
+
+            @Override
+            public boolean onLongClick(DrawerItem drawerItem, NavigationDrawerActivity navigationDrawerActivity) {
+                return false;
+            }
+        });
+        itemCreator.accessLastItemAndContinue(new DrawerItemCreator.ItemAccessor() {
+            @Override
+            public void access(DrawerItem drawerItem) {
+                drawerItem.setDrawableRight(DesignUtil.getDrawable(MainActivity.this, R.drawable.ic_nebulo_ad));
+            }
+        });
         itemCreator.createItemAndContinue(R.string.rate, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_star)), new DrawerItem.ClickListener() {
             @Override
             public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
@@ -659,6 +680,36 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
             }
         });
         return itemCreator.getDrawerItemsAndDestroy();
+    }
+
+    private void showNebuloDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(this, ThemeHandler.getDialogTheme(this))
+                .setTitle("Nebulo")
+                .setMessage(R.string.nebulo_download_text)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Preferences.getInstance(MainActivity.this).putBoolean("nebulo_shown", true);
+                        Intent storeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.frostnerd.smokescreen"));
+                        try {
+                            startActivity(storeIntent);
+                        } catch (ActivityNotFoundException ex) {
+                            storeIntent = new Intent(Intent.ACTION_VIEW,  Uri.parse("https://play.google.com/store/apps/details?id=com.frostnerd.smokescreen"));
+                            startActivity(storeIntent);
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Preferences.getInstance(MainActivity.this).putBoolean("nebulo_shown", true);
+                        dialog.dismiss();
+                    }
+                })
+                .setCancelable(false)
+                .create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
     @Override
