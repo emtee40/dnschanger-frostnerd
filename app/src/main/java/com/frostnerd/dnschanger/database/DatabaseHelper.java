@@ -84,6 +84,7 @@ public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
 
     }
 
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if(oldVersion != 4 && oldVersion != 3) super.onUpgrade(db, oldVersion, newVersion);

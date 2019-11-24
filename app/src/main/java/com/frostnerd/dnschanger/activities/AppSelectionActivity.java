@@ -14,6 +14,8 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.frostnerd.lifecycle.BaseActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,7 +37,6 @@ import com.frostnerd.design.DesignUtil;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.general.Utils;
-import com.frostnerd.lifecycle.BaseActivity;
 
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;

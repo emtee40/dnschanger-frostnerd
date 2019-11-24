@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId "com.frostnerd.dnschanger"
         minSdkVersion 14
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 89
         versionName "1.16.0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -31,6 +31,9 @@ android {
     lintOptions {
         abortOnError false
     }
+    packagingOptions {
+        exclude 'META-INF/library_release.kotlin_module'
+    }
     testOptions {
         unitTests.returnDefaultValues = true
         unitTests {
@@ -40,11 +43,11 @@ android {
 }
 
 dependencies {
-    implementation 'com.frostnerd.utils:general:1.0.7'
-    implementation 'com.frostnerd.utils:database:1.1.15'
+    implementation 'com.frostnerd.utils:general:1.0.9'
+    implementation 'com.frostnerd.utils:database:1.1.19'
     implementation 'com.frostnerd.utils:design:1.0.14'
-    implementation 'com.frostnerd.utils:materialedittext:1.0.13'
-    implementation 'com.frostnerd.utils:preferences:2.2.8'
+    implementation 'com.frostnerd.utils:materialedittext:1.0.20'
+    implementation 'com.frostnerd.utils:preferences:2.4.6'
     implementation 'com.frostnerd.utils:networking:1.0.4'
     implementation 'com.frostnerd.utils:preferenceexport:1.0.9'
     implementation 'com.frostnerd.utils:api:1.0.5'
@@ -52,7 +55,7 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:1.1.0"
     implementation "androidx.cardview:cardview:1.0.0"
-    implementation "androidx.recyclerview:recyclerview:1.0.0"
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation "androidx.preference:preference:1.1.0"
     implementation "com.google.android.material:material:1.0.0"
     testImplementation 'junit:junit:4.12'
