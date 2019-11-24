@@ -230,7 +230,7 @@
     <string name="nav_title_libraries">Libraries</string>
     <string name="dialog_libraries_text">This app contains libraries created by third parties. The libraries, their creators and the licenses are listed below.</string>
     <string name="title_disable_notification_icon">Disable notification icon</string>
-    <string name="summary_disable_notification_icon">Disables the dns icon shown in the notification bar. Will still be visible when opening the notification area.</string>
+    <string name="summary_disable_notification_icon">Disables the dns icon shown in the notification bar. Will still be visible when opening the notification area, might not work on newer Android versions.</string>
     <string name="notification_channel_hiddenicon">Channel with no icon</string>
     <string name="notification_channel_hiddenicon_description">This channel shows no icon in the notification bar</string>
     <string name="notification_ipv6_text">Go to the settings if you want to enable IPv6.</string>
