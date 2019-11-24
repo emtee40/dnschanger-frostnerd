@@ -32,7 +32,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -169,9 +169,9 @@ public class MainFragment extends Fragment {
             dns1.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
             dns2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         }
-        startStopButton.setOnClickListener(new View.OnClickListener() {
+        startStopButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 final Intent i = VpnService.prepare(requireContext());
                 LogFactory.writeMessage(requireContext(), LOG_TAG, "Startbutton clicked. Configuring VPN if needed");
                 if (i != null){
