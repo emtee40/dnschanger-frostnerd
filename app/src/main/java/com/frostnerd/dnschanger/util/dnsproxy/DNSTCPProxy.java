@@ -283,6 +283,8 @@ public class DNSTCPProxy extends DNSProxy{
             if(!(exception instanceof SocketTimeoutException) && ipPacket != null){
                 handleUpstreamDNSResponse(ipPacket, outgoingPacket.getData());
             }
+        } catch(NullPointerException ex) {
+            // Ignore
         }
     }
 
