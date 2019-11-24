@@ -165,7 +165,7 @@
 
         <activity
             android:name=".activities.PinActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -185,6 +185,7 @@
 
         <activity
             android:name=".activities.AppSelectionActivity"
+            android:launchMode="singleTask"
             android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -25,6 +25,7 @@ import org.pcap4j.packet.IpV6Packet;
 import org.pcap4j.packet.UdpPacket;
 import org.pcap4j.packet.UnknownPacket;
 
+import java.io.Closeable;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -87,7 +88,7 @@ public class DNSUDPProxy extends DNSProxy{
         @Override
         protected boolean removeEldestEntry(Entry<DatagramSocket, PacketWrap> eldest) {
             if(size() > MAX_WAITING_SOCKETS){
-                eldest.getKey().close();
+                tryClose(eldest.getKey());
                 return true;
             }
             return false;
@@ -137,6 +138,14 @@ public class DNSUDPProxy extends DNSProxy{
             LogFactory.writeMessage(context, LOG_TAG, "Created the rule resolver.");
         }
         LogFactory.writeMessage(context, LOG_TAG, "Created the proxy.");
+    }
+
+    private void tryClose(Closeable closeable) {
+        try {
+            closeable.close();
+        } catch (IOException ex) {
+            // Ignore
+        }
     }
 
     @Override
@@ -189,7 +198,7 @@ public class DNSUDPProxy extends DNSProxy{
                 if((polls[index++ + 2].revents & OsConstants.POLLIN) != 0){
                     handleRawUpstreamDNSResponse(entry.getKey(), entry.getValue().getPacket());
                     iterator.remove();
-                    entry.getKey().close();
+                    tryClose(entry.getKey());
                 }
             }
             if(shouldRun && (structFd.revents & OsConstants.POLLOUT) != 0)outputStream.write(writeToDevice.poll());
@@ -238,6 +247,7 @@ public class DNSUDPProxy extends DNSProxy{
             if(dnsMsg.getQuestion() == null)return;
             String query = dnsMsg.getQuestion().name.toString(), target;
             if(queryLogging)queryLogger.logQuery(dnsMsg, dnsMsg.getQuestion().type == Record.TYPE.AAAA);
+            LogFactory.writeMessage(vpnService, LOG_TAG, "Query from device: " + dnsMsg.getQuestion());
             if(resolveLocalRules && (target = resolver.resolve(query, dnsMsg.getQuestion().type == Record.TYPE.AAAA ,true)) != null){
                 DNSMessage.Builder builder = null;
                 if(dnsMsg.getQuestion().type == Record.TYPE.A){
@@ -261,7 +271,7 @@ public class DNSUDPProxy extends DNSProxy{
             vpnService.protect(socket); //The sent packets shouldn't be handled by this class
             socket.send(outgoingPacket);
             if(ipPacket != null) futureSocketAnswers.put(socket, new PacketWrap(ipPacket));
-            else socket.close();
+            else tryClose(socket);
         }catch(IOException exception){
             if(ipPacket != null)handleUpstreamDNSResponse(ipPacket, outgoingPacket.getData());
         }
@@ -328,7 +338,7 @@ public class DNSUDPProxy extends DNSProxy{
         }
         synchronized (futureSocketAnswers){
             for(Map.Entry<DatagramSocket, PacketWrap> entry: futureSocketAnswers.entrySet()){
-                entry.getKey().close();
+                tryClose(entry.getKey());
                 entry.getValue().packet = null;
             }
             futureSocketAnswers.clear();

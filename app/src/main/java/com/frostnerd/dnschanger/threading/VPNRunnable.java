@@ -94,8 +94,11 @@ public class VPNRunnable implements Runnable {
 
     @Override
     public void run() {
+        if(service == null) return;
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Starting Thread (run)");
-        Thread.setDefaultUncaughtExceptionHandler(((DNSChanger)service.getApplicationContext()).getExceptionHandler());
+        if(service.getApplicationContext() instanceof DNSChanger) {
+            Thread.setDefaultUncaughtExceptionHandler(((DNSChanger)service.getApplicationContext()).getExceptionHandler());
+        }
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying " + addresses.size() + " different addresses before passing any thrown exception to the upper layer");
         try{
             for(String address: addresses.keySet()){
@@ -229,7 +232,7 @@ public class VPNRunnable implements Runnable {
             builder.setMtu(1500);
         }else builder.setMtu(1280);
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface created, not yet connected");
-        builder.setConfigureIntent(PendingIntent.getActivity(service, 1, new Intent(service, MainActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
+        builder.setConfigureIntent(PendingIntent.getActivity(service, 12, new Intent(service, MainActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
     }
     public static final Map<String, InetAddress> addressRemap = new HashMap<>();
     private final String addressRemapBase = "244.0.0.";
@@ -239,10 +242,6 @@ public class VPNRunnable implements Runnable {
         if(server != null && !server.equals("")){
             if(server.equals("127.0.0.1"))server = DNSProxy.IPV4_LOOPBACK_REPLACEMENT;
             else if(server.equals("::1"))server = DNSProxy.IPV6_LOOPBACK_REPLACEMENT;
-            else if(PreferencesAccessor.sendDNSOverTLS(service)) {
-                addressRemap.put(addressRemapBase + addressRemapIndex++, getRemappedAddress(server));
-                server = addressRemapBase + (addressRemapIndex-1);
-            }
             builder.addDnsServer(server);
             if(addRoute) builder.addRoute(server, ipv6 ? 128 : 32);
         }
@@ -272,6 +271,5 @@ public class VPNRunnable implements Runnable {
         cleanup();
         upstreamServers.clear();
         vpnApps = null;
-        service = null;
     }
 }

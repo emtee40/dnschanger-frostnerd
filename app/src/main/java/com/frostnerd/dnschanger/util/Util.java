@@ -218,7 +218,7 @@ public final class Util {
                         .setLongLabel(name)
                         .setIntent(shortcutIntent)
                         .build();
-                PendingIntent intent = PendingIntent.getBroadcast(context, 0, new Intent(Util.BROADCAST_SHORTCUT_CREATED), 0);
+                PendingIntent intent = PendingIntent.getBroadcast(context, 5, new Intent(Util.BROADCAST_SHORTCUT_CREATED), 0);
                 shortcutManager.requestPinShortcut(shortcutInfo, intent.getIntentSender());
                 return;
             }
@@ -278,7 +278,6 @@ public final class Util {
             }
             PersistableBundle extras = new PersistableBundle();
             extras.putBoolean("initial", handleInitialState);
-            System.out.println("HANDLE INITIAL STATE: " + handleInitialState);
             JobScheduler scheduler = Utils.requireNonNull((JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE));
             scheduler.schedule(new JobInfo.Builder(0, new ComponentName(context, ConnectivityJobAPI21.class)).setPersisted(true)
                     .setRequiresCharging(false).setMinimumLatency(0).setOverrideDeadline(0).setExtras(extras).build());

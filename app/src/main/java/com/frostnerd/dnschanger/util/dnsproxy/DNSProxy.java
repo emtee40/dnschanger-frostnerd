@@ -61,10 +61,6 @@ public abstract class DNSProxy {
             LogFactory.writeMessage(context, LOG_TAG, "Creating a TCP proxy");
             return new DNSTCPProxy(context, parcelFileDescriptor, upstreamDNSServers,
                     resolveLocalRules, queryLogging, logUpstreamAnswers, PreferencesAccessor.getTCPTimeout(context));
-        } else if(PreferencesAccessor.sendDNSOverTLS(context)){
-            LogFactory.writeMessage(context, LOG_TAG, "Creating a TLS proxy");
-            return new DNSTLSProxy(context, parcelFileDescriptor, upstreamDNSServers,
-                    resolveLocalRules, queryLogging, logUpstreamAnswers, PreferencesAccessor.getTCPTimeout(context));
         } else {
             LogFactory.writeMessage(context, LOG_TAG, "Creating an UDP proxy");
             return new DNSUDPProxy(context, parcelFileDescriptor, upstreamDNSServers,

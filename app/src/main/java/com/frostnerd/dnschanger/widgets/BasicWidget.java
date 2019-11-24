@@ -66,7 +66,7 @@ public class BasicWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             views = new RemoteViews(context.getPackageName(), R.layout.widget_basic);
             views = resetWidget(views);
-            views.setOnClickPendingIntent(R.id.basic_widget, PendingIntent.getActivity(context, 0, new Intent(context, PinActivity.class).putExtra("main", true), 0));
+            views.setOnClickPendingIntent(R.id.basic_widget, PendingIntent.getActivity(context, 3, new Intent(context, PinActivity.class).putExtra("main", true), 0));
             views.setTextViewText(R.id.dns1, dns1);
             views.setTextViewText(R.id.dns2, dns2);
             views.setTextViewText(R.id.dns1_v6, dns1V6);
@@ -89,7 +89,7 @@ public class BasicWidget extends AppWidgetProvider {
         RemoteViews views;
         for (int appWidgetId : appWidgetIds) {
             views = new RemoteViews(context.getPackageName(), R.layout.widget_basic);
-            views.setOnClickPendingIntent(R.id.basic_widget, PendingIntent.getActivity(context, 0, new Intent(context, PinActivity.class).putExtra("main", true), 0));
+            views.setOnClickPendingIntent(R.id.basic_widget, PendingIntent.getActivity(context, 4, new Intent(context, PinActivity.class).putExtra("main", true), 0));
             views.setTextViewText(R.id.head, context.getString(R.string.widget_not_running));
             views.setViewVisibility(R.id.head, View.VISIBLE);
             views.setViewVisibility(R.id.dns1_wrap, View.GONE);

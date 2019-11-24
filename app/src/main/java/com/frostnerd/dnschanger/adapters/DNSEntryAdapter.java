@@ -199,12 +199,11 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
         @Override
         protected void finalize() throws Throwable {
             super.finalize();
-            textView = subText = null;
         }
 
         @Override
         protected void destroy() {
-            textView = subText = null;
+
         }
     }
 

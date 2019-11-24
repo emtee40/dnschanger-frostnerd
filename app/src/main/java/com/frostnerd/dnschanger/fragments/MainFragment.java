@@ -112,13 +112,16 @@ public class MainFragment extends Fragment {
             }
         }
     };
+    private CompoundButton.OnCheckedChangeListener startStopCheckListener;
 
     private void setIndicatorState(boolean vpnRunning) {
         LogFactory.writeMessage(requireContext(), LOG_TAG, "Changing IndicatorState to " + vpnRunning);
         if (vpnRunning) {
             connectionText.setText(R.string.running);
             if(connectionImage != null)connectionImage.setImageResource(R.drawable.ic_thumb_up);
+            startStopButton.setOnCheckedChangeListener(null);
             startStopButton.setChecked(true);
+            startStopButton.setOnCheckedChangeListener(startStopCheckListener);
         } else {
             TypedValue typedValue = new TypedValue();
             Resources.Theme theme = requireContext().getTheme();
@@ -126,7 +129,9 @@ public class MainFragment extends Fragment {
             if(PreferencesAccessor.isEverythingDisabled(requireContext()))  connectionText.setText(R.string.info_functionality_disabled);
             else connectionText.setText(R.string.not_running);
             if(connectionImage != null)connectionImage.setImageResource(R.drawable.ic_thumb_down);
+            startStopButton.setOnCheckedChangeListener(null);
             startStopButton.setChecked(false);
+            startStopButton.setOnCheckedChangeListener(startStopCheckListener);
         }
         LogFactory.writeMessage(requireContext(), LOG_TAG, "IndictorState set");
     }
@@ -169,7 +174,7 @@ public class MainFragment extends Fragment {
             dns1.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
             dns2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         }
-        startStopButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        startStopButton.setOnCheckedChangeListener(startStopCheckListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 final Intent i = VpnService.prepare(requireContext());

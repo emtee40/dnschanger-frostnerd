@@ -71,7 +71,6 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
         setTheme(ThemeHandler.getPreferenceTheme(this));
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.advanced_preferences);
-        getPreferenceScreen().removePreference(findPreference("dns_over_tls_category"));
         findPreference("advanced_settings").setOnPreferenceChangeListener(preferenceChangeListener);
         findPreference("advanced_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -127,26 +126,6 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
             }
         });
 
-        /*final CheckBoxPreference tls = (CheckBoxPreference) findPreference("dns_over_tls"),
-                tcp = (CheckBoxPreference) findPreference("dns_over_tcp");
-        tls.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                boolean val = (boolean)newValue;
-                tcp.setEnabled(!val);
-                return preferenceChangeListener.onPreferenceChange(preference, newValue);
-            }
-        });
-        tcp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                boolean val = (boolean)newValue;
-                tls.setEnabled(!val);
-                return preferenceChangeListener.onPreferenceChange(preference, newValue);
-            }
-        });
-        if(tls.isChecked() && tls.isEnabled())tcp.setEnabled(false);
-        else if(tcp.isChecked() && tcp.isEnabled())tls.setEnabled(false);*/
         setUndoRuleImportStatus();
     }
 

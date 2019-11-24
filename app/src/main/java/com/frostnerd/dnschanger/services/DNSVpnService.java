@@ -86,15 +86,13 @@ public class DNSVpnService extends VpnService {
             String reasonText = getString(R.string.notification_reason_stopped).replace("[reason]", stopReason);
             notificationManager.notify(NOTIFICATION_ID+1, new NotificationCompat.Builder(this, Util.createNotificationChannel(this, false)).setAutoCancel(true)
                     .setOngoing(false).setContentText(reasonText).setStyle(new NotificationCompat.BigTextStyle().bigText(reasonText))
-                    .setSmallIcon(R.drawable.ic_stat_small_icon).setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0))
+                    .setSmallIcon(R.drawable.ic_stat_small_icon).setContentIntent(PendingIntent.getActivity(this, 13, new Intent(this, PinActivity.class), 0))
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT).build());
         }
         serviceRunning = false;
         stopThread();
         if(stateRequestReceiver != null)LocalBroadcastManager.getInstance(this).unregisterReceiver(stateRequestReceiver);
         notificationManager.cancel(NOTIFICATION_ID);
-        notificationManager = null;
-        notificationBuilder = null;
         preferences = null;
         stateRequestReceiver = null;
         LogFactory.writeMessage(this, LOG_TAG, "Variables cleared");
@@ -118,11 +116,11 @@ public class DNSVpnService extends VpnService {
         NotificationCompat.Action a1 = notificationBuilder.mActions.get(0);
         a1.icon = threadRunning ? R.drawable.ic_stat_pause : R.drawable.ic_stat_resume;
         a1.title = getString(threadRunning ? R.string.action_pause : R.string.action_resume);
-        a1.actionIntent = pinProtected ? PendingIntent.getActivity(this,0,new Intent(this, PinActivity.class).setAction(new Random().nextInt(50) + "_action").
+        a1.actionIntent = pinProtected ? PendingIntent.getActivity(this,14,new Intent(this, PinActivity.class).setAction(new Random().nextInt(50) + "_action").
                 putExtra(threadRunning ? "stop_vpn" : "start_vpn", true).putExtra("redirectToService",true), PendingIntent.FLAG_UPDATE_CURRENT) :
-                PendingIntent.getService(this, 0, new Intent(this, DNSVpnService.class).setAction(new Random().nextInt(50) + "_action").putExtra(threadRunning ? VPNServiceArgument.COMMAND_STOP_VPN.getArgument() : VPNServiceArgument.COMMAND_START_VPN.getArgument(), true), PendingIntent.FLAG_CANCEL_CURRENT);
-        notificationBuilder.mActions.get(1).actionIntent = pinProtected ? PendingIntent.getActivity(this,0,new Intent(this, PinActivity.class).
-                setAction(new Random().nextInt(50) + "_action").putExtra("destroy", true).putExtra("redirectToService",true), PendingIntent.FLAG_UPDATE_CURRENT) : PendingIntent.getService(this, 1, new Intent(this, DNSVpnService.class)
+                PendingIntent.getService(this, 15, new Intent(this, DNSVpnService.class).setAction(new Random().nextInt(50) + "_action").putExtra(threadRunning ? VPNServiceArgument.COMMAND_STOP_VPN.getArgument() : VPNServiceArgument.COMMAND_START_VPN.getArgument(), true), PendingIntent.FLAG_CANCEL_CURRENT);
+        notificationBuilder.mActions.get(1).actionIntent = pinProtected ? PendingIntent.getActivity(this,16,new Intent(this, PinActivity.class).
+                setAction(new Random().nextInt(50) + "_action").putExtra("destroy", true).putExtra("redirectToService",true), PendingIntent.FLAG_UPDATE_CURRENT) : PendingIntent.getService(this, 7, new Intent(this, DNSVpnService.class)
                 .setAction(StringUtil.randomString(80) + "_action").putExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(), true), PendingIntent.FLAG_CANCEL_CURRENT);
         notificationBuilder.setContentTitle(getString(threadRunning ? R.string.active : R.string.paused));
         String excludedAppsText = (excludedApps.size() != 0 ? "\n" +
@@ -180,12 +178,12 @@ public class DNSVpnService extends VpnService {
             notificationBuilder = new NotificationCompat.Builder(this, Util.createNotificationChannel(this, true));
             notificationBuilder.setSmallIcon(R.drawable.ic_stat_small_icon); //TODO Update Image
             notificationBuilder.setContentTitle(getString(R.string.app_name));
-            notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0));
+            notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 6, new Intent(this, PinActivity.class), 0));
             notificationBuilder.setAutoCancel(false);
             notificationBuilder.setOngoing(true);
             notificationBuilder.setUsesChronometer(true);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                notificationBuilder.setBadgeIconType(Notification.BADGE_ICON_NONE);
+                notificationBuilder.setBadgeIconType(NotificationCompat.BADGE_ICON_NONE);
             }
             notificationBuilder.setPriority(NotificationCompat.PRIORITY_MIN);
             notificationBuilder.addAction(new NotificationCompat.Action(R.drawable.ic_stat_pause, getString(R.string.action_pause),null));
@@ -257,10 +255,14 @@ public class DNSVpnService extends VpnService {
                 LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Stopping self");
                 stopService();
             }else if (IntentUtil.checkExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(),intent)) {
-                LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Starting VPN");
-                createAndRunThread(!IntentUtil.checkExtra(VPNServiceArgument.FLAG_DONT_START_IF_RUNNING.getArgument(), intent),
-                        !IntentUtil.checkExtra(VPNServiceArgument.FLAG_DONT_START_IF_NOT_RUNNING.getArgument(), intent));
-                LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Creating Thread");
+                if(prepare(this) == null) {
+                    LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Starting VPN");
+                    createAndRunThread(!IntentUtil.checkExtra(VPNServiceArgument.FLAG_DONT_START_IF_RUNNING.getArgument(), intent),
+                            !IntentUtil.checkExtra(VPNServiceArgument.FLAG_DONT_START_IF_NOT_RUNNING.getArgument(), intent));
+                    LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Creating Thread");
+                } else {
+                    BackgroundVpnConfigureActivity.startBackgroundConfigure(this, true);
+                }
             }else if (IntentUtil.checkExtra(VPNServiceArgument.COMMAND_STOP_VPN.getArgument(),intent)){
                 LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Stopping VPN");
                 stopThread();

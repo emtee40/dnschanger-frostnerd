@@ -76,7 +76,6 @@ public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
     @Override
     public void onAfterCreate(SQLiteDatabase db) {
         getSQLHandler(DNSEntry.class).insert(this, DNSEntry.defaultDNSEntries.keySet());
-        getSQLHandler(DNSTLSConfiguration.class).insert(this, DNSEntry.defaultTLSConfig.keySet());
     }
 
     @Override
@@ -160,10 +159,6 @@ public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
                 version = entry.getValue();
                 if(getCount(DNSEntry.class, WhereCondition.equal("name", entry.getKey().getName())) == 0)
                     if(version > oldVersion && version <= newVersion)insert(entry.getKey());
-        }
-        for(Map.Entry<DNSTLSConfiguration, Integer> configuration: DNSEntry.defaultTLSConfig.entrySet()){
-            version = configuration.getValue();
-            if(version > oldVersion && version <= newVersion)insert(configuration.getKey());
             }
         }
     }

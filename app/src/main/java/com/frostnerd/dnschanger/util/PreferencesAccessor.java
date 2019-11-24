@@ -85,7 +85,6 @@ public class PreferencesAccessor {
                 isQueryLoggingEnabled(context) ||
                 sendDNSOverTCP(context) ||
                 isLoopbackAllowed(context) ||
-                sendDNSOverTLS(context) ||
                 logUpstreamDNSAnswers(context);
     }
 
@@ -127,13 +126,16 @@ public class PreferencesAccessor {
                 Preferences.getInstance(context).getBoolean(  "dns_over_tcp", false);
     }
 
-    public static boolean sendDNSOverTLS(@NonNull Context context){
-        return isAdvancedModeEnabled(context) &&
-                Preferences.getInstance(context).getBoolean(  "dns_over_tls", false);
-    }
-
     public static int getTCPTimeout(@NonNull Context context){
-        return Integer.parseInt(Preferences.getInstance(context).getString( "tcp_timeout", "500"));
+        int value;
+        try {
+            value = Integer.parseInt(Preferences.getInstance(context).getString( "tcp_timeout", "500"));
+        } catch (ClassCastException ex) {
+            value = Preferences.getInstance(context).getInt("tcp_timeout", 500);
+        } catch(NumberFormatException ex) {
+            value = 500;
+        }
+        return value;
     }
 
     @NonNull

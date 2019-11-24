@@ -200,7 +200,7 @@ public class PinActivity extends BaseActivity {
         if (toMain) {
             Intent i;
             LogFactory.writeMessage(this, LOG_TAG, "Starting MainActivity",
-                    i = new Intent(this, MainActivity.class));
+                    i = new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
             startActivity(i);
         } else {
             Intent i;
