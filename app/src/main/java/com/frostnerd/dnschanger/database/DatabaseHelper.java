@@ -57,20 +57,14 @@ public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
     }};
     @Nullable
     private static DatabaseHelper instance;
-    @NonNull
-    private Context wrappedContext;
 
     public static DatabaseHelper getInstance(@NonNull Context context){
-        return instance == null ? instance = new DatabaseHelper(context.getApplicationContext() != null ? context.getApplicationContext() : context) : instance;
-    }
-
-    public static boolean instanceActive(){
-        return instance != null;
+        return instance == null ?
+                instance = new DatabaseHelper(context.getApplicationContext() != null ? context.getApplicationContext() : context) : instance;
     }
 
     private DatabaseHelper(@NonNull Context context) {
         super(context, DATABASE_NAME, DATABASE_VERSION, entities);
-        wrappedContext = context;
     }
 
     @Override
@@ -161,14 +155,6 @@ public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
                     if(version > oldVersion && version <= newVersion)insert(entry.getKey());
             }
         }
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    @Override
-    public synchronized void close() {
-        instance = null;
-        wrappedContext = null;
-        super.close();
     }
 
     public boolean dnsEntryExists(String name){
