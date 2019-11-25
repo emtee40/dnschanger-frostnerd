@@ -59,8 +59,10 @@ public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
     private static DatabaseHelper instance;
 
     public static DatabaseHelper getInstance(@NonNull Context context){
-        return instance == null ?
-                instance = new DatabaseHelper(context.getApplicationContext() != null ? context.getApplicationContext() : context) : instance;
+        if(instance == null) {
+            instance = new DatabaseHelper(context.getApplicationContext());
+        }
+        return instance;
     }
 
     private DatabaseHelper(@NonNull Context context) {
