@@ -4,6 +4,8 @@ import android.app.Application;
 import android.database.sqlite.SQLiteException;
 
 import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
+import com.frostnerd.dnschanger.database.DatabaseHelper;
+import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 
 /*
@@ -39,6 +41,8 @@ public class DNSChanger extends Application {
         }
     };
     private Thread.UncaughtExceptionHandler defaultHandler;
+    private DatabaseHelper helper;
+    private Preferences mPreferences;
 
     private boolean showErrorDialog(Throwable exception) {
         if(exception instanceof SQLiteException || (exception.getCause() != null && exception instanceof SQLiteException))return true;
@@ -52,6 +56,8 @@ public class DNSChanger extends Application {
         Thread.setDefaultUncaughtExceptionHandler(customHandler);
         super.onCreate();
         LogFactory.writeMessage(this, LOG_TAG, "Application created");
+        helper = DatabaseHelper.getInstance(this);
+        mPreferences = Preferences.getInstance(this);
     }
 
     @Override
