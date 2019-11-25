@@ -2,34 +2,34 @@ apply plugin: 'com.android.application'
 apply plugin: 'project-report'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 29
 
     defaultConfig {
         applicationId "com.frostnerd.dnschanger"
         minSdkVersion 14
-        targetSdkVersion 28
-        versionCode 86
-        versionName "BETA 1.16.1"
+        targetSdkVersion 29
+        versionCode 90
+        versionName "1.16.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
-            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug{
             initWith(buildTypes.debug)
-            minifyEnabled true
-            shrinkResources true
-            zipAlignEnabled true
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     lintOptions {
         abortOnError false
+    }
+    packagingOptions {
+        exclude 'META-INF/library_release.kotlin_module'
     }
     testOptions {
         unitTests.returnDefaultValues = true
@@ -40,28 +40,28 @@ android {
 }
 
 dependencies {
-    implementation 'com.frostnerd.utils:general:1.0.7'
-    implementation 'com.frostnerd.utils:database:1.1.15'
-    implementation 'com.frostnerd.utils:design:1.0.14'
-    implementation 'com.frostnerd.utils:materialedittext:1.0.13'
-    implementation 'com.frostnerd.utils:preferences:2.2.8'
+    implementation 'com.frostnerd.utils:general:1.0.9'
+    implementation 'com.frostnerd.utils:database:1.1.19'
+    implementation 'com.frostnerd.utils:design:1.0.14-fix4'
+    implementation 'com.frostnerd.utils:materialedittext:1.0.20'
+    implementation 'com.frostnerd.utils:preferences:2.4.6'
     implementation 'com.frostnerd.utils:networking:1.0.4'
     implementation 'com.frostnerd.utils:preferenceexport:1.0.9'
     implementation 'com.frostnerd.utils:api:1.0.5'
     testImplementation 'com.frostnerd.utils:logging:1.0.7'
 
-    implementation "androidx.appcompat:appcompat:1.0.0"
+    implementation "androidx.appcompat:appcompat:1.1.0"
     implementation "androidx.cardview:cardview:1.0.0"
-    implementation "androidx.recyclerview:recyclerview:1.0.0"
-    implementation "androidx.preference:preference:1.0.0"
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation "androidx.preference:preference:1.1.0"
     implementation "com.google.android.material:material:1.0.0"
     testImplementation 'junit:junit:4.12'
-    testImplementation "org.robolectric:robolectric:4.0-alpha-3-SNAPSHOT"
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'org.pcap4j:pcap4j-core:1.7.3'
-    implementation 'org.pcap4j:pcap4j-packetfactory-static:1.7.3'
+    testImplementation "org.robolectric:robolectric:4.3.1"
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'org.pcap4j:pcap4j-core:1.8.2'
+    implementation 'org.pcap4j:pcap4j-packetfactory-static:1.8.2'
     implementation 'de.measite.minidns:minidns-core:0.2.4'
     implementation 'de.measite.minidns:minidns-hla:0.2.4'
-    compileOnly 'org.projectlombok:lombok:1.18.2'
-    annotationProcessor 'org.projectlombok:lombok:1.18.2'
+    compileOnly 'org.projectlombok:lombok:1.18.10'
+    annotationProcessor 'org.projectlombok:lombok:1.18.10'
 }

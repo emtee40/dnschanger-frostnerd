@@ -10,14 +10,23 @@ import com.frostnerd.dnschanger.database.entities.IPPortPair;
 
 import java.util.ArrayList;
 
-/**
- * Copyright Daniel Wolf 2017
- * All rights reserved.
- * <p>
- * Terms on usage of my code can be found here: https://git.frostnerd.com/PublicAndroidApps/DnsChanger/blob/master/README.md
- * <p>
- * <p>
- * development@frostnerd.com
+/*
+ * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 public class PreferencesAccessor {
 
@@ -76,7 +85,6 @@ public class PreferencesAccessor {
                 isQueryLoggingEnabled(context) ||
                 sendDNSOverTCP(context) ||
                 isLoopbackAllowed(context) ||
-                sendDNSOverTLS(context) ||
                 logUpstreamDNSAnswers(context);
     }
 
@@ -118,13 +126,16 @@ public class PreferencesAccessor {
                 Preferences.getInstance(context).getBoolean(  "dns_over_tcp", false);
     }
 
-    public static boolean sendDNSOverTLS(@NonNull Context context){
-        return isAdvancedModeEnabled(context) &&
-                Preferences.getInstance(context).getBoolean(  "dns_over_tls", false);
-    }
-
     public static int getTCPTimeout(@NonNull Context context){
-        return Integer.parseInt(Preferences.getInstance(context).getString( "tcp_timeout", "500"));
+        int value;
+        try {
+            value = Integer.parseInt(Preferences.getInstance(context).getString( "tcp_timeout", "500"));
+        } catch (ClassCastException ex) {
+            value = Preferences.getInstance(context).getInt("tcp_timeout", 500);
+        } catch(NumberFormatException ex) {
+            value = 500;
+        }
+        return value;
     }
 
     @NonNull

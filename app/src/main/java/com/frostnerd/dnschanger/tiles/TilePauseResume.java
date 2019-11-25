@@ -14,14 +14,23 @@ import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
 
-/**
- * Copyright Daniel Wolf 2017
- * All rights reserved.
+/*
+ * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
  *
- * Terms on usage of my code can be found here: https://git.frostnerd.com/PublicAndroidApps/DnsChanger/blob/master/README.md
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * <p>
- * development@frostnerd.com
+ * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 @TargetApi(Build.VERSION_CODES.N)
 public class TilePauseResume extends android.service.quicksettings.TileService {
@@ -50,25 +59,27 @@ public class TilePauseResume extends android.service.quicksettings.TileService {
         super.onStartListening();
         LogFactory.writeMessage(this, LOG_TAG, "Start listening");
         Tile tile = getQsTile();
-        if(Util.isServiceRunning(this)){
-            LogFactory.writeMessage(this, LOG_TAG, "Service running");
-            tile.setState(Tile.STATE_ACTIVE);
-            if(Util.isServiceThreadRunning()){
-                LogFactory.writeMessage(this, LOG_TAG, "Service-Thread running");
-                tile.setLabel(getString(R.string.tile_pause));
-                tile.setIcon(Icon.createWithResource(this, R.drawable.ic_stat_pause));
+        if(tile != null) {
+            if(Util.isServiceRunning(this)){
+                LogFactory.writeMessage(this, LOG_TAG, "Service running");
+                tile.setState(Tile.STATE_ACTIVE);
+                if(Util.isServiceThreadRunning()){
+                    LogFactory.writeMessage(this, LOG_TAG, "Service-Thread running");
+                    tile.setLabel(getString(R.string.tile_pause));
+                    tile.setIcon(Icon.createWithResource(this, R.drawable.ic_stat_pause));
+                }else{
+                    LogFactory.writeMessage(this, LOG_TAG, "Service-Thread not running");
+                    tile.setLabel(getString(R.string.tile_resume));
+                    tile.setIcon(Icon.createWithResource(this, R.drawable.ic_stat_resume));
+                }
             }else{
-                LogFactory.writeMessage(this, LOG_TAG, "Service-Thread not running");
-                tile.setLabel(getString(R.string.tile_resume));
-                tile.setIcon(Icon.createWithResource(this, R.drawable.ic_stat_resume));
+                LogFactory.writeMessage(this, LOG_TAG, "Service not running (State set to unavailable)");
+                tile.setState(Tile.STATE_UNAVAILABLE);
+                tile.setLabel(getString(R.string.not_running));
             }
-        }else{
-            LogFactory.writeMessage(this, LOG_TAG, "Service not running (State set to unavailable)");
-            tile.setState(Tile.STATE_UNAVAILABLE);
-            tile.setLabel(getString(R.string.not_running));
+            tile.updateTile();
+            LogFactory.writeMessage(this, LOG_TAG, "Tile updated");
         }
-        tile.updateTile();
-        LogFactory.writeMessage(this, LOG_TAG, "Tile updated");
     }
 
     @Override

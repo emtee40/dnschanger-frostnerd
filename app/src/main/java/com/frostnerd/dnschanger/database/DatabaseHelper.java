@@ -24,15 +24,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Copyright Daniel Wolf 2017
- * All rights reserved.
- * <p>
- * development@frostnerd.com
+/*
+ * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
     public static final String DATABASE_NAME = "data";
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
     @NonNull
     public static final Set<Class<? extends Entity>> entities = new HashSet<Class<? extends Entity>>(){{
         add(DNSEntry.class);
@@ -64,12 +76,17 @@ public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
     @Override
     public void onAfterCreate(SQLiteDatabase db) {
         getSQLHandler(DNSEntry.class).insert(this, DNSEntry.defaultDNSEntries.keySet());
-        getSQLHandler(DNSTLSConfiguration.class).insert(this, DNSEntry.defaultTLSConfig.keySet());
     }
 
     @Override
     public void onBeforeCreate(SQLiteDatabase db) {
 
+    }
+
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if(oldVersion != 4 && oldVersion != 3) super.onUpgrade(db, oldVersion, newVersion);
     }
 
     @Override
@@ -136,15 +153,13 @@ public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
 
     @Override
     public void onAfterUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        int version;
-        for(Map.Entry<DNSEntry, Integer> entry: DNSEntry.defaultDNSEntries.entrySet()){
-            version = entry.getValue();
-            if(getCount(DNSEntry.class, WhereCondition.equal("name", entry.getKey().getName())) == 0)
-                if(version > oldVersion && version <= newVersion)insert(entry.getKey());
-        }
-        for(Map.Entry<DNSTLSConfiguration, Integer> configuration: DNSEntry.defaultTLSConfig.entrySet()){
-            version = configuration.getValue();
-            if(version > oldVersion && version <= newVersion)insert(configuration.getKey());
+        if(oldVersion != 4) {
+            int version;
+            for(Map.Entry<DNSEntry, Integer> entry: DNSEntry.defaultDNSEntries.entrySet()){
+                version = entry.getValue();
+                if(getCount(DNSEntry.class, WhereCondition.equal("name", entry.getKey().getName())) == 0)
+                    if(version > oldVersion && version <= newVersion)insert(entry.getKey());
+            }
         }
     }
 

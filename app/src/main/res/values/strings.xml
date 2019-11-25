@@ -230,7 +230,7 @@
     <string name="nav_title_libraries">Libraries</string>
     <string name="dialog_libraries_text">This app contains libraries created by third parties. The libraries, their creators and the licenses are listed below.</string>
     <string name="title_disable_notification_icon">Disable notification icon</string>
-    <string name="summary_disable_notification_icon">Disables the dns icon shown in the notification bar. Will still be visible when opening the notification area.</string>
+    <string name="summary_disable_notification_icon">Disables the dns icon shown in the notification bar. Will still be visible when opening the notification area, might not work on newer Android versions.</string>
     <string name="notification_channel_hiddenicon">Channel with no icon</string>
     <string name="notification_channel_hiddenicon_description">This channel shows no icon in the notification bar</string>
     <string name="notification_ipv6_text">Go to the settings if you want to enable IPv6.</string>
@@ -321,17 +321,14 @@
     <string name="content_description_app_entry_icon" translatable="false">App icon</string>
     <string name="default_dns1" translatable="false">8.8.8.8</string>
     <string name="default_dns2" translatable="false">8.8.4.4</string>
-    <string name="hint_dns1">DNS 1</string>
-    <string name="hint_dns2">DNS 2</string>
+    <string name="hint_dns1">Primary server</string>
+    <string name="hint_dns2">Secondary server</string>
     <string name="hint_dns_entry_name">Name</string>
     <string name="hint_pin">PIN</string>
     <string name="loading_exporting_queries">Exporting queries, please wait…</string>
     <string name="exported_dns_queries">[x] queries exported.</string>
-    <string name="title_dns_over_tls">DNS over TLS</string>
     <string name="title_upstream_query_logging">Upstream query logging</string>
     <string name="summary_upstream_query_logging">Save the IP-address the server responds to a query</string>
-    <string name="title_dns_over_tls_disable_mobile">Disable TLS on mobile</string>
-    <string name="summary_dns_over_tls_disable_mobile">Disable DNS over TLS when being connected over a mobile connection (like 3G, 4G..)</string>
     <string name="dnssec" translatable="false">DNSSEC</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
@@ -344,4 +341,6 @@
     <string name="title_clear_local_rules">Clear local rules</string>
     <string name="summary_undo_rule_import">Revert a rule import from a file. Cannot be reverted.</string>
     <string name="title_undo_rule_import">Undo import</string>
+
+    <string name="nebulo_download_text">I created a new App named Nebulo, an open-source and ad-free App for dns-over-https and dns-over-tls. It is on the store.\nDo you want to have a look at it? Clicking yes opens the store.</string>
 </resources>

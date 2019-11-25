@@ -31,14 +31,23 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Deque;
 
-/**
- * Copyright Daniel Wolf 2017
- * All rights reserved.
- * Code may NOT be used without proper permission, neither in binary nor in source form.
- * All redistributions of this software in source code must retain this copyright header
- * All redistributions of this software in binary form must visibly inform users about usage of this software
- * <p>
- * development@frostnerd.com
+/*
+ * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 public class RuleImportService extends Service {
     public static final String PARAM_FILE_LIST = "filelist",
@@ -238,20 +247,20 @@ public class RuleImportService extends Service {
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationBuilder = new NotificationCompat.Builder(this, Util.createNotificationChannel(this, false));
         notificationBuilder.setSmallIcon(R.drawable.ic_action_import);
-        notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0));
+        notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 8, new Intent(this, PinActivity.class), 0));
         notificationBuilder.setAutoCancel(false);
         notificationBuilder.setOngoing(true);
         notificationBuilder.setUsesChronometer(true);
         notificationBuilder.setColorized(false);
         notificationBuilder.setSound(null);
         notificationBuilder.addAction(new NotificationCompat.Action(R.drawable.ic_stat_stop, getString(R.string.stop),
-                PendingIntent.getService(this, 2, new Intent(this, RuleImportService.class).putExtra(NOTIFICATION_ACTION_STOP_CURRENT, "herp"), 0)));
+                PendingIntent.getService(this, 9, new Intent(this, RuleImportService.class).putExtra(NOTIFICATION_ACTION_STOP_CURRENT, "herp"), 0)));
         notificationBuilder.addAction(new NotificationCompat.Action(R.drawable.ic_stat_stop, getString(R.string.stop_all),
-                PendingIntent.getService(this, 1, new Intent(this, RuleImportService.class).putExtra(NOTIFICATION_ACTION_STOP_ALL, "herp"),0)));
+                PendingIntent.getService(this, 10, new Intent(this, RuleImportService.class).putExtra(NOTIFICATION_ACTION_STOP_ALL, "herp"),0)));
 
         notificationBuilderFinished = new NotificationCompat.Builder(this, Util.createNotificationChannel(this, false));
         notificationBuilderFinished.setSmallIcon(R.drawable.ic_action_import);
-        notificationBuilderFinished.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0));
+        notificationBuilderFinished.setContentIntent(PendingIntent.getActivity(this, 11, new Intent(this, PinActivity.class), 0));
         notificationBuilderFinished.setAutoCancel(true);
         notificationBuilderFinished.setOngoing(false);
         notificationBuilderFinished.setUsesChronometer(false);

@@ -25,6 +25,7 @@ import org.pcap4j.packet.IpV6Packet;
 import org.pcap4j.packet.UdpPacket;
 import org.pcap4j.packet.UnknownPacket;
 
+import java.io.Closeable;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -49,17 +50,23 @@ import de.measite.minidns.record.A;
 import de.measite.minidns.record.AAAA;
 import de.measite.minidns.record.Data;
 
-/**
- * Copyright Daniel Wolf 2017
- * All rights reserved.
- * Code may NOT be used without proper permission, neither in binary nor in source form.
- * All redistributions of this software in source code must retain this copyright header
- * All redistributions of this software in binary form must visibly inform users about usage of this software
- * <p>
- * development@frostnerd.com
+/*
+ * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
  *
- * The code is in smaller parts based on dns66 (https://github.com/julian-klode/dns66) - but neither copied nor modified in its original state
- * Rather it was used as guidance.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -81,7 +88,7 @@ public class DNSUDPProxy extends DNSProxy{
         @Override
         protected boolean removeEldestEntry(Entry<DatagramSocket, PacketWrap> eldest) {
             if(size() > MAX_WAITING_SOCKETS){
-                eldest.getKey().close();
+                tryClose(eldest.getKey());
                 return true;
             }
             return false;
@@ -131,6 +138,14 @@ public class DNSUDPProxy extends DNSProxy{
             LogFactory.writeMessage(context, LOG_TAG, "Created the rule resolver.");
         }
         LogFactory.writeMessage(context, LOG_TAG, "Created the proxy.");
+    }
+
+    private void tryClose(Closeable closeable) {
+        try {
+            closeable.close();
+        } catch (IOException ex) {
+            // Ignore
+        }
     }
 
     @Override
@@ -183,7 +198,7 @@ public class DNSUDPProxy extends DNSProxy{
                 if((polls[index++ + 2].revents & OsConstants.POLLIN) != 0){
                     handleRawUpstreamDNSResponse(entry.getKey(), entry.getValue().getPacket());
                     iterator.remove();
-                    entry.getKey().close();
+                    tryClose(entry.getKey());
                 }
             }
             if(shouldRun && (structFd.revents & OsConstants.POLLOUT) != 0)outputStream.write(writeToDevice.poll());
@@ -232,6 +247,7 @@ public class DNSUDPProxy extends DNSProxy{
             if(dnsMsg.getQuestion() == null)return;
             String query = dnsMsg.getQuestion().name.toString(), target;
             if(queryLogging)queryLogger.logQuery(dnsMsg, dnsMsg.getQuestion().type == Record.TYPE.AAAA);
+            LogFactory.writeMessage(vpnService, LOG_TAG, "Query from device: " + dnsMsg.getQuestion());
             if(resolveLocalRules && (target = resolver.resolve(query, dnsMsg.getQuestion().type == Record.TYPE.AAAA ,true)) != null){
                 DNSMessage.Builder builder = null;
                 if(dnsMsg.getQuestion().type == Record.TYPE.A){
@@ -255,7 +271,7 @@ public class DNSUDPProxy extends DNSProxy{
             vpnService.protect(socket); //The sent packets shouldn't be handled by this class
             socket.send(outgoingPacket);
             if(ipPacket != null) futureSocketAnswers.put(socket, new PacketWrap(ipPacket));
-            else socket.close();
+            else tryClose(socket);
         }catch(IOException exception){
             if(ipPacket != null)handleUpstreamDNSResponse(ipPacket, outgoingPacket.getData());
         }
@@ -322,7 +338,7 @@ public class DNSUDPProxy extends DNSProxy{
         }
         synchronized (futureSocketAnswers){
             for(Map.Entry<DatagramSocket, PacketWrap> entry: futureSocketAnswers.entrySet()){
-                entry.getKey().close();
+                tryClose(entry.getKey());
                 entry.getValue().packet = null;
             }
             futureSocketAnswers.clear();

@@ -15,6 +15,7 @@ import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
 import com.frostnerd.dnschanger.activities.InvalidDNSDialogActivity;
 import com.frostnerd.dnschanger.activities.MainActivity;
+import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
@@ -35,14 +36,23 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Copyright Daniel Wolf 2017
- * All rights reserved.
- * Code may NOT be used without proper permission, neither in binary nor in source form.
- * All redistributions of this software in source code must retain this copyright header
- * All redistributions of this software in binary form must visibly inform users about usage of this software
- * <p>
- * development@frostnerd.com
+/*
+ * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 public class VPNRunnable implements Runnable {
     private static final String LOG_TAG = "[DNSVpnService-Runnable]";
@@ -85,8 +95,11 @@ public class VPNRunnable implements Runnable {
 
     @Override
     public void run() {
+        if(service == null) return;
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Starting Thread (run)");
-        Thread.setDefaultUncaughtExceptionHandler(((DNSChanger)service.getApplicationContext()).getExceptionHandler());
+        if(service.getApplicationContext() instanceof DNSChanger) {
+            Thread.setDefaultUncaughtExceptionHandler(((DNSChanger)service.getApplicationContext()).getExceptionHandler());
+        }
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying " + addresses.size() + " different addresses before passing any thrown exception to the upper layer");
         try{
             for(String address: addresses.keySet()){
@@ -220,7 +233,7 @@ public class VPNRunnable implements Runnable {
             builder.setMtu(1500);
         }else builder.setMtu(1280);
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface created, not yet connected");
-        builder.setConfigureIntent(PendingIntent.getActivity(service, 1, new Intent(service, MainActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
+        builder.setConfigureIntent(PendingIntent.getActivity(service, 12, new Intent(service, PinActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
     }
     public static final Map<String, InetAddress> addressRemap = new HashMap<>();
     private final String addressRemapBase = "244.0.0.";
@@ -230,10 +243,6 @@ public class VPNRunnable implements Runnable {
         if(server != null && !server.equals("")){
             if(server.equals("127.0.0.1"))server = DNSProxy.IPV4_LOOPBACK_REPLACEMENT;
             else if(server.equals("::1"))server = DNSProxy.IPV6_LOOPBACK_REPLACEMENT;
-            else if(PreferencesAccessor.sendDNSOverTLS(service)) {
-                addressRemap.put(addressRemapBase + addressRemapIndex++, getRemappedAddress(server));
-                server = addressRemapBase + (addressRemapIndex-1);
-            }
             builder.addDnsServer(server);
             if(addRoute) builder.addRoute(server, ipv6 ? 128 : 32);
         }
@@ -261,9 +270,7 @@ public class VPNRunnable implements Runnable {
     public void destroy(){
         running = false;
         cleanup();
-        vpnApps.clear();
         upstreamServers.clear();
         vpnApps = null;
-        service = null;
     }
 }

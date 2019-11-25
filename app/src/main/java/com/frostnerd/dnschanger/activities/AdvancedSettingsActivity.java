@@ -41,14 +41,23 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Copyright Daniel Wolf 2017
- * All rights reserved.
- * Code may NOT be used without proper permission, neither in binary nor in source form.
- * All redistributions of this software in source code must retain this copyright header
- * All redistributions of this software in binary form must visibly inform users about usage of this software
- * <p>
- * development@frostnerd.com
+/*
+ * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
     private boolean dialogShown = false;
@@ -62,7 +71,6 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
         setTheme(ThemeHandler.getPreferenceTheme(this));
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.advanced_preferences);
-        getPreferenceScreen().removePreference(findPreference("dns_over_tls_category"));
         findPreference("advanced_settings").setOnPreferenceChangeListener(preferenceChangeListener);
         findPreference("advanced_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -118,26 +126,6 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
             }
         });
 
-        /*final CheckBoxPreference tls = (CheckBoxPreference) findPreference("dns_over_tls"),
-                tcp = (CheckBoxPreference) findPreference("dns_over_tcp");
-        tls.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                boolean val = (boolean)newValue;
-                tcp.setEnabled(!val);
-                return preferenceChangeListener.onPreferenceChange(preference, newValue);
-            }
-        });
-        tcp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                boolean val = (boolean)newValue;
-                tls.setEnabled(!val);
-                return preferenceChangeListener.onPreferenceChange(preference, newValue);
-            }
-        });
-        if(tls.isChecked() && tls.isEnabled())tcp.setEnabled(false);
-        else if(tcp.isChecked() && tcp.isEnabled())tls.setEnabled(false);*/
         setUndoRuleImportStatus();
     }
 

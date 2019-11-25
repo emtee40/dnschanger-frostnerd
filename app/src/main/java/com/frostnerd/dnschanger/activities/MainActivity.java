@@ -2,6 +2,7 @@ package com.frostnerd.dnschanger.activities;
 
 import android.Manifest;
 import android.app.SearchManager;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -71,14 +72,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Copyright Daniel Wolf 2017
- * All rights reserved.
+/*
+ * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
  *
- * Terms on usage of my code can be found here: https://git.frostnerd.com/PublicAndroidApps/DnsChanger/blob/master/README.md
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * <p>
- * development@frostnerd.com
+ * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 public class MainActivity extends NavigationDrawerActivity implements RuleImport.ImportStartedListener {
     private static final String LOG_TAG = "[MainActivity]";
@@ -160,6 +170,8 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
                 }
             }).setMessage(R.string.rate_request_text).setTitle(R.string.rate).show();
             LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
+        } else if(launches >= 7 && !preferences.getBoolean("nebulo_shown", false) && random <= 15) {
+            showNebuloDialog();
         }
         Util.updateTiles(this);
         View cardView = getLayoutInflater().inflate(R.layout.main_cardview, null, false);
@@ -524,6 +536,24 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
             }
         });
         itemCreator.createItemAndContinue(R.string.app_name);
+        itemCreator.createItemAndContinue("Nebulo", setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_nebulo)), new DrawerItem.ClickListener() {
+            @Override
+            public boolean onClick(DrawerItem drawerItem, NavigationDrawerActivity navigationDrawerActivity, @Nullable Bundle bundle) {
+                showNebuloDialog();
+                return false;
+            }
+
+            @Override
+            public boolean onLongClick(DrawerItem drawerItem, NavigationDrawerActivity navigationDrawerActivity) {
+                return false;
+            }
+        });
+        itemCreator.accessLastItemAndContinue(new DrawerItemCreator.ItemAccessor() {
+            @Override
+            public void access(DrawerItem drawerItem) {
+                drawerItem.setDrawableRight(DesignUtil.getDrawable(MainActivity.this, R.drawable.ic_nebulo_ad));
+            }
+        });
         itemCreator.createItemAndContinue(R.string.rate, setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_star)), new DrawerItem.ClickListener() {
             @Override
             public boolean onClick(DrawerItem item, NavigationDrawerActivity drawerActivity, @Nullable Bundle arguments) {
@@ -651,6 +681,36 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
             }
         });
         return itemCreator.getDrawerItemsAndDestroy();
+    }
+
+    private void showNebuloDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(this, ThemeHandler.getDialogTheme(this))
+                .setTitle("Nebulo")
+                .setMessage(R.string.nebulo_download_text)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Preferences.getInstance(MainActivity.this).putBoolean("nebulo_shown", true);
+                        Intent storeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.frostnerd.smokescreen"));
+                        try {
+                            startActivity(storeIntent);
+                        } catch (ActivityNotFoundException ex) {
+                            storeIntent = new Intent(Intent.ACTION_VIEW,  Uri.parse("https://play.google.com/store/apps/details?id=com.frostnerd.smokescreen"));
+                            startActivity(storeIntent);
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Preferences.getInstance(MainActivity.this).putBoolean("nebulo_shown", true);
+                        dialog.dismiss();
+                    }
+                })
+                .setCancelable(false)
+                .create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
     @Override
@@ -791,7 +851,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
                                 _text = _text.replace("[x]", unreachable.size() + reachable.size() + "");
                                 _text = _text.replace("[y]", unreachable.size() + "");
                                 boolean customPorts = PreferencesAccessor.areCustomPortsEnabled(MainActivity.this);
-                                for(IPPortPair p: unreachable)builder.append("- ").append(p.formatForTextfield(customPorts)).append("\n");
+                                for(IPPortPair p: unreachable)if(p != null) builder.append("- ").append(p.formatForTextfield(customPorts)).append("\n");
                                 _text = _text.replace("[servers]", builder.toString());
                                 final String text = _text;
                                 MainActivity.this.runOnUiThread(new Runnable() {

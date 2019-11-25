@@ -16,14 +16,23 @@ import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.util.Util;
 
-/**
- * Copyright Daniel Wolf 2017
- * All rights reserved.
+/*
+ * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
  *
- * Terms on usage of my code can be found here: https://git.frostnerd.com/PublicAndroidApps/DnsChanger/blob/master/README.md
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * <p>
- * development@frostnerd.com
+ * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 public class BasicWidget extends AppWidgetProvider {
     private static final String LOG_TAG = "[BasicWidget]";
@@ -57,7 +66,7 @@ public class BasicWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             views = new RemoteViews(context.getPackageName(), R.layout.widget_basic);
             views = resetWidget(views);
-            views.setOnClickPendingIntent(R.id.basic_widget, PendingIntent.getActivity(context, 0, new Intent(context, PinActivity.class).putExtra("main", true), 0));
+            views.setOnClickPendingIntent(R.id.basic_widget, PendingIntent.getActivity(context, 3, new Intent(context, PinActivity.class).putExtra("main", true), 0));
             views.setTextViewText(R.id.dns1, dns1);
             views.setTextViewText(R.id.dns2, dns2);
             views.setTextViewText(R.id.dns1_v6, dns1V6);
@@ -80,7 +89,7 @@ public class BasicWidget extends AppWidgetProvider {
         RemoteViews views;
         for (int appWidgetId : appWidgetIds) {
             views = new RemoteViews(context.getPackageName(), R.layout.widget_basic);
-            views.setOnClickPendingIntent(R.id.basic_widget, PendingIntent.getActivity(context, 0, new Intent(context, PinActivity.class).putExtra("main", true), 0));
+            views.setOnClickPendingIntent(R.id.basic_widget, PendingIntent.getActivity(context, 4, new Intent(context, PinActivity.class).putExtra("main", true), 0));
             views.setTextViewText(R.id.head, context.getString(R.string.widget_not_running));
             views.setViewVisibility(R.id.head, View.VISIBLE);
             views.setViewVisibility(R.id.dns1_wrap, View.GONE);

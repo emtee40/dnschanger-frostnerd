@@ -32,9 +32,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.frostnerd.design.dialogs.LoadingDialog;
@@ -61,21 +62,32 @@ import java.util.regex.Pattern;
 import de.measite.minidns.Record;
 import de.measite.minidns.record.Data;
 
-/**
- * Copyright Daniel Wolf 2017
- * All rights reserved.
- * <p>
- * development@frostnerd.com
+/*
+ * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 public class MainFragment extends Fragment {
-    private Button startStopButton;
+    private Switch startStopButton;
     private boolean vpnRunning, wasStartedWithTasker = false;
     private MaterialEditText met_dns1, met_dns2;
     public EditText dns1, dns2;
     private static final String LOG_TAG = "[MainActivity]";
     private TextView connectionText;
     private ImageView connectionImage;
-    private View running_indicator;
     private boolean advancedMode;
     public boolean settingV6 = false;
     private final BroadcastReceiver serviceStateReceiver = new BroadcastReceiver() {
@@ -100,14 +112,16 @@ public class MainFragment extends Fragment {
             }
         }
     };
+    private CompoundButton.OnCheckedChangeListener startStopCheckListener;
 
     private void setIndicatorState(boolean vpnRunning) {
         LogFactory.writeMessage(requireContext(), LOG_TAG, "Changing IndicatorState to " + vpnRunning);
         if (vpnRunning) {
             connectionText.setText(R.string.running);
             if(connectionImage != null)connectionImage.setImageResource(R.drawable.ic_thumb_up);
-            startStopButton.setText(R.string.stop);
-            running_indicator.setBackgroundColor(Color.parseColor("#4CAF50"));
+            startStopButton.setOnCheckedChangeListener(null);
+            startStopButton.setChecked(true);
+            startStopButton.setOnCheckedChangeListener(startStopCheckListener);
         } else {
             TypedValue typedValue = new TypedValue();
             Resources.Theme theme = requireContext().getTheme();
@@ -115,8 +129,9 @@ public class MainFragment extends Fragment {
             if(PreferencesAccessor.isEverythingDisabled(requireContext()))  connectionText.setText(R.string.info_functionality_disabled);
             else connectionText.setText(R.string.not_running);
             if(connectionImage != null)connectionImage.setImageResource(R.drawable.ic_thumb_down);
-            startStopButton.setText(R.string.start);
-            running_indicator.setBackgroundColor(typedValue.data);
+            startStopButton.setOnCheckedChangeListener(null);
+            startStopButton.setChecked(false);
+            startStopButton.setOnCheckedChangeListener(startStopCheckListener);
         }
         LogFactory.writeMessage(requireContext(), LOG_TAG, "IndictorState set");
     }
@@ -136,7 +151,6 @@ public class MainFragment extends Fragment {
         dns1 = dns2 = null;
         connectionText = null;
         connectionImage = null;
-        running_indicator = null;
         contentView = null;
     }
 
@@ -154,16 +168,15 @@ public class MainFragment extends Fragment {
         dns2 = (EditText) findViewById(R.id.dns2);
         connectionImage = vertical ? null : (ImageView)findViewById(R.id.connection_status_image);
         connectionText = (TextView)findViewById(R.id.connection_status_text);
-        running_indicator = findViewById(R.id.running_indicator);
-        startStopButton = (Button) findViewById(R.id.startStopButton);
+        startStopButton = (Switch) findViewById(R.id.startStopButton);
 
         if(settingV6 || PreferencesAccessor.areCustomPortsEnabled(requireContext())){
             dns1.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
             dns2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         }
-        startStopButton.setOnClickListener(new View.OnClickListener() {
+        startStopButton.setOnCheckedChangeListener(startStopCheckListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 final Intent i = VpnService.prepare(requireContext());
                 LogFactory.writeMessage(requireContext(), LOG_TAG, "Startbutton clicked. Configuring VPN if needed");
                 if (i != null){

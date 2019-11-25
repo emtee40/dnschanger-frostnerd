@@ -307,8 +307,8 @@
     <string name="notification_text_running_in_advanced_mode">高级设置已启用。</string>
     <string name="show_system_apps">显示系统应用</string>
     <string name="only_show_apps_with_internet">只显示具有互联网权限的应用程序</string>
-    <string name="hint_dns1">DNS 1</string>
-    <string name="hint_dns2">DNS 2</string>
+    <string name="hint_dns1">主服务器</string>
+    <string name="hint_dns2">辅助服务器</string>
     <string name="hint_dns_entry_name">名称</string>
     <string name="hint_pin">PIN</string>
     <string name="loading_exporting_queries">导出查询，请稍候…</string>
@@ -324,9 +324,6 @@
     <string name="title_clear_local_rules">清除当地规则</string>
     <string name="summary_undo_rule_import">从文件恢复规则导入。 无法恢复。</string>
     <string name="title_undo_rule_import">撤消导入</string>
-    <string name="title_dns_over_tls">通过TLS的DNS</string>
     <string name="title_upstream_query_logging">上游查询记录</string>
     <string name="summary_upstream_query_logging">保存服务器响应查询的IP地址</string>
-    <string name="title_dns_over_tls_disable_mobile">在手机上禁用TLS</string>
-    <string name="summary_dns_over_tls_disable_mobile">通过移动连接进行连接时禁用TLS上的DNS（如3G，4G ..）</string>
 </resources>
