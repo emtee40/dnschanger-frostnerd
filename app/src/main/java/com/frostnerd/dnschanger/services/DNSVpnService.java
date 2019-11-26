@@ -232,6 +232,10 @@ public class DNSVpnService extends VpnService {
         //intent = intent == null ? intent : restoreSettings(intent);
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Got StartCommand", intent);
         if(notificationBuilder != null) startForeground(NOTIFICATION_ID, notificationBuilder.build());
+        else {
+            initNotification();
+            startForeground(NOTIFICATION_ID, notificationBuilder.build());
+        }
         if(Utils.isServiceRunning(this, RuleImportService.class)){
             LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Not starting the service because rules are currently being imported");
             stopSelf();
