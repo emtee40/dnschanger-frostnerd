@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.services.DNSVpnService;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
 import com.frostnerd.dnschanger.util.Preferences;
@@ -42,9 +43,11 @@ public class ShortcutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Intent i = getIntent();
         LogFactory.writeMessage(this, LOG_TAG, "Activity created", i);
-        final ArrayList<IPPortPair> upstreamServers;
-        if(i.hasExtra("servers"))upstreamServers = Util.serializableFromString(i.getStringExtra("servers"));
-        else{
+        ArrayList<IPPortPair> upstreamServers = null;
+        if(i.hasExtra("servers")){
+            upstreamServers = Util.serializableFromString(i.getStringExtra("servers"));
+        }
+        if(!i.hasExtra("servers") || upstreamServers == null){
             upstreamServers = new ArrayList<>();
             String dns1 = i.getStringExtra("dns1"), dns2 = i.getStringExtra("dns2"),
                     dns1v6 = i.getStringExtra("dns1v6"), dns2v6 = i.getStringExtra("dns2v6");
@@ -53,20 +56,29 @@ public class ShortcutActivity extends AppCompatActivity {
             if(!TextUtils.isEmpty(dns1v6))upstreamServers.add(new IPPortPair(dns1v6, 53, true));
             if(!TextUtils.isEmpty(dns2v6))upstreamServers.add(new IPPortPair(dns2v6, 53, true));
         }
-        //noinspection ConstantConditions
+        if(upstreamServers.isEmpty()) {
+            IPPortPair dns1 = PreferencesAccessor.Type.DNS1.getPair(this), dns2 = PreferencesAccessor.Type.DNS2.getPair(this),
+                    dns1v6 = PreferencesAccessor.Type.DNS1_V6.getPair(this), dns2v6 = PreferencesAccessor.Type.DNS2_V6.getPair(this);
+            if(!dns1.isEmpty()) upstreamServers.add(dns1);
+            if(!dns2.isEmpty()) upstreamServers.add(dns2);
+            if(!dns1v6.isEmpty()) upstreamServers.add(dns1v6);
+            if(!dns2v6.isEmpty()) upstreamServers.add(dns2v6);
+        }
         LogFactory.writeMessage(this, LOG_TAG, upstreamServers.toString());
         if(Util.isServiceRunning(this)){
             LogFactory.writeMessage(this, LOG_TAG, "Service is already running");
             if(Preferences.getInstance(this).getBoolean( "shortcut_click_again_disable",false)){
                 LogFactory.writeMessage(this, LOG_TAG, "shortcut_click_again_disable is true. Checking if service was started via same shortcut");
                 LogFactory.writeMessage(this, LOG_TAG, "Binding to service");
+                final ArrayList<IPPortPair> finalUpstreamServers = upstreamServers;
                 bindService(DNSVpnService.getBinderIntent(this), new ServiceConnection() {
                     @Override
                     public void onServiceConnected(ComponentName name, IBinder binder) {
                         DNSVpnService service = ((DNSVpnService.ServiceBinder)binder).getService();
                         LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Connected to service");
                         LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Started via shortcut: " + service.wasStartedFromShortcut());
-                        if(service.wasStartedFromShortcut() && service.addressesMatch(upstreamServers)){
+                        if(service.wasStartedFromShortcut() && service.addressesMatch(
+                                finalUpstreamServers)){
                             LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Service was started via same shortcut. Stopping.");
                             unbindService(this);
                             startService(new Intent(ShortcutActivity.this, DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_STOP_SERVICE.getArgument(),true));
@@ -74,7 +86,7 @@ public class ShortcutActivity extends AppCompatActivity {
                         }else{
                             LogFactory.writeMessage(ShortcutActivity.this, LOG_TAG, "Service wasn't started using this shortcut");
                             unbindService(this);
-                            start(upstreamServers);
+                            start(finalUpstreamServers);
                         }
                         service = null;
                     }
