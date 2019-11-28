@@ -219,6 +219,7 @@ public class VPNRunnable implements Runnable {
                     }
                 }else{
                     builder = builder.addDisallowedApplication("com.android.vending");
+                    builder.addDisallowedApplication(service.getPackageName());
                     for(String s: vpnApps){
                         if(s.equals("com.android.vending"))continue;
                         builder = builder.addDisallowedApplication(s);
