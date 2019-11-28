@@ -3,10 +3,21 @@ package com.frostnerd.dnschanger;
 import android.app.Application;
 import android.database.sqlite.SQLiteException;
 
+import androidx.annotation.Keep;
+
 import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
+import com.frostnerd.dnschanger.util.DataSavingSentryEventHelper;
 import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.dnschanger.util.ThemeHandler;
+
+import java.util.Locale;
+
+import io.sentry.Sentry;
+import io.sentry.SentryClient;
+import io.sentry.android.AndroidSentryClientFactory;
+import io.sentry.event.User;
+import io.sentry.event.helper.EventBuilderHelper;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
@@ -33,6 +44,7 @@ public class DNSChanger extends Application {
         public void uncaughtException(Thread t, Throwable e) {
             LogFactory.writeMessage(DNSChanger.this, new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, "Caught uncaught exception");
             LogFactory.writeStackTrace(DNSChanger.this, new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, e);
+            maybeReportSentry(e);
             if (showErrorDialog(e)) {
                 ErrorDialogActivity.show(DNSChanger.this, e);
                 System.exit(2);
@@ -41,8 +53,9 @@ public class DNSChanger extends Application {
         }
     };
     private Thread.UncaughtExceptionHandler defaultHandler;
-    private DatabaseHelper helper;
+    @Keep private DatabaseHelper helper;
     private Preferences mPreferences;
+    private Boolean sentryInitialized = false, sentryInitializing = false;
 
     private boolean showErrorDialog(Throwable exception) {
         if(exception instanceof SQLiteException || (exception.getCause() != null && exception instanceof SQLiteException))return true;
@@ -58,6 +71,59 @@ public class DNSChanger extends Application {
         LogFactory.writeMessage(this, LOG_TAG, "Application created");
         helper = DatabaseHelper.getInstance(this);
         mPreferences = Preferences.getInstance(this);
+        setupSentry();
+    }
+
+    public void maybeReportSentry(Throwable ex) {
+        if(sentryInitialized) {
+            Sentry.capture(ex);
+        }
+    }
+
+    // Creates the SentryClient
+    // Absolutely no identifiable data is transmitted (Thus it is not subject to GDPR)
+    // The Sentry instance does not store IP addresses
+    // Absolutely no tracking is possible.
+    // Can be turned off in the settings.
+    public void setupSentry() {
+        //noinspection ConstantConditions
+        if(!sentryInitialized && !sentryInitializing && BuildConfig.SENTRY_ENABLED && !BuildConfig.SENTRY_DSN.equals("dummy")) {
+            sentryInitializing = true;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        boolean enabled = !mPreferences.getBoolean("disable_crash_reporting", false);
+                        if(enabled) {
+                            Sentry.init(BuildConfig.SENTRY_DSN, new AndroidSentryClientFactory(DNSChanger.this));
+                            Sentry.getContext().setUser(new User("anon-" + BuildConfig.VERSION_CODE, null, null, null));
+                            SentryClient client = Sentry.getStoredClient();
+                            client.addTag("dist", BuildConfig.VERSION_CODE + "");
+                            client.addExtra("dist", BuildConfig.VERSION_CODE);
+                            client.addTag(
+                                    "app.installer_package",
+                                    getPackageManager().getInstallerPackageName(getPackageName())
+                            );
+                            client.addTag("richdata", "false");
+                            for (EventBuilderHelper builderHelper : client.getBuilderHelpers()) {
+                                client.removeBuilderHelper(builderHelper);
+                            }
+                            client.addBuilderHelper(new DataSavingSentryEventHelper());
+                            sentryInitialized = true;
+                        }
+                    } catch (Exception ignored) {
+
+                    } finally {
+                        sentryInitializing = false;
+                    }
+                }
+            }).start();
+        }
+    }
+
+    public void tearDownSentry() {
+        Sentry.close();
+        sentryInitialized = false;
     }
 
     @Override

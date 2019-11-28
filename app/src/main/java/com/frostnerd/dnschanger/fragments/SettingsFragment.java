@@ -33,6 +33,7 @@ import android.view.View;
 
 import com.frostnerd.design.DesignUtil;
 import com.frostnerd.dnschanger.BuildConfig;
+import com.frostnerd.dnschanger.DNSChanger;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.AdvancedSettingsActivity;
@@ -451,6 +452,19 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         findPreference("setting_auto_mobile").setOnPreferenceChangeListener(autoSettingsChanged);
         findPreference("setting_auto_wifi").setOnPreferenceChangeListener(autoSettingsChanged);
         findPreference("setting_disable_netchange").setOnPreferenceChangeListener(autoSettingsChanged);
+        ((SwitchPreference) findPreference("disable_crash_reporting")).setOnPreferenceChangeListener(
+                new Preference.OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object newValue) {
+                        boolean newState = (Boolean)newValue;
+                        if(newState) {
+                            ((DNSChanger) requireContext().getApplicationContext()).setupSentry();
+                        } else {
+                            ((DNSChanger) requireContext().getApplicationContext()).tearDownSentry();
+                        }
+                        return true;
+                    }
+                });
     }
 
     private final Preference.OnPreferenceChangeListener autoSettingsChanged = new Preference.OnPreferenceChangeListener() {

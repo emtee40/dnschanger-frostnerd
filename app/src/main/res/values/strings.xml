@@ -343,4 +343,7 @@
     <string name="title_undo_rule_import">Undo import</string>
 
     <string name="nebulo_download_text">I created a new App named Nebulo, an open-source and ad-free App for dns-over-https and dns-over-tls. It is on the store.\nDo you want to have a look at it? Clicking yes opens the store.</string>
+
+    <string name="summary_disable_crashreporting">Disable automatic reporting of crashes. Reports only contain the app version, Android version and the crash stacktrace and no personal data whatsoever.</string>
+    <string name="title_disable_crashreporting">Crash reporting</string>
 </resources>

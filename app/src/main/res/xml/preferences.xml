@@ -217,6 +217,12 @@
             android:summary="@string/summary_debug"
             android:title="@string/title_debug" />
 
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="disable_crash_reporting"
+            android:summary="@string/summary_disable_crashreporting"
+            android:title="@string/title_disable_crashreporting" />
+
         <Preference
             android:key="send_debug"
             android:summary="@string/summary_send_debug"

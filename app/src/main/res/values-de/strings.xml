@@ -328,4 +328,6 @@
     <string name="summary_undo_rule_import">Macht den Regelimport aus einer Datei rückgängig. Kann selber nicht rückgängig gemacht werden</string>
 
     <string name="nebulo_download_text">Ich habe eine neue App namens Nebulo erstellt, eine Open-Source und werbefreie App für dns-over-https und dns-over-https. Sie ist im Store verfügbar.\nMöchtest du sie dir angucken? Durch Klicken auf ja wirst du zum Store weitergeleitet.</string>
+    <string name="title_disable_crashreporting">Absturzmeldungen</string>
+    <string name="summary_disable_crashreporting">Deaktiviere automatische Absturzmeldungen. Meldungen enthalten nur die App- und Android Version und den Absturzgrund. Es werden absolut keine personenbezogenen Daten übertragen.</string>
 </resources>
