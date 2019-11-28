@@ -42,9 +42,12 @@ public class DNSChanger extends Application {
     private final Thread.UncaughtExceptionHandler customHandler = new Thread.UncaughtExceptionHandler() {
         @Override
         public void uncaughtException(Thread t, Throwable e) {
+            maybeReportSentry(e);
+            try {
+                Thread.sleep(750);
+            } catch (InterruptedException ignored) {}
             LogFactory.writeMessage(DNSChanger.this, new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, "Caught uncaught exception");
             LogFactory.writeStackTrace(DNSChanger.this, new String[]{LOG_TAG, LogFactory.Tag.ERROR.toString()}, e);
-            maybeReportSentry(e);
             if (showErrorDialog(e)) {
                 ErrorDialogActivity.show(DNSChanger.this, e);
                 System.exit(2);
