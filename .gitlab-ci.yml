@@ -12,7 +12,6 @@ before_script:
   
 stages:
   - build
-  - test
   - webdeploy
 
 build:
@@ -39,22 +38,7 @@ build_release:
   artifacts:
     paths:
     - app/build/outputs/apk/release/app-release.apk
-    
-unitTests:
-  stage: test
-  script:
-    - ./gradlew test --stacktrace || (zip -r tests.zip AndroidUtils/library/build/reports/tests/ app/build/reports/tests && exit 1)
-    - zip -r tests.zip AndroidUtils/library/build/reports/tests/ app/build/reports/tests
-  except:
-    - /^no_ci.*$/
-    - /^no_tests.*$/
-    - /^no_build_no_tests.*$/
-    - /^no_tests_no_deploy.*$/
-  artifacts:
-    when: always
-    paths:
-      - tests.zip
-    
+
 upload:
   stage: webdeploy
   script:
