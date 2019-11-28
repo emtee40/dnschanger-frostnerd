@@ -18,7 +18,7 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField("Boolean", "SENTRY_ENABLED", "true")
-            buildConfigField("String", "SENTRY_DSN", getSystemVariableOrDefault("SENTRY_DSN", '"dummy"'))
+            buildConfigField("String", "SENTRY_DSN", '"' + getSystemVariableOrDefault("SENTRY_DSN", "dummy") + '"')
         }
         debug{
             initWith(buildTypes.debug)
