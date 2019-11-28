@@ -30,6 +30,7 @@ import androidx.appcompat.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import com.frostnerd.design.DesignUtil;
 import com.frostnerd.dnschanger.BuildConfig;
@@ -465,6 +466,18 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                         return true;
                     }
                 });
+        Toast.makeText(requireContext(), BuildConfig.SENTRY_DSN + " (" + BuildConfig.SENTRY_ENABLED + ")",Toast.LENGTH_LONG).show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2500);
+                    throw new IllegalStateException("Hello");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     private final Preference.OnPreferenceChangeListener autoSettingsChanged = new Preference.OnPreferenceChangeListener() {
