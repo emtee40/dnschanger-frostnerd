@@ -389,6 +389,7 @@ public class MainFragment extends Fragment {
             checkDNSReachability(new DNSReachabilityCallback() {
                 @Override
                 public void checkFinished(@NonNull List<IPPortPair> unreachable, @NonNull List<IPPortPair> reachable) {
+                    if(isDetached() || !isAdded()) return;
                     dialog.dismiss();
                     if(unreachable.size() == 0){
                         ((MainActivity)requireContext()).runOnUiThread(new Runnable() {
