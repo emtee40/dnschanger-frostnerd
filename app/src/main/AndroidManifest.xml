@@ -49,6 +49,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme_Mono">
 
+        <meta-data android:name="io.sentry.auto-init" android:value="false" />
+
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />
