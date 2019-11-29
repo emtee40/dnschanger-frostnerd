@@ -89,10 +89,12 @@ public class QueryResultAdapter extends BaseAdapter<QueryResultAdapter.ViewHolde
     }
 
     private String getText(int position, int index){
-        if(position == 0)return answer.get(index-1).name.toString();
-        else if(position == 1)return String.valueOf(answer.get(index-1).ttl);
-        else if(position == 2)return answer.get(index-1).clazz.name();
-        else if(position == 3)return answer.get(index-1).type.name();
+        Record data = answer.get(index-1);
+
+        if(position == 0)return data.name.toString();
+        else if(position == 1)return String.valueOf(data.ttl);
+        else if(position == 2)return data.clazz != null ? answer.get(index-1).clazz.name() : Record.CLASS.IN.name();
+        else if(position == 3)return data.type != null ? answer.get(index-1).type.name() : Record.TYPE.A.name();
         else return answer.get(index-1).payloadData.toString();
     }
 
