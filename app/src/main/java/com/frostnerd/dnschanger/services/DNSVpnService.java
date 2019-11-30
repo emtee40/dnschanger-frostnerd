@@ -309,7 +309,7 @@ public class DNSVpnService extends VpnService {
                 vpnRunnable.addAfterThreadStop(new Runnable() {
                     @Override
                     public void run() {
-                        vpnRunnable.destroy();
+                        if(vpnRunnable != null) vpnRunnable.destroy();
                         vpnThread = null;
                         vpnRunnable = null;
                     }
