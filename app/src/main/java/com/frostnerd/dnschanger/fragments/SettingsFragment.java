@@ -584,7 +584,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 @Override
                 public void onClick(View v) {
                     snackbar.dismiss();
-                    Utils.goToLauncher(requireContext());
+                    Utils.goToLauncher(v.getContext());
                 }
             });
             snackbar.show();
