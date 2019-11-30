@@ -39,7 +39,7 @@ public class DataSavingSentryEventHelper implements EventBuilderHelper {
         osMap.put("version", Build.VERSION.RELEASE);
         osMap.put("build", Build.DISPLAY);
         appMap.put("app_version", BuildConfig.VERSION_NAME);
-        appMap.put("app_identifier", "com.frostnerd.smokescreen");
+        appMap.put("app_identifier", "com.frostnerd.dnschanger");
         appMap.put("app_build", BuildConfig.VERSION_CODE);
         contexts.put("os", osMap);
         contexts.put("app", appMap);
