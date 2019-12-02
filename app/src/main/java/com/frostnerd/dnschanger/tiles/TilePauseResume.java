@@ -97,6 +97,7 @@ public class TilePauseResume extends android.service.quicksettings.TileService {
             LogFactory.writeMessage(this, LOG_TAG, "Tile is Pin protected. Starting PinActivity",
                     i = new Intent(this, PinActivity.class).putExtra(running ? VPNServiceArgument.COMMAND_STOP_VPN.toString() :
                             VPNServiceArgument.COMMAND_START_VPN.toString(), true).putExtra("redirectToService",true));
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
         }else{
             LogFactory.writeMessage(this, LOG_TAG, "Tile is not Pin protected. Starting DNSVPNService",
