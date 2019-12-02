@@ -46,7 +46,7 @@ android {
 dependencies {
     implementation 'com.frostnerd.utils:general:1.0.9'
     implementation 'com.frostnerd.utils:database:1.1.22'
-    implementation 'com.frostnerd.utils:design:1.0.14-fix9'
+    implementation 'com.frostnerd.utils:design:1.0.14-fix10'
     implementation 'com.frostnerd.utils:materialedittext:1.0.20'
     implementation 'com.frostnerd.utils:preferences:2.4.8'
     implementation 'com.frostnerd.utils:networking:1.0.4'
