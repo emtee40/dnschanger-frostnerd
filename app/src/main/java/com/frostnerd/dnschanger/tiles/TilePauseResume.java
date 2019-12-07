@@ -102,7 +102,7 @@ public class TilePauseResume extends android.service.quicksettings.TileService {
         }else{
             LogFactory.writeMessage(this, LOG_TAG, "Tile is not Pin protected. Starting DNSVPNService",
                     i = running ? DNSVpnService.getStopVPNIntent(this) : DNSVpnService.getStartVPNIntent(this));
-            startService(i);
+            Util.startService(this, i);
         }
     }
 
