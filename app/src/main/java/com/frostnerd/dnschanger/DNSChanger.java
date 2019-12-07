@@ -114,7 +114,7 @@ public class DNSChanger extends Application {
                             client.addBuilderHelper(new DataSavingSentryEventHelper());
                             sentryInitialized = true;
                         }
-                    } catch (Exception ignored) {
+                    } catch (Throwable ignored) {
 
                     } finally {
                         sentryInitializing = false;
