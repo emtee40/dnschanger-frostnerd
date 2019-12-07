@@ -51,7 +51,6 @@ public class QueryResultAdapter extends BaseAdapter<QueryResultAdapter.ViewHolde
 
     @Override
     protected void cleanup(){
-        context = null;
         layoutInflater = null;
         answer = null;
     }

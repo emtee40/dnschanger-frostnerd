@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.preference.SwitchPreference;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
@@ -30,8 +31,6 @@ import androidx.appcompat.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.widget.Toast;
-
 import com.frostnerd.design.DesignUtil;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.DNSChanger;
@@ -377,11 +376,14 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                if (awaitingPinChange && !DesignUtil.hasOpenDialogs(Util.getActivity(SettingsFragment.this))) {
-                                    ((CheckBoxPreference) preference).setChecked(false);
-                                    awaitingPinChange = false;
+                                FragmentActivity activity = Util.getActivity(SettingsFragment.this);
+                                if(activity != null) {
+                                    if (awaitingPinChange && !DesignUtil.hasOpenDialogs(activity)) {
+                                        ((CheckBoxPreference) preference).setChecked(false);
+                                        awaitingPinChange = false;
+                                    }
+                                    if (awaitingPinChange) handler.postDelayed(this, 250);
                                 }
-                                if (awaitingPinChange) handler.postDelayed(this, 250);
                             }
                         }, 250);
                     }
