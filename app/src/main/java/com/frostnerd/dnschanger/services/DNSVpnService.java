@@ -93,7 +93,6 @@ public class DNSVpnService extends VpnService {
         stopThread();
         if(stateRequestReceiver != null)LocalBroadcastManager.getInstance(this).unregisterReceiver(stateRequestReceiver);
         notificationManager.cancel(NOTIFICATION_ID);
-        preferences = null;
         stateRequestReceiver = null;
         LogFactory.writeMessage(this, LOG_TAG, "Variables cleared");
         if(stopSelf){

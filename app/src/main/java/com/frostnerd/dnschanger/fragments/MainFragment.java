@@ -386,13 +386,14 @@ public class MainFragment extends Fragment {
         if(PreferencesAccessor.checkConnectivityOnStart(requireContext())){
             final LoadingDialog dialog = new LoadingDialog(requireContext(), R.string.checking_connectivity, R.string.dialog_connectivity_description);
             dialog.show();
+            final Context ctx = requireContext();
             checkDNSReachability(new DNSReachabilityCallback() {
                 @Override
                 public void checkFinished(@NonNull List<IPPortPair> unreachable, @NonNull List<IPPortPair> reachable) {
                     if(isDetached() || !isAdded()) return;
                     dialog.dismiss();
                     if(unreachable.size() == 0){
-                        ((MainActivity)requireContext()).runOnUiThread(new Runnable() {
+                        ((MainActivity)ctx).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 start();
@@ -403,17 +404,17 @@ public class MainFragment extends Fragment {
                         StringBuilder builder = new StringBuilder();
                         _text = _text.replace("[x]", unreachable.size() + reachable.size() + "");
                         _text = _text.replace("[y]", unreachable.size() + "");
-                        boolean customPorts = PreferencesAccessor.areCustomPortsEnabled(requireContext());
+                        boolean customPorts = PreferencesAccessor.areCustomPortsEnabled(ctx);
                         for(IPPortPair p: unreachable) {
                             if(p == null)continue;
                             builder.append("- ").append(p.formatForTextfield(customPorts)).append("\n");
                         }
                         _text = _text.replace("[servers]", builder.toString());
                         final String text = _text;
-                        ((MainActivity)requireContext()).runOnUiThread(new Runnable() {
+                        ((MainActivity)ctx).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                new AlertDialog.Builder(requireContext(), ThemeHandler.getDialogTheme(requireContext()))
+                                new AlertDialog.Builder(ctx, ThemeHandler.getDialogTheme(ctx))
                                         .setTitle(R.string.warning).setCancelable(true).setPositiveButton(R.string.start, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -427,8 +428,8 @@ public class MainFragment extends Fragment {
 
                 private void start(){
                     Intent i;
-                    LogFactory.writeMessage(requireContext(), LOG_TAG, "Starting VPN",
-                            i = DNSVpnService.getStartVPNIntent(requireContext()));
+                    LogFactory.writeMessage(ctx, LOG_TAG, "Starting VPN",
+                            i = DNSVpnService.getStartVPNIntent(ctx));
                     wasStartedWithTasker = false;
                     Util.startService(requireContext(), i);
                     vpnRunning = true;

@@ -11,6 +11,7 @@ import com.frostnerd.dnschanger.util.DataSavingSentryEventHelper;
 import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 
+import java.net.InetAddress;
 import java.util.Locale;
 
 import io.sentry.Sentry;
@@ -58,7 +59,7 @@ public class DNSChanger extends Application {
     private Thread.UncaughtExceptionHandler defaultHandler;
     @Keep private DatabaseHelper helper;
     private Preferences mPreferences;
-    private Boolean sentryInitialized = false, sentryInitializing = false;
+    private Boolean sentryInitialized = false, sentryInitializing = false, sentryDisabled = false;
 
     private boolean showErrorDialog(Throwable exception) {
         if(exception instanceof SQLiteException || (exception.getCause() != null && exception instanceof SQLiteException))return true;
@@ -78,7 +79,7 @@ public class DNSChanger extends Application {
     }
 
     public void maybeReportSentry(Throwable ex) {
-        if(sentryInitialized) {
+        if(sentryInitialized && !sentryDisabled) {
             Sentry.capture(ex);
         }
     }
@@ -98,6 +99,11 @@ public class DNSChanger extends Application {
                     try {
                         boolean enabled = !mPreferences.getBoolean("disable_crash_reporting", false);
                         if(enabled) {
+                            String hostname = InetAddress.getLocalHost().getHostName();
+                            if(hostname.toLowerCase().contains("mars-sandbox")){
+                                sentryDisabled = true;
+                                return;
+                            }
                             Sentry.init(BuildConfig.SENTRY_DSN, new AndroidSentryClientFactory(DNSChanger.this));
                             Sentry.getContext().setUser(new User("anon-" + BuildConfig.VERSION_CODE, null, null, null));
                             SentryClient client = Sentry.getStoredClient();
