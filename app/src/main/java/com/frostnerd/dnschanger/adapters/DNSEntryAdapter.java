@@ -109,11 +109,13 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
                     view.itemView.setBackgroundColor(DesignUtil.resolveColor(DNSEntryAdapter.this.context, R.attr.inputElementColor));
                 }
                 view.textView.setText(entity.getName());
-                if(TextUtils.isEmpty(entity.getDescription())){
-                    if(view.subText.getVisibility() == View.VISIBLE) view.subText.setVisibility(View.GONE);
-                } else {
-                    view.subText.setText(entity.getDescription());
-                    if(view.subText.getVisibility() != View.VISIBLE) view.subText.setVisibility(View.VISIBLE);
+                if(view.subText != null) {
+                    if(TextUtils.isEmpty(entity.getDescription())){
+                        if(view.subText.getVisibility() == View.VISIBLE) view.subText.setVisibility(View.GONE);
+                    } else {
+                        view.subText.setText(entity.getDescription());
+                        if(view.subText.getVisibility() != View.VISIBLE) view.subText.setVisibility(View.VISIBLE);
+                    }
                 }
 
                 if(view.itemView.isLongClickable() && onEntrySelectionUpdated == null){
@@ -154,8 +156,7 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
             itemView.setOnLongClickListener(null);
         }
         itemView.setOnClickListener(clickListener);
-
-        return new ViewHolder(itemView, viewType);
+        return new ViewHolder(itemView);
     }
 
     @Override
@@ -190,10 +191,10 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
     static class ViewHolder extends BaseViewHolder {
         private TextView textView, subText;
 
-        private ViewHolder(View itemView, int type) {
+        private ViewHolder(View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.text);
-            if(type== 0)subText = itemView.findViewById(R.id.text2);
+            subText = itemView.findViewById(R.id.text2);
         }
 
         @Override
