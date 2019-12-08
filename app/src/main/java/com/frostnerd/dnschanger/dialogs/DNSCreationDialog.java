@@ -53,6 +53,7 @@ public class DNSCreationDialog extends BaseDialog {
     private MaterialEditText met_name, met_dns1, met_dns2;
     private Vibrator vibrator;
     private boolean settingV6;
+    private Pattern namePattern = Pattern.compile("[^'#´`~]+");
     private final boolean customPorts;
     {
         customPorts = PreferencesAccessor.areCustomPortsEnabled(getContext());
@@ -213,7 +214,7 @@ public class DNSCreationDialog extends BaseDialog {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.toString().trim().equals("")) met_name.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
+                if(!namePattern.matcher(s.toString().trim()).matches()) met_name.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 else if(DatabaseHelper.getInstance(getContext()).dnsEntryExists(s.toString().trim())) met_name.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 else met_name.setIndicatorState(MaterialEditText.IndicatorState.CORRECT);
             }
