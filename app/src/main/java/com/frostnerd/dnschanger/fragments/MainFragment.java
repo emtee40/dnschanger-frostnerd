@@ -177,6 +177,7 @@ public class MainFragment extends Fragment {
         startStopButton.setOnCheckedChangeListener(startStopCheckListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isDetached() || !isAdded()) return;
                 final Intent i = VpnService.prepare(requireContext());
                 LogFactory.writeMessage(requireContext(), LOG_TAG, "Startbutton clicked. Configuring VPN if needed");
                 if (i != null){
