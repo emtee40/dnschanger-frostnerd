@@ -230,7 +230,7 @@ public class VPNRunnable implements Runnable {
             }
         }
         String release = Build.VERSION.RELEASE;
-        if(Build.VERSION.SDK_INT != 19 || release.startsWith("4.4.3") || release.startsWith("4.4.4") || release.startsWith("4.4.5") || release.startsWith("4.4.6")){
+        if(Build.VERSION.SDK_INT != 19 || release.startsWith("4.4.2") || release.startsWith("4.4.3") || release.startsWith("4.4.4") || release.startsWith("4.4.5") || release.startsWith("4.4.6")){
             builder.setMtu(1500);
         }else builder.setMtu(1280);
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface created, not yet connected");
