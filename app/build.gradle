@@ -18,7 +18,7 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField("Boolean", "SENTRY_ENABLED", "true")
-            buildConfigField("String", "SENTRY_DSN", '"' + getSystemVariableOrDefault("SENTRY_DSN", "dummy") + '"')
+            buildConfigField("String", "SENTRY_DSN", '"https://5681f490ed664cee8feb534251f1fcf0@sentry.frostnerd.com:443/3"')
         }
         debug{
             initWith(buildTypes.debug)
@@ -46,7 +46,7 @@ android {
 dependencies {
     implementation 'com.frostnerd.utils:general:1.0.9'
     implementation 'com.frostnerd.utils:database:1.1.22'
-    implementation 'com.frostnerd.utils:design:1.0.14-fix10'
+    implementation 'com.frostnerd.utils:design:1.0.14-fix12'
     implementation 'com.frostnerd.utils:materialedittext:1.0.20'
     implementation 'com.frostnerd.utils:preferences:2.4.8'
     implementation 'com.frostnerd.utils:networking:1.0.4'

@@ -15,6 +15,7 @@ import com.frostnerd.lifecycle.BaseAdapter;
 import com.frostnerd.lifecycle.BaseViewHolder;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.measite.minidns.Record;
@@ -47,12 +48,11 @@ public class QueryResultAdapter extends BaseAdapter<QueryResultAdapter.ViewHolde
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.answer = answer;
+        if(answer == null) this.answer = new ArrayList<>();
     }
 
     @Override
     protected void cleanup(){
-        layoutInflater = null;
-        answer = null;
     }
 
     @NonNull

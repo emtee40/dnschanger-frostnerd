@@ -245,7 +245,7 @@ public class PreferencesAccessor {
         }
 
         public void saveDNSPair(@NonNull Context context, @NonNull IPPortPair pair){
-            if(!canBeEmpty() && pair.isEmpty())return;
+            if(pair == null || (!canBeEmpty() && pair.isEmpty()))return;
             Preferences.getInstance(context).put(  portKey, pair.getPort() == -1 ? 53 : pair.getPort());
             Preferences.getInstance(context).put(  dnsKey, pair.getAddress());
         }
