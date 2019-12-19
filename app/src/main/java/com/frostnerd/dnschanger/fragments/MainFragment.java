@@ -1,6 +1,7 @@
 package com.frostnerd.dnschanger.fragments;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -177,20 +178,39 @@ public class MainFragment extends Fragment {
         startStopButton.setOnCheckedChangeListener(startStopCheckListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                final Intent i = VpnService.prepare(requireContext());
-                LogFactory.writeMessage(requireContext(), LOG_TAG, "Startbutton clicked. Configuring VPN if needed");
+                Context _context = getContext();
+                if(_context == null) _context = buttonView.getContext();
+                final Context context = _context;
+                final Intent i = VpnService.prepare(context);
+                LogFactory.writeMessage(context, LOG_TAG, "Startbutton clicked. Configuring VPN if needed");
                 if (i != null){
-                    LogFactory.writeMessage(requireContext(), LOG_TAG, "VPN isn't prepared yet. Showing dialog explaining the VPN");
-                    new VPNInfoDialog(requireContext(), new DialogInterface.OnClickListener() {
+                    LogFactory.writeMessage(context, LOG_TAG, "VPN isn't prepared yet. Showing dialog explaining the VPN");
+                    new VPNInfoDialog(context, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int which) {
-                            startActivityForResult(i, 0);
-                            LogFactory.writeMessage(requireContext(), LOG_TAG, "Requesting VPN access", i);
+                            try {
+                                startActivityForResult(i, 0);
+                            } catch (ActivityNotFoundException e) {
+                                new AlertDialog.Builder(context)
+                                        .setTitle(R.string.title_vpndialog_missing)
+                                        .setMessage(R.string.summary_vpndialog_missing)
+                                        .setNeutralButton(R.string.close,
+                                                new DialogInterface.OnClickListener() {
+
+                                                    @Override
+                                                    public void onClick(
+                                                            DialogInterface dialogInterface,
+                                                            int i) {
+                                                        dialogInterface.dismiss();
+                                                    }
+                                                }).show();
+                            }
+                            LogFactory.writeMessage(context, LOG_TAG, "Requesting VPN access", i);
                         }
                     });
-                    LogFactory.writeMessage(requireContext(), LOG_TAG, "Dialog is now being shown");
+                    LogFactory.writeMessage(context, LOG_TAG, "Dialog is now being shown");
                 }else{
-                    LogFactory.writeMessage(requireContext(), LOG_TAG, "VPNService is already configured");
+                    LogFactory.writeMessage(context, LOG_TAG, "VPNService is already configured");
                     onActivityResult(0, Activity.RESULT_OK, null);
                 }
             }

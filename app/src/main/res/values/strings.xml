@@ -346,4 +346,7 @@
 
     <string name="summary_disable_crashreporting">Disable automatic reporting of crashes. Reports only contain the app version, Android version and the crash stacktrace and no personal data whatsoever.</string>
     <string name="title_disable_crashreporting">Crash reporting</string>
+
+    <string name="title_vpndialog_missing">VPN missing</string>
+    <string name="summary_vpndialog_missing">Your device seems to be missing the capabilities to run a VPN. As this app fully relies on this feature you sadly won\'t be able to use it.</string>
 </resources>
