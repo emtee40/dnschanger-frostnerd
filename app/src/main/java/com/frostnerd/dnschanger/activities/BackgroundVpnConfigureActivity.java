@@ -1,5 +1,6 @@
 package com.frostnerd.dnschanger.activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -82,7 +83,11 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
                     LogFactory.writeMessage(BackgroundVpnConfigureActivity.this, LOG_TAG, "User clicked OK in Request Info Dialog. Requesting access now.");
                     requestTime = System.currentTimeMillis();
                     LogFactory.writeMessage(BackgroundVpnConfigureActivity.this, LOG_TAG, "Preparing VPNService", conf);
-                    startActivityForResult(conf, REQUEST_CODE);
+                    try {
+                        startActivityForResult(conf, REQUEST_CODE);
+                    } catch (ActivityNotFoundException e) {
+                        finish();
+                    }
                 }
             });
         } else {
