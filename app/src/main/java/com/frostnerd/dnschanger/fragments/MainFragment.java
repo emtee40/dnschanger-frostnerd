@@ -361,30 +361,34 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        LogFactory.writeMessage(requireContext(), LOG_TAG, "Got OnActivityResult" ,data);
+        final Context context = getContext();
+        if(context == null) return;
+        LogFactory.writeMessage(context, LOG_TAG, "Got OnActivityResult" ,data);
         if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
             if (!vpnRunning){
-                if(!Preferences.getInstance(requireContext()).getBoolean("44explained", false) && Build.VERSION.SDK_INT == 19){
-                    LogFactory.writeMessage(requireContext(), LOG_TAG, "Opening Dialog explaining that this might not work on Android 4.4");
-                    new AlertDialog.Builder(requireContext(), ThemeHandler.getDialogTheme(requireContext())).setTitle(R.string.warning).setCancelable(false).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                if(!Preferences.getInstance(context).getBoolean("44explained", false) && Build.VERSION.SDK_INT == 19){
+                    LogFactory.writeMessage(context, LOG_TAG, "Opening Dialog explaining that this might not work on Android 4.4");
+                    new AlertDialog.Builder(
+                            context, ThemeHandler.getDialogTheme(context)).setTitle(R.string.warning).setCancelable(false).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
                             startVpn();
                         }
                     }).setMessage(R.string.android4_4_warning).show();
-                    LogFactory.writeMessage(requireContext(), LOG_TAG, "Dialog is now being shown");
+                    LogFactory.writeMessage(context, LOG_TAG, "Dialog is now being shown");
                 }else{
                     startVpn();
                 }
-                Preferences.getInstance(requireContext()).getBoolean("44explained", true);
+                Preferences.getInstance(context).getBoolean("44explained", true);
             }else{
                 if(wasStartedWithTasker){
-                    LogFactory.writeMessage(requireContext(), LOG_TAG, "Opening dialog which warns that the app was started using Tasker");
-                    new AlertDialog.Builder(requireContext(),ThemeHandler.getDialogTheme(requireContext())).setTitle(R.string.warning).setMessage(R.string.warning_started_using_tasker). setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    LogFactory.writeMessage(context, LOG_TAG, "Opening dialog which warns that the app was started using Tasker");
+                    new AlertDialog.Builder(
+                            context,ThemeHandler.getDialogTheme(context)).setTitle(R.string.warning).setMessage(R.string.warning_started_using_tasker). setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            LogFactory.writeMessage(requireContext(), LOG_TAG, "User clicked OK in the dialog warning about Tasker");
+                            LogFactory.writeMessage(context, LOG_TAG, "User clicked OK in the dialog warning about Tasker");
                             stopVpn();
                             dialog.cancel();
                         }
@@ -392,10 +396,10 @@ public class MainFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
-                            LogFactory.writeMessage(requireContext(), LOG_TAG, "User cancelled stopping DNSChanger as it was started using tasker");
+                            LogFactory.writeMessage(context, LOG_TAG, "User cancelled stopping DNSChanger as it was started using tasker");
                         }
                     }).show();
-                    LogFactory.writeMessage(requireContext(), LOG_TAG, "Dialog is now being shown");
+                    LogFactory.writeMessage(context, LOG_TAG, "Dialog is now being shown");
                 }else stopVpn();
             }
         }
