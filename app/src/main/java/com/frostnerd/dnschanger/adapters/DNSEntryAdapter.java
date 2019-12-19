@@ -67,22 +67,25 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
         if(onEntrySelectionUpdated == null)return;
         boolean wasSelected = v.isSelected();
 
-        long id = (Long) v.getTag(idTagKey);
-        if(selectedEntries.contains(id)) {
-            selectedEntries.remove(id);
-            v.setSelected(false);
-        } else{
-            selectedEntries.add(id);
-            v.setSelected(true);
-        }
+        Object tag = v.getTag(idTagKey);
+        if (tag != null) {
+            long id = (Long) tag;
+            if(selectedEntries.contains(id)) {
+                selectedEntries.remove(id);
+                v.setSelected(false);
+            } else{
+                selectedEntries.add(id);
+                v.setSelected(true);
+            }
 
-        if(wasSelected && !selectedEntries.contains(id)) {
-            v.setBackgroundColor(DesignUtil.resolveColor(DNSEntryAdapter.this.context, android.R.attr.windowBackground));
-        } else if(!wasSelected && selectedEntries.contains(id)) {
-            v.setBackgroundColor(DesignUtil.resolveColor(DNSEntryAdapter.this.context, R.attr.inputElementColor));
-        }
+            if(wasSelected && !selectedEntries.contains(id)) {
+                v.setBackgroundColor(DesignUtil.resolveColor(DNSEntryAdapter.this.context, android.R.attr.windowBackground));
+            } else if(!wasSelected && selectedEntries.contains(id)) {
+                v.setBackgroundColor(DesignUtil.resolveColor(DNSEntryAdapter.this.context, R.attr.inputElementColor));
+            }
 
-        onEntrySelectionUpdated.selectionUpdated(selectedEntries);
+            onEntrySelectionUpdated.selectionUpdated(selectedEntries);
+        }
     }
 
     @Override
