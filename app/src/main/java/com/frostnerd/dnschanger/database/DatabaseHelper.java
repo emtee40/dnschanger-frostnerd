@@ -68,7 +68,7 @@ public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
 
     private DatabaseHelper(@NonNull Context context) {
         super(context, DATABASE_NAME, DATABASE_VERSION, entities);
-        upgradeDnsQuery(getReadableDatabase());
+        upgradeDnsQuery(getWritableDatabase());
     }
 
     @Override
