@@ -84,6 +84,8 @@
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_sql"
                 android:layout_width="48dp"
+                app:useCompatPadding="true"
+                app:fabCustomSize="48dp"
                 android:layout_height="48dp"
                 app:borderWidth="0dp" />
         </LinearLayout>
@@ -114,6 +116,8 @@
                 android:id="@+id/fab_filter"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                app:useCompatPadding="true"
+                app:fabCustomSize="48dp"
                 app:borderWidth="0dp" />
         </LinearLayout>
 
@@ -141,6 +145,8 @@
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_new"
                 android:layout_width="48dp"
+                app:useCompatPadding="true"
+                app:fabCustomSize="48dp"
                 android:layout_height="48dp"
                 app:borderWidth="0dp" />
         </LinearLayout>
@@ -149,7 +155,8 @@
             android:id="@+id/fab_open"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:layout_gravity="end"
-            android:background="?attr/inputElementColor" />
+            app:fabCustomSize="64dp"
+            app:useCompatPadding="true"
+            android:layout_gravity="end" />
     </LinearLayout>
 </RelativeLayout>
