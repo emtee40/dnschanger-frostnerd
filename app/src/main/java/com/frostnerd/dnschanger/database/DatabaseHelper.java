@@ -1,6 +1,7 @@
 package com.frostnerd.dnschanger.database;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -67,6 +68,7 @@ public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
 
     private DatabaseHelper(@NonNull Context context) {
         super(context, DATABASE_NAME, DATABASE_VERSION, entities);
+        upgradeDnsQuery(getReadableDatabase());
     }
 
     @Override
@@ -83,6 +85,27 @@ public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if(oldVersion != 4 && oldVersion != 3) super.onUpgrade(db, oldVersion, newVersion);
+    }
+
+    private void upgradeDnsQuery(SQLiteDatabase db) {
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("SELECT * FROM DNSQuery LIMIT 1", null);
+            boolean columnFound = false;
+            for(String s: cursor.getColumnNames()) {
+                if(s.equalsIgnoreCase("upstreamanswer")) {
+                    columnFound = true;
+                    break;
+                }
+            }
+            if(!columnFound) {
+                db.execSQL("ALTER TABLE DNSQuery ADD COLUMN UpstreamAnswer TEXT");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            cursor.close();
+        }
     }
 
     @Override
