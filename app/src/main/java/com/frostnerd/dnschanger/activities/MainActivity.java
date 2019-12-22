@@ -170,7 +170,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
                 }
             }).setMessage(R.string.rate_request_text).setTitle(R.string.rate).show();
             LogFactory.writeMessage(this, LOG_TAG, "Dialog is now being shown");
-        } else if(launches >= 7 && !preferences.getBoolean("nebulo_shown", false) && random <= 15) {
+        } else if(launches >= 5 && !preferences.getBoolean("nebulo_shown", false) && random <= 20) {
             showNebuloDialog();
         }
         Util.updateTiles(this);
