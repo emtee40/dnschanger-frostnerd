@@ -375,12 +375,12 @@ public class MainFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
-                            startVpn();
+                            startVpn(context);
                         }
                     }).setMessage(R.string.android4_4_warning).show();
                     LogFactory.writeMessage(context, LOG_TAG, "Dialog is now being shown");
                 }else{
-                    startVpn();
+                    startVpn(context);
                 }
                 Preferences.getInstance(context).getBoolean("44explained", true);
             }else{
@@ -408,11 +408,10 @@ public class MainFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void startVpn() {
+    private void startVpn(final Context ctx) {
         if(PreferencesAccessor.checkConnectivityOnStart(requireContext())){
             final LoadingDialog dialog = new LoadingDialog(requireContext(), R.string.checking_connectivity, R.string.dialog_connectivity_description);
             dialog.show();
-            final Context ctx = requireContext();
             checkDNSReachability(new DNSReachabilityCallback() {
                 @Override
                 public void checkFinished(@NonNull List<IPPortPair> unreachable, @NonNull List<IPPortPair> reachable) {
@@ -485,7 +484,7 @@ public class MainFragment extends Fragment {
     public void toggleVPN(){
         if (vpnRunning){
             stopVpn();
-        }else startVpn();
+        }else startVpn(requireContext());
     }
 
     public boolean toggleCurrentInputFocus(){
