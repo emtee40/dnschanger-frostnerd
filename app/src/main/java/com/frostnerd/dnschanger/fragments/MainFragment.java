@@ -190,7 +190,8 @@ public class MainFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int which) {
                             try {
-                                startActivityForResult(i, 0);
+
+                                ((Activity)context).startActivityForResult(i, 0);
                             } catch (ActivityNotFoundException e) {
                                 new AlertDialog.Builder(context)
                                         .setTitle(R.string.title_vpndialog_missing)
