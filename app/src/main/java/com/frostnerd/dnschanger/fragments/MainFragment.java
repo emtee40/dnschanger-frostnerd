@@ -116,7 +116,8 @@ public class MainFragment extends Fragment {
     private CompoundButton.OnCheckedChangeListener startStopCheckListener;
 
     private void setIndicatorState(boolean vpnRunning) {
-        LogFactory.writeMessage(requireContext(), LOG_TAG, "Changing IndicatorState to " + vpnRunning);
+        if(!isAdded() || isDetached()) return;
+        LogFactory.writeMessage(getContext(), LOG_TAG, "Changing IndicatorState to " + vpnRunning);
         if (vpnRunning) {
             connectionText.setText(R.string.running);
             if(connectionImage != null)connectionImage.setImageResource(R.drawable.ic_thumb_up);

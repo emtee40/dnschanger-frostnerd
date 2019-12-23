@@ -147,6 +147,7 @@ public class LogFactory {
     private static synchronized boolean prepare(Context context) {
         if(!enabled && ready)return false;
         if (ready) return usable;
+        if(context == null) return usable;
         enabled = PreferencesAccessor.isDebugEnabled(context);
         if(!enabled){
             ready = true;

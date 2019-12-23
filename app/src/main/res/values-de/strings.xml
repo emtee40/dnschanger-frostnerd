@@ -332,4 +332,6 @@
     <string name="summary_disable_crashreporting">Deaktiviere automatische Absturzmeldungen. Meldungen enthalten nur die App- und Android Version und den Absturzgrund. Es werden absolut keine personenbezogenen Daten übertragen.</string>
     <string name="title_vpndialog_missing">VPN fehlt</string>
     <string name="summary_vpndialog_missing">Diesem Gerät scheint die Fähigkeit zu fehlen, einen Dummy-VPN aufzubauen. Da diese App voll und ganz auf diese angewiesen ist, funktioniert sie leider nicht.</string>
+
+    <string name="message_user_restricted">Kann VPN nicht starten, das Nutzerprofil scheint eingeschränkt zu sein.</string>
 </resources>

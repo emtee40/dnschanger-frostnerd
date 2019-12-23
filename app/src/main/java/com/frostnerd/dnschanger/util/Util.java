@@ -269,6 +269,21 @@ public final class Util {
         }
     }
 
+    public static String createImportantChannel(Context context) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = Utils.requireNonNull((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE));
+            NotificationChannel channel = new NotificationChannel("defaultchannel", context.getString(R.string.notification_channel_default), NotificationManager.IMPORTANCE_HIGH);
+            channel.enableLights(false);
+            channel.enableVibration(true);
+            channel.setDescription(context.getString(R.string.notification_channel_default_description));
+            channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+            notificationManager.createNotificationChannel(channel);
+            return "defaultchannel";
+        } else {
+            return "defaultchannel";
+        }
+    }
+
     public static void runBackgroundConnectivityCheck(Context context, boolean handleInitialState){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LogFactory.writeMessage(context, LOG_TAG, "Using JobScheduler");

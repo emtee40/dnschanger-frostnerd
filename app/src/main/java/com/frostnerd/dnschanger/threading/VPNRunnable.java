@@ -1,6 +1,8 @@
 package com.frostnerd.dnschanger.threading;
 
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.VpnService;
@@ -8,10 +10,13 @@ import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+
 import android.system.OsConstants;
 
 import com.frostnerd.dnschanger.DNSChanger;
 import com.frostnerd.dnschanger.LogFactory;
+import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
 import com.frostnerd.dnschanger.activities.InvalidDNSDialogActivity;
 import com.frostnerd.dnschanger.activities.MainActivity;
@@ -143,6 +148,9 @@ public class VPNRunnable implements Runnable {
             LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "VPN Thread had an exception");
             LogFactory.writeStackTrace(service, new String[]{LOG_TAG,LogFactory.Tag.ERROR.toString()}, e);
             if(isDNSInvalid(e))service.startActivity(new Intent(service, InvalidDNSDialogActivity.class));
+            else if(e instanceof SecurityException && e.getMessage() != null && e.getMessage().contains("INTERACT_ACROSS_USERS")) {
+                showRestrictedUserNotification();
+            }
             else Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
         }finally {
             running = false;
@@ -158,6 +166,20 @@ public class VPNRunnable implements Runnable {
             cleanup();
             LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Done with finally block");
         }
+    }
+
+    private void showRestrictedUserNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(service, Util.createImportantChannel(service));
+        builder.setContentTitle(service.getString(R.string.warning));
+        builder.setSmallIcon(R.drawable.ic_stat_small_icon);
+        builder.setContentIntent(PendingIntent.getActivity(service, 20, new Intent(service, PinActivity.class), 0));
+        builder.setAutoCancel(true);
+        builder.setOngoing(false);
+        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        builder.setColorized(false);
+        builder.setContentText(service.getString(R.string.message_user_restricted));
+        builder.setStyle(new NotificationCompat.BigTextStyle().bigText(service.getString(R.string.message_user_restricted)));
+        ((NotificationManager)service.getSystemService(Context.NOTIFICATION_SERVICE)).notify(10000, builder.build());
     }
 
     public void addAfterThreadStop(@NonNull Runnable runnable){
@@ -182,7 +204,6 @@ public class VPNRunnable implements Runnable {
         builder = null;
         tunnelInterface = null;
         dnsProxy = null;
-        builder = null;
     }
 
     private void configure(@NonNull String address, boolean advanced){
