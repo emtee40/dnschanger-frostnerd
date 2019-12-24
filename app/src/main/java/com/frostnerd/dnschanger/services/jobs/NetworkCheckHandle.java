@@ -22,6 +22,9 @@ import com.frostnerd.dnschanger.widgets.BasicWidget;
 import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.general.WidgetUtil;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
  *
@@ -41,6 +44,7 @@ import com.frostnerd.general.WidgetUtil;
  * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 public class NetworkCheckHandle {
+    private static Set<ConnectivityManager.NetworkCallback> previousCallbacks = new HashSet<>();
     private BroadcastReceiver connectivityChange;
     private ConnectivityManager.NetworkCallback networkCallback;
     private ConnectivityManager connectivityManager;
@@ -56,28 +60,34 @@ public class NetworkCheckHandle {
         LOG_TAG = logTag;
         connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            for (ConnectivityManager.NetworkCallback previousCallback : previousCallbacks) {
+                connectivityManager.unregisterNetworkCallback(previousCallback);
+            }
             NetworkRequest.Builder builder = new NetworkRequest.Builder();
-            connectivityManager.registerNetworkCallback(builder.build(), networkCallback = new ConnectivityManager.NetworkCallback(){
-                @Override
-                public void onAvailable(Network network) {
-                    handleChange();
-                }
-
-                @Override
-                public void onLost(Network network) {
-                    handleChange();
-                }
-
-                private void handleChange(){
-                    if(System.currentTimeMillis() - start < 250)return;
-                    if(running){
-                        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-                        try {
-                            handleConnectivityChange(activeNetwork);
-                        } catch (ReallyWeiredExceptionOnlyAFewPeopleHave ignored) {}//Look below.
+            try {
+                connectivityManager.registerNetworkCallback(builder.build(), networkCallback = new ConnectivityManager.NetworkCallback(){
+                    @Override
+                    public void onAvailable(Network network) {
+                        handleChange();
                     }
-                }
-            });
+
+                    @Override
+                    public void onLost(Network network) {
+                        handleChange();
+                    }
+
+                    private void handleChange(){
+                        if(System.currentTimeMillis() - start < 250)return;
+                        if(running){
+                            NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+                            try {
+                                handleConnectivityChange(activeNetwork);
+                            } catch (ReallyWeiredExceptionOnlyAFewPeopleHave ignored) {}//Look below.
+                        }
+                    }
+                });
+                previousCallbacks.add(networkCallback);
+            } catch (Exception ignored) { }
         }else{
             context.registerReceiver(connectivityChange = new BroadcastReceiver() {
                 @Override
@@ -114,10 +124,19 @@ public class NetworkCheckHandle {
     public void stop(){
         if(!running)return;
         running = false;
-        if(networkCallback != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)connectivityManager.unregisterNetworkCallback(networkCallback);
+        if(networkCallback != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            previousCallbacks.remove(networkCallback);
+            connectivityManager.unregisterNetworkCallback(networkCallback);
+        }
         else if(connectivityChange != null)context.unregisterReceiver(connectivityChange);
         connectivityManager = null;networkCallback = null;
         context = null;
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        stop();
     }
 
     private void startService() throws ReallyWeiredExceptionOnlyAFewPeopleHave {
