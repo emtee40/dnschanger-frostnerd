@@ -158,6 +158,7 @@
         <item>Padrão</item>
         <item>Azul</item>
         <item>Escuro</item>
+        <item>Verdadeiro Preto</item>
     </string-array>
     <string name="remove">Remover</string>
     <string name="whitelist">Lista Branca</string>

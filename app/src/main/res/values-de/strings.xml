@@ -159,6 +159,7 @@
         <item>Standard</item>
         <item>Blau</item>
         <item>Dunkel</item>
+        <item>Wahres Schwarz</item>
     </string-array>
     <string name="remove">Löschen</string>
     <string name="whitelist">Whitelist</string>

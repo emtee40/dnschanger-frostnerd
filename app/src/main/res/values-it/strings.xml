@@ -160,6 +160,7 @@
         <item>Predefinito</item>
         <item>Blu</item>
         <item>Scuro</item>
+        <item>Vero nero</item>
     </string-array>
 
     <string name="remove">Rimuovi</string>

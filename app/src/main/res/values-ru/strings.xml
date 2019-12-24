@@ -417,4 +417,16 @@ https://git.frostnerd.com/PublicAndroidApps/DnsChanger
     <string name="x_lines">[x] линий</string>
     <string name="yes">Да</string>
     <string name="yesterday">Вчера</string>
+    <string-array name="tasker_configure_actions">
+        <item>Запустить DNSChanger</item>
+        <item>Остановить DNSChanger</item>
+        <item>Приостановить DNSChanger</item>
+        <item>Возобновить DNSChanger</item>
+    </string-array>
+    <string-array name="theme">
+        <item>По умолчанию</item>
+        <item>Синяя</item>
+        <item>Тёмная</item>
+        <item>Настоящая черная</item>
+    </string-array>
 </resources>

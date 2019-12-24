@@ -159,6 +159,7 @@
         <item>默认</item>
         <item>蓝色</item>
         <item>暗色</item>
+        <item>真黑</item>
     </string-array>
 
     <string name="remove">移除</string>

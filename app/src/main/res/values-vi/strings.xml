@@ -157,6 +157,7 @@
         <item>Mặc định</item>
         <item>Xanh da trời</item>
         <item>Màu tối</item>
+        <item>Màu đen thật</item>
     </string-array>
     <string name="remove">Gỡ bỏ</string>
     <string name="whitelist">Danh sách cho phép</string>
