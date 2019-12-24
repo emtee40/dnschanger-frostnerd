@@ -524,7 +524,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         super.onResume();
         LogFactory.writeMessage(requireContext(), LOG_TAG, "Resuming Activity");
         if(devicePolicyManager.isAdminActive(deviceAdmin)){
-            ((SwitchPreference)findPreference("device_admin")).setChecked(true);
+            Preference adminPref = findPreference("device_admin");
+            if(adminPref != null)((SwitchPreference)adminPref).setChecked(true);
         }
     }
 
