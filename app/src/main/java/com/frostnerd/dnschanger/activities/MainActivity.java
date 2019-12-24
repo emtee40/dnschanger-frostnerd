@@ -727,7 +727,13 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == REQUEST_ADVANCED_SETTINGS && resultCode == AppCompatActivity.RESULT_FIRST_USER){
             reloadMenuItems();
+        } else {
+            Fragment f = currentFragment();
+            if(f instanceof MainFragment) {
+                f.onActivityResult(requestCode, resultCode, data);
+            }
         }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
