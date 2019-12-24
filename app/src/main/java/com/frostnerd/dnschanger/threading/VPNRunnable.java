@@ -147,7 +147,7 @@ public class VPNRunnable implements Runnable {
         }catch(Exception e){
             LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "VPN Thread had an exception");
             LogFactory.writeStackTrace(service, new String[]{LOG_TAG,LogFactory.Tag.ERROR.toString()}, e);
-            if(isDNSInvalid(e))service.startActivity(new Intent(service, InvalidDNSDialogActivity.class));
+            if(isDNSInvalid(e))service.startActivity(new Intent(service, InvalidDNSDialogActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             else if(e instanceof SecurityException && e.getMessage() != null && e.getMessage().contains("INTERACT_ACROSS_USERS")) {
                 showRestrictedUserNotification();
             }
