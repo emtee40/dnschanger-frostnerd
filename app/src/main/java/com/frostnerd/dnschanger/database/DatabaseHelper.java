@@ -68,7 +68,7 @@ public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
 
     private DatabaseHelper(@NonNull Context context) {
         super(context, DATABASE_NAME, DATABASE_VERSION, entities);
-        upgradeDnsQuery(getWritableDatabase());
+        upgradeDnsQuery();
     }
 
     @Override
@@ -87,9 +87,10 @@ public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
         if(oldVersion != 4 && oldVersion != 3) super.onUpgrade(db, oldVersion, newVersion);
     }
 
-    private void upgradeDnsQuery(SQLiteDatabase db) {
+    private void upgradeDnsQuery() {
         Cursor cursor = null;
         try {
+            SQLiteDatabase db = getWritableDatabase();
             cursor = db.rawQuery("SELECT * FROM DNSQuery LIMIT 1", null);
             boolean columnFound = false;
             for(String s: cursor.getColumnNames()) {
@@ -104,7 +105,7 @@ public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            cursor.close();
+            if(cursor != null) cursor.close();
         }
     }
 
