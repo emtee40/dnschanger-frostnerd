@@ -258,7 +258,7 @@ public class DNSVpnService extends VpnService {
                 if(intent.hasExtra(VPNServiceArgument.ARGUMENT_STOP_REASON.getArgument()))stopReason = intent.getStringExtra(VPNServiceArgument.ARGUMENT_STOP_REASON.getArgument());
                 LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Stopping self");
                 stopService();
-            }else if (IntentUtil.checkExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(),intent)) {
+            }else if (IntentUtil.checkExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(),intent) || (intent.getAction() != null && intent.getAction().equals("android.net.VpnService"))) {
                 if(prepare(this) == null) {
                     LogFactory.writeMessage(this, new String[]{LOG_TAG, "[ONSTARTCOMMAND]"}, "Starting VPN");
                     createAndRunThread(!IntentUtil.checkExtra(VPNServiceArgument.FLAG_DONT_START_IF_RUNNING.getArgument(), intent),
