@@ -364,7 +364,6 @@ public class MainFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         final Context context = getContext();
-        System.out.println("CONTEXT: " + context);
         if(context == null) return;
         LogFactory.writeMessage(context, LOG_TAG, "Got OnActivityResult" ,data);
         if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
