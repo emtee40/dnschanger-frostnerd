@@ -243,7 +243,12 @@ public class DNSUDPProxy extends DNSProxy{
             sendPacketToUpstreamDNSServer(outPacket, null);
         }else{
             byte[] payloadData = udpPacket.getPayload().getRawData();
-            DNSMessage dnsMsg = new DNSMessage(payloadData);
+            DNSMessage dnsMsg;
+            try {
+                dnsMsg = new DNSMessage(payloadData);
+            } catch (IOException e) {
+                return;
+            }
             if(dnsMsg.getQuestion() == null)return;
             String query = dnsMsg.getQuestion().name.toString(), target;
             if(queryLogging)queryLogger.logQuery(dnsMsg, dnsMsg.getQuestion().type == Record.TYPE.AAAA);
