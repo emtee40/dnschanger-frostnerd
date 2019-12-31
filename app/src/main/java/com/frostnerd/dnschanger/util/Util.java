@@ -134,11 +134,15 @@ public final class Util {
 
     public static void updateAppShortcuts(Context context) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N_MR1) {
-            ShortcutManager shortcutManager = Utils.requireNonNull(context.getSystemService(ShortcutManager.class));
-            if (!PreferencesAccessor.areAppShortcutsEnabled(context)) {
-                shortcutManager.removeAllDynamicShortcuts();
+            ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
+            if (shortcutManager != null && !PreferencesAccessor.areAppShortcutsEnabled(context)) {
+                try {
+                    shortcutManager.removeAllDynamicShortcuts();
+                } catch (Exception ignored) {
+
+                }
                 return;
-            }
+            } else if(shortcutManager == null) return;
             boolean pinProtected = PreferencesAccessor.isPinProtected(context, PreferencesAccessor.PinProtectable.APP_SHORTCUT);
             List<ShortcutInfo> shortcutInfos = new ArrayList<>();
             if (isServiceThreadRunning()) {
