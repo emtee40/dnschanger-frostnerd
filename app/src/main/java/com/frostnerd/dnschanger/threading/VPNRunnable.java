@@ -183,7 +183,9 @@ public class VPNRunnable implements Runnable {
     }
 
     public void addAfterThreadStop(@NonNull Runnable runnable){
-        afterThreadStop.add(runnable);
+        synchronized (afterThreadStop){
+            afterThreadStop.add(runnable);
+        }
     }
 
     private boolean isDNSInvalid(@NonNull Exception ex){
