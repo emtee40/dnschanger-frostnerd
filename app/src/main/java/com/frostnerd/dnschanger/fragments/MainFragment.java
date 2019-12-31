@@ -409,8 +409,8 @@ public class MainFragment extends Fragment {
     }
 
     private void startVpn(final Context ctx) {
-        if(PreferencesAccessor.checkConnectivityOnStart(requireContext())){
-            final LoadingDialog dialog = new LoadingDialog(requireContext(), R.string.checking_connectivity, R.string.dialog_connectivity_description);
+        if(PreferencesAccessor.checkConnectivityOnStart(ctx)){
+            final LoadingDialog dialog = new LoadingDialog(ctx, R.string.checking_connectivity, R.string.dialog_connectivity_description);
             dialog.show();
             checkDNSReachability(new DNSReachabilityCallback() {
                 @Override
@@ -463,10 +463,10 @@ public class MainFragment extends Fragment {
             });
         }else{
             Intent i;
-            LogFactory.writeMessage(requireContext(), LOG_TAG, "Starting VPN",
-                    i = DNSVpnService.getStartVPNIntent(requireContext()));
+            LogFactory.writeMessage(ctx, LOG_TAG, "Starting VPN",
+                    i = DNSVpnService.getStartVPNIntent(ctx));
             wasStartedWithTasker = false;
-            Util.startService(requireContext(), i);
+            Util.startService(ctx, i);
             vpnRunning = true;
             setIndicatorState(true);
         }
