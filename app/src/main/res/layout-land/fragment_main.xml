@@ -166,16 +166,22 @@
                 android:maxWidth="64dp" />
         </RelativeLayout>
 
-        <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <View
+            android:id="@+id/running_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="9dp" />
+
+        <Button
             android:id="@+id/startStopButton"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:nextFocusUp="@id/default_dns_view"
             android:nextFocusForward="@id/dns1"
             android:nextFocusDown="@id/dns1"
-            android:layout_marginTop="45dp"
-            android:layout_gravity="center_horizontal"
-            android:textColor="#FFF"
-            />
+            android:layout_marginTop="15dp"
+            android:background="?attr/cardColor"
+            android:text="@string/start"
+            android:textColor="#FFF" />
     </LinearLayout>
 </RelativeLayout>

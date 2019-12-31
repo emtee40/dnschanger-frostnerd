@@ -33,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -82,7 +83,8 @@ import de.measite.minidns.record.Data;
  * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 public class MainFragment extends Fragment {
-    private Switch startStopButton;
+    private Button startStopButton;
+    private View running_indicator;
     private boolean vpnRunning, wasStartedWithTasker = false;
     private MaterialEditText met_dns1, met_dns2;
     public EditText dns1, dns2;
@@ -113,7 +115,6 @@ public class MainFragment extends Fragment {
             }
         }
     };
-    private CompoundButton.OnCheckedChangeListener startStopCheckListener;
 
     private void setIndicatorState(boolean vpnRunning) {
         if(!isAdded() || isDetached()) return;
@@ -121,9 +122,8 @@ public class MainFragment extends Fragment {
         if (vpnRunning) {
             connectionText.setText(R.string.running);
             if(connectionImage != null)connectionImage.setImageResource(R.drawable.ic_thumb_up);
-            startStopButton.setOnCheckedChangeListener(null);
-            startStopButton.setChecked(true);
-            startStopButton.setOnCheckedChangeListener(startStopCheckListener);
+            startStopButton.setText(R.string.stop);
+            running_indicator.setBackgroundColor(Color.parseColor("#4CAF50"));
         } else {
             TypedValue typedValue = new TypedValue();
             Resources.Theme theme = requireContext().getTheme();
@@ -131,9 +131,8 @@ public class MainFragment extends Fragment {
             if(PreferencesAccessor.isEverythingDisabled(requireContext()))  connectionText.setText(R.string.info_functionality_disabled);
             else connectionText.setText(R.string.not_running);
             if(connectionImage != null)connectionImage.setImageResource(R.drawable.ic_thumb_down);
-            startStopButton.setOnCheckedChangeListener(null);
-            startStopButton.setChecked(false);
-            startStopButton.setOnCheckedChangeListener(startStopCheckListener);
+            startStopButton.setText(R.string.start);
+            running_indicator.setBackgroundColor(typedValue.data);
         }
         LogFactory.writeMessage(requireContext(), LOG_TAG, "IndictorState set");
     }
@@ -170,15 +169,16 @@ public class MainFragment extends Fragment {
         dns2 = (EditText) findViewById(R.id.dns2);
         connectionImage = vertical ? null : (ImageView)findViewById(R.id.connection_status_image);
         connectionText = (TextView)findViewById(R.id.connection_status_text);
-        startStopButton = (Switch) findViewById(R.id.startStopButton);
+        running_indicator = findViewById(R.id.running_indicator);
+        startStopButton = (Button) findViewById(R.id.startStopButton);
 
         if(settingV6 || PreferencesAccessor.areCustomPortsEnabled(requireContext())){
             dns1.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
             dns2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         }
-        startStopButton.setOnCheckedChangeListener(startStopCheckListener = new CompoundButton.OnCheckedChangeListener() {
+        startStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onClick(View buttonView) {
                 if(isDetached() || !isAdded()) return;
                 Context _context = getContext();
                 if(_context == null) _context = buttonView.getContext();
