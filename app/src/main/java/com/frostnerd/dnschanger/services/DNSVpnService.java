@@ -313,7 +313,7 @@ public class DNSVpnService extends VpnService {
                         vpnRunnable = null;
                     }
                 });
-                vpnRunnable.stop(vpnThread);
+                if(vpnRunnable != null) vpnRunnable.stop(vpnThread);
             }else{
                 vpnRunnable = null;
                 vpnThread = null;

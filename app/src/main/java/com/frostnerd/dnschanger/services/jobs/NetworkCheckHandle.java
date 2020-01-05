@@ -126,11 +126,12 @@ public class NetworkCheckHandle {
         running = false;
         if(networkCallback != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             previousCallbacks.remove(networkCallback);
-            connectivityManager.unregisterNetworkCallback(networkCallback);
+            try {
+                connectivityManager.unregisterNetworkCallback(networkCallback);
+            } catch (Exception ignored) { }
         }
         else if(connectivityChange != null)context.unregisterReceiver(connectivityChange);
         connectivityManager = null;networkCallback = null;
-        context = null;
     }
 
     @Override
