@@ -216,8 +216,8 @@ public class AppSelectionActivity extends BaseActivity implements SearchView.OnQ
     }
 
     private final class AppListAdapter extends RecyclerView.Adapter<ViewHolder> {
-        private final TreeSet<AppEntry> apps = new TreeSet<>();
-        private final List<AppEntry> searchedApps = new ArrayList<>();
+        private TreeSet<AppEntry> apps = new TreeSet<>();
+        private List<AppEntry> searchedApps = new ArrayList<>();
         private boolean update = true;
         private String currentSearch = "";
 
@@ -232,28 +232,30 @@ public class AppSelectionActivity extends BaseActivity implements SearchView.OnQ
                     findViewById(R.id.progress).setVisibility(View.VISIBLE);
                 }
             });
-            apps.clear();
+            TreeSet<AppEntry> nextApps = new TreeSet<>();
             List<ApplicationInfo> packages = getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
             AppEntry entry;
             for (ApplicationInfo packageInfo : packages) {
                 entry = new AppEntry(AppSelectionActivity.this, packageInfo);
                 if(!onlyInternet || entry.hasPermission(Manifest.permission.INTERNET)){
-                    if(showSystemApps || !entry.isSystemApp())apps.add(entry);
+                    if(showSystemApps || !entry.isSystemApp())nextApps.add(entry);
                 }
             }
+            apps = nextApps;
             filter(currentSearch);
         }
 
         public void filter(String search){
             this.currentSearch = search;
-            searchedApps.clear();
+            List<AppEntry> nextSearch = new ArrayList<>();
             if(search.equals("")){
-                searchedApps.addAll(apps);
+                nextSearch.addAll(apps);
             }else{
                 for(AppEntry entry: apps){
-                    if(entry.getTitle().toLowerCase().contains(search.toLowerCase()))searchedApps.add(entry);
+                    if(entry.getTitle().toLowerCase().contains(search.toLowerCase()))nextSearch.add(entry);
                 }
             }
+            searchedApps = nextSearch;
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
