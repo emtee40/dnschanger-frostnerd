@@ -224,7 +224,9 @@ public class DNSUDPProxy extends DNSProxy{
     }
 
     private void handleDeviceDNSPacket(@NonNull InputStream inputStream, @NonNull byte[] packetBytes) throws IOException{
-        packetBytes = Arrays.copyOfRange(packetBytes, 0, inputStream.read(packetBytes));
+        int len = inputStream.read(packetBytes);
+        if(len < 0) return;
+        packetBytes = Arrays.copyOfRange(packetBytes, 0, len);
         IpPacket packet;
         try {
             packet = (IpPacket) IpSelector.newPacket(packetBytes, 0, packetBytes.length);
