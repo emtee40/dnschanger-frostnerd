@@ -71,6 +71,7 @@
             android:background="@drawable/main_round_corners"
             android:clickable="true"
             android:focusable="true"
+            android:layout_marginTop="16dp"
             android:gravity="center_vertical"
             android:nextFocusUp="@id/dns2"
             android:nextFocusDown="@id/startStopButton"
