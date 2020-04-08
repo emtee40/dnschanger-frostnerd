@@ -157,7 +157,7 @@ public class DnsQueryFragment extends Fragment {
                             }
                         });
                     }
-                } catch (final IOException e) {
+                } catch (final Exception e) {
                     e.printStackTrace();
                     if(isAdded())
                         Util.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
@@ -171,7 +171,7 @@ public class DnsQueryFragment extends Fragment {
         }.start();
     }
 
-    private void handleException(IOException e){
+    private void handleException(Exception e){
         showingError = true;
         progress.setVisibility(View.INVISIBLE);
         String errorMSG = e.getMessage();
