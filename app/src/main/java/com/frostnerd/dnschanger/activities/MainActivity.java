@@ -863,13 +863,15 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
                                 MainActivity.this.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        new AlertDialog.Builder(MainActivity.this, ThemeHandler.getDialogTheme(MainActivity.this))
-                                                .setTitle(R.string.warning).setCancelable(true).setPositiveButton(R.string.start, new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                MainActivity.this.startService(DNSVpnService.getUpdateServersIntent(MainActivity.this, true, false));
-                                            }
-                                        }).setNegativeButton(R.string.cancel, null).setMessage(text).show();
+                                        if(!isFinishing()) {
+                                            new AlertDialog.Builder(MainActivity.this, ThemeHandler.getDialogTheme(MainActivity.this))
+                                                    .setTitle(R.string.warning).setCancelable(true).setPositiveButton(R.string.start, new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    MainActivity.this.startService(DNSVpnService.getUpdateServersIntent(MainActivity.this, true, false));
+                                                }
+                                            }).setNegativeButton(R.string.cancel, null).setMessage(text).show();
+                                        }
                                     }
                                 });
                             }
