@@ -197,8 +197,12 @@ public class DNSTCPProxy extends DNSProxy{
                     tryClose(entry.getKey());
                 }
             }
-            if(shouldRun && (structFd.revents & OsConstants.POLLOUT) != 0)outputStream.write(writeToDevice.poll());
-            if(shouldRun && (structFd.revents & OsConstants.POLLIN) != 0)handleDeviceDNSPacket(inputStream, packet);
+            if(shouldRun && (structFd.revents & OsConstants.POLLOUT) != 0) try {
+                outputStream.write(writeToDevice.poll());
+            } catch (IOException ignored) {}
+            if(shouldRun && (structFd.revents & OsConstants.POLLIN) != 0) try {
+                handleDeviceDNSPacket(inputStream, packet);
+            } catch (IOException ignored) {}
         }
     }
 
