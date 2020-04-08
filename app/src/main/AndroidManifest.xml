@@ -150,6 +150,7 @@
         <service
             android:name=".services.jobs.ConnectivityJobAPI21"
             android:label="Connectivity Service"
+            android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity
