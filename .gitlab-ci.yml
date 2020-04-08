@@ -25,7 +25,8 @@ build:
 build_release:
   stage: build
   script:
-   - ./gradlew clean check assembleRelease --stacktrace -Pandroid.injected.signing.store.file=$KEYSTORE_FILE -Pandroid.injected.signing.store.password=$KEYSTORE_PASSWORD -Pandroid.injected.signing.key.alias=$KEYSTORE_KEY_NAME -Pandroid.injected.signing.key.password=$KEYSTORE_KEY_PASSWORD -x test
+    - wget -O $KEYSTORE_FILE $KEYSTORE_URL -q
+    - ./gradlew clean check assembleRelease --stacktrace -Pandroid.injected.signing.store.file=$KEYSTORE_FILE -Pandroid.injected.signing.store.password=$KEYSTORE_PASSWORD -Pandroid.injected.signing.key.alias=$KEYSTORE_KEY_NAME -Pandroid.injected.signing.key.password=$KEYSTORE_KEY_PASSWORD -x test
   artifacts:
     paths:
     - app/build/outputs/apk/release/app-release.apk
