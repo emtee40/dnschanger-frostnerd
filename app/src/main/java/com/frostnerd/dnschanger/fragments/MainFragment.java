@@ -55,6 +55,7 @@ import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.general.Utils;
 import com.frostnerd.general.textfilers.InputCharacterFilter;
 import com.frostnerd.materialedittext.MaterialEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.minidns.record.Data;
 import org.minidns.record.Record;
@@ -86,7 +87,7 @@ public class MainFragment extends Fragment {
     private Button startStopButton;
     private View running_indicator;
     private boolean vpnRunning, wasStartedWithTasker = false;
-    private MaterialEditText met_dns1, met_dns2;
+    private TextInputLayout met_dns1, met_dns2;
     public EditText dns1, dns2;
     private static final String LOG_TAG = "[MainActivity]";
     private TextView connectionText;
@@ -163,8 +164,8 @@ public class MainFragment extends Fragment {
         boolean vertical = getResources().getConfiguration().orientation == OrientationHelper.VERTICAL;
         LogFactory.writeMessage(getContextWorkaround(), LOG_TAG, "Created Activity", Util.getActivity(this).getIntent());
         LogFactory.writeMessage(getContextWorkaround(), LOG_TAG, "Setting ContentView");
-        met_dns1 = (MaterialEditText) findViewById(R.id.met_dns1);
-        met_dns2 = (MaterialEditText) findViewById(R.id.met_dns2);
+        met_dns1 = (TextInputLayout) findViewById(R.id.met_dns1);
+        met_dns2 = (TextInputLayout) findViewById(R.id.met_dns2);
         dns1 = (EditText) findViewById(R.id.dns1);
         dns2 = (EditText) findViewById(R.id.dns2);
         connectionImage = vertical ? null : (ImageView)findViewById(R.id.connection_status_image);
@@ -228,9 +229,9 @@ public class MainFragment extends Fragment {
                 IPPortPair pair = Util.validateInput(s.toString(), settingV6, false,
                         PreferencesAccessor.isLoopbackAllowed(getContextWorkaround()), 53);
                 if (pair == null || (pair.getPort() != 53 && !advancedMode)) {
-                    met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
+                    met_dns1.setError(" ");
                 } else {
-                    met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
+                    met_dns1.setError(null);
                     if (settingV6) PreferencesAccessor.Type.DNS1_V6.saveDNSPair(getContextWorkaround(), pair);
                     else PreferencesAccessor.Type.DNS1.saveDNSPair(getContextWorkaround(), pair);
                     setEditTextLabel();
@@ -255,9 +256,9 @@ public class MainFragment extends Fragment {
                 IPPortPair pair = Util.validateInput(s.toString(), settingV6, true,
                         PreferencesAccessor.isLoopbackAllowed(getContextWorkaround()), 53);
                 if (pair == null || (pair != IPPortPair.getEmptyPair() && pair.getPort() != 53 && !advancedMode)) {
-                    met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
+                    met_dns2.setError(" ");
                 } else {
-                    met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
+                    met_dns2.setError(null);
                     if (settingV6) PreferencesAccessor.Type.DNS2_V6.saveDNSPair(getContextWorkaround(), pair);
                     else PreferencesAccessor.Type.DNS2.saveDNSPair(getContextWorkaround(), pair);
                     setEditTextLabel();
@@ -288,8 +289,8 @@ public class MainFragment extends Fragment {
             if((entry = PreferencesAccessor.Type.DNS2.findMatchingDatabaseEntry(getContextWorkaround())) != null)
                 label2 += " (" + entry.getShortName() + ")";
         }
-        met_dns1.setLabelText(label1);
-        met_dns2.setLabelText(label2);
+        met_dns1.setHint(label1);
+        met_dns2.setHint(label2);
     }
 
     private void setEditTextState(){
