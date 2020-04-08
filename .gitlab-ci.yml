@@ -9,6 +9,7 @@ stages:
 build:
   stage: build
   script:
+    - chmod +x changeVersion.sh
     - ./changeVersion.sh app/build.gradle " $CI_COMMIT_REF_NAME\_$CI_PIPELINE_ID" --append
     - ./gradlew assembleDebug --stacktrace
   artifacts:
