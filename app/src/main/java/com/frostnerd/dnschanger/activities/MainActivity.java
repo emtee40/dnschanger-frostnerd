@@ -35,6 +35,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.frostnerd.design.DesignUtil;
 import com.frostnerd.design.dialogs.FileChooserDialog;
@@ -695,8 +696,12 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
                         try {
                             startActivity(storeIntent);
                         } catch (ActivityNotFoundException ex) {
-                            storeIntent = new Intent(Intent.ACTION_VIEW,  Uri.parse("https://play.google.com/store/apps/details?id=com.frostnerd.smokescreen"));
-                            startActivity(storeIntent);
+                            try {
+                                storeIntent = new Intent(Intent.ACTION_VIEW,  Uri.parse("https://play.google.com/store/apps/details?id=com.frostnerd.smokescreen"));
+                                startActivity(storeIntent);
+                            } catch (ActivityNotFoundException ex2) {
+                                Toast.makeText(MainActivity.this, R.string.nebulo_no_browser, Toast.LENGTH_LONG).show();
+                            }
                         }
                     }
                 })
@@ -863,13 +868,15 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
                                 MainActivity.this.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        new AlertDialog.Builder(MainActivity.this, ThemeHandler.getDialogTheme(MainActivity.this))
-                                                .setTitle(R.string.warning).setCancelable(true).setPositiveButton(R.string.start, new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                MainActivity.this.startService(DNSVpnService.getUpdateServersIntent(MainActivity.this, true, false));
-                                            }
-                                        }).setNegativeButton(R.string.cancel, null).setMessage(text).show();
+                                        if(!isFinishing()) {
+                                            new AlertDialog.Builder(MainActivity.this, ThemeHandler.getDialogTheme(MainActivity.this))
+                                                    .setTitle(R.string.warning).setCancelable(true).setPositiveButton(R.string.start, new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    MainActivity.this.startService(DNSVpnService.getUpdateServersIntent(MainActivity.this, true, false));
+                                                }
+                                            }).setNegativeButton(R.string.cancel, null).setMessage(text).show();
+                                        }
                                     }
                                 });
                             }

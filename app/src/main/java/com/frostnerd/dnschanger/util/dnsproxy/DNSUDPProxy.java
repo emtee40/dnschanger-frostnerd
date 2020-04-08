@@ -44,11 +44,11 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
-import de.measite.minidns.DNSMessage;
-import de.measite.minidns.Record;
-import de.measite.minidns.record.A;
-import de.measite.minidns.record.AAAA;
-import de.measite.minidns.record.Data;
+import org.minidns.dnsmessage.DnsMessage;
+import org.minidns.record.A;
+import org.minidns.record.AAAA;
+import org.minidns.record.Data;
+import org.minidns.record.Record;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
@@ -201,8 +201,12 @@ public class DNSUDPProxy extends DNSProxy{
                     tryClose(entry.getKey());
                 }
             }
-            if(shouldRun && (structFd.revents & OsConstants.POLLOUT) != 0)outputStream.write(writeToDevice.poll());
-            if(shouldRun && (structFd.revents & OsConstants.POLLIN) != 0)handleDeviceDNSPacket(inputStream, packet);
+            if(shouldRun && (structFd.revents & OsConstants.POLLOUT) != 0) try {
+                outputStream.write(writeToDevice.poll());
+            } catch (IOException ignored) {}
+            if(shouldRun && (structFd.revents & OsConstants.POLLIN) != 0) try {
+                handleDeviceDNSPacket(inputStream, packet);
+            } catch (IOException ignored) {}
         }
     }
 
@@ -245,9 +249,9 @@ public class DNSUDPProxy extends DNSProxy{
             sendPacketToUpstreamDNSServer(outPacket, null);
         }else{
             byte[] payloadData = udpPacket.getPayload().getRawData();
-            DNSMessage dnsMsg;
+            DnsMessage dnsMsg;
             try {
-                dnsMsg = new DNSMessage(payloadData);
+                dnsMsg = new DnsMessage(payloadData);
             } catch (IOException e) {
                 return;
             }
@@ -256,7 +260,7 @@ public class DNSUDPProxy extends DNSProxy{
             if(queryLogging)queryLogger.logQuery(dnsMsg, dnsMsg.getQuestion().type == Record.TYPE.AAAA);
             LogFactory.writeMessage(vpnService, LOG_TAG, "Query from device: " + dnsMsg.getQuestion());
             if(resolveLocalRules && (target = resolver.resolve(query, dnsMsg.getQuestion().type == Record.TYPE.AAAA ,true)) != null){
-                DNSMessage.Builder builder = null;
+                DnsMessage.Builder builder = null;
                 if(dnsMsg.getQuestion().type == Record.TYPE.A){
                     builder = dnsMsg.asBuilder().setQrFlag(true).addAnswer(
                             new Record<Data>(query, Record.TYPE.A, 1, 64, new A(Inet4Address.getByName(target).getAddress())));
@@ -325,8 +329,8 @@ public class DNSUDPProxy extends DNSProxy{
         writeToDevice.add(packet.getRawData());
         if(queryLogger != null && queryLogger.logUpstreamAnswers()){
             try {
-                queryLogger.logUpstreamAnswer(new DNSMessage(payloadData));
-            } catch (IOException e) {
+                queryLogger.logUpstreamAnswer(new DnsMessage(payloadData));
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

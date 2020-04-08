@@ -3,18 +3,17 @@ package com.frostnerd.dnschanger.util.dnsquery;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
+import org.minidns.AbstractDnsClient;
+import org.minidns.DnsClient;
+import org.minidns.dnsmessage.DnsMessage;
+import org.minidns.dnsmessage.Question;
+import org.minidns.record.Data;
+import org.minidns.record.Record;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import de.measite.minidns.AbstractDNSClient;
-import de.measite.minidns.DNSClient;
-import de.measite.minidns.DNSMessage;
-import de.measite.minidns.Question;
-import de.measite.minidns.Record;
-import de.measite.minidns.record.Data;
-import lombok.AccessLevel;
-import lombok.Getter;
 
 /**
  * Copyright Daniel Wolf 2018
@@ -26,8 +25,8 @@ import lombok.Getter;
  * development@frostnerd.com
  */
 public class Resolver {
-    @Getter(lazy = true, value = AccessLevel.PRIVATE) private final AbstractDNSClient resolver = createResolver();
-    @Getter(lazy = true, value = AccessLevel.PRIVATE) private final AbstractDNSClient tcpResolver = createTCPResolver();
+    private final AbstractDnsClient resolver = createResolver();
+    private final AbstractDnsClient tcpResolver = createTCPResolver();
     private InetAddress upstreamServer;
     private int timeout = -1;
 
@@ -49,8 +48,8 @@ public class Resolver {
     }
 
     public void setTimeout(@IntRange(from = 0) int timeout){
-        if(resolver != null) getResolver().getDataSource().setTimeout(timeout);
-        if(tcpResolver != null) getTcpResolver().getDataSource().setTimeout(timeout);
+        resolver.getDataSource().setTimeout(timeout);
+        tcpResolver.getDataSource().setTimeout(timeout);
         this.timeout = timeout;
     }
 
@@ -97,23 +96,23 @@ public class Resolver {
 
     @NonNull
     public <D extends Data> ResolverResult<D> resolve(@NonNull Question question, boolean tcp, @IntRange(from = 1, to = 65535) int port) throws IOException {
-        DNSMessage dnsMessage;
+        DnsMessage dnsMessage;
         System.out.println("Sending question " + question + " to " + upstreamServer + ":" + port + " (tcp: " + tcp + ")");
-        AbstractDNSClient resolver = tcp ? getTcpResolver() : getResolver();
+        AbstractDnsClient resolver = tcp ? tcpResolver : this.resolver;
         dnsMessage = resolver.query(question, upstreamServer, port);
         return new ResolverResult<>(question, dnsMessage, null);
     }
 
     @NonNull
-    private AbstractDNSClient createResolver(){
-        DNSClient client = new DNSClient();
+    private AbstractDnsClient createResolver(){
+        DnsClient client = new DnsClient();
         if(timeout != -1)client.getDataSource().setTimeout(timeout);
         return client;
     }
 
     @NonNull
-    private AbstractDNSClient createTCPResolver(){
-        DNSClient client = new DNSClient();
+    private AbstractDnsClient createTCPResolver(){
+        DnsClient client = new DnsClient();
         client.setDataSource(new TCPDataSource());
         if(timeout != -1)client.getDataSource().setTimeout(timeout);
         return client;

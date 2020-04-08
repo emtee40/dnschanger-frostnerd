@@ -1,5 +1,6 @@
 package com.frostnerd.dnschanger.util;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Notification;
@@ -11,6 +12,7 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.graphics.drawable.Icon;
@@ -22,6 +24,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import android.util.Base64;
@@ -45,6 +48,9 @@ import com.frostnerd.general.Utils;
 import com.frostnerd.networking.NetworkUtil;
 
 
+import org.minidns.record.Data;
+import org.minidns.record.Record;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -55,8 +61,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import de.measite.minidns.Record;
-import de.measite.minidns.record.Data;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
@@ -298,8 +302,12 @@ public final class Util {
             PersistableBundle extras = new PersistableBundle();
             extras.putBoolean("initial", handleInitialState);
             JobScheduler scheduler = Utils.requireNonNull((JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE));
-            scheduler.schedule(new JobInfo.Builder(0, new ComponentName(context, ConnectivityJobAPI21.class)).setPersisted(true)
-                    .setRequiresCharging(false).setMinimumLatency(0).setOverrideDeadline(0).setExtras(extras).build());
+            JobInfo.Builder infoBuilder = new JobInfo.Builder(0, new ComponentName(context, ConnectivityJobAPI21.class))
+                    .setRequiresCharging(false).setMinimumLatency(0).setOverrideDeadline(0).setExtras(extras);
+            if(ContextCompat.checkSelfPermission(context, Manifest.permission.RECEIVE_BOOT_COMPLETED) == PackageManager.PERMISSION_GRANTED) {
+                infoBuilder.setPersisted(true);
+            }
+            scheduler.schedule(infoBuilder.build());
         } else {
             LogFactory.writeMessage(context, LOG_TAG, "Starting Service (Util below 21)");
             context.startService(new Intent(context, ConnectivityBackgroundService.class).putExtra("initial", handleInitialState));

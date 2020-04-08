@@ -1,15 +1,15 @@
 package com.frostnerd.dnschanger.util.dnsquery;
 
+import org.minidns.MiniDnsException;
+import org.minidns.dnsmessage.DnsMessage;
+import org.minidns.dnsmessage.Question;
+import org.minidns.dnssec.DnssecResultNotAuthenticException;
+import org.minidns.dnssec.UnverifiedReason;
+import org.minidns.hla.ResolutionUnsuccessfulException;
+import org.minidns.record.Data;
+
 import java.util.Collections;
 import java.util.Set;
-
-import de.measite.minidns.DNSMessage;
-import de.measite.minidns.MiniDNSException;
-import de.measite.minidns.Question;
-import de.measite.minidns.dnssec.DNSSECResultNotAuthenticException;
-import de.measite.minidns.dnssec.UnverifiedReason;
-import de.measite.minidns.hla.ResolutionUnsuccessfulException;
-import de.measite.minidns.record.Data;
 
 /*
   Modified by Daniel Wolf (frostnerd.com)
@@ -19,15 +19,15 @@ import de.measite.minidns.record.Data;
  */
 public class ResolverResult<D extends Data> {
     private final Question question;
-    private final DNSMessage.RESPONSE_CODE responseCode;
+    private final DnsMessage.RESPONSE_CODE responseCode;
     private final Set<D> data;
     private final boolean isAuthenticData;
     private final Set<UnverifiedReason> unverifiedReasons;
-    private final DNSMessage dnsMessage;
+    private final DnsMessage dnsMessage;
 
-    ResolverResult(Question question , DNSMessage answer, Set<UnverifiedReason> unverifiedReasons) throws MiniDNSException.NullResultException {
+    ResolverResult(Question question , DnsMessage answer, Set<UnverifiedReason> unverifiedReasons) throws MiniDnsException.NullResultException {
         if (answer == null) {
-            throw new MiniDNSException.NullResultException(question.asMessageBuilder().build());
+            throw new MiniDnsException.NullResultException(question.asMessageBuilder().build());
         }
         this.dnsMessage = answer;
         this.question = question;
@@ -49,12 +49,12 @@ public class ResolverResult<D extends Data> {
         }
     }
 
-    public DNSMessage getDnsMessage() {
+    public DnsMessage getDnsMessage() {
         return dnsMessage;
     }
 
     public boolean wasSuccessful() {
-        return responseCode == DNSMessage.RESPONSE_CODE.NO_ERROR;
+        return responseCode == DnsMessage.RESPONSE_CODE.NO_ERROR;
     }
 
     public Set<D> getAnswers() {
@@ -66,7 +66,7 @@ public class ResolverResult<D extends Data> {
         return data;
     }
 
-    public DNSMessage.RESPONSE_CODE getResponseCode() {
+    public DnsMessage.RESPONSE_CODE getResponseCode() {
         return responseCode;
     }
 
@@ -101,16 +101,16 @@ public class ResolverResult<D extends Data> {
         return resolutionUnsuccessfulException;
     }
 
-    private DNSSECResultNotAuthenticException dnssecResultNotAuthenticException;
+    private DnssecResultNotAuthenticException dnssecResultNotAuthenticException;
 
-    public DNSSECResultNotAuthenticException getDnssecResultNotAuthenticException() {
+    public DnssecResultNotAuthenticException getDnssecResultNotAuthenticException() {
         if (!wasSuccessful())
             return null;
         if (isAuthenticData)
             return null;
 
         if (dnssecResultNotAuthenticException == null) {
-            dnssecResultNotAuthenticException = DNSSECResultNotAuthenticException.from(getUnverifiedReasons());
+            dnssecResultNotAuthenticException = DnssecResultNotAuthenticException.from(getUnverifiedReasons());
         }
 
         return dnssecResultNotAuthenticException;

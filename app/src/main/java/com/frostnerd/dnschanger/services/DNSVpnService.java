@@ -96,13 +96,14 @@ public class DNSVpnService extends VpnService {
         stateRequestReceiver = null;
         LogFactory.writeMessage(this, LOG_TAG, "Variables cleared");
         if(stopSelf){
-            stopForeground(true);
+            stopForeground(false);
             stopSelf();
         }
     }
 
     public void updateNotification() { //Well, this method is a mess.
         if(!serviceRunning)return;
+        if(preferences == null) preferences = Preferences.getInstance(this);
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Updating notification");
         initNotification();
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O && !preferences.getBoolean( "setting_show_notification",true)){
@@ -184,7 +185,7 @@ public class DNSVpnService extends VpnService {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 notificationBuilder.setBadgeIconType(NotificationCompat.BADGE_ICON_NONE);
             }
-            notificationBuilder.setPriority(NotificationCompat.PRIORITY_MIN);
+            notificationBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
             notificationBuilder.addAction(new NotificationCompat.Action(R.drawable.ic_stat_pause, getString(R.string.action_pause),null));
             notificationBuilder.addAction(new NotificationCompat.Action(R.drawable.ic_stat_stop, getString(R.string.action_stop),null));
             notificationBuilder.setColorized(false);

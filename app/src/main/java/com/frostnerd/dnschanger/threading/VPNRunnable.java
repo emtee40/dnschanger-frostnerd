@@ -4,7 +4,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
@@ -234,26 +233,34 @@ public class VPNRunnable implements Runnable {
                 addDNSServer(pair.getAddress(), advanced, pair.isIpv6());
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            try{
-                if(whitelistMode){
-                    for(String s: vpnApps){
-                        if(s.equals("com.android.vending"))continue;
+            if (whitelistMode) {
+                for (String s : vpnApps) {
+                    if (s.equals("com.android.vending")) continue;
+                    try {
                         builder = builder.addAllowedApplication(s);
-                    }
-                }else{
-                    builder = builder.addDisallowedApplication("com.android.vending");
-                    builder.addDisallowedApplication(service.getPackageName());
-                    for(String s: vpnApps){
-                        if(s.equals("com.android.vending"))continue;
-                        builder = builder.addDisallowedApplication(s);
+                    } catch (Exception ignored) {
                     }
                 }
-            }catch (PackageManager.NameNotFoundException ignored){
-
+            } else {
+                try {
+                    builder = builder.addDisallowedApplication("com.android.vending");
+                } catch (Exception ignored) {
+                }
+                try {
+                    builder.addDisallowedApplication(service.getPackageName());
+                } catch (Exception ignored) {
+                }
+                for (String s : vpnApps) {
+                    if (s.equals("com.android.vending")) continue;
+                    try {
+                        builder = builder.addDisallowedApplication(s);
+                    } catch (Exception ignored) {
+                    }
+                }
             }
         }
         String release = Build.VERSION.RELEASE;
-        if(Build.VERSION.SDK_INT != 19 || release.startsWith("4.4.2") || release.startsWith("4.4.3") || release.startsWith("4.4.4") || release.startsWith("4.4.5") || release.startsWith("4.4.6")){
+        if (Build.VERSION.SDK_INT != 19 || release.startsWith("4.4.2") || release.startsWith("4.4.3") || release.startsWith("4.4.4") || release.startsWith("4.4.5") || release.startsWith("4.4.6")) {
             builder.setMtu(1500);
         }else builder.setMtu(1280);
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface created, not yet connected");

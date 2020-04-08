@@ -34,13 +34,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.frostnerd.design.dialogs.LoadingDialog;
+import com.frostnerd.dnschanger.DNSChanger;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
@@ -56,13 +55,15 @@ import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.general.Utils;
 import com.frostnerd.general.textfilers.InputCharacterFilter;
 import com.frostnerd.materialedittext.MaterialEditText;
+import com.google.android.material.textfield.TextInputLayout;
+
+import org.minidns.record.Data;
+import org.minidns.record.Record;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import de.measite.minidns.Record;
-import de.measite.minidns.record.Data;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
@@ -86,7 +87,7 @@ public class MainFragment extends Fragment {
     private Button startStopButton;
     private View running_indicator;
     private boolean vpnRunning, wasStartedWithTasker = false;
-    private MaterialEditText met_dns1, met_dns2;
+    private TextInputLayout met_dns1, met_dns2;
     public EditText dns1, dns2;
     private static final String LOG_TAG = "[MainActivity]";
     private TextView connectionText;
@@ -96,7 +97,7 @@ public class MainFragment extends Fragment {
     private final BroadcastReceiver serviceStateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            LogFactory.writeMessage(requireContext(), LOG_TAG, "Received ServiceState Answer", intent);
+            LogFactory.writeMessage(getContextWorkaround(), LOG_TAG, "Received ServiceState Answer", intent);
             vpnRunning = intent.getBooleanExtra("vpn_running",false);
             wasStartedWithTasker = intent.getBooleanExtra("started_with_tasker", false);
             setIndicatorState(intent.getBooleanExtra("vpn_running",false));
@@ -107,7 +108,7 @@ public class MainFragment extends Fragment {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sp, String s) {
             if(s.equals("everything_disabled")){
-                boolean value = Preferences.getInstance(requireContext()).getBoolean("everything_disabled", false);
+                boolean value = Preferences.getInstance(getContextWorkaround()).getBoolean("everything_disabled", false);
                 startStopButton.setEnabled(!value);
                 startStopButton.setClickable(!value);
                 startStopButton.setAlpha(value ? 0.50f : 1f);
@@ -118,7 +119,7 @@ public class MainFragment extends Fragment {
 
     private void setIndicatorState(boolean vpnRunning) {
         if(!isAdded() || isDetached()) return;
-        LogFactory.writeMessage(getContext(), LOG_TAG, "Changing IndicatorState to " + vpnRunning);
+        LogFactory.writeMessage(getContextWorkaround(), LOG_TAG, "Changing IndicatorState to " + vpnRunning);
         if (vpnRunning) {
             connectionText.setText(R.string.running);
             if(connectionImage != null)connectionImage.setImageResource(R.drawable.ic_thumb_up);
@@ -128,13 +129,13 @@ public class MainFragment extends Fragment {
             TypedValue typedValue = new TypedValue();
             Resources.Theme theme = requireContext().getTheme();
             theme.resolveAttribute(android.R.attr.windowBackground, typedValue, true);
-            if(PreferencesAccessor.isEverythingDisabled(requireContext()))  connectionText.setText(R.string.info_functionality_disabled);
+            if(PreferencesAccessor.isEverythingDisabled(getContextWorkaround()))  connectionText.setText(R.string.info_functionality_disabled);
             else connectionText.setText(R.string.not_running);
             if(connectionImage != null)connectionImage.setImageResource(R.drawable.ic_thumb_down);
             startStopButton.setText(R.string.start);
             running_indicator.setBackgroundColor(typedValue.data);
         }
-        LogFactory.writeMessage(requireContext(), LOG_TAG, "IndictorState set");
+        LogFactory.writeMessage(getContextWorkaround(), LOG_TAG, "IndictorState set");
     }
 
     @Nullable
@@ -158,13 +159,13 @@ public class MainFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        settingV6 = !PreferencesAccessor.isIPv4Enabled(requireContext()) || (PreferencesAccessor.isIPv6Enabled(requireContext()) && settingV6);
+        settingV6 = !PreferencesAccessor.isIPv4Enabled(getContextWorkaround()) || (PreferencesAccessor.isIPv6Enabled(getContextWorkaround()) && settingV6);
         setHasOptionsMenu(true);
         boolean vertical = getResources().getConfiguration().orientation == OrientationHelper.VERTICAL;
-        LogFactory.writeMessage(requireContext(), LOG_TAG, "Created Activity", Util.getActivity(this).getIntent());
-        LogFactory.writeMessage(requireContext(), LOG_TAG, "Setting ContentView");
-        met_dns1 = (MaterialEditText) findViewById(R.id.met_dns1);
-        met_dns2 = (MaterialEditText) findViewById(R.id.met_dns2);
+        LogFactory.writeMessage(getContextWorkaround(), LOG_TAG, "Created Activity", Util.getActivity(this).getIntent());
+        LogFactory.writeMessage(getContextWorkaround(), LOG_TAG, "Setting ContentView");
+        met_dns1 = (TextInputLayout) findViewById(R.id.met_dns1);
+        met_dns2 = (TextInputLayout) findViewById(R.id.met_dns2);
         dns1 = (EditText) findViewById(R.id.dns1);
         dns2 = (EditText) findViewById(R.id.dns2);
         connectionImage = vertical ? null : (ImageView)findViewById(R.id.connection_status_image);
@@ -172,7 +173,7 @@ public class MainFragment extends Fragment {
         running_indicator = findViewById(R.id.running_indicator);
         startStopButton = (Button) findViewById(R.id.startStopButton);
 
-        if(settingV6 || PreferencesAccessor.areCustomPortsEnabled(requireContext())){
+        if(settingV6 || PreferencesAccessor.areCustomPortsEnabled(getContextWorkaround())){
             dns1.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
             dns2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         }
@@ -180,9 +181,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View buttonView) {
                 if(isDetached() || !isAdded()) return;
-                Context _context = getContext();
-                if(_context == null) _context = buttonView.getContext();
-                final Context context = _context;
+                final Context context = getContextWorkaround(buttonView);
                 final Intent i = VpnService.prepare(context);
                 LogFactory.writeMessage(context, LOG_TAG, "Startbutton clicked. Configuring VPN if needed");
                 if (i != null){
@@ -228,13 +227,13 @@ public class MainFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(this.before.equalsIgnoreCase(s.toString()))return;
                 IPPortPair pair = Util.validateInput(s.toString(), settingV6, false,
-                        PreferencesAccessor.isLoopbackAllowed(requireContext()), 53);
+                        PreferencesAccessor.isLoopbackAllowed(getContextWorkaround()), 53);
                 if (pair == null || (pair.getPort() != 53 && !advancedMode)) {
-                    met_dns1.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
+                    met_dns1.setError(" ");
                 } else {
-                    met_dns1.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
-                    if (settingV6) PreferencesAccessor.Type.DNS1_V6.saveDNSPair(requireContext(), pair);
-                    else PreferencesAccessor.Type.DNS1.saveDNSPair(requireContext(), pair);
+                    met_dns1.setError(null);
+                    if (settingV6) PreferencesAccessor.Type.DNS1_V6.saveDNSPair(getContextWorkaround(), pair);
+                    else PreferencesAccessor.Type.DNS1.saveDNSPair(getContextWorkaround(), pair);
                     setEditTextLabel();
                 }
             }
@@ -255,13 +254,13 @@ public class MainFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(this.before.equalsIgnoreCase(s.toString()))return;
                 IPPortPair pair = Util.validateInput(s.toString(), settingV6, true,
-                        PreferencesAccessor.isLoopbackAllowed(requireContext()), 53);
+                        PreferencesAccessor.isLoopbackAllowed(getContextWorkaround()), 53);
                 if (pair == null || (pair != IPPortPair.getEmptyPair() && pair.getPort() != 53 && !advancedMode)) {
-                    met_dns2.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
+                    met_dns2.setError(" ");
                 } else {
-                    met_dns2.setIndicatorState(MaterialEditText.IndicatorState.UNDEFINED);
-                    if (settingV6) PreferencesAccessor.Type.DNS2_V6.saveDNSPair(requireContext(), pair);
-                    else PreferencesAccessor.Type.DNS2.saveDNSPair(requireContext(), pair);
+                    met_dns2.setError(null);
+                    if (settingV6) PreferencesAccessor.Type.DNS2_V6.saveDNSPair(getContextWorkaround(), pair);
+                    else PreferencesAccessor.Type.DNS2.saveDNSPair(getContextWorkaround(), pair);
                     setEditTextLabel();
                 }
             }
@@ -272,30 +271,30 @@ public class MainFragment extends Fragment {
             }
         });
         setEditTextLabel();
-        LogFactory.writeMessage(requireContext(), LOG_TAG, "Done with OnCreate");
+        LogFactory.writeMessage(getContextWorkaround(), LOG_TAG, "Done with OnCreate");
     }
 
     private void setEditTextLabel(){
         String label1 = getString(R.string.hint_dns1), label2 = getString(R.string.hint_dns2);
         if(settingV6){
             DNSEntry entry;
-            if((entry = PreferencesAccessor.Type.DNS1_V6.findMatchingDatabaseEntry(requireContext())) != null)
+            if((entry = PreferencesAccessor.Type.DNS1_V6.findMatchingDatabaseEntry(getContextWorkaround())) != null)
                 label1 += " (" + entry.getShortName() + ")";
-            if((entry = PreferencesAccessor.Type.DNS2_V6.findMatchingDatabaseEntry(requireContext())) != null)
+            if((entry = PreferencesAccessor.Type.DNS2_V6.findMatchingDatabaseEntry(getContextWorkaround())) != null)
                 label2 += " (" + entry.getShortName() + ")";
         }else{
             DNSEntry entry;
-            if((entry = PreferencesAccessor.Type.DNS1.findMatchingDatabaseEntry(requireContext())) != null)
+            if((entry = PreferencesAccessor.Type.DNS1.findMatchingDatabaseEntry(getContextWorkaround())) != null)
                 label1 += " (" + entry.getShortName() + ")";
-            if((entry = PreferencesAccessor.Type.DNS2.findMatchingDatabaseEntry(requireContext())) != null)
+            if((entry = PreferencesAccessor.Type.DNS2.findMatchingDatabaseEntry(getContextWorkaround())) != null)
                 label2 += " (" + entry.getShortName() + ")";
         }
-        met_dns1.setLabelText(label1);
-        met_dns2.setLabelText(label2);
+        met_dns1.setHint(label1);
+        met_dns2.setHint(label2);
     }
 
     private void setEditTextState(){
-        boolean customPorts = PreferencesAccessor.areCustomPortsEnabled(requireContext());
+        boolean customPorts = PreferencesAccessor.areCustomPortsEnabled(getContextWorkaround());
         if(settingV6 || customPorts){
             dns1.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
             dns2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
@@ -305,8 +304,8 @@ public class MainFragment extends Fragment {
                     Pattern.compile("[0-9.:]") : Pattern.compile("[0-9.]"));
             dns1.setFilters(new InputFilter[]{filter});
             dns2.setFilters(new InputFilter[]{filter});
-            IPPortPair p1 = PreferencesAccessor.Type.DNS1.getPair(requireContext()),
-                    p2 = PreferencesAccessor.Type.DNS2.getPair(requireContext());
+            IPPortPair p1 = PreferencesAccessor.Type.DNS1.getPair(getContextWorkaround()),
+                    p2 = PreferencesAccessor.Type.DNS2.getPair(getContextWorkaround());
             dns1.setText(p1.formatForTextfield(customPorts));
             dns2.setText(p2.formatForTextfield(customPorts));
         }else{
@@ -314,8 +313,8 @@ public class MainFragment extends Fragment {
                     Pattern.compile("[0-9:a-f\\[\\]]") : Pattern.compile("[0-9:a-f]"));
             dns1.setFilters(new InputFilter[]{filter});
             dns2.setFilters(new InputFilter[]{filter});
-            IPPortPair p1 = PreferencesAccessor.Type.DNS1_V6.getPair(requireContext()),
-                    p2 = PreferencesAccessor.Type.DNS2_V6.getPair(requireContext());
+            IPPortPair p1 = PreferencesAccessor.Type.DNS1_V6.getPair(getContextWorkaround()),
+                    p2 = PreferencesAccessor.Type.DNS2_V6.getPair(getContextWorkaround());
             dns1.setText(p1.formatForTextfield(customPorts));
             dns2.setText(p2.formatForTextfield(customPorts));
         }
@@ -328,13 +327,13 @@ public class MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        advancedMode = PreferencesAccessor.isRunningInAdvancedMode(requireContext());
-        Preferences.getDefaultPreferences(requireContext()).registerOnSharedPreferenceChangeListener(preferenceChangeListener);
-        settingV6 = !PreferencesAccessor.isIPv4Enabled(requireContext()) || (PreferencesAccessor.isIPv6Enabled(requireContext()) && settingV6);
-        LogFactory.writeMessage(requireContext(), LOG_TAG, "Got OnResume");
-        LogFactory.writeMessage(requireContext(), LOG_TAG, "Sending ServiceStateRequest as broadcast");
-        vpnRunning = Util.isServiceRunning(requireContext());
-        if(PreferencesAccessor.isEverythingDisabled(requireContext())){
+        advancedMode = PreferencesAccessor.isRunningInAdvancedMode(getContextWorkaround());
+        Preferences.getDefaultPreferences(getContextWorkaround()).registerOnSharedPreferenceChangeListener(preferenceChangeListener);
+        settingV6 = !PreferencesAccessor.isIPv4Enabled(getContextWorkaround()) || (PreferencesAccessor.isIPv6Enabled(getContextWorkaround()) && settingV6);
+        LogFactory.writeMessage(getContextWorkaround(), LOG_TAG, "Got OnResume");
+        LogFactory.writeMessage(getContextWorkaround(), LOG_TAG, "Sending ServiceStateRequest as broadcast");
+        vpnRunning = Util.isServiceRunning(getContextWorkaround());
+        if(PreferencesAccessor.isEverythingDisabled(getContextWorkaround())){
             startStopButton.setEnabled(false);
             startStopButton.setClickable(false);
             startStopButton.setAlpha(0.50f);
@@ -345,10 +344,10 @@ public class MainFragment extends Fragment {
             startStopButton.setAlpha(1f);
             setIndicatorState(vpnRunning);
         }
-        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(serviceStateReceiver, new IntentFilter(Util.BROADCAST_SERVICE_STATUS_CHANGE));
-        LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(new Intent(Util.BROADCAST_SERVICE_STATE_REQUEST));
+        LocalBroadcastManager.getInstance(getContextWorkaround()).registerReceiver(serviceStateReceiver, new IntentFilter(Util.BROADCAST_SERVICE_STATUS_CHANGE));
+        LocalBroadcastManager.getInstance(getContextWorkaround()).sendBroadcast(new Intent(Util.BROADCAST_SERVICE_STATE_REQUEST));
         setEditTextState();
-        Utils.requireNonNull(((AppCompatActivity)requireContext()).getSupportActionBar()).setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
+        Utils.requireNonNull(((AppCompatActivity)getContextWorkaround()).getSupportActionBar()).setSubtitle(getString(R.string.subtitle_configuring).replace("[[x]]",settingV6 ? "Ipv6" : "Ipv4"));
         Utils.requireNonNull(Util.getActivity(this)).invalidateOptionsMenu();
         Utils.requireNonNull(Util.getActivity(this)).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
@@ -356,15 +355,14 @@ public class MainFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        LogFactory.writeMessage(requireContext(), LOG_TAG, "Got OnPause");
-        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(serviceStateReceiver);
-        Preferences.getDefaultPreferences(requireContext()).unregisterOnSharedPreferenceChangeListener(preferenceChangeListener);
+        LogFactory.writeMessage(getContextWorkaround(), LOG_TAG, "Got OnPause");
+        LocalBroadcastManager.getInstance(getContextWorkaround()).unregisterReceiver(serviceStateReceiver);
+        Preferences.getDefaultPreferences(getContextWorkaround()).unregisterOnSharedPreferenceChangeListener(preferenceChangeListener);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        final Context context = getContext();
-        if(context == null) return;
+        final Context context = getContextWorkaround();
         LogFactory.writeMessage(context, LOG_TAG, "Got OnActivityResult" ,data);
         if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
             if (!vpnRunning){
@@ -474,9 +472,9 @@ public class MainFragment extends Fragment {
 
     private void stopVpn() {
         Intent i;
-        LogFactory.writeMessage(requireContext(), LOG_TAG, "Stopping VPN",
-                i = DNSVpnService.getDestroyIntent(requireContext()));
-        requireContext().startService(i);
+        LogFactory.writeMessage(getContextWorkaround(), LOG_TAG, "Stopping VPN",
+                i = DNSVpnService.getDestroyIntent(getContextWorkaround()));
+        getContextWorkaround().startService(i);
         vpnRunning = false;
         setIndicatorState(false);
     }
@@ -484,7 +482,20 @@ public class MainFragment extends Fragment {
     public void toggleVPN(){
         if (vpnRunning){
             stopVpn();
-        }else startVpn(requireContext());
+        }else startVpn(getContextWorkaround());
+    }
+
+    private Context getContextWorkaround() {
+        Context ctx = getContext();
+        if(ctx == null) return DNSChanger.context;
+        return ctx;
+    }
+
+    private Context getContextWorkaround(@NonNull View view) {
+        Context ctx = getContext();
+        if(ctx == null) ctx = view.getContext();
+        if(ctx == null) return DNSChanger.context;
+        return ctx;
     }
 
     public boolean toggleCurrentInputFocus(){
@@ -497,10 +508,10 @@ public class MainFragment extends Fragment {
     }
 
     public void checkDNSReachability(final DNSReachabilityCallback callback){
-        List<IPPortPair> servers = PreferencesAccessor.getAllDNSPairs(requireContext(), true);
+        List<IPPortPair> servers = PreferencesAccessor.getAllDNSPairs(getContextWorkaround(), true);
         callback.setServers(servers.size());
         for(final IPPortPair pair: servers){
-            DNSQueryUtil.runAsyncDNSQuery(pair, "frostnerd.com", PreferencesAccessor.sendDNSOverTCP(requireContext()), Record.TYPE.A,
+            DNSQueryUtil.runAsyncDNSQuery(pair, "frostnerd.com", PreferencesAccessor.sendDNSOverTCP(getContextWorkaround()), Record.TYPE.A,
                     Record.CLASS.IN, new Util.DNSQueryResultListener() {
                 @Override
                 public void onSuccess(List<Record<? extends Data>> response) {
@@ -518,7 +529,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu,inflater);
-        inflater.inflate(PreferencesAccessor.isIPv6Enabled(requireContext()) ? (PreferencesAccessor.isIPv4Enabled(requireContext()) ? ((settingV6 ? R.menu.menu_main_v6 : R.menu.menu_main)) : R.menu.menu_main_no_ipv6) : R.menu.menu_main_no_ipv6,menu);
+        inflater.inflate(PreferencesAccessor.isIPv6Enabled(getContextWorkaround()) ? (PreferencesAccessor.isIPv4Enabled(getContextWorkaround()) ? ((settingV6 ? R.menu.menu_main_v6 : R.menu.menu_main)) : R.menu.menu_main_no_ipv6) : R.menu.menu_main_no_ipv6,menu);
     }
 
     @Override

@@ -61,7 +61,9 @@ public class NetworkCheckHandle {
         connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             for (ConnectivityManager.NetworkCallback previousCallback : previousCallbacks) {
-                connectivityManager.unregisterNetworkCallback(previousCallback);
+                try {
+                    connectivityManager.unregisterNetworkCallback(previousCallback);
+                } catch (Exception ignored) {}
             }
             NetworkRequest.Builder builder = new NetworkRequest.Builder();
             try {

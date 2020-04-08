@@ -28,11 +28,12 @@ import com.frostnerd.dnschanger.util.dnsquery.ResolverResult;
 import com.frostnerd.materialedittext.MaterialEditText;
 import com.frostnerd.networking.NetworkUtil;
 
+import org.minidns.record.Data;
+import org.minidns.record.Record;
+
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 
-import de.measite.minidns.Record;
-import de.measite.minidns.record.Data;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
@@ -156,7 +157,7 @@ public class DnsQueryFragment extends Fragment {
                             }
                         });
                     }
-                } catch (final IOException e) {
+                } catch (final Exception e) {
                     e.printStackTrace();
                     if(isAdded())
                         Util.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
@@ -170,7 +171,7 @@ public class DnsQueryFragment extends Fragment {
         }.start();
     }
 
-    private void handleException(IOException e){
+    private void handleException(Exception e){
         showingError = true;
         progress.setVisibility(View.INVISIBLE);
         String errorMSG = e.getMessage();
