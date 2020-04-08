@@ -351,4 +351,6 @@
     <string name="summary_vpndialog_missing">Your device seems to be missing the capabilities to run a VPN. As this app fully relies on this feature you sadly won\'t be able to use it.</string>
 
     <string name="message_user_restricted">Can\'t start VPN, your users seems to be restricted.</string>
+
+    <string name="nebulo_no_browser">You don\'t seem to have a browser or the store installed.</string>
 </resources>
