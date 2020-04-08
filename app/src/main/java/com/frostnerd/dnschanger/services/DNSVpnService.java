@@ -96,7 +96,7 @@ public class DNSVpnService extends VpnService {
         stateRequestReceiver = null;
         LogFactory.writeMessage(this, LOG_TAG, "Variables cleared");
         if(stopSelf){
-            stopForeground(true);
+            stopForeground(false);
             stopSelf();
         }
     }
@@ -185,7 +185,7 @@ public class DNSVpnService extends VpnService {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 notificationBuilder.setBadgeIconType(NotificationCompat.BADGE_ICON_NONE);
             }
-            notificationBuilder.setPriority(NotificationCompat.PRIORITY_MIN);
+            notificationBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
             notificationBuilder.addAction(new NotificationCompat.Action(R.drawable.ic_stat_pause, getString(R.string.action_pause),null));
             notificationBuilder.addAction(new NotificationCompat.Action(R.drawable.ic_stat_stop, getString(R.string.action_stop),null));
             notificationBuilder.setColorized(false);
