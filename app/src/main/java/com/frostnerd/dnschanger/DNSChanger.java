@@ -1,6 +1,7 @@
 package com.frostnerd.dnschanger;
 
 import android.app.Application;
+import android.content.Context;
 import android.database.sqlite.SQLiteException;
 
 import androidx.annotation.Keep;
@@ -60,6 +61,8 @@ public class DNSChanger extends Application {
     @Keep private DatabaseHelper helper;
     private Preferences mPreferences;
     private Boolean sentryInitialized = false, sentryInitializing = false, sentryDisabled = false;
+    // Sometimes you just have to say f it. Don't ask me why, but Context is sometimes null in MainFragment
+    public static Context context;
 
     private boolean showErrorDialog(Throwable exception) {
         if(exception instanceof SQLiteException || (exception.getCause() != null && exception instanceof SQLiteException))return true;
@@ -69,6 +72,7 @@ public class DNSChanger extends Application {
     @Override
     public void onCreate() {
         setTheme(ThemeHandler.getAppTheme(this));
+        context = this;
         defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(customHandler);
         super.onCreate();
