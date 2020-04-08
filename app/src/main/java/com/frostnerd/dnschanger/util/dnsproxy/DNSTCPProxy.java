@@ -347,7 +347,7 @@ public class DNSTCPProxy extends DNSProxy{
         if(queryLogger != null && queryLogger.logUpstreamAnswers()){
             try {
                 queryLogger.logUpstreamAnswer(new DnsMessage(payloadData));
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
