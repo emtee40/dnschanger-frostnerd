@@ -103,6 +103,7 @@ public class DNSVpnService extends VpnService {
 
     public void updateNotification() { //Well, this method is a mess.
         if(!serviceRunning)return;
+        if(preferences == null) preferences = Preferences.getInstance(this);
         LogFactory.writeMessage(this, new String[]{LOG_TAG, "[NOTIFICATION]"}, "Updating notification");
         initNotification();
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O && !preferences.getBoolean( "setting_show_notification",true)){
