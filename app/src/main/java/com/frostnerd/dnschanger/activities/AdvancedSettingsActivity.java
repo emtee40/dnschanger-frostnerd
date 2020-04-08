@@ -12,7 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.appcompat.app.AlertDialog;
+import androidx.preference.EditTextPreference;
+
+import android.text.InputType;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 import com.frostnerd.database.orm.Entity;
 import com.frostnerd.database.orm.parser.columns.Column;
@@ -125,7 +129,15 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
         });
-
+        findPreference("tcp_timeout").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                try {
+                    return Integer.parseInt(newValue.toString()) > 0;
+                } catch (Exception ignored) {}
+                return false;
+            }
+        });
         setUndoRuleImportStatus();
     }
 

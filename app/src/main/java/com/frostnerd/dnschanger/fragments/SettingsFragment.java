@@ -473,22 +473,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                         return true;
                     }
                 });
-        ((EditTextPreference)findPreference("tcp_timeout")).setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
-            @Override
-            public void onBindEditText(@NonNull EditText editText) {
-                editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-            }
-        });
-        findPreference("tcp_timeout").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                try {
-                    return Integer.parseInt(newValue.toString()) > 0;
-                } catch (Exception ignored) {}
-                return false;
-            }
-        });
-
     }
 
     private final Preference.OnPreferenceChangeListener autoSettingsChanged = new Preference.OnPreferenceChangeListener() {
