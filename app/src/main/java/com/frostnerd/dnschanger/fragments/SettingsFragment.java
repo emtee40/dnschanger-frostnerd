@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+import androidx.preference.EditTextPreference;
 import androidx.preference.SwitchPreference;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
@@ -28,9 +29,13 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.appcompat.widget.SearchView;
+
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.EditText;
+
 import com.frostnerd.design.DesignUtil;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.DNSChanger;
@@ -468,6 +473,21 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                         return true;
                     }
                 });
+        ((EditTextPreference)findPreference("tcp_timeout")).setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
+            @Override
+            public void onBindEditText(@NonNull EditText editText) {
+                editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+            }
+        });
+        findPreference("tcp_timeout").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                try {
+                    return Integer.parseInt(newValue.toString()) > 0;
+                } catch (Exception ignored) {}
+                return false;
+            }
+        });
 
     }
 
