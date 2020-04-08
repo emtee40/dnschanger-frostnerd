@@ -30,7 +30,7 @@ public class Resolver {
     private InetAddress upstreamServer;
     private int timeout = -1;
 
-    public Resolver(@NonNull String upstreamServer, @IntRange(from = 0) int timeout){
+    public Resolver(@NonNull String upstreamServer, @IntRange(from = 1) int timeout){
         setUpstreamAddress(upstreamServer);
         setTimeout(timeout);
     }
@@ -106,7 +106,7 @@ public class Resolver {
     @NonNull
     private AbstractDnsClient createResolver(){
         DnsClient client = new DnsClient();
-        if(timeout != -1)client.getDataSource().setTimeout(timeout);
+        if(timeout > 0)client.getDataSource().setTimeout(timeout);
         return client;
     }
 
@@ -114,7 +114,7 @@ public class Resolver {
     private AbstractDnsClient createTCPResolver(){
         DnsClient client = new DnsClient();
         client.setDataSource(new TCPDataSource());
-        if(timeout != -1)client.getDataSource().setTimeout(timeout);
+        if(timeout > 0)client.getDataSource().setTimeout(timeout);
         return client;
     }
 
