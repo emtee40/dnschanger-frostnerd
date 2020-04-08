@@ -76,7 +76,7 @@
     <string name="title_pin_app">Proteggi l\'App</string>
     <string name="summary_pin_app">Richiede il pin  all\'avvio dell\'app</string>
     <string name="title_category_pin">Protezione pin</string>
-    <string name="summary_version">Versione [[version]] ([[code]])\n\n© Daniel Wolf 2017\nTutti i diritti sono riservati\n\nTraduzione brasiliana a cura di Lukinhas\nTraduzione cinese a cura di Majida Whale\nTraduzione italiana a cura di Massimo Castiglia</string>
+    <string name="summary_version">Versione [[version]] ([[code]])\n\n© Daniel Wolf 2020\nTutti i diritti sono riservati\n\nTraduzione brasiliana a cura di Lukinhas\nTraduzione cinese a cura di Majida Whale\nTraduzione italiana a cura di Massimo Castiglia</string>
     <string name="usage_stats_info_text">Per mettere automaticamente in pausa DNS Changer, quando una determinata app è in primo piano, questa app ha bisogno di accedere ai dati di utilizzo. \n\nNella finestra successiva, per favore, concedi a DNS Changer l\'accesso a questi dati altrimenti, non potrai utilizzare questa impostazione. \n\n\nNon vengono richiesti dati tranne che per le applicazioni attualmente in esecuzione. Nessuno dei tuoi dati viene salvato o trasmesso.\nIl codice sorgente è disponibile all\'indirizzo https://git.frostnerd.com/PublicAndroidApps/DnsChanger se vuoi assicurartene</string>
     <string name="title_remove_usage_data">Rimuovi l\'accesso ai dati di utilizzo</string>
     <string name="summary_remove_usage_data">L\'accesso ai dati di utilizzo è stato concesso. Tocca qui per revocare questa autorizzazione.</string>
