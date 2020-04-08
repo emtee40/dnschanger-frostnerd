@@ -15,11 +15,12 @@ import com.frostnerd.lifecycle.BaseAdapter;
 import com.frostnerd.lifecycle.BaseViewHolder;
 
 
+import org.minidns.record.Data;
+import org.minidns.record.Record;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import de.measite.minidns.Record;
-import de.measite.minidns.record.Data;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)

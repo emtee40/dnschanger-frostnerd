@@ -45,6 +45,9 @@ import com.frostnerd.general.Utils;
 import com.frostnerd.networking.NetworkUtil;
 
 
+import org.minidns.record.Data;
+import org.minidns.record.Record;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -55,8 +58,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import de.measite.minidns.Record;
-import de.measite.minidns.record.Data;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)

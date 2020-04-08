@@ -6,12 +6,13 @@ import androidx.annotation.Nullable;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
 
+import org.minidns.dnsmessage.DnsMessage;
+import org.minidns.record.Data;
+import org.minidns.record.Record;
+
 import java.util.LinkedList;
 import java.util.List;
 
-import de.measite.minidns.DNSMessage;
-import de.measite.minidns.Record;
-import de.measite.minidns.record.Data;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
@@ -48,7 +49,7 @@ public class QueryLogger {
                 "," + ipv6 + "," + time + ")VALUES(?,?,?)";
     }
 
-    public void logQuery(DNSMessage dnsMessage, boolean ipv6){
+    public void logQuery(DnsMessage dnsMessage, boolean ipv6){
         helper.getWritableDatabase().execSQL(insertStatement, new Object[]{dnsMessage.getQuestion().name, ipv6, System.currentTimeMillis()});
         if(newQueryLogged != null)newQueryLogged.run();
         if(logUpstreamAnswers){
@@ -59,7 +60,7 @@ public class QueryLogger {
         }
     }
 
-    public void logUpstreamAnswer(DNSMessage dnsMessage){
+    public void logUpstreamAnswer(DnsMessage dnsMessage){
         if(!logUpstreamAnswers || dnsMessage.answerSection.size() == 0)return;
         WaitingQuery waitingQuery;
         for (int i = 0; i < waitingQueries.size(); i++) {
@@ -82,7 +83,7 @@ public class QueryLogger {
     }
 
     @Nullable
-    private String getAnswer(@NonNull DNSMessage message){
+    private String getAnswer(@NonNull DnsMessage message){
         if(message.answerSection.size() == 0)return null;
         for (Record<? extends Data> record : message.answerSection) {
             if(record.type == Record.TYPE.A || record.type == Record.TYPE.AAAA) return record.payloadData.toString();

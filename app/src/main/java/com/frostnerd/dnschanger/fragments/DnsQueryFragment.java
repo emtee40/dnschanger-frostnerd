@@ -28,11 +28,12 @@ import com.frostnerd.dnschanger.util.dnsquery.ResolverResult;
 import com.frostnerd.materialedittext.MaterialEditText;
 import com.frostnerd.networking.NetworkUtil;
 
+import org.minidns.record.Data;
+import org.minidns.record.Record;
+
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 
-import de.measite.minidns.Record;
-import de.measite.minidns.record.Data;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)

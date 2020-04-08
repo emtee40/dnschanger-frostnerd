@@ -11,8 +11,6 @@ import com.frostnerd.dnschanger.util.Util;
 
 import java.io.Serializable;
 
-import lombok.AccessLevel;
-import lombok.Getter;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
@@ -42,7 +40,7 @@ public class IPPortPair extends MultitonEntity implements Serializable{
     @Named(name = "Ipv6")
     private boolean ipv6;
     @Ignore
-    @Getter(lazy = true, value = AccessLevel.PUBLIC) private static final IPPortPair emptyPair = createEmptyPair();
+    static final IPPortPair emptyPair = new IPPortPair("", Integer.MIN_VALUE + 1, false);
     @RowID
     private long id;
     public static final IPPortPair INVALID = new IPPortPair("", Integer.MIN_VALUE, false);
@@ -123,12 +121,12 @@ public class IPPortPair extends MultitonEntity implements Serializable{
         }
     }
 
-    private static IPPortPair createEmptyPair(){
-        return new IPPortPair("", Integer.MIN_VALUE + 1, false);
+    public static IPPortPair getEmptyPair() {
+        return emptyPair;
     }
 
     public boolean isEmpty(){
-        return getAddress().equals("") || this == getEmptyPair();
+        return getAddress().equals("") || this == emptyPair;
     }
 
 }

@@ -13,8 +13,6 @@ import com.frostnerd.dnschanger.database.serializers.IPPortSerializer;
 import java.util.HashSet;
 import java.util.Set;
 
-import lombok.NoArgsConstructor;
-
 /**
  * Copyright Daniel Wolf 2017
  * All rights reserved.
@@ -24,7 +22,6 @@ import lombok.NoArgsConstructor;
  * <p>
  * development@frostnerd.com
  */
-@NoArgsConstructor
 @Table(name = "DNSTLSConfiguration")
 public class DNSTLSConfiguration extends MultitonEntity {
     @Named(name = "id")
@@ -39,6 +36,10 @@ public class DNSTLSConfiguration extends MultitonEntity {
     @NonNull
     @Named(name = "affected_servers")
     private HashSet<IPPortPair> affectedServers;
+
+    public DNSTLSConfiguration() {
+        
+    }
 
     public DNSTLSConfiguration(int port, @NonNull HashSet<IPPortPair> affectedServers) {
         this(port, affectedServers, null);
