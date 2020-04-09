@@ -24,7 +24,7 @@
         <item name="dialogTheme">@style/DialogTheme</item>
         <item name="alertDialogTheme">@style/DialogTheme</item>
         <item name="preferenceTheme">@style/PreferenceTheme</item>
-
+        <item name="roundedCornerBackground">@drawable/main_round_corners_default</item>
     </style>
 
     <style name="AppTheme_Dark" parent="Theme.AppCompat.DayNight.DarkActionBar">
@@ -50,6 +50,8 @@
         <item name="alertDialogTheme">@style/DialogTheme_Dark</item>
         <item name="preferenceTheme">@style/PreferenceTheme_Dark</item>
 
+        <item name="roundedCornerBackground">@drawable/main_round_corners_dark</item>
+
     </style>
 
     <style name="AppTheme_Mono" parent="Theme.AppCompat.DayNight.DarkActionBar">
@@ -74,6 +76,8 @@
         <item name="dialogTheme">@style/DialogTheme_Mono</item>
         <item name="alertDialogTheme">@style/DialogTheme_Mono</item>
         <item name="preferenceTheme">@style/PreferenceTheme_Mono</item>
+
+        <item name="roundedCornerBackground">@drawable/main_round_corners_mono</item>
     </style>
 
     <style name="AppTheme_True_Black" parent="Theme.AppCompat.DayNight.DarkActionBar">
@@ -98,6 +102,8 @@
         <item name="dialogTheme">@style/DialogTheme_True_Black</item>
         <item name="alertDialogTheme">@style/DialogTheme_True_Black</item>
         <item name="preferenceTheme">@style/PreferenceTheme_True_Black</item>
+
+        <item name="roundedCornerBackground">@drawable/main_round_corners_true_black</item>
     </style>
 
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">

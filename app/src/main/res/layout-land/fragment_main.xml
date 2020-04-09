@@ -75,7 +75,7 @@
 
             <LinearLayout
                 android:id="@+id/default_dns_view"
-                android:background="@drawable/main_round_corners"
+                android:background="?attr/roundedCornerBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
@@ -163,7 +163,7 @@
 
         <Button
             android:id="@+id/startStopButton"
-            android:background="@drawable/main_round_corners"
+            android:background="?attr/roundedCornerBackground"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

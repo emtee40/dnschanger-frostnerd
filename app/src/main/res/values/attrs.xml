@@ -5,4 +5,5 @@
     <attr name="navDrawableColor" format="color"/>
 
     <attr name="foregroundElementColor" format="color"/>
+    <attr name="roundedCornerBackground" format="reference" />
 </resources>
