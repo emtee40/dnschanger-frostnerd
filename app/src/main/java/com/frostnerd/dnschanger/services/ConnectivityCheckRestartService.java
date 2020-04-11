@@ -51,6 +51,8 @@ public class ConnectivityCheckRestartService extends Service {
         notificationBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
         startForeground(1286, notificationBuilder.build());
         LogFactory.writeMessage(this, LOG_TAG, "Service created.");
+        stopForeground(false);
+        ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancel(1286);
     }
 
     @Override

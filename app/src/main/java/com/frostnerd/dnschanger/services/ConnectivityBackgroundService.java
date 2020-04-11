@@ -69,6 +69,8 @@ public class ConnectivityBackgroundService extends Service {
                 Util.startForegroundService(ConnectivityBackgroundService.this, new Intent(ConnectivityBackgroundService.this, ConnectivityCheckRestartService.class));
             }
         }, 45000);
+        stopForeground(false);
+        ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancel(1285);
     }
 
     @Override
