@@ -30,6 +30,7 @@
                 android:layout_height="wrap_content"
                 android:textColorHint="?android:attr/textColorSecondary"
                 app:errorEnabled="true"
+                android:hint="@string/hint_dns1"
                 app:startIconDrawable="@drawable/ic_language_24dp"
                 app:startIconTint="?attr/foregroundElementColor">
 
@@ -38,7 +39,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:digits="0123456789."
-                    android:hint="@string/hint_dns1"
                     android:imeOptions="actionNext"
                     android:inputType="numberDecimal"
                     android:nextFocusDown="@+id/dns2"
@@ -54,6 +54,7 @@
                 android:layout_height="wrap_content"
                 android:textColorHint="?android:attr/textColorSecondary"
                 app:errorEnabled="true"
+                android:hint="@string/hint_dns2"
                 app:hintTextColor="?attr/foregroundElementColor"
                 app:startIconDrawable="@drawable/ic_language_24dp"
                 app:startIconTint="?attr/foregroundElementColor">
@@ -63,7 +64,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:digits="0123456789."
-                    android:hint="@string/hint_dns2"
                     android:imeOptions="actionDone"
                     android:inputType="numberDecimal"
                     android:nextFocusUp="@id/dns1"
