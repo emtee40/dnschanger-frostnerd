@@ -284,6 +284,10 @@ public final class Util {
 
     public static void runBackgroundConnectivityCheck(Context context, boolean handleInitialState) {
         Intent serviceIntent = new Intent(context, ConnectivityBackgroundService.class).putExtra("initial", handleInitialState);
+        startForegroundService(context, serviceIntent);
+    }
+
+    public static void startForegroundService(Context context, Intent serviceIntent) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(serviceIntent);
         } else {

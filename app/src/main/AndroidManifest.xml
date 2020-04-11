@@ -138,6 +138,8 @@
         </receiver>
 
         <service android:name=".services.ConnectivityBackgroundService" />
+        <service android:name=".services.ConnectivityCheckRestartService" />
+
         <service
             android:name=".services.DataService"
             android:exported="true"
