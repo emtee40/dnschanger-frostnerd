@@ -33,6 +33,7 @@ import com.frostnerd.dnschanger.util.Util;
 public class ConnectivityBackgroundService extends Service {
     private NetworkCheckHandle handle;
     private static final String LOG_TAG = "[ConnectivityBackgroundService]";
+    private boolean enabled = false;
 
     @Nullable
     @Override
@@ -63,6 +64,7 @@ public class ConnectivityBackgroundService extends Service {
             stopSelf();
             return START_NOT_STICKY;
         }
+        enabled = true;
         return START_STICKY;
     }
 
@@ -71,6 +73,9 @@ public class ConnectivityBackgroundService extends Service {
         super.onDestroy();
         LogFactory.writeMessage(this, LOG_TAG, "Service destroyed.");
         if(handle != null) handle.stop();
+        if(enabled) {
+            Util.runBackgroundConnectivityCheck(this, true);
+        }
     }
 
     @Override
