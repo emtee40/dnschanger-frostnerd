@@ -133,7 +133,8 @@ public class NetworkCheckHandle {
             } catch (Exception ignored) { }
         }
         else if(connectivityChange != null)context.unregisterReceiver(connectivityChange);
-        connectivityManager = null;networkCallback = null;
+        connectivityManager = null;
+        networkCallback = null;
     }
 
     @Override

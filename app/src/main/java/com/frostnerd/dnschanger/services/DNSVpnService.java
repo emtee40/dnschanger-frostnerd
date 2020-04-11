@@ -23,6 +23,7 @@ import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.services.jobs.NetworkCheckHandle;
 import com.frostnerd.dnschanger.threading.VPNRunnable;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
@@ -77,6 +78,7 @@ public class DNSVpnService extends VpnService {
     private static VPNRunnable vpnRunnable;
     private Thread vpnThread;
     private ArrayList<IPPortPair> upstreamServers;
+    private NetworkCheckHandle networkCheckHandle;
 
     private synchronized void clearVars(boolean stopSelf){
         if(variablesCleared)return;
@@ -335,7 +337,8 @@ public class DNSVpnService extends VpnService {
         preferences = Preferences.getInstance(this);
         initNotification();
         LocalBroadcastManager.getInstance(this).registerReceiver(stateRequestReceiver, new IntentFilter(Util.BROADCAST_SERVICE_STATE_REQUEST));
-        Util.runBackgroundConnectivityCheck(this, true);
+        Util.stopBackgroundConnectivityCheck(this);
+        networkCheckHandle = Util.maybeCreateNetworkCheckHandle(this, LOG_TAG, true);
     }
 
     @Override
@@ -343,6 +346,13 @@ public class DNSVpnService extends VpnService {
         LogFactory.writeMessage(this, LOG_TAG, "Destroying");
         super.onDestroy();
         Util.updateTiles(this);
+        if(networkCheckHandle != null) {
+            networkCheckHandle.stop();
+            networkCheckHandle = null;
+        }
+        if(!Util.isBackgroundConnectivityCheckRunning(this)) {
+            Util.runBackgroundConnectivityCheck(this, true);
+        }
         LogFactory.writeMessage(this, LOG_TAG, "Destroyed.");
     }
 
@@ -350,7 +360,13 @@ public class DNSVpnService extends VpnService {
     public void onRevoke() {
         super.onRevoke();
         stopService();
-        Util.runBackgroundConnectivityCheck(this, true);
+        if(networkCheckHandle != null) {
+            networkCheckHandle.stop();
+            networkCheckHandle = null;
+        }
+        if(!Util.isBackgroundConnectivityCheckRunning(this)) {
+            Util.runBackgroundConnectivityCheck(this, true);
+        }
         if(Preferences.getInstance(this).getBoolean("setting_protect_other_vpns", false)) {
             BackgroundVpnConfigureActivity.startBackgroundConfigure(this, true);
         } else {
