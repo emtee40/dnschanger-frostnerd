@@ -1,30 +1,21 @@
 package com.frostnerd.dnschanger.util;
 
-import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.service.quicksettings.TileService;
-import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import android.util.Base64;
@@ -40,8 +31,6 @@ import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.database.entities.Shortcut;
 import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
 import com.frostnerd.dnschanger.services.DNSVpnService;
-import com.frostnerd.dnschanger.services.jobs.ConnectivityJobAPI21;
-import com.frostnerd.dnschanger.services.jobs.NetworkCheckHandle;
 import com.frostnerd.dnschanger.tiles.TilePauseResume;
 import com.frostnerd.dnschanger.tiles.TileStartStop;
 import com.frostnerd.general.StringUtil;
@@ -293,50 +282,22 @@ public final class Util {
         }
     }
 
-    public static void runBackgroundConnectivityCheck(Context context, boolean handleInitialState){
-        runBackgroundConnectivityCheck(context, handleInitialState, false);
-    }
-
-    public static void runBackgroundConnectivityCheck(Context context, boolean handleInitialState, boolean forceUseService){
-        if (!forceUseService && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LogFactory.writeMessage(context, LOG_TAG, "Using JobScheduler");
-            if(isJobRunning(context, 0)){
-                LogFactory.writeMessage(context, LOG_TAG, "Job is already running/scheduled, not doing anything");
-                return;
-            }
-            PersistableBundle extras = new PersistableBundle();
-            extras.putBoolean("initial", handleInitialState);
-            JobScheduler scheduler = Utils.requireNonNull((JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE));
-            JobInfo.Builder infoBuilder = new JobInfo.Builder(0, new ComponentName(context, ConnectivityJobAPI21.class))
-                    .setRequiresCharging(false).setMinimumLatency(0).setOverrideDeadline(0).setExtras(extras);
-            if(ContextCompat.checkSelfPermission(context, Manifest.permission.RECEIVE_BOOT_COMPLETED) == PackageManager.PERMISSION_GRANTED) {
-                infoBuilder.setPersisted(true);
-            }
-            scheduler.schedule(infoBuilder.build());
+    public static void runBackgroundConnectivityCheck(Context context, boolean handleInitialState) {
+        Intent serviceIntent = new Intent(context, ConnectivityBackgroundService.class).putExtra("initial", handleInitialState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(serviceIntent);
         } else {
-            LogFactory.writeMessage(context, LOG_TAG, "Starting Service (Util below 21)");
-            context.startService(new Intent(context, ConnectivityBackgroundService.class).putExtra("initial", handleInitialState));
+            context.startService(serviceIntent);
         }
     }
 
-    public static void stopBackgroundConnectivityCheck(Context context){
+    public static void stopBackgroundConnectivityCheck(Context context) {
         LogFactory.writeMessage(context, LOG_TAG, "Stopping the background connectivity check..");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LogFactory.writeMessage(context, LOG_TAG, "Using JobScheduler");
-            if(isJobRunning(context, 0)){
-                LogFactory.writeMessage(context, LOG_TAG, "Job is running, stopping..");
-                JobScheduler scheduler = Utils.requireNonNull((JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE));
-                scheduler.cancel(0);
-            }else {
-                LogFactory.writeMessage(context, LOG_TAG, "Job is not running, thus not stopping.");
-            }
+        if (isBackgroundConnectivityCheckRunning(context)) {
+            LogFactory.writeMessage(context, LOG_TAG, "Stopping Service");
+            context.stopService(new Intent(context, ConnectivityBackgroundService.class));
         } else {
-            if(isBackgroundConnectivityCheckRunning(context)){
-                LogFactory.writeMessage(context, LOG_TAG, "Stopping Service (API below 21)");
-                context.stopService(new Intent(context, ConnectivityBackgroundService.class));
-            } else {
-                LogFactory.writeMessage(context, LOG_TAG, "Service is not running, thus not stopping.");
-            }
+            LogFactory.writeMessage(context, LOG_TAG, "Service is not running, thus not stopping.");
         }
     }
 
@@ -354,21 +315,8 @@ public final class Util {
         }
     }
 
-    public static boolean isBackgroundConnectivityCheckRunning(@NonNull Context context){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            return isJobRunning(context, 0);
-        } else {
-            return Utils.isServiceRunning(context, ConnectivityBackgroundService.class);
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private static boolean isJobRunning(@NonNull Context context, @IntRange(from = 0) int jobID){
-        JobScheduler scheduler = Utils.requireNonNull((JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE));
-        for ( JobInfo jobInfo : scheduler.getAllPendingJobs())
-            if (jobInfo.getId() == jobID) return true;
-        return false;
+    public static boolean isBackgroundConnectivityCheckRunning(@NonNull Context context) {
+        return Utils.isServiceRunning(context, ConnectivityBackgroundService.class);
     }
 
     /**

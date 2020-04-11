@@ -147,11 +147,6 @@
                 <action android:name="com.frostnerd.dnschanger.services.DataService" />
             </intent-filter>
         </service>
-        <service
-            android:name=".services.jobs.ConnectivityJobAPI21"
-            android:label="Connectivity Service"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity
             android:name=".activities.ShortcutActivity"

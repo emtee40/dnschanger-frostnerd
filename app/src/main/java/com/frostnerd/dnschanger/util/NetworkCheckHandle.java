@@ -1,4 +1,4 @@
-package com.frostnerd.dnschanger.services.jobs;
+package com.frostnerd.dnschanger.util;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

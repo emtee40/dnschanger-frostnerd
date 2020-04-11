@@ -1,13 +1,15 @@
 package com.frostnerd.dnschanger.services;
 
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
 import com.frostnerd.dnschanger.LogFactory;
-import com.frostnerd.dnschanger.services.jobs.NetworkCheckHandle;
-import com.frostnerd.dnschanger.util.Preferences;
+import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.util.NetworkCheckHandle;
 import com.frostnerd.dnschanger.util.Util;
 
 /*
@@ -42,11 +44,20 @@ public class ConnectivityBackgroundService extends Service {
     public void onCreate() {
         super.onCreate();
         LogFactory.writeMessage(this, LOG_TAG, "Service created.");
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, Util.createNotificationChannel(this, true));
+        notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
+        notificationBuilder.setOngoing(true);
+        notificationBuilder.setContentTitle(getString(R.string.notification_connectivity_service));
+        notificationBuilder.setContentText(getString(R.string.notification_connectivity_service_message));
+        notificationBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
+        startForeground(1285, notificationBuilder.build());
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         handle = Util.maybeCreateNetworkCheckHandle(this, LOG_TAG, intent == null || intent.getBooleanExtra("initial", true));
+        stopForeground(false);
+        ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancel(1285);
         if(handle == null){
             LogFactory.writeMessage(this, LOG_TAG, "Not starting handle because the respective settings aren't enabled");
             stopSelf();
