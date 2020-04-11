@@ -1,6 +1,5 @@
 package com.frostnerd.dnschanger.services;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -23,7 +22,7 @@ import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
-import com.frostnerd.dnschanger.services.jobs.NetworkCheckHandle;
+import com.frostnerd.dnschanger.util.NetworkCheckHandle;
 import com.frostnerd.dnschanger.threading.VPNRunnable;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
@@ -351,7 +350,7 @@ public class DNSVpnService extends VpnService {
             networkCheckHandle = null;
         }
         if(!Util.isBackgroundConnectivityCheckRunning(this)) {
-            Util.runBackgroundConnectivityCheck(this, true);
+            Util.runBackgroundConnectivityCheck(this, false);
         }
         LogFactory.writeMessage(this, LOG_TAG, "Destroyed.");
     }
@@ -365,7 +364,7 @@ public class DNSVpnService extends VpnService {
             networkCheckHandle = null;
         }
         if(!Util.isBackgroundConnectivityCheckRunning(this)) {
-            Util.runBackgroundConnectivityCheck(this, true);
+            Util.runBackgroundConnectivityCheck(this, false);
         }
         if(Preferences.getInstance(this).getBoolean("setting_protect_other_vpns", false)) {
             BackgroundVpnConfigureActivity.startBackgroundConfigure(this, true);
