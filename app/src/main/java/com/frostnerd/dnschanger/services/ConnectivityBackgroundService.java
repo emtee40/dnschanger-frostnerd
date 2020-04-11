@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.services.jobs.NetworkCheckHandle;
 import com.frostnerd.dnschanger.util.Preferences;
+import com.frostnerd.dnschanger.util.Util;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
@@ -45,26 +46,20 @@ public class ConnectivityBackgroundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Preferences pref = Preferences.getInstance(this);
-        boolean run = pref.getBoolean("setting_auto_wifi", false) ||
-                pref.getBoolean("setting_auto_mobile", false) ||
-                pref.getBoolean("setting_disable_netchange", false) ||
-                pref.getBoolean("start_service_when_available", false);
-        if(run){
-            handle = new NetworkCheckHandle(getApplicationContext() == null ? this : getApplicationContext(),
-                    LOG_TAG, intent == null || intent.getBooleanExtra("initial", true));
-        } else {
+        handle = Util.maybeCreateNetworkCheckHandle(this, LOG_TAG, intent == null || intent.getBooleanExtra("initial", true));
+        if(handle == null){
             LogFactory.writeMessage(this, LOG_TAG, "Not starting handle because the respective settings aren't enabled");
             stopSelf();
+            return START_NOT_STICKY;
         }
-        return run ? START_STICKY : START_NOT_STICKY;
+        return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         LogFactory.writeMessage(this, LOG_TAG, "Service destroyed.");
-        if(handle != null)handle.stop();
+        if(handle != null) handle.stop();
     }
 
     @Override
