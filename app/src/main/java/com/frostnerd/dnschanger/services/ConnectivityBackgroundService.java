@@ -67,7 +67,7 @@ public class ConnectivityBackgroundService extends Service {
                 restartingSelf = true;
                 stopSelf();
                 LogFactory.writeMessage(ConnectivityBackgroundService.this, LOG_TAG, "Restarting self.");
-                Util.startForegroundService(ConnectivityBackgroundService.this, new Intent(ConnectivityBackgroundService.this, ConnectivityCheckRestartService.class));
+                startService(new Intent(ConnectivityBackgroundService.this, ConnectivityCheckRestartService.class));
             }
         }, 45000);
         LogFactory.writeMessage(this, LOG_TAG, "onCreate done");
