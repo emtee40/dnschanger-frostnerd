@@ -37,6 +37,8 @@ public class ConnectivityBackgroundService extends Service {
     private boolean enabled = false;
     private NotificationCompat.Builder notificationBuilder;
     private boolean restartingSelf = false;
+    private Handler handler;
+    private Runnable restartCallback;
 
     @Nullable
     @Override
@@ -57,8 +59,8 @@ public class ConnectivityBackgroundService extends Service {
         // I have no idea whether this actually helps.
         // The intention is to trick the system into believing that this service only runs 45 seconds.
         // I hope that this timer is reset by killing & restarting this service
-        final Handler handler = new Handler();
-        if(!restartingSelf) handler.postDelayed(new Runnable() {
+        handler = new Handler();
+        if(!restartingSelf) handler.postDelayed(restartCallback = new Runnable() {
             @Override
             public void run() {
                 if(restartingSelf) return;
@@ -95,6 +97,8 @@ public class ConnectivityBackgroundService extends Service {
         if(handle != null) handle.stop();
         if(enabled && !restartingSelf) {
             Util.runBackgroundConnectivityCheck(this, true);
+        } else if(!enabled && restartCallback != null) {
+            handler.removeCallbacks(restartCallback);
         }
     }
 
