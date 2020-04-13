@@ -283,7 +283,7 @@ public final class Util {
     }
 
     public static void runBackgroundConnectivityCheck(Context context, boolean handleInitialState) {
-        if(shouldRunNetworkCheck(context)) {
+        if(shouldRunNetworkCheck(context) && !Util.isServiceRunning(context)) {
             Intent serviceIntent = new Intent(context, ConnectivityBackgroundService.class).putExtra("initial", handleInitialState);
             startForegroundService(context, serviceIntent);
         }
