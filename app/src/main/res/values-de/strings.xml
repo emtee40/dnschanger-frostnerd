@@ -342,4 +342,7 @@
     <string name="notification_connectivity_service_message_disable">Klicke hier zum deaktivieren</string>
     <string name="notification_channel_networkcheck">Channel für Verbindungsprüfung</string>
     <string name="notification_channel_networkcheck_description">Dieser Channel wird für die Verbindungsprüfung genutzt. Er kann bedenkenlos deaktiviert werden.</string>
+
+    <string name="summary_priv_mode">Die Automatierung mit höheren Rechten starten. Dies erhöht möglicherweise die Stabilität.</string>
+    <string name="title_priv_mode">Previligierter Modus</string>
 </resources>

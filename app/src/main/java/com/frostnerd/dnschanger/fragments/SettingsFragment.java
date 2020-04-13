@@ -473,6 +473,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                         return true;
                     }
                 });
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !preferences.contains("automation_priv_mode_set")) {
+            ((CheckBoxPreference)findPreference("automation_priv_mode")).setChecked(true);
+            preferences.putBoolean("automation_priv_mode_set", true);
+        }
     }
 
     private final Preference.OnPreferenceChangeListener autoSettingsChanged = new Preference.OnPreferenceChangeListener() {

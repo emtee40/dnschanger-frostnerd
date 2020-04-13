@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
 
 /*
@@ -60,27 +61,29 @@ public class ConnectivityCheckRestartService extends Service {
     public void onCreate() {
         super.onCreate();
         LogFactory.writeMessage(this, LOG_TAG, "onCreate");
-        notificationBuilder = new NotificationCompat.Builder(this, Util.createConnectivityCheckChannel(this));
-        notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
-        notificationBuilder.setOngoing(true);
-        notificationBuilder.setContentTitle(getString(R.string.notification_restartconnectivity_service));
-        notificationBuilder.setContentText(getString(R.string.notification_connectivity_service_message));
-        notificationBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
-        Intent channelIntent = channelSettingsIntent(this);
-        if(channelIntent != null) {
-            notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 13123, channelIntent, PendingIntent.FLAG_UPDATE_CURRENT));
-            notificationBuilder.setContentText(getString(R.string.notification_connectivity_service_message_disable));
+        if(PreferencesAccessor.runConnectivityCheckWithPrivilege(this)) {
+            notificationBuilder = new NotificationCompat.Builder(this, Util.createConnectivityCheckChannel(this));
+            notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
+            notificationBuilder.setOngoing(true);
+            notificationBuilder.setContentTitle(getString(R.string.notification_restartconnectivity_service));
+            notificationBuilder.setContentText(getString(R.string.notification_connectivity_service_message));
+            notificationBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
+            Intent channelIntent = channelSettingsIntent(this);
+            if(channelIntent != null) {
+                notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 13123, channelIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+                notificationBuilder.setContentText(getString(R.string.notification_connectivity_service_message_disable));
+            }
         }
         LogFactory.writeMessage(this, LOG_TAG, "Service created.");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        startForeground(1286, notificationBuilder.build());
+        if(notificationBuilder != null) startForeground(1286, notificationBuilder.build());
         LogFactory.writeMessage(this, LOG_TAG, "Start command received.");
         Util.runBackgroundConnectivityCheck(this, false);
-        stopForeground(true);
-        ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancel(1286);
+        if(notificationBuilder != null) stopForeground(true);
+        if(notificationBuilder != null) ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancel(1286);
         stopSelf();
         LogFactory.writeMessage(this, LOG_TAG, "Stopping self.");
         return START_NOT_STICKY;

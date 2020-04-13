@@ -1,6 +1,8 @@
 package com.frostnerd.dnschanger.util;
 
 import android.content.Context;
+import android.os.Build;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -29,6 +31,19 @@ import java.util.ArrayList;
  * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 public class PreferencesAccessor {
+
+    public static boolean runConnectivityCheckWithPrivilege(@NonNull Context context) {
+        Preferences preferences = Preferences.getInstance(context);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if(preferences.contains("automation_priv_mode_set")) {
+                return preferences.getBoolean("automation_priv_mode", false);
+            } else {
+                return true;
+            }
+        } else {
+            return preferences.getBoolean("automation_priv_mode", false);
+        }
+    }
 
     public static boolean isIPv6Enabled(@NonNull Context context) {
         return Preferences.getInstance(context).getBoolean( "setting_ipv6_enabled", false);

@@ -12,6 +12,7 @@ import androidx.core.app.NotificationCompat;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.util.NetworkCheckHandle;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
 
 /*
@@ -51,16 +52,21 @@ public class ConnectivityBackgroundService extends Service {
     public void onCreate() {
         super.onCreate();
         LogFactory.writeMessage(this, LOG_TAG, "Service created.");
-        notificationBuilder = new NotificationCompat.Builder(this, Util.createConnectivityCheckChannel(this));
-        notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
-        notificationBuilder.setOngoing(true);
-        notificationBuilder.setContentTitle(getString(R.string.notification_connectivity_service));
-        notificationBuilder.setContentText(getString(R.string.notification_connectivity_service_message));
-        notificationBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
-        Intent channelIntent = ConnectivityCheckRestartService.channelSettingsIntent(this);
-        if(channelIntent != null) {
-            notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 13123, channelIntent, PendingIntent.FLAG_UPDATE_CURRENT));
-            notificationBuilder.setContentText(getString(R.string.notification_connectivity_service_message_disable));
+        if(PreferencesAccessor.runConnectivityCheckWithPrivilege(this)) {
+            LogFactory.writeMessage(this, LOG_TAG, "Running in foreground");
+            notificationBuilder = new NotificationCompat.Builder(this, Util.createConnectivityCheckChannel(this));
+            notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
+            notificationBuilder.setOngoing(true);
+            notificationBuilder.setContentTitle(getString(R.string.notification_connectivity_service));
+            notificationBuilder.setContentText(getString(R.string.notification_connectivity_service_message));
+            notificationBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
+            Intent channelIntent = ConnectivityCheckRestartService.channelSettingsIntent(this);
+            if(channelIntent != null) {
+                notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 13123, channelIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+                notificationBuilder.setContentText(getString(R.string.notification_connectivity_service_message_disable));
+            }
+        } else {
+            LogFactory.writeMessage(this, LOG_TAG, "Not running in foreground");
         }
 
         // I have no idea whether this actually helps.
@@ -83,10 +89,10 @@ public class ConnectivityBackgroundService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         LogFactory.writeMessage(this, LOG_TAG, "Start command received");
-        startForeground(1285, notificationBuilder.build());
+        if(notificationBuilder != null) startForeground(1285, notificationBuilder.build());
         handle = Util.maybeCreateNetworkCheckHandle(this, LOG_TAG, intent == null || intent.getBooleanExtra("initial", true));
-        stopForeground(true);
-        ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancel(1285);
+        if(notificationBuilder != null) stopForeground(true);
+        if(notificationBuilder != null) ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancel(1285);
         if(handle == null){
             LogFactory.writeMessage(this, LOG_TAG, "Not starting handle because the respective settings aren't enabled");
             stopSelf();

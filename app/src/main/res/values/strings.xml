@@ -361,4 +361,7 @@
 
     <string name="notification_channel_networkcheck">Channel for Connectivity check</string>
     <string name="notification_channel_networkcheck_description">This channel is used for the connectivity check as part of the automation. Feel free to disable it.</string>
+
+    <string name="summary_priv_mode">Run the automation with higher rights. Might increase stability of the automation settings.</string>
+    <string name="title_priv_mode">Privileged mode</string>
 </resources>
