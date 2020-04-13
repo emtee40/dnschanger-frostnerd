@@ -335,4 +335,10 @@
     <string name="summary_vpndialog_missing">Diesem Gerät scheint die Fähigkeit zu fehlen, einen Dummy-VPN aufzubauen. Da diese App voll und ganz auf diese angewiesen ist, funktioniert sie leider nicht.</string>
 
     <string name="message_user_restricted">Kann VPN nicht starten, das Nutzerprofil scheint eingeschränkt zu sein.</string>
+    <string name="nebulo_no_browser">Du scheinst keinen Browser installiert zu haben</string>
+    <string name="notification_connectivity_service">Hintergrund Verbindungsprüfung</string>
+    <string name="notification_restartconnectivity_service">Starte Verbindungsprüfung neu</string>
+    <string name="notification_connectivity_service_message">Verbindungsprüfung läuft. Diese Benachrichtigung verschwindet bald.</string>
+    <string name="notification_channel_networkcheck">Channel für Verbindungsprüfung</string>
+    <string name="notification_channel_networkcheck_description">Dieser Channel wird für die Verbindungsprüfung genutzt. Er kann bedenkenlos deaktiviert werden.</string>
 </resources>
