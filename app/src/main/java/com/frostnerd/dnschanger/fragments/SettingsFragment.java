@@ -480,10 +480,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             Preferences.getInstance(requireContext()).put(preference.getKey(), newValue);
             boolean running = Util.isBackgroundConnectivityCheckRunning(requireContext());
-            Preferences pref = Preferences.getInstance(requireContext());
-            boolean run = pref.getBoolean("setting_auto_wifi", false) ||
-                    pref.getBoolean("setting_auto_mobile", false) ||
-                    pref.getBoolean("setting_disable_netchange", false);
+            boolean run = Util.shouldRunNetworkCheck(requireContext());
 
             if(run && !running){
                 Util.runBackgroundConnectivityCheck(requireContext(), false);

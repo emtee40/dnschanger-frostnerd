@@ -283,8 +283,10 @@ public final class Util {
     }
 
     public static void runBackgroundConnectivityCheck(Context context, boolean handleInitialState) {
-        Intent serviceIntent = new Intent(context, ConnectivityBackgroundService.class).putExtra("initial", handleInitialState);
-        startForegroundService(context, serviceIntent);
+        if(shouldRunNetworkCheck(context)) {
+            Intent serviceIntent = new Intent(context, ConnectivityBackgroundService.class).putExtra("initial", handleInitialState);
+            startForegroundService(context, serviceIntent);
+        }
     }
 
     public static void startForegroundService(Context context, Intent serviceIntent) {
@@ -307,16 +309,19 @@ public final class Util {
 
     @Nullable
     public static NetworkCheckHandle maybeCreateNetworkCheckHandle(@NonNull Context context, String logTag, boolean handleInitialState) {
-        Preferences pref = Preferences.getInstance(context);
-        boolean run = pref.getBoolean("setting_auto_wifi", false) ||
-                pref.getBoolean("setting_auto_mobile", false) ||
-                pref.getBoolean("setting_disable_netchange", false) ||
-                pref.getBoolean("start_service_when_available", false);
-        if(run) {
+        if(shouldRunNetworkCheck(context)) {
             return new NetworkCheckHandle(context, logTag, handleInitialState);
         } else {
             return null;
         }
+    }
+
+    public static boolean shouldRunNetworkCheck(@NonNull Context context) {
+        Preferences pref = Preferences.getInstance(context);
+        return pref.getBoolean("setting_auto_wifi", false) ||
+                pref.getBoolean("setting_auto_mobile", false) ||
+                pref.getBoolean("setting_disable_netchange", false) ||
+                pref.getBoolean("start_service_when_available", false);
     }
 
     public static boolean isBackgroundConnectivityCheckRunning(@NonNull Context context) {
