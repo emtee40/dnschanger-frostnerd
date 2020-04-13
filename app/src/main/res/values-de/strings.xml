@@ -339,6 +339,7 @@
     <string name="notification_connectivity_service">Hintergrund Verbindungsprüfung</string>
     <string name="notification_restartconnectivity_service">Starte Verbindungsprüfung neu</string>
     <string name="notification_connectivity_service_message">Verbindungsprüfung läuft. Diese Benachrichtigung verschwindet bald.</string>
+    <string name="notification_connectivity_service_message_disable">Klicke hier zum deaktivieren</string>
     <string name="notification_channel_networkcheck">Channel für Verbindungsprüfung</string>
     <string name="notification_channel_networkcheck_description">Dieser Channel wird für die Verbindungsprüfung genutzt. Er kann bedenkenlos deaktiviert werden.</string>
 </resources>

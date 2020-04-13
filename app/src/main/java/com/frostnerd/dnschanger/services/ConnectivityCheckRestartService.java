@@ -1,9 +1,13 @@
 package com.frostnerd.dnschanger.services;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
+import android.provider.Settings;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -35,6 +39,18 @@ public class ConnectivityCheckRestartService extends Service {
     private NotificationCompat.Builder notificationBuilder;
 
     @Nullable
+    public static Intent channelSettingsIntent(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .putExtra(Settings.EXTRA_APP_PACKAGE, context.getPackageName())
+                    .putExtra(Settings.EXTRA_CHANNEL_ID, "networkcheckchannel");
+        } else {
+            return null;
+        }
+    }
+
+    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -50,6 +66,11 @@ public class ConnectivityCheckRestartService extends Service {
         notificationBuilder.setContentTitle(getString(R.string.notification_restartconnectivity_service));
         notificationBuilder.setContentText(getString(R.string.notification_connectivity_service_message));
         notificationBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
+        Intent channelIntent = channelSettingsIntent(this);
+        if(channelIntent != null) {
+            notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 13123, channelIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+            notificationBuilder.setContentText(getString(R.string.notification_connectivity_service_message_disable));
+        }
         LogFactory.writeMessage(this, LOG_TAG, "Service created.");
     }
 

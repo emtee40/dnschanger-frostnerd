@@ -1,6 +1,7 @@
 package com.frostnerd.dnschanger.services;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
@@ -56,6 +57,12 @@ public class ConnectivityBackgroundService extends Service {
         notificationBuilder.setContentTitle(getString(R.string.notification_connectivity_service));
         notificationBuilder.setContentText(getString(R.string.notification_connectivity_service_message));
         notificationBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
+        Intent channelIntent = ConnectivityCheckRestartService.channelSettingsIntent(this);
+        if(channelIntent != null) {
+            notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 13123, channelIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+            notificationBuilder.setContentText(getString(R.string.notification_connectivity_service_message_disable));
+        }
+
         // I have no idea whether this actually helps.
         // The intention is to trick the system into believing that this service only runs 45 seconds.
         // I hope that this timer is reset by killing & restarting this service
