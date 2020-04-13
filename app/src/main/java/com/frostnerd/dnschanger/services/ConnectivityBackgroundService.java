@@ -54,7 +54,6 @@ public class ConnectivityBackgroundService extends Service {
         notificationBuilder.setContentTitle(getString(R.string.notification_connectivity_service));
         notificationBuilder.setContentText(getString(R.string.notification_connectivity_service_message));
         notificationBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
-        startForeground(1285, notificationBuilder.build());
         // I have no idea whether this actually helps.
         // The intention is to trick the system into believing that this service only runs 45 seconds.
         // I hope that this timer is reset by killing & restarting this service
@@ -69,8 +68,7 @@ public class ConnectivityBackgroundService extends Service {
                 Util.startForegroundService(ConnectivityBackgroundService.this, new Intent(ConnectivityBackgroundService.this, ConnectivityCheckRestartService.class));
             }
         }, 45000);
-        stopForeground(false);
-        ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancel(1285);
+        LogFactory.writeMessage(this, LOG_TAG, "onCreate done");
     }
 
     @Override
@@ -78,7 +76,7 @@ public class ConnectivityBackgroundService extends Service {
         LogFactory.writeMessage(this, LOG_TAG, "Start command received");
         startForeground(1285, notificationBuilder.build());
         handle = Util.maybeCreateNetworkCheckHandle(this, LOG_TAG, intent == null || intent.getBooleanExtra("initial", true));
-        stopForeground(false);
+        stopForeground(true);
         ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancel(1285);
         if(handle == null){
             LogFactory.writeMessage(this, LOG_TAG, "Not starting handle because the respective settings aren't enabled");
@@ -86,6 +84,7 @@ public class ConnectivityBackgroundService extends Service {
             return START_NOT_STICKY;
         }
         enabled = true;
+        LogFactory.writeMessage(this, LOG_TAG, "onStartCommand done");
         return START_STICKY;
     }
 

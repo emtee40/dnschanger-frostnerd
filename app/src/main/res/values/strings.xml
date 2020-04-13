@@ -355,5 +355,6 @@
     <string name="nebulo_no_browser">You don\'t seem to have a browser or the store installed.</string>
 
     <string name="notification_connectivity_service">Background connectivity check</string>
+    <string name="notification_restartconnectivity_service">Restarting connectivity check</string>
     <string name="notification_connectivity_service_message">Running connectivity check. This notification will be gone soon.</string>
 </resources>

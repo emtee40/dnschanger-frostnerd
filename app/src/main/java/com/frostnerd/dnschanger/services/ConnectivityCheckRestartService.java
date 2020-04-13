@@ -43,16 +43,14 @@ public class ConnectivityCheckRestartService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        LogFactory.writeMessage(this, LOG_TAG, "onCreate");
         notificationBuilder = new NotificationCompat.Builder(this, Util.createNotificationChannel(this, true));
         notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
         notificationBuilder.setOngoing(true);
-        notificationBuilder.setContentTitle(getString(R.string.notification_connectivity_service));
+        notificationBuilder.setContentTitle(getString(R.string.notification_restartconnectivity_service));
         notificationBuilder.setContentText(getString(R.string.notification_connectivity_service_message));
         notificationBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
-        startForeground(1286, notificationBuilder.build());
         LogFactory.writeMessage(this, LOG_TAG, "Service created.");
-        stopForeground(false);
-        ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancel(1286);
     }
 
     @Override
@@ -60,7 +58,7 @@ public class ConnectivityCheckRestartService extends Service {
         startForeground(1286, notificationBuilder.build());
         LogFactory.writeMessage(this, LOG_TAG, "Start command received.");
         Util.runBackgroundConnectivityCheck(this, false);
-        stopForeground(false);
+        stopForeground(true);
         ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancel(1286);
         stopSelf();
         LogFactory.writeMessage(this, LOG_TAG, "Stopping self.");
