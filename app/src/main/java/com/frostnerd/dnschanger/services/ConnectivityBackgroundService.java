@@ -50,7 +50,7 @@ public class ConnectivityBackgroundService extends Service {
     public void onCreate() {
         super.onCreate();
         LogFactory.writeMessage(this, LOG_TAG, "Service created.");
-        notificationBuilder = new NotificationCompat.Builder(this, Util.createNotificationChannel(this, true));
+        notificationBuilder = new NotificationCompat.Builder(this, Util.createConnectivityCheckChannel(this));
         notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
         notificationBuilder.setOngoing(true);
         notificationBuilder.setContentTitle(getString(R.string.notification_connectivity_service));

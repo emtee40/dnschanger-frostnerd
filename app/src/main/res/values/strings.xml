@@ -357,4 +357,7 @@
     <string name="notification_connectivity_service">Background connectivity check</string>
     <string name="notification_restartconnectivity_service">Restarting connectivity check</string>
     <string name="notification_connectivity_service_message">Running connectivity check. This notification will be gone soon.</string>
+
+    <string name="notification_channel_networkcheck">Channel for Connectivity check</string>
+    <string name="notification_channel_networkcheck_description">This channel is used for the connectivity check as part of the automation. Feel free to disable it.</string>
 </resources>

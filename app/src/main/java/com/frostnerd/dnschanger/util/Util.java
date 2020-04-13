@@ -267,6 +267,21 @@ public final class Util {
         }
     }
 
+    public static String createConnectivityCheckChannel(Context context) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = Utils.requireNonNull((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE));
+            NotificationChannel channel = new NotificationChannel("networkcheckchannel", context.getString(R.string.notification_channel_networkcheck), NotificationManager.IMPORTANCE_LOW);
+            channel.enableLights(false);
+            channel.enableVibration(false);
+            channel.setDescription(context.getString(R.string.notification_channel_networkcheck_description));
+            channel.setLockscreenVisibility(Notification.VISIBILITY_SECRET);
+            channel.setImportance(NotificationManager.IMPORTANCE_LOW);
+            channel.setShowBadge(false);
+            notificationManager.createNotificationChannel(channel);
+        }
+        return "networkcheckchannel";
+    }
+
     public static String createImportantChannel(Context context) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationManager notificationManager = Utils.requireNonNull((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE));
