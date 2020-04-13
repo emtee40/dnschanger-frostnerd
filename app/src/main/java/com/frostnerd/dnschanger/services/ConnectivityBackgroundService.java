@@ -96,7 +96,7 @@ public class ConnectivityBackgroundService extends Service {
         LogFactory.writeMessage(this, LOG_TAG, "Service destroyed.");
         if(handle != null) handle.stop();
         boolean stayEnabled = Util.shouldRunNetworkCheck(this);
-        if(!stayEnabled) {
+        if(!stayEnabled || Util.isServiceRunning(this)) {
             handler.removeCallbacks(restartCallback);
         } else if(enabled && !restartingSelf) {
             Util.runBackgroundConnectivityCheck(this, true);
