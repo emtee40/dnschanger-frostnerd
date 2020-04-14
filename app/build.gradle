@@ -8,8 +8,8 @@ android {
         applicationId "com.frostnerd.dnschanger"
         minSdkVersion 14
         targetSdkVersion 29
-        versionCode 106
-        versionName "1.16.3.2"
+        versionCode 111
+        versionName "1.16.5.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -46,7 +46,7 @@ android {
 dependencies {
     implementation 'com.frostnerd.utils:general:1.0.9'
     implementation 'com.frostnerd.utils:database:1.1.22'
-    implementation 'com.frostnerd.utils:design:1.0.14-fix13'
+    implementation 'com.frostnerd.utils:design:1.0.14-fix17'
     implementation 'com.frostnerd.utils:materialedittext:1.0.20'
     implementation 'com.frostnerd.utils:preferences:2.4.10'
     implementation 'com.frostnerd.utils:networking:1.0.4'
@@ -54,20 +54,19 @@ dependencies {
     implementation 'com.frostnerd.utils:api:1.0.5'
     testImplementation 'com.frostnerd.utils:logging:1.0.7'
 
-    implementation 'io.sentry:sentry-android:1.7.28'
+    implementation 'io.sentry:sentry-android:1.7.30'
 
     implementation "androidx.appcompat:appcompat:1.1.0"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation "androidx.preference:preference:1.1.0"
-    implementation "com.google.android.material:material:1.0.0"
-    testImplementation 'junit:junit:4.12'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0-alpha01'
+    implementation "com.google.android.material:material:1.1.0"
+    testImplementation 'junit:junit:4.13'
     testImplementation "org.robolectric:robolectric:4.3.1"
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'org.pcap4j:pcap4j-core:1.8.2'
     implementation 'org.pcap4j:pcap4j-packetfactory-static:1.8.2'
-    implementation 'de.measite.minidns:minidns-core:0.2.4'
-    implementation 'de.measite.minidns:minidns-hla:0.2.4'
-    compileOnly 'org.projectlombok:lombok:1.18.10'
-    annotationProcessor 'org.projectlombok:lombok:1.18.10'
+    implementation 'org.minidns:minidns-core:0.3.4'
+    implementation 'org.minidns:minidns-hla:0.3.4'
 }

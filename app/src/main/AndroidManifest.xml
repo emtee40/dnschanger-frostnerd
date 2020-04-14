@@ -43,6 +43,7 @@
         android:fullBackupContent="@xml/backup_rules"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
+        android:requestLegacyExternalStorage="true"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/security_config"
         android:roundIcon="@mipmap/ic_launcher"
@@ -137,6 +138,8 @@
         </receiver>
 
         <service android:name=".services.ConnectivityBackgroundService" />
+        <service android:name=".services.ConnectivityCheckRestartService" />
+
         <service
             android:name=".services.DataService"
             android:exported="true"
@@ -146,10 +149,6 @@
                 <action android:name="com.frostnerd.dnschanger.services.DataService" />
             </intent-filter>
         </service>
-        <service
-            android:name=".services.jobs.ConnectivityJobAPI21"
-            android:label="Connectivity Service"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity
             android:name=".activities.ShortcutActivity"

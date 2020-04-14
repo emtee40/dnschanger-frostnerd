@@ -1,13 +1,10 @@
 package com.frostnerd.dnschanger.util;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -16,12 +13,9 @@ import android.content.pm.ShortcutManager;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.service.quicksettings.TileService;
-import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import android.util.Base64;
@@ -37,13 +31,15 @@ import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.database.entities.Shortcut;
 import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
 import com.frostnerd.dnschanger.services.DNSVpnService;
-import com.frostnerd.dnschanger.services.jobs.ConnectivityJobAPI21;
 import com.frostnerd.dnschanger.tiles.TilePauseResume;
 import com.frostnerd.dnschanger.tiles.TileStartStop;
 import com.frostnerd.general.StringUtil;
 import com.frostnerd.general.Utils;
 import com.frostnerd.networking.NetworkUtil;
 
+
+import org.minidns.record.Data;
+import org.minidns.record.Record;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -55,8 +51,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import de.measite.minidns.Record;
-import de.measite.minidns.record.Data;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
@@ -273,6 +267,21 @@ public final class Util {
         }
     }
 
+    public static String createConnectivityCheckChannel(Context context) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = Utils.requireNonNull((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE));
+            NotificationChannel channel = new NotificationChannel("networkcheckchannel", context.getString(R.string.notification_channel_networkcheck), NotificationManager.IMPORTANCE_LOW);
+            channel.enableLights(false);
+            channel.enableVibration(false);
+            channel.setDescription(context.getString(R.string.notification_channel_networkcheck_description));
+            channel.setLockscreenVisibility(Notification.VISIBILITY_SECRET);
+            channel.setImportance(NotificationManager.IMPORTANCE_LOW);
+            channel.setShowBadge(false);
+            notificationManager.createNotificationChannel(channel);
+        }
+        return "networkcheckchannel";
+    }
+
     public static String createImportantChannel(Context context) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationManager notificationManager = Utils.requireNonNull((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE));
@@ -288,60 +297,54 @@ public final class Util {
         }
     }
 
-    public static void runBackgroundConnectivityCheck(Context context, boolean handleInitialState){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LogFactory.writeMessage(context, LOG_TAG, "Using JobScheduler");
-            if(isJobRunning(context, 0)){
-                LogFactory.writeMessage(context, LOG_TAG, "Job is already running/scheduled, not doing anything");
-                return;
-            }
-            PersistableBundle extras = new PersistableBundle();
-            extras.putBoolean("initial", handleInitialState);
-            JobScheduler scheduler = Utils.requireNonNull((JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE));
-            scheduler.schedule(new JobInfo.Builder(0, new ComponentName(context, ConnectivityJobAPI21.class)).setPersisted(true)
-                    .setRequiresCharging(false).setMinimumLatency(0).setOverrideDeadline(0).setExtras(extras).build());
-        } else {
-            LogFactory.writeMessage(context, LOG_TAG, "Starting Service (Util below 21)");
-            context.startService(new Intent(context, ConnectivityBackgroundService.class).putExtra("initial", handleInitialState));
-        }
-    }
-
-    public static void stopBackgroundConnectivityCheck(Context context){
-        LogFactory.writeMessage(context, LOG_TAG, "Stopping the background connectivity check..");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LogFactory.writeMessage(context, LOG_TAG, "Using JobScheduler");
-            if(isJobRunning(context, 0)){
-                LogFactory.writeMessage(context, LOG_TAG, "Job is running, stopping..");
-                JobScheduler scheduler = Utils.requireNonNull((JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE));
-                scheduler.cancel(0);
-            }else {
-                LogFactory.writeMessage(context, LOG_TAG, "Job is not running, thus not stopping.");
-            }
-        } else {
-            if(isBackgroundConnectivityCheckRunning(context)){
-                LogFactory.writeMessage(context, LOG_TAG, "Stopping Service (API below 21)");
-                context.stopService(new Intent(context, ConnectivityBackgroundService.class));
+    public static void runBackgroundConnectivityCheck(Context context, boolean handleInitialState) {
+        if(shouldRunNetworkCheck(context) && !Util.isServiceRunning(context)) {
+            Intent serviceIntent = new Intent(context, ConnectivityBackgroundService.class).putExtra("initial", handleInitialState);
+            if(PreferencesAccessor.runConnectivityCheckWithPrivilege(context)) {
+                startForegroundService(context, serviceIntent);
             } else {
-                LogFactory.writeMessage(context, LOG_TAG, "Service is not running, thus not stopping.");
+                context.startService(serviceIntent);
             }
         }
     }
 
-    public static boolean isBackgroundConnectivityCheckRunning(@NonNull Context context){
+    public static void startForegroundService(Context context, Intent serviceIntent) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            return isJobRunning(context, 0);
+            context.startForegroundService(serviceIntent);
         } else {
-            return Utils.isServiceRunning(context, ConnectivityBackgroundService.class);
+            context.startService(serviceIntent);
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private static boolean isJobRunning(@NonNull Context context, @IntRange(from = 0) int jobID){
-        JobScheduler scheduler = Utils.requireNonNull((JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE));
-        for ( JobInfo jobInfo : scheduler.getAllPendingJobs())
-            if (jobInfo.getId() == jobID) return true;
-        return false;
+    public static void stopBackgroundConnectivityCheck(Context context) {
+        LogFactory.writeMessage(context, LOG_TAG, "Stopping the background connectivity check..");
+        if (isBackgroundConnectivityCheckRunning(context)) {
+            LogFactory.writeMessage(context, LOG_TAG, "Stopping Service");
+            context.stopService(new Intent(context, ConnectivityBackgroundService.class));
+        } else {
+            LogFactory.writeMessage(context, LOG_TAG, "Service is not running, thus not stopping.");
+        }
+    }
+
+    @Nullable
+    public static NetworkCheckHandle maybeCreateNetworkCheckHandle(@NonNull Context context, String logTag, boolean handleInitialState) {
+        if(shouldRunNetworkCheck(context)) {
+            return new NetworkCheckHandle(context, logTag, handleInitialState);
+        } else {
+            return null;
+        }
+    }
+
+    public static boolean shouldRunNetworkCheck(@NonNull Context context) {
+        Preferences pref = Preferences.getInstance(context);
+        return pref.getBoolean("setting_auto_wifi", false) ||
+                pref.getBoolean("setting_auto_mobile", false) ||
+                pref.getBoolean("setting_disable_netchange", false) ||
+                pref.getBoolean("start_service_when_available", false);
+    }
+
+    public static boolean isBackgroundConnectivityCheckRunning(@NonNull Context context) {
+        return Utils.isServiceRunning(context, ConnectivityBackgroundService.class);
     }
 
     /**

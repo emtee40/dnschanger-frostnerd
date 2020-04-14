@@ -75,7 +75,7 @@
     <string name="title_pin_app">App schützen</string>
     <string name="summary_pin_app">Nach der Pin fragen, wenn die App geöffnet wird</string>
     <string name="title_category_pin">Pin</string>
-    <string name="summary_version">Version [[version]] ([[code]])\n\n© Daniel Wolf 2017\nAll rights reserved\nBrazilianische Übersetzung von Lukinhas\nChinesische Übersetzung von Majida Whale</string>
+    <string name="summary_version">Version [[version]] ([[code]])\n\n© Daniel Wolf 2020\nAll rights reserved\nBrazilianische Übersetzung von Lukinhas\nChinesische Übersetzung von Majida Whale</string>
     <string name="usage_stats_info_text">Um DNS Changer automatisch zu pausieren, wenn sich eine bestimmte App im Vordergrund befindet, wird Zugriff auf die Nutzungsdaten benötigt.\n\nBitte gewähre DNSChanger im nächsten Fenster Zugriff auf diese Daten, oder du wirst diese Einstellung nicht nutzen können.\n\n\nEs werden keine Daten außer den aktuell laufenden Apps angefordert. Es werden keine Daten gespeichert oder übertragen.\nDer SourceCode ist öffentlich unter https://git.frostnerd.com/PublicAndroidApps/DnsChanger verfügbar, wenn du selber sichergehen willst.</string>
     <string name="title_remove_usage_data">Zugriff auf Nutzungsdaten deaktivieren</string>
     <string name="summary_remove_usage_data">Zugriff auf die Nutzungsdaten wurde gewährt. Klicke hier, um diese Berechtigung zurückzuziehen.</string>
@@ -191,7 +191,7 @@
     <string name="nav_title_tiles">Schnelleinstellung</string>
     <string name="nav_title_pin_protection">Pin-schutz</string>
     <string name="nav_title_more">Und mehr</string>
-    <string name="about_text">Diese App ist quelloffen. Der Quellcode kann unter git.frostnerd.com eingesehen werden.\nEs werden Icons von Google benutzt (Material icon pack - https://material.io/icons).\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2017\nAll rights reserved.\n\nBrasilianische Übersetzung von Lukinhas</string>
+    <string name="about_text">Diese App ist quelloffen. Der Quellcode kann unter git.frostnerd.com eingesehen werden.\nEs werden Icons von Google benutzt (Material icon pack - https://material.io/icons).\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2020\nAll rights reserved.\n\nBrasilianische Übersetzung von Lukinhas</string>
     <string name="close">Schließen</string>
     <string name="info_text_how_does_it_work">Android erlaubt es, primäre und sekundäre DNS Server in den WLAN Einstellungen festzulegen - Allerdings nicht für mobile Netze. Zusätzlich bringt diese weitere Nachteile mit sich, zum Beispiel, dass eine statische IP-Adresse genutzt werden muss, kein IPv6 verwendet werden kann und weitere im Vergleich zu dieser App.\n\nDiese App benutzt die VPN-Struktur von Android, um die DNS server dynamisch zu setzen. Um dies zu erreichen, wird ein lokaler VPN erstellt, welcher das eigene Gerät als Endpunkt nutzt - dies bedeutet, dass diese VPN-Verbindung das Gerät nicht verlässt und von außerhalb auch nicht erkennbar ist.\nDa dieser Dummy-VPN jederzeit gestartet/gestoppt werden kann, erlaubt es eine Fülle an Automatisierungen und Verbesserungen. Es werden keine Daten aus dem VPN abgegriffen.\n\nBist du in die technische Seite hiervon interessiert, besuche mein Git unter git.frostnerd.com.</string>
     <string name="create_one">Eine erstellen</string>
@@ -335,4 +335,14 @@
     <string name="summary_vpndialog_missing">Diesem Gerät scheint die Fähigkeit zu fehlen, einen Dummy-VPN aufzubauen. Da diese App voll und ganz auf diese angewiesen ist, funktioniert sie leider nicht.</string>
 
     <string name="message_user_restricted">Kann VPN nicht starten, das Nutzerprofil scheint eingeschränkt zu sein.</string>
+    <string name="nebulo_no_browser">Du scheinst keinen Browser installiert zu haben</string>
+    <string name="notification_connectivity_service">Hintergrund Verbindungsprüfung</string>
+    <string name="notification_restartconnectivity_service">Starte Verbindungsprüfung neu</string>
+    <string name="notification_connectivity_service_message">Verbindungsprüfung läuft. Diese Benachrichtigung verschwindet bald.</string>
+    <string name="notification_connectivity_service_message_disable">Klicke hier zum deaktivieren</string>
+    <string name="notification_channel_networkcheck">Channel für Verbindungsprüfung</string>
+    <string name="notification_channel_networkcheck_description">Dieser Channel wird für die Verbindungsprüfung genutzt. Er kann bedenkenlos deaktiviert werden.</string>
+
+    <string name="summary_priv_mode">Die Automatierung mit höheren Rechten starten. Dies erhöht möglicherweise die Stabilität.</string>
+    <string name="title_priv_mode">Previligierter Modus</string>
 </resources>

@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+import androidx.preference.EditTextPreference;
 import androidx.preference.SwitchPreference;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
@@ -28,9 +29,13 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.appcompat.widget.SearchView;
+
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.EditText;
+
 import com.frostnerd.design.DesignUtil;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.DNSChanger;
@@ -468,7 +473,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                         return true;
                     }
                 });
-
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !preferences.contains("automation_priv_mode_set")) {
+            ((CheckBoxPreference)findPreference("automation_priv_mode")).setChecked(true);
+            preferences.putBoolean("automation_priv_mode_set", true);
+        }
     }
 
     private final Preference.OnPreferenceChangeListener autoSettingsChanged = new Preference.OnPreferenceChangeListener() {
@@ -476,10 +484,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             Preferences.getInstance(requireContext()).put(preference.getKey(), newValue);
             boolean running = Util.isBackgroundConnectivityCheckRunning(requireContext());
-            Preferences pref = Preferences.getInstance(requireContext());
-            boolean run = pref.getBoolean("setting_auto_wifi", false) ||
-                    pref.getBoolean("setting_auto_mobile", false) ||
-                    pref.getBoolean("setting_disable_netchange", false);
+            boolean run = Util.shouldRunNetworkCheck(requireContext());
 
             if(run && !running){
                 Util.runBackgroundConnectivityCheck(requireContext(), false);

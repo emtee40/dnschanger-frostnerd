@@ -24,71 +24,60 @@
             android:paddingEnd="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin">
 
-            <com.frostnerd.materialedittext.MaterialEditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/met_dns1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:allowCollapse="false"
-                app:animationDuration="0"
-                app:iconTint="?attr/foregroundElementColor"
-                app:image="@drawable/ic_language"
-                app:indicatorState="undefined"
-                app:indicatorVisibilityWhenUnused="hidden"
-                app:labelColorPrimary="?attr/foregroundElementColor"
-                app:labelColorSecondary="?attr/foregroundElementColor"
-                app:revealDelay="0"
-                app:revealType="revealInstant">
+                android:textColorHint="?android:attr/textColorSecondary"
+                app:errorEnabled="true"
+                android:hint="@string/hint_dns1"
+                app:startIconDrawable="@drawable/ic_language_24dp"
+                app:startIconTint="?attr/foregroundElementColor">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/dns1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:digits="0123456789."
-                    android:textColor="?attr/foregroundElementColor"
-                    android:hint="@string/hint_dns1"
                     android:imeOptions="actionNext"
                     android:inputType="numberDecimal"
                     android:nextFocusDown="@+id/dns2"
                     android:nextFocusForward="@+id/dns2"
-                    android:text="@string/default_dns1" />
-            </com.frostnerd.materialedittext.MaterialEditText>
+                    android:text="@string/default_dns1"
+                    android:textColor="?attr/foregroundElementColor" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-            <com.frostnerd.materialedittext.MaterialEditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/met_dns2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:allowCollapse="false"
-                app:animationDuration="0"
-                app:iconTint="?attr/foregroundElementColor"
-                app:image="@drawable/ic_language"
-                app:indicatorState="undefined"
-                app:indicatorVisibilityWhenUnused="hidden"
-                app:labelColorPrimary="?attr/foregroundElementColor"
-                app:labelColorSecondary="?attr/foregroundElementColor"
-                app:revealDelay="0"
-                app:revealType="revealInstant">
+                android:textColorHint="?android:attr/textColorSecondary"
+                app:errorEnabled="true"
+                android:hint="@string/hint_dns2"
+                app:hintTextColor="?attr/foregroundElementColor"
+                app:startIconDrawable="@drawable/ic_language_24dp"
+                app:startIconTint="?attr/foregroundElementColor">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/dns2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:digits="0123456789."
-                    android:hint="@string/hint_dns2"
                     android:imeOptions="actionDone"
-                    android:textColor="?attr/foregroundElementColor"
                     android:inputType="numberDecimal"
+                    android:nextFocusUp="@id/dns1"
                     android:nextFocusDown="@id/default_dns_view"
                     android:nextFocusForward="@id/default_dns_view"
-                    android:nextFocusUp="@id/dns1"
-                    android:text="@string/default_dns2" />
-            </com.frostnerd.materialedittext.MaterialEditText>
+                    android:text="@string/default_dns2"
+                    android:textColor="?attr/foregroundElementColor" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:id="@+id/default_dns_view"
+                android:background="?attr/roundedCornerBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/inputElementColor"
                 android:clickable="true"
                 android:focusable="true"
                 android:nextFocusDown="@id/startStopButton"
@@ -145,6 +134,7 @@
             android:id="@+id/connection_status_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="?attr/foregroundElementColor"
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
@@ -173,6 +163,7 @@
 
         <Button
             android:id="@+id/startStopButton"
+            android:background="?attr/roundedCornerBackground"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -180,7 +171,6 @@
             android:nextFocusForward="@id/dns1"
             android:nextFocusDown="@id/dns1"
             android:layout_marginTop="15dp"
-            android:background="?attr/cardColor"
             android:text="@string/start"
             android:textColor="#FFF" />
     </LinearLayout>

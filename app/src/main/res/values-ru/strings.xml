@@ -6,7 +6,7 @@
 Версия [[version]]
 Сборка [[build]]
 
-© Daniel Wolf 2017
+© Daniel Wolf 2020
 Все права защищены.
 https://git.frostnerd.com/PublicAndroidApps/DnsChanger
 
@@ -300,7 +300,7 @@ https://git.frostnerd.com/PublicAndroidApps/DnsChanger
     <string name="summary_upstream_query_logging">Сохранить IP-адрес, на который сервер отвечает на запрос</string>
     <string name="summary_version">"Версия [[версия]] ([[код]])
 
-© Daniel Wolf 2017
+© Daniel Wolf 2020
 Все права защищены
 
 Русский перевод papasha55

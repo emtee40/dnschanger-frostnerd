@@ -1,23 +1,16 @@
-image: openjdk:8-jdk
-variables:
-  ANDROID_COMPILE_SDK: "28"
-  ANDROID_BUILD_TOOLS: "28.0.2"
-  ANDROID_SDK_TOOLS: "26.1.1"
-  AVD_NAME: test
-  DEV_DEPLOY_DIR: /var/www/frostnerd/download/appbuilds/dnschanger/ci/dev
-  RELEASE_DEPLOY_DIR: /var/www/frostnerd/download/appbuilds/dnschanger/ci/releases
-  
+image: thyrlian/android-sdk
+
 before_script:
-  - source /home/public/android-sdk-linux/initAndroid.sh -s ${ANDROID_COMPILE_SDK} -b ${ANDROID_BUILD_TOOLS}
+  - chmod +x gradlew
   
 stages:
   - build
-  - webdeploy
 
 build:
   stage: build
   script:
-    - /./home/public/gitrunner/changeAppVersion.sh app/build.gradle " $CI_COMMIT_REF_NAME\_$CI_PIPELINE_ID" --append
+    - chmod +x changeVersion.sh
+    - ./changeVersion.sh app/build.gradle " $CI_COMMIT_REF_NAME\_$CI_PIPELINE_ID" --append
     - ./gradlew assembleDebug --stacktrace
   artifacts:
     paths:
@@ -32,34 +25,35 @@ build:
 build_release:
   stage: build
   script:
-   - ./gradlew clean check assembleRelease --stacktrace -Pandroid.injected.signing.store.file=$KEYSTORE_FILE -Pandroid.injected.signing.store.password=$KEYSTORE_PASSWORD -Pandroid.injected.signing.key.alias=$KEYSTORE_KEY_NAME -Pandroid.injected.signing.key.password=$KEYSTORE_KEY_PASSWORD -x test
+    - wget -O $KEYSTORE_FILE $KEYSTORE_URL -q
+    - ./gradlew clean check assembleRelease --stacktrace -Pandroid.injected.signing.store.file=$KEYSTORE_FILE -Pandroid.injected.signing.store.password=$KEYSTORE_PASSWORD -Pandroid.injected.signing.key.alias=$KEYSTORE_KEY_NAME -Pandroid.injected.signing.key.password=$KEYSTORE_KEY_PASSWORD -x test
   artifacts:
     paths:
     - app/build/outputs/apk/release/app-release.apk
 
-upload:
-  stage: webdeploy
-  script:
-    - cp -f app/build/outputs/apk/debug/app-debug.apk $DEV_DEPLOY_DIR/$CI_COMMIT_REF_NAME-$CI_PIPELINE_ID.apk
-    - /./home/public/gitrunner/logCIBuilds.sh $DEV_DEPLOY_DIR
-    - ln -s -f $DEV_DEPLOY_DIR/$CI_COMMIT_REF_NAME-$CI_PIPELINE_ID.apk $DEV_DEPLOY_DIR/0_latest_$CI_COMMIT_REF_NAME.apk
-  except:
-    - /^no_ci.*$/
-    - /^no_deploy.*$/
-    - /^no_tests_no_deploy.*$/
-    - /^no_build_no_deploy.*$/
-    - /^no_build.*$/ 
-    - release
-  artifacts:
-    paths:
-    - $DEV_DEPLOY_DIR/$CI_COMMIT_REF_NAME-$CI_PIPELINE_ID.apk
+#upload:
+#  stage: webdeploy
+#  script:
+#    - cp -f app/build/outputs/apk/debug/app-debug.apk $DEV_DEPLOY_DIR/$CI_COMMIT_REF_NAME-$CI_PIPELINE_ID.apk
+#    - /./home/public/gitrunner/logCIBuilds.sh $DEV_DEPLOY_DIR
+#    - ln -s -f $DEV_DEPLOY_DIR/$CI_COMMIT_REF_NAME-$CI_PIPELINE_ID.apk $DEV_DEPLOY_DIR/0_latest_$CI_COMMIT_REF_NAME.apk
+#  except:
+#    - /^no_ci.*$/
+#    - /^no_deploy.*$/
+#    - /^no_tests_no_deploy.*$/
+#    - /^no_build_no_deploy.*$/
+#    - /^no_build.*$/
+#    - release
+#  artifacts:
+#    paths:
+#    - $DEV_DEPLOY_DIR/$CI_COMMIT_REF_NAME-$CI_PIPELINE_ID.apk
     
-upload_release:
-  stage: webdeploy
-  script:
-    - cp -f app/build/outputs/apk/release/app-release.apk $RELEASE_DEPLOY_DIR/$(/./home/public/gitrunner/determineAppVersionName.sh app/build/outputs/apk/release/app-release.apk).apk
-  only:
-    - release
+#upload_release:
+#  stage: webdeploy
+#  script:
+#    - cp -f app/build/outputs/apk/release/app-release.apk $RELEASE_DEPLOY_DIR/$(/./home/public/gitrunner/determineAppVersionName.sh app/build/outputs/apk/release/app-release.apk).apk
+#  only:
+#    - release
 
 #functionalTests:
 #  stage: test
