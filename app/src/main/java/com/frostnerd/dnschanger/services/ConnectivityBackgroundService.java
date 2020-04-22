@@ -112,7 +112,7 @@ public class ConnectivityBackgroundService extends Service {
         if(!stayEnabled || Util.isServiceRunning(this)) {
             handler.removeCallbacks(restartCallback);
         } else if(enabled && !restartingSelf) {
-            Util.runBackgroundConnectivityCheck(this, true);
+            if(PreferencesAccessor.runConnectivityCheckWithPrivilege(this)) Util.runBackgroundConnectivityCheck(this, true);
         } else if(!enabled && restartCallback != null) {
             handler.removeCallbacks(restartCallback);
         }
