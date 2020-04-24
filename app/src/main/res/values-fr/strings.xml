@@ -185,4 +185,32 @@
     <string name="notification_reason_stopped">Le changeur de DNS a été automatiquement arrêté : [reason]</string>
     <string name="reason_stop_network_change">Réseau modifié (DNS Changer est réglé pour s\'arrêter)</string>
     <string name="summary_pin_app_shortcut">Demandez le code PIN lorsque vous démarrez/arrêtez les raccourcis de l\'application</string>
+    <string name="add">Ajouter</string>
+    <string name="deselect_all">Désélectionner tout</string>
+    <string name="title_enable_ipv6">Activer IPv6</string>
+    <string name="summary_enable_ipv6">Activez IPv6. Cela permet de fournir des adresses ipv6 à utiliser comme serveurs dns.</string>
+    <string name="new_entry">Nouvelle entrée</string>
+    <string name="title_exclude_apps">Exclure les applications du VPN</string>
+    <string name="summary_exclude_apps">Exclure les applications installées de l\'utilisation de la connexion VPN créée en interne. Cela ne leur appliquera pas les serveurs DNS</string>
+    <string name="excluded_apps_info_text_blacklist">Chaque application sélectionnée dans le cadre ci-dessus n\'utilisera pas le VPN interne. Les serveurs DNS ne leur seront pas non plus appliqués.</string>
+    <string name="title_about">À propos de</string>
+    <string name="search">Recherchez</string>
+    <string name="title_reset">Réinitialiser</string>
+    <string name="summary_reset">Réinitialise tous les paramètres et les serveurs dns sauvegardés. Les raccourcis et les actions du tasker ne sont pas supprimés.</string>
+    <string name="reset_warning_text">Voulez-vous vraiment réinitialiser tous les paramètres \?
+\nCela ne peut pas être inversé.</string>
+    <string name="title_theme">Thème</string>
+    <string name="summary_theme">Définit le thème de cette application</string>
+    <string name="remove">Supprimer</string>
+    <string name="whitelist">Liste blanche</string>
+    <string name="select_all">Sélectionner tout</string>
+    <string name="reason_stop_exception">Exception en cours d\'exécution</string>
+    <string name="reason_stop_tasker">Arrêté par Tasker</string>
+    <string name="invalid_dns_error_text">Il semble que l\'un des serveurs DNS que vous avez configuré ne puisse pas être utilisé sur votre appareil.
+\nSoit vous avez saisi une adresse IP non valide, soit aucun serveur DNS n\'est présent sur l\'adresse IP donnée, soit il s\'agit d\'une erreur temporaire.
+\n
+\nVeuillez vérifier la configuration dans le menu principal et vous assurer que les adresses saisies sont correctes.</string>
+    <string name="default_dns_legal_warning">Tous les fournisseurs présentés ici peuvent être des marques déposées de leurs propriétaires respectifs. Leurs conditions d\'utilisation s\'appliquent.
+\nSachez que les serveurs dns peuvent enregistrer les sites que vous visitez.</string>
+    <string name="excluded_apps_info_text_whitelist">Seules les candidatures sélectionnées dans le cadre ci-dessus utiliseront le VPN interne. Les applications non sélectionnées n\'utiliseront donc pas les serveurs DNS définis par vous.</string>
 </resources>
