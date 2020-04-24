@@ -249,4 +249,125 @@
     <string name="file_hosts">Archivo de Hosts</string>
     <string name="file_adblock">Archivo Adblock (Formato: ||HOST^)</string>
     <string name="x_lines">[x] líneas</string>
+    <string name="default_dns_explain_delete">Haga clic largo en una entrada para borrarla o editarla. Haga clic en las entradas adicionales para borrarlas también.</string>
+    <string name="warning_disabling_v4">La mayoría de las versiones de Android ya no pueden acceder a Internet cuando se ejecuta el DNS Changer y no se proporciona una dirección IPv4. Sin embargo, tendrás que intentarlo con tu dispositivo.</string>
+    <string name="unfixable_error_explaination">El trabajador de fondo se estrelló con una excepción presente en algunos dispositivos. Este accidente no puede ser arreglado por la propia aplicación.
+\nO bien intenta reiniciar la aplicación y si eso no ayuda, intenta reiniciar tu dispositivo.
+\n
+\nSi el problema persiste y su dispositivo está enraizado, intente descargar la aplicación Tun.ko Installer, ya que podría ser capaz de arreglarlo. El desarrollador de esta aplicación es DroidVPN Inc.
+\nEnlace: https://play.google.com/store/apps/details\?id=com.aed.tun.installer</string>
+    <string name="info_text_how_does_it_work">Android te permite configurar servidores DNS en la configuración wifi, pero no para conexiones móviles (3G, 4G...). Sin embargo, esto requiere que uses una dirección IP estática, no permite cambiar fácilmente y no funcionará con IPv6, entre otras desventajas en comparación con esta aplicación.
+\n
+\nEsta aplicación aprovecha la estructura VPN de Androides que permite a los dispositivos configurar servidores DNS dinámicamente. Para conseguirlo se crea un vpn local que utiliza el mismo dispositivo como punto final, lo que significa que la conexión vpn no se conecta a la propia Internet, ni es detectable desde el exterior.
+\nComo esta vpn ficticia puede ser iniciada/parada dinámicamente, permite una serie de características y automatización. Esta VPN no está intervenida y no se leen datos. Es sólo un intermediario en el cambio de los servidores DNS.
+\n
+\nSi estás interesado en el lado técnico de esto, visita mi git en git.frostnerd.com.</string>
+    <string name="feature_shortcuts">Con esta aplicación puedes crear atajos en tu pantalla de inicio. Estos accesos directos contienen la configuración de DNS y cambian los servidores DNS haciendo clic en ellos sin necesidad de abrir la aplicación.
+\nEsto los hace particularmente convenientes si quieres alternar rápidamente entre diferentes servidores: sólo tienes que crear un montón de atajos y dejarlos en tu pantalla de inicio.
+\n
+\nPuedes configurar el comportamiento de ellos en los ajustes.</string>
+    <string name="permissions_label_access_data">Datos de acceso</string>
+    <string name="summary_pin_fingerprint">Permitir la autenticación mediante cualquier huella dactilar guardada</string>
+    <string name="summary_rules_activated">Utilice las reglas configuradas en el menú principal</string>
+    <string name="error_rule_already_exists">La regla ya existe</string>
+    <string name="show_local_entries">Mostrar las reglas de resolución a una dirección de loopback</string>
+    <string name="information_advanced_settings_warranty">Para implementar las características enumeradas a continuación todos los paquetes DNS enviados son interceptados y modificados. Esto puede aumentar el uso de la batería y la memoria RAM.
+\n
+\nEl uso bajo su propio riesgo, no se ofrece ninguna garantía. Al hacer clic en Aceptar aceptas que el autor de esta aplicación no es responsable de ningún daño que pueda resultar.</string>
+    <string name="file_justdomains">Archivo de la lista de dominios</string>
+    <string name="select_files">Seleccionar archivo(s)</string>
+    <string name="importing_x_rules">Importando [x] reglas</string>
+    <string name="rules_import_finished">Se leyeron [x] líneas, [y] de las cuales eran válidas y [z] entradas distintas (nuevas).</string>
+    <string name="disable_failfast_info">Desactivar fallar rápidamente si el tipo no puede ser detectado. Como esto lleva más tiempo, intente especificar el tipo usted mismo.</string>
+    <string name="summary_export_queries">Exporta todas las consultas de un archivo de texto a una carpeta de su elección</string>
+    <string name="summary_tcp_timeout">Establece el tiempo en milisegundos después del cual la aplicación deja de intentar alcanzar el servidor DNS de subida</string>
+    <string name="deselect_all">Deseleccionar todo</string>
+    <string name="title_pin_app_shortcut">Proteger los atajos de la aplicación</string>
+    <string name="title_enable_app_shortcuts">Habilitar los atajos de la aplicación</string>
+    <string name="summary_enable_app_shortcuts">Activa los atajos de la aplicación. Clic largo en el atajo de aplicaciones en el lanzador para abrir el menú</string>
+    <string name="notification_x_whitelisted">[x] aplicaciones en la lista blanca</string>
+    <string name="notification_x_blacklisted">[x] aplicaciones en la lista negra</string>
+    <string name="summary_enable_ipv4">Activar IPv4. Esto permite proporcionar direcciones ipv4 para usarlas como servidores dns</string>
+    <string name="title_enable_ipv4">Habilitar IPv4</string>
+    <string name="tile_pause_resume">Pausa / Reanudar</string>
+    <string name="tile_start_stop">Inicio / Parada</string>
+    <string name="title_vpn_exclusion">Exclusión de VPN</string>
+    <string name="search_hint">Busca un escenario</string>
+    <string name="nav_title_dns">DNS</string>
+    <string name="nav_title_main">Pantalla principal</string>
+    <string name="nav_title_learn">Aprende</string>
+    <string name="nav_title_how_does_it_work">¿Cómo funciona\?</string>
+    <string name="nav_title_what_is_dns">¿Qué es el DNS\?</string>
+    <string name="nav_title_features">Características</string>
+    <string name="nav_title_tiles">Baldosas</string>
+    <string name="nav_title_more">Y más</string>
+    <string name="close">Cerrar</string>
+    <string name="notification_channel_default">Canal por defecto</string>
+    <string name="notification_channel_default_description">Canal por defecto para la publicación de notificaciones.</string>
+    <string name="no_disable_android_o">Esto no puede ser desactivado en el Androide O y superior.</string>
+    <string name="blacklist">Lista negra</string>
+    <string name="easter_egg">No hay huevos de pascua aquí. Váyanse.</string>
+    <string name="cardview_title">Deshabilitar todas las funciones</string>
+    <string name="cardview_text">Haga clic aquí para desactivar todo - Automatización y funcionalidad (sólo temporal)</string>
+    <string name="cardview_text_disabled">La funcionalidad está desactivada. Haga clic aquí para volver a activarla (ocurre automáticamente al reiniciar)</string>
+    <string name="info_functionality_disabled">Toda la funcionalidad ha sido desactivada por usted. Vuelva a activarla en el menú del lado para empezar.</string>
+    <string name="nav_title_dns_query">Consulta del DNS</string>
+    <string name="hint_dns_lookup">Búsqueda de DNS</string>
+    <string name="run_query">Ejecutar consulta</string>
+    <string name="query_title_name">Nombre</string>
+    <string name="query_title_ttl">TTL</string>
+    <string name="query_title_dclass">Clase D</string>
+    <string name="query_title_answer">Respuesta</string>
+    <string name="query_destination_info">La consulta será enviada a [x]</string>
+    <string name="query_error_occured">Se produjo un error: [error]</string>
+    <string name="question_enable_ipv6">¿Quieres habilitar el IPv6\?</string>
+    <string name="nav_title_libraries">Bibliotecas</string>
+    <string name="dialog_libraries_text">Esta aplicación contiene bibliotecas creadas por terceros. Las bibliotecas, sus creadores y las licencias se enumeran a continuación.</string>
+    <string name="title_disable_notification_icon">Icono de notificación de desactivación</string>
+    <string name="summary_disable_notification_icon">Desactiva el icono dns que aparece en la barra de notificación. Seguirá visible al abrir el área de notificación, puede que no funcione en las versiones más recientes de Android.</string>
+    <string name="notification_channel_hiddenicon">Canal sin icono</string>
+    <string name="notification_channel_hiddenicon_description">Este canal no muestra ningún icono en la barra de notificación</string>
+    <string name="notification_ipv6_text">Ve a los ajustes si quieres habilitar el IPv6.</string>
+    <string name="mail_debug_text">Escriba un pequeño mensaje describiendo por qué envía los archivos de registro</string>
+    <string name="edit">Edita</string>
+    <string name="new_features">Nuevas características</string>
+    <string name="title_pin_fingerprint">Huella dactilar</string>
+    <string name="checking_connectivity">Comprobando la conectividad</string>
+    <string name="dialog_connectivity_description">Comprobando si los servidores DNS son accesibles</string>
+    <string name="summary_check_connectivity">Comprobar si los servidores DNS configurados son accesibles cada vez que se pulsa el botón de inicio</string>
+    <string name="title_check_connectivity">Comprobar la conectividad</string>
+    <string name="summary_custom_ports">Permitir la entrada de puertos personalizados en los campos DNS.</string>
+    <string name="title_advanced_settings">Configuración avanzada</string>
+    <string name="summary_jump_advanced_settings">Haga clic aquí para configurar los ajustes avanzados.</string>
+    <string name="summary_advanced_settings">Activar la configuración avanzada</string>
+    <string name="nav_title_advanced">Avanzado</string>
+    <string name="nav_title_rules">Reglas</string>
+    <string name="title_rules_activated">Reglas locales</string>
+    <string name="target">Objetivo</string>
+    <string name="normal">Normal</string>
+    <string name="filter">Filtro</string>
+    <string name="new_rule">Nueva regla</string>
+    <string name="regular_expression">Expresión regular (RegEx)</string>
+    <string name="both">Ambos</string>
+    <string name="delete">Eliminar</string>
+    <string name="search_by_target">Buscar por objetivo</string>
+    <string name="x_entries">[x] entradas</string>
+    <string name="import_rules">Importación</string>
+    <string name="file_dnsmasq">El archivo Dnsmasq</string>
+    <string name="detect_rule_type">Trata de detectar el tipo</string>
+    <string name="rule_unknown_ignoring">Desconocido, ignorando</string>
+    <string name="fail_fast">Falla rápido</string>
+    <string name="loading">Cargando</string>
+    <string name="wait_importing_rules">Detección de tipos de archivos, por favor espere...</string>
+    <string name="title_query_logging">Registro de consultas</string>
+    <string name="summary_query_logging">Registra todas las consultas DNS cuando la aplicación se está ejecutando</string>
+    <string name="title_export_queries">Consultas de exportación</string>
+    <string name="show_normal_entries">Mostrar las entradas normales</string>
+    <string name="show_wildcard_entries">Mostrar entradas con comodines</string>
+    <string name="sql_actions">Acciones SQL</string>
+    <string name="title_dns_over_tcp">DNS sobre TCP</string>
+    <string name="summary_dns_over_tcp">Reenvía las consultas DNS usando TCP, no UDP</string>
+    <string name="title_tcp_timeout">Tiempo de espera del TCP</string>
+    <string name="nav_title_query_log">Bitácora de consultas</string>
+    <string name="dont_show_again">No vuelvas a aparecer.</string>
 </resources>
