@@ -1,4 +1,5 @@
-﻿<resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
     <string name="app_name">DNS Changer</string>
     <string name="start">Iniciar</string>
     <string name="stop">Parar</string>
@@ -79,7 +80,6 @@
     <string name="title_remove_usage_data">Remover Acesso aos Dados de Uso</string>
     <string name="summary_remove_usage_data">O acesso aos dados de uso foi concedido. Clique aqui para revogar essa permissão.</string>
     <string name="autopause_appselect_info_text">Cada app marcado irá pausar DNS Changer automaticamente quando estiver na frente. Isto pode ser útil como por exemplo, os aplicativos da loja não podem ser baixados quando executados com um DNS alterado.</string>
-
     <string-array name="tasker_configure_actions">
         <item>Iniciar DNS Changer</item>
         <item>Parar DNS Changer</item>
@@ -153,7 +153,6 @@
     <string name="reset_warning_text">Você realmente deseja redefinir todas as configurações?\nIsso não pode ser revertido.</string>
     <string name="title_theme">Tema</string>
     <string name="summary_theme">Defina o tema deste app</string>
-
     <string-array name="theme">
         <item>Padrão</item>
         <item>Azul</item>
@@ -326,4 +325,20 @@
     <string name="cancel">Cancelar</string>
     <string name="summary_upstream_query_logging">Salve o endereço IP que o servidor responde a uma consulta</string>
     <string name="title_upstream_query_logging">Registro de consulta upstream</string>
+    <string name="nebulo_download_text">Eu criei um novo aplicativo chamado Nebulo, um aplicativo open-source e livre de anúncios para dns-over-https e dns-over-tls. Está na loja.
+\nQueres dar uma vista de olhos\? Clicando em sim, abre a loja.</string>
+    <string name="summary_disable_crashreporting">Desactivar a comunicação automática de colisões. Os relatórios contêm apenas a versão do aplicativo, a versão do Android e o stacktrace do crash e nenhum dado pessoal.</string>
+    <string name="title_disable_crashreporting">Relatório de acidente</string>
+    <string name="title_vpndialog_missing">VPN em falta</string>
+    <string name="summary_vpndialog_missing">O seu dispositivo parece estar a faltar a capacidade de executar uma VPN. Como este aplicativo depende totalmente desta funcionalidade, você infelizmente não será capaz de usá-lo.</string>
+    <string name="message_user_restricted">Não pode iniciar o VPN, seus usuários parecem estar restritos.</string>
+    <string name="nebulo_no_browser">Você parece não ter um navegador ou a loja instalada.</string>
+    <string name="notification_connectivity_service">Verificação de conectividade de fundo</string>
+    <string name="notification_restartconnectivity_service">Reiniciar a verificação de conectividade</string>
+    <string name="notification_connectivity_service_message">A executar verificação de conectividade. Esta notificação vai desaparecer em breve.</string>
+    <string name="notification_connectivity_service_message_disable">Clique aqui para desativar a notificação</string>
+    <string name="notification_channel_networkcheck">Verificação do Canal para Conectividade</string>
+    <string name="notification_channel_networkcheck_description">Este canal é utilizado para a verificação da conectividade como parte da automatização. Sinta-se à vontade para desativá-lo.</string>
+    <string name="summary_priv_mode">Execute a automação com direitos mais elevados. Pode aumentar a estabilidade dos ajustes de automação.</string>
+    <string name="title_priv_mode">Modo Privilegiado</string>
 </resources>
