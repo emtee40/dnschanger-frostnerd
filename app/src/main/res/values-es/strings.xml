@@ -24,4 +24,12 @@
     <string name="rate">Evaluar</string>
     <string name="title_notification">Notificación</string>
     <string name="settings">Configuración</string>
+    <string name="summary_pin">Habilitar la protección del código pin</string>
+    <string name="title_pin">Código pin</string>
+    <string name="tasker_support">El apoyo de Tasker</string>
+    <string name="dont_ask_again">No preguntes de nuevo</string>
+    <string name="not_now">Ahora no</string>
+    <string name="notification_running">El DNS Changer está activo</string>
+    <string name="notification_paused">DNS Changer está en pausa</string>
+    <string name="title_start_boot">Iniciar en el arranque</string>
 </resources>
