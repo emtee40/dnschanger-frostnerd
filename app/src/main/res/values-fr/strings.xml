@@ -257,7 +257,7 @@
     <string name="query_title_name">Nom</string>
     <string name="query_title_ttl">TTL</string>
     <string name="query_title_dclass">Classe D</string>
-    <string name="query_title_type">Tapez</string>
+    <string name="query_title_type">Type</string>
     <string name="search_hint">Rechercher un paramètre</string>
     <string name="unfixable_error_explaination">Le travailleur de fond s\'est écrasé avec une exception présente sur certains appareils. Ce crash ne peut pas être réparé par l\'application elle-même.
 \nEssayez de redémarrer l\'application et si cela ne vous aide pas, essayez de redémarrer votre appareil.
@@ -291,4 +291,16 @@
 \nTraduction simplifiée en chinois par Majida Whale
 \n
 \nTraduction en vietnamien par Phi</string>
+    <string name="text_dns_configuration">Le réseau [name] dispose des serveurs DNS suivants :
+\n
+\n[servers]</string>
+    <string name="show_wildcard_entries">Afficher les entrées wildcard</string>
+    <string name="file_dnsmasq">Fichier Dnsmasq</string>
+    <string name="file_hosts">Fichier d\'hosts</string>
+    <string name="query_error_occured">Une erreur s\'est produite : [error]</string>
+    <string name="host">Host</string>
+    <string name="no_connectivity_warning_text">Sur [x] serveurs [y] sont inaccessibles :
+\n
+\n[servers]
+\nLe ou les serveurs peuvent être hors ligne, inaccessibles (peut-être n\'êtes-vous pas connecté à un réseau \?) ou bloqués par votre fournisseur d\'accès.</string>
 </resources>
