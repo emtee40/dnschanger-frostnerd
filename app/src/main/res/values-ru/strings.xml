@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_text">"Приложение с открытым исходным кодом. Исходный код можно найти на git.frostnerd.com.
-Используются значки из Google (Material icon pack - https://material.io/icons).
-
-Версия [[version]]
-Сборка [[build]]
-
-© Daniel Wolf 2020
-Все права защищены.
-https://git.frostnerd.com/PublicAndroidApps/DnsChanger
-
-Перевод на русский papasha55
-
-Перевод на бразильский Lukinhas
-
-Перевод на китайский упрощенный Majida Whale
-
-Перевод на вьетнамский Phi "</string>
+    <string name="about_text">Приложение с открытым исходным кодом. Исходный код можно найти на git.frostnerd.com. Используются значки из Google (Material icon pack - https://material.io/icons).
+\n
+\nВерсия [[version]] Сборка [[build]]
+\n
+\n© Daniel Wolf 2020
+\nВсе права защищены. Исходный текст, лицензированный по GPLv3.
+\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger
+\n
+\nПеревод на русский papasha55
+\n
+\nПеревод на бразильский Lukinhas
+\n
+\nПеревод на китайский упрощенный Majida Whale
+\n
+\nПеревод на вьетнамский Phi</string>
     <string name="action_pause">Пауза</string>
     <string name="action_resume">Продолжить</string>
     <string name="action_stop">Остановить</string>
@@ -29,9 +27,10 @@ https://git.frostnerd.com/PublicAndroidApps/DnsChanger
     <string name="app_supports_tasker_text">Приложение поддерживает Tasker и может использоваться как плагин действий для автоматизации использования DNS.</string>
     <string name="autopause_appselect_info_text">Каждое отмеченное Приложение автоматически приостанавливает DNS-чейнджер, находясь спереди.Каждое отмеченное Приложение автоматически приостанавливает DNS-чейнджер, находясь спереди.</string>
     <string name="background">Фон</string>
-    <string name="background_configure_error">"В разрешении на запуск VPN отказано. Это может делать система, запрещающая vpn подключения, запускаемые в фоновом режиме по соображениям безопасности.
-
-Откройте приложение для запуска VPN "</string>
+    <string name="background_configure_error">В разрешении на запуск VPN отказано.
+\nЭто может делать система, запрещающая vpn подключения, запускаемые в фоновом режиме по соображениям безопасности.
+\n
+\nОткройте приложение для запуска VPN</string>
     <string name="blacklist">Черный список</string>
     <string name="both">И то и другое</string>
     <string name="cancel">Отменить</string>
@@ -67,9 +66,9 @@ https://git.frostnerd.com/PublicAndroidApps/DnsChanger
     <string name="dialog_are_you_sure">Вы уверены?</string>
     <string name="dialog_connectivity_description">Проверка доступности серверов DNS</string>
     <string name="dialog_libraries_text">Приложение содержит библиотеки, созданные третьими лицами. Библиотеки, их создатели и лицензии перечислены ниже.</string>
-    <string name="dialog_question_export_shortcuts">"Экспорт ярлыков?
-
-(Экспортирует все ярлыки, созданные с момента установки с помощью этого приложения, даже те, которые уже были удалены) "</string>
+    <string name="dialog_question_export_shortcuts">Экспорт ярлыков\?
+\n
+\n(Экспортирует все ярлыки, созданные с момента установки с помощью этого приложения, даже те, которые уже были удалены)</string>
     <string name="dialog_title_dns_configuration">Конфигурация DNS</string>
     <string name="disable">Отключить</string>
     <string name="disable_failfast_info">Отключить быстро, если тип не может быть обнаружен. Поскольку это требует больше времени, попробуйте указать тип самостоятельно.</string>
@@ -87,10 +86,9 @@ https://git.frostnerd.com/PublicAndroidApps/DnsChanger
     <string name="explain_storage_permission">Для чтения/записи экспортированного файла настроек DNS Changer необходим доступ к вашему хранилищу. Предоставьте ему эти права в следующем диалоговом окне.</string>
     <string name="exported_dns_queries">[x] запросов экспортировано.</string>
     <string name="fail_fast">Не быстро</string>
-    <string name="feature_pin_protection">"Вы можете защищать каждое действие, которое запускает/останавливает/ приостанавливает/возобновляет DNS Changer. Каждый раз, когда один из них должен быть выполнен, открывается диалоговое окно с запросом на установленный вами контакт.
-
-Может быть использовано для того, чтобы помешать пользователям телефонов вмешиваться в приложение, если пользователь не разбирается в технологиях. Это было разработано, чтобы не дать детям остановить приложение.
-Чтобы выбрать, что защищать, откройте настройки. "</string>
+    <string name="feature_pin_protection">Вы можете защищать каждое действие, которое запускает/останавливает/ приостанавливает/возобновляет DNS Changer. Каждый раз, когда один из них должен быть выполнен, открывается диалоговое окно с запросом на установленный вами контакт.
+\n
+\nМожет быть использовано для того, чтобы помешать пользователям телефонов вмешиваться в приложение, если пользователь не разбирается в технологиях. Это было разработано, чтобы не дать детям остановить приложение. Чтобы выбрать, что защищать, откройте настройки.</string>
     <string name="feature_shortcuts">"С помощью этого приложения вы можете создавать ярлыки на главном экране. Эти ярлыки содержат настройки DNS и меняют ваши DNS-серверы, нажимая на них, не открывая приложение.
 Это делает их особенно удобными, если хотите быстро переключаться между разными серверами - просто создайте много ярлыков и сохраните их на главном экране."</string>
     <string name="feature_tiles">"Для быстрого доступа вы можете разместить плитки в области уведомлений. Они могут использоваться для запуска/остановки и паузы/возобновления DNS Changer.
@@ -124,14 +122,14 @@ https://git.frostnerd.com/PublicAndroidApps/DnsChanger
 Поскольку этот фиктивный VPN можно запускать/останавливать динамически, он позволяет использовать целый ряд функций и автоматизацию. Этот VPN не используется, и данные не считываются. Это просто для среднего человека в изменении DNS-серверов.
 
 Если вас интересует техническая сторона этого, посетите мой git на git.frostnerd.com ."</string>
-    <string name="information">Инф.</string>
+    <string name="information">Инф</string>
     <string name="information_advanced_settings_warranty">"Чтобы реализовать перечисленные ниже функции, все отправленные DNS-пакеты перехватываются и изменяются. Это может увеличить использование батареи и ОЗУ.
 
 Используйте на свой страх и риск, никаких гарантий не предоставляется. Нажимая ОК, вы соглашаетесь с тем, что автор этого приложения не несет ответственности за любой ущерб, который может возникнуть."</string>
-    <string name="invalid_dns_error_text">"Похоже, что один из настроенных вами DNS-серверов не может быть использован на вашем устройстве.
-Либо вы указали неверный IP-адрес, и DNS-сервер не присутствует на данном IP-адресе, либо это временная ошибка.
-
-Проверьте конфигурацию в главном меню и убедитесь, что введенные адреса верны. "</string>
+    <string name="invalid_dns_error_text">Похоже, что один из настроенных вами DNS-серверов не может быть использован на вашем устройстве.
+\nЛибо вы указали неверный IP-адрес, и DNS-сервер не присутствует на данном IP-адресе, либо это временная ошибка.
+\n
+\nПроверьте конфигурацию в главном меню и убедитесь, что введенные адреса верны.</string>
     <string name="loading">Загрузка</string>
     <string name="loading_exporting_queries">Экспорт запросов, подождите…</string>
     <string name="mail_debug_text">Напишите небольшое сообщение с описанием причины отправки файлов журнала</string>
@@ -161,10 +159,10 @@ https://git.frostnerd.com/PublicAndroidApps/DnsChanger
     <string name="new_features">Новые возможности</string>
     <string name="new_rule">Новое правило</string>
     <string name="no">Нет</string>
-    <string name="no_connectivity_warning_text">"Из [x] серверов [y] недоступны:
-
-[серверы]
-Возможно, серверы отключены, недоступны (возможно, вы не подключены к сети?) Или заблокировано вашим провайдером. "</string>
+    <string name="no_connectivity_warning_text">Из [x] серверов [y] недоступны:
+\n
+\n[серверы] 
+\nВозможно, серверы отключены, недоступны (возможно, вы не подключены к сети\?) Или заблокировано вашим провайдером.</string>
     <string name="no_disable_android_o">Нельзя отключить на Android O и выше.</string>
     <string name="normal">Нормальный</string>
     <string name="not_now">Не сейчас</string>
@@ -231,11 +229,11 @@ https://git.frostnerd.com/PublicAndroidApps/DnsChanger
 Если вам не хватает функции, нашли ошибку или просто получить общий запрос, не стесняйтесь связаться со мной по адресу support@frostnerd.com
 Исходный код для этого приложения можно посмотреть на https://git.frostnerd.com/PublicAndroidApps/DnsChanger"</string>
     <string name="share_using">Использовать обмен</string>
-    <string name="shortcut_conflict_text">"Приложение настроено на запуск/остановку vpn при изменении типа вашей сети (либо Wi-Fi, либо 3G).
-Может конфликтовать с любым параметром, начиная с ярлыка, если действие может быть переопределено в самом приложении (только один VPN может быть запущен в любой момент времени).
-
-Хотите отключить эти конфликтующие настройки? "</string>
-    <string name="shortcut_created">Ярлык создан</string>
+    <string name="shortcut_conflict_text">Приложение настроено на запуск/остановку vpn при изменении типа вашей сети (либо Wi-Fi, либо 3G).
+\nМожет конфликтовать с любым параметром, начиная с ярлыка, если действие может быть переопределено в самом приложении (только один VPN может быть запущен в любой момент времени).
+\n
+\nХотите отключить эти конфликтующие настройки\?</string>
+    <string name="shortcut_created">Ярлык создан.</string>
     <string name="shortcuts">Ярлыки</string>
     <string name="show">Показать</string>
     <string name="show_local_entries">Показать правила, разрешающие обратный адрес</string>
@@ -267,7 +265,7 @@ https://git.frostnerd.com/PublicAndroidApps/DnsChanger
     <string name="summary_dns_over_tcp">Пересылка DNS-запросов по протоколу TCP, а не UDP</string>
     <string name="summary_enable_app_shortcuts">Включает ярлыки приложений. Длительное нажатие на ярлык приложения в лаунчере, чтобы открыть меню</string>
     <string name="summary_enable_ipv4">Включить IPv4. Позволяет предоставлять ipv4-адреса для использования в качестве DNS-серверов</string>
-    <string name="summary_enable_ipv6">Включить IPv6. Позволяет предоставлять ipv4-адреса для использования в качестве DNS-серверов</string>
+    <string name="summary_enable_ipv6">Включить IPv6. Позволяет предоставлять ipv4-адреса для использования в качестве DNS-серверов.</string>
     <string name="summary_exclude_apps">Исключить установленные приложения из использования VPN соединения, созданного внутренне. Не будет использовать DNS-серверы для них</string>
     <string name="summary_export_queries">Экспортирует все запросы в текстовый файл в папку по вашему выбору</string>
     <string name="summary_export_settings">Экспортируйте настройки в файл.</string>
@@ -298,21 +296,21 @@ https://git.frostnerd.com/PublicAndroidApps/DnsChanger
     <string name="summary_theme">Устанавливает тему этого приложения</string>
     <string name="summary_undo_rule_import">Отменить импорт правила из файла. Нельзя вернуть.</string>
     <string name="summary_upstream_query_logging">Сохранить IP-адрес, на который сервер отвечает на запрос</string>
-    <string name="summary_version">"Версия [[версия]] ([[код]])
-
-© Daniel Wolf 2020
-Все права защищены
-
-Русский перевод papasha55
-Бразильский перевод Лукиньяса
-Китайский перевод Majida Whale "</string>
-    <string name="summary_vpndialog_missing">"Your device seems to be missing the capabilities to run a VPN. As this app fully relies on this feature you sadly won't be able to use it."</string>
+    <string name="summary_version">Версия [[версия]] ([[код]])
+\n
+\n© Daniel Wolf 2020
+\nВсе права защищены
+\n
+\nРусский перевод papasha55 
+\nБразильский перевод Лукиньяса 
+\nКитайский перевод Majida Whale</string>
+    <string name="summary_vpndialog_missing">Кажется, в вашем устройстве отсутствует возможность запускать VPN. Поскольку это приложение полностью полагается на эту возможность, вы, к сожалению, не сможете ею воспользоваться.</string>
     <string name="take_dns_configuration_missing_type">Предупреждение: [тип] отсутствует в конфигурации, но включен. Хотите отключить?</string>
     <string name="target">Цель</string>
-    <string name="tasker_automation_conflict_text">"Приложение настроено на запуск/остановку vpn при изменении типа вашей сети (либо Wi-Fi, либо 3G).
-Может привести к конфликту с этим плагином Tasker, поскольку действие может быть отменено самим приложением (только один VPN может работать в любой момент времени).
-
-Хотите отключить эти конфликтующие настройки? "</string>
+    <string name="tasker_automation_conflict_text">Приложение настроено на запуск/остановку vpn при изменении типа вашей сети (либо Wi-Fi, либо 3G).
+\nМожет привести к конфликту с этим плагином Tasker, поскольку действие может быть отменено самим приложением (только один VPN может работать в любой момент времени).
+\n
+\nХотите отключить эти конфликтующие настройки\?</string>
     <string name="tasker_support">Поддержка Tasker</string>
     <string name="tcp">TCP</string>
     <string name="text_dns_configuration">"Сеть [имя] имеет следующие DNS-серверы:
@@ -398,13 +396,13 @@ https://git.frostnerd.com/PublicAndroidApps/DnsChanger
 
 В любом случае, отправка отчета о сбое очень поможет мне и, возможно, приведет к исправлению.
 Хотите отправить его мне?"</string>
-    <string name="vpn_explain">"Приложение работает без рутирования телефона.
-
-Чтобы сделать это возможным, весь трафик перенаправляется с помощью VPN. VPN перенаправляет трафик только локально, данные никогда не покидают ваш телефон с помощью этого VPN соединения.
-
-Вам будет предложено разрешить VPN подключение в следующем окне, без разрешения от вас набор DNS-серверов не будет работать.
-
-Исходный код можно найти в разделе HTTPS://Git.frostnerd.com/PublicAndroidApps/DnsChanger. "</string>
+    <string name="vpn_explain">Приложение работает без рутирования телефона.
+\n
+\nЧтобы сделать это возможным, весь трафик перенаправляется с помощью VPN. VPN перенаправляет трафик только локально, данные никогда не покидают ваш телефон с помощью этого VPN соединения.
+\n
+\nВам будет предложено разрешить VPN подключение в следующем окне, без разрешения от вас набор DNS-серверов не будет работать.
+\n
+\nИсходный код можно найти в разделе HTTPS://Git.frostnerd.com/PublicAndroidApps/DnsChanger.</string>
     <string name="wait_importing_rules">Обнаружение типов файлов, подождите..</string>
     <string name="warning">Предупреждение</string>
     <string name="warning_disabling_v4">Большинство версий Android не могут получить доступ к интернету больше, когда DNS Changer запущен, а IPv4-адрес не предоставляется. Вам придется попробовать для своего устройства.</string>
