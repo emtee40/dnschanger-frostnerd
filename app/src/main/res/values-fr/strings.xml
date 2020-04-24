@@ -76,7 +76,7 @@
     <string name="summary_info">Afficher des informations générales sur cette application</string>
     <string name="title_info">Info</string>
     <string name="create_tasker_action">Créer l\'action Tasker</string>
-    <string name="show">Voir</string>
+    <string name="show">Afficher</string>
     <string name="tasker_automation_conflict_text">Cette application est configurée pour démarrer/arrêter le vpn lorsque le type de votre réseau change (soit Wifi ou 3G).
 \nCela peut entrer en conflit avec ce plugin de tâche car l\'action peut être annulée par l\'application elle-même (un seul VPN peut fonctionner à la fois).
 \n
@@ -92,4 +92,22 @@
 \n
 \nSi vous manquez une fonctionnalité, avez trouvé un bug ou avez simplement reçu une demande générale, n\'hésitez pas à me contacter à l\'adresse support@frostnerd.com
 \nLe code source de cette application peut être consulté à l\'adresse suivante : https://git.frostnerd.com/PublicAndroidApps/DnsChanger</string>
+    <string name="pin_dialog_title">Protection du code PIN</string>
+    <string name="pin_dialog_text">Vous choisissez de protéger cette application par un code PIN. Veuillez entrer le code pin que vous avez fourni dans les paramètres (par défaut : 1234)</string>
+    <string name="summary_pin_notification">Demander le code PIN lors de l\'arrêt/la pause du DNSChanger de la notification</string>
+    <string name="summary_pin_app">Demandez le code PIN au moment de démarrer l\'application</string>
+    <string name="title_category_pin">Protection par code pin</string>
+    <string name="summary_version">Version [[version]]]. ([[code]])
+\n
+\nDaniel Wolf 2020
+\nTous droits réservés
+\n
+\nTraduction brésilienne par Lukinhas
+\nTraduction en chinois par Majida Whale</string>
+    <string name="deep_link_title">DNS Changer par Frostnerd</string>
+    <string name="summary_pin_tile">Demandez le code PIN lors du démarrage/arrêt de QuickSettings</string>
+    <string name="tile_start">Démarrez DNS Changer</string>
+    <string name="tile_stop">Arrêtez DNS Changer</string>
+    <string name="tile_pause">Pause du DNS Changer</string>
+    <string name="tile_resume">Reprendre le DNS Changer</string>
 </resources>
