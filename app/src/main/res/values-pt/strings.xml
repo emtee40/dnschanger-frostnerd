@@ -20,12 +20,12 @@
     <string name="action_resume">Continuar</string>
     <string name="action_pause">Pausar</string>
     <string name="action_stop">Parar</string>
-    <string name="notification_paused">DNS Changer está pausado</string>
-    <string name="notification_running">DNS Changer está ativo</string>
+    <string name="notification_paused">DNSChanger está pausado</string>
+    <string name="notification_running">DNSChanger está ativo</string>
     <string name="active">Ativar</string>
     <string name="paused">Pausado</string>
-    <string name="summary_auto_wifi">Iniciar o DNS Changer automaticamente ao se conectar a uma rede Wi-Fi</string>
-    <string name="summary_auto_mobile">Iniciar o DNS Changer automaticamente ao se conectar aos Dados Móveis</string>
+    <string name="summary_auto_wifi">Iniciar o DNSChanger automaticamente ao se conectar a uma rede Wi-Fi</string>
+    <string name="summary_auto_mobile">Iniciar o DNSChanger automaticamente ao se conectar aos Dados Móveis</string>
     <string name="title_auto_wifi">Início Automático (WIFI)</string>
     <string name="title_auto_mobile">Início Automático (Dados Móveis)</string>
     <string name="running">Funcionando</string>
@@ -67,7 +67,7 @@
     <string name="android4_4_warning">Aviso: sua versão Android (4.4) é conhecida por ter problemas com conexões VPN. Se esse aplicativo para ou simplesmente não funciona, é muito provável que seja culpa do seu sistema e não deste aplicativo.\nSinto muito pela inconveniência.</string>
     <string name="title_auto_pause">Pausar DNS Automaticamente</string>
     <string name="summary_auto_pause">Pausar DNS automaticamente quando certos aplicativos estão no primeiro plano (disponível na próxima versão)</string>
-    <string name="title_autopause_apps">Aplicativos que pausam DNS Changer. Atual: [[count]]</string>
+    <string name="title_autopause_apps">Aplicativos que pausam DNSChanger. Atual: [[count]]</string>
     <string name="pin_dialog_title">PIN protegido</string>
     <string name="pin_dialog_text">Você escolheu proteção PIN para este aplicativo. Por favor, insira o PIN fornecido nas configurações (padrão: 1234)</string>
     <string name="title_pin_notification">Proteger Notificação</string>
@@ -76,10 +76,16 @@
     <string name="summary_pin_app">Solicitar PIN ao iniciar o app</string>
     <string name="title_category_pin">Proteção PIN</string>
     <string name="summary_version">Versão [[version]] ([[code]])\n\n© Daniel Wolf 2017\nTodos os direitos reservados\n\nTradução brasileira de Lukinhas\nTradução chinesa por Majida Whale</string>
-    <string name="usage_stats_info_text">Para pausar o DNS Changer automaticamente quando um determinado aplicativo está na frente, este app precisa acessar dados de uso. \n\nNa próxima janela, por favor, conceda DNS Changer acessar esses dados ou então você não poderá usar essa configuração.\n\n\nNão são solicitados dados, exceto para apps em execução. Nenhum dado é salvo ou transmitido.\nO código-fonte está disponível publicamente em https://git.frostnerd.com/PublicAndroidApps/DnsChanger se você quer ter certeza de si mesmo.</string>
+    <string name="usage_stats_info_text">Para pausar o DNSChanger automaticamente quando um determinado aplicativo está na frente, este app precisa acessar dados de uso. 
+\n
+\nNa próxima janela, por favor, conceda DNS Changer acessar esses dados ou então você não poderá usar essa configuração.
+\n
+\n
+\nNão são solicitados dados, exceto para apps em execução. Nenhum dado é salvo ou transmitido.
+\nO código-fonte está disponível publicamente em https://git.frostnerd.com/PublicAndroidApps/DnsChanger se você quer ter certeza de si mesmo.</string>
     <string name="title_remove_usage_data">Remover Acesso aos Dados de Uso</string>
     <string name="summary_remove_usage_data">O acesso aos dados de uso foi concedido. Clique aqui para revogar essa permissão.</string>
-    <string name="autopause_appselect_info_text">Cada app marcado irá pausar DNS Changer automaticamente quando estiver na frente. Isto pode ser útil como por exemplo, os aplicativos da loja não podem ser baixados quando executados com um DNS alterado.</string>
+    <string name="autopause_appselect_info_text">Cada app marcado irá pausar DNSChanger automaticamente quando estiver na frente. Isto pode ser útil como por exemplo, os aplicativos da loja não podem ser baixados quando executados com um DNS alterado.</string>
     <string-array name="tasker_configure_actions">
         <item>Iniciar DNS Changer</item>
         <item>Parar DNS Changer</item>
@@ -89,14 +95,14 @@
     <string name="error">Erro</string>
     <string name="vpn_error_explain">O aplicativo parou inesperadamente. Isso pode implicar que a forma como esse aplicativo funciona não é suportada pelo seu telefone/ROM ou ocorreu um erro geral (que provavelmente indica que eu fiz algo errado).\n\nDe qualquer forma, enviando o relatório de falhas me ajudaria muito e pode levar a uma correção.\nVocê quer me enviar?</string>
     <string name="send_crash_report">Enviar relatório de falha</string>
-    <string name="deep_link_title">DNS Changer por Frostnerd</string>
+    <string name="deep_link_title">DNSChanger por Frostnerd</string>
     <string name="summary_pin_tile">Solicitar PIN ao iniciar/parar pela Configuração Rápida</string>
     <string name="title_pin_tile">Proteger Configurações Rápidas</string>
-    <string name="tile_start">Iniciar DNS Changer</string>
-    <string name="tile_stop">Parar DNS Changer</string>
-    <string name="tile_pause">Pausar DNS Changer</string>
-    <string name="tile_resume">Continuar DNS Changer</string>
-    <string name="summary_disable_network_change">Desativar automaticamente ao mudar de rede (ex, Wi-Fi para 3G). O DNS Changer será ativado novamente se configurado para as configurações anteriores.</string>
+    <string name="tile_start">Iniciar DNSChanger</string>
+    <string name="tile_stop">Parar DNSChanger</string>
+    <string name="tile_pause">Pausar DNSChanger</string>
+    <string name="tile_resume">Continuar DNSChanger</string>
+    <string name="summary_disable_network_change">Desativar automaticamente ao mudar de rede (ex, Wi-Fi para 3G). O DNSChanger será ativado novamente se configurado para as configurações anteriores.</string>
     <string name="title_disable_network_change">Desativar na Mudança de Rede</string>
     <string name="title_share_app">Compartilhar App</string>
     <string name="summary_share_app">Compartilhando este app com seus amigos ou outras pessoas ajudaria muito a espalhá-lo.</string>
@@ -125,16 +131,16 @@
     <string name="title_debug_category">Solução de Problemas</string>
     <string name="shortcuts">Atalhos</string>
     <string name="dialog_question_export_shortcuts">Exportar atalhos também?\n\n(Exporta todos os atalhos criados desde a instalação usando este app, mesmo aqueles que já foram excluídos)</string>
-    <string name="widget_not_running">DNS Changer não foi lançado</string>
+    <string name="widget_not_running">DNSChanger não foi lançado</string>
     <string name="title_shortcut_click_again_disable">Toque Duplo no Atalho Para Parar</string>
-    <string name="summary_shortcut_click_again_disable">Parar DNS Changer ao tocar no atalho que foi iniciado</string>
-    <string name="summary_notification_on_stop">Mostrar uma notificação com a razão pela qual DNS Changer foi parado automaticamente</string>
+    <string name="summary_shortcut_click_again_disable">Parar DNSChanger ao tocar no atalho que foi iniciado</string>
+    <string name="summary_notification_on_stop">Mostrar uma notificação com a razão pela qual DNSChanger foi parado automaticamente</string>
     <string name="title_notification_on_stop">Notificar ao Parar</string>
     <string name="title_create_shortcut">Criar Atalho</string>
-    <string name="summary_create_shortcut">Criar um atalho vinculado a um conjunto específico de servidores DNS para iniciar o DNS Changer rapidamente</string>
-    <string name="notification_reason_stopped">DNS Changer foi parado automaticamente: [reason]</string>
+    <string name="summary_create_shortcut">Criar um atalho vinculado a um conjunto específico de servidores DNS para iniciar o DNSChanger rapidamente</string>
+    <string name="notification_reason_stopped">DNSChanger foi parado automaticamente: [reason]</string>
     <string name="reason_stop_exception">Exceção durante a execução</string>
-    <string name="reason_stop_network_change">Mudança de rede (DNS Changer está configurado para parar)</string>
+    <string name="reason_stop_network_change">Mudança de rede (DNSChanger está configurado para parar)</string>
     <string name="reason_stop_tasker">Parado por Tasker</string>
     <string name="invalid_dns_error_text">Parece que um dos servidores de DNS que você configurou não pode ser usado no seu dispositivo. \nVocê digitou um endereço IP inválido, nenhum servidor DNS está presente no endereço IP fornecido ou é um erro temporário.\n\nPor favor, verifique a configuração no menu principal e verifique se os endereços digitados estão corretos.</string>
     <string name="title_enable_ipv6">Habilitar IPv6</string>
@@ -172,7 +178,7 @@
     <string name="default_dns_explain_delete">Pressione uma entrada para excluí-la ou editá-la. Toque em entradas adicionais para excluí-las também.</string>
     <string name="summary_enable_ipv4">Habilitar IPv4. Isto permite fornecer endereços IPv4 para usar como servidores DNS</string>
     <string name="title_enable_ipv4">Habilitar IPv4</string>
-    <string name="warning_disabling_v4">A maioria das versões Android não podem mais acessar a internet quando o DNS Changer está ativo e nenhum endereço IPv4 é fornecido. No entanto, você terá que tentar para seu dispositivo.</string>
+    <string name="warning_disabling_v4">A maioria das versões Android não podem mais acessar a internet quando o DNSChanger está ativo e nenhum endereço IPv4 é fornecido. No entanto, você terá que tentar para seu dispositivo.</string>
     <string name="x_apps_selected">[[x]] apps seleccionado</string>
     <string name="tile_pause_resume">Pausar / Continuar</string>
     <string name="tile_start_stop">Iniciar / Parar</string>
@@ -208,9 +214,14 @@
     <string name="feature_shortcuts">Usando este app, você pode criar atalhos na tela inicial. Esses atalhos contêm configurações de DNS e alteram seus servidores DNS clicando neles sem precisar abrir o aplicativo.</string>
     <string name="notification_channel_default">Canal padrão</string>
     <string name="notification_channel_default_description">DCanal padrão para publicar notificações.</string>
-    <string name="feature_tiles">Para acesso rápido, você pode colocar telhas na sua área de notificação. Elas podem ser usadas para iniciar/parar e pausar/continuar o DNS Changer.\n\nPara adicioná-las, arraste para baixo a área de notificação, clique na caneta e arraste-as para cima pressionando-as.</string>
+    <string name="feature_tiles">Para acesso rápido, você pode colocar telhas na sua área de notificação. Elas podem ser usadas para iniciar/parar e pausar/continuar o DNSChanger.
+\n
+\nPara adicioná-las, arraste para baixo a área de notificação, clique na caneta e arraste-as para cima pressionando-as.</string>
     <string name="info_text_dns">DNS significa Sistema de Nomes de Domínio.\n\nO Sistema de Nomes de Domínios é usado para resolver Domínios (google.com, yahoo.com, example.com…) para endereços IP (por exemplo, 192.168.178.1) para se comunicar pela Internet.\n\nÉ um dos sistemas mais importantes utilizados em redes baseadas em IP.</string>
-    <string name="feature_pin_protection">Você pode proteger todas as ações que inicia/para/pausa/continua o DNS Changer. Cada vez que uma delas for executada, uma caixa de diálogo solicitará o PIN definido por você.\n\nIsso pode ser usado para impedir outro usuário do telefone de interferir com o aplicativo se o usuário não for experiente. Foi desenvolvido para impedir que as crianças parassem o aplicativo.\nPara escolher o que proteger, abra as configurações.</string>
+    <string name="feature_pin_protection">Você pode proteger todas as ações que inicia/para/pausa/continua o DNSChanger. Cada vez que uma delas for executada, uma caixa de diálogo solicitará o PIN definido por você.
+\n
+\nIsso pode ser usado para impedir outro usuário do telefone de interferir com o aplicativo se o usuário não for experiente. Foi desenvolvido para impedir que as crianças parassem o aplicativo.
+\nPara escolher o que proteger, abra as configurações.</string>
     <string name="no_disable_android_o">Isto não pode ser desativado no Android O e superior.</string>
     <string name="blacklist">Lista Negra</string>
     <string name="easter_egg">Não há easter eggs aqui. Vá embora.</string>
@@ -238,7 +249,7 @@
     <string name="notification_ipv6_text">Vá para as configurações se quiser habilitar o IPv6.</string>
     <string name="mail_debug_text">Escreva uma pequena mensagem descrevendo por que você envia os arquivos de log</string>
     <string name="permissions_label_access_data">Dados de acesso</string>
-    <string name="permissions_description_access_data">Permite que o aplicativo acesse dados do DNS Changer em geral</string>
+    <string name="permissions_description_access_data">Permite que o aplicativo acesse dados do DNSChanger em geral</string>
     <string name="edit">Editar</string>
     <string name="new_features">Novas funcionalidades</string>
     <string name="checking_connectivity">Verificando a conectividade</string>
