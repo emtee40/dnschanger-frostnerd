@@ -348,4 +348,20 @@
     <string name="title_undo_rule_import">撤消导入</string>
     <string name="title_upstream_query_logging">上游查询记录</string>
     <string name="summary_upstream_query_logging">保存服务器响应查询的IP地址</string>
+    <string name="nebulo_download_text">我创建了一个名为Nebulo的新App，这是一个开源的无广告App，用于dns-over-https和dns-over-tls。它已经在商店上发布了。
+\n你想看一看吗？点击 \"是 \"就会打开商店。</string>
+    <string name="summary_disable_crashreporting">禁用自动报告崩溃。报告只包含应用程序版本、Android版本和崩溃堆栈跟踪，不包含任何个人数据。</string>
+    <string name="title_disable_crashreporting">碰撞事故报告</string>
+    <string name="title_vpndialog_missing">VPN缺失</string>
+    <string name="message_user_restricted">无法启动VPN，你的用户似乎被限制了。</string>
+    <string name="nebulo_no_browser">你似乎没有安装浏览器或商店。</string>
+    <string name="notification_connectivity_service">背景连通性检查</string>
+    <string name="notification_restartconnectivity_service">重启连接性检查</string>
+    <string name="notification_connectivity_service_message">正在运行连接性检查。这个通知很快就会消失。</string>
+    <string name="notification_connectivity_service_message_disable">点击这里禁用通知</string>
+    <string name="notification_channel_networkcheck">连接性检查通道</string>
+    <string name="notification_channel_networkcheck_description">这个通道作为自动化的一部分用于连接性检查。请随意停用它。</string>
+    <string name="summary_priv_mode">用更高的权限运行自动化。可能会增加自动化设置的稳定性。</string>
+    <string name="title_priv_mode">特权模式</string>
+    <string name="summary_vpndialog_missing">你的设备似乎缺少运行VPN的功能。因为这个应用完全依赖这个功能，很遗憾，你将无法使用它。</string>
 </resources>
