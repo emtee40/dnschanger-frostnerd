@@ -22,7 +22,7 @@
     <string name="subtitle_configuring">Configuration [[x]]</string>
     <string name="menu_title_configure_v4">Configurer IPv4</string>
     <string name="menu_title_configure_v6">Configurer IPv6</string>
-    <string name="action_resume">CV</string>
+    <string name="action_resume">Continuer</string>
     <string name="start">Démarrer</string>
     <string name="info_dns_button">Informations sur le DNS</string>
     <string name="info_text_dns">DNS signifie Domain Name System (système de noms de domaine).
@@ -30,4 +30,8 @@
 \nLe système de noms de domaine est utilisé pour résoudre les domaines (google.com, yahoo.com, example.com...) en adresses IP (192.168.178.1 par exemple) pour communiquer sur Internet.
 \n
 \nC\'est l\'un des plus importants systèmes utilisés dans les réseaux basés sur IP.</string>
+    <string name="title_pin">Code PIN</string>
+    <string name="summary_pin">Activer la protection par code pin</string>
+    <string name="summary_pin_value">Cliquez ici pour modifier le code PIN</string>
+    <string name="title_pin_value">Changer le code pin</string>
 </resources>
