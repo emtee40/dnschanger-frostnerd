@@ -30,7 +30,7 @@
     <string name="dont_ask_again">No preguntes de nuevo</string>
     <string name="not_now">Ahora no</string>
     <string name="notification_running">El DNS Changer está activo</string>
-    <string name="notification_paused">DNS Changer está en pausa</string>
+    <string name="notification_paused">El DNSChanger está en pausa</string>
     <string name="title_start_boot">Iniciar en el arranque</string>
     <string name="summary_pin_value">Haga clic aquí para cambiar el PIN</string>
     <string name="summary_automation_warn">Advertencia: El uso de cualquiera de estos podría interferir con los perfiles activos de Tasker usando esta aplicación!</string>
@@ -82,4 +82,30 @@
     <string name="menu_title_configure_v4">Configurar IPv4</string>
     <string name="subtitle_configuring">Configurando [[x]]</string>
     <string name="summary_start_boot">Iniciar automáticamente el DNSChanger cuando el teléfono está encendido</string>
+    <string name="deep_link_title">DNSChanger de Frostnerd</string>
+    <string name="tile_start">Iniciar DNSChanger</string>
+    <string name="tile_pause">Pausa DNSChanger</string>
+    <string name="tile_resume">Reanudar DNSChanger</string>
+    <string name="summary_shortcut_click_again_disable">Detenga el DNSChanger cuando vuelva a cerrar el atajo con el que empezó</string>
+    <string name="summary_notification_on_stop">Mostrar una notificación con la razón por la que el DNSChanger se detuvo automáticamente</string>
+    <string name="summary_create_shortcut">Crear un atajo ligado a un conjunto específico de servidores DNS para iniciar rápidamente DNSChanger</string>
+    <string name="notification_reason_stopped">El DNSChanger se detuvo automáticamente: [reason]</string>
+    <string name="reason_stop_network_change">Red cambiada (el DNSChanger se ha puesto en parada)</string>
+    <string name="widget_not_running">DNSChanger no se lanza</string>
+    <string name="title_pin_value">Cambiar el código PIN</string>
+    <string name="create_tasker_action">Creando la acción Tasker</string>
+    <string name="show">Mostrar</string>
+    <string name="title_autopause_apps">Aplicaciones que ponen en pausa el cambio de DNS. Actual: [[count]]</string>
+    <string name="pin_dialog_title">Protegido por el código PIN</string>
+    <string name="pin_dialog_text">You choose to protect this app by PIN code. Please enter the PIN you provided in the settings (default: 1234)</string>
+    <string name="summary_pin_notification">Pedir el código PIN al detener o pausar el DNSChanger de la notificación</string>
+    <string name="summary_pin_app">Pide el código PIN al iniciar la aplicación</string>
+    <string name="title_category_pin">Protección del código PIN</string>
+    <string name="summary_version">Versión [[version]] ([[code]])
+\n
+\n© Daniel Wolf 2020
+\nTodos los derechos reservados
+\n
+\nTraducción al brasileño por Lukinhas
+\nTraducción al chino por Majida Whale</string>
 </resources>
