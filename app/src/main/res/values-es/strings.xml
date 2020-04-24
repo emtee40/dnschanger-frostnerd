@@ -22,4 +22,6 @@
     <string name="start">Comienza</string>
     <string name="app_name">DnsChanger</string>
     <string name="rate">Evaluar</string>
+    <string name="title_notification">Notificación</string>
+    <string name="settings">Configuración</string>
 </resources>
