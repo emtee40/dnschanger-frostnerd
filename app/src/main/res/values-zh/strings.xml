@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DnsChanger</string>
     <string name="start">开始</string>
@@ -48,7 +49,7 @@
     <string name="app_supports_tasker_text">这个应用支持 Tasker，可用作为自动化 DNS 用途的操作插件。</string>
     <string name="tasker_support">Tasker 支持</string>
     <string name="create_shortcut">创建快捷方式</string>
-    <string name="shortcut_created">快捷方式已创建</string>
+    <string name="shortcut_created">快捷方式已创建.</string>
     <string name="summary_show_used_dns">在通知中显示当前使用的 DNS 服务器</string>
     <string name="title_show_used_dns">显示 DNS 服务器</string>
     <string name="notification">通知</string>
@@ -76,11 +77,16 @@
     <string name="summary_pin_app">当启动应用时询问 PIN码</string>
     <string name="title_category_pin">PIN码保护</string>
     <string name="summary_version">版本 [[version]] ([[code]])\n\n© Daniel Wolf 2017\n保留所有权利\n\nBrazilian translation by Lukinhas\n\nChinese Simplified translation by Majida Whale</string>
-    <string name="usage_stats_info_text">要在某个应用在前台运行时自动暂停 DNS Changer，这个应用需要使用情况数据的访问权。\n\n在下一个窗口中，请授予 DNSChanger对这个数据的访问权，否则你将不能够使用这个设置。\n\n\n除了当前正在运行的应用程序之外，不需要其他数据。不会保存或者传输数据。\n如果你想要查看源代码，源代码现已公开可用 https://git.frostnerd.com/PublicAndroidApps/DnsChanger</string>
+    <string name="usage_stats_info_text">要在某个应用在前台运行时自动暂停 DNS Changer，这个应用需要使用情况数据的访问权。
+\n
+\n在下一个窗口中，请授予 DNSChanger对这个数据的访问权，否则你将不能够使用这个设置。
+\n
+\n
+\n除了当前正在运行的应用程序之外，不需要其他数据。不会保存或者传输数据。
+\n如果你想要查看源代码，源代码现已公开可用 https://git.frostnerd.com/PublicAndroidApps/DnsChanger。</string>
     <string name="title_remove_usage_data">移除使用情况数据的访问权</string>
     <string name="summary_remove_usage_data">已授予使用情况数据的访问权。点击此处可撤回这项权限。</string>
     <string name="autopause_appselect_info_text">各个有记号的应用都会在前台运行时自动暂停 DNS Changer 。例如在已更改 DNS 时无法下载商店里的应用时会很有用。 </string>
-
     <string-array name="tasker_configure_actions">
         <item>开始 DNSChanger</item>
         <item>停止 DNSChanger</item>
@@ -106,10 +112,10 @@
     <string name="title_import_export">导入 / 导出</string>
     <string name="title_export_settings">导出设置</string>
     <string name="title_import_settings">导入设置</string>
-    <string name="summary_export_settings">导出设置为文件</string>
+    <string name="summary_export_settings">导出设置为文件。</string>
     <string name="summary_import_settings">从文件导入设置</string>
     <string name="explain_storage_permission">要读取/写入已导出的设置文件，DNSChanger 需要存储权限。请在下一个对话框中授予这些权限。</string>
-    <string name="message_settings_exported">设置导出成功</string>
+    <string name="message_settings_exported">设置导出成功。</string>
     <string name="open_share_file">打开/分享文件</string>
     <string name="success">成功</string>
     <string name="set_device_admin_info">这个应用可以设为设备管理器以避免未经事先输入设备 PIN码即可将其移除。\n\n不使用安全性策略。\n\n这个功能仅能在设备管理器策略设为移除应用时询问密码中工作(大部分可在商业或者运输类的家长控制应用中发现)\n\nDNSChanger 实际上不会使用这些权限。\n在尝试将 DNSChanger 从你的手机上移除之前，必须要移除设备管理器，返回到设置这样做。</string>
@@ -154,14 +160,12 @@
     <string name="reset_warning_text">你真的要重置所有设置?\n此操作不可逆。</string>
     <string name="title_theme">主题</string>
     <string name="summary_theme">设置这个应用的主题</string>
-
     <string-array name="theme">
         <item>默认</item>
         <item>蓝色</item>
         <item>暗色</item>
         <item>真黑</item>
     </string-array>
-
     <string name="remove">移除</string>
     <string name="whitelist">白名单</string>
     <string name="select_all">全选</string>
@@ -191,18 +195,35 @@
     <string name="nav_title_tiles">瓷贴</string>
     <string name="nav_title_pin_protection">PIN码保护</string>
     <string name="nav_title_more">更多</string>
-    <string name="about_text">这个应用是开源的。源代码可以在 git.frostnerd.com 中找到。\n图标源自 Google (Material icon pack - https://material.io/icons).\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2017\n保留所有权利\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger\n\nBrazilian translation by Lukinhas\n\nChinese Simplified translation by Majida Whale\n\nVietnamese translation by Phi</string>
+    <string name="about_text">这个应用是开源的。源代码可以在 git.frostnerd.com 中找到。
+\n图标源自 Google (Material icon pack - https://material.io/icons).
+\n
+\nVersion [[version]]
+\nBuild [[build]]
+\n
+\n© Daniel Wolf 2020
+\n保留所有权利
+\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger
+\n
+\n巴西译者：Lukinhas
+\n
+\n马田鲸的简体中文翻译
+\n
+\n越南语翻译：Phi</string>
     <string name="close">关闭</string>
     <string name="info_text_how_does_it_work">Android 允许你在 WiFi 设置中配置 DNS 服务器 - 但是在移动连接中则不可以 (3G, 4G…)。然而，与此相比的缺点是，需要你使用静态 IP 地址，不允许轻松切换并不能使用 IPv6。\n\n这个应用采用的是 Android 的 VPN 结构以允许设备动态地设置 DNS 服务器。要达到此目的，需要创建一个将同台设备用作为末端的局域 VPN - 这意味着 VPN 连接既不能连接到互联网也不能被外部检测到。\n由于这个虚拟 VPN 可以动态地开始/停止，允许一系列功能及自动化。这个 VPN 不能点击且自身读取不到数据。这只是个更改 DNS 服务器的中间人。\n\n如果你对这个技术方面的内容感兴趣，可以访问我的git: git.frostnerd.com.</string>
     <string name="create_one">创建一个</string>
-    <string name="feature_shortcuts">使用这个应用，你可以在你的主屏幕上创建快捷方式。这些快捷方式包含 DNS 设置，无需打开应用即可通过点击更改你的 DNS 服务器。\n如果你想在不同的服务器中快速切换，这样做会显得尤其方便 - 只需创建多个快捷方式并放置在你的主屏幕上。\n\n你可以在设置中配置这些快捷方式的行为</string>
+    <string name="feature_shortcuts">使用这个应用，你可以在你的主屏幕上创建快捷方式。这些快捷方式包含 DNS 设置，无需打开应用即可通过点击更改你的 DNS 服务器。
+\n如果你想在不同的服务器中快速切换，这样做会显得尤其方便 - 只需创建多个快捷方式并放置在你的主屏幕上。
+\n
+\n你可以在设置中配置这些快捷方式的行为。</string>
     <string name="notification_channel_default">默认通道</string>
-    <string name="notification_channel_default_description">发布通知的默认通道</string>
+    <string name="notification_channel_default_description">发布通知的默认通道。</string>
     <string name="feature_tiles">为了快速访问，你可以在通知区域放置磁贴。它们可用于开始/停止及暂停/恢复 DNS Changer。\n\n要添加瓷贴，只需下拉通知区域，点击铅笔图标并通过长按将瓷贴向上拖曳即可。</string>
     <string name="feature_pin_protection">你可以使用 PIN码保护每一个开始/停止/暂停/恢复 DNS Changer 的操作。每次执行操作时，都会向你显示询问 PIN码的对话框。\n\n如果用户不精通技术，这样可用于防止手机用户干扰到应用。专为阻止小孩停止该应用而开发。\n打开设置可选择要保护的项目。</string>
-    <string name="no_disable_android_o">这个无法在 Android O 及更高系统版本上停用</string>
+    <string name="no_disable_android_o">这个无法在 Android O 及更高系统版本上停用。</string>
     <string name="blacklist">黑名单</string>
-    <string name="easter_egg">这里没有复活节彩蛋，走开啦</string>
+    <string name="easter_egg">这里没有复活节彩蛋，走开啦。</string>
     <string name="cardview_title">停用所有功能</string>
     <string name="cardview_text">点击此处以停用所有选项 - 自动化和功能 (只是暂时的)</string>
     <string name="cardview_text_disabled">功能现已停用。点击此处以重新启用 (重新启动后会自动发生)</string>
@@ -224,7 +245,7 @@
     <string name="summary_disable_notification_icon">停用显示在通知栏中的 DNS 图标。当打开通知区域时仍然可见。</string>
     <string name="notification_channel_hiddenicon">不显示通道图标</string>
     <string name="notification_channel_hiddenicon_description">这个通道不会在通知栏中显示图标</string>
-    <string name="notification_ipv6_text">如果你要启用 IPv6 ，请前往设置</string>
+    <string name="notification_ipv6_text">如果你要启用 IPv6 ，请前往设置。</string>
     <string name="mail_debug_text">写一段你为什么要发送该日志文件的简短描述</string>
     <string name="permissions_label_access_data">访问数据</string>
     <string name="permissions_description_access_data">允许应用以常规方式访问 DNS Changer 的数据</string>
@@ -237,9 +258,9 @@
     <string name="no_connectivity_warning_text"> [x] 个服务器中有 [y] 个不可达:\n\n[servers]\n(这些)服务器有可能离线、不可达(有可能你未连接到网络?) 亦或者被你的 ISP(网络服务器提供者) 拦截。</string>
     <string name="summary_check_connectivity">每当点击开始按钮时检查已配置的 DNS 服务器是否可达</string>
     <string name="title_check_connectivity">检查连通性</string>
-    <string name="summary_custom_ports">允许在 DNS 字段中输入自定义端口</string>
+    <string name="summary_custom_ports">允许在 DNS 字段中输入自定义端口。</string>
     <string name="title_advanced_settings">高级设置</string>
-    <string name="summary_jump_advanced_settings">点击此处配置高级设置</string>
+    <string name="summary_jump_advanced_settings">点击此处配置高级设置。</string>
     <string name="title_custom_ports">自定义端口</string>
     <string name="summary_advanced_settings">启用高级设置</string>
     <string name="nav_title_advanced">高级</string>
@@ -257,7 +278,7 @@
     <string name="error_rule_already_exists">规则已存在</string>
     <string name="delete">删除</string>
     <string name="search_by_target">按目标搜索</string>
-    <string name="show_local_entries">Show rules resolving to a loopback address</string>
+    <string name="show_local_entries">显示解析到环回地址的规则</string>
     <string name="x_entries">[x] 个条目</string>
     <string name="information_advanced_settings_warranty">要实现如下列所示的这些功能，所有已发送的 DNS 的数据包都会被拦截以及修改。这样可能会增加耗电和 RAM 使用量。\n\n如果使用请自行承担风险。点击 OK 即表明你同意这个应用的作者对所可能导致的任何风险概不负责。</string>
     <string name="import_rules">导入</string>
@@ -266,7 +287,7 @@
     <string name="file_justdomains">域名列表文件</string>
     <string name="select_files">选择文件</string>
     <string name="importing_x_rules">正在导入 [x] 规则</string>
-    <string name="rules_import_finished">[x] 行已读, 其中 [y] 有效及 [z] 为相异 (新) 条目</string>
+    <string name="rules_import_finished">[x] 行已读, 其中 [y] 有效及 [z] 为相异 (新) 条目。</string>
     <string name="detect_rule_type">尝试检测该类型</string>
     <string name="rule_unknown_ignoring">未知, 忽略中</string>
     <string name="file_adblock">广告拦截文件 (格式: ||HOST^)</string>
@@ -290,8 +311,8 @@
     <string name="dont_show_again">不要再显示</string>
     <string name="disable">禁用</string>
     <string name="yesterday">昨天</string>
-    <string name="time">"时间 "</string>
-    <string name="ignore">"忽视 "</string>
+    <string name="time">时间</string>
+    <string name="ignore">忽视</string>
     <string name="use_these_servers">使用这些服务器</string>
     <string name="dns_configuration_taken">应用DNS配置。</string>
     <string name="take_dns_configuration_missing_type">警告：配置中缺少[type]，但已启用。 你想禁用它吗？</string>
