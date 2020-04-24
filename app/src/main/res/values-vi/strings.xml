@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Thay đổi Dns</string>
     <string name="start">Chạy</string>
@@ -76,7 +77,13 @@
     <string name="summary_pin_app">Yêu cầu mã Pin khi khởi động ứng dụng</string>
     <string name="title_category_pin">Bảo vệ bằng mã Pin</string>
     <string name="summary_version">Phiên bản [[version]] ([[code]])\n\n© Daniel Wolf 2017\nTất cả các quyền được bảo lưu\n\nBản dịch ngôn ngữ Braxin bởi Lukinhas\nBản dịch ngôn ngữ Trung Quốc bởi Lukinhas Majida Whale\nBản dịch ngôn ngữ Việt nam bởi Pond1597</string>
-    <string name="usage_stats_info_text">Để tự động tạm dừng thay đổi DNS khi một ứng dụng nhất định chạy dưới nền, ứng dụng này cần truy cập vào dữ liệu sử dụng. \n\nTrong cửa sổ kế tiếp, hãy cấp quyền truy cập cho trình thay đổi DNS vào dữ liệu này nếu không bạn sẽ không thể sử dụng cài đặt này.\n\n\nKhông có dữ liệu ngoại trừ cho các ứng dụng đang chạy được yêu cầu. Không có dữ liệu được lưu lại hoặc được truyền đi.\nMã nguồn được công bố công khai tại  https://git.frostnerd.com/PublicAndroidApps/DNSchanger nếu bạn muốn tự mình làm cho chắc chắn</string>
+    <string name="usage_stats_info_text">Để tự động tạm dừng thay đổi DNS khi một ứng dụng nhất định chạy dưới nền, ứng dụng này cần truy cập vào dữ liệu sử dụng. 
+\n
+\nTrong cửa sổ kế tiếp, hãy cấp quyền truy cập cho trình thay đổi DNS vào dữ liệu này nếu không bạn sẽ không thể sử dụng cài đặt này.
+\n
+\n
+\nKhông có dữ liệu ngoại trừ cho các ứng dụng đang chạy được yêu cầu. Không có dữ liệu được lưu lại hoặc được truyền đi.
+\nMã nguồn được công bố công khai tại https://git.frostnerd.com/PublicAndroidApps/DNSchanger nếu bạn muốn tự mình làm cho chắc chắn.</string>
     <string name="title_remove_usage_data">Xóa quyền truy cập vào dữ liệu sử dụng</string>
     <string name="summary_remove_usage_data">Quyền truy cập vào dữ liệu sử dụng đã được cấp. Bấm vào đây để hủy bỏ sự cho phép đó.</string>
     <string name="autopause_appselect_info_text">Mỗi ứng dụng được đánh dấu sẽ tạm dừng thay đổi DNS một cách tự động khi đang ở phía trước. Điều này có thể hữu ích chẳng hạn như trong các ứng dụng lưu trữ không thể được tải xuống khi chạy với DNS đã được thay đổi.</string>
@@ -107,7 +114,7 @@
     <string name="title_import_settings">Cài đặt Nhập</string>
     <string name="summary_export_settings">Xuất các cài đặt vào một tập tin.</string>
     <string name="summary_import_settings">Nhập cài đặt vào một tập tin</string>
-    <string name="explain_storage_permission">Để đọc / ghi các tập tin cài đặt đã xuất, Trình thay đổi DNS cần truy cập vào bộ nhớ lưu trữ của bạn. Hãy cho phép các quyền này trong hộp thoại tiếp theo</string>
+    <string name="explain_storage_permission">Để đọc / ghi các tập tin cài đặt đã xuất, Trình thay đổi DNS cần truy cập vào bộ nhớ lưu trữ của bạn. Hãy cho phép các quyền này trong hộp thoại tiếp theo.</string>
     <string name="message_settings_exported">Các cài đặt đã được xuất thành công.</string>
     <string name="open_share_file">Mở / chia sẻ tập tin</string>
     <string name="success">Thành công</string>
@@ -188,7 +195,17 @@
     <string name="nav_title_tiles">Tiêu đề</string>
     <string name="nav_title_pin_protection">Mã pin bảo vệ</string>
     <string name="nav_title_more">Và hơn thế nữa</string>
-    <string name="about_text">Ứng dụng này là mã nguồn mở. Mã nguồn mở có thể được tìm thấy tại git.frostnerd.com.\nCác biểu tượng từ Google được sử dụng (Gói nguyên vật liệu biểu tượng - https://material.io/icons).\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2017\nĐã đăng ký Bản quyền.\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger\n\n Dịch sang Ngôn ngữ Braxin bởi Lukinhas</string>
+    <string name="about_text">Ứng dụng này là mã nguồn mở. Mã nguồn mở có thể được tìm thấy tại git.frostnerd.com.
+\nCác biểu tượng từ Google được sử dụng (Gói nguyên vật liệu biểu tượng - https://material.io/icons).
+\n
+\nVersion [[version]]
+\nBuild [[build]]
+\n
+\n© Daniel Wolf 2020
+\nĐã đăng ký Bản quyền.
+\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger
+\n
+\n Dịch sang Ngôn ngữ Braxin bởi Lukinhas</string>
     <string name="close">Đóng lại</string>
     <string name="info_text_how_does_it_work">Android cho phép bạn định cấu hình máy chủ DNS trong cài đặt wifi - nhưng không cho các kết nối di động (3G, 4G …). Tuy nhiên điều này đòi hỏi bạn phải sử dụng một địa chỉ IP tĩnh, không cho phép chuyển đổi một cách dễ dàng và sẽ không làm việc với IPv6, trong số những nhược điểm khác khi so sánh với ứng dụng này.\n\nỨng dụng này tận dụng cấu trúc VPN của Android cho phép thiết bị đặt máy chủ DNS tự động. Để đạt được điều này một vpn cục bộ được tạo ra sử dụng cùng một thiết bị như là thiết bị đầu cuối - điều này có nghĩa các kết nối VPN không phải kết nối với internet riêng của mình, cũng không phải là phát hiện từ bên ngoài.\nVì VPN giả này có thể được chạy / dừng tự động nó cho phép một loạt các tính năng và tự động hóa. VPN này không được khai thác và không có dữ liệu nào được đọc bởi nó. Nó chỉ là trung gian trong việc thay đổi các máy chủ DNS..\n\nNếu bạn quan tâm đến khía cạnh kỹ thuật của việc này, truy cập vào git của tôi tại git.frostnerd.com.</string>
     <string name="create_one">Tạo một cái</string>
@@ -196,7 +213,10 @@
     <string name="notification_channel_default">Kênh mặc định</string>
     <string name="notification_channel_default_description">Kênh mặc định để đăng thông báo.</string>
     <string name="feature_tiles">Để truy cập nhanh, bạn có thể truy cập trong khu vực thông báo của bạn. Chúng có thể được sử dụng để chạy / dừng lại và tạm dừng / tiếp tục thay đổi DNS.\n\nĐể thêm chúng kéo xuống khu vực thông báo, nhấp vào biểu tượng bút và kéo chúng lên phía trên bằng cách ấn giữ lâu lên chúng.</string>
-    <string name="feature_pin_protection">Bạn có thể đặt mã pin bảo vệ mọi hành động như chạy / dừng / tạm dừng / khôi phục thay đổi DNS. Mỗi lần một trong số đó sẽ được thực hiện một hộp thoại cho thấy yêu cầu cho mã pin được thiết lập bởi bạn.\n\nĐiều này có thể được sử dụng để ngăn cản người dùng điện thoại can thiệp vào ứng dụng nếu người dùng không hiểu biết nhiều về công nghệ. Nó được phát triển để ngăn chặn trẻ em dừng ứng dụng.\nĐể chọn những gì để bảo vệ mở các cài đặt</string>
+    <string name="feature_pin_protection">Bạn có thể đặt mã pin bảo vệ mọi hành động như chạy / dừng / tạm dừng / khôi phục thay đổi DNS. Mỗi lần một trong số đó sẽ được thực hiện một hộp thoại cho thấy yêu cầu cho mã pin được thiết lập bởi bạn.
+\n
+\nĐiều này có thể được sử dụng để ngăn cản người dùng điện thoại can thiệp vào ứng dụng nếu người dùng không hiểu biết nhiều về công nghệ. Nó được phát triển để ngăn chặn trẻ em dừng ứng dụng.
+\nĐể chọn những gì để bảo vệ mở các cài đặt.</string>
     <string name="no_disable_android_o">Không thể tắt tính năng này trên Android O và cao hơn.</string>
     <string name="blacklist">Danh sách cấm</string>
     <string name="easter_egg">Không có trứng phục sinh ở đây. Đi chỗ khác chơi.</string>
@@ -234,7 +254,7 @@
     <string name="no_connectivity_warning_text">Trong số các máy chủ [x] máy chủ [y] không thể truy cập được:\n\n[servers]\nMáy chủ(n) có thể ngoại tuyến, không thể truy cập được (có thể bạn không kết nối với mạng) hoặc bị chặn bởi ISP của bạn.</string>
     <string name="summary_check_connectivity">Kiểm tra xem các máy chủ DNS đã được định cấu hình có thể truy cập được mỗi khi nhấn nút chạy</string>
     <string name="title_check_connectivity">Kiểm tra kết nối</string>
-    <string name="summary_custom_ports">Cho phép nhập vào của các cổng tuỳ chỉnh trong các ô trường DNS</string>
+    <string name="summary_custom_ports">Cho phép nhập vào của các cổng tuỳ chỉnh trong các ô trường DNS.</string>
     <string name="title_advanced_settings">Cài đặt nâng cao</string>
     <string name="summary_jump_advanced_settings">Nhấn vào đây để định cấu hình cài đặt nâng cao.</string>
     <string name="title_custom_ports">Tùy chỉnh cổng kết nối</string>
