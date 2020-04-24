@@ -274,4 +274,21 @@
 \nCela les rend particulièrement pratiques si vous souhaitez passer rapidement d\'un serveur à l\'autre - il vous suffit de créer un ensemble de raccourcis et de les laisser reposer sur votre écran d\'accueil.
 \n
 \nVous pouvez configurer leur comportement dans les paramètres.</string>
+    <string name="nav_title_learn">Pour en savoir plus</string>
+    <string name="nav_title_pin_protection">Protection par code pin</string>
+    <string name="about_text">Cette application est open source. Le code source peut être trouvé à l\'adresse git.frostnerd.com.
+\nDes icônes de Google sont utilisées (Material icon pack - https://material.io/icons).
+\n
+\nVersion [[version]]].
+\nConstruire [[build]]]
+\n
+\nDaniel Wolf 2020
+\nTous droits réservés. Code source sous licence GPLv3.
+\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger
+\n
+\nTraduction brésilienne par Lukinhas
+\n
+\nTraduction simplifiée en chinois par Majida Whale
+\n
+\nTraduction en vietnamien par Phi</string>
 </resources>
