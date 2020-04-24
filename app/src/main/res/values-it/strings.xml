@@ -12,7 +12,7 @@
     <string name="information">Informazioni</string>
     <string name="settings">Impostazioni</string>
     <string name="title_notification">Notifica</string>
-    <string name="summary_notification">Mostra una notifica quando DNS Changer è in esecuzione.</string>
+    <string name="summary_notification">Mostra una notifica quando DNS Changer è in esecuzione</string>
     <string name="title_start_boot">Avvia al boot</string>
     <string name="summary_start_boot">Avvia automaticamente DNS Changer a telefono acceso</string>
     <string name="subtitle_configuring">Configurazione [[x]]</string>
@@ -25,8 +25,8 @@
     <string name="notification_running">DNS Changer è attivo</string>
     <string name="active">Attivo</string>
     <string name="paused">In pausa</string>
-    <string name="summary_auto_wifi">Attiva automaticamente DNS Changer alla connessione ad una rete WiFi.</string>
-    <string name="summary_auto_mobile">Attiva automaticamente DNS Changer alla connessione ad una rete Mobile.</string>
+    <string name="summary_auto_wifi">Attiva automaticamente DNS Changer alla connessione ad una rete WiFi</string>
+    <string name="summary_auto_mobile">Attiva automaticamente DNS Changer alla connessione ad una rete Mobile</string>
     <string name="title_auto_wifi">Avvia automaticamente (WIFI)</string>
     <string name="title_auto_mobile">Avvia automaticamente (Mobile)</string>
     <string name="running">Attivo</string>
@@ -77,11 +77,16 @@
     <string name="summary_pin_app">Richiede il pin  all\'avvio dell\'app</string>
     <string name="title_category_pin">Protezione pin</string>
     <string name="summary_version">Versione [[version]] ([[code]])\n\n© Daniel Wolf 2020\nTutti i diritti sono riservati\n\nTraduzione brasiliana a cura di Lukinhas\nTraduzione cinese a cura di Majida Whale\nTraduzione italiana a cura di Massimo Castiglia</string>
-    <string name="usage_stats_info_text">Per mettere automaticamente in pausa DNS Changer, quando una determinata app è in primo piano, questa app ha bisogno di accedere ai dati di utilizzo. \n\nNella finestra successiva, per favore, concedi a DNS Changer l\'accesso a questi dati altrimenti, non potrai utilizzare questa impostazione. \n\n\nNon vengono richiesti dati tranne che per le applicazioni attualmente in esecuzione. Nessuno dei tuoi dati viene salvato o trasmesso.\nIl codice sorgente è disponibile all\'indirizzo https://git.frostnerd.com/PublicAndroidApps/DnsChanger se vuoi assicurartene</string>
+    <string name="usage_stats_info_text">Per mettere automaticamente in pausa DNS Changer, quando una determinata app è in primo piano, questa app ha bisogno di accedere ai dati di utilizzo. 
+\n
+\nNella finestra successiva, per favore, concedi a DNS Changer l\'accesso a questi dati altrimenti, non potrai utilizzare questa impostazione. 
+\n
+\n
+\nNon vengono richiesti dati tranne che per le applicazioni attualmente in esecuzione. Nessuno dei tuoi dati viene salvato o trasmesso.
+\nIl codice sorgente è disponibile all\'indirizzo https://git.frostnerd.com/PublicAndroidApps/DnsChanger se vuoi assicurartene.</string>
     <string name="title_remove_usage_data">Rimuovi l\'accesso ai dati di utilizzo</string>
     <string name="summary_remove_usage_data">L\'accesso ai dati di utilizzo è stato concesso. Tocca qui per revocare questa autorizzazione.</string>
     <string name="autopause_appselect_info_text">Ogni applicazione contrassegnata, metterà automaticamente in pausa DNS Changer quando è in primo piano. Ciò potrebbe essere utile, per esempio, nell\'app store dove un app non può essere scaricata, durante l\'esecuzione con un DNS modificato.</string>
-
     <string-array name="tasker_configure_actions">
         <item>Avvia DNS Changer</item>
         <item>Arresta DNS Changer</item>
@@ -115,7 +120,7 @@
     <string name="success">Riuscito!</string>
     <string name="set_device_admin_info">Questa app, può essere impostata come amministratore del dispositivo per impedirne la rimozione, ma non prima di aver inserito il codice di accesso.\n\nNon vengono utilizzati criteri di sicurezza.\n\nQuesta funzione è fruibile solo se, il criterio di amministrazione dei dispositivi, è impostato per richiedere le password alla rimozione delle apps (principalmente nelle aziende o fornito con apps per il controllo genitori\n\nDNS Changer non utilizzerà effettivamente questi diritti.\nDNS Changer deve essere rimosso con i privilegi di amministratore del dispositivo; prima di tentare di rimuoverlo dal telefono, torna alle impostazioni per disinstallarlo.</string>
     <string name="title_device_admin">Amministratore del dispositivo</string>
-    <string name="summary_device_admin_activate">Attiva questa app come amministratore del dispositivo per evitarne la disinstallazione.</string>
+    <string name="summary_device_admin_activate">Attiva questa app come amministratore del dispositivo per evitarne la disinstallazione</string>
     <string name="device_admin_description">Impedisce la disinstallazione mediante le impostazioni di amministratore del dispositivo</string>
     <string name="device_admin">Amministratore del dispositivo</string>
     <string name="device_admin_removal_warning">Avvertenza: quando si rimuove questa app come amministratore del dispositivo, la disinstallazione non viene più ostacolata.</string>
@@ -130,7 +135,7 @@
     <string name="widget_not_running">DNS Changer non è stato avviato</string>
     <string name="title_shortcut_click_again_disable">Altro tocco sulla scorciatoia per arrestare</string>
     <string name="summary_shortcut_click_again_disable">Arresta DNS Changer con un altro tocco sulla scorciatoia con cui è stato avviato</string>
-    <string name="summary_notification_on_stop">Mostra una notifica con il motivo per cui, DNS Changer, è stato arrestato automaticamente.</string>
+    <string name="summary_notification_on_stop">Mostra una notifica con il motivo per cui, DNS Changer, è stato arrestato automaticamente</string>
     <string name="title_notification_on_stop">Notifica all\'arresto</string>
     <string name="title_create_shortcut">Crea una scorciatoia</string>
     <string name="summary_create_shortcut">Crea una scorciatoia legata ad un insieme specifico di servers DNS, per l\'avvio rapido di DNS Changer</string>
@@ -154,15 +159,13 @@
     <string name="summary_reset">Azzera tutte le impostazioni ed i servers DNS salvati. Le scorciatoie e le azioni di Tasker, non verranno eliminate.</string>
     <string name="reset_warning_text">Vuoi davvero ripristinare tutte le impostazioni?\nCiò sarà irreversibile.</string>
     <string name="title_theme">Tema</string>
-    <string name="summary_theme">Imposta il tema grafico di quest\'app.</string>
-
+    <string name="summary_theme">Imposta il tema grafico di quest\'app</string>
     <string-array name="theme">
         <item>Predefinito</item>
         <item>Blu</item>
         <item>Scuro</item>
         <item>Vero nero</item>
     </string-array>
-
     <string name="remove">Rimuovi</string>
     <string name="whitelist">Autorizzate</string>
     <string name="select_all">Seleziona tutto</string>
@@ -174,7 +177,7 @@
     <string name="notification_x_whitelisted">[x] apps autorizzate</string>
     <string name="notification_x_blacklisted">[x] apps non autorizzate</string>
     <string name="default_dns_explain_delete">Tocca a lungo su una voce per eliminarla o modificarla. Tocca le voci aggiuntive per eliminarle.</string>
-    <string name="summary_enable_ipv4">Abilita IPv4. Ciò consente di fornire indirizzi IPv4 da utilizzare come servers DNS.</string>
+    <string name="summary_enable_ipv4">Abilita IPv4. Ciò consente di fornire indirizzi IPv4 da utilizzare come servers DNS</string>
     <string name="title_enable_ipv4">Abilita IPv4</string>
     <string name="warning_disabling_v4">La maggior parte delle versioni di Android, non può più accedere ad Internet quando, DNS Changer, è in esecuzione e non viene fornito alcun indirizzo IPv4. Dovrai però verificarlo con il tuo dispositivo.</string>
     <string name="x_apps_selected">[[x]] apps selezionate</string>
@@ -192,7 +195,21 @@
     <string name="nav_title_tiles">Tessere</string>
     <string name="nav_title_pin_protection">Protezione pin</string>
     <string name="nav_title_more">E molto altro</string>
-    <string name="about_text">Questa app è open source. Il codice sorgente è disponibile su git.frostnerd.com.\nVengono utilizzate icone di Google (Material icon pack - https://material.io/icons).\n\nVersione [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2017\nTutti i diritti sono riservati.\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger\n\nTraduzione brasiliana a cura di Lukinhas\n\nTraduzione cinese semplificato a cura di Majida Whale\n\nTraduzione vietnamita a cura di Phi\n\nTraduzione italiana a cura di Massimo Castiglia</string>
+    <string name="about_text">Questa applicazione è open source. Il codice sorgente può essere trovato su git.frostnerd.com.
+\nSi utilizzano le icone di Google (Material icon pack - https://material.io/icons).
+\n
+\nVersione [[versione]]]
+\nCostruire [[costruire]]]
+\n
+\n© Daniel Wolf 2020
+\nTutti i diritti riservati. Codice sorgente con licenza GPLv3.
+\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger
+\n
+\nTraduzione brasiliana di Lukinhas
+\n
+\nTraduzione semplificata in cinese di Majida Whale
+\n
+\nTraduzione vietnamita di Phi</string>
     <string name="close">Chiudi</string>
     <string name="info_text_how_does_it_work">Android consente di configurare i servers DNS nelle impostazioni delle connessioni wifi, ma non di quelle mobili (3G, 4G…). Tra gli altri svantaggi, a differenza di quest\'app, Android richiede l\'utilizzo di un indirizzo IP statico, non agevola lo switch e non funziona con IPv6.\n\nQuesta app, sfrutta la struttura di Androids VPN che consente ai dispositivi di impostare i servers DNS in modo dinamico. Per ottenere ciò, viene creata una VPN locale che utilizza lo stesso dispositivo dell\'endpoint - questo significa che, la connessione VPN, non si connette ad Internet autonomamente né è rilevabile dall\'esterno.\nPoiché questa VPN fittizia può essere avviata/arrestata dinamicamente, consente una gamma di funzioni ed automazioni. Questa VPN non viene intercettata e da essa, non viene letto alcun dato. È solo un intermediario che cambia i servers DNS.\n\nSe ti interessa il lato tecnico di questo argomento, visita il mio git all\'indirizzo git.frostnerd.com.</string>
     <string name="create_one">Creane una</string>
@@ -236,7 +253,7 @@
     <string name="checking_connectivity">Controllo della connettività</string>
     <string name="dialog_connectivity_description">Verifica se i servers DNS siano raggiungibili</string>
     <string name="no_connectivity_warning_text">[x] su [y] servers sono irraggiungibili:\n\n[servers]\nI servers potrebbero essere offline, non raggiungibili (forse non sei connesso ad una rete?) o bloccati dal tuo ISP.</string>
-    <string name="summary_check_connectivity">Verifica se, i servers DNS configurati, siano raggiungibili ad ogni tocco sul pulsante avvio.</string>
+    <string name="summary_check_connectivity">Verifica se, i servers DNS configurati, siano raggiungibili ad ogni tocco sul pulsante avvio</string>
     <string name="title_check_connectivity">Controlla la connettività</string>
     <string name="summary_custom_ports">Consente l\'input di porte personalizzate nei campi DNS.</string>
     <string name="title_advanced_settings">Impostazioni avanzate</string>
@@ -321,11 +338,11 @@
     <string name="cancel">Annulla</string>
     <string name="summary_protect_other_vpns">Consenti solo all\'app di fermarsi tramite i metodi incorporati</string>
     <string name="title_protect_other_vpns">Solo una fermata graziosa</string>
-    <string name="summary_clear_queries">Elimina tutte le query registrate. Non può essere ripristinato</string>
+    <string name="summary_clear_queries">Elimina tutte le query registrate. Non può essere ripristinato.</string>
     <string name="title_clear_queries">Cancella domande</string>
     <string name="dialog_are_you_sure">Sei sicuro di volerlo fare?</string>
-    <string name="summary_clear_local_rules">Elimina tutte le regole locali. Non può essere ripristinato</string>
+    <string name="summary_clear_local_rules">Elimina tutte le regole locali. Non può essere ripristinato.</string>
     <string name="title_clear_local_rules">Cancella le regole locali</string>
-    <string name="summary_undo_rule_import">Ripristina un\'importazione di regole da un file. Non può essere ripristinato</string>
+    <string name="summary_undo_rule_import">Ripristina un\'importazione di regole da un file. Non può essere ripristinato.</string>
     <string name="title_undo_rule_import">Annulla importazione</string>
 </resources>
