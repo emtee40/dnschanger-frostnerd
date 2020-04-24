@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="summary_notification">Mostrar una notificación cuando el DNSChanger se está ejecutando</string>
+    <string name="summary_notification">Mostrar una notificación cuando DNSChanger se está ejecutando</string>
     <string name="information">Información</string>
     <string name="vpn_explain">Esta aplicación funciona sin un teléfono fijo.
 \n
