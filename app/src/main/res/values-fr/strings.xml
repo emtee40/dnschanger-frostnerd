@@ -36,12 +36,12 @@
     <string name="title_pin_value">Changer le code pin</string>
     <string name="action_pause">Pause</string>
     <string name="action_stop">Stop</string>
-    <string name="notification_paused">Le changeur de DNS est en pause</string>
-    <string name="notification_running">Le changeur de DNS est actif</string>
+    <string name="notification_paused">Le DNSChanger est mis en pause</string>
+    <string name="notification_running">Le DNSChanger est actif</string>
     <string name="active">Actif</string>
     <string name="paused">En pause</string>
-    <string name="summary_auto_wifi">Activer automatiquement le changeur DNS lors de la connexion à un réseau wifi</string>
-    <string name="summary_auto_mobile">Activer automatiquement le changeur DNS lors de la connexion à un réseau mobile</string>
+    <string name="summary_auto_wifi">Activer automatiquement le DNSChanger lors de la connexion à un réseau wifi</string>
+    <string name="summary_auto_mobile">Activer automatiquement le DNSChanger lors de la connexion à un réseau mobile</string>
     <string name="title_auto_wifi">Démarrage automatique (WIFI)</string>
     <string name="title_auto_mobile">Démarrage automatique (Mobile)</string>
     <string name="running">Actif</string>
@@ -104,22 +104,22 @@
 \n
 \nTraduction brésilienne par Lukinhas
 \nTraduction en chinois par Majida Whale</string>
-    <string name="deep_link_title">DNS Changer par Frostnerd</string>
+    <string name="deep_link_title">DNSChanger par Frostnerd</string>
     <string name="summary_pin_tile">Demandez le code PIN lors du démarrage/arrêt de QuickSettings</string>
-    <string name="tile_start">Démarrez DNS Changer</string>
-    <string name="tile_stop">Arrêtez DNS Changer</string>
-    <string name="tile_pause">Pause du DNS Changer</string>
-    <string name="tile_resume">Reprendre le DNS Changer</string>
+    <string name="tile_start">Démarrez DNSChanger</string>
+    <string name="tile_stop">Arrêtez DNSChanger</string>
+    <string name="tile_pause">Pause du DNSChanger</string>
+    <string name="tile_resume">Reprendre le DNSChanger</string>
     <string name="android4_4_warning">Attention : votre version d\'Android (4.4) est connue pour avoir des problèmes avec les connexions VPN. Si cette application plante ou ne fonctionne tout simplement pas, c\'est très probablement votre système et non la faute de cette application.
 \nJe suis désolé pour le désagrément.</string>
     <string name="title_auto_pause">Pause automatique du DNS</string>
     <string name="summary_auto_pause">Mettre automatiquement en pause le DNS lorsque certaines applications sont au premier plan (disponible dans la prochaine version)</string>
-    <string name="title_autopause_apps">Applications qui mettent en pause le DNS Changer. Actuel : [[count]]</string>
+    <string name="title_autopause_apps">Applications qui mettent en pause le DNSChanger. Actuel : [[count]]</string>
     <string name="title_pin_notification">Protéger la notification</string>
     <string name="title_pin_app">Protéger l\'application</string>
     <string name="title_remove_usage_data">Supprimer l\'accès aux données d\'utilisation</string>
     <string name="summary_remove_usage_data">L\'accès aux données d\'utilisation a été accordé. Cliquez ici pour révoquer cette autorisation.</string>
-    <string name="autopause_appselect_info_text">Chaque application marquée mettra automatiquement en pause le DNS Changer lorsqu\'elle sera devant. Cela peut être utile car, par exemple, dans le magasin, les applications ne peuvent pas être téléchargées lorsqu\'elles fonctionnent avec un DNS modifié.</string>
+    <string name="autopause_appselect_info_text">Chaque application marquée mettra automatiquement en pause le DNSChanger lorsqu\'elle sera devant. Cela peut être utile car, par exemple, dans le magasin, les applications ne peuvent pas être téléchargées lorsqu\'elles fonctionnent avec un DNS modifié.</string>
     <string name="error">Erreur</string>
     <string name="send_crash_report">Envoyer le rapport d\'accident</string>
     <string name="title_pin_tile">Protéger les réglages rapides</string>
@@ -147,10 +147,10 @@
     <string name="title_send_debug">Envoyer les journaux</string>
     <string name="title_debug_category">Dépannage</string>
     <string name="shortcuts">Raccourcis</string>
-    <string name="widget_not_running">DNS Changer n\'est pas lancé</string>
+    <string name="widget_not_running">DNSChanger n\'est pas lancé</string>
     <string name="title_shortcut_click_again_disable">Raccourci pour s\'arrêter</string>
-    <string name="summary_shortcut_click_again_disable">Arrêtez le changeur de DNS en recliquant le raccourci avec lequel il a été lancé</string>
-    <string name="summary_notification_on_stop">Afficher une notification indiquant la raison pour laquelle le DNS Changer a été arrêté automatiquement</string>
+    <string name="summary_shortcut_click_again_disable">Arrêtez le DNSChanger en recourant au raccourci avec lequel il a été lancé</string>
+    <string name="summary_notification_on_stop">Afficher une notification indiquant la raison pour laquelle le DNSChanger a été arrêté automatiquement</string>
     <string name="title_notification_on_stop">Notifier l\'arrêt</string>
     <string name="title_create_shortcut">Créer un raccourci</string>
     <string name="usage_stats_info_text">Pour mettre automatiquement en pause DNS Changer lorsqu\'une certaine application est en tête, cette application doit avoir accès aux données d\'utilisation.
@@ -164,7 +164,7 @@
 \n
 \nQuoi qu\'il en soit, l\'envoi du rapport d\'accident m\'aiderait beaucoup et pourrait éventuellement conduire à une solution.
 \nVoulez-vous me l\'envoyer \?</string>
-    <string name="summary_disable_network_change">Désactivation automatique lors d\'un changement de réseau (par exemple, du Wifi au 3G). Le changeur DNS s\'activera à nouveau s\'il est configuré de la sorte dans les paramètres précédents.</string>
+    <string name="summary_disable_network_change">Désactivation automatique lors d\'un changement de réseau (par exemple, du Wifi au 3G). Le DNSChanger s\'activera à nouveau s\'il est configuré de la sorte dans les paramètres précédents.</string>
     <string name="app_share_text">Regardez cette application de changement de DNS pour android. Vous pouvez la télécharger ici : https://play.google.com/store/apps/details\?id=com.frostnerd.dnschanger</string>
     <string name="explain_storage_permission">Pour lire/écrire le fichier de paramètres exporté, DNSChanger doit avoir accès à votre stockage. Veuillez lui accorder ces droits dans la boîte de dialogue suivante.</string>
     <string name="set_device_admin_info">Cette application peut être configurée en tant qu\'administrateur de l\'appareil afin d\'éviter de la supprimer sans entrer au préalable le code d\'accès de l\'appareil.
@@ -181,9 +181,9 @@
     <string name="dialog_question_export_shortcuts">Des raccourcis pour l\'exportation aussi \?
 \n
 \n(Exporte tous les raccourcis créés depuis l\'installation en utilisant cette application, même ceux qui ont déjà été supprimés)</string>
-    <string name="summary_create_shortcut">Créer un raccourci lié à un ensemble spécifique de serveurs DNS pour lancer rapidement le DNS Changer</string>
-    <string name="notification_reason_stopped">Le changeur de DNS a été automatiquement arrêté : [reason]</string>
-    <string name="reason_stop_network_change">Réseau modifié (DNS Changer est réglé pour s\'arrêter)</string>
+    <string name="summary_create_shortcut">Créer un raccourci lié à un ensemble spécifique de serveurs DNS pour lancer rapidement le DNSChanger</string>
+    <string name="notification_reason_stopped">Le DNSChanger a été automatiquement arrêté : [raison]</string>
+    <string name="reason_stop_network_change">Réseau modifié (DNSChanger est réglé pour s\'arrêter)</string>
     <string name="summary_pin_app_shortcut">Demandez le code PIN lorsque vous démarrez/arrêtez les raccourcis de l\'application</string>
     <string name="add">Ajouter</string>
     <string name="deselect_all">Désélectionner tout</string>
@@ -222,7 +222,7 @@
     <string name="default_dns_explain_delete">Cliquez longuement sur une entrée pour la supprimer ou la modifier. Cliquez sur des entrées supplémentaires pour les supprimer également.</string>
     <string name="summary_enable_ipv4">Activer IPv4. Cela permet de fournir des adresses ipv4 à utiliser comme serveurs dns</string>
     <string name="title_enable_ipv4">Activer IPv4</string>
-    <string name="warning_disabling_v4">La plupart des versions d\'Android ne peuvent plus accéder à l\'internet lorsque le changeur de DNS est en cours d\'exécution et qu\'aucune adresse IPv4 n\'est fournie. Vous devrez cependant essayer pour votre appareil.</string>
+    <string name="warning_disabling_v4">La plupart des versions d\'Android ne peuvent plus accéder à l\'internet lorsque DNSChanger est en cours d\'exécution et qu\'aucune adresse IPv4 n\'est fournie. Vous devrez cependant essayer pour votre appareil.</string>
     <string name="x_apps_selected">[[x]] applications sélectionnées</string>
     <string name="tile_pause_resume">Pause / Reprise</string>
     <string name="tile_start_stop">Démarrage / Arrêt</string>
@@ -351,7 +351,7 @@
     <string name="show_local_entries">Afficher les règles de résolution à une adresse de bouclage</string>
     <string name="new_features">Nouvelles fonctionnalités</string>
     <string name="edit">Edit</string>
-    <string name="permissions_description_access_data">Permet à l\'application d\'accéder aux données de DNS Changer en général</string>
+    <string name="permissions_description_access_data">Permet à l\'application d\'accéder aux données de DNSChanger en général</string>
     <string name="permissions_label_access_data">Accès aux données</string>
     <string name="mail_debug_text">Rédigez un petit message décrivant la raison pour laquelle vous envoyez les fichiers journaux</string>
     <string name="notification_ipv6_text">Allez dans les paramètres si vous voulez activer IPv6.</string>
