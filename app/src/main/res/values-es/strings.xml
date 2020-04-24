@@ -1,2 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="summary_notification">Mostrar una notificación cuando el DNSChanger se está ejecutando</string>
+    <string name="information">Información</string>
+    <string name="vpn_explain">Esta aplicación funciona sin un teléfono fijo.
+\n
+\nPara hacer esto posible todo el tráfico es redirigido usando una VPN. Esta VPN redirige el tráfico sólo localmente, los datos nunca salen de tu teléfono usando esta conexión VPN.
+\n
+\nSe le pedirá que permita la conexión VPN en la siguiente ventana, sin su permiso los servidores DNS establecidos no funcionarán.
+\n
+\n
+\nEl código fuente se puede encontrar en https://git.frostnerd.com/PublicAndroidApps/DnsChanger.</string>
+    <string name="info_text_dns">DNS significa Domain Name System.
+\n
+\nEl Sistema de Nombres de Dominio se utiliza para resolver dominios (google.com, yahoo.com, example.com...) a direcciones IP (192.168.178.1 por ejemplo) para comunicarse a través de Internet.
+\n
+\nEs uno de los sistemas más importantes utilizados en las redes basadas en IP.</string>
+    <string name="default_dns_title">Proveedores públicos de DNS</string>
+    <string name="default_dns">Direcciones DNS por defecto</string>
+    <string name="info_dns_button">Información sobre el DNS</string>
+    <string name="stop">Deténgase</string>
+    <string name="start">Comienza</string>
+    <string name="app_name">DnsChanger</string>
+</resources>
