@@ -32,4 +32,54 @@
     <string name="notification_running">El DNS Changer está activo</string>
     <string name="notification_paused">DNS Changer está en pausa</string>
     <string name="title_start_boot">Iniciar en el arranque</string>
+    <string name="summary_pin_value">Haga clic aquí para cambiar el PIN</string>
+    <string name="summary_automation_warn">Advertencia: El uso de cualquiera de estos podría interferir con los perfiles activos de Tasker usando esta aplicación!</string>
+    <string name="title_info">Información</string>
+    <string name="summary_info">Mostrar información general sobre esta aplicación</string>
+    <string name="title_general">General</string>
+    <string name="title_automation">Automatización</string>
+    <string name="notification">Notificación</string>
+    <string name="title_show_used_dns">Mostrar servidores DNS</string>
+    <string name="summary_show_used_dns">Mostrar los servidores DNS actualmente utilizados en la notificación</string>
+    <string name="shortcut_created">Atajo creado.</string>
+    <string name="create_shortcut">Crear un atajo</string>
+    <string name="app_supports_tasker_text">Esta aplicación es compatible con Tasker y puede utilizarse como un plugin de acción para automatizar el uso del DNS.</string>
+    <string name="warning_started_using_tasker">DNSChanger comenzó a usar Tasker. Detenerlo puede interrumpirlo. Iniciarlo sin usar Tasker no aplica los servidores DNS configurados con Tasker. ¿Detenerlo de todos modos\?</string>
+    <string name="contact_developer">Contacte con el desarrollador</string>
+    <string name="no">No</string>
+    <string name="yes">Sí</string>
+    <string name="warning">Advertencia</string>
+    <string name="shortcut_conflict_text">Esta aplicación está configurada para iniciar/detener el vpn cuando cambie el tipo de su red (ya sea Wifi o 3G).
+\nEsto puede entrar en conflicto con cualquier configuración cuando se inicia desde un atajo, ya que la acción puede ser anulada por la propia aplicación (sólo se puede ejecutar una VPN en un momento dado).
+\n
+\n¿Quieres deshabilitar estos ajustes conflictivos\?</string>
+    <string name="tasker_automation_conflict_text">Esta aplicación está configurada para iniciar/detener el vpn cuando cambie el tipo de su red (ya sea Wifi o 3G).
+\nEsto puede entrar en conflicto con este plugin de tareas, ya que la acción puede ser anulada por la propia aplicación (sólo se puede ejecutar una VPN en un momento dado).
+\n
+\n¿Quieres deshabilitar estos ajustes conflictivos\?</string>
+    <string name="press_back_again">Presione de nuevo para salir (¡Descarta los cambios!)</string>
+    <string name="check_validity">Por favor, compruebe la validez de su entrada</string>
+    <string name="done">Hecho</string>
+    <string name="rate_request_text">¿Le gustaría calificar esta aplicación\?
+\nAyudaría a difundirla y muestra el aprecio por mi trabajo.</string>
+    <string name="open_app">Abrir la aplicación</string>
+    <string name="background_configure_error">Permiso para iniciar la VPN denegado.
+\nEste podría ser el sistema que niega las conexiones VPN que se inicia desde el fondo por razones de seguridad.
+\n
+\nAbre la aplicación para iniciar la VPN</string>
+    <string name="not_running">Inactivo</string>
+    <string name="running">Activo</string>
+    <string name="title_auto_mobile">Iniciar automáticamente (Móvil)</string>
+    <string name="title_auto_wifi">Inicio automático (WIFI)</string>
+    <string name="summary_auto_mobile">Activar automáticamente el DNS Changer al conectarse a una red móvil</string>
+    <string name="summary_auto_wifi">Activar automáticamente el DNS Changer al conectarse a una red wifi</string>
+    <string name="paused">Pausado</string>
+    <string name="active">Activo</string>
+    <string name="action_stop">Deténgase</string>
+    <string name="action_pause">Pausa</string>
+    <string name="action_resume">Reanudar</string>
+    <string name="menu_title_configure_v6">Configurar IPv6</string>
+    <string name="menu_title_configure_v4">Configurar IPv4</string>
+    <string name="subtitle_configuring">Configurando [[x]]</string>
+    <string name="summary_start_boot">Iniciar automáticamente el DNSChanger cuando el teléfono está encendido</string>
 </resources>
