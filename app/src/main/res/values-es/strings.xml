@@ -108,4 +108,107 @@
 \n
 \nTraducción al brasileño por Lukinhas
 \nTraducción al chino por Majida Whale</string>
+    <string name="autopause_appselect_info_text">Cada aplicación marcada hará una pausa en el cambio de DNS automáticamente cuando esté en el frente. Esto puede ser útil ya que, por ejemplo, en la tienda, las aplicaciones no se pueden descargar cuando se ejecutan con un DNS cambiado.</string>
+    <string name="summary_pin_tile">Pregunte por el pin al iniciar o detenerse en el QuickSettings.</string>
+    <string name="tile_stop">Detener el cambio de DNS</string>
+    <string name="summary_disable_network_change">Deshabilitar automáticamente cuando se cambia de red (por ejemplo, de Wifi a 3G). El Cambiador de DNS se activará de nuevo si así se ha configurado en los ajustes anteriores.</string>
+    <string name="settings_information_text">Esta aplicación fue hecha por Daniel Wolf (frostnerd.com)
+\n
+\nUtiliza iconos hechos por Google (Material icon pack - https://material.io/icons/)
+\n
+\n
+\nSi le falta alguna característica, encontró un error o simplemente recibió una petición general, no dude en contactarme en support@frostnerd.com
+\nEl código fuente de esta aplicación puede verse en https://git.frostnerd.com/PublicAndroidApps/DnsChanger</string>
+    <string name="usage_stats_info_text">Para pausar automáticamente el DNS Changer cuando una determinada aplicación está en el frente, esta aplicación necesita acceder a los datos de uso.
+\n
+\nEn la siguiente ventana, por favor, conceda a DNSChanger acceso a estos datos o de lo contrario no podrá utilizar esta configuración.
+\n
+\n
+\nNo se solicitan datos, salvo los de las aplicaciones que se están ejecutando actualmente. No se guardan ni se transmiten datos.
+\nEl código fuente está disponible públicamente en https://git.frostnerd.com/PublicAndroidApps/DnsChanger si quiere asegurarse.</string>
+    <string name="vpn_error_explain">La App se estrelló inesperadamente. Esto podría implicar que la forma en que funciona esta aplicación no es compatible con su teléfono/ROM o que se produjo un error general (lo que probablemente indica que hice algo mal).
+\n
+\nDe cualquier manera, enviar el informe del accidente me ayudaría mucho y podría llevar a una solución.
+\n¿Quieres enviármelo\?</string>
+    <string name="set_device_admin_info">Esta aplicación puede ser configurada como administrador del dispositivo para evitar que se elimine sin introducir primero el código de acceso del dispositivo.
+\n
+\nNo se utilizan políticas de seguridad.
+\n
+\nEsta característica sólo funciona si la política de administración de dispositivos está configurada para solicitar contraseñas cuando se eliminan aplicaciones (la mayoría de las veces se encuentran en empresas o se envían con aplicaciones de control parental)
+\n
+\nDNSChanger no usará realmente estos derechos.
+\nDNSChanger tiene que ser eliminado como administrador del dispositivo antes de intentar eliminarlo de tu teléfono, vuelve a los ajustes para hacerlo.</string>
+    <string name="debug_dialog_info_text">Activar la función de depuración puede aumentar el consumo de la batería. Además, los registros generados contienen información general (no personal) sobre su dispositivo [versión de la aplicación, versión de Android, nombre del dispositivo, fabricante] y pueden registrar los servidores DNS que configure la aplicación para su uso.
+\n
+\nEstos datos no se envían automáticamente, pero tenlo en cuenta cuando me envíes esos registros.</string>
+    <string name="invalid_dns_error_text">Parece que uno de los servidores DNS que configuró no puede ser usado en su dispositivo.
+\nO bien introdujo una dirección IP inválida, no hay ningún servidor DNS en la dirección ip dada o se trata de un error temporal.
+\n
+\nPor favor, compruebe la configuración en el menú principal y verifique que las direcciones introducidas son correctas.</string>
+    <string name="excluded_apps_info_text_whitelist">Sólo las aplicaciones seleccionadas en la configuración anterior usarán la VPN interna. Las aplicaciones no seleccionadas no usarán los servidores DNS establecidos por usted.</string>
+    <string name="add">Añade</string>
+    <string name="android4_4_warning">Advertencia: se sabe que su versión de Android (4.4) tiene problemas con las conexiones VPN. Si esta aplicación falla o simplemente no funciona, lo más probable es que sea tu sistema y no la culpa de esta aplicación.
+\nSiento las molestias.</string>
+    <string name="title_auto_pause">Pausar el DNS automáticamente</string>
+    <string name="summary_auto_pause">Pausa automática del DNS cuando ciertas aplicaciones están en primer plano (disponible en la próxima versión)</string>
+    <string name="title_pin_notification">Notificación de protección</string>
+    <string name="title_pin_app">Proteger la aplicación</string>
+    <string name="title_remove_usage_data">Eliminar el acceso a los datos de uso</string>
+    <string name="summary_remove_usage_data">Se concedió acceso a los datos de uso. Haga clic aquí para revocar ese permiso.</string>
+    <string name="error">Error</string>
+    <string name="send_crash_report">Envíe el informe del accidente</string>
+    <string name="title_pin_tile">Proteger Ajustes rápidos</string>
+    <string name="title_disable_network_change">Desactivar en el cambio de red</string>
+    <string name="title_share_app">Comparte esta aplicación</string>
+    <string name="summary_share_app">Compartir esta aplicación con tus amigos u otras personas ayudaría mucho a difundirla.</string>
+    <string name="app_share_text">Oye, mira esta aplicación de cambio de DNS para androide. Puedes descargarla aquí: https://play.google.com/store/apps/details\?id=com.frostnerd.dnschanger</string>
+    <string name="share_using">Compartir usando</string>
+    <string name="title_import_export">Importación / Exportación</string>
+    <string name="title_export_settings">Exportar ajustes</string>
+    <string name="title_import_settings">Importar configuraciones</string>
+    <string name="summary_export_settings">Exporta la configuración a un archivo.</string>
+    <string name="summary_import_settings">Importa los ajustes de un archivo</string>
+    <string name="explain_storage_permission">Para leer/escribir el archivo de configuración exportado, DNSChanger necesita acceder a su almacenamiento. Por favor, concédale estos derechos en el siguiente diálogo.</string>
+    <string name="message_settings_exported">Los ajustes se han exportado con éxito.</string>
+    <string name="open_share_file">Abrir/compartir el archivo</string>
+    <string name="success">Éxito</string>
+    <string name="title_device_admin">El administrador del dispositivo</string>
+    <string name="summary_device_admin_activate">Activar esta aplicación como administrador del dispositivo para evitar la desinstalación</string>
+    <string name="device_admin_description">Evitar la desinstalación mediante la configuración como administrador del dispositivo</string>
+    <string name="device_admin">El administrador del dispositivo</string>
+    <string name="device_admin_removal_warning">Advertencia: Al eliminar esta aplicación, la desinstalación de la administración del dispositivo ya no es un obstáculo.</string>
+    <string name="title_debug">Debug</string>
+    <string name="summary_debug">Permite la depuración que genera archivos de registro para ser enviados al desarrollador (No ocurre automáticamente)
+\nPuede aumentar el uso de la batería.</string>
+    <string name="summary_send_debug">Envíe los registros de depuración al desarrollador</string>
+    <string name="title_send_debug">Envíe los registros</string>
+    <string name="title_debug_category">Solución de problemas</string>
+    <string name="shortcuts">Atajos</string>
+    <string name="dialog_question_export_shortcuts">¿Atajos de exportación también\?
+\n
+\n(Exporta todos los atajos creados desde la instalación usando esta aplicación, incluso los que ya fueron eliminados)</string>
+    <string name="title_shortcut_click_again_disable">Reclick el atajo para detenerse</string>
+    <string name="title_notification_on_stop">Notificar en la parada</string>
+    <string name="title_create_shortcut">Crear un atajo</string>
+    <string name="reason_stop_exception">Excepción mientras corría</string>
+    <string name="reason_stop_tasker">Detenido por Tasker</string>
+    <string name="title_enable_ipv6">Habilitar IPv6</string>
+    <string name="summary_enable_ipv6">Activar IPv6. Esto permite proporcionar direcciones ipv6 para usarlas como servidores dns.</string>
+    <string name="default_dns_legal_warning">Cualquiera de los proveedores que se muestran aquí podrían ser marcas registradas de los respectivos propietarios. Se aplican sus condiciones de uso.
+\nTenga en cuenta que los servidores dns pueden registrar los sitios que visita.</string>
+    <string name="new_entry">Nueva entrada</string>
+    <string name="title_exclude_apps">Excluir las aplicaciones de la VPN</string>
+    <string name="summary_exclude_apps">Excluir las aplicaciones instaladas de usar la conexión VPN creada internamente. Esto no aplicará los servidores DNS a ellos</string>
+    <string name="excluded_apps_info_text_blacklist">Cada aplicación seleccionada en la configuración anterior no utilizará la VPN interna. Esto tampoco les aplicará los servidores DNS.</string>
+    <string name="title_about">Acerca de</string>
+    <string name="search">Busca en</string>
+    <string name="title_reset">Reiniciar</string>
+    <string name="summary_reset">Restablece todos los ajustes y servidores dns guardados. Los atajos y las acciones de la tarea no se eliminan.</string>
+    <string name="reset_warning_text">¿Realmente quieres restablecer todos los ajustes\?
+\nEsto no se puede revertir.</string>
+    <string name="title_theme">Tema</string>
+    <string name="summary_theme">Establece el tema de esta aplicación</string>
+    <string name="remove">Retire</string>
+    <string name="whitelist">Lista blanca</string>
+    <string name="select_all">Seleccione todo.</string>
 </resources>
