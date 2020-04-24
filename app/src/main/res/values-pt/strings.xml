@@ -105,7 +105,7 @@
     <string name="title_import_export">Importar/Exportar</string>
     <string name="title_export_settings">Exportar Configurações</string>
     <string name="title_import_settings">Importar Configurações</string>
-    <string name="summary_export_settings">Export the settings into a file.</string>
+    <string name="summary_export_settings">Exportar as configurações para um arquivo.</string>
     <string name="summary_import_settings">Importar as configurações de um arquivo</string>
     <string name="explain_storage_permission">Para ler/escrever configurações arquivo, DNS Changer precisa ter acesso ao seu armazenamento. Por favor, conceda este acesso na próxima caixa de diálogo.</string>
     <string name="message_settings_exported">As configurações foram exportadas com sucesso.</string>
@@ -143,7 +143,7 @@
     <string name="add">Adicionar</string>
     <string name="new_entry">Nova entrada</string>
     <string name="title_exclude_apps">Excluir Apps da VPN</string>
-    <string name="summary_exclude_apps">Excluir aplicativos instalados de usar a conexão VPN criada internamente. Isto não aplicará os servidores DNS para eles.</string>
+    <string name="summary_exclude_apps">Excluir aplicativos instalados de usar a conexão VPN criada internamente. Isto não aplicará os servidores DNS para eles</string>
     <string name="excluded_apps_info_text_whitelist">Apenas apps selecionados usarão a VPN interna. Os aplicativos não selecionados não usarão os servidores DNS definidos por você.</string>
     <string name="excluded_apps_info_text_blacklist">Cada app verificado não usará a VPN interna. Também não aplicará os servidores DNS para eles.</string>
     <string name="title_about">Sobre</string>
@@ -170,7 +170,7 @@
     <string name="notification_x_whitelisted">[x] apps na lista branca</string>
     <string name="notification_x_blacklisted">[x] apps na lista negra</string>
     <string name="default_dns_explain_delete">Pressione uma entrada para excluí-la ou editá-la. Toque em entradas adicionais para excluí-las também.</string>
-    <string name="summary_enable_ipv4">Habilitar IPv4. Isto permite fornecer endereços IPv4 para usar como servidores DNS.</string>
+    <string name="summary_enable_ipv4">Habilitar IPv4. Isto permite fornecer endereços IPv4 para usar como servidores DNS</string>
     <string name="title_enable_ipv4">Habilitar IPv4</string>
     <string name="warning_disabling_v4">A maioria das versões Android não podem mais acessar a internet quando o DNS Changer está ativo e nenhum endereço IPv4 é fornecido. No entanto, você terá que tentar para seu dispositivo.</string>
     <string name="x_apps_selected">[[x]] apps seleccionado</string>
@@ -188,7 +188,20 @@
     <string name="nav_title_tiles">Azulejos</string>
     <string name="nav_title_pin_protection">Proteção de senha</string>
     <string name="nav_title_more">E mais</string>
-    <string name="about_text">Este aplicativo é de código aberto. O código-fonte pode ser encontrado em git.frostnerd.com\nÍcones do google são usados (Material icon pack - https://material.io/icons).\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2020\nAll rights reserved.\n\nTradução brasileira por Lukinhas\n\nChinese Simplified translation by Majida Whale\n\nVietnamese translation by Phi</string>
+    <string name="about_text">Este aplicativo é de código aberto. O código-fonte pode ser encontrado em git.frostnerd.com
+\nÍcones do google são usados (Material icon pack - https://material.io/icons).
+\n
+\nVersion [[version]]
+\nBuild [[build]]
+\n
+\n© Daniel Wolf 2020
+\nAll rights reserved. Código fonte licenciado sob a GPLv3.
+\n
+\nTradução brasileira por Lukinhas
+\n
+\nChinese Simplified translation by Majida Whale
+\n
+\nVietnamese translation by Phi</string>
     <string name="close">Fecha</string>
     <string name="info_text_how_does_it_work">Você pode configurar o comportamento nas configurações.</string>
     <string name="create_one">Criar</string>
@@ -267,10 +280,10 @@
     <string name="rules_import_finished">[x] linhas foram lidas, [y] das quais eram válidas e [z] distintas (novas) Entradas.</string>
     <string name="detect_rule_type">Tente detectar o tipo</string>
     <string name="rule_unknown_ignoring">Desconhecido, ignorando</string>
-    <string name="file_adblock">Adblock file (Format: ||HOST^)</string>
+    <string name="file_adblock">Arquivo do bloco (Formato: ||HOST^)</string>
     <string name="fail_fast">Fail rápido</string>
     <string name="loading">Carregando</string>
-    <string name="title_query_logging">Query logging</string>
+    <string name="title_query_logging">Consulta de registro</string>
     <string name="title_export_queries">Exportar queries</string>
     <string name="summary_query_logging">Registre todas as consultas de DNS quando o aplicativo estiver sendo executado</string>
     <string name="x_lines">[x] linhas</string>
@@ -278,7 +291,7 @@
     <string name="show_wildcard_entries">Mostrar entradas do curinga</string>
     <string name="sql_actions">Ações SQL</string>
     <string name="disable_failfast_info">Desativar falha rapidamente se o tipo não puder ser detectado. Como isso leva mais tempo, tente especificar o tipo você mesmo.</string>
-    <string name="wait_importing_rules">Detectando tipos de arquivo, aguarde …</string>
+    <string name="wait_importing_rules">Detectando tipos de arquivo, aguarde…</string>
     <string name="summary_export_queries">Exporta todas as consultas em um arquivo de texto para uma pasta de sua escolha</string>
     <string name="title_dns_over_tcp">DNS sobre TCP</string>
     <string name="summary_dns_over_tcp">Reencaminhar as consultas de DNS usando TCP (em vez de UDP)</string>
@@ -286,8 +299,8 @@
     <string name="summary_tcp_timeout">Define o tempo em milissegundos após o qual o aplicativo pára de tentar alcançar o servidor DNS a montante</string>
     <string name="nav_title_query_log">histórico de pedidos</string>
     <string name="dont_show_again">Não mostre novamente</string>
-    <string name="yesterday">"Ontem "</string>
-    <string name="time">"Tempo "</string>
+    <string name="yesterday">Ontem</string>
+    <string name="time">Tempo</string>
     <string name="summary_loopback_allowed">Permite que você insira o endereço de loopback em todos os campos (:: 1 e 127.0.0.1)</string>
     <string name="title_loopback_allowed">Permitir o endereço de loopback</string>
     <string name="nav_title_current_networks">Redes atuais</string>
@@ -300,7 +313,7 @@
     <string name="take_dns_configuration_missing_type">Aviso: [type] está faltando na configuração, mas está habilitado. Deseja desativá-lo?</string>
     <string name="nav_title_importexport">Importar / Exportar</string>
     <string name="tcp">TCP</string>
-    <string name="info_importing_rules_app_unusable">The App is now importing the rules. During that time you won\'t be able to use the app as the internal database is locked for the duration.</string>
+    <string name="info_importing_rules_app_unusable">O aplicativo agora está importando as regras. Durante esse tempo você não poderá usar o aplicativo, pois o banco de dados interno fica bloqueado por todo o tempo.</string>
     <string name="background">fundo</string>
     <string name="stop_all">Pare tudo</string>
     <string name="notification_text_running_in_advanced_mode">Configurações avançadas habilitadas.</string>
