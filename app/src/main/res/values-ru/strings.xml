@@ -429,4 +429,14 @@ https://git.frostnerd.com/PublicAndroidApps/DnsChanger
         <item>Тёмная</item>
         <item>Настоящая черная</item>
     </string-array>
+    <string name="message_user_restricted">Не могу запустить VPN, ваши пользователи, кажется, ограничены.</string>
+    <string name="nebulo_no_browser">Кажется, у вас не установлен ни браузер, ни магазин.</string>
+    <string name="notification_connectivity_service">Проверка фонового подключения</string>
+    <string name="notification_restartconnectivity_service">Перезапуск проверки подключения</string>
+    <string name="notification_connectivity_service_message">Проверяю подключение. Это уведомление скоро исчезнет.</string>
+    <string name="notification_connectivity_service_message_disable">Нажмите здесь, чтобы отключить уведомление</string>
+    <string name="notification_channel_networkcheck">Проверка канала связи</string>
+    <string name="notification_channel_networkcheck_description">Этот канал используется для проверки подключения в рамках автоматизации. Не стесняйтесь его отключить.</string>
+    <string name="summary_priv_mode">Запустите автоматизацию с более высокими правами. Может повысить стабильность настроек автоматизации.</string>
+    <string name="title_priv_mode">Привилегированный режим</string>
 </resources>
