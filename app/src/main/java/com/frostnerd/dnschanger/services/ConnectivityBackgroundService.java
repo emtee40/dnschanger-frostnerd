@@ -73,14 +73,14 @@ public class ConnectivityBackgroundService extends Service {
         // The intention is to trick the system into believing that this service only runs 45 seconds.
         // I hope that this timer is reset by killing & restarting this service
         handler = new Handler();
-        if(!restartingSelf) handler.postDelayed(restartCallback = new Runnable() {
+        if(!restartingSelf && PreferencesAccessor.runConnectivityCheckWithPrivilege(this)) handler.postDelayed(restartCallback = new Runnable() {
             @Override
             public void run() {
                 if(restartingSelf) return;
                 restartingSelf = true;
                 stopSelf();
                 LogFactory.writeMessage(ConnectivityBackgroundService.this, LOG_TAG, "Restarting self.");
-                startService(new Intent(ConnectivityBackgroundService.this, ConnectivityCheckRestartService.class));
+                Util.startForegroundService(ConnectivityBackgroundService.this, new Intent(ConnectivityBackgroundService.this, ConnectivityCheckRestartService.class));
             }
         }, 45000);
         LogFactory.writeMessage(this, LOG_TAG, "onCreate done");
@@ -112,7 +112,7 @@ public class ConnectivityBackgroundService extends Service {
         if(!stayEnabled || Util.isServiceRunning(this)) {
             handler.removeCallbacks(restartCallback);
         } else if(enabled && !restartingSelf) {
-            Util.runBackgroundConnectivityCheck(this, true);
+            if(PreferencesAccessor.runConnectivityCheckWithPrivilege(this)) Util.runBackgroundConnectivityCheck(this, true);
         } else if(!enabled && restartCallback != null) {
             handler.removeCallbacks(restartCallback);
         }
