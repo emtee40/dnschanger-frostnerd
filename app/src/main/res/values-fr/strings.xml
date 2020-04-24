@@ -182,5 +182,7 @@
 \n
 \n(Exporte tous les raccourcis créés depuis l\'installation en utilisant cette application, même ceux qui ont déjà été supprimés)</string>
     <string name="summary_create_shortcut">Créer un raccourci lié à un ensemble spécifique de serveurs DNS pour lancer rapidement le DNS Changer</string>
-    <string name="notification_reason_stopped">Le changeur de DNS a été automatiquement arrêté : [raison]</string>
+    <string name="notification_reason_stopped">Le changeur de DNS a été automatiquement arrêté : [reason]</string>
+    <string name="reason_stop_network_change">Réseau modifié (DNS Changer est réglé pour s\'arrêter)</string>
+    <string name="summary_pin_app_shortcut">Demandez le code PIN lorsque vous démarrez/arrêtez les raccourcis de l\'application</string>
 </resources>
