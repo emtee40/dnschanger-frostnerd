@@ -110,4 +110,77 @@
     <string name="tile_stop">Arrêtez DNS Changer</string>
     <string name="tile_pause">Pause du DNS Changer</string>
     <string name="tile_resume">Reprendre le DNS Changer</string>
+    <string name="android4_4_warning">Attention : votre version d\'Android (4.4) est connue pour avoir des problèmes avec les connexions VPN. Si cette application plante ou ne fonctionne tout simplement pas, c\'est très probablement votre système et non la faute de cette application.
+\nJe suis désolé pour le désagrément.</string>
+    <string name="title_auto_pause">Pause automatique du DNS</string>
+    <string name="summary_auto_pause">Mettre automatiquement en pause le DNS lorsque certaines applications sont au premier plan (disponible dans la prochaine version)</string>
+    <string name="title_autopause_apps">Applications qui mettent en pause le DNS Changer. Actuel : [[count]]</string>
+    <string name="title_pin_notification">Protéger la notification</string>
+    <string name="title_pin_app">Protéger l\'application</string>
+    <string name="title_remove_usage_data">Supprimer l\'accès aux données d\'utilisation</string>
+    <string name="summary_remove_usage_data">L\'accès aux données d\'utilisation a été accordé. Cliquez ici pour révoquer cette autorisation.</string>
+    <string name="autopause_appselect_info_text">Chaque application marquée mettra automatiquement en pause le DNS Changer lorsqu\'elle sera devant. Cela peut être utile car, par exemple, dans le magasin, les applications ne peuvent pas être téléchargées lorsqu\'elles fonctionnent avec un DNS modifié.</string>
+    <string name="error">Erreur</string>
+    <string name="send_crash_report">Envoyer le rapport d\'accident</string>
+    <string name="title_pin_tile">Protéger les réglages rapides</string>
+    <string name="title_disable_network_change">Désactiver lors d\'un changement de réseau</string>
+    <string name="title_share_app">Partager cette application</string>
+    <string name="summary_share_app">Partager cette application avec vos amis ou d\'autres personnes vous aiderait beaucoup à la diffuser.</string>
+    <string name="share_using">Partager en utilisant</string>
+    <string name="title_import_export">Importation / Exportation</string>
+    <string name="title_export_settings">Paramètres d\'exportation</string>
+    <string name="title_import_settings">Paramètres d\'importation</string>
+    <string name="summary_export_settings">Exportez les paramètres dans un fichier.</string>
+    <string name="summary_import_settings">Importe les paramètres d\'un fichier</string>
+    <string name="message_settings_exported">Les paramètres ont été exportés avec succès.</string>
+    <string name="open_share_file">Ouvrir/partager un fichier</string>
+    <string name="success">Succès</string>
+    <string name="title_device_admin">Administrateur de l\'appareil</string>
+    <string name="summary_device_admin_activate">Activez cette application en tant qu\'administrateur de l\'appareil pour empêcher la désinstallation</string>
+    <string name="device_admin_description">Empêcher la désinstallation par les paramètres en tant qu\'administrateur de l\'appareil</string>
+    <string name="device_admin">Administrateur de l\'appareil</string>
+    <string name="device_admin_removal_warning">Avertissement : Lorsque vous supprimez cette application en tant qu\'administrateur de l\'appareil, la désinstallation n\'est plus entravée.</string>
+    <string name="title_debug">Debug</string>
+    <string name="summary_debug">Permet le débogage qui génère des fichiers journaux à envoyer au développeur (ne se produit pas automatiquement)
+\nPeut augmenter l\'utilisation des piles.</string>
+    <string name="summary_send_debug">Envoyer les journaux de débogage au développeur</string>
+    <string name="title_send_debug">Envoyer les journaux</string>
+    <string name="title_debug_category">Dépannage</string>
+    <string name="shortcuts">Raccourcis</string>
+    <string name="widget_not_running">DNS Changer n\'est pas lancé</string>
+    <string name="title_shortcut_click_again_disable">Raccourci pour s\'arrêter</string>
+    <string name="summary_shortcut_click_again_disable">Arrêtez le changeur de DNS en recliquant le raccourci avec lequel il a été lancé</string>
+    <string name="summary_notification_on_stop">Afficher une notification indiquant la raison pour laquelle le DNS Changer a été arrêté automatiquement</string>
+    <string name="title_notification_on_stop">Notifier l\'arrêt</string>
+    <string name="title_create_shortcut">Créer un raccourci</string>
+    <string name="usage_stats_info_text">Pour mettre automatiquement en pause DNS Changer lorsqu\'une certaine application est en tête, cette application doit avoir accès aux données d\'utilisation.
+\n
+\nDans la fenêtre suivante, veuillez accorder à DNSChanger l\'accès à ces données, sinon vous ne pourrez pas utiliser ce paramètre.
+\n
+\n
+\nAucune donnée n\'est demandée, sauf pour les demandes en cours d\'exécution. Aucune donnée n\'est enregistrée ou transmise.
+\nLe code source est disponible publiquement sur https://git.frostnerd.com/PublicAndroidApps/DnsChanger si vous voulez vous en assurer vous-même.</string>
+    <string name="vpn_error_explain">L\'App s\'est écrasé de manière inattendue. Cela peut signifier que le fonctionnement de l\'application n\'est pas pris en charge par votre téléphone/ROM ou qu\'une erreur générale s\'est produite (ce qui indique très probablement que j\'ai fait quelque chose de mal).
+\n
+\nQuoi qu\'il en soit, l\'envoi du rapport d\'accident m\'aiderait beaucoup et pourrait éventuellement conduire à une solution.
+\nVoulez-vous me l\'envoyer \?</string>
+    <string name="summary_disable_network_change">Désactivation automatique lors d\'un changement de réseau (par exemple, du Wifi au 3G). Le changeur DNS s\'activera à nouveau s\'il est configuré de la sorte dans les paramètres précédents.</string>
+    <string name="app_share_text">Regardez cette application de changement de DNS pour android. Vous pouvez la télécharger ici : https://play.google.com/store/apps/details\?id=com.frostnerd.dnschanger</string>
+    <string name="explain_storage_permission">Pour lire/écrire le fichier de paramètres exporté, DNSChanger doit avoir accès à votre stockage. Veuillez lui accorder ces droits dans la boîte de dialogue suivante.</string>
+    <string name="set_device_admin_info">Cette application peut être configurée en tant qu\'administrateur de l\'appareil afin d\'éviter de la supprimer sans entrer au préalable le code d\'accès de l\'appareil.
+\n
+\nAucune politique de sécurité n\'est utilisée.
+\n
+\nCette fonctionnalité ne fonctionne que si la politique d\'administration des appareils est configurée pour demander des mots de passe lors de la suppression d\'applications (principalement présentes dans les entreprises ou livrées avec des applications de contrôle parental)
+\n
+\nDNSChanger n\'utilisera pas réellement ces droits.
+\nDNSChanger doit être supprimé en tant qu\'administrateur de l\'appareil avant d\'essayer de le supprimer de votre téléphone, revenez aux paramètres pour le faire.</string>
+    <string name="debug_dialog_info_text">L\'activation de la fonction de débogage peut augmenter la consommation de la batterie. En outre, les journaux générés contiennent des informations générales (non personnelles) sur votre appareil [version de l\'application, version Android, nom de l\'appareil, fabricant] et peuvent enregistrer les serveurs DNS que vous configurez pour utiliser l\'application.
+\n
+\nCes données ne sont pas envoyées automatiquement, mais gardez cela à l\'esprit lorsque vous m\'envoyez ces journaux.</string>
+    <string name="dialog_question_export_shortcuts">Des raccourcis pour l\'exportation aussi \?
+\n
+\n(Exporte tous les raccourcis créés depuis l\'installation en utilisant cette application, même ceux qui ont déjà été supprimés)</string>
+    <string name="summary_create_shortcut">Créer un raccourci lié à un ensemble spécifique de serveurs DNS pour lancer rapidement le DNS Changer</string>
+    <string name="notification_reason_stopped">Le changeur de DNS a été automatiquement arrêté : [raison]</string>
 </resources>
