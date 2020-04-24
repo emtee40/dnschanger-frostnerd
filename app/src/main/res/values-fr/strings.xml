@@ -303,7 +303,7 @@
 \n
 \n[servers]
 \nLe ou les serveurs peuvent être hors ligne, inaccessibles (peut-être n\'êtes-vous pas connecté à un réseau \?) ou bloqués par votre fournisseur d\'accès.</string>
-    <string name="background">Contexte</string>
+    <string name="background">Arrière-plan</string>
     <string name="info_importing_rules_app_unusable">L\'application importe maintenant les règles. Pendant ce temps, vous ne pourrez pas utiliser l\'application car la base de données interne est verrouillée pour la durée.</string>
     <string name="tcp">TCP</string>
     <string name="stop_all">Tout arrêter</string>
@@ -362,7 +362,7 @@
     <string name="dialog_libraries_text">Cette application contient des bibliothèques créées par des tiers. Les bibliothèques, leurs créateurs et les licences sont énumérés ci-dessous.</string>
     <string name="nav_title_libraries">Bibliothèques</string>
     <string name="question_enable_ipv6">Voulez-vous activer IPv6 \?</string>
-    <string name="query_destination_info">La demande sera envoyée à [x].</string>
+    <string name="query_destination_info">La demande sera envoyée à [x]</string>
     <string name="query_title_answer">Réponse</string>
     <string name="search_by_target">Recherche par cible</string>
     <string name="delete">Supprimer</string>
@@ -389,4 +389,8 @@
     <string name="checking_connectivity">Vérification de la connectivité</string>
     <string name="title_pin_fingerprint">Empreintes digitales</string>
     <string name="summary_pin_fingerprint">Permettre l\'authentification à l\'aide de toute empreinte digitale enregistrée</string>
+    <string name="nebulo_download_text">J\'ai créé une nouvelle application appelée Nebulo, une application open-source et sans publicité pour dns-over-https et dns-over-tls. lle est sur la play store.
+\nVous voulez y jeter un coup d\'œil \? Cliquer sur oui ouvre le magasin.</string>
+    <string name="title_clear_queries">Effacer les requêtes dns</string>
+    <string name="loading_exporting_queries">Exportation des requêtes, veuillez patienter…</string>
 </resources>
