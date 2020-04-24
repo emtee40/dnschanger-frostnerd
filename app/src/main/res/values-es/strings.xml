@@ -210,5 +210,43 @@
     <string name="summary_theme">Establece el tema de esta aplicación</string>
     <string name="remove">Retire</string>
     <string name="whitelist">Lista blanca</string>
-    <string name="select_all">Seleccione todo.</string>
+    <string name="select_all">Seleccione todo</string>
+    <string name="feature_tiles">Para un acceso rápido puedes colocar fichas en tu área de notificación. Pueden ser usados para iniciar/parar y pausar/reanudar el DNSChanger.
+\n
+\nPara añadirlos arrastra hacia abajo el área de notificación, haz clic en el lápiz y arrástralos hacia arriba haciendo un clic largo.</string>
+    <string name="feature_pin_protection">Puedes proteger con alfileres cada acción que inicia, detiene, pausa o reanuda el DNSChanger. Cada vez que una de ellas se ejecuta, un diálogo muestra que se pide el pin establecido por ti.
+\n
+\nEsto puede ser usado para impedir que el usuario del teléfono interfiera con la aplicación si el usuario no es demasiado experto en tecnología. Fue desarrollado para evitar que los niños detengan la aplicación.
+\nPara elegir qué proteger, abre la configuración.</string>
+    <string name="permissions_description_access_data">Permite a la aplicación acceder a los datos de DNSChanger en general</string>
+    <string name="about_text">Esta aplicación es de código abierto. El código fuente se puede encontrar en git.frostnerd.com.
+\nSe utilizan los iconos de Google (Material icon pack - https://material.io/icons).
+\n
+\nVersión [[version]]
+\nConstruir [[build]]
+\n
+\n© Daniel Wolf 2020
+\nTodos los derechos reservados. El código fuente está licenciado bajo GPLv3.
+\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger
+\n
+\nTraducción al brasileño por Lukinhas
+\n
+\nTraducción simplificada del chino por Majida Whale
+\n
+\nTraducción al vietnamita por Phi</string>
+    <string name="no_connectivity_warning_text">De los [x] servidores [y] son inalcanzables:
+\n
+\n[servers]
+\nEl servidor o servidores pueden estar desconectados, no ser localizables (¿quizás no estás conectado a una red\?) o bloqueados por tu proveedor de servicios de Internet.</string>
+    <string name="summary_pin_app_shortcut">Pedir el PIN al iniciar o detenerse de los atajos de la aplicación</string>
+    <string name="x_apps_selected">[[x]] aplicaciones seleccionadas</string>
+    <string name="nav_title_pin_protection">Protección del código PIN</string>
+    <string name="create_one">Crear uno</string>
+    <string name="query_title_type">Tipo</string>
+    <string name="title_custom_ports">Ports personalizados</string>
+    <string name="host">Host</string>
+    <string name="wildcard">Wildcard</string>
+    <string name="file_hosts">Archivo de Hosts</string>
+    <string name="file_adblock">Archivo Adblock (Formato: ||HOST^)</string>
+    <string name="x_lines">[x] líneas</string>
 </resources>
