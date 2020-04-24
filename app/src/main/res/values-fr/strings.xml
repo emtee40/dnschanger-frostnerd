@@ -10,4 +10,24 @@
 \n
 \n
 \nLe code source se trouve sur le site https://git.frostnerd.com/PublicAndroidApps/DnsChanger.</string>
+    <string name="stop">Stop</string>
+    <string name="default_dns">Adresses DNS par défaut</string>
+    <string name="default_dns_title">Fournisseurs publics de DNS</string>
+    <string name="information">Informations</string>
+    <string name="settings">Paramètres</string>
+    <string name="title_notification">Notification</string>
+    <string name="summary_notification">Afficher une notification lorsque DNSChanger est en cours</string>
+    <string name="title_start_boot">Démarrage au démarrage</string>
+    <string name="summary_start_boot">Lancez automatiquement le DNSChanger lorsque votre téléphone est allumé</string>
+    <string name="subtitle_configuring">Configuration [[x]]</string>
+    <string name="menu_title_configure_v4">Configurer IPv4</string>
+    <string name="menu_title_configure_v6">Configurer IPv6</string>
+    <string name="action_resume">CV</string>
+    <string name="start">Démarrer</string>
+    <string name="info_dns_button">Informations sur le DNS</string>
+    <string name="info_text_dns">DNS signifie Domain Name System (système de noms de domaine).
+\n
+\nLe système de noms de domaine est utilisé pour résoudre les domaines (google.com, yahoo.com, example.com...) en adresses IP (192.168.178.1 par exemple) pour communiquer sur Internet.
+\n
+\nC\'est l\'un des plus importants systèmes utilisés dans les réseaux basés sur IP.</string>
 </resources>
