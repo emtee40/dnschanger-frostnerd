@@ -109,7 +109,7 @@
 \nTraducción al brasileño por Lukinhas
 \nTraducción al chino por Majida Whale</string>
     <string name="autopause_appselect_info_text">Cada aplicación marcada hará una pausa en el cambio de DNS automáticamente cuando esté en el frente. Esto puede ser útil ya que, por ejemplo, en la tienda, las aplicaciones no se pueden descargar cuando se ejecutan con un DNS cambiado.</string>
-    <string name="summary_pin_tile">Pregunte por el pin al iniciar o detenerse en el QuickSettings.</string>
+    <string name="summary_pin_tile">Pregunte por el pin al iniciar o detenerse en el QuickSettings</string>
     <string name="tile_stop">Detener el cambio de DNS</string>
     <string name="summary_disable_network_change">Deshabilitar automáticamente cuando se cambia de red (por ejemplo, de Wifi a 3G). El Cambiador de DNS se activará de nuevo si así se ha configurado en los ajustes anteriores.</string>
     <string name="settings_information_text">Esta aplicación fue hecha por Daniel Wolf (frostnerd.com)
@@ -369,5 +369,14 @@
     <string name="summary_dns_over_tcp">Reenvía las consultas DNS usando TCP, no UDP</string>
     <string name="title_tcp_timeout">Tiempo de espera del TCP</string>
     <string name="nav_title_query_log">Bitácora de consultas</string>
-    <string name="dont_show_again">No vuelvas a aparecer.</string>
+    <string name="dont_show_again">No vuelvas a aparecer</string>
+    <string name="text_dns_configuration">La red [name] tiene los siguientes servidores DNS:
+\n
+\n[servers]</string>
+    <string name="use_these_servers">Usar estos servidores</string>
+    <string name="take_dns_configuration_missing_type">Advertencia: [type] falta en la configuración, pero está activado. ¿Quiere desactivarlo\?</string>
+    <string name="stop_all">Detén todo</string>
+    <string name="loading_exporting_queries">Exportación de consultas, por favor espere…</string>
+    <string name="nebulo_download_text">He creado una nueva aplicación llamada Nebulo, una aplicación de código abierto y libre de anuncios para dns-over-https y dns-over-tls. Está en la Play store.
+\n¿Quieres echarle un vistazo\? Haciendo clic en sí se abre Play store.</string>
 </resources>
