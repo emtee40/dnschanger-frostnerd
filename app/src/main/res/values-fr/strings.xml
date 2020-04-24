@@ -1,2 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="rate">Évaluer</string>
+    <string name="app_name">DnsChanger</string>
+    <string name="vpn_explain">Cette application fonctionne sans téléphone root.
+\n
+\nPour rendre cela possible, tout le trafic est redirigé en utilisant un VPN. Ce VPN redirige votre trafic uniquement localement, les données ne quittent jamais votre téléphone en utilisant cette connexion VPN.
+\n
+\nIl vous sera demandé d\'autoriser la connexion VPN dans la fenêtre suivante. Sans votre autorisation, les serveurs DNS définis ne fonctionneront pas.
+\n
+\n
+\nLe code source se trouve sur le site https://git.frostnerd.com/PublicAndroidApps/DnsChanger.</string>
+</resources>
