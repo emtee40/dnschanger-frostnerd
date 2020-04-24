@@ -213,4 +213,65 @@
     <string name="default_dns_legal_warning">Tous les fournisseurs présentés ici peuvent être des marques déposées de leurs propriétaires respectifs. Leurs conditions d\'utilisation s\'appliquent.
 \nSachez que les serveurs dns peuvent enregistrer les sites que vous visitez.</string>
     <string name="excluded_apps_info_text_whitelist">Seules les candidatures sélectionnées dans le cadre ci-dessus utiliseront le VPN interne. Les applications non sélectionnées n\'utiliseront donc pas les serveurs DNS définis par vous.</string>
+    <string name="notification_channel_default">Canal par défaut</string>
+    <string name="title_pin_app_shortcut">Protéger les raccourcis des applications</string>
+    <string name="title_enable_app_shortcuts">Activer les raccourcis des applications</string>
+    <string name="summary_enable_app_shortcuts">Active les raccourcis de l\'application. Cliquez longuement sur le raccourci de l\'application dans le lanceur pour ouvrir le menu</string>
+    <string name="notification_x_whitelisted">[x] Apps sur liste blanche</string>
+    <string name="notification_x_blacklisted">[x] apps sur liste noire</string>
+    <string name="default_dns_explain_delete">Cliquez longuement sur une entrée pour la supprimer ou la modifier. Cliquez sur des entrées supplémentaires pour les supprimer également.</string>
+    <string name="summary_enable_ipv4">Activer IPv4. Cela permet de fournir des adresses ipv4 à utiliser comme serveurs dns</string>
+    <string name="title_enable_ipv4">Activer IPv4</string>
+    <string name="warning_disabling_v4">La plupart des versions d\'Android ne peuvent plus accéder à l\'internet lorsque le changeur de DNS est en cours d\'exécution et qu\'aucune adresse IPv4 n\'est fournie. Vous devrez cependant essayer pour votre appareil.</string>
+    <string name="x_apps_selected">[[x]] applications sélectionnées</string>
+    <string name="tile_pause_resume">Pause / Reprise</string>
+    <string name="tile_start_stop">Démarrage / Arrêt</string>
+    <string name="title_vpn_exclusion">Exclusion des VPN</string>
+    <string name="nav_title_dns">DNS</string>
+    <string name="nav_title_main">Écran principal</string>
+    <string name="nav_title_how_does_it_work">Comment cela fonctionne-t-il \?</string>
+    <string name="nav_title_what_is_dns">Qu\'est-ce que le DNS \?</string>
+    <string name="nav_title_features">Caractéristiques</string>
+    <string name="nav_title_tiles">Carreaux</string>
+    <string name="nav_title_more">Et plus encore</string>
+    <string name="close">Fermer</string>
+    <string name="create_one">Créer un</string>
+    <string name="notification_channel_default_description">Canal par défaut pour l\'affichage des notifications.</string>
+    <string name="feature_tiles">Pour un accès rapide, vous pouvez placer des tuiles dans votre zone de notification. Elles peuvent être utilisées pour démarrer/arrêter et mettre en pause/reprendre le changeur DNS.
+\n
+\nPour les ajouter, faites glisser la zone de notification vers le bas, cliquez sur le stylo et faites-les glisser vers le haut en cliquant longuement.</string>
+    <string name="feature_pin_protection">Vous pouvez protéger chaque action qui démarre/arrête/pause/reprend le DNS Changer. Chaque fois que l\'une de ces actions doit être exécutée, une boîte de dialogue s\'affiche pour vous demander le code d\'accès que vous avez défini.
+\n
+\nCela peut être utilisé pour empêcher l\'utilisateur du téléphone d\'interférer avec l\'application si l\'utilisateur n\'est pas trop avisé en matière de technologie. Il a été développé pour empêcher les enfants d\'arrêter l\'application.
+\nPour choisir ce qu\'il faut protéger, ouvrez les paramètres.</string>
+    <string name="no_disable_android_o">Cette fonction ne peut pas être désactivée sur Android O et supérieur.</string>
+    <string name="blacklist">Liste noire</string>
+    <string name="easter_egg">Pas d\'œufs de Pâques ici. Allez-vous-en.</string>
+    <string name="cardview_title">Désactiver toutes les fonctionnalités</string>
+    <string name="cardview_text">Cliquez ici pour tout désactiver - Automatisation et fonctionnalité (uniquement temporaire)</string>
+    <string name="cardview_text_disabled">Les fonctionnalités sont désactivées. Cliquez ici pour la réactiver (se produit automatiquement au redémarrage)</string>
+    <string name="info_functionality_disabled">Toutes les fonctionnalités ont été désactivées par vous. Réactivez-les dans le menu sur le côté pour commencer.</string>
+    <string name="nav_title_dns_query">Requête DNS</string>
+    <string name="hint_dns_lookup">Recherche DNS</string>
+    <string name="run_query">Lancer une requête</string>
+    <string name="query_title_name">Nom</string>
+    <string name="query_title_ttl">TTL</string>
+    <string name="query_title_dclass">Classe D</string>
+    <string name="query_title_type">Tapez</string>
+    <string name="search_hint">Rechercher un paramètre</string>
+    <string name="unfixable_error_explaination">Le travailleur de fond s\'est écrasé avec une exception présente sur certains appareils. Ce crash ne peut pas être réparé par l\'application elle-même.
+\nEssayez de redémarrer l\'application et si cela ne vous aide pas, essayez de redémarrer votre appareil.
+\n
+\nSi le problème persiste et que votre appareil est à la racine, essayez de télécharger l\'application Tun.ko Installer car il pourrait être en mesure de le résoudre. Le développeur de cette application est DroidVPN Inc.
+\nLien : https://play.google.com/store/apps/details\?id=com.aed.tun.installer</string>
+    <string name="info_text_how_does_it_work">Android vous permet de configurer des serveurs DNS dans les paramètres wifi - mais pas pour les connexions mobiles (3G, 4G...). Cela nécessite cependant l\'utilisation d\'une adresse IP statique, ne permet pas de changer facilement d\'opérateur et ne fonctionne pas avec IPv6, entre autres inconvénients par rapport à cette application.
+\n
+\nCette application tire profit de la structure VPN d\'Androids qui permet aux appareils de configurer les serveurs DNS de manière dynamique. Pour y parvenir, un vpn local est créé qui utilise le même dispositif comme point d\'accès - cela signifie que la connexion vpn ne se connecte pas à l\'internet lui-même, ni n\'est détectable de l\'extérieur.
+\nComme ce faux VPN peut être lancé/arrêté dynamiquement, il permet une série de fonctionnalités et d\'automatisations. Ce VPN n\'est pas mis sur écoute et ne lit aucune donnée. Il s\'agit juste d\'un intermédiaire pour changer les serveurs DNS.
+\n
+\nSi vous vous intéressez à l\'aspect technique, visitez mon git sur git.frostnerd.com.</string>
+    <string name="feature_shortcuts">Cette application vous permet de créer des raccourcis sur votre écran d\'accueil. Ces raccourcis contiennent les paramètres DNS et permettent de modifier vos serveurs DNS en cliquant dessus sans avoir besoin d\'ouvrir l\'application.
+\nCela les rend particulièrement pratiques si vous souhaitez passer rapidement d\'un serveur à l\'autre - il vous suffit de créer un ensemble de raccourcis et de les laisser reposer sur votre écran d\'accueil.
+\n
+\nVous pouvez configurer leur comportement dans les paramètres.</string>
 </resources>
