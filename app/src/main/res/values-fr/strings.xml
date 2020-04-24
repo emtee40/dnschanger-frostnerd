@@ -34,4 +34,62 @@
     <string name="summary_pin">Activer la protection par code pin</string>
     <string name="summary_pin_value">Cliquez ici pour modifier le code PIN</string>
     <string name="title_pin_value">Changer le code pin</string>
+    <string name="action_pause">Pause</string>
+    <string name="action_stop">Stop</string>
+    <string name="notification_paused">Le changeur de DNS est en pause</string>
+    <string name="notification_running">Le changeur de DNS est actif</string>
+    <string name="active">Actif</string>
+    <string name="paused">En pause</string>
+    <string name="summary_auto_wifi">Activer automatiquement le changeur DNS lors de la connexion à un réseau wifi</string>
+    <string name="summary_auto_mobile">Activer automatiquement le changeur DNS lors de la connexion à un réseau mobile</string>
+    <string name="title_auto_wifi">Démarrage automatique (WIFI)</string>
+    <string name="title_auto_mobile">Démarrage automatique (Mobile)</string>
+    <string name="running">Actif</string>
+    <string name="not_running">Inactif</string>
+    <string name="background_configure_error">Autorisation de démarrer le VPN refusée.
+\nIl pourrait s\'agir du système refusant les connexions vpn démarrées en arrière-plan pour des raisons de sécurité.
+\n
+\nOuvrez l\'application pour démarrer le VPN</string>
+    <string name="open_app">Ouvrir l\'application</string>
+    <string name="rate_request_text">Voulez-vous évaluer cette application \?
+\nCela aiderait à la diffuser et à montrer que j\'apprécie mon travail.</string>
+    <string name="not_now">Pas maintenant</string>
+    <string name="dont_ask_again">Ne demandez pas à nouveau</string>
+    <string name="done">Fait</string>
+    <string name="check_validity">Veuillez vérifier la validité de votre contribution</string>
+    <string name="press_back_again">Appuyez à nouveau sur la touche pour quitter (Jette les modifications !)</string>
+    <string name="shortcut_conflict_text">Cette application est configurée pour démarrer/arrêter le vpn lorsque le type de votre réseau change (soit Wifi ou 3G).
+\nCela peut entrer en conflit avec n\'importe quel paramètre lorsque vous démarrez à partir d\'un raccourci car l\'action peut être annulée par l\'application elle-même (un seul VPN peut fonctionner à tout moment).
+\n
+\nVoulez-vous désactiver ces paramètres contradictoires \?</string>
+    <string name="warning">Avertissement</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="tasker_support">Soutien aux Taskers</string>
+    <string name="create_shortcut">Créer un raccourci</string>
+    <string name="shortcut_created">Raccourci créé.</string>
+    <string name="summary_show_used_dns">Indiquer les serveurs DNS actuellement utilisés dans la notification</string>
+    <string name="title_show_used_dns">Afficher les serveurs DNS</string>
+    <string name="notification">Notification</string>
+    <string name="title_automation">Automatisation</string>
+    <string name="title_general">Généralités</string>
+    <string name="summary_info">Afficher des informations générales sur cette application</string>
+    <string name="title_info">Info</string>
+    <string name="create_tasker_action">Créer l\'action Tasker</string>
+    <string name="show">Voir</string>
+    <string name="tasker_automation_conflict_text">Cette application est configurée pour démarrer/arrêter le vpn lorsque le type de votre réseau change (soit Wifi ou 3G).
+\nCela peut entrer en conflit avec ce plugin de tâche car l\'action peut être annulée par l\'application elle-même (un seul VPN peut fonctionner à la fois).
+\n
+\nVoulez-vous désactiver ces paramètres contradictoires \?</string>
+    <string name="contact_developer">Contacter le développeur</string>
+    <string name="warning_started_using_tasker">Le DNSChanger a été lancé en utilisant Tasker. L\'arrêter peut être interrompu avec lui. Le démarrer sans utiliser Tasker n\'applique pas les serveurs DNS configurés avec Tasker. L\'arrêter quand même \?</string>
+    <string name="app_supports_tasker_text">Cette application supporte Tasker et peut être utilisée comme un plugin d\'action pour automatiser l\'utilisation du DNS.</string>
+    <string name="summary_automation_warn">Avertissement : L\'utilisation de l\'un de ces éléments pourrait interférer avec les profils de Tâcheurs actifs utilisant cette application !</string>
+    <string name="settings_information_text">Cette application a été réalisée par Daniel Wolf (frostnerd.com)
+\n
+\nIl utilise des icônes fabriquées par Google (Material icon pack - https://material.io/icons/)
+\n
+\n
+\nSi vous manquez une fonctionnalité, avez trouvé un bug ou avez simplement reçu une demande générale, n\'hésitez pas à me contacter à l\'adresse support@frostnerd.com
+\nLe code source de cette application peut être consulté à l\'adresse suivante : https://git.frostnerd.com/PublicAndroidApps/DnsChanger</string>
 </resources>
