@@ -345,4 +345,20 @@
     <string name="title_clear_local_rules">Cancella le regole locali</string>
     <string name="summary_undo_rule_import">Ripristina un\'importazione di regole da un file. Non può essere ripristinato.</string>
     <string name="title_undo_rule_import">Annulla importazione</string>
+    <string name="nebulo_download_text">Ho creato una nuova App chiamata Nebulo, un\'App open-source e senza pubblicità per dns-over-https e dns-over-tls. È in negozio.
+\nVolete dargli un\'occhiata\? Cliccando sì si apre il negozio.</string>
+    <string name="summary_disable_crashreporting">Disattivare la segnalazione automatica degli incidenti. I report contengono solo la versione dell\'app, la versione Android e lo stacktrace dei crash e nessun dato personale.</string>
+    <string name="title_disable_crashreporting">Segnalazione di crash</string>
+    <string name="title_vpndialog_missing">VPN mancante</string>
+    <string name="message_user_restricted">Non è possibile avviare la VPN, i vostri utenti sembrano essere limitati.</string>
+    <string name="nebulo_no_browser">Non sembra che tu abbia installato un browser o il negozio.</string>
+    <string name="notification_connectivity_service">Controllo della connettività in background</string>
+    <string name="notification_restartconnectivity_service">Controllo della connettività di riavvio</string>
+    <string name="notification_connectivity_service_message">Controllo della connettività in corso. Questa notifica sparirà presto.</string>
+    <string name="notification_connectivity_service_message_disable">Clicca qui per disabilitare la notifica</string>
+    <string name="notification_channel_networkcheck">Canale per il controllo della connettività</string>
+    <string name="notification_channel_networkcheck_description">Questo canale viene utilizzato per il controllo della connettività come parte dell\'automazione. Sentitevi liberi di disabilitarlo.</string>
+    <string name="summary_priv_mode">Eseguire l\'automazione con diritti più elevati. Potrebbe aumentare la stabilità delle impostazioni dell\'automazione.</string>
+    <string name="title_priv_mode">Modalità privilegiata</string>
+    <string name="summary_vpndialog_missing">Il dispositivo sembra non avere la capacità di eseguire una VPN. Poiché questa applicazione si basa completamente su questa funzionalità, purtroppo non sarà in grado di utilizzarla.</string>
 </resources>
