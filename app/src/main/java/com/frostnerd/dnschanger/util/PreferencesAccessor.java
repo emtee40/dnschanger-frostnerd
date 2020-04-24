@@ -62,7 +62,7 @@ public class PreferencesAccessor {
     }
 
     public static boolean isEverythingDisabled(@NonNull Context context){
-        return Preferences.getInstance(context).getBoolean(  "everything_disabled", false);
+        return false;
     }
 
     public static boolean checkConnectivityOnStart(@NonNull Context context){

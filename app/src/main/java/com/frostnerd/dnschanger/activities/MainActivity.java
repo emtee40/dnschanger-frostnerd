@@ -175,32 +175,6 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
             showNebuloDialog();
         }
         Util.updateTiles(this);
-        View cardView = getLayoutInflater().inflate(R.layout.main_cardview, null, false);
-        final TextView text = cardView.findViewById(R.id.text);
-        final Switch button = cardView.findViewById(R.id.cardview_switch);
-        if(PreferencesAccessor.isEverythingDisabled(this)){
-            button.setChecked(true);
-            text.setText(R.string.cardview_text_disabled);
-        }
-        button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                LogFactory.writeMessage(MainActivity.this, new String[]{LOG_TAG, "[DISABLE-EVERYTHING]"}, "The DisableEverything switch was clicked and changed to " + b);
-                text.setText(b ? R.string.cardview_text_disabled : R.string.cardview_text);
-                preferences.put("everything_disabled", b);
-                if(Util.isServiceRunning(MainActivity.this)){
-                    LogFactory.writeMessage(MainActivity.this, new String[]{LOG_TAG, "[DISABLE-EVERYTHING]"}, "Service is running. Destroying...");
-                    startService(DNSVpnService.getDestroyIntent(MainActivity.this));
-                }
-            }
-        });
-        cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                button.toggle();
-            }
-        });
-        setCardView(cardView);
         preferences.put( "first_run", false);
     }
 

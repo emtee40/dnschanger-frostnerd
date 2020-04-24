@@ -118,7 +118,7 @@ public class Preferences extends com.frostnerd.preferences.Preferences {
                 "pin_fingerprint", "pin_notification", "pin_tile", "pin_app_shortcut", "shortcut_click_again_disable",
                 "excluded_whitelist", "device_admin", "setting_app_shortcuts_enabled", "check_connectivity", "debug",
                 "advanced_settings", "loopback_allowed", "custom_port", "rules_activated", "dns_over_tcp", "query_logging",
-                "first_run", "rated", "auto_pause", "everything_disabled", "app_whitelist_configured", "ipv6_asked",
+                "first_run", "rated", "auto_pause", "app_whitelist_configured", "ipv6_asked",
                 "start_service_when_available"};
         for(String s: booleanPreferences){
             builder.key(s).ofType(Type.BOOLEAN).doneWithKey();
