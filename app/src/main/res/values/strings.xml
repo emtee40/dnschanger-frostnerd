@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DnsChanger</string>
     <string name="start">Start</string>
@@ -67,7 +68,6 @@
     <string name="title_pin_app">Protect App</string>
     <string name="summary_pin_app">Ask for the PIN when starting the app</string>
     <string name="title_category_pin">PIN protection</string>
-
     <string-array name="tasker_configure_actions">
         <item>Start DNSChanger</item>
         <item>Stop DNSChanger</item>
@@ -134,14 +134,12 @@
     <string name="reset_warning_text">Do you really want to reset all settings?\nThis cannot be reversed.</string>
     <string name="title_theme">Theme</string>
     <string name="summary_theme">Sets the theme of this app</string>
-
     <string-array name="theme">
         <item>Default</item>
         <item>Blue</item>
         <item>Dark</item>
         <item>True black</item>
     </string-array>
-
     <string-array name="themeValues" translatable="false">
         <item>2</item>
         <item>1</item>
@@ -177,7 +175,23 @@
     <string name="nav_title_tiles">Tiles</string>
     <string name="nav_title_pin_protection">PIN protection</string>
     <string name="nav_title_more">And more</string>
-    <string name="about_text">This app is open source. The source code can be found at git.frostnerd.com.\nIcons from Google are used (Material icon pack - https://material.io/icons).\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2020\nAll rights reserved. Source code licensed under GPLv3.\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger\n\nBrazilian translation by Lukinhas\n\nChinese Simplified translation by Majida Whale\n\nVietnamese translation by Phi</string>
+    <string name="about_text">This app is open source. The source code can be found at git.frostnerd.com.
+\nIcons from Google are used (Material icon pack - https://material.io/icons).
+\n
+\nVersion [[version]]
+\nBuild [[build]]
+\n
+\n© Daniel Wolf 2020
+\nAll rights reserved. Source code licensed under GPLv3.
+\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger
+\n
+\nBrazilian translation by Lukinhas
+\n
+\nChinese Simplified translation by Majida Whale
+\n
+\nVietnamese translation by Phi
+\n
+\nNorwegian bokmål translation by Imre Kristoffer Eilertsen</string>
     <string name="close">Close</string>
     <string name="info_text_how_does_it_work">Android allows you to configure DNS servers in the wifi settings - but not for mobile connections (3G, 4G…). This however requires you to use a static IP address, doesn\'t allow switching easily and won\'t work with IPv6, among other disadvantages when compared to this app.\n\nThis app takes advantage of Androids VPN structure which allows devices to set DNS servers dynamically. To achieve this a local vpn is created which uses the same device as endpoint - this means the vpn connection neither connects to the internet itself, nor is it detectable from outside.\nAs this dummy-VPN can be started/stopped dynamically it allows for a range of features and automatation. This VPN isn\'t tapped and no data is read by it. It\'s just a middle man in changing the DNS servers.\n\nIf you are interested in the technical side of this, visit my git at git.frostnerd.com.</string>
     <string name="create_one">Create one</string>
@@ -254,7 +268,7 @@
     <string name="fail_fast">Fail fast</string>
     <string name="disable_failfast_info">Disable fail fast if the type cannot be detected. As this takes longer try specifying the type yourself.</string>
     <string name="loading">Loading</string>
-    <string name="wait_importing_rules">Detecting file types, please wait..</string>
+    <string name="wait_importing_rules">Detecting file types, please wait…</string>
     <string name="title_query_logging">Query logging</string>
     <string name="summary_query_logging">Log all DNS queries when the app is running</string>
     <string name="title_export_queries">Export queries</string>
@@ -309,27 +323,19 @@
     <string name="title_clear_local_rules">Clear local rules</string>
     <string name="summary_undo_rule_import">Revert a rule import from a file. Cannot be reverted.</string>
     <string name="title_undo_rule_import">Undo import</string>
-
     <string name="nebulo_download_text">I created a new App named Nebulo, an open-source and ad-free App for dns-over-https and dns-over-tls. It is on the store.\nDo you want to have a look at it? Clicking yes opens the store.</string>
-
     <string name="summary_disable_crashreporting">Disable automatic reporting of crashes. Reports only contain the app version, Android version and the crash stacktrace and no personal data whatsoever.</string>
     <string name="title_disable_crashreporting">Crash reporting</string>
-
     <string name="title_vpndialog_missing">VPN missing</string>
     <string name="summary_vpndialog_missing">Your device seems to be missing the capabilities to run a VPN. As this app fully relies on this feature you sadly won\'t be able to use it.</string>
-
     <string name="message_user_restricted">Can\'t start VPN, your users seems to be restricted.</string>
-
     <string name="nebulo_no_browser">You don\'t seem to have a browser or the store installed.</string>
-
     <string name="notification_connectivity_service">Background connectivity check</string>
     <string name="notification_restartconnectivity_service">Restarting connectivity check</string>
     <string name="notification_connectivity_service_message">Running connectivity check. This notification will be gone soon.</string>
     <string name="notification_connectivity_service_message_disable">Click here to disable notification</string>
-
     <string name="notification_channel_networkcheck">Channel for Connectivity check</string>
     <string name="notification_channel_networkcheck_description">This channel is used for the connectivity check as part of the automation. Feel free to disable it.</string>
-
     <string name="summary_priv_mode">Run the automation with higher rights. Might increase stability of the automation settings.</string>
     <string name="title_priv_mode">Privileged mode</string>
 </resources>
