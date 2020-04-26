@@ -312,7 +312,7 @@
     <string name="rule_unknown_ignoring">Desconocido, ignorando</string>
     <string name="fail_fast">Falla rápido</string>
     <string name="loading">Cargando</string>
-    <string name="wait_importing_rules">Detección de tipos de archivos, por favor espere...</string>
+    <string name="wait_importing_rules">Detección de tipos de archivos, por favor espere…</string>
     <string name="title_query_logging">Registro de consultas</string>
     <string name="summary_query_logging">Registra todas las consultas DNS cuando la aplicación se está ejecutando</string>
     <string name="title_export_queries">Consultas de exportación</string>
