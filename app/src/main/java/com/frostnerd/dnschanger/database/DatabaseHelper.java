@@ -45,7 +45,7 @@ import java.util.Set;
  */
 public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
     public static final String DATABASE_NAME = "data";
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 6;
     @NonNull
     public static final Set<Class<? extends Entity>> entities = new HashSet<Class<? extends Entity>>(){{
         add(DNSEntry.class);
