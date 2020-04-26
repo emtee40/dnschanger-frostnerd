@@ -72,15 +72,11 @@
         android:layout_height="1dp"
         android:background="#9E9E9E" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
+            android:layout_gravity="end"
             android:orientation="horizontal">
 
             <Button
@@ -97,6 +93,4 @@
                 android:layout_height="wrap_content"
                 android:text="@string/cancel" />
         </LinearLayout>
-
-    </RelativeLayout>
 </LinearLayout>
