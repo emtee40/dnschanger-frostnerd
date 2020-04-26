@@ -16,8 +16,6 @@
     <string name="title_start_boot">开机自启</string>
     <string name="summary_start_boot">当你的手机启动时自动打开 DNSChanger</string>
     <string name="subtitle_configuring">配置 [[x]]</string>
-    <string name="menu_title_configure_v4">配置 IPv4</string>
-    <string name="menu_title_configure_v6">配置 IPv6</string>
     <string name="action_resume">恢复</string>
     <string name="action_pause">暂停</string>
     <string name="action_stop">停止</string>
@@ -37,7 +35,6 @@
     <string name="not_now">不是现在</string>
     <string name="dont_ask_again">不再询问</string>
     <string name="done">完成</string>
-    <string name="check_validity">请检查你的输入内容的有效性</string>
     <string name="press_back_again">再次点按返回键以离开 (放弃更改!)</string>
     <string name="tasker_automation_conflict_text">这个应用已设为网络类型发生变更时开始/停止 VPN (要么 Wifi 要么 3G)。\n这可能会与这个 Tasker 插件发生冲突，也就是这个操作可能会被应用本身所覆写 (在给定时间内有且只能运行一个 VPN).\n\n是否要停用这些冲突的设置?</string>
     <string name="shortcut_conflict_text">这个应用已设为网络类型发生变更时开始/停止 VPN (要么 Wifi 要么 3G)。\n这可能会与任何设置发生冲突，也就是从快捷方式中启动为操作可能会被应用本身所覆写 (在给定时间内有且只能运行一个 VPN)。\n\n是否要停用这些冲突的设置?</string>
@@ -55,19 +52,14 @@
     <string name="notification">通知</string>
     <string name="title_automation">自动</string>
     <string name="title_general">常规</string>
-    <string name="summary_info">显示这个应用的常规信息</string>
-    <string name="title_info">信息</string>
     <string name="summary_automation_warn">警告: 使用这些可能会干扰到使用这个应用的现用 Tasker 配置文件！</string>
     <string name="title_pin">PIN码</string>
     <string name="summary_pin">启用PIN码保护</string>
     <string name="summary_pin_value">点击此处以变更 PIN</string>
     <string name="title_pin_value">变更PIN码</string>
-    <string name="settings_information_text">这个应用由 Daniel Wolf (frostnerd.com) 制作\n\n图标源自 Google (Material icon pack - https://material.io/icons/)\n\n\n如果你有功能请求、发现 Bug 又或者提出一般的请求，请随时联系我: support@frostnerd.com\n这个应用的源代码可以在 https://git.frostnerd.com/PublicAndroidApps/DnsChanger 中查看</string>
     <string name="create_tasker_action">正在创建 Tasker 操作</string>
     <string name="show">显示</string>
     <string name="android4_4_warning">警告: 你的 Android 版本 (4.4) 已知会与 VPN 连接发生问题。如果这个应用发生崩溃或者只是无法工作，有可能是你的系统而不是这个应用的故障问题。\n对此造成不便深感抱歉。</string>
-    <string name="title_auto_pause">自动暂停 DNS </string>
-    <string name="summary_auto_pause">当某个应用在前台运行时自动暂停 DNS (在下个版本时可用)</string>
     <string name="title_autopause_apps">用于暂停 DNSChanger 的应用。当前: [[count]]</string>
     <string name="pin_dialog_title">PIN码保护</string>
     <string name="pin_dialog_text">你已选择使用PIN码保护这个应用。请在设置中输入要提供的PIN码 (默认: 1234)</string>
@@ -76,17 +68,6 @@
     <string name="title_pin_app">保护应用</string>
     <string name="summary_pin_app">当启动应用时询问 PIN码</string>
     <string name="title_category_pin">PIN码保护</string>
-    <string name="summary_version">版本 [[version]] ([[code]])\n\n© Daniel Wolf 2017\n保留所有权利\n\nBrazilian translation by Lukinhas\n\nChinese Simplified translation by Majida Whale</string>
-    <string name="usage_stats_info_text">要在某个应用在前台运行时自动暂停 DNS Changer，这个应用需要使用情况数据的访问权。
-\n
-\n在下一个窗口中，请授予 DNSChanger对这个数据的访问权，否则你将不能够使用这个设置。
-\n
-\n
-\n除了当前正在运行的应用程序之外，不需要其他数据。不会保存或者传输数据。
-\n如果你想要查看源代码，源代码现已公开可用 https://git.frostnerd.com/PublicAndroidApps/DnsChanger。</string>
-    <string name="title_remove_usage_data">移除使用情况数据的访问权</string>
-    <string name="summary_remove_usage_data">已授予使用情况数据的访问权。点击此处可撤回这项权限。</string>
-    <string name="autopause_appselect_info_text">各个有记号的应用都会在前台运行时自动暂停 DNSChanger 。例如在已更改 DNS 时无法下载商店里的应用时会很有用。</string>
     <string-array name="tasker_configure_actions">
         <item>开始 DNSChanger</item>
         <item>停止 DNSChanger</item>
@@ -106,15 +87,10 @@
     <string name="summary_disable_network_change">在切换网络 (例如 Wifi 切换为 3G) 时自动停用。如果设定了上一个设置，将重新激活 DNSChanger。</string>
     <string name="title_disable_network_change">在网络切换时停用</string>
     <string name="title_share_app">分享这个应用</string>
-    <string name="summary_share_app">将这个应用分享给你的朋友或者其他人会帮助这个应用让更多的人知道。</string>
     <string name="app_share_text">嘿，快来看一下这个 Android 版的 DNS 更改器。你可以点击链接下载: https://play.google.com/store/apps/details?id=com.frostnerd.dnschanger</string>
     <string name="share_using">分享方式</string>
-    <string name="title_import_export">导入 / 导出</string>
     <string name="title_export_settings">导出设置</string>
     <string name="title_import_settings">导入设置</string>
-    <string name="summary_export_settings">导出设置为文件。</string>
-    <string name="summary_import_settings">从文件导入设置</string>
-    <string name="explain_storage_permission">要读取/写入已导出的设置文件，DNSChanger 需要存储权限。请在下一个对话框中授予这些权限。</string>
     <string name="message_settings_exported">设置导出成功。</string>
     <string name="open_share_file">打开/分享文件</string>
     <string name="success">成功</string>
@@ -132,7 +108,6 @@
     <string name="title_debug_category">疑难解答</string>
     <string name="shortcuts">快捷方式</string>
     <string name="dialog_question_export_shortcuts">同时导出快捷方式?\n\n(导出自使用这个应用安装以来创建的所有快捷方式，甚至是已经删除的快捷方式。)</string>
-    <string name="widget_not_running">未启动 DNSChanger</string>
     <string name="title_shortcut_click_again_disable">再次点击快捷方式以停止</string>
     <string name="summary_shortcut_click_again_disable">当重新点击快捷方式时停止 DNSChanger</string>
     <string name="summary_notification_on_stop">显示为什么 DNSChanger 会自动停止的通知</string>
@@ -140,7 +115,6 @@
     <string name="title_create_shortcut">创建快捷方式</string>
     <string name="summary_create_shortcut">创建绑定指定 DNS 服务器组的快捷方式以快速启动 DNSChanger</string>
     <string name="notification_reason_stopped">DNSChanger 已自动停止: [reason]</string>
-    <string name="reason_stop_exception">同时运行异常</string>
     <string name="reason_stop_network_change">网络发生变更 (DNSChanger 已设为停止)</string>
     <string name="reason_stop_tasker">被 Tasker 停止</string>
     <string name="invalid_dns_error_text">似乎你配置的 DNS 服务器之一无法在你的设备上使用。 \n也许你输入了无效的 IP 地址，在给定的 IP 地址上不存在 DNS 服务器亦或者只是个临时错误。\n\n请检查主菜单中的配置并验证所输入的地址是否正确。</string>
@@ -168,8 +142,6 @@
     </string-array>
     <string name="remove">移除</string>
     <string name="whitelist">白名单</string>
-    <string name="select_all">全选</string>
-    <string name="deselect_all">反选</string>
     <string name="summary_pin_app_shortcut">当从应用快捷方式中开始/停止时询问 PIN码</string>
     <string name="title_pin_app_shortcut">保护应用快捷方式</string>
     <string name="title_enable_app_shortcuts">启用应用快捷方式</string>
@@ -184,7 +156,6 @@
     <string name="tile_pause_resume">暂停 / 恢复</string>
     <string name="tile_start_stop">开始 / 停止</string>
     <string name="title_vpn_exclusion">VPN 排除</string>
-    <string name="search_hint">搜索设置项</string>
     <string name="unfixable_error_explaination">后台工作程序因在一些设备上发生异常而崩溃。这个崩溃无法通过应用本身修复。\n这时可试着重新启动应用，如果没有帮助，可以重新开机。\n\n如果问题仍然存在并且你的设备已经 Root ，可尝试下载应用 Tun.ko Installer，有可能会修复。这个应用的开发者是 DroidVPN Inc.\nLink: https://play.google.com/store/apps/details?id=com.aed.tun.installer</string>
     <string name="nav_title_dns">DNS</string>
     <string name="nav_title_main">主屏幕</string>
@@ -229,9 +200,6 @@
     <string name="no_disable_android_o">这个无法在 Android O 及更高系统版本上停用。</string>
     <string name="blacklist">黑名单</string>
     <string name="easter_egg">这里没有复活节彩蛋，走开啦。</string>
-    <string name="cardview_title">停用所有功能</string>
-    <string name="cardview_text">点击此处以停用所有选项 - 自动化和功能 (只是暂时的)</string>
-    <string name="cardview_text_disabled">功能现已停用。点击此处以重新启用 (重新启动后会自动发生)</string>
     <string name="info_functionality_disabled">你已停用所有功能。可在侧边栏菜单中重新启用。</string>
     <string name="nav_title_dns_query">DNS 查询</string>
     <string name="hint_dns_lookup">DNS 查找</string>
@@ -255,7 +223,6 @@
     <string name="permissions_label_access_data">访问数据</string>
     <string name="permissions_description_access_data">允许应用以常规方式访问 DNSChanger 的数据</string>
     <string name="edit">编辑</string>
-    <string name="new_features">新功能</string>
     <string name="summary_pin_fingerprint">允许授权使用任何已保存的指纹</string>
     <string name="title_pin_fingerprint">指纹</string>
     <string name="checking_connectivity">正在检查连通性</string>
@@ -275,7 +242,6 @@
     <string name="host">Host</string>
     <string name="target">目标</string>
     <string name="wildcard">通配符</string>
-    <string name="normal">普通</string>
     <string name="filter">筛选</string>
     <string name="new_rule">新规则</string>
     <string name="regular_expression">正则表达式 (RegEx)</string>
@@ -315,7 +281,6 @@
     <string name="nav_title_query_log">请求历史</string>
     <string name="dont_show_again">不要再显示</string>
     <string name="disable">禁用</string>
-    <string name="yesterday">昨天</string>
     <string name="time">时间</string>
     <string name="ignore">忽视</string>
     <string name="use_these_servers">使用这些服务器</string>
@@ -351,8 +316,6 @@
     <string name="title_clear_local_rules">清除当地规则</string>
     <string name="summary_undo_rule_import">从文件恢复规则导入。 无法恢复。</string>
     <string name="title_undo_rule_import">撤消导入</string>
-    <string name="title_upstream_query_logging">上游查询记录</string>
-    <string name="summary_upstream_query_logging">保存服务器响应查询的IP地址</string>
     <string name="nebulo_download_text">我创建了一个名为Nebulo的新App，这是一个开源的无广告App，用于dns-over-https和dns-over-tls。它已经在商店上发布了。
 \n你想看一看吗？点击 \"是 \"就会打开商店。</string>
     <string name="summary_disable_crashreporting">禁用自动报告崩溃。报告只包含应用程序版本、Android版本和崩溃堆栈跟踪，不包含任何个人数据。</string>

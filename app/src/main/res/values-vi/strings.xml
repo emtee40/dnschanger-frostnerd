@@ -16,8 +16,6 @@
     <string name="title_start_boot">Chạy khi khởi động</string>
     <string name="summary_start_boot">Tự động khởi động Trình thay đổi DNS khi điện thoại của bạn được bật</string>
     <string name="subtitle_configuring">Cấu hình [[x]]</string>
-    <string name="menu_title_configure_v4">Cấu hình IPv4</string>
-    <string name="menu_title_configure_v6">Cấu hình IPv6</string>
     <string name="action_resume">Tiếp tục</string>
     <string name="action_pause">Tạm dừng</string>
     <string name="action_stop">Dừng</string>
@@ -37,7 +35,6 @@
     <string name="not_now">Không phải lúc này</string>
     <string name="dont_ask_again">Đừng hỏi nữa</string>
     <string name="done">Xong</string>
-    <string name="check_validity">Vui lòng kiểm tra tính hợp lệ đã nhập vào của bạn</string>
     <string name="press_back_again">Nhấn phím quay lại lần nữa rời khỏi (hủy thay đổi!)</string>
     <string name="tasker_automation_conflict_text">Ứng dụng này được thiết lập để chạy / dừng VPN khi loại mạng của bạn thay đổi (Hoặc là Wifi hoặc 3G).\nĐiều này có thể xung đột với phần bổ trợ tác vụ tự động này do hành động đó có thể bị ghi đè bởi chính ứng dụng (Chỉ có một VPN có thể chạy ở bất kỳ thời điểm nào).\n\nBạn có muốn vô hiệu các cài đặt xung đột này?</string>
     <string name="shortcut_conflict_text">Ứng dụng này được thiết lập để chạy / dừng VPN khi loại mạng của bạn thay đổi (Hoặc là Wifi hoặc 3G).\nĐiều này có thể xung đột với bất kỳ cài đặt nào khi bắt đầu từ lối tắt vì hành động đó có thể bị ghi đè bởi chính ứng dụng (Chỉ có một VPN có thể chạy bất kỳ lúc nào).\n\nBạn có muốn vô hiệu các cài đặt xung đột này?</string>
@@ -55,19 +52,14 @@
     <string name="notification">Thông báo</string>
     <string name="title_automation">Tự động hóa</string>
     <string name="title_general">Tổng quát</string>
-    <string name="summary_info">Hiển thị thông tin chung về ứng dụng này</string>
-    <string name="title_info">Thông tin</string>
     <string name="summary_automation_warn">Cảnh báo: Sử dụng bất kỳ cách nào trong số này có thể can thiệp vào lịch sử của Tác vụ tự động đang hoạt động sử dụng ứng dụng này!</string>
     <string name="title_pin">Mã Pin</string>
     <string name="summary_pin">Kích hoạt tính năng bảo vệ bằng mã Pin</string>
     <string name="summary_pin_value">Nhấn vào đây để thay đổi mã PIN</string>
     <string name="title_pin_value">Thay đổi mã Pin</string>
-    <string name="settings_information_text">Ứng dụng này được thực hiện bởi Daniel Wolf (frostnerd.com)\n\nNó sử dụng các biểu tượng được thực hiện bởi Google (Gói nguyên vật liệu biểu tượng  - https://material.io/icons/)\n\n\nNếu bạn đang thiếu một tính năng, tìm thấy lỗi hoặc chỉ cần có một yêu cầu chung, vui lòng liên hệ với tôi tại support@frostnerd.com\nMã nguồn cho ứng dụng này có thể được xem tại https://git.frostnerd.com/PublicAndroidApps/Trình thay đổi DNS</string>
     <string name="create_tasker_action">Tạo hành động cho tác vụ tự động</string>
     <string name="show">Hiển thị</string>
     <string name="android4_4_warning">Cảnh báo: phiên bản Android của bạn (4.4) được biết là có vấn đề với kết nối VPN. Nếu ứng dụng này gặp sự cố hoặc chỉ cần không làm việc, nó rất có thể là do hệ thống của bạn và không phải là lỗi của ứng dụng này.\nTôi rất lấy làm tiếc cho sự bất tiện này.</string>
-    <string name="title_auto_pause">Tự động tạm dừng DNS</string>
-    <string name="summary_auto_pause">Tự động tạm dừng DNS khi một số ứng dụng nhất định đang chạy dưới nền(có sẵn trong phiên bản tiếp theo)</string>
     <string name="title_autopause_apps">Các ứng dụng tạm dừng DNS Changer. Hiện tại: [[count]]</string>
     <string name="pin_dialog_title">Được bảo vệ bằng mã Pin</string>
     <string name="pin_dialog_text">Bạn chọn bảo vệ bằng mã Pin cho ứng dụng này. Hãy nhập số pin bạn đã cung cấp trong cài đặt (mặc định: 1234)</string>
@@ -76,17 +68,6 @@
     <string name="title_pin_app">Bảo vệ ứng dụng</string>
     <string name="summary_pin_app">Yêu cầu mã Pin khi khởi động ứng dụng</string>
     <string name="title_category_pin">Bảo vệ bằng mã Pin</string>
-    <string name="summary_version">Phiên bản [[version]] ([[code]])\n\n© Daniel Wolf 2017\nTất cả các quyền được bảo lưu\n\nBản dịch ngôn ngữ Braxin bởi Lukinhas\nBản dịch ngôn ngữ Trung Quốc bởi Lukinhas Majida Whale\nBản dịch ngôn ngữ Việt nam bởi Pond1597</string>
-    <string name="usage_stats_info_text">Để tự động tạm dừng thay đổi DNS khi một ứng dụng nhất định chạy dưới nền, ứng dụng này cần truy cập vào dữ liệu sử dụng. 
-\n
-\nTrong cửa sổ kế tiếp, hãy cấp quyền truy cập cho trình thay đổi DNS vào dữ liệu này nếu không bạn sẽ không thể sử dụng cài đặt này.
-\n
-\n
-\nKhông có dữ liệu ngoại trừ cho các ứng dụng đang chạy được yêu cầu. Không có dữ liệu được lưu lại hoặc được truyền đi.
-\nMã nguồn được công bố công khai tại https://git.frostnerd.com/PublicAndroidApps/DNSchanger nếu bạn muốn tự mình làm cho chắc chắn.</string>
-    <string name="title_remove_usage_data">Xóa quyền truy cập vào dữ liệu sử dụng</string>
-    <string name="summary_remove_usage_data">Quyền truy cập vào dữ liệu sử dụng đã được cấp. Bấm vào đây để hủy bỏ sự cho phép đó.</string>
-    <string name="autopause_appselect_info_text">Mỗi ứng dụng được đánh dấu sẽ tạm dừng thay đổi DNS một cách tự động khi đang ở phía trước. Điều này có thể hữu ích chẳng hạn như trong các ứng dụng lưu trữ không thể được tải xuống khi chạy với DNS đã được thay đổi.</string>
     <string-array name="tasker_configure_actions">
         <item>Chạy Trình thay đổi  DNS</item>
         <item>Dừng Trình thay đổi  DNS</item>
@@ -106,15 +87,10 @@
     <string name="summary_disable_network_change">Tự động tắt khi thay đổi mạng (ví dụ như từ Wifi sang 3G). Trình thay đổi DNS sẽ kích hoạt lại nếu được thiết lập trong phần cài đặt trước đó.</string>
     <string name="title_disable_network_change">Tắt khi thay đổi mạng</string>
     <string name="title_share_app">Chia sẻ ứng dụng này</string>
-    <string name="summary_share_app">Chia sẻ ứng dụng này với bạn bè hoặc những người khác thực sự sẽ giúp rất nhiều trong việc phổ biến ứng dụng này.</string>
     <string name="app_share_text">Chào, có một cái nhìn vào ứng dụng này thay đổi DNS cho Android. Bạn có thể tải xuống ở đây: https://play.google.com/store/apps/details?id=com.frostnerd.Trình thay đổi DNS</string>
     <string name="share_using">Chia sẻ sử dụng</string>
-    <string name="title_import_export">Nhập / Xuất</string>
     <string name="title_export_settings">Cài đặt Xuất</string>
     <string name="title_import_settings">Cài đặt Nhập</string>
-    <string name="summary_export_settings">Xuất các cài đặt vào một tập tin.</string>
-    <string name="summary_import_settings">Nhập cài đặt vào một tập tin</string>
-    <string name="explain_storage_permission">Để đọc / ghi các tập tin cài đặt đã xuất, Trình thay đổi DNS cần truy cập vào bộ nhớ lưu trữ của bạn. Hãy cho phép các quyền này trong hộp thoại tiếp theo.</string>
     <string name="message_settings_exported">Các cài đặt đã được xuất thành công.</string>
     <string name="open_share_file">Mở / chia sẻ tập tin</string>
     <string name="success">Thành công</string>
@@ -132,7 +108,6 @@
     <string name="title_debug_category">Giải quyết sự cố</string>
     <string name="shortcuts">Lối tắt</string>
     <string name="dialog_question_export_shortcuts">Xuất các lối tắt là tốt?\n\n(Xuất tất cả các lối tắt được tạo ra từ khi cài đặt sử dụng ứng dụng này, ngay cả những ứng dụng đã bị xóa)</string>
-    <string name="widget_not_running">Trình thay đổi DNS đã không được khởi chạy</string>
     <string name="title_shortcut_click_again_disable">Nhấn lại phím tắt để dừng</string>
     <string name="summary_shortcut_click_again_disable">Dừng Thay đổi DNS khi nhấn lại các lối tắt đã được chạy</string>
     <string name="summary_notification_on_stop">Hiển thị thông báo với lý do tại sao Thay đổi DNS đã bị tự động dừng lại</string>
@@ -140,7 +115,6 @@
     <string name="title_create_shortcut">Tạo một lối tắt</string>
     <string name="summary_create_shortcut">Tạo một lối tắt được ràng buộc với một bộ máy chủ DNS cụ thể để nhanh chóng khởi động thay đổi DNS Changer</string>
     <string name="notification_reason_stopped">Trình thay đổi DNS đã tự động dừng lại: [reason]</string>
-    <string name="reason_stop_exception">Danh sách chp phép ngoại lệ đang chạy</string>
     <string name="reason_stop_network_change">Mạng đã được thay đổi (Thay đổi DNS được thiết lập để dừng lại)</string>
     <string name="reason_stop_tasker">Đã dừng bởi Tác vụ tự động</string>
     <string name="invalid_dns_error_text">Dường như một trong những máy chủ DNS bạn đã cấu hình không thể sử dụng trên thiết bị của bạn. \nHoặc bạn đã nhập một địa chỉ IP không hợp lệ, không có máy chủ DNS nào có trên địa chỉ IP đã chọn hoặc nó là một lỗi tạm thời.\n\nHãy kiểm tra cấu hình trong trình đơn chính và xác minh rằng địa chỉ đã nhập là chính xác.</string>
@@ -168,8 +142,6 @@
     </string-array>
     <string name="remove">Gỡ bỏ</string>
     <string name="whitelist">Danh sách cho phép</string>
-    <string name="select_all">Chọn tất cả</string>
-    <string name="deselect_all">Bỏ chọn tất cả</string>
     <string name="summary_pin_app_shortcut">Yêu cầu mã pin khi chạy / dừng từ các lối tắt ứng dụng</string>
     <string name="title_pin_app_shortcut">Bảo vệ lối tắt ứng dụng</string>
     <string name="title_enable_app_shortcuts">Bật lối tắt ứng dụng</string>
@@ -184,7 +156,6 @@
     <string name="tile_pause_resume">Tạm dừng / Tiếp tục</string>
     <string name="tile_start_stop">Chạy / Dừng</string>
     <string name="title_vpn_exclusion">Loại trừ VPN</string>
-    <string name="search_hint">Tìm kiếm cài đặt</string>
     <string name="unfixable_error_explaination">Hoạt động dưới nền đã bị sự cố với một ngoại lệ xuất hiện trên một số thiết bị. Sự cố này không thể được sửa  bởi bản thân ứng dụng.\nHãy thử khởi động lại ứng dụng và nếu điều đó không giúp thử khởi động lại thiết bị của bạn.\n\nNếu vấn đề vẫn còn tồn tại và thiết bị đã được root thử tải về ứng dụng Trình cài đặt Tun.ko vì nó có thể có thể sửa chữa nó. Nhà phát triển của ứng dụng này là DroidVPN Inc.\nLink: https://play.google.com/store/apps/details?id=com.aed.tun.installer</string>
     <string name="nav_title_dns">DNS</string>
     <string name="nav_title_main">Màn hình chính</string>
@@ -220,9 +191,6 @@
     <string name="no_disable_android_o">Không thể tắt tính năng này trên Android O và cao hơn.</string>
     <string name="blacklist">Danh sách cấm</string>
     <string name="easter_egg">Không có trứng phục sinh ở đây. Đi chỗ khác chơi.</string>
-    <string name="cardview_title">Vô hiệu hoá tất cả các chức năng</string>
-    <string name="cardview_text">Nhấn vào đây để vô hiệu hóa tất cả mọi thứ - Tự động hóa và chức năng (chỉ là tạm thời)</string>
-    <string name="cardview_text_disabled">Chức năng bị vô hiệu hóa. Nhấn vào đây để kích hoạt lại (thiết bị sẽ tự động khởi động lại)</string>
     <string name="info_functionality_disabled">Tất cả chức năng đã bị vô hiệu hóa. Bật lại trong trình đơn ở bên cạnh để chạy.</string>
     <string name="nav_title_dns_query">Truy vấn DNS</string>
     <string name="hint_dns_lookup">Tra cứu DNS</string>
@@ -246,7 +214,6 @@
     <string name="permissions_label_access_data">Truy cập dữ liệu</string>
     <string name="permissions_description_access_data">Cho phép ứng dụng truy cập dữ liệu của thay đổi tổng quát DNS</string>
     <string name="edit">Chỉnh sửa</string>
-    <string name="new_features">Các tính năng mới</string>
     <string name="summary_pin_fingerprint">Cho phép xác thực bằng bất kỳ dấu vân tay đã lưu nào</string>
     <string name="title_pin_fingerprint">Dấu vân tây</string>
     <string name="checking_connectivity">Kiểm tra kết nối</string>
@@ -266,7 +233,6 @@
     <string name="host">Host</string>
     <string name="target">Mục tiêu</string>
     <string name="wildcard">Ký tự đại diện</string>
-    <string name="normal">Bình thường</string>
     <string name="filter">Bộ lọc</string>
     <string name="new_rule">Qui tắc mới</string>
     <string name="regular_expression">Chuỗi thông thường (RegEx)</string>
@@ -305,7 +271,6 @@
     <string name="summary_tcp_timeout">Thiết lập thời gian bằng mili giây sau đó ứng dụng ngừng tìm cách truy cập vào máy chủ DNS ngược dòng</string>
     <string name="nav_title_query_log">Truy vấn bản ghi</string>
     <string name="dont_show_again">Đừng hiển thị lại</string>
-    <string name="yesterday">Hôm qua</string>
     <string name="time">Giờ</string>
     <string name="summary_loopback_allowed">Cho phép bạn nhập địa chỉ lặp trở lại trong tất cả các ô trường(::1 và 127.0.0.1)</string>
     <string name="title_loopback_allowed">Cho phép địa chỉ lặp trở lại</string>
@@ -342,6 +307,4 @@
     <string name="title_clear_local_rules">Xóa quy tắc địa phương</string>
     <string name="summary_undo_rule_import">Hoàn nguyên quy tắc nhập từ một tệp. Không thể hoàn nguyên.</string>
     <string name="title_undo_rule_import">Hoàn tác nhập</string>
-    <string name="title_upstream_query_logging">Ghi nhật ký truy vấn ngược dòng</string>
-    <string name="summary_upstream_query_logging">Lưu địa chỉ IP máy chủ trả lời truy vấn</string>
 </resources>

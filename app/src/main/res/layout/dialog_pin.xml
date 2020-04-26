@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activities.PinActivity"
-    android:background="?android:attr/windowBackground"
     android:orientation="vertical"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"

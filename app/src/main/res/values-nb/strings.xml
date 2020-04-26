@@ -16,8 +16,6 @@
     <string name="title_start_boot">Start ved systemoppstart</string>
     <string name="summary_start_boot">Starter DNSChanger automatisk når mobilen din blir skrudd på</string>
     <string name="subtitle_configuring">Setter opp [[x]]</string>
-    <string name="menu_title_configure_v4">Sett opp IPv4</string>
-    <string name="menu_title_configure_v6">Sett opp IPv6</string>
     <string name="action_resume">Fortsett</string>
     <string name="action_pause">Pause</string>
     <string name="action_stop">Stopp</string>
@@ -37,7 +35,6 @@
     <string name="not_now">Ikke nå</string>
     <string name="dont_ask_again">Ikke spør igjen</string>
     <string name="done">Ferdig</string>
-    <string name="check_validity">Vennligst sjekk gyldigheten til inndataen din</string>
     <string name="press_back_again">Trykk Tilbake-knappen igjen for å gå ut (Forkaster endringer!)</string>
     <string name="warning">Advarsel</string>
     <string name="yes">Ja</string>
@@ -50,15 +47,11 @@
     <string name="notification">Notifikasjon</string>
     <string name="title_automation">Automatisering</string>
     <string name="title_general">Generelt</string>
-    <string name="summary_info">Vis generell info om denne appen</string>
-    <string name="title_info">Info</string>
     <string name="title_pin">PIN</string>
     <string name="summary_pin">Skru på PIN-beskyttelse</string>
     <string name="summary_pin_value">Klikk her for å endre PIN-koden</string>
     <string name="title_pin_value">Endre PIN</string>
     <string name="show">Vis</string>
-    <string name="title_auto_pause">Sett DNS automatisk på pause</string>
-    <string name="summary_auto_pause">Sett DNS automatisk på pause når visse apper vises fremst på skjermen (Tilgjengelig i den neste versjonen)</string>
     <string name="title_autopause_apps">Apper som setter DNSChanger på pause. For øyeblikket: [[count]]</string>
     <string name="pin_dialog_title">PIN-beskyttet</string>
     <string name="pin_dialog_text">Du valgte å PIN-beskytte denne appen. Vennligst skriv PIN-koden du oppga i innstillingene (Standard: 1234)</string>
@@ -67,9 +60,6 @@
     <string name="title_pin_app">Beskytt appen</string>
     <string name="summary_pin_app">Spør om PIN-koden når appen startes opp</string>
     <string name="title_category_pin">PIN-beskyttelse</string>
-    <string name="summary_version">Versjon [[version]] ([[code]])\n\n© Daniel Wolf 2020\nAlle rettigheter reservert\n\nPortugisisk-for-Brasil oversettelse av Lukinhas\nKinesisk oversettelse av Majida Whale\nNorsk oversettelse av Imre Kristoffer Eilertsen</string>
-    <string name="title_remove_usage_data">Fjern tilgang til bruksdata</string>
-    <string name="summary_remove_usage_data">Tilgang til bruksdata ble gitt. Klikk her for å trekke tilbake den tillatelsen.</string>
 
     <string-array name="tasker_configure_actions">
         <item>Start DNSChanger</item>
@@ -89,14 +79,9 @@
     <string name="summary_disable_network_change">Skru av automatisk når det byttes nettverk (f.eks. Wi-Fi til 4G). DNSChanger vil bli skrudd på igjen dersom de innstillingene ovenfor indikerer det.</string>
     <string name="title_disable_network_change">Skru av ved nettverksendring</string>
     <string name="title_share_app">Del denne appen</string>
-    <string name="summary_share_app">Å dele denne appen med vennene dine eller andre, ville virkelig hjulpet med å spre ordet om denne appen.</string>
     <string name="share_using">Del gjennom</string>
-    <string name="title_import_export">Importer / Eksporter</string>
     <string name="title_export_settings">Eksporter innstillinger</string>
     <string name="title_import_settings">Importer innstillinger</string>
-    <string name="summary_export_settings">Eksporter innstillingene til en fil.</string>
-    <string name="summary_import_settings">Importer innstillingene fra en fil</string>
-    <string name="explain_storage_permission">For å lese/skrive den valgte innstillingsfilen, behøver DNSChanger tilgang til lagringsplassen din. Vennligst gi den de rettighetene i det neste vinduet.</string>
     <string name="message_settings_exported">Innstillingene har blitt vellykket eksportert</string>
     <string name="open_share_file">Åpne/del fil</string>
     <string name="success">Suksess</string>
@@ -111,7 +96,6 @@
     <string name="title_send_debug">Send loggføringer</string>
     <string name="title_debug_category">Feilsøking</string>
     <string name="shortcuts">Snarveier</string>
-    <string name="widget_not_running">DNSChanger har ikke blitt startet opp is not launched</string>
     <string name="title_shortcut_click_again_disable">Klikk på snarveien igjen for å stoppe</string>
     <string name="summary_shortcut_click_again_disable">Stopp DNSChanger når det klikkes på snarveien som den ble startet opp med</string>
     <string name="summary_notification_on_stop">Vis en notifikasjon som forteller hvorfor DNSChanger ble automatisk stoppet</string>
@@ -119,7 +103,6 @@
     <string name="title_create_shortcut">Lag en snarvei</string>
     <string name="summary_create_shortcut">Lag en snarvei som er bundet til et spesifikt sett med DNS-tjenere, for å raskt starte opp DNSChanger</string>
     <string name="notification_reason_stopped">DNSChanger ble stoppet automatisk: [reason]</string>
-    <string name="reason_stop_exception">Unntak under kjøring</string>
     <string name="reason_stop_network_change">Nettverket ble endret (DNSChanger er satt til å stoppe)</string>
     <string name="reason_stop_tasker">Stoppet av Tasker</string>
     <string name="title_enable_ipv6">Skru på IPv6</string>
@@ -146,8 +129,6 @@
     </string-array>
     <string name="remove">Fjern</string>
     <string name="whitelist">Hvitelist</string>
-    <string name="select_all">Velg alle</string>
-    <string name="deselect_all">Avvelg alle</string>
     <string name="summary_pin_app_shortcut">Spør om PIN-koden når du starter/stopper fra appsnarveier</string>
     <string name="title_pin_app_shortcut">Beskytt appsnarveier</string>
     <string name="title_enable_app_shortcuts">Skru på appsnarveier</string>
@@ -162,7 +143,6 @@
     <string name="tile_pause_resume">Pause / Fortsett</string>
     <string name="tile_start_stop">Start / Stopp</string>
     <string name="title_vpn_exclusion">VPN-unntak</string>
-    <string name="search_hint">Søk etter en innstilling</string>
     <string name="nav_title_dns">DNS</string>
     <string name="nav_title_main">Hovedskjerm</string>
     <string name="nav_title_learn">Lær mer</string>
@@ -179,9 +159,6 @@
     <string name="notification_channel_default_description">Standardkanalen for utlegging av notifikasjoner.</string>
     <string name="no_disable_android_o">Dette kan ikke bli skrudd av på Android O eller høyere cannot be disabled on Android O and above.</string>
     <string name="blacklist">Svarteliste</string>
-    <string name="cardview_title">Skru av all funksjonalitet</string>
-    <string name="cardview_text">Klikk her for å skru av alt - Automatisering og funksjonalitet (kun midlertidig)</string>
-    <string name="cardview_text_disabled">Funksjonaliteten er skrudd av. Klikk her for å skru på på nytt (skjer automatisk ved omstart)</string>
     <string name="info_functionality_disabled">All funksjonalitet har blitt skrudd av av deg. Skru det på igjen i sidemenyen for å begynne igjen.</string>
     <string name="nav_title_dns_query">DNS-forespørsel</string>
     <string name="hint_dns_lookup">DNS-oppleting</string>
@@ -205,7 +182,6 @@
     <string name="permissions_label_access_data">Tilgang til dataer</string>
     <string name="permissions_description_access_data">Gir appen tilgang til DNSChanger sine data generelt</string>
     <string name="edit">Rediger</string>
-    <string name="new_features">Nye funksjoner</string>
     <string name="summary_pin_fingerprint">Tillat autentisering med ethvert lagret fingeravtrykk</string>
     <string name="title_pin_fingerprint">Fingeravtrykk</string>
     <string name="checking_connectivity">Sjekker tilkobling</string>
@@ -225,7 +201,6 @@
     <string name="host">Vert</string>
     <string name="target">Målpunkt</string>
     <string name="wildcard">Jokertegn</string>
-    <string name="normal">Normal</string>
     <string name="filter">Filtrér</string>
     <string name="new_rule">Ny oppføring</string>
     <string name="regular_expression">Ordinært uttrykk (RegEx)</string>
@@ -264,7 +239,6 @@
     <string name="summary_tcp_timeout">Bestemmer tiden i millisekunder, hvorpå appen vil avslutte forsøket på å nå oppstrøms-DNS-tjeneren</string>
     <string name="nav_title_query_log">Forespørselslogg</string>
     <string name="dont_show_again">Ikke vis igjen</string>
-    <string name="yesterday">I går</string>
     <string name="time">Tid</string>
     <string name="summary_loopback_allowed">Lar deg skrive inn loopback-adresser i alle feltene (f.eks. ::1 og 127.0.0.1)</string>
     <string name="title_loopback_allowed">Tillat loopback-adresser</string>

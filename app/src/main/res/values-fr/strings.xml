@@ -20,8 +20,6 @@
     <string name="title_start_boot">Démarrage au démarrage</string>
     <string name="summary_start_boot">Lancez automatiquement le DNSChanger lorsque votre téléphone est allumé</string>
     <string name="subtitle_configuring">Configuration [[x]]</string>
-    <string name="menu_title_configure_v4">Configurer IPv4</string>
-    <string name="menu_title_configure_v6">Configurer IPv6</string>
     <string name="action_resume">Continuer</string>
     <string name="start">Démarrer</string>
     <string name="info_dns_button">Informations sur le DNS</string>
@@ -56,7 +54,6 @@
     <string name="not_now">Pas maintenant</string>
     <string name="dont_ask_again">Ne demandez pas à nouveau</string>
     <string name="done">Fait</string>
-    <string name="check_validity">Veuillez vérifier la validité de votre contribution</string>
     <string name="press_back_again">Appuyez à nouveau sur la touche pour quitter (Jette les modifications !)</string>
     <string name="shortcut_conflict_text">Cette application est configurée pour démarrer/arrêter le vpn lorsque le type de votre réseau change (soit Wifi ou 3G).
 \nCela peut entrer en conflit avec n\'importe quel paramètre lorsque vous démarrez à partir d\'un raccourci car l\'action peut être annulée par l\'application elle-même (un seul VPN peut fonctionner à tout moment).
@@ -73,8 +70,6 @@
     <string name="notification">Notification</string>
     <string name="title_automation">Automatisation</string>
     <string name="title_general">Généralités</string>
-    <string name="summary_info">Afficher des informations générales sur cette application</string>
-    <string name="title_info">Info</string>
     <string name="create_tasker_action">Créer l\'action Tasker</string>
     <string name="show">Afficher</string>
     <string name="tasker_automation_conflict_text">Cette application est configurée pour démarrer/arrêter le vpn lorsque le type de votre réseau change (soit Wifi ou 3G).
@@ -85,25 +80,11 @@
     <string name="warning_started_using_tasker">Le DNSChanger a été lancé en utilisant Tasker. L\'arrêter peut être interrompu avec lui. Le démarrer sans utiliser Tasker n\'applique pas les serveurs DNS configurés avec Tasker. L\'arrêter quand même \?</string>
     <string name="app_supports_tasker_text">Cette application supporte Tasker et peut être utilisée comme un plugin d\'action pour automatiser l\'utilisation du DNS.</string>
     <string name="summary_automation_warn">Avertissement : L\'utilisation de l\'un de ces éléments pourrait interférer avec les profils de Tâcheurs actifs utilisant cette application !</string>
-    <string name="settings_information_text">Cette application a été réalisée par Daniel Wolf (frostnerd.com)
-\n
-\nIl utilise des icônes fabriquées par Google (Material icon pack - https://material.io/icons/)
-\n
-\n
-\nSi vous manquez une fonctionnalité, avez trouvé un bug ou avez simplement reçu une demande générale, n\'hésitez pas à me contacter à l\'adresse support@frostnerd.com
-\nLe code source de cette application peut être consulté à l\'adresse suivante : https://git.frostnerd.com/PublicAndroidApps/DnsChanger</string>
     <string name="pin_dialog_title">Protection du code PIN</string>
     <string name="pin_dialog_text">Vous choisissez de protéger cette application par un code PIN. Veuillez entrer le code pin que vous avez fourni dans les paramètres (par défaut : 1234)</string>
     <string name="summary_pin_notification">Demander le code PIN lors de l\'arrêt/la pause du DNSChanger de la notification</string>
     <string name="summary_pin_app">Demandez le code PIN au moment de démarrer l\'application</string>
     <string name="title_category_pin">Protection par code pin</string>
-    <string name="summary_version">Version [[version]]]. ([[code]])
-\n
-\nDaniel Wolf 2020
-\nTous droits réservés
-\n
-\nTraduction brésilienne par Lukinhas
-\nTraduction en chinois par Majida Whale</string>
     <string name="deep_link_title">DNSChanger par Frostnerd</string>
     <string name="summary_pin_tile">Demandez le code PIN lors du démarrage/arrêt de QuickSettings</string>
     <string name="tile_start">Démarrez DNSChanger</string>
@@ -112,26 +93,17 @@
     <string name="tile_resume">Reprendre le DNSChanger</string>
     <string name="android4_4_warning">Attention : votre version d\'Android (4.4) est connue pour avoir des problèmes avec les connexions VPN. Si cette application plante ou ne fonctionne tout simplement pas, c\'est très probablement votre système et non la faute de cette application.
 \nJe suis désolé pour le désagrément.</string>
-    <string name="title_auto_pause">Pause automatique du DNS</string>
-    <string name="summary_auto_pause">Mettre automatiquement en pause le DNS lorsque certaines applications sont au premier plan (disponible dans la prochaine version)</string>
     <string name="title_autopause_apps">Applications qui mettent en pause le DNSChanger. Actuel : [[count]]</string>
     <string name="title_pin_notification">Protéger la notification</string>
     <string name="title_pin_app">Protéger l\'application</string>
-    <string name="title_remove_usage_data">Supprimer l\'accès aux données d\'utilisation</string>
-    <string name="summary_remove_usage_data">L\'accès aux données d\'utilisation a été accordé. Cliquez ici pour révoquer cette autorisation.</string>
-    <string name="autopause_appselect_info_text">Chaque application marquée mettra automatiquement en pause le DNSChanger lorsqu\'elle sera devant. Cela peut être utile car, par exemple, dans le magasin, les applications ne peuvent pas être téléchargées lorsqu\'elles fonctionnent avec un DNS modifié.</string>
     <string name="error">Erreur</string>
     <string name="send_crash_report">Envoyer le rapport d\'accident</string>
     <string name="title_pin_tile">Protéger les réglages rapides</string>
     <string name="title_disable_network_change">Désactiver lors d\'un changement de réseau</string>
     <string name="title_share_app">Partager cette application</string>
-    <string name="summary_share_app">Partager cette application avec vos amis ou d\'autres personnes vous aiderait beaucoup à la diffuser.</string>
     <string name="share_using">Partager en utilisant</string>
-    <string name="title_import_export">Importation / Exportation</string>
     <string name="title_export_settings">Paramètres d\'exportation</string>
     <string name="title_import_settings">Paramètres d\'importation</string>
-    <string name="summary_export_settings">Exportez les paramètres dans un fichier.</string>
-    <string name="summary_import_settings">Importe les paramètres d\'un fichier</string>
     <string name="message_settings_exported">Les paramètres ont été exportés avec succès.</string>
     <string name="open_share_file">Ouvrir/partager un fichier</string>
     <string name="success">Succès</string>
@@ -147,26 +119,17 @@
     <string name="title_send_debug">Envoyer les journaux</string>
     <string name="title_debug_category">Dépannage</string>
     <string name="shortcuts">Raccourcis</string>
-    <string name="widget_not_running">DNSChanger n\'est pas lancé</string>
     <string name="title_shortcut_click_again_disable">Raccourci pour s\'arrêter</string>
     <string name="summary_shortcut_click_again_disable">Arrêtez le DNSChanger en recourant au raccourci avec lequel il a été lancé</string>
     <string name="summary_notification_on_stop">Afficher une notification indiquant la raison pour laquelle le DNSChanger a été arrêté automatiquement</string>
     <string name="title_notification_on_stop">Notifier l\'arrêt</string>
     <string name="title_create_shortcut">Créer un raccourci</string>
-    <string name="usage_stats_info_text">Pour mettre automatiquement en pause DNS Changer lorsqu\'une certaine application est en tête, cette application doit avoir accès aux données d\'utilisation.
-\n
-\nDans la fenêtre suivante, veuillez accorder à DNSChanger l\'accès à ces données, sinon vous ne pourrez pas utiliser ce paramètre.
-\n
-\n
-\nAucune donnée n\'est demandée, sauf pour les demandes en cours d\'exécution. Aucune donnée n\'est enregistrée ou transmise.
-\nLe code source est disponible publiquement sur https://git.frostnerd.com/PublicAndroidApps/DnsChanger si vous voulez vous en assurer vous-même.</string>
     <string name="vpn_error_explain">L\'App s\'est écrasé de manière inattendue. Cela peut signifier que le fonctionnement de l\'application n\'est pas pris en charge par votre téléphone/ROM ou qu\'une erreur générale s\'est produite (ce qui indique très probablement que j\'ai fait quelque chose de mal).
 \n
 \nQuoi qu\'il en soit, l\'envoi du rapport d\'accident m\'aiderait beaucoup et pourrait éventuellement conduire à une solution.
 \nVoulez-vous me l\'envoyer \?</string>
     <string name="summary_disable_network_change">Désactivation automatique lors d\'un changement de réseau (par exemple, du Wifi au 3G). Le DNSChanger s\'activera à nouveau s\'il est configuré de la sorte dans les paramètres précédents.</string>
     <string name="app_share_text">Regardez cette application de changement de DNS pour android. Vous pouvez la télécharger ici : https://play.google.com/store/apps/details\?id=com.frostnerd.dnschanger</string>
-    <string name="explain_storage_permission">Pour lire/écrire le fichier de paramètres exporté, DNSChanger doit avoir accès à votre stockage. Veuillez lui accorder ces droits dans la boîte de dialogue suivante.</string>
     <string name="set_device_admin_info">Cette application peut être configurée en tant qu\'administrateur de l\'appareil afin d\'éviter de la supprimer sans entrer au préalable le code d\'accès de l\'appareil.
 \n
 \nAucune politique de sécurité n\'est utilisée.
@@ -186,7 +149,6 @@
     <string name="reason_stop_network_change">Réseau modifié (DNSChanger est réglé pour s\'arrêter)</string>
     <string name="summary_pin_app_shortcut">Demandez le code PIN lorsque vous démarrez/arrêtez les raccourcis de l\'application</string>
     <string name="add">Ajouter</string>
-    <string name="deselect_all">Désélectionner tout</string>
     <string name="title_enable_ipv6">Activer IPv6</string>
     <string name="summary_enable_ipv6">Activez IPv6. Cela permet de fournir des adresses ipv6 à utiliser comme serveurs dns.</string>
     <string name="new_entry">Nouvelle entrée</string>
@@ -203,8 +165,6 @@
     <string name="summary_theme">Définit le thème de cette application</string>
     <string name="remove">Supprimer</string>
     <string name="whitelist">Liste blanche</string>
-    <string name="select_all">Sélectionner tout</string>
-    <string name="reason_stop_exception">Exception en cours d\'exécution</string>
     <string name="reason_stop_tasker">Arrêté par Tasker</string>
     <string name="invalid_dns_error_text">Il semble que l\'un des serveurs DNS que vous avez configuré ne puisse pas être utilisé sur votre appareil.
 \nSoit vous avez saisi une adresse IP non valide, soit aucun serveur DNS n\'est présent sur l\'adresse IP donnée, soit il s\'agit d\'une erreur temporaire.
@@ -247,9 +207,6 @@
     <string name="no_disable_android_o">Cette fonction ne peut pas être désactivée sur Android O et supérieur.</string>
     <string name="blacklist">Liste noire</string>
     <string name="easter_egg">Pas d\'œufs de Pâques ici. Allez-vous-en.</string>
-    <string name="cardview_title">Désactiver toutes les fonctionnalités</string>
-    <string name="cardview_text">Cliquez ici pour tout désactiver - Automatisation et fonctionnalité (uniquement temporaire)</string>
-    <string name="cardview_text_disabled">Les fonctionnalités sont désactivées. Cliquez ici pour la réactiver (se produit automatiquement au redémarrage)</string>
     <string name="info_functionality_disabled">Toutes les fonctionnalités ont été désactivées par vous. Réactivez-les dans le menu sur le côté pour commencer.</string>
     <string name="nav_title_dns_query">Requête DNS</string>
     <string name="hint_dns_lookup">Recherche DNS</string>
@@ -258,7 +215,6 @@
     <string name="query_title_ttl">TTL</string>
     <string name="query_title_dclass">Classe D</string>
     <string name="query_title_type">Type</string>
-    <string name="search_hint">Rechercher un paramètre</string>
     <string name="unfixable_error_explaination">Le travailleur de fond s\'est écrasé avec une exception présente sur certains appareils. Ce crash ne peut pas être réparé par l\'application elle-même.
 \nEssayez de redémarrer l\'application et si cela ne vous aide pas, essayez de redémarrer votre appareil.
 \n
@@ -318,7 +274,6 @@
     <string name="title_loopback_allowed">Autoriser l\'adresse de rebouclage</string>
     <string name="summary_loopback_allowed">Permet de saisir l\'adresse de bouclage dans tous les champs (::1 et 127.0.0.1)</string>
     <string name="time">Heure</string>
-    <string name="yesterday">Hier</string>
     <string name="dont_show_again">Ne plus se montrer</string>
     <string name="nav_title_query_log">Journal des requêtes</string>
     <string name="summary_tcp_timeout">Définit le temps en millisecondes après lequel l\'application cesse d\'essayer d\'atteindre le serveur DNS en amont</string>
@@ -349,7 +304,6 @@
 \nUtilisez à vos propres risques, aucune garantie n\'est fournie. En cliquant sur OK, vous acceptez que l\'auteur de cette application ne soit pas responsable des dommages qui pourraient en résulter.</string>
     <string name="x_entries">[x] entrées</string>
     <string name="show_local_entries">Afficher les règles de résolution à une adresse de bouclage</string>
-    <string name="new_features">Nouvelles fonctionnalités</string>
     <string name="edit">Edit</string>
     <string name="permissions_description_access_data">Permet à l\'application d\'accéder aux données de DNSChanger en général</string>
     <string name="permissions_label_access_data">Accès aux données</string>
@@ -371,7 +325,6 @@
     <string name="regular_expression">Expression régulière (RegEx)</string>
     <string name="new_rule">Nouvelle règle</string>
     <string name="filter">Filtrez</string>
-    <string name="normal">Normal</string>
     <string name="wildcard">Wildcard</string>
     <string name="target">Cible</string>
     <string name="summary_rules_activated">Utilisez les règles configurées dans le menu principal</string>
@@ -417,8 +370,6 @@
     <string name="summary_protect_other_vpns">N\'autoriser l\'arrêt de l\'application que par les méthodes intégrées</string>
     <string name="cancel">Annuler</string>
     <string name="ok">OK</string>
-    <string name="summary_upstream_query_logging">Enregistrer l\'adresse IP à laquelle le serveur répond à une requête</string>
-    <string name="title_upstream_query_logging">Enregistrement des requêtes en amont</string>
     <string name="exported_dns_queries">[x] requêtes exportées.</string>
     <string name="hint_pin">PIN</string>
     <string name="hint_dns_entry_name">Nom</string>

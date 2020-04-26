@@ -16,8 +16,6 @@
     <string name="title_start_boot">Avvia al boot</string>
     <string name="summary_start_boot">Avvia automaticamente DNS Changer a telefono acceso</string>
     <string name="subtitle_configuring">Configurazione [[x]]</string>
-    <string name="menu_title_configure_v4">Configura IPv4</string>
-    <string name="menu_title_configure_v6">Configura IPv6</string>
     <string name="action_resume">Riprendi</string>
     <string name="action_pause">Sospendi</string>
     <string name="action_stop">Arresta</string>
@@ -37,7 +35,6 @@
     <string name="not_now">Non adesso</string>
     <string name="dont_ask_again">Non chiederlo più</string>
     <string name="done">Fatto!</string>
-    <string name="check_validity">Si prega di verificare la validità dei dati inseriti</string>
     <string name="press_back_again">Premi di nuovo indietro per uscire (ignora le modifiche!)</string>
     <string name="tasker_automation_conflict_text">Questa app è impostata per avviare/arrestare la VPN al cambio del tipo di rete (sia Wifi che 3G).\nCiò potrebbe entrare in conflitto con questo plugin di Tasker in quanto, l\'azione, potrebbe essere sovrascritta dall\'app stessa (può essere in esecuzione solo una VPN alla volta).\n\nVuoi disabilitare queste impostazioni conflittuali?</string>
     <string name="shortcut_conflict_text">Questa app è impostata per avviare/arrestare la VPN al cambio del tipo di rete (sia Wifi che 3G).\nCiò potrebbe entrare in conflitto con una qualsiasi delle impostazioni, quando si avvia da una scorciatoia poiché, l\'azione, potrebbe essere sovrascritta dall\'app stessa (può essere in esecuzione solo una VPN alla volta).\n\nVuoi disabilitare queste impostazioni conflittuali?</string>
@@ -55,19 +52,14 @@
     <string name="notification">Notifica</string>
     <string name="title_automation">Automazione</string>
     <string name="title_general">Generali</string>
-    <string name="summary_info">Mostra informazioni generali su questa app</string>
-    <string name="title_info">Info</string>
     <string name="summary_automation_warn">Avvertenza: l\'utilizzo di uno qualsiasi di questi profili, utilizzando questa applicazione, potrebbe interferire con i profili Tasker attivi!</string>
     <string name="title_pin">Pin</string>
     <string name="summary_pin">Abilita la protezione PIN</string>
     <string name="summary_pin_value">Tocca qui per cambiare il PIN</string>
     <string name="title_pin_value">Cambia PIN</string>
-    <string name="settings_information_text">Questa app è stata realizzata da Daniel Wolf (frostnerd.com)\n\nUtilizza icone di Google (Material icon pack - https://material.io/icons/)\n\n\nSe necessiti di una funzionalità, hai trovato un bug od hai un quesito generale, non esitare a contattarmi all\'indirizzo support@frostnerd.com\nThe Sourcecode to this app can be viewed at https://git.frostnerd.com/PublicAndroidApps/DnsChanger</string>
     <string name="create_tasker_action">Creazione di azione Tasker</string>
     <string name="show">Mostra</string>
     <string name="android4_4_warning">Attenzione: la tua versione Android (4,4) è nota per avere problemi con le connessioni VPN. Se questa app si arresta in modo anomalo o semplicemente non funziona, molto probabilmente è il tuo sistema e non un errore di questa app.\nMi dispiace per l\'inconveniente.</string>
-    <string name="title_auto_pause">Sospendi automaticamente DNS Changer</string>
-    <string name="summary_auto_pause">Sospende automaticamente DNS Changer quando alcune applicazioni sono in primo piano (disponibile nella versione successiva)</string>
     <string name="title_autopause_apps">Apps che mettono in pausa DNSChanger. Correnti: [[count]]</string>
     <string name="pin_dialog_title">Pin protetto</string>
     <string name="pin_dialog_text">Hai scelto di proteggere questa app. Inserisci il pin che hai fornito nelle impostazioni (predefinito: 1234)</string>
@@ -76,17 +68,6 @@
     <string name="title_pin_app">Proteggi l\'App</string>
     <string name="summary_pin_app">Richiede il pin  all\'avvio dell\'app</string>
     <string name="title_category_pin">Protezione pin</string>
-    <string name="summary_version">Versione [[version]] ([[code]])\n\n© Daniel Wolf 2020\nTutti i diritti sono riservati\n\nTraduzione brasiliana a cura di Lukinhas\nTraduzione cinese a cura di Majida Whale\nTraduzione italiana a cura di Massimo Castiglia</string>
-    <string name="usage_stats_info_text">Per mettere automaticamente in pausa DNS Changer, quando una determinata app è in primo piano, questa app ha bisogno di accedere ai dati di utilizzo. 
-\n
-\nNella finestra successiva, per favore, concedi a DNS Changer l\'accesso a questi dati altrimenti, non potrai utilizzare questa impostazione. 
-\n
-\n
-\nNon vengono richiesti dati tranne che per le applicazioni attualmente in esecuzione. Nessuno dei tuoi dati viene salvato o trasmesso.
-\nIl codice sorgente è disponibile all\'indirizzo https://git.frostnerd.com/PublicAndroidApps/DnsChanger se vuoi assicurartene.</string>
-    <string name="title_remove_usage_data">Rimuovi l\'accesso ai dati di utilizzo</string>
-    <string name="summary_remove_usage_data">L\'accesso ai dati di utilizzo è stato concesso. Tocca qui per revocare questa autorizzazione.</string>
-    <string name="autopause_appselect_info_text">Ogni applicazione contrassegnata, metterà automaticamente in pausa DNSChanger quando è in primo piano. Ciò potrebbe essere utile, per esempio, nell\'app store dove un app non può essere scaricata, durante l\'esecuzione con un DNS modificato.</string>
     <string-array name="tasker_configure_actions">
         <item>Avvia DNS Changer</item>
         <item>Arresta DNS Changer</item>
@@ -106,15 +87,10 @@
     <string name="summary_disable_network_change">Disabilitazione automatica al cambio rete (ad es. da Wifi a 3G). DNSChanger si attiverà di nuovo, se impostato in tal modo, nelle impostazioni precedenti.</string>
     <string name="title_disable_network_change">Disabilita al cambio rete</string>
     <string name="title_share_app">Condividi questa app</string>
-    <string name="summary_share_app">Condividere questa app con i tuoi amici od altre persone, mi aiuterebbe davvero molto a farla conoscere.</string>
     <string name="app_share_text">Ehi, dai un\'occhiata a questa app per cambiare i DNS su Android. Puoi scaricarla da qui: https://play.google.com/store/apps/details?id=com.frostnerd.dnschanger</string>
     <string name="share_using">Condividi l\'utilizzo</string>
-    <string name="title_import_export">Importa / Esporta</string>
     <string name="title_export_settings">Esporta le impostazioni</string>
     <string name="title_import_settings">Importa le impostazioni</string>
-    <string name="summary_export_settings">Esporta le impostazioni in un file.</string>
-    <string name="summary_import_settings">Importa le impostazioni da un file</string>
-    <string name="explain_storage_permission">Per leggere/scrivere il file delle impostazioni esportate, DNS Changer ha bisogno di accedere al tuo spazio di archiviazione. Per favore, concedi questi diritti nella prossima finestra di dialogo.</string>
     <string name="message_settings_exported">Le impostazioni sono state esportate correttamente.</string>
     <string name="open_share_file">Apri/Condividi il file</string>
     <string name="success">Riuscito!</string>
@@ -132,7 +108,6 @@
     <string name="title_debug_category">Risoluzione dei problemi</string>
     <string name="shortcuts">Scorciatoie</string>
     <string name="dialog_question_export_shortcuts">Vuoi esportare anche le scorciatoie?\n\n(Esporta tutte le scorciatoie create dall\'installazione utilizzando quest\'app, anche quelle già eliminate)</string>
-    <string name="widget_not_running">DNSChanger non è stato avviato</string>
     <string name="title_shortcut_click_again_disable">Altro tocco sulla scorciatoia per arrestare</string>
     <string name="summary_shortcut_click_again_disable">Arresta DNSChanger con un altro tocco sulla scorciatoia con cui è stato avviato</string>
     <string name="summary_notification_on_stop">Mostra una notifica con il motivo per cui, DNSChanger, è stato arrestato automaticamente</string>
@@ -140,7 +115,6 @@
     <string name="title_create_shortcut">Crea una scorciatoia</string>
     <string name="summary_create_shortcut">Crea una scorciatoia legata ad un insieme specifico di servers DNS, per l\'avvio rapido di DNSChanger</string>
     <string name="notification_reason_stopped">DNSChanger è stato arrestato automaticamente: [reason]</string>
-    <string name="reason_stop_exception">Eccezione durante l\'esecuzione</string>
     <string name="reason_stop_network_change">Cambio rete (DNSChanger è impostato per arrestarsi)</string>
     <string name="reason_stop_tasker">Arrestato da Tasker</string>
     <string name="invalid_dns_error_text">Sembra che uno dei server DNS configurati non possa essere utilizzato sul tuo dispositivo. \nHai inserito un indirizzo IP non valido, nessun server DNS è presente all\'indirizzo IP fornito o si tratta di un errore temporaneo.\n\nTi prego di verificare la configurazione nel menù principale e verificare che, gli indirizzi inseriti, siano corretti.</string>
@@ -168,8 +142,6 @@
     </string-array>
     <string name="remove">Rimuovi</string>
     <string name="whitelist">Autorizzate</string>
-    <string name="select_all">Seleziona tutto</string>
-    <string name="deselect_all">Deseleziona tutto</string>
     <string name="summary_pin_app_shortcut">Chiedi il pin all\'avvio/arresto dalle scorciatoie dell\'app</string>
     <string name="title_pin_app_shortcut">Proteggi le scorciatoie dell\'app</string>
     <string name="title_enable_app_shortcuts">Abilita le scorciatoie delle app</string>
@@ -184,7 +156,6 @@
     <string name="tile_pause_resume">Sospendi / Riprendi</string>
     <string name="tile_start_stop">Avvia / Arresta</string>
     <string name="title_vpn_exclusion">Esclusione VPN</string>
-    <string name="search_hint">Cerca un\'impostazione</string>
     <string name="unfixable_error_explaination">Il worker in background si è bloccato con un\'eccezione presente su alcuni dispositivi. Questo arresto non può essere risolto dall\'app stessa.\nProva a riavviare l\'app e se ciò non aiuta, prova a riavviare il dispositivo.\n\nSe il problema persiste ed il tuo dispositivo è rootato, prova a scaricare l\'app Tun.ko Installer in quanto, potrebbe essere in grado di risolverlo. Lo sviluppatore di questa app è DroidVPN Inc.\nLink: https://play.google.com/store/apps/details?id=com.aed.tun.installer</string>
     <string name="nav_title_dns">DNS</string>
     <string name="nav_title_main">Schermata principale</string>
@@ -226,9 +197,6 @@
     <string name="no_disable_android_o">Non può essere disabilitato su Android O e versioni successive.</string>
     <string name="blacklist">Non autorizzate</string>
     <string name="easter_egg">Non ci sono uova di Pasqua qui. Vedi di andartene!</string>
-    <string name="cardview_title">Disabilita tutte le funzionalità</string>
-    <string name="cardview_text">Tocca qui per disabilitare tutto - Automazione e funzionalità (solo temporaneamente)</string>
-    <string name="cardview_text_disabled">Le funzionalità sono disabilitate. Tocca qui per riabilitarle (avviene automaticamente al riavvio)</string>
     <string name="info_functionality_disabled">Tutte le funzionalità sono state da te, disabilitate. Riabilitale nel menù laterale per avviarle.</string>
     <string name="nav_title_dns_query">Interrogazione DNS</string>
     <string name="hint_dns_lookup">Ricerca DNS</string>
@@ -252,7 +220,6 @@
     <string name="permissions_label_access_data">Accesso ai dati</string>
     <string name="permissions_description_access_data">Consente all\'app di accedere ai dati di DNSChanger in generale</string>
     <string name="edit">Modifica</string>
-    <string name="new_features">Nuove funzionalità</string>
     <string name="summary_pin_fingerprint">Consente l\'autenticazione utilizzando qualsiasi impronta digitale salvata</string>
     <string name="title_pin_fingerprint">Impronta digitale</string>
     <string name="checking_connectivity">Controllo della connettività</string>
@@ -272,7 +239,6 @@
     <string name="host">Host</string>
     <string name="target">Destinazione</string>
     <string name="wildcard">Wildcard</string>
-    <string name="normal">Normale</string>
     <string name="filter">Filtro</string>
     <string name="new_rule">Nuova regola</string>
     <string name="regular_expression">Espressione regolare (RegEx)</string>
@@ -311,7 +277,6 @@
     <string name="summary_tcp_timeout">Imposta il tempo in millisecondi dopo il quale, l\'app smette di cercare di raggiungere il server DNS a monte</string>
     <string name="nav_title_query_log">Log delle richieste</string>
     <string name="dont_show_again">Non mostrare più</string>
-    <string name="yesterday">Ieri</string>
     <string name="time">Tempo</string>
     <string name="summary_loopback_allowed">Consente di inserire l\'indirizzo di loopback in tutti i campi (:: 1 e 127.0.0.1)</string>
     <string name="title_loopback_allowed">Consenti indirizzo di loopback</string>
@@ -338,8 +303,6 @@
     <string name="loading_exporting_queries">Esportare le query, attendere…</string>
     <string name="exported_dns_queries">[x] query esportate.</string>
     <string name="ok">OK</string>
-    <string name="title_upstream_query_logging">Registrazione di query upstream</string>
-    <string name="summary_upstream_query_logging">Salva l\'indirizzo IP il server risponde a una query</string>
     <string name="cancel">Annulla</string>
     <string name="summary_protect_other_vpns">Consenti solo all\'app di fermarsi tramite i metodi incorporati</string>
     <string name="title_protect_other_vpns">Solo una fermata graziosa</string>
