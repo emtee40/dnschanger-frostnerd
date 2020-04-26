@@ -265,7 +265,7 @@
     <string name="fail_fast">快速失败</string>
     <string name="disable_failfast_info">如果无法检测到该类型则停用快速失败。于此，在自行指定类型时需多花一点时间。</string>
     <string name="loading">载入中</string>
-    <string name="wait_importing_rules">正在检测文件类型，请稍等..</string>
+    <string name="wait_importing_rules">正在检测文件类型，请稍等…</string>
     <string name="title_query_logging">查询记录</string>
     <string name="summary_query_logging">当应用运行时记录所有 DNS 查询项</string>
     <string name="title_export_queries">导出查询项</string>
