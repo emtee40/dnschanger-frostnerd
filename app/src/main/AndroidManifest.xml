@@ -293,15 +293,6 @@
                 android:resource="@xml/generic_provider_paths" />
         </provider>
 
-        <!--<receiver android:name=".widgets.BasicWidget">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/basic_widget" />
-        </receiver>-->
-
         <service
             android:name=".services.RuleImportService"
             android:stopWithTask="false" />
