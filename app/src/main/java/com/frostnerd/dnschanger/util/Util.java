@@ -298,9 +298,15 @@ public final class Util {
     }
 
     public static void runBackgroundConnectivityCheck(Context context, boolean handleInitialState) {
+        runBackgroundConnectivityCheck(context,handleInitialState, false);
+    }
+
+    public static void runBackgroundConnectivityCheck(Context context, boolean handleInitialState, boolean forceForeground) {
         if(shouldRunNetworkCheck(context) && !Util.isServiceRunning(context)) {
-            Intent serviceIntent = new Intent(context, ConnectivityBackgroundService.class).putExtra("initial", handleInitialState);
-            if(PreferencesAccessor.runConnectivityCheckWithPrivilege(context)) {
+            Intent serviceIntent = new Intent(context, ConnectivityBackgroundService.class)
+                    .putExtra("initial", handleInitialState);
+            if(forceForeground) serviceIntent.putExtra("forceForeground", true);
+            if(forceForeground || PreferencesAccessor.runConnectivityCheckWithPrivilege(context)) {
                 startForegroundService(context, serviceIntent);
             } else {
                 context.startService(serviceIntent);
