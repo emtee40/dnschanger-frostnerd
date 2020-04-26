@@ -287,7 +287,7 @@
     <string name="title_export_queries">Questions relatives à l\'exportation</string>
     <string name="summary_query_logging">Enregistrer toutes les requêtes DNS lorsque l\'application est en cours d\'exécution</string>
     <string name="title_query_logging">Enregistrement des requêtes</string>
-    <string name="wait_importing_rules">Détection des types de fichiers, veuillez patienter..</string>
+    <string name="wait_importing_rules">Détection des types de fichiers, veuillez patienter…</string>
     <string name="loading">Chargement</string>
     <string name="disable_failfast_info">Désactivez la fonction \"échec rapide\" si le type ne peut être détecté. Comme cela prend plus de temps, essayez de spécifier le type vous-même.</string>
     <string name="fail_fast">Échouer rapidement</string>
