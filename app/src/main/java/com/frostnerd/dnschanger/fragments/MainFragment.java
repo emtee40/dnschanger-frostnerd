@@ -104,18 +104,6 @@ public class MainFragment extends Fragment {
         }
     };
     private View contentView;
-    private final SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sp, String s) {
-            if(s.equals("everything_disabled")){
-                boolean value = Preferences.getInstance(getContextWorkaround()).getBoolean("everything_disabled", false);
-                startStopButton.setEnabled(!value);
-                startStopButton.setClickable(!value);
-                startStopButton.setAlpha(value ? 0.50f : 1f);
-                if(!value) setIndicatorState(vpnRunning);
-            }
-        }
-    };
 
     private void setIndicatorState(boolean vpnRunning) {
         if(!isAdded() || isDetached()) return;
@@ -328,7 +316,6 @@ public class MainFragment extends Fragment {
     public void onResume() {
         super.onResume();
         advancedMode = PreferencesAccessor.isRunningInAdvancedMode(getContextWorkaround());
-        Preferences.getDefaultPreferences(getContextWorkaround()).registerOnSharedPreferenceChangeListener(preferenceChangeListener);
         settingV6 = !PreferencesAccessor.isIPv4Enabled(getContextWorkaround()) || (PreferencesAccessor.isIPv6Enabled(getContextWorkaround()) && settingV6);
         LogFactory.writeMessage(getContextWorkaround(), LOG_TAG, "Got OnResume");
         LogFactory.writeMessage(getContextWorkaround(), LOG_TAG, "Sending ServiceStateRequest as broadcast");
@@ -357,7 +344,6 @@ public class MainFragment extends Fragment {
         super.onPause();
         LogFactory.writeMessage(getContextWorkaround(), LOG_TAG, "Got OnPause");
         LocalBroadcastManager.getInstance(getContextWorkaround()).unregisterReceiver(serviceStateReceiver);
-        Preferences.getDefaultPreferences(getContextWorkaround()).unregisterOnSharedPreferenceChangeListener(preferenceChangeListener);
     }
 
     @Override

@@ -38,7 +38,6 @@ public class BootReceiver extends BroadcastReceiver {
             LogFactory.writeMessage(context, LOG_TAG, "Action is BOOT_COMPLETED");
             LogFactory.writeMessage(context, LOG_TAG, "Starting ConnectivityBackgroundService");
             Util.runBackgroundConnectivityCheck(context, false);
-            Preferences.getInstance(context).put( "everything_disabled", false);
             if(Preferences.getInstance(context).getBoolean("setting_start_boot",false)){
                 LogFactory.writeMessage(context, LOG_TAG, "User wants App to start on boot");
                 Intent i = VpnService.prepare(context);
