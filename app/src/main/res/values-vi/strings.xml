@@ -315,4 +315,14 @@
     <string name="summary_disable_crashreporting">Vô hiệu hóa báo cáo tự động của sự cố. Các báo cáo chỉ chứa phiên bản ứng dụng, phiên bản Android và ngăn xếp sự cố và không có dữ liệu cá nhân nào.</string>
     <string name="nebulo_download_text">Tôi đã tạo một Ứng dụng mới có tên Nebulo, Ứng dụng mã nguồn mở và không có quảng cáo cho dns-over-https và dns-over-tls. Nó ở trên cửa hàng.
 \nBạn có muốn có một cái nhìn về nó\? Nhấp vào có sẽ mở cửa hàng.</string>
+    <string name="title_priv_mode">Chế độ đặc quyền</string>
+    <string name="summary_priv_mode">Chạy tự động hóa với quyền cao hơn. Có thể tăng độ ổn định của cài đặt tự động hóa.</string>
+    <string name="notification_channel_networkcheck_description">Kênh này được sử dụng để kiểm tra kết nối như là một phần của tự động hóa. Hãy vô hiệu hóa nó.</string>
+    <string name="notification_channel_networkcheck">Kiểm tra kết nối kênh</string>
+    <string name="notification_connectivity_service_message_disable">Nhấn vào đây để tắt thông báo</string>
+    <string name="notification_connectivity_service_message">Chạy kiểm tra kết nối. Thông báo này sẽ sớm biến mất.</string>
+    <string name="notification_restartconnectivity_service">Khởi động lại kiểm tra kết nối</string>
+    <string name="notification_connectivity_service">Kiểm tra kết nối nền</string>
+    <string name="nebulo_no_browser">Bạn dường như không cài đặt trình duyệt hoặc cửa hàng.</string>
+    <string name="message_user_restricted">Không thể khởi động VPN, người dùng của bạn dường như bị hạn chế.</string>
 </resources>
