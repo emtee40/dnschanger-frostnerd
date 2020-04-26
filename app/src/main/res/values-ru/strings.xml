@@ -351,7 +351,7 @@
 \nВам будет предложено разрешить VPN подключение в следующем окне, без разрешения от вас набор DNS-серверов не будет работать.
 \n
 \nИсходный код можно найти в разделе HTTPS://Git.frostnerd.com/PublicAndroidApps/DnsChanger.</string>
-    <string name="wait_importing_rules">Обнаружение типов файлов, подождите..</string>
+    <string name="wait_importing_rules">Обнаружение типов файлов, подождите…</string>
     <string name="warning">Предупреждение</string>
     <string name="warning_disabling_v4">Большинство версий Android не могут получить доступ к интернету больше, когда DNSChanger запущен, а IPv4-адрес не предоставляется. Вам придется попробовать для своего устройства.</string>
     <string name="warning_started_using_tasker">DNS Changer был запущен с помощью Tasker. Остановка может прерваться. Запуск его не с помощью Tasker не применяет DNS-серверы, настроенные с помощью Tasker. Все равно прекратить?</string>
