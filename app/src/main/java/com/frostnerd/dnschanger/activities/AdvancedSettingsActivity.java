@@ -12,11 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.appcompat.app.AlertDialog;
-import androidx.preference.EditTextPreference;
 
-import android.text.InputType;
 import android.view.MenuItem;
-import android.widget.EditText;
 
 import com.frostnerd.database.orm.Entity;
 import com.frostnerd.database.orm.parser.columns.Column;
@@ -326,7 +323,7 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
         for (DNSRuleImport dnsRuleImport : DatabaseHelper.getInstance(this).getAll(DNSRuleImport.class)) {
             imports.put(dnsRuleImport.toString(), dnsRuleImport);
         }
-        final String[] displayedTexts = imports.keySet().toArray(new String[imports.size()]);
+        final String[] displayedTexts = imports.keySet().toArray(new String[0]);
         final Set<DNSRuleImport> selectedImports = new HashSet<>();
 
         builder.setNegativeButton(R.string.cancel, null);

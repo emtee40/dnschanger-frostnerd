@@ -307,7 +307,7 @@ public class RuleImportService extends Service {
         }
     }
 
-    private class Configuration{
+    private static class Configuration{
         private FileList fileList;
         private int lineCount;
         private int databaseConflictHandling;

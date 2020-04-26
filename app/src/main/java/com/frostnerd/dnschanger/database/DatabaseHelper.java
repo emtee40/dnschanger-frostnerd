@@ -167,7 +167,7 @@ public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
 
     private String legacyString(int column, @NonNull CursorWithDefaults cursor, @NonNull String defaultValue){
         String fromDB = cursor.getStringNonEmpty(column, defaultValue);
-        fromDB = fromDB.replaceAll("\\r|\\n", "");
+        fromDB = fromDB.replaceAll("[\\r\\n]", "");
         return Utils.notEmptyOrDefault(fromDB, defaultValue);
     }
 

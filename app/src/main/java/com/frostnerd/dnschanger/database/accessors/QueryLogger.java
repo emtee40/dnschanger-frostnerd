@@ -105,7 +105,7 @@ public class QueryLogger {
         waitingQueries.clear();
     }
 
-    private class WaitingQuery{
+    private static class WaitingQuery{
         private DNSQuery query;
         private int messageID;
 

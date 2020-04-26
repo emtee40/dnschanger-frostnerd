@@ -362,8 +362,8 @@ public class DNSTCPProxy extends DNSProxy{
             LogFactory.writeMessage(vpnService, LOG_TAG, "Closing the descriptors.");
             if(interruptedDescriptor != null) Os.close(interruptedDescriptor);
             if(blockingDescriptor != null) Os.close(blockingDescriptor);
-        } catch (Exception ignored) {
-            LogFactory.writeMessage(vpnService, LOG_TAG, "An error occurred when closing the descriptors: " + ignored.getMessage() + "(Cause: " + ignored.getCause() + ")");
+        } catch (Exception e) {
+            LogFactory.writeMessage(vpnService, LOG_TAG, "An error occurred when closing the descriptors: " + e.getMessage() + "(Cause: " + e.getCause() + ")");
         }
         synchronized (futureSocketAnswers) {
             for (Map.Entry<Socket, PacketWrap> entry : futureSocketAnswers.entrySet()) {
@@ -384,7 +384,7 @@ public class DNSTCPProxy extends DNSProxy{
         interruptedDescriptor = blockingDescriptor = null;
     }
 
-    private class PacketWrap{
+    private static class PacketWrap{
         @NonNull private IpPacket packet;
         private final long time;
 

@@ -6,7 +6,6 @@
         android:key="notification_category"
         android:title="@string/notification">
         <CheckBoxPreference
-            android:id="@+id/setting_show_notification"
             android:defaultValue="true"
             android:key="setting_show_notification"
             android:summary="@string/summary_notification"
@@ -20,7 +19,6 @@
             android:title="@string/title_disable_notification_icon" />
 
         <CheckBoxPreference
-            android:id="@+id/setting_show_used_dns"
             android:defaultValue="true"
             android:dependency="setting_show_notification"
             android:key="show_used_dns"
@@ -38,28 +36,24 @@
         android:title="@string/title_automation">
         <Preference android:key="warn_automation_tasker" />
         <CheckBoxPreference
-            android:id="@+id/setting_start_boot"
             android:defaultValue="false"
             android:key="setting_start_boot"
             android:summary="@string/summary_start_boot"
             android:title="@string/title_start_boot" />
 
         <CheckBoxPreference
-            android:id="@+id/setting_auto_wifi"
             android:defaultValue="false"
             android:key="setting_auto_wifi"
             android:summary="@string/summary_auto_wifi"
             android:title="@string/title_auto_wifi" />
 
         <CheckBoxPreference
-            android:id="@+id/setting_auto_mobile"
             android:defaultValue="false"
             android:key="setting_auto_mobile"
             android:summary="@string/summary_auto_mobile"
             android:title="@string/title_auto_mobile" />
 
         <CheckBoxPreference
-            android:id="@+id/setting_auto_disable"
             android:defaultValue="false"
             android:key="setting_disable_netchange"
             android:summary="@string/summary_disable_network_change"

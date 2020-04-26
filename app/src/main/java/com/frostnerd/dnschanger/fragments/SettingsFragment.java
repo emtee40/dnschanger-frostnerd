@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
-import androidx.preference.EditTextPreference;
 import androidx.preference.SwitchPreference;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
@@ -30,11 +29,9 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.appcompat.widget.SearchView;
 
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.widget.EditText;
 
 import com.frostnerd.design.DesignUtil;
 import com.frostnerd.dnschanger.BuildConfig;
@@ -132,7 +129,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             findPreference("warn_automation_tasker").setSummary(R.string.summary_automation_warn);
         else
             ((PreferenceCategory) findPreference("automation")).removePreference(findPreference("warn_automation_tasker"));
-        automatingCategory = (PreferenceCategory) getPreferenceScreen().findPreference("automation");
+        automatingCategory = getPreferenceScreen().findPreference("automation");
         if (devicePolicyManager.isAdminActive(deviceAdmin))
             ((SwitchPreference) findPreference("device_admin")).setChecked(true);
         else {
@@ -180,7 +177,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             }
         });
         sendDebugPreference = findPreference("send_debug");
-        debugCategory = (PreferenceCategory) findPreference("debug_category");
+        debugCategory = findPreference("debug_category");
         if (!PreferencesAccessor.isDebugEnabled(requireContext()))
             debugCategory.removePreference(sendDebugPreference);
         findPreference("debug").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -300,8 +297,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             findPreference("setting_app_shortcuts_enabled").setOnPreferenceChangeListener(changeListener);
         findPreference("theme").setDefaultValue(0);
         LogFactory.writeMessage(requireContext(), LOG_TAG, "Done with onCreate");
-        final CheckBoxPreference v4Enabled = (CheckBoxPreference) findPreference("setting_ipv4_enabled"),
-                v6Enabled = (CheckBoxPreference) findPreference("setting_ipv6_enabled");
+        final CheckBoxPreference v4Enabled = findPreference("setting_ipv4_enabled"),
+                v6Enabled = findPreference("setting_ipv6_enabled");
         v4Enabled.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, final Object newValue) {
@@ -460,7 +457,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         findPreference("setting_auto_mobile").setOnPreferenceChangeListener(autoSettingsChanged);
         findPreference("setting_auto_wifi").setOnPreferenceChangeListener(autoSettingsChanged);
         findPreference("setting_disable_netchange").setOnPreferenceChangeListener(autoSettingsChanged);
-        ((SwitchPreference) findPreference("disable_crash_reporting")).setOnPreferenceChangeListener(
+        findPreference("disable_crash_reporting").setOnPreferenceChangeListener(
                 new Preference.OnPreferenceChangeListener() {
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object newValue) {

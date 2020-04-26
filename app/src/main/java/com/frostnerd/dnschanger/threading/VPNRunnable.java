@@ -18,7 +18,6 @@ import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
 import com.frostnerd.dnschanger.activities.InvalidDNSDialogActivity;
-import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.services.DNSVpnService;

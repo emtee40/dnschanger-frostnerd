@@ -15,11 +15,6 @@ import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
 import com.frostnerd.dnschanger.services.DNSVpnService;
-import com.frostnerd.dnschanger.util.PreferencesAccessor;
-import com.frostnerd.dnschanger.util.Util;
-import com.frostnerd.dnschanger.util.VPNServiceArgument;
-import com.frostnerd.dnschanger.widgets.BasicWidget;
-import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.general.WidgetUtil;
 
 import java.util.HashSet;
@@ -183,7 +178,6 @@ public class NetworkCheckHandle {
         LogFactory.writeMessage(accessContext(), LOG_TAG, "Connectivity changed. Connected: " + connected + ", type: " + connectionType);
         LogFactory.writeMessage(accessContext(), LOG_TAG, "Service running: " + serviceRunning + "; Thread running: " + serviceThreadRunning);
         Util.updateTiles(accessContext());
-        WidgetUtil.updateAllWidgets(accessContext(), BasicWidget.class);
         Intent i;
         if(connectionType == ConnectionType.VPN){
             if(!Util.isServiceThreadRunning() && connected)
@@ -239,7 +233,7 @@ public class NetworkCheckHandle {
         return context;
     }
     
-    private class ReallyWeiredExceptionOnlyAFewPeopleHave extends Exception{
+    private static class ReallyWeiredExceptionOnlyAFewPeopleHave extends Exception{
         ReallyWeiredExceptionOnlyAFewPeopleHave(){
             super("It's strange, isn't it?");
         }

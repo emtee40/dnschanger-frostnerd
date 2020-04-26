@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.VpnService;
@@ -54,7 +53,6 @@ import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.general.Utils;
 import com.frostnerd.general.textfilers.InputCharacterFilter;
-import com.frostnerd.materialedittext.MaterialEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.minidns.record.Data;

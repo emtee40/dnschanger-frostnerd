@@ -32,8 +32,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -616,7 +614,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
                     public void onClick(View view) {
                         new AlertDialog.Builder(MainActivity.this).setTitle("Apache License 2.0").setPositiveButton(R.string.close, null).setMessage(R.string.license_apache_2).show();
                     }
-                };;
+                };
                 SpannableString spannable = new SpannableString(licenseText.replaceAll("\\[.]",""));
                 spannable.setSpan(span3, licenseText.indexOf("[1]"), licenseText.indexOf("[2]")-3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 spannable.setSpan(span2, licenseText.indexOf("[3]")-6, licenseText.indexOf("[4]")-9, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

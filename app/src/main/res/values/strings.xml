@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DnsChanger</string>
     <string name="start">Start</string>
@@ -15,8 +16,6 @@
     <string name="title_start_boot">Start on boot</string>
     <string name="summary_start_boot">Automatically start DNSChanger when your phone is turned on</string>
     <string name="subtitle_configuring">Configuring [[x]]</string>
-    <string name="menu_title_configure_v4">Configure IPv4</string>
-    <string name="menu_title_configure_v6">Configure IPv6</string>
     <string name="action_resume">Resume</string>
     <string name="action_pause">Pause</string>
     <string name="action_stop">Stop</string>
@@ -36,7 +35,6 @@
     <string name="not_now">Not now</string>
     <string name="dont_ask_again">Don\'t ask again</string>
     <string name="done">Done</string>
-    <string name="check_validity">Please check the validity of your input</string>
     <string name="press_back_again">Press back again to leave (Discards changes!)</string>
     <string name="tasker_automation_conflict_text">This app is set to start/stop the vpn when the type of your network changes (Either Wifi or 3G).\nThis might conflict with this tasker plugin as the action might be overridden by the app itself (Only one VPN can be running at any given time).\n\nDo you want to disable these conflicting settings?</string>
     <string name="shortcut_conflict_text">This app is set to start/stop the vpn when the type of your network changes (Either Wifi or 3G).\nThis might conflict with any setting when starting from a shortcut as the action might be overridden by the app itself (Only one VPN can be running at any given time).\n\nDo you want to disable these conflicting settings?</string>
@@ -54,19 +52,14 @@
     <string name="notification">Notification</string>
     <string name="title_automation">Automation</string>
     <string name="title_general">General</string>
-    <string name="summary_info">Show general info about this app</string>
-    <string name="title_info">Info</string>
     <string name="summary_automation_warn">Warning: Using any of these might interfere with active Tasker profiles using this app!</string>
     <string name="title_pin">PIN</string>
     <string name="summary_pin">Enable PIN protection</string>
     <string name="summary_pin_value">Click here to change the PIN</string>
     <string name="title_pin_value">Change PIN</string>
-    <string name="settings_information_text">This app was made by Daniel Wolf (frostnerd.com)\n\nIt uses icons made by Google (Material icon pack - https://material.io/icons/)\n\n\nIf you are missing a feature, found a bug or just got a general request, feel free to contact me at support@frostnerd.com\nThe Sourcecode to this app can be viewed at https://git.frostnerd.com/PublicAndroidApps/DnsChanger</string>
     <string name="create_tasker_action">Creating Tasker Action</string>
     <string name="show">Show</string>
     <string name="android4_4_warning">Warning: your Android version (4.4) is known to have problems with VPN connections. If this app crashes or just doesn\'t work it\'s most likely your system and not the fault of this app.\nI\'m sorry for the inconvenience.</string>
-    <string name="title_auto_pause">Pause DNS automatically</string>
-    <string name="summary_auto_pause">Automatically pause the DNS when certain apps are in the foreground (available in the next version)</string>
     <string name="title_autopause_apps">Apps which pause DNSChanger. Current: [[count]]</string>
     <string name="pin_dialog_title">PIN protected</string>
     <string name="pin_dialog_text">You choose to protect this app by PIN. Please enter the PIN you provided in the settings (default: 1234)</string>
@@ -75,12 +68,6 @@
     <string name="title_pin_app">Protect App</string>
     <string name="summary_pin_app">Ask for the PIN when starting the app</string>
     <string name="title_category_pin">PIN protection</string>
-    <string name="summary_version">Version [[version]] ([[code]])\n\n© Daniel Wolf 2017\nAll rights reserved\n\nBrazilian translation by Lukinhas\nChinese translation by Majida Whale</string>
-    <string name="usage_stats_info_text">To automatically pause DNSChanger when a certain app is in the front, this app needs access to usage data. \n\nIn the next window, please grant DNSChanger access to this data or else you won\'t be able to use this setting.\n\n\nNo data execept for currently running applications is requested. No data is saved or transmitted.\nThe source code is publicy available at https://git.frostnerd.com/PublicAndroidApps/DnsChanger if you want to make sure yourself.</string>
-    <string name="title_remove_usage_data">Remove access to usage data</string>
-    <string name="summary_remove_usage_data">Access to usage data was granted. Click here to revoke that permission.</string>
-    <string name="autopause_appselect_info_text">Each App marked will pause DNSChanger automatically when being in the front. This might be useful as for instance in the store apps can\'t be downloaded when running with a changed DNS.</string>
-
     <string-array name="tasker_configure_actions">
         <item>Start DNSChanger</item>
         <item>Stop DNSChanger</item>
@@ -100,15 +87,10 @@
     <string name="summary_disable_network_change">Automatically disable when changing network (e.g Wifi to 3G). DNSChanger will activate again if set so in the previous settings.</string>
     <string name="title_disable_network_change">Disable on network change</string>
     <string name="title_share_app">Share this app</string>
-    <string name="summary_share_app">Sharing this app with your friends or other people would really help a lot spreading this app.</string>
     <string name="app_share_text">Hey, have a look at this DNS changing app for android. You can download it here: https://play.google.com/store/apps/details?id=com.frostnerd.dnschanger</string>
     <string name="share_using">Share using</string>
-    <string name="title_import_export">Import / Export</string>
     <string name="title_export_settings">Export settings</string>
     <string name="title_import_settings">Import settings</string>
-    <string name="summary_export_settings">Export the settings into a file.</string>
-    <string name="summary_import_settings">Imports the settings from a file</string>
-    <string name="explain_storage_permission">To read/write the exported settings file, DNSChanger needs access to your storage. Please grant it these rights in the next dialog.</string>
     <string name="message_settings_exported">Settings have been exported successfully.</string>
     <string name="open_share_file">Open/share file</string>
     <string name="success">Success</string>
@@ -126,7 +108,6 @@
     <string name="title_debug_category">Troubleshooting</string>
     <string name="shortcuts">Shortcuts</string>
     <string name="dialog_question_export_shortcuts">Export shortcuts as well?\n\n(Exports all shortcuts created since install using this app, even those which were already deleted)</string>
-    <string name="widget_not_running">DNSChanger is not launched</string>
     <string name="title_shortcut_click_again_disable">Reclick shortcut to stop</string>
     <string name="summary_shortcut_click_again_disable">Stop DNSChanger when reclicking the shortcut it was started with</string>
     <string name="summary_notification_on_stop">Show a notification with the reason why DNSChanger was stopped automatically</string>
@@ -134,7 +115,6 @@
     <string name="title_create_shortcut">Create a shortcut</string>
     <string name="summary_create_shortcut">Create a shortcut bound to a specific set of DNS servers to quickly start DNSChanger</string>
     <string name="notification_reason_stopped">DNSChanger was automatically stopped: [reason]</string>
-    <string name="reason_stop_exception">Exception whilst running</string>
     <string name="reason_stop_network_change">Network changed (DNSChanger is set to stop)</string>
     <string name="reason_stop_tasker">Stopped by Tasker</string>
     <string name="invalid_dns_error_text">It looks like one of the DNS servers you configured cannot be used on your device. \nEither you entered an invalid IP address, no DNS server is present on the given ip address or it is a temporary error.\n\nPlease check the configuration in the main menu and verify that the addresses entered are correct.</string>
@@ -154,14 +134,12 @@
     <string name="reset_warning_text">Do you really want to reset all settings?\nThis cannot be reversed.</string>
     <string name="title_theme">Theme</string>
     <string name="summary_theme">Sets the theme of this app</string>
-
     <string-array name="theme">
         <item>Default</item>
         <item>Blue</item>
         <item>Dark</item>
         <item>True black</item>
     </string-array>
-
     <string-array name="themeValues" translatable="false">
         <item>2</item>
         <item>1</item>
@@ -170,8 +148,6 @@
     </string-array>
     <string name="remove">Remove</string>
     <string name="whitelist">Whitelist</string>
-    <string name="select_all">Select all</string>
-    <string name="deselect_all">Deselect all</string>
     <string name="summary_pin_app_shortcut">Ask for the PIN when starting or stopping from the app shortcuts</string>
     <string name="title_pin_app_shortcut">Protect app shortcuts</string>
     <string name="title_enable_app_shortcuts">Enable app shortcuts</string>
@@ -189,7 +165,6 @@
     <string name="tile_pause_resume">Pause / Resume</string>
     <string name="tile_start_stop">Start / Stop</string>
     <string name="title_vpn_exclusion">VPN exclusion</string>
-    <string name="search_hint">Search a setting</string>
     <string name="unfixable_error_explaination">The background worker crashed with an exception present on some devices. This crash cannot be fixed by the app itself.\nEither try restarting the app and if that doesn\'t help try restarting your device.\n\nIf the problem persists and your device is rooted try downloading the app Tun.ko Installer as it might be able to fix it. The developer of this app is DroidVPN Inc.\nLink: https://play.google.com/store/apps/details?id=com.aed.tun.installer</string>
     <string name="nav_title_dns">DNS</string>
     <string name="nav_title_main">Main screen</string>
@@ -200,7 +175,23 @@
     <string name="nav_title_tiles">Tiles</string>
     <string name="nav_title_pin_protection">PIN protection</string>
     <string name="nav_title_more">And more</string>
-    <string name="about_text">This app is open source. The source code can be found at git.frostnerd.com.\nIcons from Google are used (Material icon pack - https://material.io/icons).\n\nVersion [[version]]\nBuild [[build]]\n\n© Daniel Wolf 2020\nAll rights reserved. Source code licensed under GPLv3.\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger\n\nBrazilian translation by Lukinhas\n\nChinese Simplified translation by Majida Whale\n\nVietnamese translation by Phi</string>
+    <string name="about_text">This app is open source. The source code can be found at git.frostnerd.com.
+\nIcons from Google are used (Material icon pack - https://material.io/icons).
+\n
+\nVersion [[version]]
+\nBuild [[build]]
+\n
+\n© Daniel Wolf 2020
+\nAll rights reserved. Source code licensed under GPLv3.
+\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger
+\n
+\nBrazilian translation by Lukinhas
+\n
+\nChinese Simplified translation by Majida Whale
+\n
+\nVietnamese translation by Phi
+\n
+\nNorwegian bokmål translation by Imre Kristoffer Eilertsen</string>
     <string name="close">Close</string>
     <string name="info_text_how_does_it_work">Android allows you to configure DNS servers in the wifi settings - but not for mobile connections (3G, 4G…). This however requires you to use a static IP address, doesn\'t allow switching easily and won\'t work with IPv6, among other disadvantages when compared to this app.\n\nThis app takes advantage of Androids VPN structure which allows devices to set DNS servers dynamically. To achieve this a local vpn is created which uses the same device as endpoint - this means the vpn connection neither connects to the internet itself, nor is it detectable from outside.\nAs this dummy-VPN can be started/stopped dynamically it allows for a range of features and automatation. This VPN isn\'t tapped and no data is read by it. It\'s just a middle man in changing the DNS servers.\n\nIf you are interested in the technical side of this, visit my git at git.frostnerd.com.</string>
     <string name="create_one">Create one</string>
@@ -212,9 +203,6 @@
     <string name="no_disable_android_o">This cannot be disabled on Android O and above.</string>
     <string name="blacklist">Blacklist</string>
     <string name="easter_egg">No easter eggs here. Go away.</string>
-    <string name="cardview_title">Disable all functionality</string>
-    <string name="cardview_text">Click here to disable everything - Automation and functionality (only temporary)</string>
-    <string name="cardview_text_disabled">Functionality is disabled. Click here to re-enable (happens automatically at reboot)</string>
     <string name="info_functionality_disabled">All functionality has been disabled by you. Re-enable in the menu on the side to start.</string>
     <string name="nav_title_dns_query">DNS Query</string>
     <string name="hint_dns_lookup">DNS lookup</string>
@@ -238,7 +226,6 @@
     <string name="permissions_label_access_data">Access data</string>
     <string name="permissions_description_access_data">Allows the app to access data of DNSChanger in general</string>
     <string name="edit">Edit</string>
-    <string name="new_features">New features</string>
     <string name="summary_pin_fingerprint">Allow authentication using any saved fingerprint</string>
     <string name="title_pin_fingerprint">Fingerprint</string>
     <string name="checking_connectivity">Checking connectivity</string>
@@ -258,7 +245,6 @@
     <string name="host">Host</string>
     <string name="target">Target</string>
     <string name="wildcard">Wildcard</string>
-    <string name="normal">Normal</string>
     <string name="filter">Filter</string>
     <string name="new_rule">New rule</string>
     <string name="regular_expression">Regular expression (RegEx)</string>
@@ -282,7 +268,7 @@
     <string name="fail_fast">Fail fast</string>
     <string name="disable_failfast_info">Disable fail fast if the type cannot be detected. As this takes longer try specifying the type yourself.</string>
     <string name="loading">Loading</string>
-    <string name="wait_importing_rules">Detecting file types, please wait..</string>
+    <string name="wait_importing_rules">Detecting file types, please wait…</string>
     <string name="title_query_logging">Query logging</string>
     <string name="summary_query_logging">Log all DNS queries when the app is running</string>
     <string name="title_export_queries">Export queries</string>
@@ -297,7 +283,6 @@
     <string name="summary_tcp_timeout">Sets the time in milliseconds after which the app stops trying to reach the upstream DNS server</string>
     <string name="nav_title_query_log">Query log</string>
     <string name="dont_show_again">Don\'t show again</string>
-    <string name="yesterday">Yesterday</string>
     <string name="time">Time</string>
     <string name="summary_loopback_allowed">Allows you to input the loopback address in all fields (::1 and 127.0.0.1)</string>
     <string name="title_loopback_allowed">Allow loopback address</string>
@@ -327,9 +312,6 @@
     <string name="hint_pin">PIN</string>
     <string name="loading_exporting_queries">Exporting queries, please wait…</string>
     <string name="exported_dns_queries">[x] queries exported.</string>
-    <string name="title_upstream_query_logging">Upstream query logging</string>
-    <string name="summary_upstream_query_logging">Save the IP-address the server responds to a query</string>
-    <string name="dnssec" translatable="false">DNSSEC</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="summary_protect_other_vpns">Only allow the app to stop via the inbuilt methods</string>
@@ -341,27 +323,19 @@
     <string name="title_clear_local_rules">Clear local rules</string>
     <string name="summary_undo_rule_import">Revert a rule import from a file. Cannot be reverted.</string>
     <string name="title_undo_rule_import">Undo import</string>
-
     <string name="nebulo_download_text">I created a new App named Nebulo, an open-source and ad-free App for dns-over-https and dns-over-tls. It is on the store.\nDo you want to have a look at it? Clicking yes opens the store.</string>
-
     <string name="summary_disable_crashreporting">Disable automatic reporting of crashes. Reports only contain the app version, Android version and the crash stacktrace and no personal data whatsoever.</string>
     <string name="title_disable_crashreporting">Crash reporting</string>
-
     <string name="title_vpndialog_missing">VPN missing</string>
     <string name="summary_vpndialog_missing">Your device seems to be missing the capabilities to run a VPN. As this app fully relies on this feature you sadly won\'t be able to use it.</string>
-
     <string name="message_user_restricted">Can\'t start VPN, your users seems to be restricted.</string>
-
     <string name="nebulo_no_browser">You don\'t seem to have a browser or the store installed.</string>
-
     <string name="notification_connectivity_service">Background connectivity check</string>
     <string name="notification_restartconnectivity_service">Restarting connectivity check</string>
     <string name="notification_connectivity_service_message">Running connectivity check. This notification will be gone soon.</string>
     <string name="notification_connectivity_service_message_disable">Click here to disable notification</string>
-
     <string name="notification_channel_networkcheck">Channel for Connectivity check</string>
     <string name="notification_channel_networkcheck_description">This channel is used for the connectivity check as part of the automation. Feel free to disable it.</string>
-
     <string name="summary_priv_mode">Run the automation with higher rights. Might increase stability of the automation settings.</string>
     <string name="title_priv_mode">Privileged mode</string>
 </resources>

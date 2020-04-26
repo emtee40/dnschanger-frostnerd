@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DNSChanger</string>
+    <string name="start">Start</string>
+    <string name="stop">Stopp</string>
+    <string name="rate">Ranger</string>
+    <string name="info_dns_button">Info om DNS</string>
+    <string name="default_dns">Standard-DNS-adresser</string>
+    <string name="default_dns_title">Offentlige DNS-leverandører</string>
+    <string name="info_text_dns">DNS står for Domain Name System.\n\nDet brukes til å knytte sammen domener (google.no, yahoo.com, example.com …) til IP-adresser (f.eks. 192.168.178.1) for å kommunisere over internettet.\n\nDet er et av de viktigste systemene som brukes i IP-baserte nettverk.</string>
+    <string name="vpn_explain">Denne appen fungerer uten en rootet mobil.\n\nFor å muliggjøre dette, omdirigeres all trafikk gjennom en lokal VPN. Denne VPN-en omdirigerer kun din trafikk lokalt, og dataene forlater aldri mobilen din når VPN-tilkoblingen brukes.\n\nDu vil bli spurt om å tillate VPN-tilkoblingen i det neste vinduet; uten tillatelsen vil ikke de valgte DNS-tjenerne fungere.\n\n\nKildekoden kan bli funnet hos https://git.frostnerd.com/PublicAndroidApps/DnsChanger.</string>
+    <string name="information">Informasjon</string>
+    <string name="settings">Innstillinger</string>
+    <string name="title_notification">Notifikasjon</string>
+    <string name="summary_notification">Vis en notifikasjon når DNSChanger kjører</string>
+    <string name="title_start_boot">Start ved systemoppstart</string>
+    <string name="summary_start_boot">Starter DNSChanger automatisk når mobilen din blir skrudd på</string>
+    <string name="subtitle_configuring">Setter opp [[x]]</string>
+    <string name="action_resume">Fortsett</string>
+    <string name="action_pause">Pause</string>
+    <string name="action_stop">Stopp</string>
+    <string name="notification_paused">DNS Changer er satt på pause</string>
+    <string name="notification_running">DNS Changer er aktiv</string>
+    <string name="active">Aktiv</string>
+    <string name="paused">Satt på pause</string>
+    <string name="summary_auto_wifi">Skru på DNSChanger automatisk når det kobles til et Wi-Fi-nettverk</string>
+    <string name="summary_auto_mobile">Skru på DNSChanger automatisk når det kobles til mobildata</string>
+    <string name="title_auto_wifi">Start automatisk (Wi-Fi)</string>
+    <string name="title_auto_mobile">Start automatisk (Mobile)</string>
+    <string name="running">Aktiv</string>
+    <string name="not_running">Inaktiv</string>
+    <string name="background_configure_error">Tillatelsen til å starte opp VPN-en ble avslått.\nDette kan være fordi systemet avslår at VPN-tilkoblinger blir startet opp i bakgrunnen av sikkerhetsårsaker.\n\nÅpne appen for å starte opp VPN-en</string>
+    <string name="open_app">Åpne appen</string>
+    <string name="rate_request_text">Vil du rangere denne appen?\nDet hadde hjulpet til med å spre det ut og vil vise takknemlighet for arbeidet mitt.</string>
+    <string name="not_now">Ikke nå</string>
+    <string name="dont_ask_again">Ikke spør igjen</string>
+    <string name="done">Ferdig</string>
+    <string name="press_back_again">Trykk Tilbake-knappen igjen for å gå ut (Forkaster endringer!)</string>
+    <string name="warning">Advarsel</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nei</string>
+    <string name="contact_developer">Kontakt utvikleren</string>
+    <string name="create_shortcut">Lag en snarvei</string>
+    <string name="shortcut_created">Snarveien ble opprettet.</string>
+    <string name="summary_show_used_dns">Viser DNS-tjenerne som brukes for øyeblikket i notifikasjonen</string>
+    <string name="title_show_used_dns">Vis DNS-tjenere</string>
+    <string name="notification">Notifikasjon</string>
+    <string name="title_automation">Automatisering</string>
+    <string name="title_general">Generelt</string>
+    <string name="title_pin">PIN</string>
+    <string name="summary_pin">Skru på PIN-beskyttelse</string>
+    <string name="summary_pin_value">Klikk her for å endre PIN-koden</string>
+    <string name="title_pin_value">Endre PIN</string>
+    <string name="show">Vis</string>
+    <string name="title_autopause_apps">Apper som setter DNSChanger på pause. For øyeblikket: [[count]]</string>
+    <string name="pin_dialog_title">PIN-beskyttet</string>
+    <string name="pin_dialog_text">Du valgte å PIN-beskytte denne appen. Vennligst skriv PIN-koden du oppga i innstillingene (Standard: 1234)</string>
+    <string name="title_pin_notification">Beskytt notifikasjonen</string>
+    <string name="summary_pin_notification">Be om PIN-koden når DNSChanger startes/stoppes fra notifikasjonen</string>
+    <string name="title_pin_app">Beskytt appen</string>
+    <string name="summary_pin_app">Spør om PIN-koden når appen startes opp</string>
+    <string name="title_category_pin">PIN-beskyttelse</string>
+    <string-array name="tasker_configure_actions">
+        <item>Start DNSChanger</item>
+        <item>Stopp DNSChanger</item>
+        <item>Sett DNSChanger på pause</item>
+        <item>Fortsett DNSChanger</item>
+    </string-array>
+    <string name="error">Feil</string>
+    <string name="send_crash_report">Send krasjrapport</string>
+    <string name="deep_link_title">DNSChanger fra Frostnerd</string>
+    <string name="summary_pin_tile">Spør om PIN-koden når du starter/stopper fra hurtiginnstillingene</string>
+    <string name="title_pin_tile">Beskytt hurtiginnstillingene</string>
+    <string name="tile_start">Start DNSChanger</string>
+    <string name="tile_stop">Stopp DNSChanger</string>
+    <string name="tile_pause">Sett DNSChanger på pause</string>
+    <string name="tile_resume">Fortsett DNSChanger</string>
+    <string name="summary_disable_network_change">Skru av automatisk når det byttes nettverk (f.eks. Wi-Fi til 4G). DNSChanger vil bli skrudd på igjen dersom de innstillingene ovenfor indikerer det.</string>
+    <string name="title_disable_network_change">Skru av ved nettverksendring</string>
+    <string name="title_share_app">Del denne appen</string>
+    <string name="share_using">Del gjennom</string>
+    <string name="title_export_settings">Eksporter innstillinger</string>
+    <string name="title_import_settings">Importer innstillinger</string>
+    <string name="message_settings_exported">Innstillingene har blitt vellykket eksportert.</string>
+    <string name="open_share_file">Åpne/del fil</string>
+    <string name="success">Suksess</string>
+    <string name="title_device_admin">Enhetsadmin</string>
+    <string name="summary_device_admin_activate">Aktiver denne appen som enhetsadmin for å hindre avinstallasjon</string>
+    <string name="device_admin_description">Forhindre avinstallasjon gjennom innstillinger som enhetsadmin</string>
+    <string name="device_admin">Enhetsadmin</string>
+    <string name="device_admin_removal_warning">Advarsel: Når denne appen fjernes fra enhetsadmin-status, er ikke avinstallasjon forhindret lenger.</string>
+    <string name="title_debug">Avlusing</string>
+    <string name="summary_debug">Skrur på avlusing, som genererer loggfiler som kan sendes til utvikleren (Skjer ikke automatisk).\nKan øke batteribruken.</string>
+    <string name="summary_send_debug">Send avlusingsloggføringer til utvikleren</string>
+    <string name="title_send_debug">Send loggføringer</string>
+    <string name="title_debug_category">Feilsøking</string>
+    <string name="shortcuts">Snarveier</string>
+    <string name="title_shortcut_click_again_disable">Klikk på snarveien igjen for å stoppe</string>
+    <string name="summary_shortcut_click_again_disable">Stopp DNSChanger når det klikkes på snarveien som den ble startet opp med</string>
+    <string name="summary_notification_on_stop">Vis en notifikasjon som forteller hvorfor DNSChanger ble automatisk stoppet</string>
+    <string name="title_notification_on_stop">Si ifra ved stopp</string>
+    <string name="title_create_shortcut">Lag en snarvei</string>
+    <string name="summary_create_shortcut">Lag en snarvei som er bundet til et spesifikt sett med DNS-tjenere, for å raskt starte opp DNSChanger</string>
+    <string name="notification_reason_stopped">DNSChanger ble stoppet automatisk: [reason]</string>
+    <string name="reason_stop_network_change">Nettverket ble endret (DNSChanger er satt til å stoppe)</string>
+    <string name="reason_stop_tasker">Stoppet av Tasker</string>
+    <string name="title_enable_ipv6">Skru på IPv6</string>
+    <string name="summary_enable_ipv6">Skru på IPv6. Dette vil la deg velge IPv6-adresser som DNS-tjenere.</string>
+    <string name="default_dns_legal_warning">Enhver av leverandørene som vises her, kan være registrerte varemerker hos sine respektive eiere. Deres bruksvilkår er gjeldende.\nBemerk at DNS-tjenere kanskje kan lagre hvilke nettsteder du besøker.</string>
+    <string name="add">Legg til</string>
+    <string name="new_entry">Ny oppføring</string>
+    <string name="title_exclude_apps">Ekskluder apper fra VPN-en</string>
+    <string name="summary_exclude_apps">Ekskluder installerte apper fra å bruke den internt opprettede VPN-tilkoblingen. Dette vil gjøre at DNS-tjenerne ikke benyttes av dem</string>
+    <string name="excluded_apps_info_text_blacklist">Alle apper som er valgt i innstillingen ovenfor vil ikke bruke den interne VPN-en. Dette vil også gjøre at DNS-tjenerne ikke benyttes av dem.</string>
+    <string name="title_about">Om</string>
+    <string name="search">Søk</string>
+    <string name="title_reset">Tilbakestill</string>
+    <string name="summary_reset">Tilbakestiller alle innstillinger og de valgte DNS-tjenerne. Snarveier og Tasker-handlinger blir ikke slettet.</string>
+    <string name="reset_warning_text">Vil du virkelig tilbakestille alle innstillinger?\nDette kan ikke bli angret på.</string>
+    <string name="title_theme">Tema</string>
+    <string name="summary_theme">Velger appens fargetema</string>
+    <string-array name="theme">
+        <item>Standard</item>
+        <item>Blå</item>
+        <item>Mørk</item>
+        <item>Ekte svart</item>
+    </string-array>
+    <string name="remove">Fjern</string>
+    <string name="whitelist">Hvitelist</string>
+    <string name="summary_pin_app_shortcut">Spør om PIN-koden når du starter/stopper fra appsnarveier</string>
+    <string name="title_pin_app_shortcut">Beskytt appsnarveier</string>
+    <string name="title_enable_app_shortcuts">Skru på appsnarveier</string>
+    <string name="summary_enable_app_shortcuts">Skrur på appsnarveier. Langklikk på appsnarveien på skrivebordet for å åpne menyen</string>
+    <string name="notification_x_whitelisted">[x] apper er hvitelistet</string>
+    <string name="notification_x_blacklisted">[x] apper er svartelistet</string>
+    <string name="default_dns_explain_delete">Langklikk på en oppføring for å slette eller redigere den. Klikk på ytterligere oppføringer for å slette dem også.</string>
+    <string name="summary_enable_ipv4">Skru på IPv4. Dette vil la deg velge IPv4-adresser som DNS-tjenere</string>
+    <string name="title_enable_ipv4">Skru på IPv4</string>
+    <string name="warning_disabling_v4">De fleste Android-versjoner vil ikke kunne koble til Internett lenger dersom DNSChanger kjører og ingen IPv4-adresser er spesifisert. Du vil måtte teste det ut for din enhet, riktignok.</string>
+    <string name="x_apps_selected">[[x]] apper er valgt</string>
+    <string name="tile_pause_resume">Pause / Fortsett</string>
+    <string name="tile_start_stop">Start / Stopp</string>
+    <string name="title_vpn_exclusion">VPN-unntak</string>
+    <string name="nav_title_dns">DNS</string>
+    <string name="nav_title_main">Hovedskjerm</string>
+    <string name="nav_title_learn">Lær mer</string>
+    <string name="nav_title_how_does_it_work">Hvordan fungerer det?</string>
+    <string name="nav_title_what_is_dns">Hva er DNS?</string>
+    <string name="nav_title_features">Funksjoner</string>
+    <string name="nav_title_tiles">Fliser</string>
+    <string name="nav_title_pin_protection">PIN-beskyttelse</string>
+    <string name="nav_title_more">Og mer</string>
+    <string name="about_text">Denne appen er åpen-kildet. Kildekoden kan bli funnet hos git.frostnerd.com.\nIkoner fra Google har blitt brukt (Material-ikonpakken - https://material.io/icons).\n\nVersjon [[version]]\nByggversjon [[build]]\n\n© Daniel Wolf 2017\nAlle rettigheter reservert.\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger\n\nPortugisisk-for-Brasil oversettelse av Lukinhas\n\nForenklet kinesisk oversettelse av Majida Whale\n\nVietnamesisk oversettelse av Phi\n\nNorsk bokmål oversettelse av Imre Kristoffer Eilertsen</string>
+    <string name="close">Lukk</string>
+    <string name="create_one">Opprett en</string>
+    <string name="notification_channel_default">Standard kanal</string>
+    <string name="notification_channel_default_description">Standardkanalen for utlegging av notifikasjoner.</string>
+    <string name="no_disable_android_o">Dette kan ikke bli skrudd av på Android O eller høyere cannot be disabled on Android O and above.</string>
+    <string name="blacklist">Svarteliste</string>
+    <string name="info_functionality_disabled">All funksjonalitet har blitt skrudd av av deg. Skru det på igjen i sidemenyen for å begynne igjen.</string>
+    <string name="nav_title_dns_query">DNS-forespørsel</string>
+    <string name="hint_dns_lookup">DNS-oppleting</string>
+    <string name="run_query">Forespør</string>
+    <string name="query_title_name">Name</string>
+    <string name="query_title_ttl">TTL</string>
+    <string name="query_title_dclass">D-klasse</string>
+    <string name="query_title_type">Type</string>
+    <string name="query_title_answer">Tilbakemelding</string>
+    <string name="query_destination_info">Forespørselen vil bli sendt til [x]</string>
+    <string name="query_error_occured">En feil oppstod: [error]</string>
+    <string name="question_enable_ipv6">Vil du skru på IPv6?</string>
+    <string name="nav_title_libraries">Biblioteker</string>
+    <string name="dialog_libraries_text">Denne appen inneholder biblioteker laget av tredjeparter. Bibliotekene, skaperne deres, og lisensene deres er listet opp nedenfor.</string>
+    <string name="title_disable_notification_icon">Skru av notifikasjonsikonet</string>
+    <string name="summary_disable_notification_icon">Skrur av DNS-ikonet som vises i notifikasjonslinjen. Den vil fortsatt være synlig når notifikasjonsfeltet åpnes; kan kanskje ikke virke på nyere Android-versjoner.</string>
+    <string name="notification_channel_hiddenicon">Kanal uten ikon</string>
+    <string name="notification_channel_hiddenicon_description">Denne kanalen viser ikke noe ikon i notifikasjonslinjen</string>
+    <string name="notification_ipv6_text">Gå til innstillingene hvis du vil skru på IPv6.</string>
+    <string name="mail_debug_text">Skriv en liten melding som forklarer hvorfor du sender inn loggføringsfilene</string>
+    <string name="permissions_label_access_data">Tilgang til dataer</string>
+    <string name="permissions_description_access_data">Gir appen tilgang til DNSChanger sine data generelt</string>
+    <string name="edit">Rediger</string>
+    <string name="summary_pin_fingerprint">Tillat autentisering med ethvert lagret fingeravtrykk</string>
+    <string name="title_pin_fingerprint">Fingeravtrykk</string>
+    <string name="checking_connectivity">Sjekker tilkobling</string>
+    <string name="dialog_connectivity_description">Sjekker hvorvidt DNS-tjenerne kan nåes</string>
+    <string name="no_connectivity_warning_text">Av [x] tjenere, kunne [y] ikke nåes:\n\n[servers]\nTjeneren(e) kan være offline, ute av stand til å bli nådd (kanskje du ikke er på nett?), eller blokkert av din ISP.</string>
+    <string name="summary_check_connectivity">Test ut om de valgte DNS-tjenerne kan nåes hver gang Start-knappen trykkes på</string>
+    <string name="title_check_connectivity">Test ut tilkoblinger</string>
+    <string name="summary_custom_ports">Lar deg skrive inn selvvalgte porter i DNS-feltene.</string>
+    <string name="title_advanced_settings">Avanserte innstillinger</string>
+    <string name="summary_jump_advanced_settings">Klikk her for å justere på de avanserte innstillingene.</string>
+    <string name="title_custom_ports">Selvvalgte porter</string>
+    <string name="summary_advanced_settings">Skru på de avanserte innstillingene</string>
+    <string name="nav_title_advanced">Avansert</string>
+    <string name="nav_title_rules">Oppføringer</string>
+    <string name="title_rules_activated">Lokale oppføringer</string>
+    <string name="summary_rules_activated">Benytt oppføringene som er satt opp i hovedmenyen</string>
+    <string name="host">Vert</string>
+    <string name="target">Målpunkt</string>
+    <string name="wildcard">Jokertegn</string>
+    <string name="filter">Filtrér</string>
+    <string name="new_rule">Ny oppføring</string>
+    <string name="regular_expression">Ordinært uttrykk (RegEx)</string>
+    <string name="both">Begge</string>
+    <string name="error_rule_already_exists">Regelen finnes allerede</string>
+    <string name="delete">Slett</string>
+    <string name="search_by_target">Søk etter målpunkt</string>
+    <string name="show_local_entries">Vis regler som leder til en loopback-adresse</string>
+    <string name="x_entries">[x] oppføringer</string>
+    <string name="information_advanced_settings_warranty">For å kunne benytte egenskapene nedenfor, vil alle sendte DNS-pakker bli snappet opp og modifisert. Dette kan øke batteri- og RAM-bruken.\n\n\Bruk dette på din egen risiko. Ved å klikke OK, sier du deg enig i at appens skaper ikke er ansvarlig for noen skader som kan forekomme.</string>
+    <string name="import_rules">Importer</string>
+    <string name="file_hosts">«Hosts»-fil</string>
+    <string name="file_dnsmasq">Dnsmasq-fil</string>
+    <string name="file_justdomains">Domeneliste</string>
+    <string name="select_files">Velg fil(er)</string>
+    <string name="importing_x_rules">Importerer [x] oppføringer</string>
+    <string name="rules_import_finished">[x] linjer ble lest, hvorav [y] var gyldige og [z] er unike (dvs. nye).</string>
+    <string name="detect_rule_type">Forsøk å oppdag formatet</string>
+    <string name="rule_unknown_ignoring">Ukjent, ignorerer</string>
+    <string name="file_adblock">Adblocker-liste (Format: ||DOMENE^)</string>
+    <string name="fail_fast">Rask feilstatus</string>
+    <string name="disable_failfast_info">Skru av rask feilstatus dersom typen ikke kan bli oppdaget. Siden dette tar lengre tid, prøv gjerne å spesifisere formatet selv.</string>
+    <string name="loading">Laster inn</string>
+    <string name="wait_importing_rules">Oppdager filtyper, vennligst vent …</string>
+    <string name="title_query_logging">Forespørselsloggføring</string>
+    <string name="summary_query_logging">Loggfør alle DNS-forespørsler mens appen kjører</string>
+    <string name="title_export_queries">Eksporter forespørsler</string>
+    <string name="summary_export_queries">Eksporter forespørsler til en tekstfil i en mappe du selv velger</string>
+    <string name="x_lines">[x] linjer</string>
+    <string name="show_normal_entries">Vis normale oppføringer</string>
+    <string name="show_wildcard_entries">Vis jokertegnoppføringer</string>
+    <string name="sql_actions">SQL-handlinger</string>
+    <string name="title_dns_over_tcp">DNS over TCP</string>
+    <string name="summary_dns_over_tcp">Videresend DNS-forespørsler ved bruk av TCP, og ikke UDP</string>
+    <string name="title_tcp_timeout">TCP-tidsgrense</string>
+    <string name="summary_tcp_timeout">Bestemmer tiden i millisekunder, hvorpå appen vil avslutte forsøket på å nå oppstrøms-DNS-tjeneren</string>
+    <string name="nav_title_query_log">Forespørselslogg</string>
+    <string name="dont_show_again">Ikke vis igjen</string>
+    <string name="time">Tid</string>
+    <string name="summary_loopback_allowed">Lar deg skrive inn loopback-adresser i alle feltene (f.eks. ::1 og 127.0.0.1)</string>
+    <string name="title_loopback_allowed">Tillat loopback-adresser</string>
+    <string name="nav_title_current_networks">Nåværende nettverk</string>
+    <string name="dialog_title_dns_configuration">DNS-oppsett</string>
+    <string name="text_dns_configuration">Nettverket [name] har de følgende DNS-tjenerne:\n\n[servers]</string>
+    <string name="use_these_servers">Bruk disse tjenerne</string>
+    <string name="dns_configuration_taken">DNS-oppsettet er iverksatt.</string>
+    <string name="take_dns_configuration_missing_type">Advarsel: [type] mangler i oppsettet, men er skrudd på. Vil du skru den av?</string>
+    <string name="ignore">Ignorer</string>
+    <string name="disable">Skru av</string>
+    <string name="nav_title_importexport">Importer / Eksporter</string>
+    <string name="stop_all">Stopp alle</string>
+    <string name="tcp">TCP</string>
+    <string name="info_importing_rules_app_unusable">Appen importerer nå oppføringene. I mellomtiden vil du ikke kunne bruke appen, da dens interne database er låst mens dette foregår.</string>
+    <string name="background">Bakgrunn</string>
+    <string name="notification_text_running_in_advanced_mode">Avanserte innstillinger er skrudd på.</string>
+    <string name="show_system_apps">Vis systemapper</string>
+    <string name="only_show_apps_with_internet">Bare vis apper som har blitt gitt nettilgang</string>
+    <string name="hint_dns1">Primærtjener</string>
+    <string name="hint_dns2">Sekundær tjener</string>
+    <string name="hint_dns_entry_name">Navn</string>
+    <string name="hint_pin">PIN</string>
+    <string name="loading_exporting_queries">Eksporter forespørsler, vennligst vent… </string>
+    <string name="exported_dns_queries">[x] forespørsler er eksportert.</string>
+    <string name="vpn_error_explain">Appen krasjet uventet. Dette kan enten innebære at måten denne appen ikke støttes av din telefon / ROM, eller at det oppsto en generell feil (noe som sannsynligvis indikerte at jeg gjorde noe galt).
+\n
+\nUansett vil det å sende krasjrapporten hjelpe meg mye og kan muligens føre til en løsning.
+\nVil du sende det til meg\?</string>
+    <string name="title_priv_mode">Priviligerte modus</string>
+    <string name="summary_priv_mode">Kjør automatiseringen med høyere rettigheter. Kan øke stabiliteten til automatiseringsinnstillingene.</string>
+    <string name="notification_channel_networkcheck_description">Denne kanalen brukes til tilkoblingssjekk som en del av automatiseringen. Deaktiver det gjerne.</string>
+    <string name="notification_channel_networkcheck">Kanal for tilkoblingssjekk</string>
+    <string name="notification_connectivity_service_message_disable">Klikk her for å deaktivere varsel</string>
+    <string name="notification_connectivity_service_message">Kjører tilkoblingssjekk. Denne varslingen vil snart bli borte.</string>
+    <string name="notification_restartconnectivity_service">Start tilkoblingssjekk på nytt</string>
+    <string name="notification_connectivity_service">Kontroll av bakgrunnskonnektivitet</string>
+    <string name="nebulo_no_browser">Du ser ikke ut til å ha en nettleser eller butikken installert.</string>
+    <string name="message_user_restricted">Kan ikke starte VPN, brukerne dine ser ut til å være begrenset.</string>
+    <string name="summary_vpndialog_missing">Det ser ut til at enheten din mangler mulighetene for å kjøre et VPN. Siden denne appen er avhengig av denne funksjonen, kan du dessverre ikke bruke den.</string>
+    <string name="title_vpndialog_missing">VPN mangler</string>
+    <string name="title_disable_crashreporting">Rapportering om krasj</string>
+    <string name="summary_disable_crashreporting">Deaktiver automatisk rapportering av krasjer. Rapporter inneholder bare appversjonen, Android-versjonen og crash-stacktrace og ingen personopplysninger overhodet.</string>
+    <string name="nebulo_download_text">Jeg opprettet en ny app som heter Nebulo, en åpen kildekode og annonsefri app for dns-over-https og dns-over-tls. Den er på butikken.
+\nVil du se på det\? Ved å klikke på ja åpnes butikken.</string>
+    <string name="title_undo_rule_import">Angre import</string>
+    <string name="summary_undo_rule_import">Gå tilbake til en regelimport fra en fil. Kan ikke tilbakeføres.</string>
+    <string name="title_clear_local_rules">Tydelige lokale regler</string>
+    <string name="summary_clear_local_rules">Sletter alle lokale regler. Kan ikke tilbakeføres.</string>
+    <string name="dialog_are_you_sure">Er du sikker på at du vil gjøre det\?</string>
+    <string name="title_clear_queries">Fjern spørsmål</string>
+    <string name="summary_clear_queries">Sletter alle loggede spørsmål. Kan ikke tilbakeføres.</string>
+    <string name="title_protect_other_vpns">Bare grasiøs stopp</string>
+    <string name="summary_protect_other_vpns">Bare la appen stoppe via de innebygde metodene</string>
+    <string name="cancel">Avbryt</string>
+    <string name="ok">OK</string>
+    <string name="easter_egg">Ingen påskeegg her. Gå vekk.</string>
+    <string name="feature_pin_protection">Du kan pin-beskytte enhver handling som starter / stopper / pauser / fortsetter DNSChanger. Hver gang en av disse skal utføres, vises en dialog der du ber om pinnen satt av deg.
+\n
+\nDette kan brukes til å hindre telefonen brukeren fra å forstyrre appen hvis brukeren ikke er teknisk kunnskapsrik. Den ble utviklet for å hindre barn i å stoppe appen.
+\nÅpne innstillingene for å velge hva du vil beskytte.</string>
+    <string name="feature_tiles">For rask tilgang kan du plassere fliser i varslingsområdet. De kan brukes til å starte / stoppe og pause / fortsette DNSChanger.
+\n
+\nFor å legge dem til, dra ned varslingsområdet, klikk på pennen og dra dem oppover ved å lenge klikke på dem.</string>
+    <string name="feature_shortcuts">Ved hjelp av denne appen kan du lage snarveier på startskjermen. Disse snarveiene inneholder DNS-innstillinger og endrer DNS-serverne dine ved å klikke på dem uten at du trenger å åpne appen.
+\nDette gjør dem spesielt praktiske hvis du raskt vil sykle mellom forskjellige servere - bare lag en haug med snarveiene og la dem hvile på startskjermen.
+\n
+\nDu kan konfigurere oppførselen til dem i innstillingene.</string>
+    <string name="info_text_how_does_it_work">Android lar deg konfigurere DNS-servere i wifi-innstillingene - men ikke for mobilforbindelser (3G, 4G ...). Dette krever imidlertid at du bruker en statisk IP-adresse, tillater ikke å bytte enkelt og vil ikke fungere med IPv6, blant andre ulemper når du sammenligner med denne appen.
+\n
+\nDenne appen drar fordel av Androids VPN-struktur som lar enheter stille inn DNS-servere dynamisk. For å oppnå dette opprettes en lokal vpn som bruker samme enhet som sluttpunkt - dette betyr at vpn-tilkoblingen verken kobles til internett selv, eller at den er påvisbar utenfra.
+\nSiden denne dummy-VPN kan startes / stoppes dynamisk, gir det mulighet for en rekke funksjoner og automatisering. Denne VPN-enheten er ikke trykket på, og ingen data blir lest av den. Det er bare en midtmann i å bytte DNS-servere.
+\n
+\nHvis du er interessert i den tekniske siden av dette, kan du besøke giten min på git.frostnerd.com.</string>
+    <string name="unfixable_error_explaination">Bakgrunnsarbeideren krasjet med et unntak til stede på noen enheter. Dette krasjet kan ikke fikses av appen selv.
+\nEnten kan du prøve å starte appen på nytt, og hvis det ikke hjelper, kan du prøve å starte enheten på nytt.
+\n
+\nHvis problemet vedvarer og enheten din er forankret, kan du laste ned appen Tun.ko Installer, da den kan være i stand til å fikse den. Utvikleren av denne appen er DroidVPN Inc.
+\nLink: https://play.google.com/store/apps/details\?id=com.aed.tun.installer</string>
+    <string name="excluded_apps_info_text_whitelist">Bare applikasjoner valgt i innstillingen over vil bruke det interne VPN-en. Apper som ikke er valgt, bruker ikke DNS-serverne som er angitt av deg.</string>
+    <string name="invalid_dns_error_text">Det ser ut som en av DNS-serverne du konfigurerte ikke kan brukes på enheten din.
+\nEnten skrev du inn en ugyldig IP-adresse, ingen DNS-server er til stede på den gitte ip-adressen, eller det er en midlertidig feil.
+\n
+\nVennligst sjekk konfigurasjonen i hovedmenyen, og kontroller at de oppgitte adressene er riktige.</string>
+    <string name="dialog_question_export_shortcuts">Eksporter snarveier også\?
+\n
+\n(Eksporterer alle snarveier opprettet siden installasjonen ved hjelp av denne appen, også de som allerede var slettet)</string>
+    <string name="debug_dialog_info_text">Aktivering av feilsøkingsfunksjonen kan øke batteriforbruket. I tillegg inneholder de genererte loggene generell (ikke personlig) informasjon om enheten din [App-versjon, Android-versjon, Enhetsnavn, Produsent] og kan logge på DNS-serverne du konfigurerer appen til å bruke.
+\n
+\nDisse dataene sendes ikke automatisk, men husk det når du sender loggene til meg.</string>
+    <string name="set_device_admin_info">Denne appen kan settes som enhetsadministrator for å forhindre å fjerne den uten å angi enhetens passord først.
+\n
+\nIngen sikkerhetspolicyer brukes.
+\n
+\nDenne funksjonen fungerer bare hvis enhetsadministrasjonspolicyen er satt til å be om passord når du fjerner apper (er vanligvis funnet i bedrifter eller levert med foreldrekontrollapper)
+\n
+\nDNSChanger vil ikke bruke disse rettighetene.
+\nDNSChanger må fjernes som enhetsadministrator før du prøver å fjerne den fra telefonen. Kom tilbake til innstillingene for å gjøre det.</string>
+    <string name="app_share_text">Hei, se på denne DNS-skiftende appen for Android. Du kan laste ned det her: https://play.google.com/store/apps/details\?id=com.frostnerd.dnschanger</string>
+    <string name="android4_4_warning">Advarsel: Det er kjent at Android-versjonen din (4.4) har problemer med VPN-tilkoblinger. Hvis denne appen krasjer eller bare ikke fungerer, er det mest sannsynlig at systemet ditt og ikke skylden for denne appen.
+\nJeg beklager bryet.</string>
+    <string name="create_tasker_action">Opprette Tasker Action</string>
+    <string name="summary_automation_warn">Advarsel: Å bruke noen av disse kan forstyrre aktive Tasker-profiler ved bruk av denne appen!</string>
+    <string name="tasker_support">Tasker-støtte</string>
+    <string name="app_supports_tasker_text">Denne appen støtter Tasker og kan brukes som en action-plugin for å automatisere DNS-bruk.</string>
+    <string name="warning_started_using_tasker">DNSChanger ble startet med Tasker. Å stoppe den kan avbryte den. Å starte den med ikke å bruke tasker, bruker ikke DNS-serverne som er konfigurert ved hjelp av Tasker. Stopp uansett\?</string>
+    <string name="shortcut_conflict_text">Denne appen er satt til å starte / stoppe vpn når typen nettverk endres (enten Wifi eller 3G).
+\nDette kan komme i konflikt med hvilken som helst innstilling når du starter fra en snarvei, ettersom handlingen kan bli overstyret av appen selv (bare en VPN kan kjøres når som helst).
+\n
+\nVil du deaktivere disse motstridende innstillingene\?</string>
+    <string name="tasker_automation_conflict_text">Denne appen er satt til å starte / stoppe vpn når typen nettverk endres (enten Wifi eller 3G).
+\nDette kan komme i konflikt med denne tasker-plugin, ettersom handlingen kan overstyres av selve appen (bare en VPN kan kjøres når som helst).
+\n
+\nVil du deaktivere disse motstridende innstillingene\?</string>
+</resources>

@@ -88,7 +88,6 @@ public class ShortcutActivity extends AppCompatActivity {
                             unbindService(this);
                             start(finalUpstreamServers);
                         }
-                        service = null;
                     }
 
                     @Override
