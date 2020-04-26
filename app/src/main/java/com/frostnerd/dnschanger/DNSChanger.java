@@ -13,7 +13,6 @@ import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 
 import java.net.InetAddress;
-import java.util.Locale;
 
 import io.sentry.Sentry;
 import io.sentry.SentryClient;

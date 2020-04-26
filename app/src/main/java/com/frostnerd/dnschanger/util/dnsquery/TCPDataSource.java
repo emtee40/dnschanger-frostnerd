@@ -31,7 +31,6 @@ class TCPDataSource extends NetworkDataSource {
             return dnsMessage;
         }
 
-        assert(dnsMessage == null || dnsMessage.truncated || ioExceptions.size() == 1);
         LOGGER.log(Level.FINE, "Fallback to TCP because {0}", new Object[] { dnsMessage != null ? "response is truncated" : ioExceptions.get(0) });
 
         try {

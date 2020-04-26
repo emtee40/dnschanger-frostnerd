@@ -193,7 +193,7 @@ public class Preferences extends com.frostnerd.preferences.Preferences {
 
     private static String findUnusedDNSEntryName(DatabaseHelper helper, String name){
         for (int i = 0; i < 100; i++) {
-            String newName = i == 0 ? name : String.valueOf(i) + "_" + name;
+            String newName = i == 0 ? name : i + "_" + name;
             if(!helper.dnsEntryExists(newName)) return newName;
         }
         return name;

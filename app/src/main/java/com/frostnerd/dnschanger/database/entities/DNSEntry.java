@@ -1,6 +1,5 @@
 package com.frostnerd.dnschanger.database.entities;
 
-import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -11,10 +10,8 @@ import com.frostnerd.database.orm.annotations.RowID;
 import com.frostnerd.database.orm.annotations.Serialized;
 import com.frostnerd.database.orm.annotations.Table;
 import com.frostnerd.database.orm.annotations.Unique;
-import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.serializers.IPPortSerializer;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeMap;

@@ -68,7 +68,7 @@ public class LogFactory {
                     return pathname.getName().endsWith(".log");
                 }
             });
-            BufferedInputStream in = null;
+            BufferedInputStream in;
             FileOutputStream dest = new FileOutputStream(zipFile);
             ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
             byte[] buffer = new byte[2048];
@@ -367,7 +367,7 @@ public class LogFactory {
             str2 = localBufferedReader.readLine();//meminfo
             arrayOfString = str2.split("\\s+");
             localBufferedReader.close();
-            return Integer.valueOf(arrayOfString[1]) * 1024;
+            return Integer.parseInt(arrayOfString[1]) * 1024;
         }
         catch (IOException e){
             return -1;

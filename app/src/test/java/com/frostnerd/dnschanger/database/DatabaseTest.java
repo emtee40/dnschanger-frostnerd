@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -113,19 +114,19 @@ public class DatabaseTest {
         assertNotNull("Inserted DNSRule should be in the database",
                 helper.select(DNSRule.class, WhereCondition.buildBasedOnPrimaryKeys(rule)));
         helper.createDNSRule("blockeddomain.com", "0.0.0.0", false, false);
-        assertTrue("The host of the DNSRule inserted last should be 'blockeddomain.com'", helper.getLastRow(DNSRule.class).getHost().equals("blockeddomain.com"));
+        assertEquals("The host of the DNSRule inserted last should be 'blockeddomain.com'", "blockeddomain.com", helper.getLastRow(DNSRule.class).getHost());
     }
 
     @Test
     public void testEditDNSRule(){
         helper.createDNSRule("blockeddomain.com", "0.0.0.0", false, false);
-        assertTrue("The host of the DNSRule inserted last should be 'blockeddomain.com'", helper.getLastRow(DNSRule.class).getHost().equals("blockeddomain.com"));
-        assertTrue("The target of the DNSRule inserted last should be '0.0.0.0'", helper.getLastRow(DNSRule.class).getTarget().equals("0.0.0.0"));
+        assertEquals("The host of the DNSRule inserted last should be 'blockeddomain.com'", "blockeddomain.com", helper.getLastRow(DNSRule.class).getHost());
+        assertEquals("The target of the DNSRule inserted last should be '0.0.0.0'", "0.0.0.0", helper.getLastRow(DNSRule.class).getTarget());
         helper.editDNSRule("blockeddomain.com", false, "192.168.178.1");
-        assertTrue("The host of the DNSRule inserted last should be 'blockeddomain.com'", helper.getLastRow(DNSRule.class).getHost().equals("blockeddomain.com"));
-        assertTrue("The target of the DNSRule inserted last should be '192.168.178.1'", helper.getLastRow(DNSRule.class).getTarget().equals("192.168.178.1"));
+        assertEquals("The host of the DNSRule inserted last should be 'blockeddomain.com'", "blockeddomain.com", helper.getLastRow(DNSRule.class).getHost());
+        assertEquals("The target of the DNSRule inserted last should be '192.168.178.1'", "192.168.178.1", helper.getLastRow(DNSRule.class).getTarget());
         helper.deleteDNSRule("blockeddomain.com", false);
-        assertTrue("Table should now be empty", ParsedEntity.wrapEntity(DNSRule.class).getCount(helper) == 0);
+        assertEquals("Table should now be empty", 0, ParsedEntity.wrapEntity(DNSRule.class).getCount(helper));
     }
 
     @Test
@@ -137,7 +138,7 @@ public class DatabaseTest {
         helper.insert(shortcut);
         assertNotNull("Inserted Shortcut should be in the database", helper.select(Shortcut.class, WhereCondition.buildBasedOnPrimaryKeys(shortcut)));
         helper.createShortcut("NewShortcut2", pairs.get(0), pairs.get(1), pairs.get(2), pairs.get(3));
-        assertTrue("The name of the Shortcut inserted last should be 'NewShortcut2'", helper.getLastRow(Shortcut.class).getName().equals("NewShortcut2"));
+        assertEquals("The name of the Shortcut inserted last should be 'NewShortcut2'", "NewShortcut2", helper.getLastRow(Shortcut.class).getName());
     }
 
     @Test

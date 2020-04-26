@@ -85,10 +85,9 @@ public class SettingsImportActivity extends Activity {
             LogFactory.writeMessage(c, LOG_TAG, "Reading data");
             while ((line = reader.readLine()) != null) {
                 if (line.equals("") || line.startsWith("[")) continue;
-                if(line.startsWith("'")){
-                    //Util.createShortcut(c, Shortcut.fromString(line.split("'")[1]));
+                if(!line.startsWith("'")){
+                    data.append(line);
                 }
-                else data.append(line);
             }
             LogFactory.writeMessage(c, LOG_TAG, "Data read: " + data);
             Preferences.importFromJson(c, data.toString());

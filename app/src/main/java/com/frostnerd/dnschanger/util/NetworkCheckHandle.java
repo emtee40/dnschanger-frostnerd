@@ -233,7 +233,7 @@ public class NetworkCheckHandle {
         return context;
     }
     
-    private class ReallyWeiredExceptionOnlyAFewPeopleHave extends Exception{
+    private static class ReallyWeiredExceptionOnlyAFewPeopleHave extends Exception{
         ReallyWeiredExceptionOnlyAFewPeopleHave(){
             super("It's strange, isn't it?");
         }
