@@ -30,13 +30,18 @@ public class BackgroundDNSListActivity extends AppCompatActivity {
         setTheme(ThemeHandler.getDialogTheme(this));
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        if(getIntent() == null)
-            throw new IllegalStateException();
-        if(!getIntent().hasExtra(KEY_MESSAGE))
-            throw new IllegalStateException();
-        if(getIntent().getParcelableExtra(KEY_MESSAGE) == null)
-            throw new IllegalStateException();
-
+        if(getIntent() == null){
+            finish();
+            return;
+        }
+        if(!getIntent().hasExtra(KEY_MESSAGE)){
+            finish();
+            return;
+        }
+        if(getIntent().getParcelableExtra(KEY_MESSAGE) == null){
+            finish();
+            return;
+        }
         message = getIntent().getParcelableExtra(KEY_MESSAGE);
         new DNSEntryListDialog(this, ThemeHandler.getDialogTheme(this), new DNSEntryListDialog.OnProviderSelectedListener() {
             @Override
