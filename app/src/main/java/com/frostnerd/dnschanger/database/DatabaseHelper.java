@@ -85,6 +85,9 @@ public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if(oldVersion != 4 && oldVersion != 3 && oldVersion != 5) super.onUpgrade(db, oldVersion, newVersion);
+        else {
+            onAfterUpgrade(db, oldVersion, newVersion);
+        }
     }
 
     private void upgradeDnsQuery() {
@@ -178,8 +181,9 @@ public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
             for(Map.Entry<DNSEntry, Integer> entry: DNSEntry.defaultDNSEntries.entrySet()){
                 version = entry.getValue();
                 if(version > oldVersion && version <= newVersion) {
-                    if(getCount(DNSEntry.class, WhereCondition.equal("name", entry.getKey().getName())) == 0) {
-                        insert(entry.getKey());
+                    int count = ParsedEntity.wrapEntity(DNSEntry.class).getCount(db, WhereCondition.equal("name", entry.getKey().getName()));
+                    if(count == 0) {
+                        insert(db, entry.getKey());
                     }
                 }
             }
