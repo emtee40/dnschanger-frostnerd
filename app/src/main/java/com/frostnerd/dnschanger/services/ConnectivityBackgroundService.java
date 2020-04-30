@@ -87,7 +87,7 @@ public class ConnectivityBackgroundService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         LogFactory.writeMessage(this, LOG_TAG, "Start command received");
-        runInForeground = runInForeground || intent.getBooleanExtra("forceForeground", false);
+        runInForeground = runInForeground || (intent != null && intent.getBooleanExtra("forceForeground", false));
         if(runInForeground) startForeground(1285, notificationBuilder.build());
         else LogFactory.writeMessage(this, LOG_TAG, "Not running in foreground");
         handle = Util.maybeCreateNetworkCheckHandle(this, LOG_TAG, intent == null || intent.getBooleanExtra("initial", true));
