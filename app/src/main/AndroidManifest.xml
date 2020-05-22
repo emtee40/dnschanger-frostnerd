@@ -163,11 +163,21 @@
             android:targetActivity=".activities.ShortcutActivity"
             android:taskAffinity="com.frostnerd.dnschangerShortcut"
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
-        <activity android:name=".activities.automation.PauseDnsActivity"/>
-        <activity android:name=".activities.automation.ResumeDnsActivity"/>
-        <activity android:name=".activities.automation.StartDnsActivity"/>
-        <activity android:name=".activities.automation.StopDnsActivity"/>
-        <activity android:name=".activities.automation.ToggleDnsActivity"/>
+        <activity android:name=".activities.automation.PauseDnsActivity"
+            android:exported="true"
+            />
+        <activity android:name=".activities.automation.ResumeDnsActivity"
+            android:exported="true"
+            />
+        <activity android:name=".activities.automation.StartDnsActivity"
+            android:exported="true"
+            />
+        <activity android:name=".activities.automation.StopDnsActivity"
+            android:exported="true"
+            />
+        <activity android:name=".activities.automation.ToggleDnsActivity"
+            android:exported="true"
+            />
 
 
         <activity
