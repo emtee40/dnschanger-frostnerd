@@ -148,7 +148,7 @@ public class DnsQueryFragment extends Fragment {
                     }
                     if(isAdded()){
                         if(adapter != null) adapter.destroy();
-                        adapter = new QueryResultAdapter(requireContext(), result.getDnsMessage().answerSection);
+                        adapter = new QueryResultAdapter(requireContext(), result.getRawAnswer().answerSection);
                         if(isAdded())Util.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

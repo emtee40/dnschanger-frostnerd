@@ -8,17 +8,25 @@ import androidx.annotation.Keep;
 
 import com.frostnerd.dnschanger.activities.ErrorDialogActivity;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
-import com.frostnerd.dnschanger.util.DataSavingSentryEventHelper;
+import com.frostnerd.dnschanger.util.DataSavingSentryEventProcessor;
 import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
 
-import io.sentry.Sentry;
-import io.sentry.SentryClient;
-import io.sentry.android.AndroidSentryClientFactory;
-import io.sentry.event.User;
-import io.sentry.event.helper.EventBuilderHelper;
+import io.sentry.android.core.AppComponentsBreadcrumbsIntegration;
+import io.sentry.android.core.AppLifecycleIntegration;
+import io.sentry.android.core.PhoneStateBreadcrumbsIntegration;
+import io.sentry.android.core.SentryAndroid;
+import io.sentry.android.core.SentryAndroidOptions;
+import io.sentry.android.core.SystemEventsBreadcrumbsIntegration;
+import io.sentry.android.core.TempSensorBreadcrumbsIntegration;
+import io.sentry.core.Integration;
+import io.sentry.core.Sentry;
+import io.sentry.core.protocol.User;
+
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
@@ -83,7 +91,7 @@ public class DNSChanger extends Application {
 
     public void maybeReportSentry(Throwable ex) {
         if(sentryInitialized && !sentryDisabled) {
-            Sentry.capture(ex);
+            Sentry.captureException(ex);
         }
     }
 
@@ -107,20 +115,22 @@ public class DNSChanger extends Application {
                                 sentryDisabled = true;
                                 return;
                             }
-                            Sentry.init(BuildConfig.SENTRY_DSN, new AndroidSentryClientFactory(DNSChanger.this));
-                            Sentry.getContext().setUser(new User("anon-" + BuildConfig.VERSION_CODE, null, null, null));
-                            SentryClient client = Sentry.getStoredClient();
-                            client.addTag("dist", BuildConfig.VERSION_CODE + "");
-                            client.addExtra("dist", BuildConfig.VERSION_CODE);
-                            client.addTag(
+                            SentryAndroid.init(DNSChanger.this, new Sentry.OptionsConfiguration<SentryAndroidOptions>() {
+                                @Override
+                                public void configure(SentryAndroidOptions options) {
+                                    options.setDsn(BuildConfig.SENTRY_DSN);
+                                    setupSentryForDatasaving(options);
+                                }
+                            });
+                            User user = new User();
+                            user.setUsername("anon-" + BuildConfig.VERSION_CODE);
+                            Sentry.setUser(user);
+                            Sentry.setTag("dist", BuildConfig.VERSION_CODE + "");
+                            Sentry.setTag(
                                     "app.installer_package",
                                     getPackageManager().getInstallerPackageName(getPackageName())
                             );
-                            client.addTag("richdata", "false");
-                            for (EventBuilderHelper builderHelper : client.getBuilderHelpers()) {
-                                client.removeBuilderHelper(builderHelper);
-                            }
-                            client.addBuilderHelper(new DataSavingSentryEventHelper());
+                            Sentry.setTag("richdata", "false");
                             sentryInitialized = true;
                         }
                     } catch (Throwable ignored) {
@@ -131,6 +141,21 @@ public class DNSChanger extends Application {
                 }
             }).start();
         }
+    }
+
+    private void setupSentryForDatasaving(SentryAndroidOptions options) {
+        List<Integration> toBeRemoved = new ArrayList<>();
+        for (Integration integration : options.getIntegrations()) {
+            if (integration instanceof PhoneStateBreadcrumbsIntegration ||
+                    integration instanceof SystemEventsBreadcrumbsIntegration ||
+                    integration instanceof TempSensorBreadcrumbsIntegration ||
+                    integration instanceof AppComponentsBreadcrumbsIntegration
+            ) toBeRemoved.add(integration);
+        }
+        for (Integration integration : toBeRemoved) {
+            options.getIntegrations().remove(integration);
+        }
+        options.addEventProcessor(new DataSavingSentryEventProcessor());
     }
 
     public void tearDownSentry() {

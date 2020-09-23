@@ -7,6 +7,7 @@ import org.minidns.AbstractDnsClient;
 import org.minidns.DnsClient;
 import org.minidns.dnsmessage.DnsMessage;
 import org.minidns.dnsmessage.Question;
+import org.minidns.dnsqueryresult.DnsQueryResult;
 import org.minidns.record.Data;
 import org.minidns.record.Record;
 
@@ -96,11 +97,11 @@ public class Resolver {
 
     @NonNull
     public <D extends Data> ResolverResult<D> resolve(@NonNull Question question, boolean tcp, @IntRange(from = 1, to = 65535) int port) throws IOException {
-        DnsMessage dnsMessage;
+        DnsQueryResult queryResult;
         System.out.println("Sending question " + question + " to " + upstreamServer + ":" + port + " (tcp: " + tcp + ")");
         AbstractDnsClient resolver = tcp ? tcpResolver : this.resolver;
-        dnsMessage = resolver.query(question, upstreamServer, port);
-        return new ResolverResult<>(question, dnsMessage, null);
+        queryResult = resolver.query(question, upstreamServer, port);
+        return new ResolverResult(question, queryResult, null);
     }
 
     @NonNull
