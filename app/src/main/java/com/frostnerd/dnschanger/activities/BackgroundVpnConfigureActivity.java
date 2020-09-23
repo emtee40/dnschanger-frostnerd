@@ -54,8 +54,19 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
     public static void startWithFixedDNS(final Context context, ArrayList<IPPortPair> upstreamServers, boolean startedWithTasker) {
         LogFactory.writeMessage(context, LOG_TAG, "[STATIC] Starting with fixed DNS. Started with tasker: " +startedWithTasker);
         LogFactory.writeMessage(context, LOG_TAG, "[STATIC] " + upstreamServers);
-        context.startActivity(new Intent(context, BackgroundVpnConfigureActivity.class).putExtra("fixeddns", true).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .putExtra("servers", upstreamServers).putExtra("startService", true).putExtra("startedWithTasker", startedWithTasker));
+
+        if(startedWithTasker) {
+            Util.startService(context,
+                    DNSVpnService.getStartVPNIntent(context, upstreamServers, true, true));
+        } else {
+            Intent intent = new Intent(context, BackgroundVpnConfigureActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .putExtra("fixeddns", true)
+                    .putExtra("servers", upstreamServers)
+                    .putExtra("startService", true)
+                    .putExtra("startedWithTasker", false);
+            context.startActivity(intent);
+        }
     }
 
     @Override
