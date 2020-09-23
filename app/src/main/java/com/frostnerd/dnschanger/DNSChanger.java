@@ -148,8 +148,7 @@ public class DNSChanger extends Application {
         for (Integration integration : options.getIntegrations()) {
             if (integration instanceof PhoneStateBreadcrumbsIntegration ||
                     integration instanceof SystemEventsBreadcrumbsIntegration ||
-                    integration instanceof TempSensorBreadcrumbsIntegration ||
-                    integration instanceof AppComponentsBreadcrumbsIntegration
+                    integration instanceof TempSensorBreadcrumbsIntegration
             ) toBeRemoved.add(integration);
         }
         for (Integration integration : toBeRemoved) {
