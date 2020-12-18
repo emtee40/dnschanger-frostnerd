@@ -33,7 +33,7 @@ import java.util.ArrayList;
 public class PreferencesAccessor {
 
     public static boolean runConnectivityCheckWithPrivilege(@NonNull Context context) {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O || preferences.getBoolean("automation_priv_mode", false);
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ||  Preferences.getInstance(context).getBoolean("automation_priv_mode", false);
     }
 
     public static boolean isIPv6Enabled(@NonNull Context context) {
