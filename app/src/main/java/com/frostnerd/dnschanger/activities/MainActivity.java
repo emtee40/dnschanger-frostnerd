@@ -664,17 +664,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Preferences.getInstance(MainActivity.this).putBoolean("nebulo_shown", true);
-                        Intent storeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.frostnerd.smokescreen"));
-                        try {
-                            startActivity(storeIntent);
-                        } catch (ActivityNotFoundException ex) {
-                            try {
-                                storeIntent = new Intent(Intent.ACTION_VIEW,  Uri.parse("https://play.google.com/store/apps/details?id=com.frostnerd.smokescreen"));
-                                startActivity(storeIntent);
-                            } catch (ActivityNotFoundException ex2) {
-                                Toast.makeText(MainActivity.this, R.string.nebulo_no_browser, Toast.LENGTH_LONG).show();
-                            }
-                        }
+                        openMarket("com.frostnerd.smokescreen");
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -772,17 +762,24 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
     }
 
     public void rateApp() {
-        final String appPackageName = this.getPackageName();
         LogFactory.writeMessage(this, LOG_TAG, "Opening site to rate app");
+        openMarket(getPackageName());
+        Preferences.getInstance(this).put("rated",true);
+    }
+
+    private void openMarket(String packageName) {
         try {
             LogFactory.writeMessage(this, LOG_TAG, "Trying to open market");
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)));
             LogFactory.writeMessage(this, LOG_TAG, "Market was opened");
         } catch (android.content.ActivityNotFoundException e) {
             LogFactory.writeMessage(this, LOG_TAG, "Market not present. Opening with general ACTION_VIEW");
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + packageName)));
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(MainActivity.this, R.string.nebulo_no_browser, Toast.LENGTH_LONG).show();
+            }
         }
-        Preferences.getInstance(this).put("rated",true);
     }
 
     public void openDefaultDNSDialog(View v) {
