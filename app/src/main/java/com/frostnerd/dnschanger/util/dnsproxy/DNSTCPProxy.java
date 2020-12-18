@@ -19,6 +19,7 @@ import com.frostnerd.dnschanger.database.accessors.QueryLogger;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 
 import org.minidns.dnsmessage.DnsMessage;
+import org.minidns.dnsname.InvalidDnsNameException;
 import org.minidns.record.A;
 import org.minidns.record.AAAA;
 import org.minidns.record.Data;
@@ -256,7 +257,7 @@ public class DNSTCPProxy extends DNSProxy{
             DnsMessage dnsMsg;
             try {
                 dnsMsg = new DnsMessage(payloadData);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 return;
             }
             if(dnsMsg.getQuestion() == null)return;
