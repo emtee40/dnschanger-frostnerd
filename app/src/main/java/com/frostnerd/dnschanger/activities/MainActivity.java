@@ -776,7 +776,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
             LogFactory.writeMessage(this, LOG_TAG, "Market not present. Opening with general ACTION_VIEW");
             try {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + packageName)));
-            } catch (ActivityNotFoundException e) {
+            } catch (ActivityNotFoundException e2) {
                 Toast.makeText(MainActivity.this, R.string.nebulo_no_browser, Toast.LENGTH_LONG).show();
             }
         }
