@@ -335,6 +335,7 @@ public final class Util {
     @Nullable
     public static NetworkCheckHandle maybeCreateNetworkCheckHandle(@NonNull Context context, String logTag, boolean handleInitialState) {
         if(shouldRunNetworkCheck(context)) {
+            boolean handleInitial = handleInitialState && !Preferences.getInstance(context).getBoolean("service_stopped_by_user", false);
             return new NetworkCheckHandle(context, logTag, handleInitialState);
         } else {
             return null;
