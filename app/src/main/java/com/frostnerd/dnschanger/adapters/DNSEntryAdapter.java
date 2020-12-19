@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.frostnerd.database.DatabaseAdapter;
@@ -15,6 +16,8 @@ import com.frostnerd.design.DesignUtil;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.lifecycle.BaseViewHolder;
 
 import java.util.HashSet;
@@ -100,10 +103,19 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
         this.entrySelected = entrySelected;
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
+        boolean ipv6 = PreferencesAccessor.isIPv6Enabled(context);
+        boolean ipv4 = PreferencesAccessor.isIPv4Enabled(context);
+        IPPortPair _primary = ipv4 ? PreferencesAccessor.Type.DNS1.getPair(context) : null,
+                _secondary = ipv4 ? PreferencesAccessor.Type.DNS2.getPair(context) : null,
+                _primaryV6 = ipv6 ? PreferencesAccessor.Type.DNS1_V6.getPair(context) : null,
+                _secondaryV6 = ipv6 ? PreferencesAccessor.Type.DNS2_V6.getPair(context) : null;
         setOnRowLoaded(new OnRowLoaded<DNSEntry, ViewHolder>() {
             @Override
             public void bindRow(ViewHolder view, DNSEntry entity, int position) {
                 boolean wasSelected = view.itemView.isSelected();
+                boolean isCurrentServer = ipMatches(ipv4 ? entity.getDns1() : null, _primary) && ipMatches(ipv4 ? entity.getDns2() : null, _secondary) &&
+                        ipMatches(ipv6 ? entity.getDns1V6() : null, _primaryV6) && ipMatches(ipv6 ? entity.getDns2V6() : null, _secondaryV6);
+
                 if(wasSelected && !selectedEntries.contains(entity.getID())) {
                     view.itemView.setSelected(false);
                     view.itemView.setBackgroundColor(DesignUtil.resolveColor(DNSEntryAdapter.this.context, android.R.attr.windowBackground));
@@ -127,8 +139,9 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
                 }else if(onEntrySelectionUpdated != null && !view.itemView.isLongClickable()){
                     view.itemView.setOnLongClickListener(longClickListener);
                 }
-                view.itemView.setOnClickListener(clickListener);
+                view.radioButton.setChecked(isCurrentServer);
 
+                view.itemView.setOnClickListener(clickListener);
                 view.itemView.setTag(idTagKey, entity.getID());
                 view.itemView.setTag(positionTagKey, position);
             }
@@ -146,6 +159,12 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
                 .order("name", true, OrderOption.Collate.NOCASE);
         setOrderOption(order);
         reloadData();
+    }
+
+    private boolean ipMatches(IPPortPair one, IPPortPair two) {
+        if((one == null || one.isEmpty()) && (two == null || two.isEmpty())) return true;
+        else if(one == null || two == null) return false;
+        return one.matches(two);
     }
 
     @NonNull
@@ -193,11 +212,13 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
 
     static class ViewHolder extends BaseViewHolder {
         private TextView textView, subText;
+        private RadioButton radioButton;
 
         private ViewHolder(View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.text);
             subText = itemView.findViewById(R.id.text2);
+            radioButton = itemView.findViewById(R.id.radioButton);
         }
 
         @Override
