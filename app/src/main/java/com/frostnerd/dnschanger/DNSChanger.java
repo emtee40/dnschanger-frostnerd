@@ -16,17 +16,11 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.sentry.android.core.AppComponentsBreadcrumbsIntegration;
-import io.sentry.android.core.AppLifecycleIntegration;
-import io.sentry.android.core.PhoneStateBreadcrumbsIntegration;
-import io.sentry.android.core.SentryAndroid;
-import io.sentry.android.core.SentryAndroidOptions;
-import io.sentry.android.core.SystemEventsBreadcrumbsIntegration;
-import io.sentry.android.core.TempSensorBreadcrumbsIntegration;
-import io.sentry.core.Integration;
-import io.sentry.core.Sentry;
-import io.sentry.core.protocol.User;
-
+import io.sentry.Integration;
+import io.sentry.Sentry;
+import io.sentry.SentryOptions;
+import io.sentry.android.core.*;
+import io.sentry.protocol.User;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)

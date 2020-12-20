@@ -49,13 +49,13 @@ dependencies {
     implementation 'com.frostnerd.utils:preferenceexport:1.0.10'
     implementation 'com.frostnerd.utils:api:1.0.6'
 
-    implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation "androidx.appcompat:appcompat:1.2.0"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation "androidx.legacy:legacy-preference-v14:1.0.0"
-    implementation "com.google.android.material:material:1.1.0"
-    testImplementation 'junit:junit:4.13'
+    implementation "com.google.android.material:material:1.2.1"
+    testImplementation 'junit:junit:4.13.1'
     implementation 'org.pcap4j:pcap4j-core:1.8.2'
     implementation 'org.pcap4j:pcap4j-packetfactory-static:1.8.2'
-    implementation 'org.minidns:minidns-core:0.3.4'
+    implementation 'org.minidns:minidns-core:1.0.0'
 }

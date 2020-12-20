@@ -3,13 +3,14 @@ package com.frostnerd.dnschanger.util;
 import android.os.Build;
 
 import com.frostnerd.dnschanger.BuildConfig;
+import io.sentry.EventProcessor;
+import io.sentry.SentryEvent;
+import io.sentry.protocol.App;
+import io.sentry.protocol.Device;
+import io.sentry.protocol.OperatingSystem;
 
 
-import io.sentry.core.EventProcessor;
-import io.sentry.core.SentryEvent;
-import io.sentry.core.protocol.App;
-import io.sentry.core.protocol.Device;
-import io.sentry.core.protocol.OperatingSystem;
+
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
