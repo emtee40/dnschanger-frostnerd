@@ -338,4 +338,6 @@
     <string name="notification_channel_networkcheck_description">This channel is used for the connectivity check as part of the automation. Feel free to disable it.</string>
     <string name="summary_priv_mode">Run the automation with higher rights. Might increase stability of the automation settings.</string>
     <string name="title_priv_mode">Privileged mode</string>
+    <string name="title_run_after_update">Enable app after update</string>
+    <string name="summary_run_after_update">Automatically enable DNS Changer after it has been updated.\nThis might not work when DNS Changer was not active for a prolonged time.</string>
 </resources>
