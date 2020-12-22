@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'project-report'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.frostnerd.dnschanger"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 118
-        versionName "1.16.5.8"
+        versionCode 122
+        versionName "1.16.5.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -72,4 +72,6 @@ dependencies {
     implementation 'org.pcap4j:pcap4j-packetfactory-static:1.8.2'
     implementation 'org.minidns:minidns-core:1.0.0'
     implementation 'org.minidns:minidns-hla:1.0.0'
+
+    implementation 'com.google.android.play:core:1.9.0'
 }
