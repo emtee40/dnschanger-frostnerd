@@ -197,10 +197,11 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
                 try {
                     if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
                         int stalenessDays = appUpdateInfo.clientVersionStalenessDays() != null ? appUpdateInfo.clientVersionStalenessDays() : Integer.MIN_VALUE;
-                        boolean shouldUpdate = stalenessDays >= 24;
+                        boolean shouldHoldUpdate = System.currentTimeMillis() >= Preferences.getInstance(this).getLong("ask_update_later_than", 0);
                         boolean shouldUpdateImmediate = appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE) && appUpdateInfo.updatePriority() >= 4;
-                        shouldUpdate = shouldUpdate || (stalenessDays >= 14 && appUpdateInfo.updatePriority() >= 1);
-                        shouldUpdate = shouldUpdate || (stalenessDays >= 7 && appUpdateInfo.updatePriority() >= 2);
+                        boolean shouldUpdate = !shouldHoldUpdate && stalenessDays >= 24;
+                        shouldUpdate = shouldUpdate || (stalenessDays >= 14 && !shouldHoldUpdate && appUpdateInfo.updatePriority() >= 1);
+                        shouldUpdate = shouldUpdate || (stalenessDays >= 7 && !shouldHoldUpdate && appUpdateInfo.updatePriority() >= 2);
                         shouldUpdate = shouldUpdate || (stalenessDays >= 3 && appUpdateInfo.updatePriority() >= 3);
                         shouldUpdate = shouldUpdate || (stalenessDays >= 1 && appUpdateInfo.updatePriority() >= 4);
                         shouldUpdate = shouldUpdate || appUpdateInfo.updatePriority() >= 5;
@@ -738,8 +739,13 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == REQUEST_ADVANCED_SETTINGS && resultCode == AppCompatActivity.RESULT_FIRST_USER){
+        if(requestCode == REQUEST_ADVANCED_SETTINGS && resultCode == AppCompatActivity.RESULT_FIRST_USER) {
             reloadMenuItems();
+        } else if(requestCode == REQUEST_APP_UPDATE) {
+            if(resultCode != RESULT_OK) {
+                long updateAskDelay = 2*24*60*60*1000; //2 Days
+                Preferences.getInstance(this).putLong("ask_update_later_than", System.currentTimeMillis() + updateAskDelay);
+            }
         } else {
             Fragment f = currentFragment();
             if(f instanceof MainFragment) {
