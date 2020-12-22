@@ -25,7 +25,7 @@ import com.frostnerd.dnschanger.util.Preferences;
  *
  * You can contact the developer at daniel.wolf@frostnerd.com.
  */
-class UpdateReceiver extends BroadcastReceiver {
+public class UpdateReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction() != null) {
