@@ -1,6 +1,7 @@
 package com.frostnerd.dnschanger.activities;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -65,6 +66,12 @@ import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.general.Utils;
 import com.frostnerd.general.permissions.PermissionsUtil;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.Task;
 
 import java.io.File;
 import java.util.Arrays;
@@ -91,7 +98,7 @@ import java.util.Random;
  */
 public class MainActivity extends NavigationDrawerActivity implements RuleImport.ImportStartedListener {
     private static final String LOG_TAG = "[MainActivity]";
-    private static final int REQUEST_PERMISSION_IMPORT_SETTINGS = 131, REQUEST_PERMISSION_EXPORT_SETTINGS = 130, REQUEST_ADVANCED_SETTINGS = 132;
+    private static final int REQUEST_PERMISSION_IMPORT_SETTINGS = 131, REQUEST_PERMISSION_EXPORT_SETTINGS = 130, REQUEST_ADVANCED_SETTINGS = 132, REQUEST_APP_UPDATE = 133;
     private AlertDialog dialog1;
     private DNSEntryListDialog dnsEntryListDialog;
     private MainFragment mainFragment;
@@ -174,6 +181,45 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
         }
         Util.updateTiles(this);
         preferences.put( "first_run", false);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        tryCheckUpdate();
+    }
+
+    private void tryCheckUpdate() {
+        try {
+            AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(this);
+            Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+            appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+                try {
+                    if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                        int stalenessDays = appUpdateInfo.clientVersionStalenessDays() != null ? appUpdateInfo.clientVersionStalenessDays() : Integer.MIN_VALUE;
+                        boolean shouldUpdate = stalenessDays >= 24;
+                        boolean shouldUpdateImmediate = appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE) && appUpdateInfo.updatePriority() >= 4;
+                        shouldUpdate = shouldUpdate || (stalenessDays >= 14 && appUpdateInfo.updatePriority() >= 1);
+                        shouldUpdate = shouldUpdate || (stalenessDays >= 7 && appUpdateInfo.updatePriority() >= 2);
+                        shouldUpdate = shouldUpdate || (stalenessDays >= 3 && appUpdateInfo.updatePriority() >= 3);
+                        shouldUpdate = shouldUpdate || (stalenessDays >= 1 && appUpdateInfo.updatePriority() >= 4);
+                        shouldUpdate = shouldUpdate || appUpdateInfo.updatePriority() >= 5;
+                        if (shouldUpdate) {
+                            appUpdateManager.startUpdateFlowForResult(
+                                    appUpdateInfo,
+                                    shouldUpdateImmediate ? AppUpdateType.IMMEDIATE : AppUpdateType.FLEXIBLE,
+                                    this,
+                                    REQUEST_APP_UPDATE);
+
+                        }
+                    }
+                } catch (Throwable ex2) {
+                   ex2.printStackTrace();
+                }
+            });
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
