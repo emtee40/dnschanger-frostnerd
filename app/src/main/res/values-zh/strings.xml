@@ -332,4 +332,7 @@
     <string name="summary_priv_mode">用更高的权限运行自动化。可能会增加自动化设置的稳定性。</string>
     <string name="title_priv_mode">特权模式</string>
     <string name="summary_vpndialog_missing">你的设备似乎缺少运行VPN的功能。因为这个应用完全依赖这个功能，很遗憾，你将无法使用它。</string>
+    <string name="summary_run_after_update">在DNS Changer更新后自动启用。
+\n当DNS Changer长时间不活动时，这个功能可能无法使用。</string>
+    <string name="title_run_after_update">更新后启用应用程序</string>
 </resources>

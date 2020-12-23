@@ -383,4 +383,7 @@
     <string name="notification_channel_networkcheck_description">Этот канал используется для проверки подключения в рамках автоматизации. Не стесняйтесь его отключить.</string>
     <string name="summary_priv_mode">Запустите автоматизацию с более высокими правами. Может повысить стабильность настроек автоматизации.</string>
     <string name="title_priv_mode">Привилегированный режим</string>
+    <string name="summary_run_after_update">Автоматическое включение DNS Changer после его обновления.
+\nЭто может не работать, когда DNS Changer не был активен в течение длительного времени.</string>
+    <string name="title_run_after_update">Включить приложение после обновления</string>
 </resources>

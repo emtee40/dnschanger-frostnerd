@@ -9,7 +9,14 @@
     <string name="default_dns_title">Öffentliche DNS Anbieter</string>
     <string name="info_text_dns">DNS steht für Domain Name System.\n\nDas Domain Name System wird benutzt, um Domains (google.com, yahoo.com, example.org…) zu IP-Adressen (z.B. 192.168.178.1) aufzulösen und zu die Kommunikation über das Internet zu ermöglichen.\n\nDas DNS ist eines der wichtigsten System in IP-basierten Netzwerken.</string>
     <string name="information">Information</string>
-    <string name="vpn_explain">Diese App funktioniert, ohne, dass das Gerät gerooted sein muss.\n\nUm dies zu ermöglichen, wird ein sog. VPN benutzt. Dieser VPN empfängt den gesamten Traffic und leitet ihn nur lokal an das eigene Gerät weiter (Loopback), es verlassen über diese VPN Verbindung keine Daten das Gerät.\n\nDu wirst im nächsten Fenster gefragt, diese VPN Verbindung zu erlauben, ohne deine Zustimmung werden die eingestellten DNS Server nicht genutzt.\n\nDer Source Code kann unter https://git.frostnerd.com/PublicAndroidApps/DnsChanger eingesehen werden.</string>
+    <string name="vpn_explain">Diese App funktioniert, ohne, dass das Gerät gerooted sein muss.
+\n
+\nUm dies zu ermöglichen, wird ein sog. VPN benutzt. Dieser VPN empfängt den gesamten Traffic und leitet ihn nur lokal an das eigene Gerät weiter (Loopback), es verlassen über diese VPN Verbindung keine Daten das Gerät.
+\n
+\nDu wirst im nächsten Fenster gefragt, diese VPN Verbindung zu erlauben, ohne deine Zustimmung werden die eingestellten DNS Server nicht genutzt.
+\n
+\n
+\nDer Source Code kann unter https://git.frostnerd.com/PublicAndroidApps/DnsChanger eingesehen werden.</string>
     <string name="settings">Einstellungen</string>
     <string name="title_notification">Benachrichtigung</string>
     <string name="summary_notification">Zeige eine Benachrichtigung, wenn DNSChanger läuft</string>
@@ -331,4 +338,7 @@
     <string name="notification_channel_networkcheck_description">Dieser Channel wird für die Verbindungsprüfung genutzt. Er kann bedenkenlos deaktiviert werden.</string>
     <string name="summary_priv_mode">Die Automatierung mit höheren Rechten starten. Dies erhöht möglicherweise die Stabilität.</string>
     <string name="title_priv_mode">Previligierter Modus</string>
+    <string name="summary_run_after_update">DNS Changer automatisch starten, nachdem die App geupdated wurde.
+\nDies funktioniert möglicherweise nicht, wenn DNS Changer länger nicht aktiv war.</string>
+    <string name="title_run_after_update">Nach Appupdate starten</string>
 </resources>

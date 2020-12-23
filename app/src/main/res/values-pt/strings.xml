@@ -330,4 +330,7 @@
     <string name="notification_channel_networkcheck_description">Este canal é utilizado para a verificação da conectividade como parte da automatização. Sinta-se à vontade para desativá-lo.</string>
     <string name="summary_priv_mode">Execute a automação com direitos mais elevados. Pode aumentar a estabilidade dos ajustes de automação.</string>
     <string name="title_priv_mode">Modo Privilegiado</string>
+    <string name="summary_run_after_update">Ative automaticamente o DNS Changer após a sua atualização.
+\nIsso pode não funcionar quando o DNS Changer não estiver ativo por um tempo prolongado.</string>
+    <string name="title_run_after_update">Habilitar aplicativo após atualização</string>
 </resources>

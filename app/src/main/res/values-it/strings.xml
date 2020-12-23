@@ -329,4 +329,7 @@
     <string name="summary_priv_mode">Eseguire l\'automazione con diritti più elevati. Potrebbe aumentare la stabilità delle impostazioni dell\'automazione.</string>
     <string name="title_priv_mode">Modalità privilegiata</string>
     <string name="summary_vpndialog_missing">Il dispositivo sembra non avere la capacità di eseguire una VPN. Poiché questa applicazione si basa completamente su questa funzionalità, purtroppo non sarà in grado di utilizzarla.</string>
+    <string name="summary_run_after_update">Abilitare automaticamente il DNS Changer dopo l\'aggiornamento.
+\nQuesto potrebbe non funzionare quando il DNS Changer non è stato attivo per un tempo prolungato.</string>
+    <string name="title_run_after_update">Attivare l\'applicazione dopo l\'aggiornamento</string>
 </resources>
