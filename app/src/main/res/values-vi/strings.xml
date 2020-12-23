@@ -325,4 +325,7 @@
     <string name="notification_connectivity_service">Kiểm tra kết nối nền</string>
     <string name="nebulo_no_browser">Bạn dường như không cài đặt trình duyệt hoặc cửa hàng.</string>
     <string name="message_user_restricted">Không thể khởi động VPN, người dùng của bạn dường như bị hạn chế.</string>
+    <string name="summary_run_after_update">Tự động bật DNS Changer sau khi nó được cập nhật.
+\nĐiều này có thể không hoạt động khi DNS Changer không hoạt động trong một thời gian dài.</string>
+    <string name="title_run_after_update">Bật ứng dụng sau khi cập nhật</string>
 </resources>
