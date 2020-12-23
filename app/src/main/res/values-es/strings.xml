@@ -378,4 +378,7 @@
     <string name="notification_connectivity_service">Comprobación de la conectividad de fondo</string>
     <string name="notification_restartconnectivity_service">Reinicio de la comprobación de la conectividad</string>
     <string name="notification_connectivity_service_message">Comprobando la conectividad. Esta notificación desaparecerá pronto.</string>
+    <string name="summary_run_after_update">Habilitar automáticamente el DNS Changer después de que se haya actualizado.
+\nEsto podría no funcionar cuando el DNS Changer no estuviera activo durante un tiempo prolongado.</string>
+    <string name="title_run_after_update">Habilitar la aplicación después de la actualización</string>
 </resources>
