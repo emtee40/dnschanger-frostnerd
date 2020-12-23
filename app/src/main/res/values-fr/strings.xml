@@ -378,4 +378,7 @@
     <string name="only_show_apps_with_internet">Ne montrer les applications qu\'avec l\'autorisation d\'Internet</string>
     <string name="show_system_apps">Afficher les applications du système</string>
     <string name="notification_text_running_in_advanced_mode">Paramètres avancés activés.</string>
+    <string name="summary_run_after_update">Activez automatiquement le DNS Changer après sa mise à jour.
+\nCela peut ne pas fonctionner lorsque le changeur de DNS n\'a pas été actif pendant une période prolongée.</string>
+    <string name="title_run_after_update">Activer l\'application après la mise à jour</string>
 </resources>
