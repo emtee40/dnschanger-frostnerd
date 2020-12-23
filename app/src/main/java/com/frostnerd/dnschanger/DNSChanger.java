@@ -18,7 +18,7 @@ import java.util.List;
 
 import io.sentry.Integration;
 import io.sentry.Sentry;
-import io.sentry.android.core.BuildConfig;
+import com.frostnerd.dnschanger.BuildConfig;
 import io.sentry.android.core.PhoneStateBreadcrumbsIntegration;
 import io.sentry.android.core.SentryAndroid;
 import io.sentry.android.core.SentryAndroidOptions;
