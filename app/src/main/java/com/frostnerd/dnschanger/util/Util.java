@@ -298,9 +298,15 @@ public final class Util {
     }
 
     public static void runBackgroundConnectivityCheck(Context context, boolean handleInitialState) {
+        runBackgroundConnectivityCheck(context,handleInitialState, false);
+    }
+
+    public static void runBackgroundConnectivityCheck(Context context, boolean handleInitialState, boolean forceForeground) {
         if(shouldRunNetworkCheck(context) && !Util.isServiceRunning(context)) {
-            Intent serviceIntent = new Intent(context, ConnectivityBackgroundService.class).putExtra("initial", handleInitialState);
-            if(PreferencesAccessor.runConnectivityCheckWithPrivilege(context)) {
+            Intent serviceIntent = new Intent(context, ConnectivityBackgroundService.class)
+                    .putExtra("initial", handleInitialState);
+            if(forceForeground) serviceIntent.putExtra("forceForeground", true);
+            if(forceForeground || PreferencesAccessor.runConnectivityCheckWithPrivilege(context)) {
                 startForegroundService(context, serviceIntent);
             } else {
                 context.startService(serviceIntent);
@@ -329,6 +335,7 @@ public final class Util {
     @Nullable
     public static NetworkCheckHandle maybeCreateNetworkCheckHandle(@NonNull Context context, String logTag, boolean handleInitialState) {
         if(shouldRunNetworkCheck(context)) {
+            boolean handleInitial = handleInitialState && !Preferences.getInstance(context).getBoolean("service_stopped_by_user", false);
             return new NetworkCheckHandle(context, logTag, handleInitialState);
         } else {
             return null;

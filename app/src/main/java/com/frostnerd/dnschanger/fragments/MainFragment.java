@@ -168,7 +168,13 @@ public class MainFragment extends Fragment {
             public void onClick(View buttonView) {
                 if(isDetached() || !isAdded()) return;
                 final Context context = getContextWorkaround(buttonView);
-                final Intent i = VpnService.prepare(context);
+                Intent i;
+                try {
+                    i = VpnService.prepare(context);
+                } catch (NullPointerException ex) {
+                    i = null; // I have no idea why this sometimes occurs.
+                }
+                final Intent configureIntent = i;
                 LogFactory.writeMessage(context, LOG_TAG, "Startbutton clicked. Configuring VPN if needed");
                 if (i != null){
                     LogFactory.writeMessage(context, LOG_TAG, "VPN isn't prepared yet. Showing dialog explaining the VPN");
@@ -176,7 +182,7 @@ public class MainFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int which) {
                             try {
-                                ((Activity)context).startActivityForResult(i, 0);
+                                ((Activity)context).startActivityForResult(configureIntent, 0);
                             } catch (ActivityNotFoundException e) {
                                 new AlertDialog.Builder(context)
                                         .setTitle(R.string.title_vpndialog_missing)
@@ -192,7 +198,7 @@ public class MainFragment extends Fragment {
                                                     }
                                                 }).show();
                             }
-                            LogFactory.writeMessage(context, LOG_TAG, "Requesting VPN access", i);
+                            LogFactory.writeMessage(context, LOG_TAG, "Requesting VPN access", configureIntent);
                         }
                     });
                     LogFactory.writeMessage(context, LOG_TAG, "Dialog is now being shown");

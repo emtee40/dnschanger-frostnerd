@@ -76,7 +76,7 @@ public class DNSQueryUtil {
                     Resolver resolver = new Resolver(server.getAddress());
                     ResolverResult<Data> result = resolver.resolve(query, type, clazz,  tcp, server.getPort());
                     if(!result.wasSuccessful()) resultListener.onError(new IllegalStateException("The query wasn't successful"));
-                    resultListener.onSuccess(result.getDnsMessage().answerSection);
+                    resultListener.onSuccess(result.getRawAnswer().answerSection);
                 } catch (IOException | IllegalStateException e) {
                     resultListener.onError(e);
                 }
@@ -91,7 +91,7 @@ public class DNSQueryUtil {
             Resolver resolver = new Resolver(server.getAddress());
             ResolverResult<Data> result = resolver.resolve(query, type, clazz,  tcp, server.getPort());
             if(!result.wasSuccessful()) return new ArrayList<>();
-            return result.getDnsMessage().answerSection;
+            return result.getRawAnswer().answerSection;
         } catch (IOException | IllegalStateException e) {
             return null;
         }

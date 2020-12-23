@@ -18,6 +18,7 @@ import com.frostnerd.dnschanger.database.accessors.DNSResolver;
 import com.frostnerd.dnschanger.database.accessors.QueryLogger;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 
+import org.minidns.dnsname.InvalidDnsNameException;
 import org.pcap4j.packet.IpPacket;
 import org.pcap4j.packet.IpSelector;
 import org.pcap4j.packet.IpV4Packet;
@@ -252,7 +253,7 @@ public class DNSUDPProxy extends DNSProxy{
             DnsMessage dnsMsg;
             try {
                 dnsMsg = new DnsMessage(payloadData);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 return;
             }
             if(dnsMsg.getQuestion() == null)return;

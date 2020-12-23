@@ -3,8 +3,9 @@ package com.frostnerd.dnschanger.util.dnsquery;
 import org.minidns.MiniDnsException;
 import org.minidns.dnsmessage.DnsMessage;
 import org.minidns.dnsmessage.Question;
+import org.minidns.dnsqueryresult.DnsQueryResult;
 import org.minidns.dnssec.DnssecResultNotAuthenticException;
-import org.minidns.dnssec.UnverifiedReason;
+import org.minidns.dnssec.DnssecUnverifiedReason;
 import org.minidns.hla.ResolutionUnsuccessfulException;
 import org.minidns.record.Data;
 
@@ -18,20 +19,25 @@ import java.util.Set;
   Licensed under the WTFPL
  */
 public class ResolverResult<D extends Data> {
-    private final Question question;
+    protected final Question question;
     private final DnsMessage.RESPONSE_CODE responseCode;
     private final Set<D> data;
     private final boolean isAuthenticData;
-    private final Set<UnverifiedReason> unverifiedReasons;
-    private final DnsMessage dnsMessage;
+    protected final Set<DnssecUnverifiedReason> unverifiedReasons;
+    protected final DnsMessage answer;
+    protected final DnsQueryResult result;
 
-    ResolverResult(Question question , DnsMessage answer, Set<UnverifiedReason> unverifiedReasons) throws MiniDnsException.NullResultException {
-        if (answer == null) {
+    public ResolverResult(Question question, DnsQueryResult result, Set<DnssecUnverifiedReason> unverifiedReasons) throws MiniDnsException.NullResultException {
+        if (result == null) {
             throw new MiniDnsException.NullResultException(question.asMessageBuilder().build());
         }
-        this.dnsMessage = answer;
+
+        this.result = result;
+
+        DnsMessage answer = result.response;
         this.question = question;
         this.responseCode = answer.responseCode;
+        this.answer = answer;
 
         Set<D> r = answer.getAnswersFor(question);
         if (r == null) {
@@ -47,10 +53,6 @@ public class ResolverResult<D extends Data> {
             this.unverifiedReasons = Collections.unmodifiableSet(unverifiedReasons);
             isAuthenticData = this.unverifiedReasons.isEmpty();
         }
-    }
-
-    public DnsMessage getDnsMessage() {
-        return dnsMessage;
     }
 
     public boolean wasSuccessful() {
@@ -75,7 +77,12 @@ public class ResolverResult<D extends Data> {
         return isAuthenticData;
     }
 
-    public Set<UnverifiedReason> getUnverifiedReasons() {
+    /**
+     * Get the reasons the result could not be verified if any exists.
+     *
+     * @return The reasons the result could not be verified or <code>null</code>.
+     */
+    public Set<DnssecUnverifiedReason> getUnverifiedReasons() {
         throwIseIfErrorResponse();
         return unverifiedReasons;
     }
@@ -116,7 +123,46 @@ public class ResolverResult<D extends Data> {
         return dnssecResultNotAuthenticException;
     }
 
-    private void throwIseIfErrorResponse() {
+    /**
+     * Get the raw answer DNS message we received. <b>This is likely not what you want</b>, try {@link #getAnswers()} instead.
+     *
+     * @return the raw answer DNS Message.
+     * @see #getAnswers()
+     */
+    public DnsMessage getRawAnswer() {
+        return answer;
+    }
+
+    public DnsQueryResult getDnsQueryResult() {
+        return result;
+    }
+
+    @Override
+    public final String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(getClass().getName()).append('\n')
+                .append("Question: ").append(question).append('\n')
+                .append("Response Code: ").append(responseCode).append('\n');
+
+        if (responseCode == DnsMessage.RESPONSE_CODE.NO_ERROR) {
+            if (isAuthenticData) {
+                sb.append("Results verified via DNSSEC\n");
+            }
+            if (hasUnverifiedReasons()) {
+                sb.append(unverifiedReasons).append('\n');
+            }
+            sb.append(answer.answerSection);
+        }
+
+        return sb.toString();
+    }
+
+    boolean hasUnverifiedReasons() {
+        return unverifiedReasons != null && !unverifiedReasons.isEmpty();
+    }
+
+    protected void throwIseIfErrorResponse() {
         ResolutionUnsuccessfulException resolutionUnsuccessfulException = getResolutionUnsuccessfulException();
         if (resolutionUnsuccessfulException != null)
             throw new IllegalStateException("Can not perform operation because the DNS resolution was unsuccessful",

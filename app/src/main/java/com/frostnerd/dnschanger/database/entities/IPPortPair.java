@@ -49,6 +49,11 @@ public class IPPortPair extends MultitonEntity implements Serializable{
 
     }
 
+    public boolean matches(IPPortPair other) {
+        if(other == null) return false;
+        return other.ipv6 == ipv6 && other.ip.equalsIgnoreCase(ip) && other.port == port;
+    }
+
     public IPPortPair(@NonNull String ip, int port, boolean IPv6) {
         if(!ip.equals("") && (port <= 0 || port > 0xFFFF))
             throw new IllegalArgumentException("Invalid port: " + port + " (Address: " + ip + ")", new Throwable("The invalid port " + port + " was supplied"));

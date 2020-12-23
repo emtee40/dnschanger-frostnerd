@@ -45,7 +45,7 @@ import java.util.Set;
  */
 public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
     public static final String DATABASE_NAME = "data";
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 6;
     @NonNull
     public static final Set<Class<? extends Entity>> entities = new HashSet<Class<? extends Entity>>(){{
         add(DNSEntry.class);
@@ -84,7 +84,10 @@ public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if(oldVersion != 4 && oldVersion != 3) super.onUpgrade(db, oldVersion, newVersion);
+        if(oldVersion != 4 && oldVersion != 3 && oldVersion != 5) super.onUpgrade(db, oldVersion, newVersion);
+        else {
+            onAfterUpgrade(db, oldVersion, newVersion);
+        }
     }
 
     private void upgradeDnsQuery() {
@@ -177,8 +180,12 @@ public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
             int version;
             for(Map.Entry<DNSEntry, Integer> entry: DNSEntry.defaultDNSEntries.entrySet()){
                 version = entry.getValue();
-                if(getCount(DNSEntry.class, WhereCondition.equal("name", entry.getKey().getName())) == 0)
-                    if(version > oldVersion && version <= newVersion)insert(entry.getKey());
+                if(version > oldVersion && version <= newVersion) {
+                    int count = ParsedEntity.wrapEntity(DNSEntry.class).getCount(db, WhereCondition.equal("name", entry.getKey().getName()));
+                    if(count == 0) {
+                        insert(db, entry.getKey());
+                    }
+                }
             }
         }
     }

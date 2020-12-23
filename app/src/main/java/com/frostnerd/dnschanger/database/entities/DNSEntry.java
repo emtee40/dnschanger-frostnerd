@@ -122,6 +122,8 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
         defaultDNSEntries.put(DNSEntry.constructSimple("CleanBrowsing Adult Filter", "CleanBrowsing",
                 "185.228.168.10", "185.228.168.11", "2a0d:2a00:1::1", "2a0d:2a00:2::1",
                 "Blocks access to all adult sites. Sites like Reddit are allowed. Google and Bing are set to the Safe Mode.", false), 3);
+        defaultDNSEntries.put(DNSEntry.constructSimple( "OpenDNS FamilyShield", "OpenDNS", "208.67.222.123",
+                "208.67.220.123", "", "", "",false),6);
     }
 
     public DNSEntry(@NonNull String name, @NonNull String shortName, @NonNull IPPortPair dns1, @Nullable IPPortPair dns2,

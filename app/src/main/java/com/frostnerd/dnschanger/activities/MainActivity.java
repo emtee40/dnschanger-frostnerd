@@ -1,6 +1,7 @@
 package com.frostnerd.dnschanger.activities;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -65,6 +66,12 @@ import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.general.Utils;
 import com.frostnerd.general.permissions.PermissionsUtil;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.Task;
 
 import java.io.File;
 import java.util.Arrays;
@@ -91,7 +98,7 @@ import java.util.Random;
  */
 public class MainActivity extends NavigationDrawerActivity implements RuleImport.ImportStartedListener {
     private static final String LOG_TAG = "[MainActivity]";
-    private static final int REQUEST_PERMISSION_IMPORT_SETTINGS = 131, REQUEST_PERMISSION_EXPORT_SETTINGS = 130, REQUEST_ADVANCED_SETTINGS = 132;
+    private static final int REQUEST_PERMISSION_IMPORT_SETTINGS = 131, REQUEST_PERMISSION_EXPORT_SETTINGS = 130, REQUEST_ADVANCED_SETTINGS = 132, REQUEST_APP_UPDATE = 133;
     private AlertDialog dialog1;
     private DNSEntryListDialog dnsEntryListDialog;
     private MainFragment mainFragment;
@@ -174,6 +181,46 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
         }
         Util.updateTiles(this);
         preferences.put( "first_run", false);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        tryCheckUpdate();
+    }
+
+    private void tryCheckUpdate() {
+        try {
+            AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(this);
+            Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+            appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+                try {
+                    if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                        int stalenessDays = appUpdateInfo.clientVersionStalenessDays() != null ? appUpdateInfo.clientVersionStalenessDays() : Integer.MIN_VALUE;
+                        boolean shouldHoldUpdate = System.currentTimeMillis() >= Preferences.getInstance(this).getLong("ask_update_later_than", 0);
+                        boolean shouldUpdateImmediate = appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE) && appUpdateInfo.updatePriority() >= 4;
+                        boolean shouldUpdate = !shouldHoldUpdate && stalenessDays >= 24;
+                        shouldUpdate = shouldUpdate || (stalenessDays >= 14 && !shouldHoldUpdate && appUpdateInfo.updatePriority() >= 1);
+                        shouldUpdate = shouldUpdate || (stalenessDays >= 7 && !shouldHoldUpdate && appUpdateInfo.updatePriority() >= 2);
+                        shouldUpdate = shouldUpdate || (stalenessDays >= 3 && appUpdateInfo.updatePriority() >= 3);
+                        shouldUpdate = shouldUpdate || (stalenessDays >= 1 && appUpdateInfo.updatePriority() >= 4);
+                        shouldUpdate = shouldUpdate || appUpdateInfo.updatePriority() >= 5;
+                        if (shouldUpdate) {
+                            appUpdateManager.startUpdateFlowForResult(
+                                    appUpdateInfo,
+                                    shouldUpdateImmediate ? AppUpdateType.IMMEDIATE : AppUpdateType.FLEXIBLE,
+                                    this,
+                                    REQUEST_APP_UPDATE);
+
+                        }
+                    }
+                } catch (Throwable ex2) {
+                   ex2.printStackTrace();
+                }
+            });
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -664,17 +711,7 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Preferences.getInstance(MainActivity.this).putBoolean("nebulo_shown", true);
-                        Intent storeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.frostnerd.smokescreen"));
-                        try {
-                            startActivity(storeIntent);
-                        } catch (ActivityNotFoundException ex) {
-                            try {
-                                storeIntent = new Intent(Intent.ACTION_VIEW,  Uri.parse("https://play.google.com/store/apps/details?id=com.frostnerd.smokescreen"));
-                                startActivity(storeIntent);
-                            } catch (ActivityNotFoundException ex2) {
-                                Toast.makeText(MainActivity.this, R.string.nebulo_no_browser, Toast.LENGTH_LONG).show();
-                            }
-                        }
+                        openMarket("com.frostnerd.smokescreen");
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -702,8 +739,13 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == REQUEST_ADVANCED_SETTINGS && resultCode == AppCompatActivity.RESULT_FIRST_USER){
+        if(requestCode == REQUEST_ADVANCED_SETTINGS && resultCode == AppCompatActivity.RESULT_FIRST_USER) {
             reloadMenuItems();
+        } else if(requestCode == REQUEST_APP_UPDATE) {
+            if(resultCode != RESULT_OK) {
+                long updateAskDelay = 2*24*60*60*1000; //2 Days
+                Preferences.getInstance(this).putLong("ask_update_later_than", System.currentTimeMillis() + updateAskDelay);
+            }
         } else {
             Fragment f = currentFragment();
             if(f instanceof MainFragment) {
@@ -772,17 +814,24 @@ public class MainActivity extends NavigationDrawerActivity implements RuleImport
     }
 
     public void rateApp() {
-        final String appPackageName = this.getPackageName();
         LogFactory.writeMessage(this, LOG_TAG, "Opening site to rate app");
+        openMarket(getPackageName());
+        Preferences.getInstance(this).put("rated",true);
+    }
+
+    private void openMarket(String packageName) {
         try {
             LogFactory.writeMessage(this, LOG_TAG, "Trying to open market");
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)));
             LogFactory.writeMessage(this, LOG_TAG, "Market was opened");
         } catch (android.content.ActivityNotFoundException e) {
             LogFactory.writeMessage(this, LOG_TAG, "Market not present. Opening with general ACTION_VIEW");
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + packageName)));
+            } catch (ActivityNotFoundException e2) {
+                Toast.makeText(MainActivity.this, R.string.nebulo_no_browser, Toast.LENGTH_LONG).show();
+            }
         }
-        Preferences.getInstance(this).put("rated",true);
     }
 
     public void openDefaultDNSDialog(View v) {
