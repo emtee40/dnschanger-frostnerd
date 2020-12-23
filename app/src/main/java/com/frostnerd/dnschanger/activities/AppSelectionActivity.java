@@ -10,18 +10,7 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.frostnerd.lifecycle.BaseActivity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.SimpleItemAnimator;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,10 +22,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+
 import com.frostnerd.design.DesignUtil;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.general.Utils;
+import com.frostnerd.lifecycle.BaseActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
@@ -389,14 +388,14 @@ public class AppSelectionActivity extends BaseActivity implements SearchView.OnQ
         private boolean isPermissionGranted(PackageInfo info, String permission){
             for(int i = 0; i < info.requestedPermissions.length; i++){
                 if(info.requestedPermissions[i].equals(permission)) {
-                    return Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN || (info.requestedPermissionsFlags[i] & PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0;
+                    return (info.requestedPermissionsFlags[i] & PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0;
                 }
             }
             return false;
         }
 
         private boolean isPermissionGranted(PackageInfo info, int pos){
-            return Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN || (info.requestedPermissionsFlags[pos] & PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0;
+            return (info.requestedPermissionsFlags[pos] & PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0;
         }
     }
 }

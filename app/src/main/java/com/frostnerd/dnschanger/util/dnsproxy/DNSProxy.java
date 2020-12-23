@@ -3,8 +3,9 @@ package com.frostnerd.dnschanger.util.dnsproxy;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import androidx.annotation.RequiresApi;
 import android.system.ErrnoException;
+
+import androidx.annotation.RequiresApi;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;

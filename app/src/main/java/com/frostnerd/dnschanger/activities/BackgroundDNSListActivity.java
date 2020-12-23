@@ -3,9 +3,10 @@ package com.frostnerd.dnschanger.activities;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.RemoteException;
+import android.view.Window;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import android.view.Window;
 
 import com.frostnerd.api.dnschanger.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;

@@ -3,6 +3,7 @@ package com.frostnerd.dnschanger.util;
 import android.os.Build;
 
 import com.frostnerd.dnschanger.BuildConfig;
+
 import io.sentry.EventProcessor;
 import io.sentry.SentryEvent;
 import io.sentry.protocol.App;

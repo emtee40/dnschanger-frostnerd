@@ -3,17 +3,17 @@ package com.frostnerd.dnschanger.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.frostnerd.design.DesignUtil;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.lifecycle.BaseAdapter;
 import com.frostnerd.lifecycle.BaseViewHolder;
-
 
 import org.minidns.record.Data;
 import org.minidns.record.Record;

@@ -1,14 +1,14 @@
 package com.frostnerd.dnschanger.adapters;
 
 import android.app.Activity;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.frostnerd.database.DatabaseAdapter;
 import com.frostnerd.database.orm.parser.columns.Column;

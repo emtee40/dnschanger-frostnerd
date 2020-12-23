@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
-import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Preferences;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

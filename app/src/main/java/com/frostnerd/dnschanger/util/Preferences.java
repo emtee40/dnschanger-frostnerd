@@ -3,9 +3,9 @@ package com.frostnerd.dnschanger.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;

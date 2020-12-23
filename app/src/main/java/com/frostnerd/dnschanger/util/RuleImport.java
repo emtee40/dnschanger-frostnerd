@@ -1,6 +1,7 @@
 package com.frostnerd.dnschanger.util;
 
 import android.app.Activity;
+
 import androidx.annotation.NonNull;
 
 import com.frostnerd.dnschanger.services.RuleImportService;

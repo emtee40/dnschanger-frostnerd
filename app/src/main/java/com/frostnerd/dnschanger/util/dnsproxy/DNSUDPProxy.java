@@ -4,13 +4,14 @@ import android.annotation.TargetApi;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import android.system.ErrnoException;
 import android.system.Os;
 import android.system.OsConstants;
 import android.system.StructPollfd;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
@@ -18,7 +19,11 @@ import com.frostnerd.dnschanger.database.accessors.DNSResolver;
 import com.frostnerd.dnschanger.database.accessors.QueryLogger;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 
-import org.minidns.dnsname.InvalidDnsNameException;
+import org.minidns.dnsmessage.DnsMessage;
+import org.minidns.record.A;
+import org.minidns.record.AAAA;
+import org.minidns.record.Data;
+import org.minidns.record.Record;
 import org.pcap4j.packet.IpPacket;
 import org.pcap4j.packet.IpSelector;
 import org.pcap4j.packet.IpV4Packet;
@@ -44,12 +49,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
-
-import org.minidns.dnsmessage.DnsMessage;
-import org.minidns.record.A;
-import org.minidns.record.AAAA;
-import org.minidns.record.Data;
-import org.minidns.record.Record;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)

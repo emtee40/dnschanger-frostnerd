@@ -1,14 +1,14 @@
 package com.frostnerd.dnschanger.adapters;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.frostnerd.database.DatabaseAdapter;
 import com.frostnerd.database.orm.statementoptions.queryoptions.OrderOption;
@@ -191,7 +191,6 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
         return 0;
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     protected void cleanup() {
         super.cleanup();

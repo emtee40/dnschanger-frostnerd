@@ -7,8 +7,8 @@ import android.net.VpnService;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
-import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.Preferences;
+import com.frostnerd.dnschanger.util.Util;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
