@@ -139,7 +139,7 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
                 }else if(onEntrySelectionUpdated != null && !view.itemView.isLongClickable()){
                     view.itemView.setOnLongClickListener(longClickListener);
                 }
-                view.radioButton.setChecked(isCurrentServer);
+                if(view.radioButton != null) view.radioButton.setChecked(isCurrentServer);
 
                 view.itemView.setOnClickListener(clickListener);
                 view.itemView.setTag(idTagKey, entity.getID());
@@ -210,14 +210,14 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
     }
 
     static class ViewHolder extends BaseViewHolder {
-        private TextView textView, subText;
-        private RadioButton radioButton;
+        private final TextView textView, subText;
+        private final RadioButton radioButton;
 
         private ViewHolder(View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.text);
             subText = itemView.findViewById(R.id.text2);
-            radioButton = itemView.findViewById(R.id.radioButton);
+            radioButton = itemView.findViewById(R.id.currentServerRadioButton);
         }
 
         @Override
