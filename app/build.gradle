@@ -8,8 +8,8 @@ android {
         applicationId "com.frostnerd.dnschanger"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 123
-        versionName "1.16.5.10"
+        versionCode 124
+        versionName "1.16.5.11"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -18,7 +18,7 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField("Boolean", "SENTRY_ENABLED", "true")
-            buildConfigField("String", "SENTRY_DSN", '"https://5681f490ed664cee8feb534251f1fcf0@sentry.frostnerd.com:443/3"')
+            buildConfigField("String", "SENTRY_DSN", '"dummy"')
         }
         debug{
             initWith(buildTypes.debug)
@@ -26,7 +26,7 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField("Boolean", "SENTRY_ENABLED", "true")
-            buildConfigField("String", "SENTRY_DSN", '"https://5681f490ed664cee8feb534251f1fcf0@sentry.frostnerd.com:443/3"')
+            buildConfigField("String", "SENTRY_DSN", '"dummy"')
         }
     }
     lintOptions {
