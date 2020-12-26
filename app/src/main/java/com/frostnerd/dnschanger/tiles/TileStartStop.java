@@ -59,20 +59,22 @@ public class TileStartStop extends android.service.quicksettings.TileService {
         super.onStartListening();
         LogFactory.writeMessage(this, LOG_TAG, "Start listening");
         Tile tile = getQsTile();
-        tile.setState(Tile.STATE_INACTIVE);
-        if (Util.isServiceRunning(this)) {
-            LogFactory.writeMessage(this, LOG_TAG, "Service not running (State set to Active)");
-            tile.setState(Tile.STATE_ACTIVE);
-            tile.setLabel(getString(R.string.tile_stop));
-            tile.setIcon(Icon.createWithResource(this, R.drawable.ic_stat_stop));
-        } else {
-            LogFactory.writeMessage(this, LOG_TAG, "Service running (State set to inactive)");
+        if(tile != null) {
             tile.setState(Tile.STATE_INACTIVE);
-            tile.setLabel(getString(R.string.tile_start));
-            tile.setIcon(Icon.createWithResource(this, R.drawable.ic_stat_resume));
+            if (Util.isServiceRunning(this)) {
+                LogFactory.writeMessage(this, LOG_TAG, "Service not running (State set to Active)");
+                tile.setState(Tile.STATE_ACTIVE);
+                tile.setLabel(getString(R.string.tile_stop));
+                tile.setIcon(Icon.createWithResource(this, R.drawable.ic_stat_stop));
+            } else {
+                LogFactory.writeMessage(this, LOG_TAG, "Service running (State set to inactive)");
+                tile.setState(Tile.STATE_INACTIVE);
+                tile.setLabel(getString(R.string.tile_start));
+                tile.setIcon(Icon.createWithResource(this, R.drawable.ic_stat_resume));
+            }
+            tile.updateTile();
+            LogFactory.writeMessage(this, LOG_TAG, "Tile updated");
         }
-        tile.updateTile();
-        LogFactory.writeMessage(this, LOG_TAG, "Tile updated");
     }
 
     @Override
@@ -86,11 +88,12 @@ public class TileStartStop extends android.service.quicksettings.TileService {
             LogFactory.writeMessage(this, LOG_TAG, "Tile is Pin protected. Starting PinActivity",
                     i = new Intent(this, PinActivity.class).putExtra(running ? VPNServiceArgument.COMMAND_STOP_SERVICE.toString() :
                             VPNServiceArgument.COMMAND_START_VPN.toString(), true).putExtra("redirectToService", true));
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
         } else {
             LogFactory.writeMessage(this, LOG_TAG, "Tile is not Pin protected. Starting DNSVPNService",
                     i = running ? DNSVpnService.getDestroyIntent(this) : DNSVpnService.getStartVPNIntent(this));
-            startService(i);
+            Util.startService(this, i);
         }
     }
 

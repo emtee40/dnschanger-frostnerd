@@ -5,8 +5,6 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -16,14 +14,14 @@ import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
 import android.service.quicksettings.TileService;
-import android.support.annotation.IntRange;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Base64;
 import android.util.Base64InputStream;
 import android.util.Base64OutputStream;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
@@ -34,14 +32,14 @@ import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.database.entities.Shortcut;
 import com.frostnerd.dnschanger.services.ConnectivityBackgroundService;
 import com.frostnerd.dnschanger.services.DNSVpnService;
-import com.frostnerd.dnschanger.services.jobs.ConnectivityJobAPI21;
 import com.frostnerd.dnschanger.tiles.TilePauseResume;
 import com.frostnerd.dnschanger.tiles.TileStartStop;
-import com.frostnerd.utils.general.StringUtil;
-import com.frostnerd.utils.general.Utils;
-import com.frostnerd.utils.networking.NetworkUtil;
+import com.frostnerd.general.StringUtil;
+import com.frostnerd.general.Utils;
+import com.frostnerd.networking.NetworkUtil;
 
-import org.xbill.DNS.Record;
+import org.minidns.record.Data;
+import org.minidns.record.Record;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -52,6 +50,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
@@ -129,11 +128,15 @@ public final class Util {
 
     public static void updateAppShortcuts(Context context) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N_MR1) {
-            ShortcutManager shortcutManager = Utils.requireNonNull(context.getSystemService(ShortcutManager.class));
-            if (!PreferencesAccessor.areAppShortcutsEnabled(context)) {
-                shortcutManager.removeAllDynamicShortcuts();
+            ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
+            if (shortcutManager != null && !PreferencesAccessor.areAppShortcutsEnabled(context)) {
+                try {
+                    shortcutManager.removeAllDynamicShortcuts();
+                } catch (Exception ignored) {
+
+                }
                 return;
-            }
+            } else if(shortcutManager == null) return;
             boolean pinProtected = PreferencesAccessor.isPinProtected(context, PreferencesAccessor.PinProtectable.APP_SHORTCUT);
             List<ShortcutInfo> shortcutInfos = new ArrayList<>();
             if (isServiceThreadRunning()) {
@@ -213,7 +216,7 @@ public final class Util {
                         .setLongLabel(name)
                         .setIntent(shortcutIntent)
                         .build();
-                PendingIntent intent = PendingIntent.getBroadcast(context, 0, new Intent(Util.BROADCAST_SHORTCUT_CREATED), 0);
+                PendingIntent intent = PendingIntent.getBroadcast(context, 5, new Intent(Util.BROADCAST_SHORTCUT_CREATED), 0);
                 shortcutManager.requestPinShortcut(shortcutInfo, intent.getIntentSender());
                 return;
             }
@@ -264,28 +267,91 @@ public final class Util {
         }
     }
 
-    public static void runBackgroundConnectivityCheck(Context context){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LogFactory.writeMessage(context, LOG_TAG, "Using JobScheduler");
-            if(isJobRunning(context, 0)){
-                LogFactory.writeMessage(context, LOG_TAG, "Job is already running/scheduled, not doing anything");
-                return;
-            }
-            JobScheduler scheduler = Utils.requireNonNull((JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE));
-            scheduler.schedule(new JobInfo.Builder(0, new ComponentName(context, ConnectivityJobAPI21.class)).setPersisted(true)
-                    .setRequiresCharging(false).setMinimumLatency(0).setOverrideDeadline(0).build());
+    public static String createConnectivityCheckChannel(Context context) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = Utils.requireNonNull((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE));
+            NotificationChannel channel = new NotificationChannel("networkcheckchannel", context.getString(R.string.notification_channel_networkcheck), NotificationManager.IMPORTANCE_LOW);
+            channel.enableLights(false);
+            channel.enableVibration(false);
+            channel.setDescription(context.getString(R.string.notification_channel_networkcheck_description));
+            channel.setLockscreenVisibility(Notification.VISIBILITY_SECRET);
+            channel.setImportance(NotificationManager.IMPORTANCE_LOW);
+            channel.setShowBadge(false);
+            notificationManager.createNotificationChannel(channel);
+        }
+        return "networkcheckchannel";
+    }
+
+    public static String createImportantChannel(Context context) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = Utils.requireNonNull((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE));
+            NotificationChannel channel = new NotificationChannel("defaultchannel", context.getString(R.string.notification_channel_default), NotificationManager.IMPORTANCE_HIGH);
+            channel.enableLights(false);
+            channel.enableVibration(true);
+            channel.setDescription(context.getString(R.string.notification_channel_default_description));
+            channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+            notificationManager.createNotificationChannel(channel);
+            return "defaultchannel";
         } else {
-            LogFactory.writeMessage(context, LOG_TAG, "Starting Service (Util below 21)");
-            context.startService(new Intent(context, ConnectivityBackgroundService.class));
+            return "defaultchannel";
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private static boolean isJobRunning(Context context, @IntRange(from = 0) int jobID){
-        JobScheduler scheduler = Utils.requireNonNull((JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE));
-        for ( JobInfo jobInfo : scheduler.getAllPendingJobs())
-            if (jobInfo.getId() == jobID) return true;
-        return false;
+    public static void runBackgroundConnectivityCheck(Context context, boolean handleInitialState) {
+        runBackgroundConnectivityCheck(context,handleInitialState, false);
+    }
+
+    public static void runBackgroundConnectivityCheck(Context context, boolean handleInitialState, boolean forceForeground) {
+        if(shouldRunNetworkCheck(context) && !Util.isServiceRunning(context)) {
+            Intent serviceIntent = new Intent(context, ConnectivityBackgroundService.class)
+                    .putExtra("initial", handleInitialState);
+            if(forceForeground) serviceIntent.putExtra("forceForeground", true);
+            if(forceForeground || PreferencesAccessor.runConnectivityCheckWithPrivilege(context)) {
+                startForegroundService(context, serviceIntent);
+            } else {
+                context.startService(serviceIntent);
+            }
+        }
+    }
+
+    public static void startForegroundService(Context context, Intent serviceIntent) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(serviceIntent);
+        } else {
+            context.startService(serviceIntent);
+        }
+    }
+
+    public static void stopBackgroundConnectivityCheck(Context context) {
+        LogFactory.writeMessage(context, LOG_TAG, "Stopping the background connectivity check..");
+        if (isBackgroundConnectivityCheckRunning(context)) {
+            LogFactory.writeMessage(context, LOG_TAG, "Stopping Service");
+            context.stopService(new Intent(context, ConnectivityBackgroundService.class));
+        } else {
+            LogFactory.writeMessage(context, LOG_TAG, "Service is not running, thus not stopping.");
+        }
+    }
+
+    @Nullable
+    public static NetworkCheckHandle maybeCreateNetworkCheckHandle(@NonNull Context context, String logTag, boolean handleInitialState) {
+        if(shouldRunNetworkCheck(context)) {
+            boolean handleInitial = handleInitialState && !Preferences.getInstance(context).getBoolean("service_stopped_by_user", false);
+            return new NetworkCheckHandle(context, logTag, handleInitialState);
+        } else {
+            return null;
+        }
+    }
+
+    public static boolean shouldRunNetworkCheck(@NonNull Context context) {
+        Preferences pref = Preferences.getInstance(context);
+        return pref.getBoolean("setting_auto_wifi", false) ||
+                pref.getBoolean("setting_auto_mobile", false) ||
+                pref.getBoolean("setting_disable_netchange", false) ||
+                pref.getBoolean("start_service_when_available", false);
+    }
+
+    public static boolean isBackgroundConnectivityCheckRunning(@NonNull Context context) {
+        return Utils.isServiceRunning(context, ConnectivityBackgroundService.class);
     }
 
     /**
@@ -334,7 +400,7 @@ public final class Util {
     }
 
     public interface DNSQueryResultListener{
-        void onSuccess(Record[] response);
+        void onSuccess(List<Record<? extends Data>> response);
         void onError(@Nullable Exception e);
     }
 }

@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Vibrator;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -17,13 +14,17 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.util.RuleImport;
 import com.frostnerd.dnschanger.util.ThemeHandler;
-import com.frostnerd.utils.design.MaterialEditText;
-import com.frostnerd.utils.lifecyclehelper.UtilityDialog;
-import com.frostnerd.utils.networking.NetworkUtil;
+import com.frostnerd.lifecycle.BaseDialog;
+import com.frostnerd.materialedittext.MaterialEditText;
+import com.frostnerd.networking.NetworkUtil;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
@@ -43,7 +44,7 @@ import com.frostnerd.utils.networking.NetworkUtil;
  *
  * You can contact the developer at daniel.wolf@frostnerd.com.
  */
-public class NewRuleDialog extends UtilityDialog {
+public class NewRuleDialog extends BaseDialog {
     private MaterialEditText metHost;
     private MaterialEditText metTarget;
     private MaterialEditText metTarget2;

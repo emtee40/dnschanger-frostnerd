@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="about_text">Приложение с открытым исходным кодом. Исходный код можно найти на git.frostnerd.com. Используются значки из Google (Material icon pack - https://material.io/icons).
+\n
+\nВерсия [[version]] Сборка [[build]]
+\n
+\n© Daniel Wolf 2020
+\nВсе права защищены. Исходный текст, лицензированный по GPLv3.
+\nhttps://git.frostnerd.com/PublicAndroidApps/DnsChanger
+\n
+\nПеревод на русский papasha55
+\n
+\nПеревод на бразильский Lukinhas
+\n
+\nПеревод на китайский упрощенный Majida Whale
+\n
+\nПеревод на вьетнамский Phi</string>
+    <string name="action_pause">Пауза</string>
+    <string name="action_resume">Продолжить</string>
+    <string name="action_stop">Остановить</string>
+    <string name="active">Активно</string>
+    <string name="add">Добавить</string>
+    <string name="android4_4_warning">"Внимание: ваша Версия Android (4.4), как известно, имеет проблемы с VPN-подключениями. Если это приложение падает или просто не работает, это, скорее всего, виновата ваша система, а не приложение.
+Извините за неудобства."</string>
+    <string name="app_name">DnsChanger</string>
+    <string name="app_share_text">Посмотрите это приложение для изменения DNS на Android. Вы можете скачать его здесь: https://play.google.com/store/apps/details?id=com.frostnerd.dnschanger</string>
+    <string name="app_supports_tasker_text">Приложение поддерживает Tasker и может использоваться как плагин действий для автоматизации использования DNS.</string>
+    <string name="background">Фон</string>
+    <string name="background_configure_error">В разрешении на запуск VPN отказано.
+\nЭто может делать система, запрещающая vpn подключения, запускаемые в фоновом режиме по соображениям безопасности.
+\n
+\nОткройте приложение для запуска VPN</string>
+    <string name="blacklist">Черный список</string>
+    <string name="both">И то и другое</string>
+    <string name="cancel">Отменить</string>
+    <string name="checking_connectivity">Проверка подключения</string>
+    <string name="close">Закрыть</string>
+    <string name="contact_developer">Связаться с разработчиком</string>
+    <string name="content_description_app_entry_icon">Значки приложений</string>
+    <string name="content_description_main_connection_status">Текущее состояние подключения</string>
+    <string name="create_one">Создать один</string>
+    <string name="create_shortcut">Создать ярлык</string>
+    <string name="create_tasker_action">Создание действия Tasker</string>
+    <string name="debug_dialog_info_text">"Активация функции отладки может увеличить потребление батареи. Кроме того, созданные журналы содержат общую (не личную) информацию о вашем устройстве [версия приложения, версия Android, имя устройства, производитель] и могут регистрировать DNS-серверы, которые вы настраиваете для использования приложения.
+
+Эти данные не отправляются автоматически, но помните об этом при отправке этих журналов мне."</string>
+    <string name="deep_link_title">DNSChanger от Frostnerd</string>
+    <string name="default_dns">Адреса DNS по умолчанию</string>
+    <string name="default_dns_explain_delete">Длительное нажатие на запись, чтобы удалить или изменить её. Нажмите на дополнительные записи, чтобы удалить их.</string>
+    <string name="default_dns_legal_warning">"Любой из представленных здесь поставщиков может быть зарегистрированным товарным знаком соответствующих владельцев. Их условия использования применимы.
+Имейте в виду, что серверы DNS могут регистрировать сайты, которые вы посещаете."</string>
+    <string name="default_dns_title">Общедоступные поставщики DNS</string>
+    <string name="delete">Удалить</string>
+    <string name="detect_rule_type">Попробуйте определить тип</string>
+    <string name="device_admin">Администратор устройства</string>
+    <string name="device_admin_description">Запретить удаление настроек в качестве администратора устройства</string>
+    <string name="device_admin_removal_warning">Предупреждение: при удалении этого приложения в качестве администратора устройства больше не будет мешать.</string>
+    <string name="dialog_are_you_sure">Вы уверены?</string>
+    <string name="dialog_connectivity_description">Проверка доступности серверов DNS</string>
+    <string name="dialog_libraries_text">Приложение содержит библиотеки, созданные третьими лицами. Библиотеки, их создатели и лицензии перечислены ниже.</string>
+    <string name="dialog_question_export_shortcuts">Экспорт ярлыков\?
+\n
+\n(Экспортирует все ярлыки, созданные с момента установки с помощью этого приложения, даже те, которые уже были удалены)</string>
+    <string name="dialog_title_dns_configuration">Конфигурация DNS</string>
+    <string name="disable">Отключить</string>
+    <string name="disable_failfast_info">Отключить быстро, если тип не может быть обнаружен. Поскольку это требует больше времени, попробуйте указать тип самостоятельно.</string>
+    <string name="dns_configuration_taken">Конфигурация DNS применина.</string>
+    <string name="done">Готово</string>
+    <string name="dont_ask_again">Больше не спрашивать</string>
+    <string name="dont_show_again">Больше не показывать</string>
+    <string name="easter_egg">Здесь нет пасхальных яиц. Уходи.</string>
+    <string name="edit">Редактировать</string>
+    <string name="error">Ошибка</string>
+    <string name="error_rule_already_exists">Правило уже существует</string>
+    <string name="excluded_apps_info_text_blacklist">Каждое приложение, выбранное в настройках выше, не будет использовать внутренний VPN. Также не будет применяться к DNS-серверам.</string>
+    <string name="excluded_apps_info_text_whitelist">Только приложения, выбранные в настройках выше, будут использовать внутреннИЙ VPN. Приложения, не выбранные таким образом, не будут использовать установленные вами DNS-серверы.</string>
+    <string name="exported_dns_queries">[x] запросов экспортировано.</string>
+    <string name="fail_fast">Не быстро</string>
+    <string name="feature_pin_protection">Вы можете защищать каждое действие, которое запускает/останавливает/ приостанавливает/возобновляет DNS Changer. Каждый раз, когда один из них должен быть выполнен, открывается диалоговое окно с запросом на установленный вами контакт.
+\n
+\nМожет быть использовано для того, чтобы помешать пользователям телефонов вмешиваться в приложение, если пользователь не разбирается в технологиях. Это было разработано, чтобы не дать детям остановить приложение. Чтобы выбрать, что защищать, откройте настройки.</string>
+    <string name="feature_shortcuts">"С помощью этого приложения вы можете создавать ярлыки на главном экране. Эти ярлыки содержат настройки DNS и меняют ваши DNS-серверы, нажимая на них, не открывая приложение.
+Это делает их особенно удобными, если хотите быстро переключаться между разными серверами - просто создайте много ярлыков и сохраните их на главном экране."</string>
+    <string name="feature_tiles">Для быстрого доступа вы можете разместить плитки в области уведомлений. Они могут использоваться для запуска/остановки и паузы/возобновления DNSChanger.
+\n
+\nЧтобы добавить их, перетащите вниз область уведомлений, нажмите на перо и перетащите их вверх, длительным нажатием их.</string>
+    <string name="file_adblock">Файл Adblock (Формат: HOST ^)</string>
+    <string name="file_dnsmasq">Файл Dnsmasq</string>
+    <string name="file_hosts">Файл хостов</string>
+    <string name="file_justdomains">Файл списка доменов</string>
+    <string name="filter">Фильтр</string>
+    <string name="hint_dns1">Основной сервер</string>
+    <string name="hint_dns2">Доп. сервер</string>
+    <string name="hint_dns_entry_name">Название</string>
+    <string name="hint_dns_lookup">Поиск DNS</string>
+    <string name="hint_pin">PIN-код</string>
+    <string name="host">Хост</string>
+    <string name="ignore">Игнорировать</string>
+    <string name="import_rules">Импорт</string>
+    <string name="importing_x_rules">Импортирование [x] правил</string>
+    <string name="info_dns_button">Информация о DNS</string>
+    <string name="info_functionality_disabled">Все функции были отключены вами. Повторно включите в меню сбоку, чтобы начать.</string>
+    <string name="info_importing_rules_app_unusable">Приложение теперь импортирует правила. В течение этого времени вы не сможете использовать приложение, так как внутренняя база данных временно заблокирована.</string>
+    <string name="info_text_dns">"DNS означает систему доменных имен.
+
+Система доменных имен используется для разрешения доменов (google.com, yahoo.com, example.com …) на IP-адреса (например, 192.168.178.1) для связи через интернет.
+
+Это одна из самых важных систем, используемых в сетях на базе IP."</string>
+    <string name="info_text_how_does_it_work">"Android позволяет настраивать DNS-серверы в настройках Wi-Fi, но не для мобильных подключений (3G, 4G …). Однако это требует использования статического IP-адреса, не позволяет легко переключаться и не будет работать с IPv6, среди других недостатков по сравнению с этим приложением.
+
+Приложение использует структуру VPN Androids, которая позволяет устройствам динамически устанавливать DNS-серверы. Для этого создается локальный vpn, который использует то же устройство, что и конечная точка - это означает, что соединение vpn не подключается к самому интернету и не обнаруживается снаружи.
+Поскольку этот фиктивный VPN можно запускать/останавливать динамически, он позволяет использовать целый ряд функций и автоматизацию. Этот VPN не используется, и данные не считываются. Это просто для среднего человека в изменении DNS-серверов.
+
+Если вас интересует техническая сторона этого, посетите мой git на git.frostnerd.com ."</string>
+    <string name="information">Инф</string>
+    <string name="information_advanced_settings_warranty">"Чтобы реализовать перечисленные ниже функции, все отправленные DNS-пакеты перехватываются и изменяются. Это может увеличить использование батареи и ОЗУ.
+
+Используйте на свой страх и риск, никаких гарантий не предоставляется. Нажимая ОК, вы соглашаетесь с тем, что автор этого приложения не несет ответственности за любой ущерб, который может возникнуть."</string>
+    <string name="invalid_dns_error_text">Похоже, что один из настроенных вами DNS-серверов не может быть использован на вашем устройстве.
+\nЛибо вы указали неверный IP-адрес, и DNS-сервер не присутствует на данном IP-адресе, либо это временная ошибка.
+\n
+\nПроверьте конфигурацию в главном меню и убедитесь, что введенные адреса верны.</string>
+    <string name="loading">Загрузка</string>
+    <string name="loading_exporting_queries">Экспорт запросов, подождите…</string>
+    <string name="mail_debug_text">Напишите небольшое сообщение с описанием причины отправки файлов журнала</string>
+    <string name="message_settings_exported">Настройки успешно экспортированы.</string>
+    <string name="nav_title_advanced">Расширенный</string>
+    <string name="nav_title_current_networks">Текущие сети</string>
+    <string name="nav_title_dns">DNS</string>
+    <string name="nav_title_dns_query">DNS-запрос</string>
+    <string name="nav_title_features">Функции</string>
+    <string name="nav_title_how_does_it_work">Как это работает?</string>
+    <string name="nav_title_importexport">Импорт / Экспорт</string>
+    <string name="nav_title_learn">Изучить</string>
+    <string name="nav_title_libraries">Библиотеки</string>
+    <string name="nav_title_main">Главный экран</string>
+    <string name="nav_title_more">И больше</string>
+    <string name="nav_title_pin_protection">Защитный Пин-код</string>
+    <string name="nav_title_query_log">Журнал запросов</string>
+    <string name="nav_title_rules">Правила</string>
+    <string name="nav_title_tiles">Плитки</string>
+    <string name="nav_title_what_is_dns">Что такое DNS?</string>
+    <string name="nebulo_download_text">"Я создал новое приложение под названием Nebulo, приложение с открытым исходным кодом и без рекламы для dns-over-https и dns-over-tls. Оно находится в магазине.
+Хотите взглянуть на него? Нажатие кнопки да открывает магазин."</string>
+    <string name="new_entry">Новая запись</string>
+    <string name="new_rule">Новое правило</string>
+    <string name="no">Нет</string>
+    <string name="no_connectivity_warning_text">Из [x] серверов [y] недоступны:
+\n
+\n[серверы] 
+\nВозможно, серверы отключены, недоступны (возможно, вы не подключены к сети\?) Или заблокировано вашим провайдером.</string>
+    <string name="no_disable_android_o">Нельзя отключить на Android O и выше.</string>
+    <string name="not_now">Не сейчас</string>
+    <string name="not_running">Неактивно</string>
+    <string name="notification">Уведомление</string>
+    <string name="notification_channel_default">Канал по умолчанию</string>
+    <string name="notification_channel_default_description">Канал по умолчанию для отправки уведомлений.</string>
+    <string name="notification_channel_hiddenicon">Канал без значка</string>
+    <string name="notification_channel_hiddenicon_description">Канал не показывает значок на панели уведомлений</string>
+    <string name="notification_ipv6_text">Перейдите к настройкам, если хотите включить IPv6.</string>
+    <string name="notification_paused">DNSChanger приостановлен</string>
+    <string name="notification_reason_stopped">DNSChanger был автоматически остановлен: [причина]</string>
+    <string name="notification_running">DNSChanger активен</string>
+    <string name="notification_text_running_in_advanced_mode">Расширенные настройки включены.</string>
+    <string name="notification_x_blacklisted">[x] приложения в черном списке</string>
+    <string name="notification_x_whitelisted">[x] приложения в белом списке</string>
+    <string name="ok">Хорошо</string>
+    <string name="only_show_apps_with_internet">Показывать только приложения с доступом в интернет</string>
+    <string name="open_app">Открыть приложение</string>
+    <string name="open_share_file">Открыть /поделиться файлом</string>
+    <string name="paused">Пауза</string>
+    <string name="permissions_description_access_data">Позволяет приложению получать доступ к данным DNSChanger в общем</string>
+    <string name="permissions_label_access_data">Доступ к данным</string>
+    <string name="pin_dialog_text">Выберите Пин-код для защиты приложения. Введите Пин-код, который вы указали в настройках (по умолчанию: 1234)</string>
+    <string name="pin_dialog_title">Защита Пин-кодом</string>
+    <string name="press_back_again">Нажмите еще раз, чтобы покинуть (сбросить изменения!)</string>
+    <string name="query_destination_info">Запрос будет отправлен на [x]</string>
+    <string name="query_error_occured">Произошла ошибка: [ошибка]</string>
+    <string name="query_title_answer">Ответить</string>
+    <string name="query_title_dclass">Класс D</string>
+    <string name="query_title_name">Название</string>
+    <string name="query_title_ttl">TTL</string>
+    <string name="query_title_type">Тип</string>
+    <string name="question_enable_ipv6">Хотите включить IPv6?</string>
+    <string name="rate">Оценить</string>
+    <string name="rate_request_text">"Хотите оценить это приложение?
+Это помогло бы распространить его и показать признательность за мою работу.."</string>
+    <string name="reason_stop_network_change">Сеть изменена (DNSChanger установлен на остановку)</string>
+    <string name="reason_stop_tasker">Tasker остановлен</string>
+    <string name="regular_expression">Регулярное выражение (RegEx)</string>
+    <string name="remove">Удалить</string>
+    <string name="reset_warning_text">"Действительно хотите сбросить все настройки?
+Невозможно отменить."</string>
+    <string name="rule_unknown_ignoring">Неизвестно, игнорировать</string>
+    <string name="rules_import_finished">[x] строк были прочитаны, [y] из которых были действительными и [z] отличались (новые) записями.</string>
+    <string name="run_query">Выполнить запрос</string>
+    <string name="running">Активно</string>
+    <string name="search">Поиск</string>
+    <string name="search_by_target">Поиск по целевым показателям</string>
+    <string name="select_files">Выбрать файлы</string>
+    <string name="send_crash_report">Отправить отчет об ошибке</string>
+    <string name="set_device_admin_info">"This app can be set as device admin to prevent removing it without entering the devices Passcode first.
+
+Приложение может быть установлено в качестве администратора устройства, чтобы предотвратить его удаление без ввода пароля устройства в первую очередь. Политики безопасности не используются. Функция работает только в том случае, если политика администратора устройств настроена на запрос паролей при удалении приложений (в основном найденных в компаниях или поставляемых с приложениями родительского контроля) Категории не пользоваться этими правами. DNSChanger должен быть удален как администратор устройства, прежде чем пытаться удалить его с телефона, вернитесь к настройкам, чтобы сделать это."</string>
+    <string name="settings">Настройки</string>
+    <string name="share_using">Использовать обмен</string>
+    <string name="shortcut_conflict_text">Приложение настроено на запуск/остановку vpn при изменении типа вашей сети (либо Wi-Fi, либо 3G).
+\nМожет конфликтовать с любым параметром, начиная с ярлыка, если действие может быть переопределено в самом приложении (только один VPN может быть запущен в любой момент времени).
+\n
+\nХотите отключить эти конфликтующие настройки\?</string>
+    <string name="shortcut_created">Ярлык создан.</string>
+    <string name="shortcuts">Ярлыки</string>
+    <string name="show">Показать</string>
+    <string name="show_local_entries">Показать правила, разрешающие обратный адрес</string>
+    <string name="show_normal_entries">Показать обычные записи</string>
+    <string name="show_system_apps">Показать системные приложения</string>
+    <string name="show_wildcard_entries">Показать подстановочные записи</string>
+    <string name="sql_actions">Действия SQL</string>
+    <string name="start">Начать</string>
+    <string name="stop">Остановить</string>
+    <string name="stop_all">Остановить все</string>
+    <string name="subtitle_configuring">Настройка [[x]]</string>
+    <string name="success">Успешно</string>
+    <string name="summary_advanced_settings">Включить дополнительные настройки</string>
+    <string name="summary_auto_mobile">Автом. включать DNSChanger при подключении к мобильной сети</string>
+    <string name="summary_auto_wifi">Автовключение DNSChanger при подключении к сети Wi-Fi</string>
+    <string name="summary_automation_warn">Предупреждение. Использование любого из них может помешать активным профилям Tasker с помощью этого приложения!</string>
+    <string name="summary_check_connectivity">Проверьте, доступны ли настроенные DNS-серверы каждый раз, когда нажата кнопка запуска</string>
+    <string name="summary_clear_local_rules">Удаляет все локальные правила. Нельзя вернуть.</string>
+    <string name="summary_clear_queries">Удаляет все запротоколированные запросы. Нельзя вернуть.</string>
+    <string name="summary_create_shortcut">Создайте ярлык, привязанный к определенному набору DNS-серверов, чтобы быстро запустить DNSChanger</string>
+    <string name="summary_custom_ports">Разрешить ввод пользовательских портов в поля DNS.</string>
+    <string name="summary_debug">"Включает отладку, которая генерирует файлы журнала для отправки разработчику (не происходит автоматически)
+Может увеличить использование батареи."</string>
+    <string name="summary_device_admin_activate">Активируйте это приложение в качестве администратора устройства, чтобы предотвратить удаление</string>
+    <string name="summary_disable_crashreporting">Отключите автоматическую отчетность о сбоях. Отчеты содержат только версию приложения, версию Android и трассировку аварийного стека и не содержат никаких личных данных.</string>
+    <string name="summary_disable_network_change">Автоматически отключается при смене сети (например, от Wifi к 3G). DNSChanger снова активируется, если он установлен в предыдущих настройках.</string>
+    <string name="summary_disable_notification_icon">Отключает значок dns, отображаемый на панели уведомлений. По-прежнему будет отображаться при открытии области уведомлений, может не работать на более новых версиях Android.</string>
+    <string name="summary_dns_over_tcp">Пересылка DNS-запросов по протоколу TCP, а не UDP</string>
+    <string name="summary_enable_app_shortcuts">Включает ярлыки приложений. Длительное нажатие на ярлык приложения в лаунчере, чтобы открыть меню</string>
+    <string name="summary_enable_ipv4">Включить IPv4. Позволяет предоставлять ipv4-адреса для использования в качестве DNS-серверов</string>
+    <string name="summary_enable_ipv6">Включить IPv6. Позволяет предоставлять ipv4-адреса для использования в качестве DNS-серверов.</string>
+    <string name="summary_exclude_apps">Исключить установленные приложения из использования VPN соединения, созданного внутренне. Не будет использовать DNS-серверы для них</string>
+    <string name="summary_export_queries">Экспортирует все запросы в текстовый файл в папку по вашему выбору</string>
+    <string name="summary_jump_advanced_settings">Нажмите здесь, чтобы настроить дополнительные параметры.</string>
+    <string name="summary_loopback_allowed">Позволяет вводить адрес обратной связи во всех полях (:: 1 и 127.0.0.1)</string>
+    <string name="summary_notification">Показывать уведомление при запуске DNS Changer</string>
+    <string name="summary_notification_on_stop">Показывать уведомление с указанием причины, по которой DNSChanger был остановлен автоматически</string>
+    <string name="summary_pin">Включить защиту Пин-кодом</string>
+    <string name="summary_pin_app">Запросить Пин-код при запуске приложения</string>
+    <string name="summary_pin_app_shortcut">Запросить Пин-код при запуске/остановке из ярлыков приложений</string>
+    <string name="summary_pin_fingerprint">Разрешить аутентификацию с помощью любого сохраненного отпечатка пальца</string>
+    <string name="summary_pin_notification">Запросить Пин-код при остановке/приостановке DNS Changer из уведомления</string>
+    <string name="summary_pin_tile">Запросить Пин-код при запуске/остановке из Быстрых настроек</string>
+    <string name="summary_pin_value">Нажмите здесь, чтобы изменить Пин-код</string>
+    <string name="summary_protect_other_vpns">Разрешить приложению останавливаться только с помощью встроенных методов</string>
+    <string name="summary_query_logging">Зарегистрировать все DNS-запросы при запуске приложения</string>
+    <string name="summary_reset">Сбрасывает все настройки и сохраненные DNS-серверы. Действия ярлыков и задач не удаляются.</string>
+    <string name="summary_rules_activated">Используйте правила, настроенные в главном меню</string>
+    <string name="summary_send_debug">Отправлять журналы отладки разработчику</string>
+    <string name="summary_shortcut_click_again_disable">Остановите DNSChanger при повторном нажатии ярлыка, с которого он был запущен</string>
+    <string name="summary_show_used_dns">Показывать используемые DNS-серверы в уведомлении</string>
+    <string name="summary_start_boot">Автоматический запуск DNS Changer при включении телефона</string>
+    <string name="summary_tcp_timeout">Устанавливает время в миллисекундах, после которого приложение перестает пытаться достичь восходящего потока DNS-сервера</string>
+    <string name="summary_theme">Устанавливает тему этого приложения</string>
+    <string name="summary_undo_rule_import">Отменить импорт правила из файла. Нельзя вернуть.</string>
+    <string name="summary_vpndialog_missing">Кажется, в вашем устройстве отсутствует возможность запускать VPN. Поскольку это приложение полностью полагается на эту возможность, вы, к сожалению, не сможете ею воспользоваться.</string>
+    <string name="take_dns_configuration_missing_type">Предупреждение: [тип] отсутствует в конфигурации, но включен. Хотите отключить?</string>
+    <string name="target">Цель</string>
+    <string name="tasker_automation_conflict_text">Приложение настроено на запуск/остановку vpn при изменении типа вашей сети (либо Wi-Fi, либо 3G).
+\nМожет привести к конфликту с этим плагином Tasker, поскольку действие может быть отменено самим приложением (только один VPN может работать в любой момент времени).
+\n
+\nХотите отключить эти конфликтующие настройки\?</string>
+    <string name="tasker_support">Поддержка Tasker</string>
+    <string name="tcp">TCP</string>
+    <string name="text_dns_configuration">"Сеть [имя] имеет следующие DNS-серверы:
+
+[серверы]"</string>
+    <string name="tile_pause">Приостановить DNSChanger</string>
+    <string name="tile_pause_resume">Приостановить / Возобновить</string>
+    <string name="tile_resume">Возобновить DNSChanger</string>
+    <string name="tile_start">Запустить DNSChanger</string>
+    <string name="tile_start_stop">Запустить / Остановить</string>
+    <string name="tile_stop">Остановить DNSChanger</string>
+    <string name="time">Время</string>
+    <string name="title_about">О приложении</string>
+    <string name="title_advanced_settings">Расширенные настройки</string>
+    <string name="title_auto_mobile">Автозапуск (мобильный)</string>
+    <string name="title_auto_wifi">Автозапуск (WiFi)</string>
+    <string name="title_automation">Автоматизация</string>
+    <string name="title_autopause_apps">Приложения, которые приостанавливают DNSChanger. Текущий: [[кол.]]</string>
+    <string name="title_category_pin">Защитный Пин-код</string>
+    <string name="title_check_connectivity">Проверка подключения</string>
+    <string name="title_clear_local_rules">Очистить локальные правила</string>
+    <string name="title_clear_queries">Очистить запросы</string>
+    <string name="title_create_shortcut">Создать ярлык</string>
+    <string name="title_custom_ports">Пользовательские порты</string>
+    <string name="title_debug">Отладка</string>
+    <string name="title_debug_category">Исправление проблем</string>
+    <string name="title_device_admin">Администратор устройства</string>
+    <string name="title_disable_crashreporting">Отчеты о сбоях</string>
+    <string name="title_disable_network_change">Отключить при изменении сети</string>
+    <string name="title_disable_notification_icon">Отключить значок уведомления</string>
+    <string name="title_dns_over_tcp">DNS через TCP</string>
+    <string name="title_enable_app_shortcuts">Включить ярлыки приложений</string>
+    <string name="title_enable_ipv4">Включить IPv4</string>
+    <string name="title_enable_ipv6">Включить IPv6</string>
+    <string name="title_exclude_apps">Исключение приложений из VPN</string>
+    <string name="title_export_queries">Экспорт запросов</string>
+    <string name="title_export_settings">Экспорт настроек</string>
+    <string name="title_general">Общие</string>
+    <string name="title_import_settings">Импорт настроек</string>
+    <string name="title_loopback_allowed">Разрешать локальные адреса</string>
+    <string name="title_notification">Уведомление</string>
+    <string name="title_notification_on_stop">Уведомлять об остановке</string>
+    <string name="title_pin">Пин</string>
+    <string name="title_pin_app">Защита приложения</string>
+    <string name="title_pin_app_shortcut">Защита ярлыков приложений</string>
+    <string name="title_pin_fingerprint">Отпечаток пальца</string>
+    <string name="title_pin_notification">Защита уведомлений</string>
+    <string name="title_pin_tile">Быстрая защита настроек</string>
+    <string name="title_pin_value">Изменить пин-код</string>
+    <string name="title_protect_other_vpns">Только корректная остановка</string>
+    <string name="title_query_logging">Ведение журнала запросов</string>
+    <string name="title_reset">Сбросить</string>
+    <string name="title_rules_activated">Локальные правила</string>
+    <string name="title_send_debug">Отправить логи</string>
+    <string name="title_share_app">Поделиться этим приложением</string>
+    <string name="title_shortcut_click_again_disable">Нажмите ярлык снова, чтобы остановить</string>
+    <string name="title_show_used_dns">Показать DNS серверы</string>
+    <string name="title_start_boot">Запуск при загрузке</string>
+    <string name="title_tcp_timeout">Тайм-аут TCP</string>
+    <string name="title_theme">Тема</string>
+    <string name="title_undo_rule_import">Отменить импорт</string>
+    <string name="title_vpn_exclusion">Исключение VPN</string>
+    <string name="title_vpndialog_missing">VPN missing</string>
+    <string name="unfixable_error_explaination">"Работа в фоне потерпела сбой с исключением, присутствующим на некоторых устройствах. Этот сбой не может быть исправлен самим приложением.
+Либо попробуйте перезапустить приложение, и если это не поможет попробуйте перезагрузить устройство.
+
+Если проблема сохраняется и ваше устройство, попробуйте скачать приложение Tun.ko установщика, как это может быть в состоянии исправить это. Разработчик этого приложения является DroidVPN Inc.
+Ссылка: https://play.google.com/store/apps/details?id=com.aed.tun.installer"</string>
+    <string name="use_these_servers">Использовать эти серверы</string>
+    <string name="vpn_error_explain">"Приложение неожиданно потерпело сбой. Это может означать, что способ работы этого приложения не поддерживается вашим телефоном/ПЗУ или произошла общая ошибка (которая, скорее всего, указала, что я сделал что-то неправильно).
+
+В любом случае, отправка отчета о сбое очень поможет мне и, возможно, приведет к исправлению.
+Хотите отправить его мне?"</string>
+    <string name="vpn_explain">Приложение работает без рутирования телефона.
+\n
+\nЧтобы сделать это возможным, весь трафик перенаправляется с помощью VPN. VPN перенаправляет трафик только локально, данные никогда не покидают ваш телефон с помощью этого VPN соединения.
+\n
+\nВам будет предложено разрешить VPN подключение в следующем окне, без разрешения от вас набор DNS-серверов не будет работать.
+\n
+\nИсходный код можно найти в разделе HTTPS://Git.frostnerd.com/PublicAndroidApps/DnsChanger.</string>
+    <string name="wait_importing_rules">Обнаружение типов файлов, подождите…</string>
+    <string name="warning">Предупреждение</string>
+    <string name="warning_disabling_v4">Большинство версий Android не могут получить доступ к интернету больше, когда DNSChanger запущен, а IPv4-адрес не предоставляется. Вам придется попробовать для своего устройства.</string>
+    <string name="warning_started_using_tasker">DNS Changer был запущен с помощью Tasker. Остановка может прерваться. Запуск его не с помощью Tasker не применяет DNS-серверы, настроенные с помощью Tasker. Все равно прекратить?</string>
+    <string name="whitelist">Белый список</string>
+    <string name="wildcard">Wildcard</string>
+    <string name="x_apps_selected">[[x]] приложений выбрано</string>
+    <string name="x_entries">[х] записей</string>
+    <string name="x_lines">[x] линий</string>
+    <string name="yes">Да</string>
+    <string-array name="tasker_configure_actions">
+        <item>Запустить DNSChanger</item>
+        <item>Остановить DNSChanger</item>
+        <item>Приостановить DNSChanger</item>
+        <item>Возобновить DNSChanger</item>
+    </string-array>
+    <string-array name="theme">
+        <item>По умолчанию</item>
+        <item>Синяя</item>
+        <item>Тёмная</item>
+        <item>Настоящая черная</item>
+    </string-array>
+    <string name="message_user_restricted">Не могу запустить VPN, ваши пользователи, кажется, ограничены.</string>
+    <string name="nebulo_no_browser">Кажется, у вас не установлен ни браузер, ни магазин.</string>
+    <string name="notification_connectivity_service">Проверка фонового подключения</string>
+    <string name="notification_restartconnectivity_service">Перезапуск проверки подключения</string>
+    <string name="notification_connectivity_service_message">Проверяю подключение. Это уведомление скоро исчезнет.</string>
+    <string name="notification_connectivity_service_message_disable">Нажмите здесь, чтобы отключить уведомление</string>
+    <string name="notification_channel_networkcheck">Проверка канала связи</string>
+    <string name="notification_channel_networkcheck_description">Этот канал используется для проверки подключения в рамках автоматизации. Не стесняйтесь его отключить.</string>
+    <string name="summary_priv_mode">Запустите автоматизацию с более высокими правами. Может повысить стабильность настроек автоматизации.</string>
+    <string name="title_priv_mode">Привилегированный режим</string>
+    <string name="summary_run_after_update">Автоматическое включение DNS Changer после его обновления.
+\nЭто может не работать, когда DNS Changer не был активен в течение длительного времени.</string>
+    <string name="title_run_after_update">Включить приложение после обновления</string>
+</resources>

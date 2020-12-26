@@ -1,8 +1,10 @@
 package com.frostnerd.dnschanger.util;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.os.Build;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
@@ -30,6 +32,10 @@ import java.util.ArrayList;
  */
 public class PreferencesAccessor {
 
+    public static boolean runConnectivityCheckWithPrivilege(@NonNull Context context) {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ||  Preferences.getInstance(context).getBoolean("automation_priv_mode", false);
+    }
+
     public static boolean isIPv6Enabled(@NonNull Context context) {
         return Preferences.getInstance(context).getBoolean( "setting_ipv6_enabled", false);
     }
@@ -47,7 +53,7 @@ public class PreferencesAccessor {
     }
 
     public static boolean isEverythingDisabled(@NonNull Context context){
-        return Preferences.getInstance(context).getBoolean(  "everything_disabled", false);
+        return false;
     }
 
     public static boolean checkConnectivityOnStart(@NonNull Context context){
@@ -83,7 +89,9 @@ public class PreferencesAccessor {
         return areCustomPortsEnabled(context) ||
                 areRulesEnabled(context) ||
                 isQueryLoggingEnabled(context) ||
-                sendDNSOverTCP(context) || isLoopbackAllowed(context);
+                sendDNSOverTCP(context) ||
+                isLoopbackAllowed(context) ||
+                logUpstreamDNSAnswers(context);
     }
 
     public static boolean areCustomPortsEnabled(@NonNull Context context){
@@ -99,6 +107,11 @@ public class PreferencesAccessor {
     public static boolean isQueryLoggingEnabled(@NonNull Context context){
         return isAdvancedModeEnabled(context) &&
                 Preferences.getInstance(context).getBoolean(  "query_logging", false);
+    }
+
+    public static boolean logUpstreamDNSAnswers(@NonNull Context context){
+        return isAdvancedModeEnabled(context) &&
+                Preferences.getInstance(context).getBoolean(  "upstream_query_logging", false);
     }
 
     public static boolean isPinProtectionEnabled(@NonNull Context context){
@@ -120,7 +133,15 @@ public class PreferencesAccessor {
     }
 
     public static int getTCPTimeout(@NonNull Context context){
-        return Integer.parseInt(Preferences.getInstance(context).getString( "tcp_timeout", "500"));
+        int value;
+        try {
+            value = Integer.parseInt(Preferences.getInstance(context).getString( "tcp_timeout", "500"));
+        } catch (ClassCastException ex) {
+            value = Preferences.getInstance(context).getInt("tcp_timeout", 500);
+        } catch(NumberFormatException ex) {
+            value = 500;
+        }
+        return value;
     }
 
     @NonNull
@@ -230,7 +251,7 @@ public class PreferencesAccessor {
         }
 
         public void saveDNSPair(@NonNull Context context, @NonNull IPPortPair pair){
-            if(!canBeEmpty() && pair.isEmpty())return;
+            if(pair == null || (!canBeEmpty() && pair.isEmpty()))return;
             Preferences.getInstance(context).put(  portKey, pair.getPort() == -1 ? 53 : pair.getPort());
             Preferences.getInstance(context).put(  dnsKey, pair.getAddress());
         }

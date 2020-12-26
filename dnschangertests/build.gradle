@@ -1,13 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    compileSdkVersion 29
 
     defaultConfig {
         applicationId "com.frostnerd.dnschangertests"
         minSdkVersion 14
-        targetSdkVersion 27
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
@@ -23,21 +22,40 @@ android {
     lintOptions {
         abortOnError false
     }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/library_release.kotlin_module'
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-alpha1', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support:cardview-v7:27.1.1'
-    implementation 'com.android.support:recyclerview-v7:27.1.1'
-    implementation 'com.android.support:preference-v14:27.1.1'
-    implementation project(path: ':AndroidUtils:library')
-    testImplementation 'junit:junit:4.12'
-    implementation 'dnsjava:dnsjava:2.1.8'
-    implementation 'org.pcap4j:pcap4j-core:1.7.3'
-    implementation 'org.pcap4j:pcap4j-packetfactory-static:1.7.3'
-    implementation 'de.measite.minidns:minidns-core:0.2.2'
+    implementation 'com.frostnerd.utils:general:1.0.10'
+    implementation 'com.frostnerd.utils:database:1.1.24'
+    implementation 'com.frostnerd.utils:design:1.0.14-fix18'
+    implementation 'com.frostnerd.utils:materialedittext:1.0.21'
+    implementation 'com.frostnerd.utils:preferences:2.4.11'
+    implementation 'com.frostnerd.utils:networking:1.0.5'
+    implementation 'com.frostnerd.utils:preferenceexport:1.0.10'
+    implementation 'com.frostnerd.utils:api:1.0.6'
+
+    implementation "androidx.appcompat:appcompat:1.2.0"
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation "androidx.legacy:legacy-preference-v14:1.0.0"
+    implementation "com.google.android.material:material:1.2.1"
+    testImplementation 'junit:junit:4.13.1'
+    implementation 'org.pcap4j:pcap4j-core:1.8.2'
+    implementation 'org.pcap4j:pcap4j-packetfactory-static:1.8.2'
+    implementation 'org.minidns:minidns-core:1.0.0'
 }

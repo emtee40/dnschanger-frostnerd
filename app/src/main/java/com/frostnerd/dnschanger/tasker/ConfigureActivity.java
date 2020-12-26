@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -24,19 +21,23 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.dialogs.DNSEntryListDialog;
+import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Util;
-import com.frostnerd.utils.design.MaterialEditText;
-import com.frostnerd.dnschanger.util.Preferences;
-import com.frostnerd.utils.general.Utils;
-import com.frostnerd.utils.textfilers.InputCharacterFilter;
+import com.frostnerd.general.Utils;
+import com.frostnerd.general.textfilers.InputCharacterFilter;
+import com.frostnerd.materialedittext.MaterialEditText;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -98,7 +99,6 @@ public class ConfigureActivity extends AppCompatActivity {
     }
 
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

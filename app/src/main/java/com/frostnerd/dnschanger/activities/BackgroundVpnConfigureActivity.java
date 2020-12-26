@@ -1,13 +1,15 @@
 package com.frostnerd.dnschanger.activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.VpnService;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
@@ -53,8 +55,19 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
     public static void startWithFixedDNS(final Context context, ArrayList<IPPortPair> upstreamServers, boolean startedWithTasker) {
         LogFactory.writeMessage(context, LOG_TAG, "[STATIC] Starting with fixed DNS. Started with tasker: " +startedWithTasker);
         LogFactory.writeMessage(context, LOG_TAG, "[STATIC] " + upstreamServers);
-        context.startActivity(new Intent(context, BackgroundVpnConfigureActivity.class).putExtra("fixeddns", true).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .putExtra("servers", upstreamServers).putExtra("startService", true).putExtra("startedWithTasker", startedWithTasker));
+
+        if(startedWithTasker) {
+            Util.startService(context,
+                    DNSVpnService.getStartVPNIntent(context, upstreamServers, true, true));
+        } else {
+            Intent intent = new Intent(context, BackgroundVpnConfigureActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .putExtra("fixeddns", true)
+                    .putExtra("servers", upstreamServers)
+                    .putExtra("startService", true)
+                    .putExtra("startedWithTasker", false);
+            context.startActivity(intent);
+        }
     }
 
     @Override
@@ -82,7 +95,11 @@ public class BackgroundVpnConfigureActivity extends AppCompatActivity {
                     LogFactory.writeMessage(BackgroundVpnConfigureActivity.this, LOG_TAG, "User clicked OK in Request Info Dialog. Requesting access now.");
                     requestTime = System.currentTimeMillis();
                     LogFactory.writeMessage(BackgroundVpnConfigureActivity.this, LOG_TAG, "Preparing VPNService", conf);
-                    startActivityForResult(conf, REQUEST_CODE);
+                    try {
+                        startActivityForResult(conf, REQUEST_CODE);
+                    } catch (ActivityNotFoundException e) {
+                        finish();
+                    }
                 }
             });
         } else {

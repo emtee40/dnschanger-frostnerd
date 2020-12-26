@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -8,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
-    <com.frostnerd.utils.design.MaterialEditText
+    <com.frostnerd.materialedittext.MaterialEditText
         android:id="@+id/met_query"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,6 +19,9 @@
         app:indicatorState="undefined"
         app:indicatorVisibilityWhenUnused="hidden"
         app:revealDelay="0"
+        app:iconTint="?attr/foregroundElementColor"
+        app:labelColorPrimary="?attr/foregroundElementColor"
+        app:labelColorSecondary="?attr/foregroundElementColor"
         app:revealType="revealInstant">
 
         <EditText
@@ -27,8 +31,8 @@
             android:hint="@string/hint_dns_lookup"
             android:text="google.com"
             android:inputType="textNoSuggestions"
-            android:textColor="#FFF" />
-    </com.frostnerd.utils.design.MaterialEditText>
+            android:textColor="?attr/foregroundElementColor"/>
+    </com.frostnerd.materialedittext.MaterialEditText>
 
     <RelativeLayout
         android:id="@+id/start_button_wrap"
@@ -45,7 +49,7 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:text="@string/run_query"
-            android:textColor="#FFF" />
+            android:textColor="?attr/foregroundElementColor" />
 
         <TextView
             android:id="@+id/query_destination_info_text"
@@ -70,6 +74,16 @@
         android:text="@string/tcp"
         android:textColor="?android:attr/textColor" />
 
+    <CheckBox
+        android:id="@+id/query_any"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/query_tcp"
+        android:checked="false"
+        android:text="ANY"
+        android:textColor="?android:attr/textColor"
+        tools:ignore="HardcodedText" />
+
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="48dp"
@@ -82,11 +96,11 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/query_tcp"
+        android:layout_below="@id/query_any"
         android:layout_marginTop="15dp"
         android:scrollbars="vertical">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/result_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

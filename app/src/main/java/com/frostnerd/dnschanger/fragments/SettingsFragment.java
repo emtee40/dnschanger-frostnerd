@@ -16,23 +16,26 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v14.preference.SwitchPreference;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.CheckBoxPreference;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceCategory;
-import android.support.v7.preference.PreferenceFragmentCompat;
-import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.FragmentActivity;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreference;
+
+import com.frostnerd.design.DesignUtil;
 import com.frostnerd.dnschanger.BuildConfig;
+import com.frostnerd.dnschanger.DNSChanger;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.AdvancedSettingsActivity;
@@ -41,18 +44,18 @@ import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.receivers.AdminReceiver;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.tasker.ConfigureActivity;
+import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
-import com.frostnerd.utils.general.DesignUtil;
-import com.frostnerd.utils.general.IntentUtil;
-import com.frostnerd.utils.general.Utils;
-import com.frostnerd.utils.permissions.PermissionsUtil;
-import com.frostnerd.dnschanger.util.Preferences;
-import com.frostnerd.utils.preferences.searchablepreferences.SearchSettings;
-import com.frostnerd.utils.preferences.searchablepreferences.v14.PreferenceSearcher;
-import com.frostnerd.utils.preferences.searchablepreferences.v14.SearchablePreference;
+import com.frostnerd.general.IntentUtil;
+import com.frostnerd.general.Utils;
+import com.frostnerd.general.permissions.PermissionsUtil;
+import com.frostnerd.preferences.searchablepreferences.SearchSettings;
+import com.frostnerd.preferences.searchablepreferences.v14.PreferenceSearcher;
+import com.frostnerd.preferences.searchablepreferences.v14.SearchablePreference;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -116,18 +119,17 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         findPreference("setting_start_boot").setOnPreferenceChangeListener(changeListener);
         findPreference("setting_show_notification").setOnPreferenceChangeListener(changeListener);
         findPreference("show_used_dns").setOnPreferenceChangeListener(changeListener);
-        findPreference("setting_auto_mobile").setOnPreferenceChangeListener(changeListener);
         findPreference("setting_disable_netchange").setOnPreferenceChangeListener(changeListener);
         findPreference("notification_on_stop").setOnPreferenceChangeListener(changeListener);
         findPreference("shortcut_click_again_disable").setOnPreferenceChangeListener(changeListener);
-        
+
         final Preferences preferences = Preferences.getInstance(requireContext());
-        
+
         if (Util.isTaskerInstalled(requireContext()))
             findPreference("warn_automation_tasker").setSummary(R.string.summary_automation_warn);
         else
             ((PreferenceCategory) findPreference("automation")).removePreference(findPreference("warn_automation_tasker"));
-        automatingCategory = (PreferenceCategory) getPreferenceScreen().findPreference("automation");
+        automatingCategory = getPreferenceScreen().findPreference("automation");
         if (devicePolicyManager.isAdminActive(deviceAdmin))
             ((SwitchPreference) findPreference("device_admin")).setChecked(true);
         else {
@@ -164,24 +166,24 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                     return false;
                 } else if (!value) {
                     LogFactory.writeMessage(requireContext(), LOG_TAG, "User disabled Admin access. Removing as Deviceadmin");
-                   preferences.put("device_admin", false);
+                    preferences.put("device_admin", false);
                     devicePolicyManager.removeActiveAdmin(deviceAdmin);
                     LogFactory.writeMessage(requireContext(), LOG_TAG, "App was removed as DeviceAdmin");
                 } else {
                     LogFactory.writeMessage(requireContext(), LOG_TAG, "User wants app to function as DeviceAdmin and Access was granted. Showing state as true.");
-                   preferences.put("device_admin", true);
+                    preferences.put("device_admin", true);
                 }
                 return true;
             }
         });
         sendDebugPreference = findPreference("send_debug");
-        debugCategory = (PreferenceCategory) findPreference("debug_category");
+        debugCategory = findPreference("debug_category");
         if (!PreferencesAccessor.isDebugEnabled(requireContext()))
             debugCategory.removePreference(sendDebugPreference);
         findPreference("debug").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-               preferences.put(preference.getKey(), newValue);
+                preferences.put(preference.getKey(), newValue);
                 LogFactory.writeMessage(requireContext(), LOG_TAG, "Preference " + preference.getKey() + " was changed to " +
                         newValue + ", Type: " + Preferences.guessType(newValue));
                 boolean val = (Boolean) newValue;
@@ -195,7 +197,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 ((SwitchPreference) findPreference("debug")).setChecked(true);
-                               preferences.put("debug", true);
+                                preferences.put("debug", true);
                                 LogFactory.enable(requireContext());
                                 debugCategory.addPreference(sendDebugPreference);
                             }
@@ -295,8 +297,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             findPreference("setting_app_shortcuts_enabled").setOnPreferenceChangeListener(changeListener);
         findPreference("theme").setDefaultValue(0);
         LogFactory.writeMessage(requireContext(), LOG_TAG, "Done with onCreate");
-        final CheckBoxPreference v4Enabled = (CheckBoxPreference) findPreference("setting_ipv4_enabled"),
-                v6Enabled = (CheckBoxPreference) findPreference("setting_ipv6_enabled");
+        final CheckBoxPreference v4Enabled = findPreference("setting_ipv4_enabled"),
+                v6Enabled = findPreference("setting_ipv6_enabled");
         v4Enabled.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, final Object newValue) {
@@ -334,7 +336,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 boolean val = (boolean) newValue;
                 v4Enabled.setEnabled(val);
-               preferences.put(preference.getKey(), newValue);
+                preferences.put(preference.getKey(), newValue);
                 if (Util.isServiceRunning(requireContext()))
                     requireContext().startService(new Intent(requireContext(), DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true));
                 return true;
@@ -351,8 +353,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 boolean newValue = (boolean) o;
-               preferences.put("app_whitelist_configured", true);
-               preferences.put("excluded_whitelist", o);
+                preferences.put("app_whitelist_configured", true);
+                preferences.put("excluded_whitelist", o);
                 preference.setSummary(newValue ? R.string.excluded_apps_info_text_whitelist : R.string.excluded_apps_info_text_blacklist);
                 preference.setTitle(newValue ? R.string.whitelist : R.string.blacklist);
                 Set<String> selected = preferences.getStringSet("excluded_apps");
@@ -362,7 +364,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                     if (selected.contains(packageInfo.packageName)) continue;
                     flipped.add(packageInfo.packageName);
                 }
-               preferences.put("excluded_apps", flipped);
+                preferences.put("excluded_apps", flipped);
                 return true;
             }
         });
@@ -376,11 +378,14 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                if (awaitingPinChange && !DesignUtil.hasOpenDialogs(Util.getActivity(SettingsFragment.this))) {
-                                    ((CheckBoxPreference) preference).setChecked(false);
-                                    awaitingPinChange = false;
+                                FragmentActivity activity = Util.getActivity(SettingsFragment.this);
+                                if(activity != null) {
+                                    if (awaitingPinChange && !DesignUtil.hasOpenDialogs(activity)) {
+                                        ((CheckBoxPreference) preference).setChecked(false);
+                                        awaitingPinChange = false;
+                                    }
+                                    if (awaitingPinChange) handler.postDelayed(this, 250);
                                 }
-                                if (awaitingPinChange) handler.postDelayed(this, 250);
                             }
                         }, 250);
                     }
@@ -447,9 +452,45 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 }
             });
             ipv6EnableQuestionSnackbar.show();
-           preferences.put("ipv6_asked", true);
+            preferences.put("ipv6_asked", true);
+        }
+        findPreference("setting_auto_mobile").setOnPreferenceChangeListener(autoSettingsChanged);
+        findPreference("setting_auto_wifi").setOnPreferenceChangeListener(autoSettingsChanged);
+        findPreference("setting_disable_netchange").setOnPreferenceChangeListener(autoSettingsChanged);
+        findPreference("disable_crash_reporting").setOnPreferenceChangeListener(
+                new Preference.OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object newValue) {
+                        boolean newState = (Boolean)newValue;
+                        if(newState) {
+                            ((DNSChanger) requireContext().getApplicationContext()).setupSentry();
+                        } else {
+                            ((DNSChanger) requireContext().getApplicationContext()).tearDownSentry();
+                        }
+                        return true;
+                    }
+                });
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !preferences.contains("automation_priv_mode_set")) {
+            ((CheckBoxPreference)findPreference("automation_priv_mode")).setChecked(true);
+            preferences.putBoolean("automation_priv_mode_set", true);
         }
     }
+
+    private final Preference.OnPreferenceChangeListener autoSettingsChanged = new Preference.OnPreferenceChangeListener() {
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+            Preferences.getInstance(requireContext()).put(preference.getKey(), newValue);
+            boolean running = Util.isBackgroundConnectivityCheckRunning(requireContext());
+            boolean run = Util.shouldRunNetworkCheck(requireContext());
+
+            if(run && !running){
+                Util.runBackgroundConnectivityCheck(requireContext(), false);
+            } else if(!run && running) {
+                Util.stopBackgroundConnectivityCheck(requireContext());
+            }
+            return true;
+        }
+    };
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -466,7 +507,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             LogFactory.writeMessage(requireContext(), LOG_TAG, "Preference " + preference.getKey() + " was changed to " +
                     newValue + ", Type: " + Preferences.guessType(newValue));
-            Preferences.getInstance(requireContext()).put(preference.getKey(), newValue, false);
+            Preferences.getInstance(requireContext()).put(preference.getKey(), newValue);
             String key = preference.getKey();
             if((key.equalsIgnoreCase("setting_show_notification") || key.equalsIgnoreCase("show_used_dns") ||
                     key.equalsIgnoreCase("auto_pause") || key.equalsIgnoreCase("hide_notification_icon")) && Util.isServiceRunning(requireContext())){
@@ -485,7 +526,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
         super.onResume();
         LogFactory.writeMessage(requireContext(), LOG_TAG, "Resuming Activity");
         if(devicePolicyManager.isAdminActive(deviceAdmin)){
-            ((SwitchPreference)findPreference("device_admin")).setChecked(true);
+            Preference adminPref = findPreference("device_admin");
+            if(adminPref != null)((SwitchPreference)adminPref).setChecked(true);
         }
     }
 
@@ -517,7 +559,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             }else{
                 LogFactory.writeMessage(requireContext(), LOG_TAG, "Permission to usage stats wasn't granted");
                 ((CheckBoxPreference)findPreference("auto_pause")).setChecked(false);
-               preferences.put("auto_pause",false);
+                preferences.put("auto_pause",false);
                 if(!usageRevokeHidden){
                     LogFactory.writeMessage(requireContext(), LOG_TAG, "Access was previously granted, hiding 'Revoke access' preference");
                     automatingCategory.removePreference(removeUsagePreference);
@@ -530,8 +572,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
             findPreference("autopause_appselect").setTitle(getString(R.string.title_autopause_apps).
                     replace("[[count]]", ""+ apps.size()));
             if(apps.size() != getResources().getStringArray(R.array.default_blacklist).length)preferences.put("app_whitelist_configured", true);
-           preferences.put("autopause_apps", new HashSet<>(apps));
-           preferences.put("autopause_apps_count", apps.size());
+            preferences.put("autopause_apps", new HashSet<>(apps));
+            preferences.put("autopause_apps_count", apps.size());
             if(Util.isServiceRunning(requireContext())){
                 Intent i;
                 LogFactory.writeMessage(requireContext(), LOG_TAG, "Restarting DNSVPNService because the autopause apps changed",
@@ -547,20 +589,20 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
                 @Override
                 public void onClick(View v) {
                     snackbar.dismiss();
-                    Utils.goToLauncher(requireContext());
+                    Utils.goToLauncher(v.getContext());
                 }
             });
             snackbar.show();
         }else if(requestCode == REQUEST_EXCLUDE_APPS && resultCode == AppCompatActivity.RESULT_OK){
             ArrayList<String> apps = data.getStringArrayListExtra("apps");
-           preferences.put("excluded_apps", new HashSet<>(apps));
-           preferences.put("excluded_whitelist", data.getBooleanExtra("whitelist",false));
+            preferences.put("excluded_apps", new HashSet<>(apps));
+            preferences.put("excluded_whitelist", data.getBooleanExtra("whitelist",false));
             if(Util.isServiceRunning(requireContext())){
                 requireContext().startService(new Intent(requireContext(), DNSVpnService.class).putExtra(VPNServiceArgument.COMMAND_START_VPN.getArgument(), true).
                         putExtra(VPNServiceArgument.FLAG_DONT_UPDATE_DNS.getArgument(),true));
             }
         }else if(requestCode == REQUEST_ADVANCED_SETTINGS && resultCode == AppCompatActivity.RESULT_FIRST_USER){
-            IntentUtil.restartActivity(((MainActivity)requireContext()));
+            ((MainActivity)requireContext()).reloadMenuItems();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -596,7 +638,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Search
     }
 
     @Override
-    public android.support.v7.preference.PreferenceGroup getTopLevelPreferenceGroup() {
+    public androidx.preference.PreferenceGroup getTopLevelPreferenceGroup() {
         return getPreferenceScreen();
     }
 

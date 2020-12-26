@@ -1,21 +1,24 @@
 package com.frostnerd.dnschanger.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
+import com.frostnerd.database.DatabaseAdapter;
+import com.frostnerd.database.orm.statementoptions.queryoptions.OrderOption;
+import com.frostnerd.design.DesignUtil;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
-import com.frostnerd.utils.adapters.BaseViewHolder;
-import com.frostnerd.utils.adapters.DatabaseAdapter;
-import com.frostnerd.utils.database.orm.statementoptions.queryoptions.OrderOption;
-import com.frostnerd.utils.general.DesignUtil;
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.lifecycle.BaseViewHolder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -67,22 +70,25 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
         if(onEntrySelectionUpdated == null)return;
         boolean wasSelected = v.isSelected();
 
-        long id = (Long) v.getTag(idTagKey);
-        if(selectedEntries.contains(id)) {
-            selectedEntries.remove(id);
-            v.setSelected(false);
-        } else{
-            selectedEntries.add(id);
-            v.setSelected(true);
-        }
+        Object tag = v.getTag(idTagKey);
+        if (tag != null) {
+            long id = (Long) tag;
+            if(selectedEntries.contains(id)) {
+                selectedEntries.remove(id);
+                v.setSelected(false);
+            } else{
+                selectedEntries.add(id);
+                v.setSelected(true);
+            }
 
-        if(wasSelected && !selectedEntries.contains(id)) {
-            v.setBackgroundColor(DesignUtil.resolveColor(DNSEntryAdapter.this.context, android.R.attr.windowBackground));
-        } else if(!wasSelected && selectedEntries.contains(id)) {
-            v.setBackgroundColor(DesignUtil.resolveColor(DNSEntryAdapter.this.context, R.attr.inputElementColor));
-        }
+            if(wasSelected && !selectedEntries.contains(id)) {
+                v.setBackgroundColor(DesignUtil.resolveColor(DNSEntryAdapter.this.context, android.R.attr.windowBackground));
+            } else if(!wasSelected && selectedEntries.contains(id)) {
+                v.setBackgroundColor(DesignUtil.resolveColor(DNSEntryAdapter.this.context, R.attr.inputElementColor));
+            }
 
-        onEntrySelectionUpdated.selectionUpdated(selectedEntries);
+            onEntrySelectionUpdated.selectionUpdated(selectedEntries);
+        }
     }
 
     @Override
@@ -97,10 +103,19 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
         this.entrySelected = entrySelected;
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
+        boolean ipv6 = PreferencesAccessor.isIPv6Enabled(context);
+        boolean ipv4 = PreferencesAccessor.isIPv4Enabled(context);
+        IPPortPair _primary = ipv4 ? PreferencesAccessor.Type.DNS1.getPair(context) : null,
+                _secondary = ipv4 ? PreferencesAccessor.Type.DNS2.getPair(context) : null,
+                _primaryV6 = ipv6 ? PreferencesAccessor.Type.DNS1_V6.getPair(context) : null,
+                _secondaryV6 = ipv6 ? PreferencesAccessor.Type.DNS2_V6.getPair(context) : null;
         setOnRowLoaded(new OnRowLoaded<DNSEntry, ViewHolder>() {
             @Override
             public void bindRow(ViewHolder view, DNSEntry entity, int position) {
                 boolean wasSelected = view.itemView.isSelected();
+                boolean isCurrentServer = ipMatches(ipv4 ? entity.getDns1() : null, _primary) && ipMatches(ipv4 ? entity.getDns2() : null, _secondary) &&
+                        ipMatches(ipv6 ? entity.getDns1V6() : null, _primaryV6) && ipMatches(ipv6 ? entity.getDns2V6() : null, _secondaryV6);
+
                 if(wasSelected && !selectedEntries.contains(entity.getID())) {
                     view.itemView.setSelected(false);
                     view.itemView.setBackgroundColor(DesignUtil.resolveColor(DNSEntryAdapter.this.context, android.R.attr.windowBackground));
@@ -109,11 +124,13 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
                     view.itemView.setBackgroundColor(DesignUtil.resolveColor(DNSEntryAdapter.this.context, R.attr.inputElementColor));
                 }
                 view.textView.setText(entity.getName());
-                if(TextUtils.isEmpty(entity.getDescription())){
-                    if(view.subText.getVisibility() == View.VISIBLE) view.subText.setVisibility(View.GONE);
-                } else {
-                    view.subText.setText(entity.getDescription());
-                    if(view.subText.getVisibility() != View.VISIBLE) view.subText.setVisibility(View.VISIBLE);
+                if(view.subText != null) {
+                    if(TextUtils.isEmpty(entity.getDescription())){
+                        if(view.subText.getVisibility() == View.VISIBLE) view.subText.setVisibility(View.GONE);
+                    } else {
+                        view.subText.setText(entity.getDescription());
+                        if(view.subText.getVisibility() != View.VISIBLE) view.subText.setVisibility(View.VISIBLE);
+                    }
                 }
 
                 if(view.itemView.isLongClickable() && onEntrySelectionUpdated == null){
@@ -122,8 +139,9 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
                 }else if(onEntrySelectionUpdated != null && !view.itemView.isLongClickable()){
                     view.itemView.setOnLongClickListener(longClickListener);
                 }
-                view.itemView.setOnClickListener(clickListener);
+                if(view.radioButton != null) view.radioButton.setChecked(isCurrentServer);
 
+                view.itemView.setOnClickListener(clickListener);
                 view.itemView.setTag(idTagKey, entity.getID());
                 view.itemView.setTag(positionTagKey, position);
             }
@@ -143,6 +161,12 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
         reloadData();
     }
 
+    private boolean ipMatches(IPPortPair one, IPPortPair two) {
+        if((one == null || one.isEmpty()) && (two == null || two.isEmpty())) return true;
+        else if(one == null || two == null) return false;
+        return one.matches(two);
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -154,8 +178,7 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
             itemView.setOnLongClickListener(null);
         }
         itemView.setOnClickListener(clickListener);
-
-        return new ViewHolder(itemView, viewType);
+        return new ViewHolder(itemView);
     }
 
     @Override
@@ -168,7 +191,6 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
         return 0;
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     protected void cleanup() {
         super.cleanup();
@@ -188,23 +210,24 @@ public class DNSEntryAdapter extends DatabaseAdapter<DNSEntry, DNSEntryAdapter.V
     }
 
     static class ViewHolder extends BaseViewHolder {
-        private TextView textView, subText;
+        private final TextView textView, subText;
+        private final RadioButton radioButton;
 
-        private ViewHolder(View itemView, int type) {
+        private ViewHolder(View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.text);
-            if(type== 0)subText = itemView.findViewById(R.id.text2);
+            subText = itemView.findViewById(R.id.text2);
+            radioButton = itemView.findViewById(R.id.currentServerRadioButton);
         }
 
         @Override
         protected void finalize() throws Throwable {
             super.finalize();
-            textView = subText = null;
         }
 
         @Override
         protected void destroy() {
-            textView = subText = null;
+
         }
     }
 

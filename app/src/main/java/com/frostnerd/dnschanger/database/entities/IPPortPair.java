@@ -1,18 +1,16 @@
 package com.frostnerd.dnschanger.database.entities;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
+import com.frostnerd.database.orm.MultitonEntity;
+import com.frostnerd.database.orm.annotations.Ignore;
+import com.frostnerd.database.orm.annotations.Named;
+import com.frostnerd.database.orm.annotations.RowID;
+import com.frostnerd.database.orm.annotations.Table;
 import com.frostnerd.dnschanger.util.Util;
-import com.frostnerd.utils.database.orm.MultitonEntity;
-import com.frostnerd.utils.database.orm.annotations.Ignore;
-import com.frostnerd.utils.database.orm.annotations.Named;
-import com.frostnerd.utils.database.orm.annotations.RowID;
-import com.frostnerd.utils.database.orm.annotations.Table;
 
 import java.io.Serializable;
 
-import lombok.AccessLevel;
-import lombok.Getter;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
@@ -42,13 +40,18 @@ public class IPPortPair extends MultitonEntity implements Serializable{
     @Named(name = "Ipv6")
     private boolean ipv6;
     @Ignore
-    @Getter(lazy = true, value = AccessLevel.PUBLIC) private static final IPPortPair emptyPair = createEmptyPair();
+    static final IPPortPair emptyPair = new IPPortPair("", Integer.MIN_VALUE + 1, false);
     @RowID
     private long id;
     public static final IPPortPair INVALID = new IPPortPair("", Integer.MIN_VALUE, false);
 
     public IPPortPair(){
 
+    }
+
+    public boolean matches(IPPortPair other) {
+        if(other == null) return false;
+        return other.ipv6 == ipv6 && other.ip.equalsIgnoreCase(ip) && other.port == port;
     }
 
     public IPPortPair(@NonNull String ip, int port, boolean IPv6) {
@@ -123,12 +126,12 @@ public class IPPortPair extends MultitonEntity implements Serializable{
         }
     }
 
-    private static IPPortPair createEmptyPair(){
-        return new IPPortPair("", Integer.MIN_VALUE + 1, false);
+    public static IPPortPair getEmptyPair() {
+        return emptyPair;
     }
 
     public boolean isEmpty(){
-        return getAddress().equals("") || this == getEmptyPair();
+        return getAddress().equals("") || this == emptyPair;
     }
 
 }

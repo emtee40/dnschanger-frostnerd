@@ -21,6 +21,10 @@ package com.frostnerd.dnschanger.util.dnsproxy;
 public class DummyProxy extends DNSProxy {
     private boolean shouldRun = true;
 
+    public DummyProxy(){
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CREATING DUMMY");
+    }
+
     @Override
     public void run() throws InterruptedException {
         while(shouldRun){

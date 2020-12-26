@@ -1,24 +1,24 @@
 package com.frostnerd.dnschanger.adapters;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.frostnerd.database.DatabaseAdapter;
+import com.frostnerd.database.orm.parser.columns.Column;
+import com.frostnerd.database.orm.statementoptions.queryoptions.WhereCondition;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSRule;
 import com.frostnerd.dnschanger.dialogs.NewRuleDialog;
 import com.frostnerd.dnschanger.util.RuleImport;
-import com.frostnerd.utils.adapters.BaseViewHolder;
-import com.frostnerd.utils.adapters.DatabaseAdapter;
-import com.frostnerd.utils.database.orm.parser.columns.Column;
-import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
+import com.frostnerd.lifecycle.BaseViewHolder;
 
 
 /*
@@ -39,7 +39,7 @@ import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondi
  *
  * You can contact the developer at daniel.wolf@frostnerd.com.
  */
-public class RuleAdapter<T extends Activity &RuleImport.ImportStartedListener> extends DatabaseAdapter<DNSRule, RuleAdapter.ViewHolder>{
+public class RuleAdapter<T extends Activity &RuleImport.ImportStartedListener> extends DatabaseAdapter<DNSRule, RuleAdapter.ViewHolder> {
     private LayoutInflater layoutInflater;
     private NewRuleDialog newRuleDialog;
     private T context;
@@ -110,7 +110,7 @@ public class RuleAdapter<T extends Activity &RuleImport.ImportStartedListener> e
         return new ViewHolder(layoutInflater.inflate(R.layout.row_rule, parent, false));
     }
 
-    static class ViewHolder extends BaseViewHolder{
+    static class ViewHolder extends BaseViewHolder {
         private TextView host, target;
 
         private ViewHolder(View itemView) {
@@ -144,6 +144,11 @@ public class RuleAdapter<T extends Activity &RuleImport.ImportStartedListener> e
         layoutInflater = null;
         if(newRuleDialog != null)newRuleDialog.dismiss();
         newRuleDialog = null;
+    }
+
+    @Override
+    public int queryDBCount() {
+        return super.queryDBCount();
     }
 
     public enum ArgumentLessFilter implements DatabaseAdapter.ArgumentLessFilter{

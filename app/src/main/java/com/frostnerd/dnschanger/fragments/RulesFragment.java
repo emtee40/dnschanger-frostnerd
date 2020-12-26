@@ -9,17 +9,6 @@ import android.content.IntentFilter;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPropertyAnimatorCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -34,6 +23,18 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.ViewPropertyAnimatorCompat;
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.frostnerd.design.DesignUtil;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.adapters.RuleAdapter;
@@ -42,10 +43,10 @@ import com.frostnerd.dnschanger.dialogs.NewRuleDialog;
 import com.frostnerd.dnschanger.services.RuleImportService;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Util;
-import com.frostnerd.utils.design.MaterialEditText;
-import com.frostnerd.utils.general.DesignUtil;
-import com.frostnerd.utils.general.Utils;
-import com.frostnerd.utils.networking.NetworkUtil;
+import com.frostnerd.general.Utils;
+import com.frostnerd.materialedittext.MaterialEditText;
+import com.frostnerd.networking.NetworkUtil;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
@@ -293,15 +294,21 @@ public class RulesFragment extends Fragment implements SearchView.OnQueryTextLis
         });
     }
 
+    private boolean wasPaused = false;
+
     @Override
     public void onPause() {
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(databaseUpdateReceiver);
+        wasPaused = true;
         super.onPause();
     }
 
     @Override
     public void onResume() {
         LocalBroadcastManager.getInstance(requireContext()).registerReceiver(databaseUpdateReceiver, new IntentFilter(RuleImportService.BROADCAST_EVENT_DATABASE_UPDATED));
+        if(wasPaused && ruleAdapter.getItemCount() != ruleAdapter.queryDBCount())
+            ruleAdapter.reloadData();
+        wasPaused = false;
         super.onResume();
     }
 

@@ -3,21 +3,24 @@ package com.frostnerd.dnschanger.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.frostnerd.dnschanger.R;
-import com.frostnerd.utils.adapters.BaseAdapter;
-import com.frostnerd.utils.adapters.BaseViewHolder;
-import com.frostnerd.utils.general.DesignUtil;
+import androidx.annotation.NonNull;
 
-import org.xbill.DNS.DClass;
-import org.xbill.DNS.Record;
-import org.xbill.DNS.Type;
+import com.frostnerd.design.DesignUtil;
+import com.frostnerd.dnschanger.R;
+import com.frostnerd.lifecycle.BaseAdapter;
+import com.frostnerd.lifecycle.BaseViewHolder;
+
+import org.minidns.record.Data;
+import org.minidns.record.Record;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
@@ -38,27 +41,25 @@ import org.xbill.DNS.Type;
  * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 public class QueryResultAdapter extends BaseAdapter<QueryResultAdapter.ViewHolder> {
-    private Record[] answer;
+    private List<Record<? extends Data>> answer;
     private Context context;
     private LayoutInflater layoutInflater;
 
-    public QueryResultAdapter(Context context, Record[] answer){
+    public QueryResultAdapter(Context context, List<Record<? extends Data>> answer){
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.answer = answer;
+        if(answer == null) this.answer = new ArrayList<>();
     }
 
     @Override
     protected void cleanup(){
-        context = null;
-        layoutInflater = null;
-        answer = null;
     }
 
     @NonNull
     @Override
     public QueryResultAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(answer.length, context, (LinearLayout)layoutInflater.inflate(R.layout.row_dns_query, parent, false));
+        return new ViewHolder(answer.size(), context, (LinearLayout)layoutInflater.inflate(R.layout.row_dns_query, parent, false));
     }
 
     @Override
@@ -88,11 +89,13 @@ public class QueryResultAdapter extends BaseAdapter<QueryResultAdapter.ViewHolde
     }
 
     private String getText(int position, int index){
-        if(position == 0)return answer[index-1].getName().toString();
-        else if(position == 1)return String.valueOf(answer[index-1].getTTL());
-        else if(position == 2)return DClass.string(answer[index-1].getDClass());
-        else if(position == 3)return Type.string(answer[index-1].getType());
-        else return answer[index-1].rdataToString();
+        Record data = answer.get(index-1);
+
+        if(position == 0)return data.name.toString();
+        else if(position == 1)return String.valueOf(data.ttl);
+        else if(position == 2)return data.clazz != null ? answer.get(index-1).clazz.name() : Record.CLASS.IN.name();
+        else if(position == 3)return data.type != null ? answer.get(index-1).type.name() : Record.TYPE.A.name();
+        else return answer.get(index-1).payloadData.toString();
     }
 
     @Override
@@ -100,7 +103,7 @@ public class QueryResultAdapter extends BaseAdapter<QueryResultAdapter.ViewHolde
         return 5;
     }
 
-    static class ViewHolder extends BaseViewHolder{
+    static class ViewHolder extends BaseViewHolder {
         private ViewHolder(int elementCount, Context context, LinearLayout itemView) {
             super(itemView);
             TextView text;

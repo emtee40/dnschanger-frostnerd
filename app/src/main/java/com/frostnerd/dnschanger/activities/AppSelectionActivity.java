@@ -10,16 +10,7 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.SimpleItemAnimator;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,11 +22,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+
+import com.frostnerd.design.DesignUtil;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.util.ThemeHandler;
-import com.frostnerd.utils.general.DesignUtil;
-import com.frostnerd.utils.general.Utils;
-import com.frostnerd.utils.lifecyclehelper.UtilityActivity;
+import com.frostnerd.general.Utils;
+import com.frostnerd.lifecycle.BaseActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ import java.util.TreeSet;
  *
  * You can contact the developer at daniel.wolf@frostnerd.com.
  */
-public class AppSelectionActivity extends UtilityActivity implements SearchView.OnQueryTextListener{
+public class AppSelectionActivity extends BaseActivity implements SearchView.OnQueryTextListener{
     private long lastBackPress;
     private ArrayList<String> currentSelected;
     private RecyclerView appList;
@@ -215,8 +215,8 @@ public class AppSelectionActivity extends UtilityActivity implements SearchView.
     }
 
     private final class AppListAdapter extends RecyclerView.Adapter<ViewHolder> {
-        private final TreeSet<AppEntry> apps = new TreeSet<>();
-        private final List<AppEntry> searchedApps = new ArrayList<>();
+        private TreeSet<AppEntry> apps = new TreeSet<>();
+        private List<AppEntry> searchedApps = new ArrayList<>();
         private boolean update = true;
         private String currentSearch = "";
 
@@ -231,28 +231,30 @@ public class AppSelectionActivity extends UtilityActivity implements SearchView.
                     findViewById(R.id.progress).setVisibility(View.VISIBLE);
                 }
             });
-            apps.clear();
+            TreeSet<AppEntry> nextApps = new TreeSet<>();
             List<ApplicationInfo> packages = getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
             AppEntry entry;
             for (ApplicationInfo packageInfo : packages) {
                 entry = new AppEntry(AppSelectionActivity.this, packageInfo);
                 if(!onlyInternet || entry.hasPermission(Manifest.permission.INTERNET)){
-                    if(showSystemApps || !entry.isSystemApp())apps.add(entry);
+                    if(showSystemApps || !entry.isSystemApp())nextApps.add(entry);
                 }
             }
+            apps = nextApps;
             filter(currentSearch);
         }
 
         public void filter(String search){
             this.currentSearch = search;
-            searchedApps.clear();
+            List<AppEntry> nextSearch = new ArrayList<>();
             if(search.equals("")){
-                searchedApps.addAll(apps);
+                nextSearch.addAll(apps);
             }else{
                 for(AppEntry entry: apps){
-                    if(entry.getTitle().toLowerCase().contains(search.toLowerCase()))searchedApps.add(entry);
+                    if(entry.getTitle().toLowerCase().contains(search.toLowerCase()))nextSearch.add(entry);
                 }
             }
+            searchedApps = nextSearch;
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -386,14 +388,14 @@ public class AppSelectionActivity extends UtilityActivity implements SearchView.
         private boolean isPermissionGranted(PackageInfo info, String permission){
             for(int i = 0; i < info.requestedPermissions.length; i++){
                 if(info.requestedPermissions[i].equals(permission)) {
-                    return Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN || (info.requestedPermissionsFlags[i] & PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0;
+                    return (info.requestedPermissionsFlags[i] & PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0;
                 }
             }
             return false;
         }
 
         private boolean isPermissionGranted(PackageInfo info, int pos){
-            return Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN || (info.requestedPermissionsFlags[pos] & PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0;
+            return (info.requestedPermissionsFlags[pos] & PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0;
         }
     }
 }

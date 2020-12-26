@@ -1,7 +1,7 @@
 package com.frostnerd.dnschanger.database.serializers;
 
+import com.frostnerd.database.orm.Serializer;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
-import com.frostnerd.utils.database.orm.Serializer;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)

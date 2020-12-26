@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activities.PinActivity"
-    android:background="?android:attr/windowBackground"
     android:orientation="vertical"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
@@ -28,7 +27,7 @@
         android:layout_height="1dp"
         android:background="#9E9E9E" />
 
-    <com.frostnerd.utils.design.MaterialEditText
+    <com.frostnerd.materialedittext.MaterialEditText
         android:id="@+id/pin_dialog_met"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,6 +37,9 @@
         app:image="?attr/keyResource"
         app:indicatorState="undefined"
         app:indicatorVisibilityWhenUnused="hidden"
+        app:labelColorPrimary="?attr/foregroundElementColor"
+        app:labelColorSecondary="?attr/foregroundElementColor"
+        app:iconTint="?attr/foregroundElementColor"
         app:labelText="PIN"
         app:revealDelay="0"
         app:revealType="revealInstant">
@@ -50,8 +52,8 @@
             android:cursorVisible="true"
             android:hint="@string/hint_pin"
             android:inputType="numberPassword"
-            android:textColor="#FFF" />
-    </com.frostnerd.utils.design.MaterialEditText>
+            android:textColor="?attr/foregroundElementColor" />
+    </com.frostnerd.materialedittext.MaterialEditText>
 
     <TextView
         android:layout_width="wrap_content"
@@ -70,23 +72,12 @@
         android:layout_height="1dp"
         android:background="#9E9E9E" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
+            android:layout_gravity="end"
             android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/pin_dialog_ok"
-                style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ok" />
 
             <Button
                 android:id="@+id/pin_dialog_cancel"
@@ -94,7 +85,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cancel" />
-        </LinearLayout>
 
-    </RelativeLayout>
+            <Button
+                android:id="@+id/pin_dialog_ok"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ok" />
+        </LinearLayout>
 </LinearLayout>

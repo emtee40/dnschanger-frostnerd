@@ -7,8 +7,8 @@ import android.net.VpnService;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
-import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.Preferences;
+import com.frostnerd.dnschanger.util.Util;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
@@ -37,8 +37,7 @@ public class BootReceiver extends BroadcastReceiver {
         if(intent.getAction() != null && intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED) || intent.getAction().equals(Intent.ACTION_LOCKED_BOOT_COMPLETED)){
             LogFactory.writeMessage(context, LOG_TAG, "Action is BOOT_COMPLETED");
             LogFactory.writeMessage(context, LOG_TAG, "Starting ConnectivityBackgroundService");
-            Util.runBackgroundConnectivityCheck(context);
-            Preferences.getInstance(context).put( "everything_disabled", false);
+            if(Util.shouldRunNetworkCheck(context)) Util.runBackgroundConnectivityCheck(context, false, true);
             if(Preferences.getInstance(context).getBoolean("setting_start_boot",false)){
                 LogFactory.writeMessage(context, LOG_TAG, "User wants App to start on boot");
                 Intent i = VpnService.prepare(context);

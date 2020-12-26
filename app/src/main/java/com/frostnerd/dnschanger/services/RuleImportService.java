@@ -8,9 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.LocalBroadcastManager;
+
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.frostnerd.dnschanger.DNSChanger;
 import com.frostnerd.dnschanger.R;
@@ -144,7 +145,7 @@ public class RuleImportService extends Service {
                 BufferedReader reader = new BufferedReader(new FileReader(file.getFile()));
                 RuleImport.LineParser parser = file.getFileType();
                 updateNotification(file.getFile());
-                rowID = DatabaseHelper.getInstance(this).getHighestRowID(DNSRule.class);
+                rowID = DatabaseHelper.getInstance(this).getHighestUnusedRowID(DNSRule.class);
                 lastRowID = rowID;
                 long currentRowID;
                 while (continueCurrent && shouldContinue && (line = reader.readLine()) != null) {
@@ -247,20 +248,20 @@ public class RuleImportService extends Service {
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationBuilder = new NotificationCompat.Builder(this, Util.createNotificationChannel(this, false));
         notificationBuilder.setSmallIcon(R.drawable.ic_action_import);
-        notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0));
+        notificationBuilder.setContentIntent(PendingIntent.getActivity(this, 8, new Intent(this, PinActivity.class), 0));
         notificationBuilder.setAutoCancel(false);
         notificationBuilder.setOngoing(true);
         notificationBuilder.setUsesChronometer(true);
         notificationBuilder.setColorized(false);
         notificationBuilder.setSound(null);
         notificationBuilder.addAction(new NotificationCompat.Action(R.drawable.ic_stat_stop, getString(R.string.stop),
-                PendingIntent.getService(this, 2, new Intent(this, RuleImportService.class).putExtra(NOTIFICATION_ACTION_STOP_CURRENT, "herp"), 0)));
+                PendingIntent.getService(this, 9, new Intent(this, RuleImportService.class).putExtra(NOTIFICATION_ACTION_STOP_CURRENT, "herp"), 0)));
         notificationBuilder.addAction(new NotificationCompat.Action(R.drawable.ic_stat_stop, getString(R.string.stop_all),
-                PendingIntent.getService(this, 1, new Intent(this, RuleImportService.class).putExtra(NOTIFICATION_ACTION_STOP_ALL, "herp"),0)));
+                PendingIntent.getService(this, 10, new Intent(this, RuleImportService.class).putExtra(NOTIFICATION_ACTION_STOP_ALL, "herp"),0)));
 
         notificationBuilderFinished = new NotificationCompat.Builder(this, Util.createNotificationChannel(this, false));
         notificationBuilderFinished.setSmallIcon(R.drawable.ic_action_import);
-        notificationBuilderFinished.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, PinActivity.class), 0));
+        notificationBuilderFinished.setContentIntent(PendingIntent.getActivity(this, 11, new Intent(this, PinActivity.class), 0));
         notificationBuilderFinished.setAutoCancel(true);
         notificationBuilderFinished.setOngoing(false);
         notificationBuilderFinished.setUsesChronometer(false);
@@ -307,7 +308,7 @@ public class RuleImportService extends Service {
         }
     }
 
-    private class Configuration{
+    private static class Configuration{
         private FileList fileList;
         private int lineCount;
         private int databaseConflictHandling;

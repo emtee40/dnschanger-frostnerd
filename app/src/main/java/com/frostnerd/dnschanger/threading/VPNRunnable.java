@@ -1,31 +1,38 @@
 package com.frostnerd.dnschanger.threading;
 
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.system.OsConstants;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
 import com.frostnerd.dnschanger.DNSChanger;
 import com.frostnerd.dnschanger.LogFactory;
+import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
 import com.frostnerd.dnschanger.activities.InvalidDNSDialogActivity;
-import com.frostnerd.dnschanger.activities.MainActivity;
+import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.services.DNSVpnService;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.dnsproxy.DNSProxy;
 import com.frostnerd.dnschanger.util.dnsproxy.DummyProxy;
-import com.frostnerd.utils.general.StringUtil;
-import com.frostnerd.utils.networking.NetworkUtil;
+import com.frostnerd.general.StringUtil;
+import com.frostnerd.networking.NetworkUtil;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -91,8 +98,11 @@ public class VPNRunnable implements Runnable {
 
     @Override
     public void run() {
+        if(service == null) return;
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Starting Thread (run)");
-        Thread.setDefaultUncaughtExceptionHandler(((DNSChanger)service.getApplicationContext()).getExceptionHandler());
+        if(service.getApplicationContext() instanceof DNSChanger) {
+            Thread.setDefaultUncaughtExceptionHandler(((DNSChanger)service.getApplicationContext()).getExceptionHandler());
+        }
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Trying " + addresses.size() + " different addresses before passing any thrown exception to the upper layer");
         try{
             for(String address: addresses.keySet()){
@@ -119,7 +129,7 @@ public class VPNRunnable implements Runnable {
                         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "We are in advanced mode, starting DNS proxy");
                         dnsProxy = DNSProxy.createProxy(service, tunnelInterface, new HashSet<>(upstreamServers)
                                 ,PreferencesAccessor.areRulesEnabled(service), PreferencesAccessor.isQueryLoggingEnabled(service),
-                                PreferencesAccessor.sendDNSOverTCP(service));
+                                PreferencesAccessor.logUpstreamDNSAnswers(service));
                         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "DNS proxy created");
                     }else dnsProxy = new DummyProxy();
                     dnsProxy.run();
@@ -135,7 +145,10 @@ public class VPNRunnable implements Runnable {
         }catch(Exception e){
             LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "VPN Thread had an exception");
             LogFactory.writeStackTrace(service, new String[]{LOG_TAG,LogFactory.Tag.ERROR.toString()}, e);
-            if(isDNSInvalid(e))service.startActivity(new Intent(service, InvalidDNSDialogActivity.class));
+            if(isDNSInvalid(e))service.startActivity(new Intent(service, InvalidDNSDialogActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            else if(e instanceof SecurityException && e.getMessage() != null && e.getMessage().contains("INTERACT_ACROSS_USERS")) {
+                showRestrictedUserNotification();
+            }
             else Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
         }finally {
             running = false;
@@ -153,8 +166,24 @@ public class VPNRunnable implements Runnable {
         }
     }
 
+    private void showRestrictedUserNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(service, Util.createImportantChannel(service));
+        builder.setContentTitle(service.getString(R.string.warning));
+        builder.setSmallIcon(R.drawable.ic_stat_small_icon);
+        builder.setContentIntent(PendingIntent.getActivity(service, 20, new Intent(service, PinActivity.class), 0));
+        builder.setAutoCancel(true);
+        builder.setOngoing(false);
+        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        builder.setColorized(false);
+        builder.setContentText(service.getString(R.string.message_user_restricted));
+        builder.setStyle(new NotificationCompat.BigTextStyle().bigText(service.getString(R.string.message_user_restricted)));
+        ((NotificationManager)service.getSystemService(Context.NOTIFICATION_SERVICE)).notify(10000, builder.build());
+    }
+
     public void addAfterThreadStop(@NonNull Runnable runnable){
-        afterThreadStop.add(runnable);
+        synchronized (afterThreadStop){
+            afterThreadStop.add(runnable);
+        }
     }
 
     private boolean isDNSInvalid(@NonNull Exception ex){
@@ -175,7 +204,6 @@ public class VPNRunnable implements Runnable {
         builder = null;
         tunnelInterface = null;
         dnsProxy = null;
-        builder = null;
     }
 
     private void configure(@NonNull String address, boolean advanced){
@@ -204,38 +232,64 @@ public class VPNRunnable implements Runnable {
                 addDNSServer(pair.getAddress(), advanced, pair.isIpv6());
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            try{
-                if(whitelistMode){
-                    for(String s: vpnApps){
-                        if(s.equals("com.android.vending"))continue;
+            if (whitelistMode) {
+                for (String s : vpnApps) {
+                    if (s.equals("com.android.vending")) continue;
+                    try {
                         builder = builder.addAllowedApplication(s);
-                    }
-                }else{
-                    builder = builder.addDisallowedApplication("com.android.vending");
-                    for(String s: vpnApps){
-                        if(s.equals("com.android.vending"))continue;
-                        builder = builder.addDisallowedApplication(s);
+                    } catch (Exception ignored) {
                     }
                 }
-            }catch (PackageManager.NameNotFoundException ignored){
-
+            } else {
+                try {
+                    builder = builder.addDisallowedApplication("com.android.vending");
+                } catch (Exception ignored) {
+                }
+                try {
+                    builder.addDisallowedApplication(service.getPackageName());
+                } catch (Exception ignored) {
+                }
+                for (String s : vpnApps) {
+                    if (s.equals("com.android.vending")) continue;
+                    try {
+                        builder = builder.addDisallowedApplication(s);
+                    } catch (Exception ignored) {
+                    }
+                }
             }
         }
         String release = Build.VERSION.RELEASE;
-        if(Build.VERSION.SDK_INT != 19 || release.startsWith("4.4.3") || release.startsWith("4.4.4") || release.startsWith("4.4.5") || release.startsWith("4.4.6")){
+        if (Build.VERSION.SDK_INT != 19 || release.startsWith("4.4.2") || release.startsWith("4.4.3") || release.startsWith("4.4.4") || release.startsWith("4.4.5") || release.startsWith("4.4.6")) {
             builder.setMtu(1500);
         }else builder.setMtu(1280);
         LogFactory.writeMessage(service, new String[]{LOG_TAG, "[VPNTHREAD]", ID}, "Tunnel interface created, not yet connected");
-        builder.setConfigureIntent(PendingIntent.getActivity(service, 1, new Intent(service, MainActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
+        builder.setConfigureIntent(PendingIntent.getActivity(service, 12, new Intent(service, PinActivity.class), PendingIntent.FLAG_CANCEL_CURRENT));
     }
+    public static final Map<String, InetAddress> addressRemap = new HashMap<>();
+    private final String addressRemapBase = "244.0.0.";
+    private int addressRemapIndex = 1;
 
     private void addDNSServer(@NonNull String server, boolean addRoute, boolean ipv6){
         if(server != null && !server.equals("")){
-            if(server.equals("127.0.0.1"))server = DNSProxy.IPV4_LOOPBACK_REPLACEMENT;
-            else if(server.equals("::1"))server = DNSProxy.IPV6_LOOPBACK_REPLACEMENT;
+            if(server.equals("127.0.0.1")) {
+                server = DNSProxy.IPV4_LOOPBACK_REPLACEMENT;
+                ipv6 = false;
+            } else if(server.equals("::1")) {
+                server = DNSProxy.IPV6_LOOPBACK_REPLACEMENT;
+                ipv6 = true;
+            }
             builder.addDnsServer(server);
-            if(addRoute)builder.addRoute(server, ipv6 ? 128 : 32);
+            if(addRoute) builder.addRoute(server, ipv6 ? 128 : 32);
         }
+    }
+
+    private InetAddress getRemappedAddress(String server){
+        try {
+            return InetAddress.getByName(server);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public boolean isThreadRunning(){
@@ -253,6 +307,5 @@ public class VPNRunnable implements Runnable {
         cleanup();
         upstreamServers.clear();
         vpnApps = null;
-        service = null;
     }
 }

@@ -3,24 +3,27 @@ package com.frostnerd.dnschanger.database;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.frostnerd.database.CursorWithDefaults;
+import com.frostnerd.database.orm.Entity;
+import com.frostnerd.database.orm.parser.ParsedEntity;
+import com.frostnerd.database.orm.statementoptions.queryoptions.WhereCondition;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.DNSQuery;
 import com.frostnerd.dnschanger.database.entities.DNSRule;
 import com.frostnerd.dnschanger.database.entities.DNSRuleImport;
+import com.frostnerd.dnschanger.database.entities.DNSTLSConfiguration;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.database.entities.Shortcut;
-import com.frostnerd.utils.database.CursorWithDefaults;
-import com.frostnerd.utils.database.orm.Entity;
-import com.frostnerd.utils.database.orm.parser.ParsedEntity;
-import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
-import com.frostnerd.utils.general.Utils;
+import com.frostnerd.general.Utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /*
@@ -41,9 +44,9 @@ import java.util.Set;
  *
  * You can contact the developer at daniel.wolf@frostnerd.com.
  */
-public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper {
+public class DatabaseHelper extends com.frostnerd.database.DatabaseHelper {
     public static final String DATABASE_NAME = "data";
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 6;
     @NonNull
     public static final Set<Class<? extends Entity>> entities = new HashSet<Class<? extends Entity>>(){{
         add(DNSEntry.class);
@@ -52,23 +55,21 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
         add(DNSRuleImport.class);
         add(IPPortPair.class);
         add(Shortcut.class);
+        add(DNSTLSConfiguration.class);
     }};
     @Nullable
     private static DatabaseHelper instance;
-    @NonNull
-    private Context wrappedContext;
 
     public static DatabaseHelper getInstance(@NonNull Context context){
-        return instance == null ? instance = new DatabaseHelper(context.getApplicationContext() != null ? context.getApplicationContext() : context) : instance;
-    }
-
-    public static boolean instanceActive(){
-        return instance != null;
+        if(instance == null) {
+            instance = new DatabaseHelper(context.getApplicationContext());
+        }
+        return instance;
     }
 
     private DatabaseHelper(@NonNull Context context) {
         super(context, DATABASE_NAME, DATABASE_VERSION, entities);
-        wrappedContext = context;
+        upgradeDnsQuery();
     }
 
     @Override
@@ -81,13 +82,40 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
 
     }
 
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if(oldVersion != 4 && oldVersion != 3) super.onUpgrade(db, oldVersion, newVersion);
+        if(oldVersion != 4 && oldVersion != 3 && oldVersion != 5) super.onUpgrade(db, oldVersion, newVersion);
+        else {
+            onAfterUpgrade(db, oldVersion, newVersion);
+        }
+    }
+
+    private void upgradeDnsQuery() {
+        Cursor cursor = null;
+        try {
+            SQLiteDatabase db = getWritableDatabase();
+            cursor = db.rawQuery("SELECT * FROM DNSQuery LIMIT 1", null);
+            boolean columnFound = false;
+            for(String s: cursor.getColumnNames()) {
+                if(s.equalsIgnoreCase("upstreamanswer")) {
+                    columnFound = true;
+                    break;
+                }
+            }
+            if(!columnFound) {
+                db.execSQL("ALTER TABLE DNSQuery ADD COLUMN UpstreamAnswer TEXT");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(cursor != null) cursor.close();
+        }
     }
 
     @Override
     public void onBeforeUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        System.out.println("Updating from " + oldVersion + " to " + newVersion);
         if(oldVersion <= 1){
             List<Shortcut> shortcuts = new ArrayList<>();
             List<DNSEntry> entries = new ArrayList<>();
@@ -130,6 +158,10 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
             onCreate(db);
             for(DNSEntry entry: entries) insert(entry);
             for(Shortcut shortcut: shortcuts) createShortcut(shortcut);
+        }else if(oldVersion <= 3) {
+            getSQLHandler(DNSTLSConfiguration.class).createTable(db);
+            db.execSQL("DROP TABLE IF EXISTS " + getTableName(DNSRuleImport.class));
+            getSQLHandler(DNSRuleImport.class).createTable(db);
         }
     }
 
@@ -139,7 +171,7 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
 
     private String legacyString(int column, @NonNull CursorWithDefaults cursor, @NonNull String defaultValue){
         String fromDB = cursor.getStringNonEmpty(column, defaultValue);
-        fromDB = fromDB.replaceAll("\\r|\\n", "");
+        fromDB = fromDB.replaceAll("[\\r\\n]", "");
         return Utils.notEmptyOrDefault(fromDB, defaultValue);
     }
 
@@ -147,20 +179,16 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
     public void onAfterUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if(oldVersion != 4) {
             int version;
-            for(DNSEntry entry: DNSEntry.defaultDNSEntries.keySet()){
-                version = DNSEntry.defaultDNSEntries.get(entry);
-                if(getCount(DNSEntry.class, WhereCondition.equal("name", entry.getName())) == 0)
-                    if(version > oldVersion && version <= newVersion)insert(entry);
+            for(Map.Entry<DNSEntry, Integer> entry: DNSEntry.defaultDNSEntries.entrySet()){
+                version = entry.getValue();
+                if(version > oldVersion && version <= newVersion) {
+                    int count = ParsedEntity.wrapEntity(DNSEntry.class).getCount(db, WhereCondition.equal("name", entry.getKey().getName()));
+                    if(count == 0) {
+                        insert(db, entry.getKey());
+                    }
+                }
             }
         }
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    @Override
-    public synchronized void close() {
-        instance = null;
-        wrappedContext = null;
-        super.close();
     }
 
     public boolean dnsEntryExists(String name){
@@ -226,6 +254,50 @@ public class DatabaseHelper extends com.frostnerd.utils.database.DatabaseHelper 
                 WhereCondition.like(parsedEntity.getTable().findColumn("dns2"), address).nextOr(),
                 WhereCondition.like(parsedEntity.getTable().findColumn("dns1v6"), address).nextOr(),
                 WhereCondition.like(parsedEntity.getTable().findColumn("dns2v6"), address));
+    }
+
+    @NonNull
+    public Set<DNSEntry> findMatchingDNSEntries(@NonNull String dnsServer) {
+        String address = "%" + dnsServer + "%";
+        if (address.equals("%%")) return new HashSet<>();
+        ParsedEntity<DNSEntry> parsedEntity = getSQLHandler(DNSEntry.class);
+        return new HashSet<>(parsedEntity.select(this, false, WhereCondition.like(parsedEntity.getTable().findColumn("dns1"), address).nextOr(),
+                WhereCondition.like(parsedEntity.getTable().findColumn("dns2"), address).nextOr(),
+                WhereCondition.like(parsedEntity.getTable().findColumn("dns1v6"), address).nextOr(),
+                WhereCondition.like(parsedEntity.getTable().findColumn("dns2v6"), address)));
+    }
+
+    @Nullable
+    public DNSTLSConfiguration findTLSConfiguration(@NonNull DNSEntry entry){
+        DNSTLSConfiguration best = null;
+        int maxHits = 0;
+        for(DNSTLSConfiguration configuration: getAll(DNSTLSConfiguration.class)){
+            for(IPPortPair pair: entry.getServers()) {
+                int hits = 0;
+                for(IPPortPair ip: configuration.getAffectedServers()) {
+                    if(pair.getAddress().equalsIgnoreCase(ip.getAddress())) hits++;
+                }
+                if(hits > maxHits) {
+                    maxHits = hits;
+                    best = configuration;
+                }
+            }
+        }
+        return best;
+    }
+
+    public List<DNSEntry> getCustomDNSEntries(){
+        return select(DNSEntry.class, WhereCondition.equal("customentry", "1"));
+    }
+
+    @Nullable
+    public DNSTLSConfiguration findTLSConfiguration(@NonNull IPPortPair pair){
+        for(DNSTLSConfiguration configuration: getAll(DNSTLSConfiguration.class)){
+            for(IPPortPair ip: configuration.getAffectedServers()) {
+                if(ip.getAddress().equalsIgnoreCase(pair.getAddress())) return configuration;
+            }
+        }
+        return null;
     }
 
     @Override

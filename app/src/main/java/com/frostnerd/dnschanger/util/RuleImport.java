@@ -1,10 +1,11 @@
 package com.frostnerd.dnschanger.util;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.frostnerd.dnschanger.services.RuleImportService;
-import com.frostnerd.utils.networking.NetworkUtil;
+import com.frostnerd.networking.NetworkUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -56,7 +57,7 @@ public class RuleImport {
         int linesCombined = 0;
         for(ImportableFile file: files)linesCombined += file.getLines();
         context.startService(RuleImportService.createIntent(context, linesCombined, databaseConflictHandling,
-                files.toArray(new ImportableFile[files.size()])));
+                files.toArray(new ImportableFile[0])));
         context.importStarted(linesCombined);
     }
 
@@ -168,9 +169,7 @@ public class RuleImport {
                     String target = DNSMASQ_VALIDATION_MATCHER.group(2);
                     if(target != null && NetworkUtil.isIP(target, false)){
                         return true;
-                    }else if((target = DNSMASQ_VALIDATION_MATCHER.group(3)) != null && NetworkUtil.isIP(target, true)){
-                        return true;
-                    }
+                    }else return (target = DNSMASQ_VALIDATION_MATCHER.group(3)) != null && NetworkUtil.isIP(target, true);
                 }
                 return false;
             }

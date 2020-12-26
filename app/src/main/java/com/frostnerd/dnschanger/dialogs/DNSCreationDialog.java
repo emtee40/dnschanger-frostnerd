@@ -3,8 +3,6 @@ package com.frostnerd.dnschanger.dialogs;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Vibrator;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -14,6 +12,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
@@ -21,9 +22,9 @@ import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Util;
-import com.frostnerd.utils.design.MaterialEditText;
-import com.frostnerd.utils.lifecyclehelper.UtilityDialog;
-import com.frostnerd.utils.textfilers.InputCharacterFilter;
+import com.frostnerd.general.textfilers.InputCharacterFilter;
+import com.frostnerd.lifecycle.BaseDialog;
+import com.frostnerd.materialedittext.MaterialEditText;
 
 import java.util.regex.Pattern;
 
@@ -45,7 +46,7 @@ import java.util.regex.Pattern;
  *
  * You can contact the developer at daniel.wolf@frostnerd.com.
  */
-public class DNSCreationDialog extends UtilityDialog {
+public class DNSCreationDialog extends BaseDialog {
     private IPPortPair dns1, dns2 ,
             dns1V6, dns2V6;
     private EditText ed_dns1, ed_dns2;
@@ -53,6 +54,7 @@ public class DNSCreationDialog extends UtilityDialog {
     private MaterialEditText met_name, met_dns1, met_dns2;
     private Vibrator vibrator;
     private boolean settingV6;
+    private Pattern namePattern = Pattern.compile("[^'#´`~]+");
     private final boolean customPorts;
     {
         customPorts = PreferencesAccessor.areCustomPortsEnabled(getContext());
@@ -213,7 +215,7 @@ public class DNSCreationDialog extends UtilityDialog {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.toString().trim().equals("")) met_name.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
+                if(!namePattern.matcher(s.toString().trim()).matches()) met_name.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 else if(DatabaseHelper.getInstance(getContext()).dnsEntryExists(s.toString().trim())) met_name.setIndicatorState(MaterialEditText.IndicatorState.INCORRECT);
                 else met_name.setIndicatorState(MaterialEditText.IndicatorState.CORRECT);
             }

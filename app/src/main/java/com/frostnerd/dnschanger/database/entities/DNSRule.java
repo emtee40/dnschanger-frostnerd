@@ -1,14 +1,15 @@
 package com.frostnerd.dnschanger.database.entities;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
-import com.frostnerd.utils.database.orm.MultitonEntity;
-import com.frostnerd.utils.database.orm.annotations.Default;
-import com.frostnerd.utils.database.orm.annotations.Named;
-import com.frostnerd.utils.database.orm.annotations.NotNull;
-import com.frostnerd.utils.database.orm.annotations.PrimaryKey;
-import com.frostnerd.utils.database.orm.annotations.RowID;
-import com.frostnerd.utils.database.orm.annotations.Table;
+import com.frostnerd.database.orm.MultitonEntity;
+import com.frostnerd.database.orm.annotations.Default;
+import com.frostnerd.database.orm.annotations.Named;
+import com.frostnerd.database.orm.annotations.NotNull;
+import com.frostnerd.database.orm.annotations.PrimaryKey;
+import com.frostnerd.database.orm.annotations.RowID;
+import com.frostnerd.database.orm.annotations.Table;
+
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
@@ -29,7 +30,7 @@ import com.frostnerd.utils.database.orm.annotations.Table;
  * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 @Table(name = "DNSRule")
-public class DNSRule extends MultitonEntity{
+public class DNSRule extends MultitonEntity {
     @PrimaryKey
     @Named(name = "Host")
     @NonNull

@@ -5,16 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 import com.frostnerd.dnschanger.LogFactory;
-import com.frostnerd.dnschanger.util.ThemeHandler;
-import com.frostnerd.utils.general.Utils;
-import com.frostnerd.utils.permissions.PermissionsUtil;
 import com.frostnerd.dnschanger.util.Preferences;
-import com.frostnerd.utils.preferences.util.PreferenceHelper;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import com.frostnerd.dnschanger.util.ThemeHandler;
+import com.frostnerd.general.Utils;
+import com.frostnerd.general.permissions.PermissionsUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -87,13 +85,12 @@ public class SettingsImportActivity extends Activity {
             LogFactory.writeMessage(c, LOG_TAG, "Reading data");
             while ((line = reader.readLine()) != null) {
                 if (line.equals("") || line.startsWith("[")) continue;
-                if(line.startsWith("'")){
-                    //Util.createShortcut(c, Shortcut.fromString(line.split("'")[1]));
+                if(!line.startsWith("'")){
+                    data.append(line);
                 }
-                else data.append(line);
             }
             LogFactory.writeMessage(c, LOG_TAG, "Data read: " + data);
-            PreferenceHelper.importFromJSON(Preferences.getInstance(c), new Gson().fromJson(data.toString(), JsonObject.class));
+            Preferences.importFromJson(c, data.toString());
             LogFactory.writeMessage(c, LOG_TAG, "Imported data and added to preferences.");
         } catch (Exception e) {
             LogFactory.writeStackTrace(c, LogFactory.Tag.ERROR, e);

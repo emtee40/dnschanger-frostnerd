@@ -1,17 +1,19 @@
 package com.frostnerd.dnschanger.database.entities;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.frostnerd.database.orm.MultitonEntity;
+import com.frostnerd.database.orm.annotations.Named;
+import com.frostnerd.database.orm.annotations.NotNull;
+import com.frostnerd.database.orm.annotations.RowID;
+import com.frostnerd.database.orm.annotations.Serialized;
+import com.frostnerd.database.orm.annotations.Table;
+import com.frostnerd.database.orm.annotations.Unique;
 import com.frostnerd.dnschanger.database.serializers.IPPortSerializer;
-import com.frostnerd.utils.database.orm.MultitonEntity;
-import com.frostnerd.utils.database.orm.annotations.Named;
-import com.frostnerd.utils.database.orm.annotations.NotNull;
-import com.frostnerd.utils.database.orm.annotations.RowID;
-import com.frostnerd.utils.database.orm.annotations.Serialized;
-import com.frostnerd.utils.database.orm.annotations.Table;
-import com.frostnerd.utils.database.orm.annotations.Unique;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.TreeMap;
 
 /*
@@ -85,8 +87,6 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
                 "208.67.220.220", "2620:0:ccc::2", "2620:0:ccd::2", "",false), 0);
         defaultDNSEntries.put(DNSEntry.constructSimple("Level3", "Level3", "209.244.0.3",
                 "209.244.0.4", "", "", "",false), 0);
-        defaultDNSEntries.put(DNSEntry.constructSimple("FreeDNS", "FreeDNS", "37.235.1.174",
-                "37.235.1.177", "", "", "",false), 0);
         defaultDNSEntries.put(DNSEntry.constructSimple("DNS.Watch", "DNS.Watch",
                 "84.200.69.80", "84.200.70.40", "2001:1608:10:25::1c04:b12f", "2001:1608:10:25::9249:d69b", "", false), 3);
         defaultDNSEntries.put(DNSEntry.constructSimple("Cloudflare", "Cloudflare",
@@ -97,15 +97,9 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
                 "64.6.65.6", "2620:74:1b::1:1", "2620:74:1c::2:2", "",false), 0);
         defaultDNSEntries.put(DNSEntry.constructSimple("Alternate", "Alternate", "198.101.242.72",
                 "23.253.163.53", "", "", "",false), 0);
-        defaultDNSEntries.put(DNSEntry.constructSimple("Norton Connectsafe - Security", "Norton Connectsafe",
-                "199.85.126.10", "199.85.127.10", "", "", "",false), 0);
-        defaultDNSEntries.put(DNSEntry.constructSimple("Norton Connectsafe - Security + Pornography" ,
-                "Norton Connectsafe", "199.85.126.20", "199.85.127.20", "", "", "",false), 0);
-        defaultDNSEntries.put(DNSEntry.constructSimple("Norton Connectsafe - Security + Pornography + Other",
-                "Norton Connectsafe", "199.85.126.30", "199.85.127.30", "", "", "",false), 0);
-        defaultDNSEntries.put(DNSEntry.constructSimple("Quad9", "Quad9", "9.9.9.9", "",
+        defaultDNSEntries.put(DNSEntry.constructSimple("Quad9", "Quad9", "9.9.9.9", "149.112.112.112",
                 "2620:fe::fe", "", "", false), 2);
-        defaultDNSEntries.put(DNSEntry.constructSimple("Quad9 secondary", "Quad9 secondary", "9.9.9.10", "",
+        defaultDNSEntries.put(DNSEntry.constructSimple("Quad9 Unsecure ", "Quad9 Unsecure", "9.9.9.10", "",
                 "2620:fe::10", "", "", false), 2);
         defaultDNSEntries.put(DNSEntry.constructSimple("Comodo secure", "Comodo",
                 "8.26.56.26", "8.20.247.20", "", "", "", false), 3);
@@ -128,6 +122,8 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
         defaultDNSEntries.put(DNSEntry.constructSimple("CleanBrowsing Adult Filter", "CleanBrowsing",
                 "185.228.168.10", "185.228.168.11", "2a0d:2a00:1::1", "2a0d:2a00:2::1",
                 "Blocks access to all adult sites. Sites like Reddit are allowed. Google and Bing are set to the Safe Mode.", false), 3);
+        defaultDNSEntries.put(DNSEntry.constructSimple( "OpenDNS FamilyShield", "OpenDNS", "208.67.222.123",
+                "208.67.220.123", "", "", "",false),6);
     }
 
     public DNSEntry(@NonNull String name, @NonNull String shortName, @NonNull IPPortPair dns1, @Nullable IPPortPair dns2,
@@ -236,6 +232,21 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
         return !(ip == null || ip.equals("")) && (entryAddressMatches(ip, dns1) || entryAddressMatches(ip, dns2) || entryAddressMatches(ip, dns1V6) || entryAddressMatches(ip, dns2V6));
     }
 
+    private boolean entryAddressMatches(@Nullable String ip, @Nullable IPPortPair pair){
+        return ip != null && pair != null && ip.equals(pair.getAddress());
+    }
+
+    public Set<IPPortPair> getServers(){
+        Set<IPPortPair> servers = new HashSet<>();
+        servers.add(dns1);
+        servers.add(dns1V6);
+        if(dns2 != null && dns2 != IPPortPair.getEmptyPair() && dns2 != IPPortPair.INVALID)
+            servers.add(dns2);
+        if(dns2V6 != null && dns2V6 != IPPortPair.getEmptyPair() && dns2V6 != IPPortPair.INVALID)
+            servers.add(dns2V6);
+        return servers;
+    }
+
     @Override
     public String toString() {
         return "DNSEntry{" +
@@ -249,9 +260,5 @@ public class DNSEntry extends MultitonEntity implements Comparable<DNSEntry>{
                 ", customEntry=" + customEntry +
                 ", ID=" + ID +
                 '}';
-    }
-
-    private boolean entryAddressMatches(@Nullable String ip, @Nullable IPPortPair pair){
-        return ip != null && pair != null && ip.equals(pair.getAddress());
     }
 }

@@ -5,13 +5,8 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -19,18 +14,24 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+
+import com.frostnerd.design.dialogs.FileChooserDialog;
+import com.frostnerd.design.dialogs.LoadingDialog;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.util.RuleImport;
 import com.frostnerd.dnschanger.util.ThemeHandler;
-import com.frostnerd.utils.design.dialogs.FileChooserDialog;
-import com.frostnerd.utils.design.dialogs.LoadingDialog;
-import com.frostnerd.utils.lifecyclehelper.UtilityDialog;
+import com.frostnerd.lifecycle.BaseDialog;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
@@ -50,7 +51,7 @@ import java.util.List;
  *
  * You can contact the developer at daniel.wolf@frostnerd.com.
  */
-class RuleImportChooserDialog extends UtilityDialog {
+class RuleImportChooserDialog extends BaseDialog {
     private final List<RuleImport.ImportableFile> files = new ArrayList<>();
     private TextView fileLabel;
     private TextView failFastInfo;
@@ -272,9 +273,7 @@ class RuleImportChooserDialog extends UtilityDialog {
             fileChooserDialog.setNavigateToLastPath(true);
             fileChooserDialog.showDialog();
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 999);
-            }
+            ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 999);
         }
     }
 }

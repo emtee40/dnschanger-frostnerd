@@ -59,25 +59,27 @@ public class TilePauseResume extends android.service.quicksettings.TileService {
         super.onStartListening();
         LogFactory.writeMessage(this, LOG_TAG, "Start listening");
         Tile tile = getQsTile();
-        if(Util.isServiceRunning(this)){
-            LogFactory.writeMessage(this, LOG_TAG, "Service running");
-            tile.setState(Tile.STATE_ACTIVE);
-            if(Util.isServiceThreadRunning()){
-                LogFactory.writeMessage(this, LOG_TAG, "Service-Thread running");
-                tile.setLabel(getString(R.string.tile_pause));
-                tile.setIcon(Icon.createWithResource(this, R.drawable.ic_stat_pause));
+        if(tile != null) {
+            if(Util.isServiceRunning(this)){
+                LogFactory.writeMessage(this, LOG_TAG, "Service running");
+                tile.setState(Tile.STATE_ACTIVE);
+                if(Util.isServiceThreadRunning()){
+                    LogFactory.writeMessage(this, LOG_TAG, "Service-Thread running");
+                    tile.setLabel(getString(R.string.tile_pause));
+                    tile.setIcon(Icon.createWithResource(this, R.drawable.ic_stat_pause));
+                }else{
+                    LogFactory.writeMessage(this, LOG_TAG, "Service-Thread not running");
+                    tile.setLabel(getString(R.string.tile_resume));
+                    tile.setIcon(Icon.createWithResource(this, R.drawable.ic_stat_resume));
+                }
             }else{
-                LogFactory.writeMessage(this, LOG_TAG, "Service-Thread not running");
-                tile.setLabel(getString(R.string.tile_resume));
-                tile.setIcon(Icon.createWithResource(this, R.drawable.ic_stat_resume));
+                LogFactory.writeMessage(this, LOG_TAG, "Service not running (State set to unavailable)");
+                tile.setState(Tile.STATE_UNAVAILABLE);
+                tile.setLabel(getString(R.string.not_running));
             }
-        }else{
-            LogFactory.writeMessage(this, LOG_TAG, "Service not running (State set to unavailable)");
-            tile.setState(Tile.STATE_UNAVAILABLE);
-            tile.setLabel(getString(R.string.not_running));
+            tile.updateTile();
+            LogFactory.writeMessage(this, LOG_TAG, "Tile updated");
         }
-        tile.updateTile();
-        LogFactory.writeMessage(this, LOG_TAG, "Tile updated");
     }
 
     @Override
@@ -95,11 +97,12 @@ public class TilePauseResume extends android.service.quicksettings.TileService {
             LogFactory.writeMessage(this, LOG_TAG, "Tile is Pin protected. Starting PinActivity",
                     i = new Intent(this, PinActivity.class).putExtra(running ? VPNServiceArgument.COMMAND_STOP_VPN.toString() :
                             VPNServiceArgument.COMMAND_START_VPN.toString(), true).putExtra("redirectToService",true));
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
         }else{
             LogFactory.writeMessage(this, LOG_TAG, "Tile is not Pin protected. Starting DNSVPNService",
                     i = running ? DNSVpnService.getStopVPNIntent(this) : DNSVpnService.getStartVPNIntent(this));
-            startService(i);
+            Util.startService(this, i);
         }
     }
 

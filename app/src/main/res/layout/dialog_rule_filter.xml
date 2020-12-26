@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:attr/windowBackground"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <com.frostnerd.utils.design.MaterialEditText
+    <com.frostnerd.materialedittext.MaterialEditText
         android:id="@+id/met_target"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:allowCollapse="false"
         app:animationDuration="0"
         app:image="@drawable/ic_language"
+        app:labelColorPrimary="?attr/foregroundElementColor"
+        app:labelColorSecondary="?attr/foregroundElementColor"
+        app:iconTint="?attr/foregroundElementColor"
         app:indicatorState="undefined"
         app:indicatorVisibilityWhenUnused="hidden"
         app:revealDelay="0"
@@ -26,8 +28,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/search_by_target"
             android:inputType="textNoSuggestions"
-            android:textColor="#FFF"/>
-    </com.frostnerd.utils.design.MaterialEditText>
+            android:textColor="?attr/foregroundElementColor"/>
+    </com.frostnerd.materialedittext.MaterialEditText>
 
     <RadioGroup
         android:layout_width="match_parent"
@@ -39,7 +41,6 @@
             android:layout_height="wrap_content"
             android:text="IPv4"
             android:textColor="?android:attr/textColor" />
-
 
         <RadioButton
             android:id="@+id/radio_ipv6"

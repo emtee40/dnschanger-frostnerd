@@ -1,11 +1,6 @@
 package com.frostnerd.dnschanger.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -17,24 +12,29 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.adapters.QueryResultAdapter;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
-import com.frostnerd.utils.design.MaterialEditText;
-import com.frostnerd.utils.networking.NetworkUtil;
+import com.frostnerd.dnschanger.util.dnsquery.Resolver;
+import com.frostnerd.dnschanger.util.dnsquery.ResolverResult;
+import com.frostnerd.materialedittext.MaterialEditText;
+import com.frostnerd.networking.NetworkUtil;
 
-import org.xbill.DNS.Lookup;
-import org.xbill.DNS.Name;
-import org.xbill.DNS.Record;
-import org.xbill.DNS.Resolver;
-import org.xbill.DNS.SimpleResolver;
-import org.xbill.DNS.Type;
+import org.minidns.record.Data;
+import org.minidns.record.Record;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
@@ -61,7 +61,7 @@ public class DnsQueryFragment extends Fragment {
     private RecyclerView resultList;
     private ProgressBar progress;
     private TextView infoText;
-    private CheckBox tcp;
+    private CheckBox tcp, any;
     private boolean showingError;
     private QueryResultAdapter adapter;
     private static final String LOG_TAG = "DnsQueryFragment";
@@ -76,6 +76,7 @@ public class DnsQueryFragment extends Fragment {
         resultList = contentView.findViewById(R.id.result_list);
         progress = contentView.findViewById(R.id.progress);
         infoText = contentView.findViewById(R.id.query_destination_info_text);
+        any = contentView.findViewById(R.id.query_any);
         edQuery.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -134,24 +135,21 @@ public class DnsQueryFragment extends Fragment {
 
     private void runQuery(final String queryText){
         progress.setVisibility(View.VISIBLE);
-        final String adjustedQuery = queryText.endsWith(".") ? queryText : queryText + ".";
+        final String adjustedQuery = queryText.endsWith(".") ? queryText.substring(0, queryText.length()-1) : queryText;
         new Thread(){
             @Override
             public void run() {
                 try {
                     IPPortPair server = getDefaultDNSServer();
                     LogFactory.writeMessage(getContext(), LOG_TAG,"Sending query '" + adjustedQuery + "' to " + server.getAddress() + ":" + server.getPort() + " (tcp: " + tcp.isChecked() + ")");
-                    Name name = Name.fromString(adjustedQuery);
-                    Resolver resolver = new SimpleResolver(server.getAddress());
-                    resolver.setPort(server.getPort());
-                    resolver.setTCP(tcp.isChecked());
-                    Lookup lookup = new Lookup(name, Type.ANY);
-                    lookup.setResolver(resolver);
-                    Record[] response = lookup.run();
-                    if(response == null)throw new IOException(lookup.getErrorString());
+                    ResolverResult<Data> result = new Resolver(server.getAddress()).resolve(adjustedQuery, any.isChecked() ? Record.TYPE.ANY : Record.TYPE.A, Record.CLASS.IN,
+                            tcp.isChecked(), server.getPort());
+                    if(!result.wasSuccessful()){
+                        throw new IOException(result.getResponseCode().name());
+                    }
                     if(isAdded()){
                         if(adapter != null) adapter.destroy();
-                        adapter = new QueryResultAdapter(requireContext(), response);
+                        adapter = new QueryResultAdapter(requireContext(), result.getRawAnswer().answerSection);
                         if(isAdded())Util.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -160,7 +158,8 @@ public class DnsQueryFragment extends Fragment {
                             }
                         });
                     }
-                } catch (final IOException e) {
+                } catch (final Exception e) {
+                    e.printStackTrace();
                     if(isAdded())
                         Util.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
                             @Override
@@ -173,7 +172,7 @@ public class DnsQueryFragment extends Fragment {
         }.start();
     }
 
-    private void handleException(IOException e){
+    private void handleException(Exception e){
         showingError = true;
         progress.setVisibility(View.INVISIBLE);
         String errorMSG = e.getMessage();

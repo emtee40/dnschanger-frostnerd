@@ -1,12 +1,14 @@
 package com.frostnerd.dnschanger.database.entities;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-import com.frostnerd.utils.database.orm.MultitonEntity;
-import com.frostnerd.utils.database.orm.annotations.Named;
-import com.frostnerd.utils.database.orm.annotations.NotNull;
-import com.frostnerd.utils.database.orm.annotations.PrimaryKey;
-import com.frostnerd.utils.database.orm.annotations.Table;
+import com.frostnerd.database.orm.MultitonEntity;
+import com.frostnerd.database.orm.annotations.Named;
+import com.frostnerd.database.orm.annotations.NotNull;
+import com.frostnerd.database.orm.annotations.PrimaryKey;
+import com.frostnerd.database.orm.annotations.Table;
+
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
@@ -39,6 +41,10 @@ public class DNSQuery extends MultitonEntity {
     @Named(name = "Time")
     private long time;
 
+    @Nullable
+    @Named(name = "UpstreamAnswer")
+    private String upstreamAnswer;
+
     public DNSQuery(@NonNull String host, boolean ipv6, long time) {
         this.host = host;
         this.ipv6 = ipv6;
@@ -47,6 +53,15 @@ public class DNSQuery extends MultitonEntity {
 
     public DNSQuery(){
 
+    }
+
+    @Nullable
+    public String getUpstreamAnswer() {
+        return upstreamAnswer;
+    }
+
+    public void setUpstreamAnswer(@NonNull String upstreamAnswer) {
+        this.upstreamAnswer = upstreamAnswer;
     }
 
     @NonNull

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.frostnerd.dnschanger"
     android:installLocation="internalOnly">
 
@@ -11,8 +12,12 @@
     <uses-permission
         android:name="android.permission.USE_FINGERPRINT"
         android:required="false" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
 
     <permission
         android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
@@ -40,11 +45,16 @@
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_rules"
         android:hardwareAccelerated="true"
+        android:extractNativeLibs="true"
         android:icon="@mipmap/ic_launcher"
+        android:requestLegacyExternalStorage="true"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/security_config"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme_Mono">
+
+        <meta-data android:name="io.sentry.auto-init" android:value="false" />
 
         <meta-data
             android:name="android.max_aspect"
@@ -81,6 +91,8 @@
             <intent-filter>
                 <action android:name="android.net.VpnService" />
             </intent-filter>
+            <meta-data android:name="android.net.VpnService.SUPPORTS_ALWAYS_ON"
+                android:value="true" />
         </service>
 
         <activity
@@ -90,6 +102,11 @@
 
         <activity
             android:name=".activities.BackgroundVpnConfigureActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
+
+        <activity
+            android:name=".activities.BackgroundDNSListActivity"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
 
@@ -112,6 +129,8 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
 
@@ -125,6 +144,8 @@
         </receiver>
 
         <service android:name=".services.ConnectivityBackgroundService" />
+        <service android:name=".services.ConnectivityCheckRestartService" />
+
         <service
             android:name=".services.DataService"
             android:exported="true"
@@ -134,10 +155,6 @@
                 <action android:name="com.frostnerd.dnschanger.services.DataService" />
             </intent-filter>
         </service>
-        <service
-            android:name=".services.jobs.ConnectivityJobAPI21"
-            android:label="Connectivity Service"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity
             android:name=".activities.ShortcutActivity"
@@ -152,10 +169,26 @@
             android:targetActivity=".activities.ShortcutActivity"
             android:taskAffinity="com.frostnerd.dnschangerShortcut"
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
+        <activity android:name=".activities.automation.PauseDnsActivity"
+            android:exported="true"
+            />
+        <activity android:name=".activities.automation.ResumeDnsActivity"
+            android:exported="true"
+            />
+        <activity android:name=".activities.automation.StartDnsActivity"
+            android:exported="true"
+            />
+        <activity android:name=".activities.automation.StopDnsActivity"
+            android:exported="true"
+            />
+        <activity android:name=".activities.automation.ToggleDnsActivity"
+            android:exported="true"
+            />
+
 
         <activity
             android:name=".activities.PinActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -175,6 +208,7 @@
 
         <activity
             android:name=".activities.AppSelectionActivity"
+            android:launchMode="singleTask"
             android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -246,6 +280,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="com.frostnerd.design.filechooseractivity.FileChooserActivity" />
+
         <receiver
             android:name=".receivers.AdminReceiver"
             android:description="@string/device_admin_description"
@@ -259,8 +295,18 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".receivers.UpdateReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="com.frostnerd.dnschanger"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -278,15 +324,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/generic_provider_paths" />
         </provider>
-
-        <!--<receiver android:name=".widgets.BasicWidget">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/basic_widget" />
-        </receiver>-->
 
         <service
             android:name=".services.RuleImportService"

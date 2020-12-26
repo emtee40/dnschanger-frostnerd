@@ -1,14 +1,16 @@
 package com.frostnerd.dnschanger.database.entities;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-import com.frostnerd.utils.database.DatabaseHelper;
-import com.frostnerd.utils.database.orm.MultitonEntity;
-import com.frostnerd.utils.database.orm.annotations.ForeignKey;
-import com.frostnerd.utils.database.orm.annotations.Named;
-import com.frostnerd.utils.database.orm.annotations.NotNull;
-import com.frostnerd.utils.database.orm.annotations.Table;
+import com.frostnerd.database.orm.MultitonEntity;
+import com.frostnerd.database.orm.annotations.DeletableForeignKey;
+import com.frostnerd.database.orm.annotations.Named;
+import com.frostnerd.database.orm.annotations.NotNull;
+import com.frostnerd.database.orm.annotations.Table;
+import com.frostnerd.dnschanger.database.DatabaseHelper;
+
+import java.text.DateFormat;
 
 
 /*
@@ -37,10 +39,10 @@ public class DNSRuleImport extends MultitonEntity {
     private String filename;
     @Named(name = "Time")
     private long time;
-    @ForeignKey(referencedEntity = DNSRule.class, referencedField = "rowid")
+    @DeletableForeignKey(referencedEntity = DNSRule.class, referencedField = "rowid")
     @Named(name = "FirstInsert")
     private long firstInsert;
-    @ForeignKey(referencedEntity = DNSRule.class, referencedField = "rowid")
+    @DeletableForeignKey(referencedEntity = DNSRule.class, referencedField = "rowid")
     @Named(name = "LastInsert")
     private long lastInsert;
 
@@ -74,13 +76,18 @@ public class DNSRuleImport extends MultitonEntity {
         return databaseHelper.getByRowID(DNSRule.class, firstInsert);
     }
 
+    public long getFirstInsert() {
+        return firstInsert;
+    }
+
+    public long getLastInsert() {
+        return lastInsert;
+    }
+
+    private static final DateFormat TIME_FORMATTER = DateFormat.getDateTimeInstance();
+
     @Override
     public String toString() {
-        return "DNSRuleImport{" +
-                "filename='" + filename + '\'' +
-                ", time=" + time +
-                ", firstInsert=" + firstInsert +
-                ", lastInsert=" + lastInsert +
-                '}';
+        return filename + " (" + TIME_FORMATTER.format(time) + ", " + (lastInsert-firstInsert) + " total)";
     }
 }

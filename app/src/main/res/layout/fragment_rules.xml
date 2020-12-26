@@ -34,7 +34,7 @@
             android:text="@string/target" />
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -81,9 +81,11 @@
                 android:padding="8dp"
                 android:text="@string/sql_actions" />
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_sql"
                 android:layout_width="48dp"
+                app:useCompatPadding="true"
+                app:fabCustomSize="48dp"
                 android:layout_height="48dp"
                 app:borderWidth="0dp" />
         </LinearLayout>
@@ -110,10 +112,12 @@
                 android:padding="8dp"
                 android:text="@string/filter" />
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_filter"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                app:useCompatPadding="true"
+                app:fabCustomSize="48dp"
                 app:borderWidth="0dp" />
         </LinearLayout>
 
@@ -138,18 +142,21 @@
                 android:padding="8dp"
                 android:text="@string/new_entry" />
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_new"
                 android:layout_width="48dp"
+                app:useCompatPadding="true"
+                app:fabCustomSize="48dp"
                 android:layout_height="48dp"
                 app:borderWidth="0dp" />
         </LinearLayout>
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_open"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:layout_gravity="end"
-            android:background="?attr/inputElementColor" />
+            app:fabCustomSize="64dp"
+            app:useCompatPadding="true"
+            android:layout_gravity="end" />
     </LinearLayout>
 </RelativeLayout>

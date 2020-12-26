@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" key="advanced_preferences_screen">
 
     <SwitchPreference
         android:defaultValue="false"
@@ -25,13 +25,6 @@
         <CheckBoxPreference
             android:defaultValue="false"
             android:dependency="advanced_settings"
-            android:key="rules_activated"
-            android:summary="@string/summary_rules_activated"
-            android:title="@string/title_rules_activated" />
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:dependency="advanced_settings"
             android:key="dns_over_tcp"
             android:summary="@string/summary_dns_over_tcp"
             android:title="@string/title_dns_over_tcp" />
@@ -43,16 +36,50 @@
             android:key="tcp_timeout"
             android:summary="@string/summary_tcp_timeout"
             android:title="@string/title_tcp_timeout" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/title_rules_activated">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="advanced_settings"
+            android:key="rules_activated"
+            android:summary="@string/summary_rules_activated"
+            android:title="@string/title_rules_activated" />
+
+        <Preference
+            android:dependency="rules_activated"
+            android:key="clear_local_rules"
+            android:summary="@string/summary_clear_local_rules"
+            android:title="@string/title_clear_local_rules" />
+
+        <Preference
+            android:dependency="rules_activated"
+            android:key="undo_rule_import"
+            android:summary="@string/summary_undo_rule_import"
+            android:title="@string/title_undo_rule_import" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/title_query_logging">
-
         <CheckBoxPreference
             android:defaultValue="false"
             android:dependency="advanced_settings"
             android:key="query_logging"
             android:summary="@string/summary_query_logging"
             android:title="@string/title_query_logging" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="query_logging"
+            android:key="upstream_query_logging"
+            android:summary="Upstream logging"
+            android:title="Log upstreams answers" />
+
+        <Preference
+            android:dependency="query_logging"
+            android:key="clear_queries"
+            android:summary="@string/summary_clear_queries"
+            android:title="@string/title_clear_queries" />
 
         <Preference
             android:dependency="query_logging"

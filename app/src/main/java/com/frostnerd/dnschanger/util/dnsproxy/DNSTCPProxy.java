@@ -1,15 +1,17 @@
 package com.frostnerd.dnschanger.util.dnsproxy;
 
+import android.annotation.TargetApi;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.system.ErrnoException;
 import android.system.Os;
 import android.system.OsConstants;
 import android.system.StructPollfd;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
@@ -17,6 +19,11 @@ import com.frostnerd.dnschanger.database.accessors.DNSResolver;
 import com.frostnerd.dnschanger.database.accessors.QueryLogger;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 
+import org.minidns.dnsmessage.DnsMessage;
+import org.minidns.record.A;
+import org.minidns.record.AAAA;
+import org.minidns.record.Data;
+import org.minidns.record.Record;
 import org.pcap4j.packet.IpPacket;
 import org.pcap4j.packet.IpSelector;
 import org.pcap4j.packet.IpV4Packet;
@@ -24,6 +31,7 @@ import org.pcap4j.packet.IpV6Packet;
 import org.pcap4j.packet.UdpPacket;
 import org.pcap4j.packet.UnknownPacket;
 
+import java.io.Closeable;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileDescriptor;
@@ -46,12 +54,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
-import de.measite.minidns.DNSMessage;
-import de.measite.minidns.Record;
-import de.measite.minidns.record.A;
-import de.measite.minidns.record.AAAA;
-import de.measite.minidns.record.Data;
-
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
  *
@@ -71,6 +73,7 @@ import de.measite.minidns.record.Data;
  * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+@TargetApi(value = Build.VERSION_CODES.LOLLIPOP)
 public class DNSTCPProxy extends DNSProxy{
     private static final String LOG_TAG = "[DNSTCPProxy]";
     private FileDescriptor interruptedDescriptor = null;
@@ -90,11 +93,7 @@ public class DNSTCPProxy extends DNSProxy{
         @Override
         protected boolean removeEldestEntry(Entry<Socket, PacketWrap> eldest) {
             if(size() > MAX_WAITING_SOCKETS){
-                try {
-                    eldest.getKey().close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                tryClose(eldest.getKey());
                 return true;
             }
             return false;
@@ -122,7 +121,7 @@ public class DNSTCPProxy extends DNSProxy{
 
 
     public DNSTCPProxy(VpnService context, ParcelFileDescriptor parcelFileDescriptor,
-                       Set<IPPortPair> upstreamDNSServers, boolean resolveLocalRules, boolean queryLogging, int timeout){
+                       Set<IPPortPair> upstreamDNSServers, boolean resolveLocalRules, boolean queryLogging, boolean logUpstreamAnswers, int timeout){
         LogFactory.writeMessage(context, LOG_TAG, "Creating the proxy...");
         if(parcelFileDescriptor == null)throw new IllegalStateException("The ParcelFileDescriptor passed to DNSUDPProxy is null.");
         if(context == null)throw new IllegalStateException("The DNSVPNService passed to DNSTCPProxy is null.");
@@ -136,7 +135,7 @@ public class DNSTCPProxy extends DNSProxy{
         this.resolveLocalRules = resolveLocalRules;
         this.queryLogging = queryLogging;
         if(queryLogging) {
-            queryLogger = new QueryLogger(DatabaseHelper.getInstance(context));
+            queryLogger = new QueryLogger(DatabaseHelper.getInstance(context), logUpstreamAnswers);
             LogFactory.writeMessage(context, LOG_TAG, "Created the query logger.");
         }
         if(resolveLocalRules) {
@@ -196,11 +195,23 @@ public class DNSTCPProxy extends DNSProxy{
                 if((polls[index++ + 2].revents & OsConstants.POLLIN) != 0){
                     handleRawUpstreamDNSResponse(entry.getKey(), entry.getValue().getPacket());
                     iterator.remove();
-                    entry.getKey().close();
+                    tryClose(entry.getKey());
                 }
             }
-            if(shouldRun && (structFd.revents & OsConstants.POLLOUT) != 0)outputStream.write(writeToDevice.poll());
-            if(shouldRun && (structFd.revents & OsConstants.POLLIN) != 0)handleDeviceDNSPacket(inputStream, packet);
+            if(shouldRun && (structFd.revents & OsConstants.POLLOUT) != 0) try {
+                outputStream.write(writeToDevice.poll());
+            } catch (IOException ignored) {}
+            if(shouldRun && (structFd.revents & OsConstants.POLLIN) != 0) try {
+                handleDeviceDNSPacket(inputStream, packet);
+            } catch (IOException ignored) {}
+        }
+    }
+
+    private void tryClose(Closeable closeable) {
+        try {
+            closeable.close();
+        } catch (IOException ex) {
+            // Ignore
         }
     }
 
@@ -222,7 +233,9 @@ public class DNSTCPProxy extends DNSProxy{
     }
 
     private void handleDeviceDNSPacket(@NonNull InputStream inputStream, @NonNull byte[] packetBytes) throws IOException{
-        packetBytes = Arrays.copyOfRange(packetBytes, 0, inputStream.read(packetBytes));
+        int len = inputStream.read(packetBytes);
+        if(len < 0) return;
+        packetBytes = Arrays.copyOfRange(packetBytes, 0, len);
         IpPacket packet;
         try {
             packet = (IpPacket) IpSelector.newPacket(packetBytes, 0, packetBytes.length);
@@ -241,12 +254,18 @@ public class DNSTCPProxy extends DNSProxy{
             sendPacketToUpstreamDNSServer(outPacket, null);
         }else{
             byte[] payloadData = udpPacket.getPayload().getRawData();
-            DNSMessage dnsMsg = new DNSMessage(payloadData);
+            DnsMessage dnsMsg;
+            try {
+                dnsMsg = new DnsMessage(payloadData);
+            } catch (Exception e) {
+                return;
+            }
             if(dnsMsg.getQuestion() == null)return;
             String query = dnsMsg.getQuestion().name.toString(), target;
-            if(queryLogging)queryLogger.logQuery(query, dnsMsg.getQuestion().type == Record.TYPE.AAAA);
+            if(queryLogging)queryLogger.logQuery(dnsMsg, dnsMsg.getQuestion().type == Record.TYPE.AAAA);
+            LogFactory.writeMessage(vpnService, LOG_TAG, "Query from device: " + dnsMsg.getQuestion());
             if(resolveLocalRules && (target = resolver.resolve(query, dnsMsg.getQuestion().type == Record.TYPE.AAAA ,true)) != null){
-                DNSMessage.Builder builder = null;
+                DnsMessage.Builder builder = null;
                 if(dnsMsg.getQuestion().type == Record.TYPE.A){
                     builder = dnsMsg.asBuilder().setQrFlag(true).addAnswer(
                             new Record<Data>(query, Record.TYPE.A, 1, 64, new A(Inet4Address.getByName(target).getAddress())));
@@ -275,12 +294,14 @@ public class DNSTCPProxy extends DNSProxy{
             outputStream.flush();
             if(ipPacket != null)futureSocketAnswers.put(socket, new PacketWrap(ipPacket));
             else{
-                outputStream.close(); //Closes the associated socket
+                tryClose(outputStream);
             }
         }catch(IOException exception){
             if(!(exception instanceof SocketTimeoutException) && ipPacket != null){
                 handleUpstreamDNSResponse(ipPacket, outgoingPacket.getData());
             }
+        } catch(NullPointerException ex) {
+            // Ignore
         }
     }
 
@@ -324,7 +345,13 @@ public class DNSTCPProxy extends DNSProxy{
                     .payloadBuilder(dnsPayloadBuilder)
                     .build();
         }
-
+        if(queryLogger != null && queryLogger.logUpstreamAnswers()){
+            try {
+                queryLogger.logUpstreamAnswer(new DnsMessage(payloadData));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         writeToDevice.add(packet.getRawData());
     }
 
@@ -336,18 +363,14 @@ public class DNSTCPProxy extends DNSProxy{
             LogFactory.writeMessage(vpnService, LOG_TAG, "Closing the descriptors.");
             if(interruptedDescriptor != null) Os.close(interruptedDescriptor);
             if(blockingDescriptor != null) Os.close(blockingDescriptor);
-        } catch (Exception ignored) {
-            LogFactory.writeMessage(vpnService, LOG_TAG, "An error occurred when closing the descriptors: " + ignored.getMessage() + "(Cause: " + ignored.getCause() + ")");
+        } catch (Exception e) {
+            LogFactory.writeMessage(vpnService, LOG_TAG, "An error occurred when closing the descriptors: " + e.getMessage() + "(Cause: " + e.getCause() + ")");
         }
-        synchronized (futureSocketAnswers){
-                try {
-                    for(Map.Entry<Socket, PacketWrap> entry: futureSocketAnswers.entrySet()){
-                        entry.getKey().close();
-                        entry.getValue().packet = null;
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        synchronized (futureSocketAnswers) {
+            for (Map.Entry<Socket, PacketWrap> entry : futureSocketAnswers.entrySet()) {
+                tryClose(entry.getKey());
+                entry.getValue().packet = null;
+            }
             futureSocketAnswers.clear();
         }
         upstreamServers.clear();
@@ -362,7 +385,7 @@ public class DNSTCPProxy extends DNSProxy{
         interruptedDescriptor = blockingDescriptor = null;
     }
 
-    private class PacketWrap{
+    private static class PacketWrap{
         @NonNull private IpPacket packet;
         private final long time;
 

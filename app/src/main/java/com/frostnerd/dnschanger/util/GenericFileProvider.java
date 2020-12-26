@@ -1,6 +1,6 @@
 package com.frostnerd.dnschanger.util;
 
-import android.support.v4.content.FileProvider;
+import androidx.core.content.FileProvider;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)

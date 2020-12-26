@@ -5,19 +5,19 @@
     android:background="?android:attr/windowBackground"
     android:padding="16dp">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.frostnerd.utils.design.MaterialEditText
+        <com.frostnerd.materialedittext.MaterialEditText
             android:id="@+id/met_host"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:allowCollapse="false"
             app:animationDuration="0"
+            app:iconTint="?attr/foregroundElementColor"
             app:image="@drawable/ic_language"
             app:indicatorState="undefined"
             app:indicatorVisibilityWhenUnused="hidden"
@@ -34,17 +34,18 @@
                 android:nextFocusDown="@+id/target"
                 android:nextFocusForward="@+id/target"
                 android:text="example.com"
-                android:textColor="#FFF"
+                android:textColor="?attr/foregroundElementColor"
                 tools:ignore="HardcodedText" />
-        </com.frostnerd.utils.design.MaterialEditText>
+        </com.frostnerd.materialedittext.MaterialEditText>
 
-        <com.frostnerd.utils.design.MaterialEditText
+        <com.frostnerd.materialedittext.MaterialEditText
             android:id="@+id/met_target"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:allowCollapse="false"
             app:animationDuration="0"
             app:image="@drawable/ic_action_ipv4"
+            app:iconTint="?attr/foregroundElementColor"
             app:indicatorState="undefined"
             app:indicatorVisibilityWhenUnused="hidden"
             app:revealDelay="0"
@@ -60,11 +61,11 @@
                 android:nextFocusDown="@+id/target2"
                 android:nextFocusForward="@+id/target2"
                 android:text="127.0.0.1"
-                android:textColor="#FFF"
+                android:textColor="?attr/foregroundElementColor"
                 tools:ignore="HardcodedText" />
-        </com.frostnerd.utils.design.MaterialEditText>
+        </com.frostnerd.materialedittext.MaterialEditText>
 
-        <com.frostnerd.utils.design.MaterialEditText
+        <com.frostnerd.materialedittext.MaterialEditText
             android:id="@+id/met_target2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -87,9 +88,9 @@
                 android:nextFocusDown="@+id/dns2"
                 android:nextFocusForward="@+id/dns2"
                 android:text="::1"
-                android:textColor="#FFF"
+                android:textColor="?attr/foregroundElementColor"
                 tools:ignore="HardcodedText" />
-        </com.frostnerd.utils.design.MaterialEditText>
+        </com.frostnerd.materialedittext.MaterialEditText>
 
         <CheckBox
             android:id="@+id/wildcard"

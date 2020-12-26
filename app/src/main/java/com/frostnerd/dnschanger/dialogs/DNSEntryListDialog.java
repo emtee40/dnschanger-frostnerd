@@ -2,23 +2,25 @@ package com.frostnerd.dnschanger.dialogs;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.frostnerd.database.DatabaseAdapter;
+import com.frostnerd.database.orm.parser.ParsedEntity;
+import com.frostnerd.database.orm.parser.columns.Column;
+import com.frostnerd.database.orm.statementoptions.queryoptions.WhereCondition;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.adapters.DNSEntryAdapter;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
-import com.frostnerd.utils.adapters.DatabaseAdapter;
-import com.frostnerd.utils.database.orm.parser.ParsedEntity;
-import com.frostnerd.utils.database.orm.parser.columns.Column;
-import com.frostnerd.utils.database.orm.statementoptions.queryoptions.WhereCondition;
-import com.frostnerd.utils.lifecyclehelper.UtilityDialog;
+import com.frostnerd.lifecycle.BaseDialog;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,7 +42,7 @@ import java.util.Set;
  *
  * You can contact the developer at daniel.wolf@frostnerd.com.
  */
-public class DNSEntryListDialog extends UtilityDialog {
+public class DNSEntryListDialog extends BaseDialog {
     private OnProviderSelectedListener listener;
     private RecyclerView list;
     private DNSEntryAdapter adapter;
@@ -92,7 +94,6 @@ public class DNSEntryListDialog extends UtilityDialog {
                                 }
                             }).show();
                         }else {
-                            //noinspection ConstantConditions
                             new DNSCreationDialog(getContext(), new DNSCreationDialog.OnEditingFinishedListener() {
                                 @Override
                                 public void editingFinished(@NonNull DNSEntry entry) {

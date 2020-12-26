@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
-import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Preferences;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -54,7 +54,7 @@ public class LogFactory {
     private static final SimpleDateFormat DATE_TIME_FORMATTER = new SimpleDateFormat("dd_MM_yyyy___kk_mm_ss", Locale.US),
             TIMESTAMP_FORMATTER = new SimpleDateFormat("EEE MMM dd.yy kk:mm:ss", Locale.US);
     public static final String STATIC_TAG = "[STATIC]";
-    private static final boolean printMessagesToConsole = false;
+    private static final boolean printMessagesToConsole = BuildConfig.DEBUG;
 
     public static synchronized File zipLogFiles(Context c){
         if(logDir == null || !logDir.canWrite() || !logDir.canRead())return null;
@@ -68,7 +68,7 @@ public class LogFactory {
                     return pathname.getName().endsWith(".log");
                 }
             });
-            BufferedInputStream in = null;
+            BufferedInputStream in;
             FileOutputStream dest = new FileOutputStream(zipFile);
             ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
             byte[] buffer = new byte[2048];
@@ -147,6 +147,7 @@ public class LogFactory {
     private static synchronized boolean prepare(Context context) {
         if(!enabled && ready)return false;
         if (ready) return usable;
+        if(context == null) return usable;
         enabled = PreferencesAccessor.isDebugEnabled(context);
         if(!enabled){
             ready = true;
@@ -366,7 +367,7 @@ public class LogFactory {
             str2 = localBufferedReader.readLine();//meminfo
             arrayOfString = str2.split("\\s+");
             localBufferedReader.close();
-            return Integer.valueOf(arrayOfString[1]) * 1024;
+            return Integer.parseInt(arrayOfString[1]) * 1024;
         }
         catch (IOException e){
             return -1;
