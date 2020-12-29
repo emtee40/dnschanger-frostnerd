@@ -12,13 +12,14 @@ android {
         versionName "1.16.5.11"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    def sentryDSN = String.valueOf(getSystemVariableOrDefault("DNSCHANGER_SENTRY_DSN", "dummy"))
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField("Boolean", "SENTRY_ENABLED", "true")
-            buildConfigField("String", "SENTRY_DSN", '"dummy"')
+            buildConfigField("String", "SENTRY_DSN", '"' + sentryDSN + '"')
         }
         debug{
             initWith(buildTypes.debug)
