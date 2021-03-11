@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="dont_ask_again">නැවත අහන්න එපා</string>
+    <string name="action_stop">නවත්වන්න</string>
+    <string name="title_notification">දැනුම්දීම</string>
+    <string name="settings">සැකසුම්</string>
+    <string name="information">තොරතුරු</string>
+    <string name="stop">නවත්වන්න</string>
+</resources>
