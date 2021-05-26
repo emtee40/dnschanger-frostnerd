@@ -33,12 +33,11 @@ ext.nexus_password = getNexusPassword()
 
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
-        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.15.1"
+        classpath 'com.android.tools.build:gradle:4.2.1'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -46,7 +45,7 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
+        mavenCentral()
         google()
         maven {
             url 'https://nexus.frostnerd.com/repository/libs-release/'
