@@ -15,7 +15,6 @@ import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.BackgroundVpnConfigureActivity;
 import com.frostnerd.dnschanger.services.DNSVpnService;
-import com.frostnerd.general.WidgetUtil;
 
 import java.util.HashSet;
 import java.util.Set;

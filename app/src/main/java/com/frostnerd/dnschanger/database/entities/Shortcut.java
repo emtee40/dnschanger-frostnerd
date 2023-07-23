@@ -3,7 +3,6 @@ package com.frostnerd.dnschanger.database.entities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-
 import com.frostnerd.database.orm.MultitonEntity;
 import com.frostnerd.database.orm.annotations.Named;
 import com.frostnerd.database.orm.annotations.NotNull;

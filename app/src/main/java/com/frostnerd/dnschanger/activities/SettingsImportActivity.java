@@ -9,8 +9,8 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import com.frostnerd.dnschanger.LogFactory;
-import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.dnschanger.util.Preferences;
+import com.frostnerd.dnschanger.util.ThemeHandler;
 import com.frostnerd.general.Utils;
 import com.frostnerd.general.permissions.PermissionsUtil;
 

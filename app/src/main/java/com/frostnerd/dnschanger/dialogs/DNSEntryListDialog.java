@@ -2,11 +2,12 @@ package com.frostnerd.dnschanger.dialogs;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.LayoutInflater;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
 
 import com.frostnerd.database.DatabaseAdapter;
 import com.frostnerd.database.orm.parser.ParsedEntity;
@@ -93,7 +94,6 @@ public class DNSEntryListDialog extends BaseDialog {
                                 }
                             }).show();
                         }else {
-                            //noinspection ConstantConditions
                             new DNSCreationDialog(getContext(), new DNSCreationDialog.OnEditingFinishedListener() {
                                 @Override
                                 public void editingFinished(@NonNull DNSEntry entry) {

@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 
 import org.minidns.AbstractDnsClient;
 import org.minidns.DnsClient;
-import org.minidns.dnsmessage.DnsMessage;
 import org.minidns.dnsmessage.Question;
 import org.minidns.dnsqueryresult.DnsQueryResult;
 import org.minidns.record.Data;

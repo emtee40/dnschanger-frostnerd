@@ -4,12 +4,12 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.AttrRes;
-import androidx.annotation.ColorInt;
 import android.util.TypedValue;
 
+import androidx.annotation.AttrRes;
+import androidx.annotation.ColorInt;
+
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.dnschanger.util.Preferences;
 
 /*
  * Copyright (C) 2019 Daniel Wolf (Ch4t4r)

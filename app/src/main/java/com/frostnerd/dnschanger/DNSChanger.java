@@ -18,8 +18,12 @@ import java.util.List;
 
 import io.sentry.Integration;
 import io.sentry.Sentry;
-import io.sentry.SentryOptions;
-import io.sentry.android.core.*;
+import com.frostnerd.dnschanger.BuildConfig;
+import io.sentry.android.core.PhoneStateBreadcrumbsIntegration;
+import io.sentry.android.core.SentryAndroid;
+import io.sentry.android.core.SentryAndroidOptions;
+import io.sentry.android.core.SystemEventsBreadcrumbsIntegration;
+import io.sentry.android.core.TempSensorBreadcrumbsIntegration;
 import io.sentry.protocol.User;
 
 /*
@@ -95,7 +99,6 @@ public class DNSChanger extends Application {
     // Absolutely no tracking is possible.
     // Can be turned off in the settings.
     public void setupSentry() {
-        //noinspection ConstantConditions
         if(!sentryInitialized && !sentryInitializing && BuildConfig.SENTRY_ENABLED && !BuildConfig.SENTRY_DSN.equals("dummy")) {
             sentryInitializing = true;
             new Thread(new Runnable() {

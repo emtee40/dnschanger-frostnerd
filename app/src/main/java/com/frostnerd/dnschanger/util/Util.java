@@ -14,13 +14,14 @@ import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
 import android.service.quicksettings.TileService;
+import android.util.Base64;
+import android.util.Base64InputStream;
+import android.util.Base64OutputStream;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import android.util.Base64;
-import android.util.Base64InputStream;
-import android.util.Base64OutputStream;
 
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
@@ -36,7 +37,6 @@ import com.frostnerd.dnschanger.tiles.TileStartStop;
 import com.frostnerd.general.StringUtil;
 import com.frostnerd.general.Utils;
 import com.frostnerd.networking.NetworkUtil;
-
 
 import org.minidns.record.Data;
 import org.minidns.record.Record;

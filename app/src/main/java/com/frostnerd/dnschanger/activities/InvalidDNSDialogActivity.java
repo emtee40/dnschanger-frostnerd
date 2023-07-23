@@ -3,6 +3,7 @@ package com.frostnerd.dnschanger.activities;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 

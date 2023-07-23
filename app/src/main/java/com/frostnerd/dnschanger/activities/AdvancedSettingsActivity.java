@@ -4,16 +4,15 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.SwitchPreference;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
-import androidx.appcompat.app.AlertDialog;
-
-import android.view.MenuItem;
 
 import com.frostnerd.database.orm.Entity;
 import com.frostnerd.database.orm.parser.columns.Column;
@@ -93,11 +92,7 @@ public class AdvancedSettingsActivity extends AppCompatPreferenceActivity {
                 if (!PermissionsUtil.canWriteExternalStorage(AdvancedSettingsActivity.this) ||
                         !PermissionsUtil.canReadExternalStorage(AdvancedSettingsActivity.this)) {
                     String[] permissions;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
-                    } else {
-                        permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                    }
+                    permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
                     ActivityCompat.requestPermissions(AdvancedSettingsActivity.this, permissions, REQUEST_READWRITE_PERMISSION);
                 } else {
                     showExportQueriesDialog();

@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.RemoteException;
+
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -22,16 +23,15 @@ import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.database.DatabaseHelper;
 import com.frostnerd.dnschanger.database.entities.DNSEntry;
 import com.frostnerd.dnschanger.database.entities.IPPortPair;
-import com.frostnerd.dnschanger.util.NetworkCheckHandle;
 import com.frostnerd.dnschanger.threading.VPNRunnable;
+import com.frostnerd.dnschanger.util.NetworkCheckHandle;
+import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.dnschanger.util.PreferencesAccessor;
 import com.frostnerd.dnschanger.util.Util;
 import com.frostnerd.dnschanger.util.VPNServiceArgument;
-import com.frostnerd.dnschanger.util.Preferences;
 import com.frostnerd.general.IntentUtil;
 import com.frostnerd.general.StringUtil;
 import com.frostnerd.general.Utils;
-import com.frostnerd.general.WidgetUtil;
 
 import java.util.ArrayList;
 import java.util.Random;

@@ -3,6 +3,7 @@ package com.frostnerd.dnschanger.database;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 

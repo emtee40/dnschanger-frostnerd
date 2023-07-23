@@ -150,9 +150,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@string/content_description_main_connection_status"
-                android:tint="?attr/foregroundElementColor"
                 android:maxHeight="64dp"
-                android:maxWidth="64dp" />
+                android:maxWidth="64dp"
+                app:tint="?attr/foregroundElementColor" />
         </RelativeLayout>
 
         <View
