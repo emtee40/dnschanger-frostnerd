@@ -1,84 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/windowBackground"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <com.frostnerd.utils.design.MaterialEditText
-        android:id="@+id/met_name"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        app:allowCollapse="false"
-        app:image="@drawable/ic_language"
-        app:maxCharLength="50"
-        app:revealDelay="0"
-        app:revealType="revealInstant">
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/name"
+        <com.frostnerd.materialedittext.MaterialEditText
+            android:id="@+id/met_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name"
-            android:imeOptions="actionNext"
-            android:maxLines="1"
-            android:nextFocusDown="@+id/dns1"
-            android:nextFocusForward="@+id/dns1"
-            android:text=""
-            android:textColor="#FFF">
+            android:layout_marginTop="15dp"
+            app:allowCollapse="false"
+            app:animationDuration="0"
+            app:iconTint="?attr/foregroundElementColor"
+            app:image="@drawable/ic_language"
+            app:labelColorPrimary="?attr/foregroundElementColor"
+            app:labelColorSecondary="?attr/foregroundElementColor"
+            app:maxCharLength="60"
+            app:revealDelay="0"
+            app:revealType="revealInstant">
 
-            <requestFocus />
-        </EditText>
-    </com.frostnerd.utils.design.MaterialEditText>
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_dns_entry_name"
+                android:imeOptions="actionNext"
+                android:inputType="textNoSuggestions"
+                android:maxLines="1"
+                android:nextFocusDown="@+id/dns1"
+                android:nextFocusForward="@+id/dns1"
+                android:text=""
+                android:textColor="?attr/foregroundElementColor">
 
-    <com.frostnerd.utils.design.MaterialEditText
-        android:id="@+id/met_dns1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:allowCollapse="false"
-        app:image="@drawable/ic_language"
-        app:revealDelay="0"
-        app:revealType="revealInstant">
+                <requestFocus />
+            </EditText>
+        </com.frostnerd.materialedittext.MaterialEditText>
 
-        <EditText
-            android:id="@+id/dns1"
+        <com.frostnerd.materialedittext.MaterialEditText
+            android:id="@+id/met_dns1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:digits="0123456789."
-            android:hint="DNS 1"
-            android:imeOptions="actionNext"
-            android:inputType="numberDecimal"
-            android:nextFocusDown="@+id/dns2"
-            android:nextFocusForward="@+id/dns2"
-            android:nextFocusUp="@id/name"
-            android:text="8.8.8.8"
-            android:textColor="#FFF" />
-    </com.frostnerd.utils.design.MaterialEditText>
+            android:layout_marginTop="20dp"
+            app:allowCollapse="false"
+            app:animationDuration="0"
+            app:iconTint="?attr/foregroundElementColor"
+            app:image="@drawable/ic_language"
+            app:labelColorPrimary="?attr/foregroundElementColor"
+            app:labelColorSecondary="?attr/foregroundElementColor"
+            app:revealDelay="0"
+            app:revealType="revealInstant">
+
+            <EditText
+                android:id="@+id/dns1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="0123456789."
+                android:hint="@string/hint_dns1"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:nextFocusDown="@+id/dns2"
+                android:nextFocusForward="@+id/dns2"
+                android:nextFocusUp="@id/name"
+                android:text="@string/default_dns1"
+                android:textColor="?attr/foregroundElementColor" />
+        </com.frostnerd.materialedittext.MaterialEditText>
 
 
-    <com.frostnerd.utils.design.MaterialEditText
-        android:id="@+id/met_dns2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:allowCollapse="false"
-        app:image="@drawable/ic_language"
-        app:revealDelay="0"
-        app:revealType="revealInstant">
-
-        <EditText
-            android:id="@+id/dns2"
+        <com.frostnerd.materialedittext.MaterialEditText
+            android:id="@+id/met_dns2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:digits="0123456789."
-            android:hint="DNS 2"
-            android:imeOptions="actionDone"
-            android:inputType="numberDecimal"
-            android:nextFocusUp="@id/dns1"
-            android:text="8.8.4.4"
-            android:textColor="#FFF" />
-    </com.frostnerd.utils.design.MaterialEditText>
+            app:allowCollapse="false"
+            app:animationDuration="0"
+            app:iconTint="?attr/foregroundElementColor"
+            app:image="@drawable/ic_language"
+            app:labelColorPrimary="?attr/foregroundElementColor"
+            app:labelColorSecondary="?attr/foregroundElementColor"
+            app:revealDelay="0"
+            app:revealType="revealInstant">
 
-</LinearLayout>
+            <EditText
+                android:id="@+id/dns2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="0123456789."
+                android:hint="@string/hint_dns2"
+                android:imeOptions="actionDone"
+                android:inputType="numberDecimal"
+                android:nextFocusUp="@id/dns1"
+                android:text="@string/default_dns2"
+                android:textColor="?attr/foregroundElementColor" />
+        </com.frostnerd.materialedittext.MaterialEditText>
+    </LinearLayout>
+</ScrollView>

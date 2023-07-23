@@ -4,7 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
-import com.frostnerd.utils.preferences.Preferences;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.Preferences;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -27,14 +28,23 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-/**
- * Copyright Daniel Wolf 2017
- * All rights reserved.
+/*
+ * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
  *
- * Terms on usage of my code can be found here: https://git.frostnerd.com/PublicAndroidApps/DnsChanger/blob/master/README.md
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * <p>
- * development@frostnerd.com
+ * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 public class LogFactory {
     private static File logFile;
@@ -44,7 +54,7 @@ public class LogFactory {
     private static final SimpleDateFormat DATE_TIME_FORMATTER = new SimpleDateFormat("dd_MM_yyyy___kk_mm_ss", Locale.US),
             TIMESTAMP_FORMATTER = new SimpleDateFormat("EEE MMM dd.yy kk:mm:ss", Locale.US);
     public static final String STATIC_TAG = "[STATIC]";
-    private static final boolean printMessagesToConsole = false;
+    private static final boolean printMessagesToConsole = BuildConfig.DEBUG;
 
     public static synchronized File zipLogFiles(Context c){
         if(logDir == null || !logDir.canWrite() || !logDir.canRead())return null;
@@ -58,7 +68,7 @@ public class LogFactory {
                     return pathname.getName().endsWith(".log");
                 }
             });
-            BufferedInputStream in = null;
+            BufferedInputStream in;
             FileOutputStream dest = new FileOutputStream(zipFile);
             ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
             byte[] buffer = new byte[2048];
@@ -92,7 +102,7 @@ public class LogFactory {
         if(fileWriter != null){
             try{
                 fileWriter.close();
-            }catch(Exception e){
+            }catch(Exception ignored){
 
             }
             fileWriter = null;
@@ -107,7 +117,7 @@ public class LogFactory {
         if(fileWriter != null){
             try{
                 fileWriter.close();
-            }catch(Exception e){
+            }catch(Exception ignored){
 
             }
             fileWriter = null;
@@ -117,7 +127,7 @@ public class LogFactory {
     public synchronized static void terminate(){
         try{
             fileWriter.close();
-        }catch(Exception e){
+        }catch(Exception ignored){
 
         }
         fileWriter = null;logFile=null;logDir = null;
@@ -134,10 +144,11 @@ public class LogFactory {
         if(wasEnabled)enable(context);
     }
 
-    public static synchronized boolean prepare(Context context) {
+    private static synchronized boolean prepare(Context context) {
         if(!enabled && ready)return false;
         if (ready) return usable;
-        enabled = Preferences.getBoolean(context, "debug", false);
+        if(context == null) return usable;
+        enabled = PreferencesAccessor.isDebugEnabled(context);
         if(!enabled){
             ready = true;
             enabled = false;
@@ -166,9 +177,10 @@ public class LogFactory {
         writeMessage(context, Tag.INFO, "Device: " + Build.MODEL + " from " + Build.MANUFACTURER + " (Device: " + Build.DEVICE + ", Product: " + Build.PRODUCT + ")");
         writeMessage(context, Tag.INFO, "Language: " + Locale.getDefault().getDisplayLanguage());
         writeMessage(context, Tag.INFO, "Device RAM: " + getTotalMemory());
-        String s = "";
-        Map<String,Object> prefs = Preferences.getAll(context, false);
-        for(String key: prefs.keySet())s += key + "->" + prefs.get(key) + "; ";
+        StringBuilder s = new StringBuilder();
+        Map<String,Object> prefs = Preferences.getInstance(context).getAll(false);
+        for(Map.Entry<String, Object> entry: prefs.entrySet())
+            s.append(entry.getKey()).append("->").append(entry.getValue()).append("; ");
         writeMessage(context, Tag.INFO, "Preferences: " + s);
         writeMessage(context, Tag.INFO, "Prepare caller stack: " + stacktraceToString(new Throwable(), true));
         writeMessage(context, Tag.NO_TAG, "--------------------------------------------------");
@@ -202,9 +214,10 @@ public class LogFactory {
                 builder.append("] >");
                 builder.append(TIMESTAMP_FORMATTER.format(new Date()));
                 builder.append("<");
-                for(String s: tags)if(!s.equalsIgnoreCase(Tag.NO_TAG.toString()))builder.append(" " + s);
-                builder.append(": " + message);
-                if(printIntent)builder.append(" " + describeIntent(intent, true));
+                for(String s: tags)if(!s.equalsIgnoreCase(Tag.NO_TAG.toString()))
+                    builder.append(" ").append(s);
+                builder.append(": ").append(message);
+                if(printIntent) builder.append(" ").append(describeIntent(intent, true));
                 if(printMessagesToConsole) System.out.println(builder.toString().split("<")[1]);
                 builder.append("\n");
                 fileWriter.write(builder.toString());
@@ -303,9 +316,14 @@ public class LogFactory {
     public static String describeIntent(Intent intent, boolean printExtras){
         if(intent == null)return "Intent{NullIntent}";
         StringBuilder builder = new StringBuilder();
-        builder.append("Intent{Action:" + intent.getAction() + "; Type:" + intent.getType() + "; Package:" + intent.getPackage() +
-                "; Scheme:" + intent.getScheme() + "; Data:" + intent.getDataString() + ";");
-        if(intent.getExtras() != null)builder.append("ExtrasCount:" + intent.getExtras().size());
+        builder.append("Intent{Action:").append(intent.getAction()).append("; Type:").append(intent.getType())
+                .append("; Package:").append(intent.getPackage()).append("; Scheme:").append(intent.getScheme())
+                .append("; Data:").append(intent.getDataString()).append("; Component: ")
+                .append(intent.getComponent() != null ? intent.getComponent().toShortString() : "Null;")
+        .append("Categories: ").append(intent.getCategories()).append(";")
+        .append("Flags: ").append(intent.getFlags()).append(";");
+        if(intent.getExtras() != null)
+            builder.append("ExtrasCount:").append(intent.getExtras().size());
         if(printExtras){
             builder.append("; Extras:{");
             if(intent.getExtras() == null)builder.append("Null}");
@@ -313,7 +331,7 @@ public class LogFactory {
                 String key;
                 for(Iterator<String> keys = intent.getExtras().keySet().iterator(); keys.hasNext();){
                     key = keys.next();
-                    builder.append(key + "->" + intent.getExtras().get(key));
+                    builder.append(key).append("->").append(intent.getExtras().get(key));
                     if(keys.hasNext())builder.append("; ");
                 }
                 builder.append("}");
@@ -349,7 +367,7 @@ public class LogFactory {
             str2 = localBufferedReader.readLine();//meminfo
             arrayOfString = str2.split("\\s+");
             localBufferedReader.close();
-            return Integer.valueOf(arrayOfString[1]).intValue() * 1024;
+            return Integer.parseInt(arrayOfString[1]) * 1024;
         }
         catch (IOException e){
             return -1;

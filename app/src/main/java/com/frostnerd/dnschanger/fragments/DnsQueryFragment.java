@@ -1,45 +1,57 @@
 package com.frostnerd.dnschanger.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.frostnerd.dnschanger.API.API;
+import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.dnschanger.activities.MainActivity;
 import com.frostnerd.dnschanger.adapters.QueryResultAdapter;
-import com.frostnerd.utils.design.MaterialEditText;
-import com.frostnerd.utils.networking.NetworkUtil;
+import com.frostnerd.dnschanger.database.entities.IPPortPair;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.Util;
+import com.frostnerd.dnschanger.util.dnsquery.Resolver;
+import com.frostnerd.dnschanger.util.dnsquery.ResolverResult;
+import com.frostnerd.materialedittext.MaterialEditText;
+import com.frostnerd.networking.NetworkUtil;
 
-import org.xbill.DNS.DClass;
-import org.xbill.DNS.Message;
-import org.xbill.DNS.Name;
-import org.xbill.DNS.RRset;
-import org.xbill.DNS.Record;
-import org.xbill.DNS.Resolver;
-import org.xbill.DNS.SimpleResolver;
-import org.xbill.DNS.Type;
+import org.minidns.record.Data;
+import org.minidns.record.Record;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 
-/**
- * Copyright Daniel Wolf 2017
- * All rights reserved.
- * <p>
- * development@frostnerd.com
+
+/*
+ * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 public class DnsQueryFragment extends Fragment {
     private MaterialEditText metQuery;
@@ -48,11 +60,14 @@ public class DnsQueryFragment extends Fragment {
     private RecyclerView resultList;
     private ProgressBar progress;
     private TextView infoText;
+    private CheckBox tcp, any;
     private boolean showingError;
+    private QueryResultAdapter adapter;
+    private static final String LOG_TAG = "DnsQueryFragment";
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View contentView = inflater.inflate(R.layout.fragment_dnsquery, container, false);
         metQuery = contentView.findViewById(R.id.met_query);
         edQuery = contentView.findViewById(R.id.query);
@@ -60,7 +75,7 @@ public class DnsQueryFragment extends Fragment {
         resultList = contentView.findViewById(R.id.result_list);
         progress = contentView.findViewById(R.id.progress);
         infoText = contentView.findViewById(R.id.query_destination_info_text);
-
+        any = contentView.findViewById(R.id.query_any);
         edQuery.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -85,34 +100,56 @@ public class DnsQueryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 resetElements();
-                runQuery(edQuery.getText().toString() + ".");
+                runQuery(edQuery.getText().toString());
             }
         });
-        resultList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        infoText.setText(getString(R.string.query_destination_info).replace("[x]", API.getDNS1(getContext())));
+        tcp = contentView.findViewById(R.id.query_tcp);
+        tcp.setChecked(PreferencesAccessor.sendDNSOverTCP(requireContext()));
+        resultList.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        infoText.setText(getString(R.string.query_destination_info).replace("[x]", getDefaultDNSServer().toString(PreferencesAccessor.areCustomPortsEnabled(requireContext()))));
         return contentView;
     }
 
-    private void runQuery(String queryText){
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(resultList != null){
+            if(resultList.getAdapter() != null){
+                ((QueryResultAdapter)resultList.getAdapter()).destroy();
+            }
+            resultList.setAdapter(null);
+        }
+        metQuery = null;
+        edQuery = null;
+        runQuery = null;
+        resultList = null;
+        progress = null;
+        infoText = null;
+        tcp = null;
+    }
+
+    private IPPortPair getDefaultDNSServer(){
+        return PreferencesAccessor.isIPv4Enabled(requireContext()) ? PreferencesAccessor.Type.DNS1.getPair(requireContext()) : PreferencesAccessor.Type.DNS1_V6.getPair(requireContext());
+    }
+
+    private void runQuery(final String queryText){
         progress.setVisibility(View.VISIBLE);
-        final String adjustedQuery = queryText.endsWith(".") ? queryText : queryText + ".";
+        final String adjustedQuery = queryText.endsWith(".") ? queryText.substring(0, queryText.length()-1) : queryText;
         new Thread(){
             @Override
             public void run() {
                 try {
-                    Resolver resolver = new SimpleResolver(API.getDNS1(getContext()));
-                    resolver.setTCP(true);
-                    Name name = Name.fromString(adjustedQuery);
-                    Record record = Record.newRecord(name, Type.ANY, DClass.IN);
-                    Message query = Message.newQuery(record);
-                    Message response = resolver.send(query);
-                    RRset[] answer = response.getSectionRRsets(1),
-                            authority = response.getSectionRRsets(2),
-                            additional = response.getSectionRRsets(3);
-                    if(answer == null)throw new IOException("RESULT NULL");
-                    if(getContext() != null && isAdded()){
-                        final QueryResultAdapter adapter = new QueryResultAdapter(getContext(), answer, authority, additional);
-                        API.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
+                    IPPortPair server = getDefaultDNSServer();
+                    LogFactory.writeMessage(getContext(), LOG_TAG,"Sending query '" + adjustedQuery + "' to " + server.getAddress() + ":" + server.getPort() + " (tcp: " + tcp.isChecked() + ")");
+                    ResolverResult<Data> result = new Resolver(server.getAddress()).resolve(adjustedQuery, any.isChecked() ? Record.TYPE.ANY : Record.TYPE.A, Record.CLASS.IN,
+                            tcp.isChecked(), server.getPort());
+                    if(!result.wasSuccessful()){
+                        throw new IOException(result.getResponseCode().name());
+                    }
+                    if(isAdded()){
+                        if(adapter != null) adapter.destroy();
+                        adapter = new QueryResultAdapter(requireContext(), result.getRawAnswer().answerSection);
+                        if(isAdded())Util.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 resultList.setAdapter(adapter);
@@ -120,19 +157,21 @@ public class DnsQueryFragment extends Fragment {
                             }
                         });
                     }
-                } catch (final IOException e) {
-                    if(getContext() != null && isAdded())API.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            handleException(e);
-                        }
-                    });
+                } catch (final Exception e) {
+                    e.printStackTrace();
+                    if(isAdded())
+                        Util.getActivity(DnsQueryFragment.this).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                handleException(e);
+                            }
+                        });
                 }
             }
         }.start();
     }
 
-    private void handleException(IOException e){
+    private void handleException(Exception e){
         showingError = true;
         progress.setVisibility(View.INVISIBLE);
         String errorMSG = e.getMessage();
@@ -146,23 +185,13 @@ public class DnsQueryFragment extends Fragment {
 
     private void resetElements(){
         if(showingError){
-            infoText.setText(getString(R.string.query_destination_info).replace("[x]", API.getDNS1(getContext())));
+            resultList.setAdapter(null);
+            infoText.setText(getString(R.string.query_destination_info).replace("[x]", getDefaultDNSServer().toString(PreferencesAccessor.areCustomPortsEnabled(requireContext()))));
             showingError = false;
         }
     }
 
     private boolean isResolvable(String s){
-        return NetworkUtil.isDomain(s) || (s != null && !s.equals("") && !s.contains("."));
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public Context getContext() {
-        Context context = super.getContext();
-        return context == null ? MainActivity.currentContext : context;
+        return NetworkUtil.isDomain(s) || !s.equals("") && !s.contains(".");
     }
 }

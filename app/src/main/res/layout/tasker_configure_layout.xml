@@ -6,7 +6,6 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/activity_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -21,15 +20,14 @@
             style="@style/Base.TextAppearance.AppCompat.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:textColor="#FFFFFF" />
+            android:layout_marginBottom="15dp" />
 
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <com.frostnerd.utils.design.MaterialEditText
+        <com.frostnerd.materialedittext.MaterialEditText
             android:id="@+id/met_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,6 +35,9 @@
             app:allowCollapse="false"
             app:image="@drawable/ic_language"
             app:maxCharLength="50"
+            app:labelColorPrimary="?attr/foregroundElementColor"
+            app:labelColorSecondary="?attr/foregroundElementColor"
+            app:iconTint="?attr/foregroundElementColor"
             app:revealDelay="0"
             app:revealType="revealInstant">
 
@@ -44,17 +45,18 @@
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Name"
+                android:hint="@string/hint_dns_entry_name"
                 android:imeOptions="actionNext"
+                android:inputType="textNoSuggestions"
                 android:maxLines="1"
                 android:nextFocusDown="@id/dns1"
                 android:nextFocusForward="@id/dns1"
                 android:text=""
-                android:textColor="#FFF">
+                android:textColor="?attr/foregroundElementColor" >
 
                 <requestFocus />
             </EditText>
-        </com.frostnerd.utils.design.MaterialEditText>
+        </com.frostnerd.materialedittext.MaterialEditText>
 
         <LinearLayout
             android:id="@+id/wrapper"
@@ -62,12 +64,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.frostnerd.utils.design.MaterialEditText
+            <com.frostnerd.materialedittext.MaterialEditText
                 android:id="@+id/met_dns1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 app:allowCollapse="false"
+                app:labelColorPrimary="?attr/foregroundElementColor"
+                app:labelColorSecondary="?attr/foregroundElementColor"
+                app:iconTint="?attr/foregroundElementColor"
                 app:image="@drawable/ic_language"
                 app:revealDelay="0"
                 app:revealType="revealInstant">
@@ -77,23 +82,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:digits="0123456789."
-                    android:hint="DNS 1"
+                    android:hint="@string/hint_dns1"
                     android:imeOptions="actionNext"
                     android:inputType="numberDecimal"
                     android:nextFocusDown="@id/dns2"
                     android:nextFocusForward="@id/dns2"
                     android:nextFocusUp="@id/name"
-                    android:text="8.8.8.8"
-                    android:textColor="#FFF" />
-            </com.frostnerd.utils.design.MaterialEditText>
+                    android:text="@string/default_dns1"
+                    android:textColor="?attr/foregroundElementColor" />
+            </com.frostnerd.materialedittext.MaterialEditText>
 
 
-            <com.frostnerd.utils.design.MaterialEditText
+            <com.frostnerd.materialedittext.MaterialEditText
                 android:id="@+id/met_dns2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:allowCollapse="false"
                 app:image="@drawable/ic_language"
+                app:labelColorPrimary="?attr/foregroundElementColor"
+                app:labelColorSecondary="?attr/foregroundElementColor"
+                app:iconTint="?attr/foregroundElementColor"
                 app:revealDelay="0"
                 app:revealType="revealInstant">
 
@@ -102,26 +110,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:digits="0123456789."
-                    android:hint="DNS 2"
+                    android:hint="@string/hint_dns2"
                     android:imeOptions="actionDone"
                     android:inputType="numberDecimal"
                     android:nextFocusUp="@id/dns1"
-                    android:text="8.8.4.4"
-                    android:textColor="#FFF" />
-            </com.frostnerd.utils.design.MaterialEditText>
+                    android:text="@string/default_dns2"
+                    android:textColor="?attr/foregroundElementColor"/>
+            </com.frostnerd.materialedittext.MaterialEditText>
 
-            <!-- TODO -->
             <LinearLayout
                 android:id="@+id/default_dns_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/inputElementColor"
                 android:clickable="true"
+                android:focusable="true"
                 android:onClick="openDefaultDNSDialog"
                 android:padding="10dp">
 
                 <ImageButton
-                    android:id="@+id/default_dns_view_image"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
@@ -131,21 +138,21 @@
                 <View
                     android:layout_width="2dp"
                     android:layout_height="match_parent"
-                    android:background="#FFF" />
+                    android:textColor="?attr/foregroundElementColor" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="@string/default_dns"
-                    android:textColor="#FFF" />
+                    android:textColor="?attr/foregroundElementColor" />
             </LinearLayout>
         </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_marginTop="15dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
 
             <View
                 android:id="@+id/middle"
@@ -157,21 +164,25 @@
                 android:id="@+id/cancel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="3dp"
                 android:layout_marginRight="3dp"
                 android:layout_toLeftOf="@id/middle"
+                android:layout_toStartOf="@id/middle"
                 android:background="?attr/inputElementColor"
                 android:text="@string/cancel"
-                android:textColor="#FFF" />
+                android:textColor="?attr/foregroundElementColor" />
 
             <Button
                 android:id="@+id/done"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
+                android:layout_marginStart="3dp"
+                android:layout_toEndOf="@id/middle"
                 android:layout_toRightOf="@id/middle"
                 android:background="?attr/inputElementColor"
                 android:text="@string/done"
-                android:textColor="#FFF" />
+                android:textColor="?attr/foregroundElementColor" />
         </RelativeLayout>
     </LinearLayout>
 

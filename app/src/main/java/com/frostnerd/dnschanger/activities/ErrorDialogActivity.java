@@ -9,30 +9,39 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
+import androidx.appcompat.app.AlertDialog;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.widget.TextView;
 
-import com.frostnerd.dnschanger.API.ThemeHandler;
 import com.frostnerd.dnschanger.BuildConfig;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
-import com.frostnerd.utils.preferences.Preferences;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.ThemeHandler;
 
 import java.io.File;
 
-/**
- * Copyright Daniel Wolf 2017
- * All rights reserved.
+/*
+ * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
  *
- * Terms on usage of my code can be found here: https://git.frostnerd.com/PublicAndroidApps/DnsChanger/blob/master/README.md
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * <p>
- * development@frostnerd.com
+ * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 public class ErrorDialogActivity extends Activity {
     private static final String LOG_TAG = "[ErrorDialogActivity]";
@@ -85,7 +94,7 @@ public class ErrorDialogActivity extends Activity {
                     emailIntent.putExtra(Intent.EXTRA_EMAIL, "support@frostnerd.com");
                     emailIntent.putExtra(Intent.EXTRA_TEXT, body);
                     LogFactory.writeMessage(ErrorDialogActivity.this, LOG_TAG,"User choose to send Email to dev", emailIntent);
-                    if(Preferences.getBoolean(ErrorDialogActivity.this, "debug",false)){
+                    if(PreferencesAccessor.isDebugEnabled(ErrorDialogActivity.this)){
                         File zip = LogFactory.zipLogFiles(ErrorDialogActivity.this);
                         if(zip != null){
                             Uri zipURI = FileProvider.getUriForFile(ErrorDialogActivity.this,"com.frostnerd.dnschanger",zip);

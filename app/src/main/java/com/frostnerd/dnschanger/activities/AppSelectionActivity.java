@@ -1,21 +1,27 @@
 package com.frostnerd.dnschanger.activities;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.SimpleItemAnimator;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.frostnerd.lifecycle.BaseActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,69 +33,127 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.frostnerd.dnschanger.API.ThemeHandler;
+import com.frostnerd.design.DesignUtil;
 import com.frostnerd.dnschanger.R;
+import com.frostnerd.dnschanger.util.ThemeHandler;
+import com.frostnerd.general.Utils;
 
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
 
-/**
- * Copyright Daniel Wolf 2017
- * All rights reserved.
+/*
+ * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
  *
- * Terms on usage of my code can be found here: https://git.frostnerd.com/PublicAndroidApps/DnsChanger/blob/master/README.md
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * <p>
- * development@frostnerd.com
+ * You can contact the developer at daniel.wolf@frostnerd.com.
  */
-public class AppSelectionActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
+public class AppSelectionActivity extends BaseActivity implements SearchView.OnQueryTextListener{
     private long lastBackPress;
     private ArrayList<String> currentSelected;
     private RecyclerView appList;
-    private RecyclerView.LayoutManager listLayoutManager;
     private AppListAdapter listAdapter;
     private boolean changed;
     private String infoTextWhitelist, infoTextBlacklist;
-    private boolean whiteList, onlyInternet;
+    private boolean whiteList, onlyInternet, showSystemApps = true;
+    private FloatingActionButton fabSettings;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(ThemeHandler.getAppTheme(this));
         setContentView(R.layout.activity_app_select);
-        appList = (RecyclerView) findViewById(R.id.app_list);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        appList = findViewById(R.id.app_list);
+        fabSettings = findViewById(R.id.fab_settings);
+        Utils.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
         onlyInternet = getIntent() != null && getIntent().getBooleanExtra("onlyInternet",false);
         currentSelected = getIntent() != null && getIntent().hasExtra("apps") ? getIntent().getStringArrayListExtra("apps") : new ArrayList<String>();
         infoTextWhitelist = getIntent() != null && getIntent().hasExtra("infoTextWhitelist") ? getIntent().getStringExtra("infoTextWhitelist") : null;
         infoTextBlacklist = getIntent() != null && getIntent().hasExtra("infoTextBlacklist") ? getIntent().getStringExtra("infoTextBlacklist") : null;
         whiteList = getIntent() != null && getIntent().getBooleanExtra("whitelist", false);
-        listLayoutManager = new LinearLayoutManager(this);
-        appList.setLayoutManager(listLayoutManager);
+        appList.setLayoutManager(new LinearLayoutManager(this));
         appList.setHasFixedSize(true);
         ((SimpleItemAnimator) appList.getItemAnimator()).setSupportsChangeAnimations(false);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 listAdapter = new AppListAdapter();
-                runOnUiThread(new Runnable() {
+                if(appList != null)runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        findViewById(R.id.progress).setVisibility(View.GONE);
                         appList.setAdapter(listAdapter);
                     }
                 });
+                else {
+                    listAdapter.update = false;
+                    listAdapter.apps.clear();
+                    listAdapter.searchedApps.clear();
+                    listAdapter = null;
+                }
             }
         }).start();
+        appList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 30) {
+                    fabSettings.hide();
+                } else if (dy < 5) fabSettings.show();
+            }
+        });
+        ColorStateList stateList = ColorStateList.valueOf(ThemeHandler.getColor(this, R.attr.inputElementColor, Color.WHITE));
+        final int textColor = ThemeHandler.getColor(this, android.R.attr.textColor, Color.BLACK);
+        fabSettings.setBackgroundTintList(stateList);
+        fabSettings.setCompatElevation(4);
+        fabSettings.setImageDrawable(DesignUtil.setDrawableColor(DesignUtil.getDrawable(this, R.drawable.ic_settings), textColor));
+        fabSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSettingsDialog();
+            }
+        });
         getSupportActionBar().setSubtitle(getString(R.string.x_apps_selected).replace("[[x]]", currentSelected.size() + ""));
-        //Preferences.getStringSet(this, "autopause_apps");
+    }
+
+    private void showSettingsDialog(){
+        View dialogContent = getLayoutInflater().inflate(R.layout.dialog_app_selection_settings, null, false);
+        final CheckBox showSystem = dialogContent.findViewById(R.id.show_system_apps),
+                showOnlyInternet = dialogContent.findViewById(R.id.only_show_apps_with_internet);
+        showSystem.setChecked(showSystemApps);
+        showOnlyInternet.setChecked(onlyInternet);
+        new AlertDialog.Builder(this, ThemeHandler.getDialogTheme(this))
+                .setTitle(R.string.settings).setView(dialogContent).setNeutralButton(R.string.cancel, null).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                showSystemApps = showSystem.isChecked();
+                onlyInternet = showOnlyInternet.isChecked();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(listAdapter != null) listAdapter.reload();
+                    }
+                }).start();
+            }
+        }).show();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_autopause_appselect, menu);
-        ((SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search))).setOnQueryTextListener(this);
+        ((SearchView) menu.findItem(R.id.action_search).getActionView()).setOnQueryTextListener(this);
         return true;
     }
 
@@ -105,12 +169,39 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        appList.setAdapter(null);
+        if(listAdapter != null){
+            listAdapter.update = false;
+            listAdapter.apps.clear();
+            listAdapter.searchedApps.clear();
+            listAdapter = null;
+        }
+        appList = null;
+        fabSettings = null;
+    }
+
+    @Override
+    protected Configuration getConfiguration() {
+        return Configuration.withDefaults();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_done || item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == R.id.menu_done){
             setResult(RESULT_OK, new Intent().putExtra("apps", currentSelected).putExtra("whitelist", whiteList));
             finish();
-        }
-        return super.onOptionsItemSelected(item);
+        }else if(item.getItemId() == android.R.id.home) {
+            if (System.currentTimeMillis() - lastBackPress <= 1500 || !changed) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }else {
+                lastBackPress = System.currentTimeMillis();
+                Toast.makeText(this, R.string.press_back_again, Toast.LENGTH_LONG).show();
+            }
+        }else return super.onOptionsItemSelected(item);
+        return true;
     }
 
     @Override
@@ -124,53 +215,77 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         return true;
     }
 
-    private final class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHolder> {
+    private final class AppListAdapter extends RecyclerView.Adapter<ViewHolder> {
         private TreeSet<AppEntry> apps = new TreeSet<>();
         private List<AppEntry> searchedApps = new ArrayList<>();
-        private boolean apply = true;
+        private boolean update = true;
+        private String currentSearch = "";
 
-        public AppListAdapter() {
+        AppListAdapter() {
+            reload();
+        }
+
+        void reload(){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    findViewById(R.id.progress).setVisibility(View.VISIBLE);
+                }
+            });
+            TreeSet<AppEntry> nextApps = new TreeSet<>();
             List<ApplicationInfo> packages = getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
             AppEntry entry;
             for (ApplicationInfo packageInfo : packages) {
-                entry = new AppEntry(getPackageManager(), packageInfo);
-                //if (!entry.isSystemApp()) apps.add(entry);
-                if(!onlyInternet || entry.hasPermission(Manifest.permission.INTERNET))apps.add(entry);
+                entry = new AppEntry(AppSelectionActivity.this, packageInfo);
+                if(!onlyInternet || entry.hasPermission(Manifest.permission.INTERNET)){
+                    if(showSystemApps || !entry.isSystemApp())nextApps.add(entry);
+                }
             }
-            filter("");
+            apps = nextApps;
+            filter(currentSearch);
         }
 
         public void filter(String search){
-            searchedApps.clear();
+            this.currentSearch = search;
+            List<AppEntry> nextSearch = new ArrayList<>();
             if(search.equals("")){
-                for(AppEntry entry: apps)searchedApps.add(entry);
+                nextSearch.addAll(apps);
             }else{
                 for(AppEntry entry: apps){
-                    if(entry.getTitle().toLowerCase().contains(search.toLowerCase()))searchedApps.add(entry);
+                    if(entry.getTitle().toLowerCase().contains(search.toLowerCase()))nextSearch.add(entry);
                 }
             }
-            notifyDataSetChanged();
+            searchedApps = nextSearch;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    notifyDataSetChanged();
+                    findViewById(R.id.progress).setVisibility(View.GONE);
+                }
+            });
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder((RelativeLayout) getLayoutInflater().inflate(viewType == 0 ? R.layout.row_appselect_info : R.layout.row_app_entry, parent, false), viewType);
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder((RelativeLayout) getLayoutInflater().inflate(viewType == 0 ?
+                    R.layout.row_appselect_info : R.layout.row_app_entry, parent, false), viewType);
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+            if(!update)return;
             if (holder.type == 0){
-                ((TextView)holder.contentView.findViewById(R.id.text)).setText(whiteList ? infoTextWhitelist : infoTextBlacklist);
+                ((TextView)holder.itemView.findViewById(R.id.text)).setText(whiteList ? infoTextWhitelist : infoTextBlacklist);
             }else{
                 int offSet = 1;
                 AppEntry entry = searchedApps.get(position - offSet);
-                CheckBox checkBox = (CheckBox) holder.contentView.findViewById(R.id.app_selected_indicator);
-                ((ImageView) holder.contentView.findViewById(R.id.app_image)).setImageDrawable(entry.getIcon());
-                ((TextView) holder.contentView.findViewById(R.id.app_title)).setText(entry.getTitle());
-                holder.contentView.setClickable(true);
+                CheckBox checkBox = holder.itemView.findViewById(R.id.app_selected_indicator);
+                ((ImageView) holder.itemView.findViewById(R.id.app_image)).setImageDrawable(entry.getIcon());
+                ((TextView) holder.itemView.findViewById(R.id.app_title)).setText(entry.getTitle());
+                holder.itemView.setClickable(true);
                 checkBox.setOnCheckedChangeListener(null);
-                checkBox.setChecked(currentSelected.contains(entry.packageName));
-                holder.contentView.setOnClickListener(new View.OnClickListener() {
+                checkBox.setChecked(currentSelected.contains(entry.getPackageName()));
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ((CheckBox) v.findViewById(R.id.app_selected_indicator)).toggle();
@@ -179,15 +294,15 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
                 checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if(!apply)return;
-                        if (isChecked)currentSelected.add(holder.appEntry.packageName);
-                        else currentSelected.remove(holder.appEntry.packageName);
+                        if(!update)return;
+                        if (isChecked) currentSelected.add(holder.appEntry.get().getPackageName());
+                        else currentSelected.remove(holder.appEntry.get().getPackageName());
                         listAdapter.notifyItemChanged(0);
-                        getSupportActionBar().setSubtitle(getString(R.string.x_apps_selected).replace("[[x]]", currentSelected.size() + ""));
+                        Utils.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.x_apps_selected).replace("[[x]]", currentSelected.size() + ""));
                         changed = true;
                     }
                 });
-                holder.appEntry = entry;
+                holder.appEntry = new SoftReference<>(entry);
             }
         }
 
@@ -200,31 +315,32 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         public int getItemCount() {
             return searchedApps.size() + 1;
         }
+    }
 
-        public final class ViewHolder extends RecyclerView.ViewHolder {
-            private RelativeLayout contentView;
-            private AppEntry appEntry;
-            private int type;
+    private static final class ViewHolder extends RecyclerView.ViewHolder {
+        private SoftReference<AppEntry> appEntry;
+        private final int type;
 
-            public ViewHolder(RelativeLayout layout, int type) {
-                super(layout);
-                this.contentView = layout;
-                this.type = type;
-            }
+        ViewHolder(RelativeLayout layout, int type) {
+            super(layout);
+            this.type = type;
+        }
+
+        @Override
+        protected void finalize() throws Throwable {
+            super.finalize();
+            appEntry.clear();
+            appEntry = null;
         }
     }
 
-    private class AppEntry implements Comparable<AppEntry> {
-        private ApplicationInfo info;
-        private Drawable icon;
-        private String title;
-        private String packageName;
+    private static class AppEntry implements Comparable<AppEntry> {
+        private final ApplicationInfo info;
+        private SoftReference<Context> context;
 
-        public AppEntry(PackageManager pm, ApplicationInfo info) {
+        AppEntry(Context context, ApplicationInfo info) {
             this.info = info;
-            icon = info.loadIcon(pm);
-            title = pm.getApplicationLabel(info).toString();
-            packageName = info.packageName;
+            this.context = new SoftReference<>(context);
         }
 
         public ApplicationInfo getRawInfo() {
@@ -232,7 +348,13 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         }
 
         public String getTitle() {
-            return title;
+            if(context.isEnqueued())
+                throw new IllegalStateException("The Context supplied to the AppEntry doesn't exist anymore");
+            return context.get().getPackageManager().getApplicationLabel(info).toString();
+        }
+
+        public String getPackageName(){
+            return info.packageName;
         }
 
         public boolean isSystemApp() {
@@ -240,17 +362,19 @@ public class AppSelectionActivity extends AppCompatActivity implements SearchVie
         }
 
         private Drawable getIcon() {
-            return icon;
+            if(context.isEnqueued())
+                throw new IllegalStateException("The Context supplied to the AppEntry doesn't exist anymore");
+            return info.loadIcon(context.get().getPackageManager());
         }
 
         @Override
         public int compareTo(@NonNull AppEntry o) {
-            return title.compareTo(o.title);
+            return getTitle().compareTo(o.getTitle());
         }
 
         public boolean hasPermission(String s){
             try {
-                PackageInfo info = getPackageManager().getPackageInfo(packageName, PackageManager.GET_PERMISSIONS);
+                PackageInfo info = context.get().getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_PERMISSIONS);
                 String[] permissions = info.requestedPermissions;
                 if(permissions == null)return false;
                 for(int i = 0; i < permissions.length; i++){

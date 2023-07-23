@@ -5,14 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 
-import com.frostnerd.dnschanger.API.API;
-import com.frostnerd.dnschanger.API.Shortcut;
-import com.frostnerd.dnschanger.API.ThemeHandler;
+import androidx.annotation.Nullable;
+
 import com.frostnerd.dnschanger.LogFactory;
-import com.frostnerd.utils.permissions.PermissionsUtil;
-import com.frostnerd.utils.preferences.Preferences;
+import com.frostnerd.dnschanger.util.ThemeHandler;
+import com.frostnerd.dnschanger.util.Preferences;
+import com.frostnerd.general.Utils;
+import com.frostnerd.general.permissions.PermissionsUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,11 +21,23 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-/**
- * Copyright Daniel Wolf 2017
- * All rights reserved.
- * <p>
- * development@frostnerd.com
+/*
+ * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 public class SettingsImportActivity extends Activity {
     private static final String LOG_TAG = "[SettingsImportActivity]";
@@ -36,8 +48,8 @@ public class SettingsImportActivity extends Activity {
         setTheme(ThemeHandler.getAppTheme(this));
         LogFactory.writeMessage(this, LOG_TAG, "Created activity", getIntent());
         Intent intent = getIntent();
-        if (intent.getAction().equals(Intent.ACTION_VIEW) && PermissionsUtil.canReadExternalStorage(this)) {
-            Uri uri = intent.getData();
+        if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_VIEW) && PermissionsUtil.canReadExternalStorage(this)) {
+            Uri uri = Utils.requireNonNull(intent.getData());
             LogFactory.writeMessage(this, LOG_TAG, "Importing from given URI: " + uri);
             try {
                 importFromStream(this, this.getContentResolver().openInputStream(uri));
@@ -69,17 +81,16 @@ public class SettingsImportActivity extends Activity {
             reader = new BufferedReader(ir);
             LogFactory.writeMessage(c, LOG_TAG, "Streams created.");
             String line;
-            String data = "";
+            StringBuilder data = new StringBuilder();
             LogFactory.writeMessage(c, LOG_TAG, "Reading data");
             while ((line = reader.readLine()) != null) {
                 if (line.equals("") || line.startsWith("[")) continue;
-                if(line.startsWith("'")){
-                    API.createShortcut(c, Shortcut.fromString(line.split("'")[1]));
+                if(!line.startsWith("'")){
+                    data.append(line);
                 }
-                else data += line;
             }
             LogFactory.writeMessage(c, LOG_TAG, "Data read: " + data);
-            Preferences.importFromStringAndPut(c, data, "<<>>");
+            Preferences.importFromJson(c, data.toString());
             LogFactory.writeMessage(c, LOG_TAG, "Imported data and added to preferences.");
         } catch (Exception e) {
             LogFactory.writeStackTrace(c, LogFactory.Tag.ERROR, e);
@@ -89,7 +100,7 @@ public class SettingsImportActivity extends Activity {
                 if (ir != null) ir.close();
                 if (reader != null) reader.close();
                 if (stream != null) stream.close();
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
             Intent i;

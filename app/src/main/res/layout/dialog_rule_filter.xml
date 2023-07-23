@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <com.frostnerd.materialedittext.MaterialEditText
+        android:id="@+id/met_target"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:allowCollapse="false"
+        app:animationDuration="0"
+        app:image="@drawable/ic_language"
+        app:labelColorPrimary="?attr/foregroundElementColor"
+        app:labelColorSecondary="?attr/foregroundElementColor"
+        app:iconTint="?attr/foregroundElementColor"
+        app:indicatorState="undefined"
+        app:indicatorVisibilityWhenUnused="hidden"
+        app:revealDelay="0"
+        app:revealType="revealInstant">
+
+        <EditText
+            android:id="@+id/target"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/search_by_target"
+            android:inputType="textNoSuggestions"
+            android:textColor="?attr/foregroundElementColor"/>
+    </com.frostnerd.materialedittext.MaterialEditText>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/radio_ipv4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="IPv4"
+            android:textColor="?android:attr/textColor" />
+
+        <RadioButton
+            android:id="@+id/radio_ipv6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="IPv6"
+            android:textColor="?android:attr/textColor" />
+
+        <RadioButton
+            android:id="@+id/radio_both"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/both"
+            android:textColor="?android:attr/textColor" />
+    </RadioGroup>
+
+    <CheckBox
+        android:id="@+id/show_local"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="@string/show_local_entries"
+        android:textColor="?android:attr/textColor" />
+
+    <CheckBox
+        android:id="@+id/show_normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="@string/show_normal_entries"
+        android:textColor="?android:attr/textColor" />
+
+    <CheckBox
+        android:id="@+id/show_wildcard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="@string/show_wildcard_entries"
+        android:textColor="?android:attr/textColor" />
+
+</LinearLayout>

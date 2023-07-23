@@ -6,22 +6,31 @@ import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.service.quicksettings.Tile;
 
-import com.frostnerd.dnschanger.API.API;
-import com.frostnerd.dnschanger.API.VPNServiceArgument;
 import com.frostnerd.dnschanger.LogFactory;
 import com.frostnerd.dnschanger.R;
 import com.frostnerd.dnschanger.activities.PinActivity;
 import com.frostnerd.dnschanger.services.DNSVpnService;
-import com.frostnerd.utils.preferences.Preferences;
+import com.frostnerd.dnschanger.util.PreferencesAccessor;
+import com.frostnerd.dnschanger.util.Util;
+import com.frostnerd.dnschanger.util.VPNServiceArgument;
 
-/**
- * Copyright Daniel Wolf 2017
- * All rights reserved.
- * <p>
- * Terms on usage of my code can be found here: https://git.frostnerd.com/PublicAndroidApps/DnsChanger/blob/master/README.md
- * <p>
- * <p>
- * development@frostnerd.com
+/*
+ * Copyright (C) 2019 Daniel Wolf (Ch4t4r)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact the developer at daniel.wolf@frostnerd.com.
  */
 @TargetApi(Build.VERSION_CODES.N)
 public class TileStartStop extends android.service.quicksettings.TileService {
@@ -36,7 +45,7 @@ public class TileStartStop extends android.service.quicksettings.TileService {
             tile.setState(Tile.STATE_INACTIVE);
             tile.setLabel(getString(R.string.tile_start));
             tile.updateTile();
-        }else API.updateTiles(this);
+        }else Util.updateTiles(this);
     }
 
     @Override
@@ -50,38 +59,41 @@ public class TileStartStop extends android.service.quicksettings.TileService {
         super.onStartListening();
         LogFactory.writeMessage(this, LOG_TAG, "Start listening");
         Tile tile = getQsTile();
-        tile.setState(Tile.STATE_INACTIVE);
-        if (API.isServiceRunning(this)) {
-            LogFactory.writeMessage(this, LOG_TAG, "Service not running (State set to Active)");
-            tile.setState(Tile.STATE_ACTIVE);
-            tile.setLabel(getString(R.string.tile_stop));
-            tile.setIcon(Icon.createWithResource(this, R.drawable.ic_stat_stop));
-        } else {
-            LogFactory.writeMessage(this, LOG_TAG, "Service running (State set to inactive)");
+        if(tile != null) {
             tile.setState(Tile.STATE_INACTIVE);
-            tile.setLabel(getString(R.string.tile_start));
-            tile.setIcon(Icon.createWithResource(this, R.drawable.ic_stat_resume));
+            if (Util.isServiceRunning(this)) {
+                LogFactory.writeMessage(this, LOG_TAG, "Service not running (State set to Active)");
+                tile.setState(Tile.STATE_ACTIVE);
+                tile.setLabel(getString(R.string.tile_stop));
+                tile.setIcon(Icon.createWithResource(this, R.drawable.ic_stat_stop));
+            } else {
+                LogFactory.writeMessage(this, LOG_TAG, "Service running (State set to inactive)");
+                tile.setState(Tile.STATE_INACTIVE);
+                tile.setLabel(getString(R.string.tile_start));
+                tile.setIcon(Icon.createWithResource(this, R.drawable.ic_stat_resume));
+            }
+            tile.updateTile();
+            LogFactory.writeMessage(this, LOG_TAG, "Tile updated");
         }
-        tile.updateTile();
-        LogFactory.writeMessage(this, LOG_TAG, "Tile updated");
     }
 
     @Override
     public void onClick() {
         super.onClick();
         LogFactory.writeMessage(this, LOG_TAG, "Tile clicked");
-        boolean pinProtected = Preferences.getBoolean(this, "pin_tile", false),
-        running = API.isServiceRunning(this);
+        boolean pinProtected = PreferencesAccessor.isPinProtected(this, PreferencesAccessor.PinProtectable.TILE),
+        running = Util.isServiceRunning(this);
         Intent i;
         if (pinProtected) {
             LogFactory.writeMessage(this, LOG_TAG, "Tile is Pin protected. Starting PinActivity",
                     i = new Intent(this, PinActivity.class).putExtra(running ? VPNServiceArgument.COMMAND_STOP_SERVICE.toString() :
                             VPNServiceArgument.COMMAND_START_VPN.toString(), true).putExtra("redirectToService", true));
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
         } else {
             LogFactory.writeMessage(this, LOG_TAG, "Tile is not Pin protected. Starting DNSVPNService",
                     i = running ? DNSVpnService.getDestroyIntent(this) : DNSVpnService.getStartVPNIntent(this));
-            startService(i);
+            Util.startService(this, i);
         }
     }
 
